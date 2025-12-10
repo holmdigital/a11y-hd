@@ -95,8 +95,8 @@ jobs:
 
 ```bash
 # Clone repo
-git clone https://github.com/holmdigital/a11y.git
-cd a11y
+git clone git@github.com:holmdigital/a11y-hd.git
+cd a11y-hd
 
 # Install dependencies
 npm install
@@ -113,6 +113,7 @@ npm run build
 │   ├── engine/          # Test engine (Puppeteer/Axe) with i18n
 │   ├── components/      # React components
 │   └── standards/       # Regulatory database (EN/SV/DE/FR/ES)
+├── holmdigital-website/ # Public Marketing Website & Dashboard
 ├── holmdigital-wiki/    # Private Internal Wiki / Documentation
 └── package.json         # Monorepo root
 ```
@@ -130,5 +131,5 @@ Copyright (c) 2025 Holm Digital AB
 ## 🔗 Links
 
 - [Holm Digital AB](https://holmdigital.se)
-- [GitHub](https://github.com/holmdigital/a11y)
+- [GitHub](https://github.com/holmdigital/a11y-hd)
 - [NPM](https://www.npmjs.com/org/holmdigital)
