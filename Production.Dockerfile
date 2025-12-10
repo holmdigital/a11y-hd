@@ -16,8 +16,10 @@ COPY holmdigital-wiki ./holmdigital-wiki
 # We use 'npm ci' for reliable builds, and run from root to handle workspaces
 RUN npm ci
 
-# Build only library packages (skipping apps to avoid double-build/config issues)
-RUN npm run build --workspace=@holmdigital/engine --workspace=@holmdigital/components --workspace=@holmdigital/standards
+# Build library packages sequentially to ensure dependencies (standards -> engine) are ready
+RUN npm run build -w @holmdigital/standards
+RUN npm run build -w @holmdigital/engine
+RUN npm run build -w @holmdigital/components
 
 
 # Build Website
