@@ -16,6 +16,10 @@ COPY holmdigital-wiki ./holmdigital-wiki
 # We use 'npm ci' for reliable builds, and run from root to handle workspaces
 RUN npm ci
 
+# Build all workspace packages (engine, components, standards)
+RUN npm run build
+
+
 # Build Website
 WORKDIR /app/holmdigital-website
 RUN npm run build
