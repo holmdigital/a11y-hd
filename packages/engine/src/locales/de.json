@@ -1,0 +1,34 @@
+{
+    "cli": {
+        "title": "\n🌐 HolmDigital Regulatorischer Scanner\n",
+        "scanning": "Scanne {url}...\n",
+        "initializing": "Initialisiere Scanner...",
+        "analyzing": "Analysiere DOM & Shadow DOM...",
+        "complete": "Scan abgeschlossen!",
+        "generating_pdf": "Generiere PDF-Bericht...",
+        "pdf_saved": "PDF-Bericht gespeichert unter {path}",
+        "scan_failed": "Scan fehlgeschlagen",
+        "critical_failure": "\nCI/CD Fehler: Kritische regulatorische Verstöße gefunden.",
+        "score": "\nKonformitätsbewertung: {score}/100",
+        "status": "Konformitätsstatus: {status}",
+        "not_compliant": "  (Nicht konform mit gesetzlichen Anforderungen - BITV 2.0)",
+        "viewport": "Ansichtsfenster: {width}x{height}",
+        "prescriptive_fix": "\n💡 Vorschriftsmäßige Lösung:",
+        "use_component": "Verwenden Sie die Komponente: {component}",
+        "pseudo_tests": "\n🧬 Generiere Pseudo-Automatisierungstests...\n",
+        "test_for": "Test für {ruleId}:"
+    },
+    "report": {
+        "title": "Barrierefreiheitsbericht - {url}",
+        "generated": "Generiert: {date}",
+        "scan_target": "Scan-Ziel: {url}",
+        "overall_score": "Gesamtbewertung",
+        "critical_issues": "Kritische Probleme",
+        "high_issues": "Hohe Probleme",
+        "total_issues": "Gesamtprobleme",
+        "detailed_violations": "Detaillierte Verstöße",
+        "prescriptive_fix": "💡 Vorschriftsmäßige Lösung",
+        "use": "Verwenden",
+        "footer": "Generiert von @holmdigital/engine v0.1.0 • Standards: WCAG 2.1 AA, EN 301 549, BITV 2.0"
+    }
+}

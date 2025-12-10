@@ -1,0 +1,34 @@
+version_control:
+  # Konfigurerar hur Antigravity hanterar versionshantering
+  auto_save:
+    enabled: true 
+    
+    # Mappen där alla historikversioner sparas. 
+    # Se till att den existerar i din workspace!
+    history_directory: ".antigravity/history" 
+    
+    # Lista över regler för vilka filer som ska sparas
+    rules:
+      
+      # 1. Regel för implementation plans i mappen "imp-plan"
+      - name: Save Implementation Plans Folder
+        match:
+          # Matchar ALLA Markdown-filer (.md) i mappen 'imp-plan/'
+          # Om ni använder en annan filtyp (t.ex. .txt), ändra *.md
+          path: "imp-plan/**/*.md" 
+          
+        action:
+          type: "save_version"
+          # Notera: Vi utelämnar 'max_versions' för att spara så många versioner som möjligt 
+          # och därmed säkerställa att du kan gå tillbaka 3 veckor eller mer.
+          
+      # 2. Regel för den dynamiska AI-README-filen
+      - name: Track AI Readme File
+        match:
+          # Matchar specifikt README.md filen inuti 'ai-readme' mappen.
+          # Anpassa filnamnet om ni använder ett annat namn!
+          path: "ai-readme/README.md"
+          
+        action:
+          type: "save_version"
+          # Också här utelämnas 'max_versions' för långtidsminne.

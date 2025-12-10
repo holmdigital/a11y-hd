@@ -1,0 +1,65 @@
+{
+    "name": "@holmdigital/a11y",
+    "version": "0.1.0",
+    "description": "Omfattande tillgänglighetstest-paket för WCAG, EN 301 549 och DOS-lagen",
+    "main": "./dist/index.js",
+    "module": "./dist/index.mjs",
+    "types": "./dist/index.d.ts",
+    "bin": {
+        "holmdigital-a11y": "./dist/cli/index.js"
+    },
+    "exports": {
+        ".": {
+            "import": "./dist/index.mjs",
+            "require": "./dist/index.js",
+            "types": "./dist/index.d.ts"
+        }
+    },
+    "scripts": {
+        "build": "tsup src/index.ts src/cli/index.ts --format cjs,esm --dts --clean",
+        "dev": "tsup src/index.ts src/cli/index.ts --format cjs,esm --dts --watch",
+        "test": "vitest",
+        "test:integration": "vitest run --config vitest.integration.config.ts",
+        "lint": "eslint src --ext .ts",
+        "format": "prettier --write \"src/**/*.ts\"",
+        "prepublishOnly": "npm run build"
+    },
+    "keywords": [
+        "accessibility",
+        "a11y",
+        "wcag",
+        "en301549",
+        "dos-lagen",
+        "tillgänglighet",
+        "holmdigital",
+        "axe-core",
+        "testing"
+    ],
+    "author": "HolmDigital",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/holmdigital/a11y"
+    },
+    "homepage": "https://a11y.holmdigital.se",
+    "dependencies": {
+        "axe-core": "^4.10.2",
+        "puppeteer": "^23.10.4",
+        "commander": "^12.1.0",
+        "chalk": "^5.3.0",
+        "ora": "^8.1.1"
+    },
+    "devDependencies": {
+        "@types/node": "^22.10.2",
+        "@typescript-eslint/eslint-plugin": "^8.18.1",
+        "@typescript-eslint/parser": "^8.18.1",
+        "eslint": "^9.17.0",
+        "prettier": "^3.4.2",
+        "tsup": "^8.3.5",
+        "typescript": "^5.7.2",
+        "vitest": "^2.1.8"
+    },
+    "engines": {
+        "node": ">=18.0.0"
+    }
+}

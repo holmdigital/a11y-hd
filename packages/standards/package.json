@@ -1,0 +1,55 @@
+{
+    "name": "@holmdigital/standards",
+    "version": "0.1.0",
+    "publishConfig": {
+        "access": "public"
+    },
+    "description": "Machine-readable regulatory database for WCAG, EN 301 549 and the DOS Act",
+    "main": "./dist/index.js",
+    "module": "./dist/index.mjs",
+    "types": "./dist/index.d.ts",
+    "exports": {
+        ".": {
+            "import": "./dist/index.mjs",
+            "require": "./dist/index.js",
+            "types": "./dist/index.d.ts"
+        },
+        "./data/*": "./data/*",
+        "./schema/*": "./schema/*"
+    },
+    "files": [
+        "dist",
+        "data",
+        "schema",
+        "README.md"
+    ],
+    "scripts": {
+        "build": "tsup src/index.ts --format cjs,esm --dts --clean",
+        "dev": "tsup src/index.ts --format cjs,esm --dts --watch",
+        "test": "vitest",
+        "lint": "eslint src --ext .ts",
+        "validate-schema": "node scripts/validate-schema.js",
+        "validate-data": "node scripts/validate-data.js"
+    },
+    "keywords": [
+        "accessibility",
+        "a11y",
+        "wcag",
+        "en301549",
+        "dos-lagen",
+        "standards",
+        "regulatory",
+        "compliance"
+    ],
+    "author": "Holm Digital AB",
+    "license": "MIT",
+    "dependencies": {
+        "ajv": "^8.17.1"
+    },
+    "devDependencies": {
+        "@types/node": "^22.10.2",
+        "tsup": "^8.3.5",
+        "typescript": "^5.7.2",
+        "vitest": "^2.1.8"
+    }
+}

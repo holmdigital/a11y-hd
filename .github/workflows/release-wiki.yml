@@ -1,0 +1,44 @@
+name: Release Wiki
+
+on:
+  push:
+    tags:
+      - 'holmdigital-wiki@*'
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-release:
+    name: Build and Release Wiki
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Build Wiki
+        run: npm run build -w holmdigital-wiki
+
+      - name: Create Artifact
+        run: |
+          cd holmdigital-wiki/dist
+          zip -r ../../wiki-release.zip .
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: wiki-release.zip
+          draft: false
+          prerelease: false
+          generate_release_notes: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

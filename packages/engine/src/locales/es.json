@@ -1,0 +1,34 @@
+{
+    "cli": {
+        "title": "\n🌐 HolmDigital Escáner Regulatorio\n",
+        "scanning": "Escaneando {url}...\n",
+        "initializing": "Inicializando escáner...",
+        "analyzing": "Analizando DOM y Shadow DOM...",
+        "complete": "¡Escaneo completo!",
+        "generating_pdf": "Generando Informe PDF...",
+        "pdf_saved": "Informe PDF guardado en {path}",
+        "scan_failed": "Escaneo fallido",
+        "critical_failure": "\nFallo de CI/CD: Se encontraron violaciones regulatorias críticas.",
+        "score": "\nPuntuación de Cumplimiento: {score}/100",
+        "status": "Estado de Cumplimiento: {status}",
+        "not_compliant": "  (No cumple con los requisitos legales - UNE 139803)",
+        "viewport": "Ventana gráfica: {width}x{height}",
+        "prescriptive_fix": "\n💡 Solución Prescriptiva:",
+        "use_component": "Use el componente: {component}",
+        "pseudo_tests": "\n🧬 Generando pruebas de pseudo-automatización...\n",
+        "test_for": "Prueba para {ruleId}:"
+    },
+    "report": {
+        "title": "Informe de Accesibilidad - {url}",
+        "generated": "Generado: {date}",
+        "scan_target": "Objetivo de escaneo: {url}",
+        "overall_score": "Puntuación General",
+        "critical_issues": "Problemas Críticos",
+        "high_issues": "Problemas Altos",
+        "total_issues": "Problemas Totales",
+        "detailed_violations": "Violaciones Detalladas",
+        "prescriptive_fix": "💡 Solución Prescriptiva",
+        "use": "Usar",
+        "footer": "Generado por @holmdigital/engine v0.1.0 • Estándares: WCAG 2.1 AA, EN 301 549, UNE 139803"
+    }
+}

@@ -1,0 +1,191 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "https://a11y.holmdigital.se/schema/convergence-schema.json",
+    "title": "HolmDigital Convergence Schema",
+    "description": "Schema för mappning mellan WCAG, EN 301 549 och DOS-lagen med regulatorisk metadata",
+    "type": "object",
+    "required": [
+        "ruleId",
+        "wcagCriteria",
+        "en301549Criteria",
+        "remediation",
+        "holmdigitalInsight"
+    ],
+    "properties": {
+        "ruleId": {
+            "type": "string",
+            "description": "Unikt ID för regeln",
+            "pattern": "^[a-z0-9-]+$"
+        },
+        "wcagCriteria": {
+            "type": "string",
+            "description": "WCAG Success Criteria (format: X.X.X)",
+            "pattern": "^[0-9]\\.[0-9]\\.[0-9]+$"
+        },
+        "wcagLevel": {
+            "type": "string",
+            "description": "WCAG conformance level",
+            "enum": [
+                "A",
+                "AA",
+                "AAA"
+            ]
+        },
+        "wcagTitle": {
+            "type": "string",
+            "description": "WCAG Success Criteria titel"
+        },
+        "wcagVersion": {
+            "type": "string",
+            "description": "WCAG version",
+            "enum": [
+                "2.0",
+                "2.1",
+                "2.2"
+            ]
+        },
+        "en301549Criteria": {
+            "type": "string",
+            "description": "EN 301 549 clause (format: X.X.X.X)",
+            "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+$"
+        },
+        "en301549Title": {
+            "type": "string",
+            "description": "EN 301 549 clause titel"
+        },
+        "en301549Chapter": {
+            "type": "integer",
+            "description": "EN 301 549 kapitel nummer",
+            "minimum": 1,
+            "maximum": 14
+        },
+        "dosLagenApplies": {
+            "type": "boolean",
+            "description": "Om DOS-lagen är tillämplig"
+        },
+        "dosLagenReference": {
+            "type": "string",
+            "description": "Referens till DOS-lagen paragraf"
+        },
+        "remediation": {
+            "type": "object",
+            "description": "Åtgärdsinformation enligt WCAG 3.3.3",
+            "required": [
+                "description",
+                "technicalGuidance"
+            ],
+            "properties": {
+                "description": {
+                    "type": "string",
+                    "description": "Beskrivning av problemet på svenska"
+                },
+                "technicalGuidance": {
+                    "type": "string",
+                    "description": "Teknisk vägledning för att åtgärda"
+                },
+                "component": {
+                    "type": "string",
+                    "description": "Rekommenderad komponent från @holmdigital/components",
+                    "pattern": "^@holmdigital/components/[A-Z][a-zA-Z]+$"
+                },
+                "codeExample": {
+                    "type": "string",
+                    "description": "Kodexempel för korrekt implementation"
+                },
+                "wcagTechnique": {
+                    "type": "array",
+                    "description": "WCAG Techniques som är relevanta",
+                    "items": {
+                        "type": "string",
+                        "pattern": "^(G|H|C|SCR|ARIA|F)[0-9]+$"
+                    }
+                }
+            }
+        },
+        "holmdigitalInsight": {
+            "type": "object",
+            "description": "HolmDigitals expertanalys och riskbedömning",
+            "required": [
+                "diggRisk",
+                "eaaImpact",
+                "swedishInterpretation"
+            ],
+            "properties": {
+                "diggRisk": {
+                    "type": "string",
+                    "description": "Riskklassificering baserat på DIGG:s tillsynspraxis",
+                    "enum": [
+                        "low",
+                        "medium",
+                        "high",
+                        "critical"
+                    ]
+                },
+                "eaaImpact": {
+                    "type": "string",
+                    "description": "Påverkan enligt European Accessibility Act",
+                    "enum": [
+                        "none",
+                        "low",
+                        "medium",
+                        "high",
+                        "critical"
+                    ]
+                },
+                "swedishInterpretation": {
+                    "type": "string",
+                    "description": "Svensk tolkning och kontext"
+                },
+                "commonMistakes": {
+                    "type": "array",
+                    "description": "Vanliga misstag i svenska implementationer",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "diggPrecedent": {
+                    "type": "string",
+                    "description": "Tidigare DIGG-beslut eller vägledning"
+                },
+                "priorityRationale": {
+                    "type": "string",
+                    "description": "Motivering för prioritering"
+                }
+            }
+        },
+        "testability": {
+            "type": "object",
+            "description": "Information om testbarhet",
+            "properties": {
+                "automated": {
+                    "type": "boolean",
+                    "description": "Kan testas automatiskt"
+                },
+                "requiresManualCheck": {
+                    "type": "boolean",
+                    "description": "Kräver manuell verifiering"
+                },
+                "pseudoAutomation": {
+                    "type": "boolean",
+                    "description": "Kan generera testskript för manuell körning"
+                },
+                "complexity": {
+                    "type": "string",
+                    "enum": [
+                        "simple",
+                        "moderate",
+                        "complex"
+                    ],
+                    "description": "Komplexitet för testning"
+                }
+            }
+        },
+        "tags": {
+            "type": "array",
+            "description": "Tags för kategorisering",
+            "items": {
+                "type": "string"
+            }
+        }
+    }
+}

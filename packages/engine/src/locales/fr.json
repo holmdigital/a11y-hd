@@ -1,0 +1,34 @@
+{
+    "cli": {
+        "title": "\n🌐 HolmDigital Scanner Réglementaire\n",
+        "scanning": "Scan de {url} en cours...\n",
+        "initializing": "Initialisation du scanner...",
+        "analyzing": "Analyse du DOM & Shadow DOM...",
+        "complete": "Scan terminé !",
+        "generating_pdf": "Génération du rapport PDF...",
+        "pdf_saved": "Rapport PDF enregistré sous {path}",
+        "scan_failed": "Échec du scan",
+        "critical_failure": "\nÉchec CI/CD : Violations réglementaires critiques détectées.",
+        "score": "\nScore de Conformité : {score}/100",
+        "status": "Statut de Conformité : {status}",
+        "not_compliant": "  (Non conforme aux exigences légales - RGAA)",
+        "viewport": "Fenêtre d'affichage : {width}x{height}",
+        "prescriptive_fix": "\n💡 Solution Prescriptive :",
+        "use_component": "Utilisez le composant : {component}",
+        "pseudo_tests": "\n🧬 Génération de tests de pseudo-automatisation...\n",
+        "test_for": "Test pour {ruleId} :"
+    },
+    "report": {
+        "title": "Rapport d'Accessibilité - {url}",
+        "generated": "Généré le : {date}",
+        "scan_target": "Cible du scan : {url}",
+        "overall_score": "Score Global",
+        "critical_issues": "Problèmes Critiques",
+        "high_issues": "Problèmes Importants",
+        "total_issues": "Total des Problèmes",
+        "detailed_violations": "Violations Détaillées",
+        "prescriptive_fix": "💡 Solution Prescriptive",
+        "use": "Utiliser",
+        "footer": "Généré par @holmdigital/engine v0.1.0 • Standards : WCAG 2.1 AA, EN 301 549, RGAA"
+    }
+}

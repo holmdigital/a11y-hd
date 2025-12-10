@@ -1,0 +1,9 @@
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Production.Dockerfile
+    ports:
+      - "80:80"
+    restart: always
+    container_name: holmdigital-unified

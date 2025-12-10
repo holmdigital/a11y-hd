@@ -1,0 +1,102 @@
+{
+    "name": "@holmdigital/components",
+    "author": "Holm Digital AB",
+    "version": "0.1.0",
+    "publishConfig": {
+        "access": "public"
+    },
+    "description": "Prescriptive, accessible React components for regulatory compliance",
+    "main": "./dist/index.js",
+    "module": "./dist/index.mjs",
+    "types": "./dist/index.d.ts",
+    "exports": {
+        ".": {
+            "import": "./dist/index.mjs",
+            "require": "./dist/index.js",
+            "types": "./dist/index.d.ts"
+        },
+        "./Button": {
+            "import": "./dist/Button/Button.mjs",
+            "types": "./dist/Button/Button.d.ts"
+        },
+        "./FormField": {
+            "import": "./dist/FormField/FormField.mjs",
+            "types": "./dist/FormField/FormField.d.ts"
+        },
+        "./Dialog": {
+            "import": "./dist/Dialog/Dialog.mjs",
+            "types": "./dist/Dialog/Dialog.d.ts"
+        },
+        "./Modal": {
+            "import": "./dist/Modal/Modal.mjs",
+            "types": "./dist/Modal/Modal.d.ts"
+        },
+        "./SkipLink": {
+            "import": "./dist/SkipLink/SkipLink.mjs",
+            "types": "./dist/SkipLink/SkipLink.d.ts"
+        },
+        "./NavigationMenu": {
+            "import": "./dist/NavigationMenu/NavigationMenu.mjs",
+            "types": "./dist/NavigationMenu/NavigationMenu.d.ts"
+        },
+        "./Checkbox": {
+            "import": "./dist/Checkbox/Checkbox.mjs",
+            "types": "./dist/Checkbox/Checkbox.d.ts"
+        },
+        "./RadioGroup": {
+            "import": "./dist/RadioGroup/RadioGroup.mjs",
+            "types": "./dist/RadioGroup/RadioGroup.d.ts"
+        },
+        "./Select": {
+            "import": "./dist/Select/Select.mjs",
+            "types": "./dist/Select/Select.d.ts"
+        },
+        "./Switch": {
+            "import": "./dist/Switch/Switch.mjs",
+            "types": "./dist/Switch/Switch.d.ts"
+        },
+        "./Toast": {
+            "import": "./dist/Toast/Toast.mjs",
+            "types": "./dist/Toast/Toast.d.ts"
+        },
+        "./Tooltip": {
+            "import": "./dist/Tooltip/Tooltip.mjs",
+            "types": "./dist/Tooltip/Tooltip.d.ts"
+        }
+    },
+    "files": [
+        "dist",
+        "README.md"
+    ],
+    "scripts": {
+        "build": "tsup src/index.ts src/Button/Button.tsx src/FormField/FormField.tsx src/Dialog/Dialog.tsx src/Modal/Modal.tsx src/SkipLink/SkipLink.tsx src/NavigationMenu/NavigationMenu.tsx src/Checkbox/Checkbox.tsx src/RadioGroup/RadioGroup.tsx src/Select/Select.tsx src/Switch/Switch.tsx src/Toast/Toast.tsx src/Tooltip/Tooltip.tsx --format cjs,esm --dts --clean --external react",
+        "dev": "tsup src/index.ts src/Button/Button.tsx src/FormField/FormField.tsx src/Dialog/Dialog.tsx src/Modal/Modal.tsx src/SkipLink/SkipLink.tsx src/NavigationMenu/NavigationMenu.tsx src/Checkbox/Checkbox.tsx src/RadioGroup/RadioGroup.tsx src/Select/Select.tsx src/Switch/Switch.tsx src/Toast/Toast.tsx src/Tooltip/Tooltip.tsx --format cjs,esm --dts --watch --external react",
+        "lint": "eslint src --ext .ts,.tsx",
+        "storybook": "storybook dev -p 6006",
+        "build-storybook": "storybook build"
+    },
+    "keywords": [
+        "react",
+        "components",
+        "accessibility",
+        "a11y",
+        "wcag",
+        "design-system"
+    ],
+    "peerDependencies": {
+        "react": ">=18.0.0",
+        "react-dom": ">=18.0.0"
+    },
+    "devDependencies": {
+        "@types/react": "^18.2.0",
+        "@types/react-dom": "^18.2.0",
+        "react": "^18.2.0",
+        "react-dom": "^18.2.0",
+        "storybook": "^7.6.0",
+        "tsup": "^8.3.5",
+        "typescript": "^5.7.2"
+    },
+    "dependencies": {
+        "lucide-react": "^0.556.0"
+    }
+}

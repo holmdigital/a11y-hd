@@ -1,0 +1,189 @@
+[
+    {
+        "id": "5.1.3.1",
+        "chapter": 5,
+        "title": "Auditory output",
+        "description": "Where ICT provides auditory output, the auditory output shall be available without requiring the use of hearing.",
+        "applicableFor": [
+            "hardware",
+            "kiosks",
+            "atm"
+        ],
+        "manualVerification": true,
+        "checklistItem": "Check that auditory output is available and can be used with headphones or other assistive technology.",
+        "swedishGuidance": "For public terminals (e.g. ticket machines) auditory output must be available for screen reader functionality.",
+        "diggRelevance": "medium",
+        "eaaRelevance": "high"
+    },
+    {
+        "id": "5.1.3.16",
+        "chapter": 5,
+        "title": "Tactilely discernible parts",
+        "description": "Where ICT has physical controls, these must be tactilely discernible.",
+        "applicableFor": [
+            "hardware",
+            "kiosks",
+            "atm",
+            "physical-devices"
+        ],
+        "manualVerification": true,
+        "checklistItem": "Check that physical buttons and controls can be identified by touch.",
+        "swedishGuidance": "Important for self-service terminals in the public sector.",
+        "diggRelevance": "low",
+        "eaaRelevance": "high"
+    },
+    {
+        "id": "5.5.2",
+        "chapter": 5,
+        "title": "Operable parts discernibility",
+        "description": "Where ICT has operable parts, these must be visually discernible.",
+        "applicableFor": [
+            "hardware",
+            "kiosks"
+        ],
+        "manualVerification": true,
+        "checklistItem": "Check that buttons and controls have sufficient contrast against the background.",
+        "swedishGuidance": "Also applies to touch screens on public terminals.",
+        "diggRelevance": "medium",
+        "eaaRelevance": "high"
+    },
+    {
+        "id": "10.1.1.1",
+        "chapter": 10,
+        "title": "Non-text content (non-web documents)",
+        "description": "Non-web documents shall satisfy WCAG 2.1 Success Criterion 1.1.1.",
+        "applicableFor": [
+            "pdf",
+            "word",
+            "excel",
+            "powerpoint",
+            "ebook",
+            "epub"
+        ],
+        "manualVerification": true,
+        "checklistItem": "Check that all images in documents have alternative text.",
+        "swedishGuidance": "PDF documents and E-books (EPUB) must have alt-text. MTM supervises e-books compliance.",
+        "diggRelevance": "high",
+        "eaaRelevance": "medium"
+    },
+    {
+        "id": "10.2.1.1",
+        "chapter": 10,
+        "title": "Keyboard (non-web documents)",
+        "description": "Non-web documents shall be navigable by keyboard.",
+        "applicableFor": [
+            "pdf",
+            "word",
+            "excel"
+        ],
+        "manualVerification": true,
+        "checklistItem": "Check that documents can be navigated with keyboard (Tab, arrow keys).",
+        "swedishGuidance": "PDF forms and E-book navigation must be operable via keyboard/reading systems.",
+        "diggRelevance": "high",
+        "eaaRelevance": "medium"
+    },
+    {
+        "id": "10.2.4.2",
+        "chapter": 10,
+        "title": "Document titled (non-web documents)",
+        "description": "Non-web documents shall have a title.",
+        "applicableFor": [
+            "pdf",
+            "word",
+            "excel",
+            "powerpoint"
+        ],
+        "manualVerification": true,
+        "checklistItem": "Check that documents have a descriptive title in metadata.",
+        "swedishGuidance": "PDF documents must have title set in document properties.",
+        "diggRelevance": "medium",
+        "eaaRelevance": "low"
+    },
+    {
+        "id": "11.5.2.5",
+        "chapter": 11,
+        "title": "Object information (software)",
+        "description": "Software shall expose object information to assistive technology.",
+        "applicableFor": [
+            "desktop-software",
+            "mobile-apps"
+        ],
+        "manualVerification": true,
+        "checklistItem": "Check that UI elements expose name, role, value, and state to screen readers.",
+        "swedishGuidance": "Mobile apps from public authorities must work with iOS VoiceOver and Android TalkBack.",
+        "diggRelevance": "high",
+        "eaaRelevance": "high"
+    },
+    {
+        "id": "11.8.2",
+        "chapter": 11,
+        "title": "Authoring tool accessibility (software)",
+        "description": "If the software is an authoring tool, it must support accessible content creation.",
+        "applicableFor": [
+            "cms",
+            "authoring-tools",
+            "editors"
+        ],
+        "manualVerification": true,
+        "checklistItem": "Check that CMS/authoring tools have features to create accessible content (e.g. alt-text fields).",
+        "swedishGuidance": "CMS used by authorities must encourage/require accessible content.",
+        "diggRelevance": "medium",
+        "eaaRelevance": "medium"
+    },
+    {
+        "id": "12.1.1",
+        "chapter": 12,
+        "title": "Accessibility and compatibility features",
+        "description": "Product documentation shall describe accessibility features.",
+        "applicableFor": [
+            "all"
+        ],
+        "manualVerification": true,
+        "checklistItem": "Check that documentation lists all accessibility features and how to use them.",
+        "swedishGuidance": "Accessibility statement must include information about accessibility features. Applies to public sector (DOS-law), private actors (Accessibility Act), and E-book distributors.",
+        "diggRelevance": "high",
+        "eaaRelevance": "medium"
+    },
+    {
+        "id": "12.1.2",
+        "chapter": 12,
+        "title": "Accessible documentation",
+        "description": "Product documentation shall be accessible.",
+        "applicableFor": [
+            "all"
+        ],
+        "manualVerification": true,
+        "checklistItem": "Check that user manual and help documentation meet WCAG 2.1 AA.",
+        "swedishGuidance": "Help pages and user guides must be accessible. Critical for e-commerce and banking services under the Accessibility Act.",
+        "diggRelevance": "medium",
+        "eaaRelevance": "medium"
+    },
+    {
+        "id": "12.2.2",
+        "chapter": 12,
+        "title": "Information on accessibility and compatibility features",
+        "description": "Support services shall be knowledgeable about accessibility features.",
+        "applicableFor": [
+            "support-services"
+        ],
+        "manualVerification": true,
+        "checklistItem": "Check that support staff is trained in the product's accessibility features.",
+        "swedishGuidance": "Support services (helpdesk/technical support) must be able to assist users with disabilities. Applies to all actors covered by the Accessibility Act.",
+        "diggRelevance": "low",
+        "eaaRelevance": "medium"
+    },
+    {
+        "id": "12.2.4",
+        "chapter": 12,
+        "title": "Accessible support services",
+        "description": "Support services shall be accessible.",
+        "applicableFor": [
+            "support-services"
+        ],
+        "manualVerification": true,
+        "checklistItem": "Check that support is available via multiple channels (phone, email, chat) and is accessible.",
+        "swedishGuidance": "Support channels must be accessible. Private actors offering services to consumers must ensure their support is inclusive.",
+        "diggRelevance": "medium",
+        "eaaRelevance": "high"
+    }
+]

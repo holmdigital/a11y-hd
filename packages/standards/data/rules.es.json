@@ -1,0 +1,1946 @@
+[
+    {
+        "ruleId": "color-contrast",
+        "wcagCriteria": "1.4.3",
+        "wcagLevel": "AA",
+        "wcagTitle": "Contrast (Minimum)",
+        "wcagVersion": "2.0",
+        "en301549Criteria": "9.1.4.3",
+        "en301549Title": "Contrast (minimum)",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "UNE 139803:2012, Nivel AA requerido",
+        "remediation": {
+            "description": "Text and images of text must have a contrast ratio of at least 4.5:1 (3:1 for large text).",
+            "technicalGuidance": "Use tools like WebAIM Contrast Checker to verify contrast. Adjust color choices or add background opacity to achieve correct contrast.",
+            "component": "@holmdigital/components/Button",
+            "codeExample": "import { Button } from '@holmdigital/components';\n\n// Bad: Poor contrast\n<button style={{ background: '#777', color: '#999' }}>Click me</button>\n\n// Good: Use accessible component\n<Button variant=\"primary\">Click me</Button>",
+            "wcagTechnique": [
+                "G18",
+                "G145",
+                "G174"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "high",
+            "eaaImpact": "critical",
+            "swedishInterpretation": "One of the most common reasons for fines from regulators. Especially important for public sector monitoring.",
+            "commonMistakes": [
+                "Gray text on white background (#777 on #FFF)",
+                "Light blue links without underline",
+                "Placeholder text with too low contrast"
+            ],
+            "diggPrecedent": "Regulators often cite poor contrast in primary navigation elements.",
+            "priorityRationale": "Critical for users with low vision. Affects readability for all users in varying lighting conditions."
+        },
+        "testability": {
+            "automated": true,
+            "requiresManualCheck": false,
+            "pseudoAutomation": false,
+            "complexity": "simple"
+        },
+        "tags": [
+            "color",
+            "contrast",
+            "visual",
+            "wcag2a",
+            "wcag21aa"
+        ]
+    },
+    {
+        "ruleId": "keyboard-accessible",
+        "wcagCriteria": "2.1.1",
+        "wcagLevel": "A",
+        "wcagTitle": "Keyboard",
+        "wcagVersion": "2.0",
+        "en301549Criteria": "9.2.1.1",
+        "en301549Title": "Keyboard",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "UNE 139803:2012, Nivel A requerido",
+        "remediation": {
+            "description": "All functionality must be accessible via keyboard.",
+            "technicalGuidance": "Use semantic HTML elements (button, a, input) instead of div/span with click handlers. Ensure tabindex is used correctly.",
+            "component": "@holmdigital/components/Button",
+            "codeExample": "// Bad: Div with onClick\n<div onClick={handleClick}>Click Me</div>\n\n// Good: Button element\n<button onClick={handleClick}>Click Me</button>\n\n// Best: Use HolmDigital component\nimport { Button } from '@holmdigital/components';\n<Button onClick={handleClick}>Click Me</Button>",
+            "wcagTechnique": [
+                "G202",
+                "H91"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "critical",
+            "eaaImpact": "critical",
+            "swedishInterpretation": "Keyboard access is fundamental and non-negotiable. Top priority in compliance audits.",
+            "commonMistakes": [
+                "Using div/span for clickable elements",
+                "Custom dropdown menus without keyboard support",
+                "Modal dialogs that trap focus incorrectly"
+            ],
+            "diggPrecedent": "Auditors have issued fines for sites where core functions (e.g. forms, navigation) are not keyboard accessible.",
+            "priorityRationale": "Critical for users with motor disabilities and screen reader users."
+        },
+        "testability": {
+            "automated": false,
+            "requiresManualCheck": true,
+            "pseudoAutomation": true,
+            "complexity": "moderate"
+        },
+        "tags": [
+            "keyboard",
+            "interaction",
+            "wcag2a",
+            "wcag21a"
+        ]
+    },
+    {
+        "ruleId": "alt-text",
+        "wcagCriteria": "1.1.1",
+        "wcagLevel": "A",
+        "wcagTitle": "Non-text Content",
+        "wcagVersion": "2.0",
+        "en301549Criteria": "9.1.1.1",
+        "en301549Title": "Non-text content",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "UNE 139803:2012, Nivel A requerido",
+        "remediation": {
+            "description": "All images must have descriptive alternative text.",
+            "technicalGuidance": "Add alt attributes to all img elements. For decorative images, use alt=\"\". For informative images, concisely describe the content.",
+            "codeExample": "// Bad: Msising alt\n<img src=\"logo.png\" />\n\n// Good: Descriptive alt\n<img src=\"logo.png\" alt=\"HolmDigital Logo\" />\n\n// Good: Decorative image\n<img src=\"decoration.png\" alt=\"\" role=\"presentation\" />",
+            "wcagTechnique": [
+                "G94",
+                "G95",
+                "H37"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "high",
+            "eaaImpact": "high",
+            "swedishInterpretation": "Especially important for logos and informational graphics. Frequently checked in audits.",
+            "commonMistakes": [
+                "Missing alt text entirely",
+                "Alt text that just says 'image' or 'icon'",
+                "Filename as alt text (e.g. 'IMG_1234.jpg')",
+                "Decorative images with unnecessary description"
+            ],
+            "diggPrecedent": "Audits frequently cite missing alt text, especially for vital infographics.",
+            "priorityRationale": "Critical for screen reader users to access visual information."
+        },
+        "testability": {
+            "automated": true,
+            "requiresManualCheck": true,
+            "pseudoAutomation": false,
+            "complexity": "simple"
+        },
+        "tags": [
+            "images",
+            "alt-text",
+            "wcag2a",
+            "wcag21a"
+        ]
+    },
+    {
+        "ruleId": "form-labels",
+        "wcagCriteria": "3.3.2",
+        "wcagLevel": "A",
+        "wcagTitle": "Labels or Instructions",
+        "wcagVersion": "2.0",
+        "en301549Criteria": "9.3.3.2",
+        "en301549Title": "Labels or instructions",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "UNE 139803:2012, Nivel A requerido",
+        "remediation": {
+            "description": "Form fields must have clear labels or instructions.",
+            "technicalGuidance": "Use label elements linked to input via for/id. For complex forms, use fieldset and legend. Use aria-describedby for extra instructions.",
+            "component": "@holmdigital/components/FormField",
+            "codeExample": "import { FormField } from '@holmdigital/components';\n\n// Bad: No label\n<input type=\"text\" placeholder=\"Name\" />\n\n// Good: With label\n<label htmlFor=\"name\">Name:</label>\n<input type=\"text\" id=\"name\" />\n\n// Best: Use HolmDigital component\n<FormField\n  label=\"Name\"\n  type=\"text\"\n  required\n  helpText=\"Enter your full name\"\n/>",
+            "wcagTechnique": [
+                "G131",
+                "G162",
+                "H44",
+                "H71"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "high",
+            "eaaImpact": "high",
+            "swedishInterpretation": "Forms are critical for e-services. Compliance is strictly enforced in public sector apps.",
+            "commonMistakes": [
+                "Only placeholder without label",
+                "Label and input not linked via for/id",
+                "Error messages without aria-describedby",
+                "Required fields not clearly marked"
+            ],
+            "diggPrecedent": "Audit decisions often criticize poor form accessibility, especially for application and contact forms.",
+            "priorityRationale": "Critical for users to successfully use e-services and submit information."
+        },
+        "testability": {
+            "automated": true,
+            "requiresManualCheck": false,
+            "pseudoAutomation": false,
+            "complexity": "simple"
+        },
+        "tags": [
+            "forms",
+            "labels",
+            "wcag2a",
+            "wcag21a"
+        ]
+    },
+    {
+        "ruleId": "page-title",
+        "wcagCriteria": "2.4.2",
+        "wcagLevel": "A",
+        "wcagTitle": "Page Titled",
+        "wcagVersion": "2.0",
+        "en301549Criteria": "9.2.4.2",
+        "en301549Title": "Page titled",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "UNE 139803:2012, Nivel A requerido",
+        "remediation": {
+            "description": "Each web page must have a descriptive title.",
+            "technicalGuidance": "Use the title element in head. The title should be unique for each page and describe its purpose. Format: 'Page Name - Site Name'.",
+            "codeExample": "// Bad: Generic title\n<title>Page</title>\n\n// Good: Descriptive title\n<title>Contact Us - HolmDigital</title>\n\n// React/Next.js\nimport Head from 'next/head';\n\n<Head>\n  <title>Contact Us - HolmDigital</title>\n</Head>",
+            "wcagTechnique": [
+                "G88",
+                "H25"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "medium",
+            "eaaImpact": "medium",
+            "swedishInterpretation": "Important for navigation, especially in SPAs where the title must update dynamically.",
+            "commonMistakes": [
+                "Same title on all pages",
+                "Title not updating in SPAs",
+                "Too long or too short title",
+                "Title missing entirely"
+            ],
+            "diggPrecedent": "Audits have noted missing page titles, especially in Single Page Applications.",
+            "priorityRationale": "Important for screen reader navigation and SEO."
+        },
+        "testability": {
+            "automated": true,
+            "requiresManualCheck": false,
+            "pseudoAutomation": false,
+            "complexity": "simple"
+        },
+        "tags": [
+            "navigation",
+            "title",
+            "wcag2a",
+            "wcag21a"
+        ]
+    },
+    {
+        "ruleId": "info-and-relationships",
+        "wcagCriteria": "1.3.1",
+        "wcagLevel": "A",
+        "wcagTitle": "Info and Relationships",
+        "wcagVersion": "2.0",
+        "en301549Criteria": "9.1.3.1",
+        "en301549Title": "Info and relationships",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "UNE 139803:2012, Nivel A requerido",
+        "remediation": {
+            "description": "Information, structure, and relationships conveyed through presentation can be programmatically determined or are available in text.",
+            "technicalGuidance": "Use semantic HTML: <header>, <nav>, <main>, <footer>, <h1>-<h6>, <ul>/ <ol>, <table>. Do not use visual styles to create 'fake' headings or lists.",
+            "component": null,
+            "wcagTechnique": [
+                "H42",
+                "H48",
+                "G115"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "high",
+            "eaaImpact": "high",
+            "swedishInterpretation": "Semantic structure is crucial for screen readers to navigate effectively. Auditors often cite 'div-soup' that looks like structure but lacks semantics.",
+            "commonMistakes": [
+                "Using bold text instead of <h1>-<h6>",
+                "Using <br> for lists instead of <ul>",
+                "Tables for layout"
+            ],
+            "priorityRationale": "Fundamental for all assistive technology navigation."
+        },
+        "testability": {
+            "automated": true,
+            "requiresManualCheck": true,
+            "pseudoAutomation": false,
+            "complexity": "moderate"
+        },
+        "tags": [
+            "structure",
+            "semantic",
+            "headings",
+            "wcag2a"
+        ]
+    },
+    {
+        "ruleId": "use-of-color",
+        "wcagCriteria": "1.4.1",
+        "wcagLevel": "A",
+        "wcagTitle": "Use of Color",
+        "wcagVersion": "2.0",
+        "en301549Criteria": "9.1.4.1",
+        "en301549Title": "Use of color",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "UNE 139803:2012, Nivel A requerido",
+        "remediation": {
+            "description": "Color is not used as the only visual means of conveying information, indicating an action, prompting a response, or distinguishing a visual element.",
+            "technicalGuidance": "Complement color with text, icons, or underlining. E.g. links must have underlines or another visual marker besides color. Error messages need text/icon, not just a red border.",
+            "component": "@holmdigital/components/FormField",
+            "wcagTechnique": [
+                "G14",
+                "G182",
+                "G183"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "medium",
+            "eaaImpact": "medium",
+            "swedishInterpretation": "Common problem in graphs and maps where only color coding is used.",
+            "commonMistakes": [
+                "Links that only differ by color from body text",
+                "Error messages only marked with red color",
+                "Graphs where only color distinguishes data points"
+            ],
+            "priorityRationale": "Crucial for color blind users."
+        },
+        "testability": {
+            "automated": false,
+            "requiresManualCheck": true,
+            "pseudoAutomation": false,
+            "complexity": "moderate"
+        },
+        "tags": [
+            "visual",
+            "color",
+            "design",
+            "wcag2a"
+        ]
+    },
+    {
+        "ruleId": "reflow",
+        "wcagCriteria": "1.4.10",
+        "wcagLevel": "AA",
+        "wcagTitle": "Reflow",
+        "wcagVersion": "2.1",
+        "en301549Criteria": "9.1.4.10",
+        "en301549Title": "Reflow",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "UNE 139803:2012, Nivel AA requerido",
+        "remediation": {
+            "description": "Content must be presentable without requiring scrolling in two dimensions down to 320px width.",
+            "technicalGuidance": "Use responsive design (CSS Media Queries, Flexbox, Grid). Avoid fixed widths in pixels. Ensure tables and images scale correctly.",
+            "component": null,
+            "wcagTechnique": [
+                "C32",
+                "C31"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "high",
+            "eaaImpact": "high",
+            "swedishInterpretation": "A modern requirement (WCAG 2.1) critical for mobile use and magnified text. DIGG has zero tolerance for horizontal scroll on vertical sites.",
+            "commonMistakes": [
+                "Fixed widths on containers",
+                "Tables that are not responsive",
+                "Images wider than the screen"
+            ],
+            "priorityRationale": "Critical for low vision users who zoom in heavily."
+        },
+        "testability": {
+            "automated": false,
+            "requiresManualCheck": true,
+            "pseudoAutomation": true,
+            "complexity": "moderate"
+        },
+        "tags": [
+            "design",
+            "responsive",
+            "mobile",
+            "wcag21aa"
+        ]
+    },
+    {
+        "ruleId": "non-text-contrast",
+        "wcagCriteria": "1.4.11",
+        "wcagLevel": "AA",
+        "wcagTitle": "Non-text Contrast",
+        "wcagVersion": "2.1",
+        "en301549Criteria": "9.1.4.11",
+        "en301549Title": "Non-text contrast",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "UNE 139803:2012, Nivel AA requerido",
+        "remediation": {
+            "description": "The visual presentation of user interface components and graphical objects must have a contrast ratio of at least 3:1 against adjacent colors.",
+            "technicalGuidance": "Applies to buttons, input borders, icons, and focus indicators. Ensure all interactive elements are clearly visible against the background.",
+            "component": "@holmdigital/components/Button",
+            "wcagTechnique": [
+                "G195",
+                "G207"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "low",
+            "eaaImpact": "low",
+            "swedishInterpretation": "Often missed requirement regarding focus rings and inactive (but visible) components. Important for understanding the interface.",
+            "commonMistakes": [
+                "Grayed out buttons with too low contrast"
+            ],
+            "priorityRationale": "Important for distinguishing interactive elements."
+        },
+        "testability": {
+            "automated": false,
+            "requiresManualCheck": true,
+            "pseudoAutomation": false,
+            "complexity": "complex"
+        },
+        "tags": [
+            "visual",
+            "contrast",
+            "graphics",
+            "wcag21aa"
+        ]
+    },
+    {
+        "ruleId": "text-spacing",
+        "wcagCriteria": "1.4.12",
+        "wcagLevel": "AA",
+        "wcagTitle": "Text Spacing",
+        "wcagVersion": "2.1",
+        "en301549Criteria": "9.1.4.12",
+        "en301549Title": "Text spacing",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "UNE 139803:2012, Nivel AA requerido",
+        "remediation": {
+            "description": "Content or functionality must not be lost when the user changes text spacing (line height, paragraph spacing, etc.).",
+            "technicalGuidance": "Avoid fixed heights on text containers. Let containers grow with content. Test with text spacing bookmarklet.",
+            "component": null,
+            "wcagTechnique": [
+                "C36"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "low",
+            "eaaImpact": "medium",
+            "swedishInterpretation": "Important for dyslexia adaptations.",
+            "commonMistakes": [
+                "Fixed line height in pixels",
+                "Text container that does not grow"
+            ],
+            "priorityRationale": "Important for readability during adaptations."
+        },
+        "testability": {
+            "automated": false,
+            "requiresManualCheck": true,
+            "pseudoAutomation": true,
+            "complexity": "moderate"
+        },
+        "tags": [
+            "visual",
+            "typography",
+            "wcag21aa"
+        ]
+    },
+    {
+        "ruleId": "content-on-hover",
+        "wcagCriteria": "1.4.13",
+        "wcagLevel": "AA",
+        "wcagTitle": "Content on Hover or Focus",
+        "wcagVersion": "2.1",
+        "en301549Criteria": "9.1.4.13",
+        "en301549Title": "Content on hover or focus",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "UNE 139803:2012, Nivel AA requerido",
+        "remediation": {
+            "description": "Content shown on hover/focus (e.g. tooltips) must be Dismissable, Hoverable, and Persistent.",
+            "technicalGuidance": "Ensure tooltips do not disappear when moving mouse from trigger to the tooltip itself. Allow ESC to dismiss.",
+            "component": null,
+            "wcagTechnique": [
+                "SCR39"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "medium",
+            "eaaImpact": "medium",
+            "swedishInterpretation": "Common problem with custom tooltips and mega-menus.",
+            "commonMistakes": [
+                "Tooltips that cannot be reached with mouse",
+                "Menus that close too easily",
+                "Content that cannot be dismissed without moving focus"
+            ],
+            "priorityRationale": "Important for users with magnification and motor difficulties."
+        },
+        "testability": {
+            "automated": false,
+            "requiresManualCheck": true,
+            "pseudoAutomation": true,
+            "complexity": "complex"
+        },
+        "tags": [
+            "interaction",
+            "hover",
+            "tooltips",
+            "wcag21aa"
+        ]
+    },
+    {
+        "ruleId": "captions-prerecorded",
+        "wcagCriteria": "1.2.2",
+        "wcagLevel": "A",
+        "wcagTitle": "Captions (Prerecorded)",
+        "wcagVersion": "2.0",
+        "en301549Criteria": "9.1.2.2",
+        "en301549Title": "Captions (prerecorded)",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "UNE 139803:2012, Nivel A requerido",
+        "remediation": {
+            "description": "Captions must be provided for all prerecorded audio content in synchronized media.",
+            "technicalGuidance": "Use the <track> element with WebVTT files for HTML5 video. For social media embeds, ensure captions are enabled.",
+            "component": null,
+            "wcagTechnique": [
+                "G87",
+                "G93"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "high",
+            "eaaImpact": "high",
+            "swedishInterpretation": "One of the most common deficiencies in the public sector. The legal requirement is strict: video with audio MUST have captions.",
+            "commonMistakes": [
+                "Auto-generated captions that satisfy no one",
+                "Captions missing entirely",
+                "Captions burned into video (not accessible for search/translation)"
+            ],
+            "priorityRationale": "Critical for deaf and hard of hearing users."
+        },
+        "testability": {
+            "automated": false,
+            "requiresManualCheck": true,
+            "pseudoAutomation": false,
+            "complexity": "simple"
+        },
+        "tags": [
+            "media",
+            "video",
+            "captions",
+            "wcag2a"
+        ]
+    },
+    {
+        "ruleId": "audio-description",
+        "wcagCriteria": "1.2.5",
+        "wcagLevel": "AA",
+        "wcagTitle": "Audio Description (Prerecorded)",
+        "wcagVersion": "2.0",
+        "en301549Criteria": "9.1.2.5",
+        "en301549Title": "Audio description (prerecorded)",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "UNE 139803:2012, Nivel AA requerido",
+        "remediation": {
+            "description": "Audio description must be provided for all prerecorded video content.",
+            "technicalGuidance": "Either as a separate audio track, an alternative version of the video, or (if 'talking heads') ensuring all info is conveyed by audio.",
+            "component": null,
+            "wcagTechnique": [
+                "G78",
+                "G69"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "medium",
+            "eaaImpact": "medium",
+            "swedishInterpretation": "Can often be solved by 'integrated description' (talking about what is seen), which is more cost-effective.",
+            "commonMistakes": [
+                "Information shown only visually (graphics, text signs) without being mentioned in audio"
+            ],
+            "priorityRationale": "Critical for blind video users."
+        },
+        "testability": {
+            "automated": false,
+            "requiresManualCheck": true,
+            "pseudoAutomation": false,
+            "complexity": "moderate"
+        },
+        "tags": [
+            "media",
+            "video",
+            "audio-description",
+            "wcag2aa"
+        ]
+    },
+    {
+        "ruleId": "orientation",
+        "wcagCriteria": "1.3.4",
+        "wcagLevel": "AA",
+        "wcagTitle": "Orientation",
+        "wcagVersion": "2.1",
+        "en301549Criteria": "9.1.3.4",
+        "en301549Title": "Orientation",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "UNE 139803:2012, Nivel AA requerido",
+        "remediation": {
+            "description": "Content must not restrict its view and operation to a single display orientation, unless a specific orientation is essential.",
+            "technicalGuidance": "Do not lock screen to portrait or landscape via CSS or JS manifest. Use CSS media queries to handle layout changes.",
+            "component": null,
+            "wcagTechnique": [
+                "F97"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "low",
+            "eaaImpact": "medium",
+            "swedishInterpretation": "Important for tablets and users who have the device mounted (e.g., wheelchair).",
+            "commonMistakes": [
+                "Apps/sites that rotate interface 90 degrees against user will"
+            ],
+            "priorityRationale": "Important for users who cannot rotate their device."
+        },
+        "testability": {
+            "automated": false,
+            "requiresManualCheck": true,
+            "pseudoAutomation": true,
+            "complexity": "simple"
+        },
+        "tags": [
+            "mobile",
+            "responsive",
+            "orientation",
+            "wcag21aa"
+        ]
+    },
+    {
+        "ruleId": "identify-input-purpose",
+        "wcagCriteria": "1.3.5",
+        "wcagLevel": "AA",
+        "wcagTitle": "Identify Input Purpose",
+        "wcagVersion": "2.1",
+        "en301549Criteria": "9.1.3.5",
+        "en301549Title": "Identify input purpose",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "UNE 139803:2012, Nivel AA requerido",
+        "remediation": {
+            "description": "The purpose of each input field collecting information about the user can be programmatically determined.",
+            "technicalGuidance": "Use the 'autocomplete' attribute on input fields for personal data (name, email, tel, address etc.).",
+            "component": "@holmdigital/components/FormField",
+            "wcagTechnique": [
+                "H98"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "medium",
+            "eaaImpact": "high",
+            "swedishInterpretation": "Makes it much easier to fill confusing forms (autofill).",
+            "commonMistakes": [
+                "Missing autocomplete attribute",
+                "Incorrect autocomplete value",
+                "Turning off autocomplete (autocomplete='off') unnecessarily"
+            ],
+            "priorityRationale": "Reduces cognitive load and motor requirements."
+        },
+        "testability": {
+            "automated": true,
+            "requiresManualCheck": false,
+            "pseudoAutomation": false,
+            "complexity": "simple"
+        },
+        "tags": [
+            "forms",
+            "autocomplete",
+            "wcag21aa"
+        ]
+    },
+    {
+        "ruleId": "no-keyboard-trap",
+        "wcagCriteria": "2.1.2",
+        "wcagLevel": "A",
+        "wcagTitle": "No Keyboard Trap",
+        "wcagVersion": "2.0",
+        "en301549Criteria": "9.2.1.2",
+        "en301549Title": "No keyboard trap",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "UNE 139803:2012, Nivel A requerido",
+        "remediation": {
+            "description": "If focus can be moved to a component of the page using a keyboard interface, then focus can be moved away from that component using only a keyboard interface.",
+            "technicalGuidance": "Be careful with JS widgets that trap focus (e.g. modal windows). Ensure there is always a way out (e.g. ESC or shift+tab).",
+            "component": null,
+            "wcagTechnique": [
+                "G21"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "critical",
+            "eaaImpact": "critical",
+            "swedishInterpretation": "A keyboard trap is a 'blocker' that makes the website unusable. Serious error.",
+            "commonMistakes": [
+                "Custom widgets that loop focus infinitely",
+                "Embedded third-party components (maps, chats) without exit"
+            ],
+            "priorityRationale": "Critical: The user gets stuck and must restart the browser."
+        },
+        "testability": {
+            "automated": false,
+            "requiresManualCheck": true,
+            "pseudoAutomation": true,
+            "complexity": "moderate"
+        },
+        "tags": [
+            "keyboard",
+            "interaction",
+            "wcag2a"
+        ]
+    },
+    {
+        "ruleId": "character-key-shortcuts",
+        "wcagCriteria": "2.1.4",
+        "wcagLevel": "A",
+        "wcagTitle": "Character Key Shortcuts",
+        "wcagVersion": "2.1",
+        "en301549Criteria": "9.2.1.4",
+        "en301549Title": "Character key shortcuts",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "UNE 139803:2012, Nivel A requerido",
+        "remediation": {
+            "description": "If a keyboard shortcut consists of only one character (letter, number, symbol), there must be a way to turn it off or remap it, or it must only be active on focus.",
+            "technicalGuidance": "Avoid single-key shortcuts if possible. If needed, ensure they do not conflict with voice control or accidental typing.",
+            "component": null,
+            "wcagTechnique": [
+                "G217"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "medium",
+            "eaaImpact": "medium",
+            "swedishInterpretation": "Important for voice control users (Dragon etc.) where single words can trigger commands accidentally.",
+            "commonMistakes": [
+                "Gmail-like shortcuts that are on by default without option to disable"
+            ],
+            "priorityRationale": "Important to avoid accidental activation."
+        },
+        "testability": {
+            "automated": false,
+            "requiresManualCheck": true,
+            "pseudoAutomation": false,
+            "complexity": "moderate"
+        },
+        "tags": [
+            "keyboard",
+            "shortcuts",
+            "wcag21a"
+        ]
+    },
+    {
+        "ruleId": "timing-adjustable",
+        "wcagCriteria": "2.2.1",
+        "wcagLevel": "A",
+        "wcagTitle": "Timing Adjustable",
+        "wcagVersion": "2.0",
+        "en301549Criteria": "9.2.2.1",
+        "en301549Title": "Timing adjustable",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "UNE 139803:2012, Nivel A requerido",
+        "remediation": {
+            "description": "If a time limit (session, reading time) is set, the user must be able to turn off, adjust, or extend it.",
+            "technicalGuidance": "Provide a warning before the session expires with an 'Extend session' button. The time limit must be at least 20 seconds.",
+            "component": null,
+            "wcagTechnique": [
+                "SCR16",
+                "G180"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "high",
+            "eaaImpact": "high",
+            "swedishInterpretation": "Critical for e-services/banking. Users who read slowly or use assistive technology need more time.",
+            "commonMistakes": [
+                "Logout without warning",
+                "Time limits that cannot be extended"
+            ],
+            "priorityRationale": "Critical to avoid losing entered data."
+        },
+        "testability": {
+            "automated": false,
+            "requiresManualCheck": true,
+            "pseudoAutomation": true,
+            "complexity": "moderate"
+        },
+        "tags": [
+            "time",
+            "session",
+            "wcag2a"
+        ]
+    },
+    {
+        "ruleId": "pause-stop-hide",
+        "wcagCriteria": "2.2.2",
+        "wcagLevel": "A",
+        "wcagTitle": "Pause, Stop, Hide",
+        "wcagVersion": "2.0",
+        "en301549Criteria": "9.2.2.2",
+        "en301549Title": "Pause, stop, hide",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "UNE 139803:2012, Nivel A requerido",
+        "remediation": {
+            "description": "For moving, blinking, or scrolling content that starts automatically and lasts more than 5 seconds, there must be a way to pause, stop, or hide it.",
+            "technicalGuidance": "Applies to carousels (sliders), auto-updating news feeds, animated backgrounds. Add a clear pause button.",
+            "component": null,
+            "wcagTechnique": [
+                "G4",
+                "G186"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "medium",
+            "eaaImpact": "medium",
+            "swedishInterpretation": "Important for users with concentration difficulties (ADHD/Autism) who are distracted by movement.",
+            "commonMistakes": [
+                "Image carousels without pause button",
+                "Animated backgrounds that cannot be turned off"
+            ],
+            "priorityRationale": "Important for cognitive accessibility."
+        },
+        "testability": {
+            "automated": false,
+            "requiresManualCheck": true,
+            "pseudoAutomation": true,
+            "complexity": "moderate"
+        },
+        "tags": [
+            "animation",
+            "carousel",
+            "distraction",
+            "wcag2a"
+        ]
+    },
+    {
+        "ruleId": "three-flashes",
+        "wcagCriteria": "2.3.1",
+        "wcagLevel": "A",
+        "wcagTitle": "Three Flashes or Below Threshold",
+        "wcagVersion": "2.0",
+        "en301549Criteria": "9.2.3.1",
+        "en301549Title": "Three flashes or below threshold",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "UNE 139803:2012, Nivel A requerido",
+        "remediation": {
+            "description": "Content must not flash more than three times per second (can cause seizures).",
+            "technicalGuidance": "Avoid rapid flashing in video and animations. Use tools to measure flash frequency (PEAT).",
+            "component": null,
+            "wcagTechnique": [
+                "G19"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "critical",
+            "eaaImpact": "critical",
+            "swedishInterpretation": "Health risk. Zero tolerance.",
+            "commonMistakes": [
+                "Stroboscopic effects in video",
+                "Misuse of blinking error messages"
+            ],
+            "priorityRationale": "Critical safety risk."
+        },
+        "testability": {
+            "automated": false,
+            "requiresManualCheck": true,
+            "pseudoAutomation": false,
+            "complexity": "complex"
+        },
+        "tags": [
+            "seizure",
+            "safety",
+            "animation",
+            "wcag2a"
+        ]
+    },
+    {
+        "ruleId": "bypass-blocks",
+        "wcagCriteria": "2.4.1",
+        "wcagLevel": "A",
+        "wcagTitle": "Bypass Blocks",
+        "wcagVersion": "2.0",
+        "en301549Criteria": "9.2.4.1",
+        "en301549Title": "Bypass blocks",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "UNE 139803:2012, Nivel A requerido",
+        "remediation": {
+            "description": "There must be a way to skip blocks of content that are repeated on multiple pages (e.g. navigation).",
+            "technicalGuidance": "Implement a 'Skip to Main Content' link at the top of the page that becomes visible on focus. Use semantic landmarks (<main>, <nav>).",
+            "component": null,
+            "wcagTechnique": [
+                "G1",
+                "H69"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "medium",
+            "eaaImpact": "medium",
+            "swedishInterpretation": "Standard on all public sector sites. Enormously helpful for keyboard users.",
+            "commonMistakes": [
+                "Missing skip-link",
+                "Skip-link broken (does not move focus correctly)",
+                "Landmarks missing"
+            ],
+            "priorityRationale": "Important for efficient navigation."
+        },
+        "testability": {
+            "automated": true,
+            "requiresManualCheck": true,
+            "pseudoAutomation": true,
+            "complexity": "simple"
+        },
+        "tags": [
+            "navigation",
+            "skip-link",
+            "keyboard",
+            "wcag2a"
+        ]
+    },
+    {
+        "ruleId": "focus-order",
+        "wcagCriteria": "2.4.3",
+        "wcagLevel": "A",
+        "wcagTitle": "Focus Order",
+        "wcagVersion": "2.0",
+        "en301549Criteria": "9.2.4.3",
+        "en301549Title": "Focus order",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "UNE 139803:2012, Nivel A requerido",
+        "remediation": {
+            "description": "Focus order must be logical and follow meaning/structure.",
+            "technicalGuidance": "Match DOM order with visual order. Avoid tabindex greater than 0. Manage focus manually in modals and menus.",
+            "component": null,
+            "wcagTechnique": [
+                "G59",
+                "C27"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "high",
+            "eaaImpact": "high",
+            "swedishInterpretation": "Critical for complex layouts (Grid/Flexbox) where visual order may differ from DOM order.",
+            "commonMistakes": [
+                "Focus jumps illogically",
+                "Menus in wrong order",
+                "Modal closes and focus returns to top of page"
+            ],
+            "priorityRationale": "Critical for keyboard navigation and understanding."
+        },
+        "testability": {
+            "automated": false,
+            "requiresManualCheck": true,
+            "pseudoAutomation": true,
+            "complexity": "moderate"
+        },
+        "tags": [
+            "focus",
+            "keyboard",
+            "navigation",
+            "wcag2a"
+        ]
+    },
+    {
+        "ruleId": "link-purpose",
+        "wcagCriteria": "2.4.4",
+        "wcagLevel": "A",
+        "wcagTitle": "Link Purpose (In Context)",
+        "wcagVersion": "2.0",
+        "en301549Criteria": "9.2.4.4",
+        "en301549Title": "Link purpose (in context)",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "UNE 139803:2012, Nivel A requerido",
+        "remediation": {
+            "description": "The purpose of each link can be understood from the link text alone or from the link text together with its context.",
+            "technicalGuidance": "Avoid 'Read more' or 'Click here'. Write descriptive link texts. Use aria-label if visual space is limited but more info is needed.",
+            "component": null,
+            "wcagTechnique": [
+                "G91",
+                "H30"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "medium",
+            "eaaImpact": "medium",
+            "swedishInterpretation": "Important for users navigating via link lists (screen readers).",
+            "commonMistakes": [
+                "Lots of 'Read more' links",
+                "Links that don't say where they lead"
+            ],
+            "priorityRationale": "Important for efficient navigation."
+        },
+        "testability": {
+            "automated": true,
+            "requiresManualCheck": true,
+            "pseudoAutomation": false,
+            "complexity": "simple"
+        },
+        "tags": [
+            "links",
+            "navigation",
+            "copywriting",
+            "wcag2a"
+        ]
+    },
+    {
+        "ruleId": "multiple-ways",
+        "wcagCriteria": "2.4.5",
+        "wcagLevel": "AA",
+        "wcagTitle": "Multiple Ways",
+        "wcagVersion": "2.0",
+        "en301549Criteria": "9.2.4.5",
+        "en301549Title": "Multiple ways",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "UNE 139803:2012, Nivel AA requerido",
+        "remediation": {
+            "description": "There must be more than one way to find a web page within a set of web pages.",
+            "technicalGuidance": "At least two of: Menu, Search, Sitemap, Links in content.",
+            "component": null,
+            "wcagTechnique": [
+                "G125",
+                "G126"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "low",
+            "eaaImpact": "low",
+            "swedishInterpretation": "Often fulfilled by menu + search. Sitemap is best practice.",
+            "commonMistakes": [
+                "Missing search on sites with many pages"
+            ],
+            "priorityRationale": "Facilitates different navigation strategies."
+        },
+        "testability": {
+            "automated": false,
+            "requiresManualCheck": true,
+            "pseudoAutomation": false,
+            "complexity": "simple"
+        },
+        "tags": [
+            "navigation",
+            "search",
+            "sitemap",
+            "wcag2aa"
+        ]
+    },
+    {
+        "ruleId": "headings-and-labels",
+        "wcagCriteria": "2.4.6",
+        "wcagLevel": "AA",
+        "wcagTitle": "Headings and Labels",
+        "wcagVersion": "2.0",
+        "en301549Criteria": "9.2.4.6",
+        "en301549Title": "Headings and labels",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "UNE 139803:2012, Nivel AA requerido",
+        "remediation": {
+            "description": "Headings and labels must describe topic or purpose.",
+            "technicalGuidance": "Write clear, descriptive headings that give meaning to the content below them. Form labels must be understandable.",
+            "component": null,
+            "wcagTechnique": [
+                "G130"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "medium",
+            "eaaImpact": "medium",
+            "swedishInterpretation": "About editorial quality and comprehensibility.",
+            "commonMistakes": [
+                "Cryptic headings",
+                "Labels that don't match what needs to be filled in"
+            ],
+            "priorityRationale": "Important for cognitive accessibility."
+        },
+        "testability": {
+            "automated": false,
+            "requiresManualCheck": true,
+            "pseudoAutomation": false,
+            "complexity": "simple"
+        },
+        "tags": [
+            "content",
+            "headings",
+            "labels",
+            "wcag2aa"
+        ]
+    },
+    {
+        "ruleId": "focus-visible",
+        "wcagCriteria": "2.4.7",
+        "wcagLevel": "AA",
+        "wcagTitle": "Focus Visible",
+        "wcagVersion": "2.0",
+        "en301549Criteria": "9.2.4.7",
+        "en301549Title": "Focus visible",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "UNE 139803:2012, Nivel AA requerido",
+        "remediation": {
+            "description": "Any user interface operable by keyboard must have a visible focus indicator.",
+            "technicalGuidance": "Never remove outline with CSS (outline: none) without replacing it with a clear visual indicator. Ensure contrast of focus ring is sufficient (see 1.4.11).",
+            "component": "@holmdigital/components/Button",
+            "wcagTechnique": [
+                "G149",
+                "G165",
+                "C15"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "high",
+            "eaaImpact": "high",
+            "swedishInterpretation": "One of the most common errors. Often because designers dislike the 'blue ring'.",
+            "commonMistakes": [
+                "outline: none in CSS reset",
+                "Custom buttons missing :focus style"
+            ],
+            "priorityRationale": "Critical: Without visible focus, the keyboard user doesn't know where they are."
+        },
+        "testability": {
+            "automated": true,
+            "requiresManualCheck": true,
+            "pseudoAutomation": true,
+            "complexity": "simple"
+        },
+        "tags": [
+            "focus",
+            "visual",
+            "keyboard",
+            "wcag2aa"
+        ]
+    },
+    {
+        "ruleId": "language-of-page",
+        "wcagCriteria": "3.1.1",
+        "wcagLevel": "A",
+        "wcagTitle": "Language of Page",
+        "wcagVersion": "2.0",
+        "en301549Criteria": "9.3.1.1",
+        "en301549Title": "Language of page",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "UNE 139803:2012, Nivel A requerido",
+        "remediation": {
+            "description": "The default human language of each web page must be programmatically determinable.",
+            "technicalGuidance": "Set the 'lang' attribute on the <html> element. E.g., <html lang='en'> for English.",
+            "component": null,
+            "wcagTechnique": [
+                "H57"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "high",
+            "eaaImpact": "high",
+            "swedishInterpretation": "Fundamental for screen reading. Without this, the screen reader guesses the language, often leading to wrong pronunciation.",
+            "commonMistakes": [
+                "Lang attribute missing",
+                "Wrong language code (e.g. 'en' on a Swedish page)"
+            ],
+            "priorityRationale": "Critical for screen reader users."
+        },
+        "testability": {
+            "automated": true,
+            "requiresManualCheck": false,
+            "pseudoAutomation": false,
+            "complexity": "simple"
+        },
+        "tags": [
+            "content",
+            "language",
+            "wcag2a"
+        ]
+    },
+    {
+        "ruleId": "language-of-parts",
+        "wcagCriteria": "3.1.2",
+        "wcagLevel": "AA",
+        "wcagTitle": "Language of Parts",
+        "wcagVersion": "2.0",
+        "en301549Criteria": "9.3.1.2",
+        "en301549Title": "Language of parts",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "UNE 139803:2012, Nivel AA requerido",
+        "remediation": {
+            "description": "The human language of each passage or phrase in the content must be programmatically determinable.",
+            "technicalGuidance": "Use the lang attribute on elements that differ from the page's main language. E.g. <span lang='fr'>Bonjour</span>.",
+            "component": null,
+            "wcagTechnique": [
+                "H58"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "low",
+            "eaaImpact": "low",
+            "swedishInterpretation": "Rarely a critical error unless it significantly hinders understanding.",
+            "commonMistakes": [
+                "Foreign quotes in text without markup"
+            ],
+            "priorityRationale": "Important for correct pronunciation."
+        },
+        "testability": {
+            "automated": false,
+            "requiresManualCheck": true,
+            "pseudoAutomation": true,
+            "complexity": "moderate"
+        },
+        "tags": [
+            "content",
+            "language",
+            "wcag2aa"
+        ]
+    },
+    {
+        "ruleId": "on-focus",
+        "wcagCriteria": "3.2.1",
+        "wcagLevel": "A",
+        "wcagTitle": "On Focus",
+        "wcagVersion": "2.0",
+        "en301549Criteria": "9.3.2.1",
+        "en301549Title": "On focus",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "UNE 139803:2012, Nivel A requerido",
+        "remediation": {
+            "description": "When a component receives focus, it must not initiate a change of context.",
+            "technicalGuidance": "Do not open new windows, submit forms, or move focus automatically just because user tabs to a field.",
+            "component": null,
+            "wcagTechnique": [
+                "G107"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "high",
+            "eaaImpact": "high",
+            "swedishInterpretation": "Very confusing for users. Creates a feeling of lack of control.",
+            "commonMistakes": [
+                "Dropdowns that navigate immediately upon selection (without 'Go' button)",
+                "Forms that auto-submit on last field focus"
+            ],
+            "priorityRationale": "Important for predictability."
+        },
+        "testability": {
+            "automated": false,
+            "requiresManualCheck": true,
+            "pseudoAutomation": true,
+            "complexity": "moderate"
+        },
+        "tags": [
+            "interaction",
+            "focus",
+            "predictability",
+            "wcag2a"
+        ]
+    },
+    {
+        "ruleId": "on-input",
+        "wcagCriteria": "3.2.2",
+        "wcagLevel": "A",
+        "wcagTitle": "On Input",
+        "wcagVersion": "2.0",
+        "en301549Criteria": "9.3.2.2",
+        "en301549Title": "On input",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "UNE 139803:2012, Nivel A requerido",
+        "remediation": {
+            "description": "Changing the setting of any component does not automatically cause a change of context unless the user has been advised of the behavior before using the component.",
+            "technicalGuidance": "Inform the user that selection in a list reloads the page. Preferably, add a button to confirm the choice.",
+            "component": null,
+            "wcagTechnique": [
+                "G13",
+                "H32"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "medium",
+            "eaaImpact": "medium",
+            "swedishInterpretation": "Common in filtering functions.",
+            "commonMistakes": [
+                "Checkboxes that reload page immediately",
+                "Filtering that moves focus"
+            ],
+            "priorityRationale": "Important for predictability."
+        },
+        "testability": {
+            "automated": false,
+            "requiresManualCheck": true,
+            "pseudoAutomation": true,
+            "complexity": "moderate"
+        },
+        "tags": [
+            "interaction",
+            "input",
+            "predictability",
+            "wcag2a"
+        ]
+    },
+    {
+        "ruleId": "consistent-navigation",
+        "wcagCriteria": "3.2.3",
+        "wcagLevel": "AA",
+        "wcagTitle": "Consistent Navigation",
+        "wcagVersion": "2.0",
+        "en301549Criteria": "9.3.2.3",
+        "en301549Title": "Consistent navigation",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "UNE 139803:2012, Nivel AA requerido",
+        "remediation": {
+            "description": "Navigational mechanisms that are repeated on multiple Web pages occur in the same relative order each time they are repeated.",
+            "technicalGuidance": "Main menu should look the same and be in the same place on all pages. Search function as well.",
+            "component": null,
+            "wcagTechnique": [
+                "G61"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "medium",
+            "eaaImpact": "medium",
+            "swedishInterpretation": "Predictability is key to cognitive accessibility.",
+            "commonMistakes": [
+                "Menus that change place or order on different pages"
+            ],
+            "priorityRationale": "Facilitates learning."
+        },
+        "testability": {
+            "automated": false,
+            "requiresManualCheck": true,
+            "pseudoAutomation": false,
+            "complexity": "simple"
+        },
+        "tags": [
+            "navigation",
+            "design",
+            "consistency",
+            "wcag2aa"
+        ]
+    },
+    {
+        "ruleId": "consistent-identification",
+        "wcagCriteria": "3.2.4",
+        "wcagLevel": "AA",
+        "wcagTitle": "Consistent Identification",
+        "wcagVersion": "2.0",
+        "en301549Criteria": "9.3.2.4",
+        "en301549Title": "Consistent identification",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "UNE 139803:2012, Nivel AA requerido",
+        "remediation": {
+            "description": "Components that have the same functionality within a set of Web pages are identified consistently.",
+            "technicalGuidance": "Don't call search 'Search' on one page and 'Find' on another. Use the same icon for the same function.",
+            "component": null,
+            "wcagTechnique": [
+                "G197"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "low",
+            "eaaImpact": "low",
+            "swedishInterpretation": "Important for usability.",
+            "commonMistakes": [
+                "Inconsistent naming",
+                "Different icons for print/download"
+            ],
+            "priorityRationale": "Reduces cognitive load."
+        },
+        "testability": {
+            "automated": false,
+            "requiresManualCheck": true,
+            "pseudoAutomation": false,
+            "complexity": "simple"
+        },
+        "tags": [
+            "content",
+            "icons",
+            "consistency",
+            "wcag2aa"
+        ]
+    },
+    {
+        "ruleId": "error-identification",
+        "wcagCriteria": "3.3.1",
+        "wcagLevel": "A",
+        "wcagTitle": "Error Identification",
+        "wcagVersion": "2.0",
+        "en301549Criteria": "9.3.3.1",
+        "en301549Title": "Error identification",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "UNE 139803:2012, Nivel A requerido",
+        "remediation": {
+            "description": "If an input error is automatically detected, the item that is in error is identified and the error is described to the user in text.",
+            "technicalGuidance": "Show error message close to the field. Link with aria-describedby or include in label. Do not just color the field red.",
+            "component": "@holmdigital/components/FormField",
+            "wcagTechnique": [
+                "G83",
+                "SCR18"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "high",
+            "eaaImpact": "high",
+            "swedishInterpretation": "Critical for completing tasks. Generic error messages ('Something went wrong') are not accepted if the error is specific.",
+            "commonMistakes": [
+                "'Invalid value' without explanation",
+                "Error message not visible to screen readers"
+            ],
+            "priorityRationale": "Critical for error handling."
+        },
+        "testability": {
+            "automated": false,
+            "requiresManualCheck": true,
+            "pseudoAutomation": true,
+            "complexity": "moderate"
+        },
+        "tags": [
+            "forms",
+            "errors",
+            "wcag2a"
+        ]
+    },
+    {
+        "ruleId": "error-suggestion",
+        "wcagCriteria": "3.3.3",
+        "wcagLevel": "AA",
+        "wcagTitle": "Error Suggestion",
+        "wcagVersion": "2.0",
+        "en301549Criteria": "9.3.3.3",
+        "en301549Title": "Error suggestion",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "UNE 139803:2012, Nivel AA requerido",
+        "remediation": {
+            "description": "If an input error is automatically detected and suggestions for correction are known, then the suggestions are provided to the user.",
+            "technicalGuidance": "If date format is wrong, show required format (YYYY-MM-DD). Offer spelling suggestions for search ('Did you mean...?').",
+            "component": "@holmdigital/components/FormField",
+            "wcagTechnique": [
+                "G177"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "medium",
+            "eaaImpact": "medium",
+            "swedishInterpretation": "About being helpful. Reduces support cases.",
+            "commonMistakes": [
+                "Only saying 'Error' without saying how to fix it"
+            ],
+            "priorityRationale": "Facilitates correction."
+        },
+        "testability": {
+            "automated": false,
+            "requiresManualCheck": true,
+            "pseudoAutomation": true,
+            "complexity": "moderate"
+        },
+        "tags": [
+            "forms",
+            "errors",
+            "guidance",
+            "wcag2aa"
+        ]
+    },
+    {
+        "ruleId": "error-prevention",
+        "wcagCriteria": "3.3.4",
+        "wcagLevel": "AA",
+        "wcagTitle": "Error Prevention (Legal, Financial, Data)",
+        "wcagVersion": "2.0",
+        "en301549Criteria": "9.3.3.4",
+        "en301549Title": "Error prevention (legal, financial, data)",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "UNE 139803:2012, Nivel AA requerido",
+        "remediation": {
+            "description": "For Web pages that cause legal commitments or financial transactions, users must be able to: Reverse, Check, or Confirm.",
+            "technicalGuidance": "Offer a summary page before final submission with ability to edit.",
+            "component": null,
+            "wcagTechnique": [
+                "G164",
+                "G98"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "high",
+            "eaaImpact": "high",
+            "swedishInterpretation": "Absolute requirement for e-commerce and legal decisions.",
+            "commonMistakes": [
+                "Direct purchase without confirmation",
+                "Submission of binding contracts without review"
+            ],
+            "priorityRationale": "Critical to avoid serious consequences of mistakes."
+        },
+        "testability": {
+            "automated": false,
+            "requiresManualCheck": true,
+            "pseudoAutomation": false,
+            "complexity": "moderate"
+        },
+        "tags": [
+            "forms",
+            "legal",
+            "financial",
+            "wcag2aa"
+        ]
+    },
+    {
+        "ruleId": "parsing",
+        "wcagCriteria": "4.1.1",
+        "wcagLevel": "A",
+        "wcagTitle": "Parsing",
+        "wcagVersion": "2.0",
+        "en301549Criteria": "9.4.1.1",
+        "en301549Title": "Parsing",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "UNE 139803:2012, Nivel A requerido",
+        "remediation": {
+            "description": "Update: From WCAG 2.2 this criterion is removed/obsolete, but in WCAG 2.1/EN 301 549 it applies: IDs must be unique, elements correctly nested.",
+            "technicalGuidance": "Validate HTML. Ensure id attributes are unique on the page. Close all tags correctly.",
+            "component": null,
+            "wcagTechnique": [
+                "H88"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "low",
+            "eaaImpact": "low",
+            "swedishInterpretation": "Less prioritized now as modern browsers handle errors well, but duplicate IDs can still break ARIA.",
+            "commonMistakes": [
+                "Duplicate IDs",
+                "Broken HTML structure"
+            ],
+            "priorityRationale": "Technical hygiene factor."
+        },
+        "testability": {
+            "automated": true,
+            "requiresManualCheck": false,
+            "pseudoAutomation": false,
+            "complexity": "simple"
+        },
+        "tags": [
+            "code",
+            "html",
+            "parsing",
+            "wcag2a"
+        ]
+    },
+    {
+        "ruleId": "name-role-value",
+        "wcagCriteria": "4.1.2",
+        "wcagLevel": "A",
+        "wcagTitle": "Name, Role, Value",
+        "wcagVersion": "2.0",
+        "en301549Criteria": "9.4.1.2",
+        "en301549Title": "Name, role, value",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "UNE 139803:2012, Nivel A requerido",
+        "remediation": {
+            "description": "For all components, name and role can be programmatically determined. Values can be set programmatically.",
+            "technicalGuidance": "Use native HTML elements when possible. If custom components are used, ARIA (role, aria-label, aria-valuenow) must be used correctly.",
+            "component": null,
+            "wcagTechnique": [
+                "ARIA4",
+                "ARIA5"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "critical",
+            "eaaImpact": "critical",
+            "swedishInterpretation": "This is the foundation for how screen readers work with modern web apps. Without this, the app is 'invisible' to assistive technology.",
+            "commonMistakes": [
+                "Div buttons without role",
+                "Custom checkboxes without aria-checked",
+                "Missing accessible name"
+            ],
+            "priorityRationale": "Absolutely critical for compatibility."
+        },
+        "testability": {
+            "automated": true,
+            "requiresManualCheck": true,
+            "pseudoAutomation": true,
+            "complexity": "complex"
+        },
+        "tags": [
+            "code",
+            "aria",
+            "interaction",
+            "wcag2a"
+        ]
+    },
+    {
+        "ruleId": "status-messages",
+        "wcagCriteria": "4.1.3",
+        "wcagLevel": "AA",
+        "wcagTitle": "Status Messages",
+        "wcagVersion": "2.1",
+        "en301549Criteria": "9.4.1.3",
+        "en301549Title": "Status messages",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "UNE 139803:2012, Nivel AA requerido",
+        "remediation": {
+            "description": "Statusmeddelanden ska kunna presenteras för användaren utan att motta fokus (via skärmläsare).",
+            "technicalGuidance": "Använd aria-live regioner (polite/assertive) eller role='status'/'alert' för meddelanden som dyker upp dynamiskt (t.ex. 'Sparat', 'Sökning klar').",
+            "component": null,
+            "wcagTechnique": [
+                "ARIA19",
+                "ARIA22"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "medium",
+            "eaaImpact": "medium",
+            "swedishInterpretation": "Important in SPAs where page load does not happen. The user must know something happened.",
+            "commonMistakes": [
+                "Silent updates of cart/search results",
+                "Toast notifications not being announced"
+            ],
+            "priorityRationale": "Provides feedback to users without sight."
+        },
+        "testability": {
+            "automated": false,
+            "requiresManualCheck": true,
+            "pseudoAutomation": true,
+            "complexity": "moderate"
+        },
+        "tags": [
+            "aria",
+            "updates",
+            "feedback",
+            "wcag21aa"
+        ]
+    },
+    {
+        "ruleId": "landmark-one-main",
+        "wcagCriteria": "1.3.1",
+        "wcagLevel": "A",
+        "wcagTitle": "Info and Relationships",
+        "wcagVersion": "2.0",
+        "en301549Criteria": "9.1.3.1",
+        "en301549Title": "Info and relationships",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "9 § (Struktur och relationer)",
+        "remediation": {
+            "description": "The page must have exactly one 'main' landmark.",
+            "technicalGuidance": "Use the <main> element once per page to identify the main content. Avoid having multiple <main> without unique labels, or missing it entirely.",
+            "wcagTechnique": [
+                "ARIA11",
+                "H97"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "medium",
+            "eaaImpact": "medium",
+            "swedishInterpretation": "Screen reader users rely on landmarks to navigate quickly to the content. Missing <main> makes it difficult to skip navigation.",
+            "commonMistakes": [
+                "Using <div id='main'> instead of <main>",
+                "Having multiple <main> elements"
+            ]
+        },
+        "testability": {
+            "automated": true,
+            "requiresManualCheck": false,
+            "pseudoAutomation": true,
+            "complexity": "simple"
+        },
+        "tags": [
+            "wcag2a",
+            "wcag131",
+            "landmark"
+        ]
+    },
+    {
+        "ruleId": "page-has-heading-one",
+        "wcagCriteria": "1.3.1",
+        "wcagLevel": "A",
+        "wcagTitle": "Info and Relationships",
+        "wcagVersion": "2.0",
+        "en301549Criteria": "9.1.3.1",
+        "en301549Title": "Info and relationships",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "9 § (Struktur och relationer)",
+        "remediation": {
+            "description": "The page must have a level 1 heading (<h1>).",
+            "technicalGuidance": "Ensure there is exactly one <h1> describing the page's unique content.",
+            "wcagTechnique": [
+                "H42"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "high",
+            "eaaImpact": "high",
+            "swedishInterpretation": "A clear <h1> is critical for users to understand where they have landed. It is often the first thing a screen reader user looks for.",
+            "commonMistakes": [
+                "Starting headings at <h2>",
+                "Using logo as the only <h1> without text"
+            ]
+        },
+        "testability": {
+            "automated": true,
+            "requiresManualCheck": false,
+            "pseudoAutomation": true,
+            "complexity": "simple"
+        },
+        "tags": [
+            "wcag2a",
+            "wcag131",
+            "heading"
+        ]
+    },
+    {
+        "ruleId": "heading-order",
+        "wcagCriteria": "1.3.1",
+        "wcagLevel": "A",
+        "wcagTitle": "Info and Relationships",
+        "wcagVersion": "2.0",
+        "en301549Criteria": "9.1.3.1",
+        "en301549Title": "Info and relationships",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "9 § (Struktur och relationer)",
+        "remediation": {
+            "description": "Headings must follow a logical order (h1 -> h2 -> h3).",
+            "technicalGuidance": "Do not skip heading levels (e.g. directly from h1 to h3).",
+            "wcagTechnique": [
+                "G141"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "medium",
+            "eaaImpact": "medium",
+            "swedishInterpretation": "Incorrect heading structure makes it difficult for screen readers to navigate. Never skip levels.",
+            "commonMistakes": [
+                "Using h3 for styling instead of structure"
+            ]
+        },
+        "testability": {
+            "automated": true,
+            "requiresManualCheck": false,
+            "pseudoAutomation": true,
+            "complexity": "simple"
+        },
+        "tags": [
+            "wcag2a",
+            "wcag131",
+            "heading"
+        ]
+    },
+    {
+        "ruleId": "landmark-banner-is-top-level",
+        "wcagCriteria": "1.3.1",
+        "wcagLevel": "A",
+        "wcagTitle": "Info and Relationships",
+        "wcagVersion": "2.0",
+        "en301549Criteria": "9.1.3.1",
+        "en301549Title": "Info and relationships",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "9 § (Struktur och relationer)",
+        "remediation": {
+            "description": "The banner (<header>) must be at the top level.",
+            "technicalGuidance": "Do not place <header> inside another landmark if it is the page's main banner.",
+            "wcagTechnique": [
+                "ARIA11"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "medium",
+            "eaaImpact": "medium",
+            "swedishInterpretation": "The page's main menu/banner must be located correctly in the structure to be found quickly.",
+            "commonMistakes": [
+                "Nesting header inside main"
+            ]
+        },
+        "testability": {
+            "automated": true,
+            "requiresManualCheck": false,
+            "pseudoAutomation": true,
+            "complexity": "simple"
+        },
+        "tags": [
+            "wcag2a",
+            "wcag131",
+            "landmark"
+        ]
+    },
+    {
+        "ruleId": "landmark-no-duplicate-banner",
+        "wcagCriteria": "1.3.1",
+        "wcagLevel": "A",
+        "wcagTitle": "Info and Relationships",
+        "wcagVersion": "2.0",
+        "en301549Criteria": "9.1.3.1",
+        "en301549Title": "Info and relationships",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "9 § (Struktur och relationer)",
+        "remediation": {
+            "description": "The page must have only one 'banner' landmark (usually <header>).",
+            "technicalGuidance": "Ensure you only have one <header> at the top level.",
+            "wcagTechnique": [
+                "ARIA11"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "medium",
+            "eaaImpact": "medium",
+            "swedishInterpretation": "Multiple banners confuse navigation. There should be only one top header.",
+            "commonMistakes": [
+                "Having header both at top and bottom"
+            ]
+        },
+        "testability": {
+            "automated": true,
+            "requiresManualCheck": false,
+            "pseudoAutomation": true,
+            "complexity": "simple"
+        },
+        "tags": [
+            "wcag2a",
+            "wcag131",
+            "landmark"
+        ]
+    },
+    {
+        "ruleId": "landmark-unique",
+        "wcagCriteria": "1.3.1",
+        "wcagLevel": "A",
+        "wcagTitle": "Info and Relationships",
+        "wcagVersion": "2.0",
+        "en301549Criteria": "9.1.3.1",
+        "en301549Title": "Info and relationships",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "9 § (Struktur och relationer)",
+        "remediation": {
+            "description": "Landmarks must have unique roles or labels.",
+            "technicalGuidance": "If you have multiple <nav> elements, give them unique 'aria-label' (e.g., 'Main Menu', 'Footer Menu').",
+            "wcagTechnique": [
+                "ARIA11"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "medium",
+            "eaaImpact": "medium",
+            "swedishInterpretation": "The user must be able to distinguish between different menus/regions. Give them names.",
+            "commonMistakes": [
+                "Multiple nav elements without aria-label"
+            ]
+        },
+        "testability": {
+            "automated": true,
+            "requiresManualCheck": false,
+            "pseudoAutomation": true,
+            "complexity": "simple"
+        },
+        "tags": [
+            "wcag2a",
+            "wcag131",
+            "landmark"
+        ]
+    },
+    {
+        "ruleId": "region",
+        "wcagCriteria": "1.3.1",
+        "wcagLevel": "A",
+        "wcagTitle": "Info and Relationships",
+        "wcagVersion": "2.0",
+        "en301549Criteria": "9.1.3.1",
+        "en301549Title": "Info and relationships",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "9 § (Struktur och relationer)",
+        "remediation": {
+            "description": "All content on the page must be contained within landmarks (regions).",
+            "technicalGuidance": "Ensure all content is inside <main>, <header>, <nav>, <footer>, or <aside>.",
+            "component": null,
+            "wcagTechnique": [
+                "ARIA11"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "medium",
+            "eaaImpact": "medium",
+            "swedishInterpretation": "For screen reader users to navigate effectively, the page must be divided into logical regions.",
+            "commonMistakes": [
+                "Content directly in <body> without container",
+                "Using too many landmarks"
+            ]
+        },
+        "testability": {
+            "automated": true,
+            "requiresManualCheck": false,
+            "pseudoAutomation": true,
+            "complexity": "simple"
+        },
+        "tags": [
+            "wcag2a",
+            "wcag131"
+        ]
+    },
+    {
+        "ruleId": "audio-description",
+        "wcagCriteria": "1.2.5",
+        "wcagLevel": "AA",
+        "wcagTitle": "Audio Description (Prerecorded)",
+        "wcagVersion": "2.0",
+        "en301549Criteria": "9.1.2.5",
+        "en301549Title": "Audio description (prerecorded)",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "100 § (Tidsberoende media)",
+        "remediation": {
+            "description": "Prerecorded video content must have audio description if visual information is critical.",
+            "technicalGuidance": "Provide an alternative audio track or version describing what happens visually.",
+            "component": null,
+            "wcagTechnique": [
+                "G78"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "medium",
+            "eaaImpact": "low",
+            "swedishInterpretation": "Video conveying information visually must be described for those who cannot see the screen.",
+            "commonMistakes": [
+                "Video missing audio description despite important visual info"
+            ]
+        },
+        "testability": {
+            "automated": false,
+            "requiresManualCheck": true,
+            "pseudoAutomation": false,
+            "complexity": "hard"
+        },
+        "tags": [
+            "wcag2aa",
+            "wcag125"
+        ]
+    }
+]

@@ -1,0 +1,62 @@
+{
+    "name": "@holmdigital/engine",
+    "version": "0.1.0",
+    "publishConfig": {
+        "access": "public"
+    },
+    "description": "Regulatory accessibility test engine with Virtual DOM and Shadow DOM support",
+    "main": "./dist/index.js",
+    "module": "./dist/index.mjs",
+    "types": "./dist/index.d.ts",
+    "bin": {
+        "hd-a11y-scan": "./dist/cli/index.js"
+    },
+    "exports": {
+        ".": {
+            "import": "./dist/index.mjs",
+            "require": "./dist/index.js",
+            "types": "./dist/index.d.ts"
+        }
+    },
+    "files": [
+        "dist",
+        "README.md"
+    ],
+    "scripts": {
+        "build": "tsup src/index.ts src/cli/index.ts --format cjs,esm --dts --clean",
+        "dev": "tsup src/index.ts src/cli/index.ts --format cjs,esm --dts --watch",
+        "test": "vitest",
+        "test:integration": "vitest run --config vitest.integration.config.ts",
+        "lint": "eslint src --ext .ts"
+    },
+    "keywords": [
+        "accessibility",
+        "a11y",
+        "scanner",
+        "regulatory",
+        "wcag",
+        "en301549",
+        "dos-lagen",
+        "testing",
+        "virtual-dom"
+    ],
+    "author": "Holm Digital AB",
+    "license": "MIT",
+    "dependencies": {
+        "@holmdigital/standards": "*",
+        "axe-core": "^4.10.2",
+        "chalk": "^5.3.0",
+        "commander": "^12.1.0",
+        "html-validate": "^10.4.0",
+        "ora": "^8.1.1",
+        "puppeteer": "^23.10.4",
+        "ws": "^8.18.0"
+    },
+    "devDependencies": {
+        "@types/node": "^22.10.2",
+        "@types/ws": "^8.5.13",
+        "tsup": "^8.3.5",
+        "typescript": "^5.7.2",
+        "vitest": "^2.1.8"
+    }
+}

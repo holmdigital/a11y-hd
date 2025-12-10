@@ -1,0 +1,34 @@
+{
+    "cli": {
+        "title": "\n🌐 HolmDigital Regulatorisk Scanner\n",
+        "scanning": "Skannar {url}...\n",
+        "initializing": "Initierar skanner...",
+        "analyzing": "Analyserar DOM & Shadow DOM...",
+        "complete": "Skanning klar!",
+        "generating_pdf": "Genererar PDF-rapport...",
+        "pdf_saved": "PDF-rapport sparad till {path}",
+        "scan_failed": "Skanning misslyckades",
+        "critical_failure": "\nCI/CD Fel: Kritiska regulatoriska brister hittades.",
+        "score": "\nEfterlevnadspoäng: {score}/100",
+        "status": "Efterlevnadsstatus: {status}",
+        "not_compliant": "  (Uppfyller ej legala krav)",
+        "viewport": "Skärmstorlek: {width}x{height}",
+        "prescriptive_fix": "\n💡 Preskriptiv Lösning:",
+        "use_component": "Använd komponent: {component}",
+        "pseudo_tests": "\n🧬 Genererar Pseudo-automationstester...\n",
+        "test_for": "Test för {ruleId}:"
+    },
+    "report": {
+        "title": "Tillgänglighetsrapport - {url}",
+        "generated": "Genererad: {date}",
+        "scan_target": "Skannat mål: {url}",
+        "overall_score": "Totalpoäng",
+        "critical_issues": "Kritiska fel",
+        "high_issues": "Allvarliga fel",
+        "total_issues": "Antal brister",
+        "detailed_violations": "Detaljerade brister",
+        "prescriptive_fix": "💡 Preskriptiv Lösning",
+        "use": "Använd",
+        "footer": "Genererad av @holmdigital/engine v0.1.0 • Standarder: WCAG 2.1 AA, EN 301 549, DOS-lagen"
+    }
+}
