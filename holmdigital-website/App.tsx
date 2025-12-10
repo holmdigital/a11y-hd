@@ -218,7 +218,7 @@ export default function App() {
                     <div className="h-6 w-px bg-slate-200 mx-4 hidden sm:block"></div>
 
                     <a
-                      href="http://localhost:3002"
+                      href={import.meta.env.PROD ? "/wiki/" : "http://localhost:3002"}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-primary-500 rounded-md px-1 hover:bg-slate-50 transition-colors"
