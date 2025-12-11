@@ -1644,7 +1644,7 @@
         "en301549Title": "Info and relationships",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "9 § (Struktur och relationer)",
+        "dosLagenReference": "UNE 139803:2012, Nivel A requerido",
         "remediation": {
             "description": "La página debe tener una (y solo una) región principal (<main>).",
             "technicalGuidance": "Use el elemento <main> para el contenido principal. Si tiene varios, use aria-label, pero generalmente uno es mejor. Evite tener múltiples <main> sin etiquetas únicas, o que falte por completo.",
@@ -1684,7 +1684,7 @@
         "en301549Title": "Info and relationships",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "9 § (Struktur och relationer)",
+        "dosLagenReference": "UNE 139803:2012, Nivel A requerido",
         "remediation": {
             "description": "La página debe tener un título de nivel 1 (<h1>).",
             "technicalGuidance": "Asegúrese de que hay exactamente un <h1> describiendo el contenido único de la página.",
@@ -1723,7 +1723,7 @@
         "en301549Title": "Info and relationships",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "9 § (Struktur och relationer)",
+        "dosLagenReference": "UNE 139803:2012, Nivel A requerido",
         "remediation": {
             "description": "Los encabezados deben seguir un orden lógico (h1 -> h2 -> h3).",
             "technicalGuidance": "No salte niveles de encabezado (ej: directamente de h1 a h3).",
@@ -1761,7 +1761,7 @@
         "en301549Title": "Info and relationships",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "9 § (Struktur och relationer)",
+        "dosLagenReference": "UNE 139803:2012, Nivel A requerido",
         "remediation": {
             "description": "El banner (<header>) debe estar en el nivel superior.",
             "technicalGuidance": "No coloque <header> dentro de otro landmark si es el banner principal de la página.",
@@ -1799,7 +1799,7 @@
         "en301549Title": "Info and relationships",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "9 § (Struktur och relationer)",
+        "dosLagenReference": "UNE 139803:2012, Nivel A requerido",
         "remediation": {
             "description": "La página debe tener solo un landmark 'banner' (generalmente <header>).",
             "technicalGuidance": "Solo un <header> fuera de artículos/secciones. Asegúrese de tener un solo <header> en el nivel superior.",
@@ -1837,7 +1837,7 @@
         "en301549Title": "Info and relationships",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "9 § (Struktur och relationer)",
+        "dosLagenReference": "UNE 139803:2012, Nivel A requerido",
         "remediation": {
             "description": "Los landmarks deben tener roles o etiquetas únicos.",
             "technicalGuidance": "Si tiene múltiples elementos <nav>, déles un 'aria-label' único (ej: 'Menú principal', 'Menú pie de página').",
@@ -1875,7 +1875,7 @@
         "en301549Title": "Info and relationships",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "9 § (Struktur och relationer)",
+        "dosLagenReference": "UNE 139803:2012, Nivel A requerido",
         "remediation": {
             "description": "Todo el contenido de la página debe estar contenido dentro de landmarks (regiones).",
             "technicalGuidance": "Asegúrese de que todo el contenido esté dentro de <main>, <header>, <nav>, <footer> o <aside>.",
@@ -1914,7 +1914,7 @@
         "en301549Title": "Audio description (prerecorded)",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "100 § (Tidsberoende media)",
+        "dosLagenReference": "UNE 139803:2012, Nivel AA requerido",
         "remediation": {
             "description": "Se proporciona audiodescripción para todo el contenido de video pregrabado.",
             "technicalGuidance": "Proporcione una pista de audio alternativa o una versión que describa lo que sucede visualmente.",

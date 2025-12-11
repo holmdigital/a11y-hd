@@ -1644,7 +1644,7 @@
         "en301549Title": "Info and relationships",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "9 § (Struktur och relationer)",
+        "dosLagenReference": "RGAA 4.1, Niveau A requis",
         "remediation": {
             "description": "La page doit avoir une (et une seule) région principale (<main>).",
             "technicalGuidance": "Utilisez l'élément <main> pour le contenu principal. Si vous en avez plusieurs, utilisez aria-label pour les distinguer, mais généralement un seul est préférable.",
@@ -1684,7 +1684,7 @@
         "en301549Title": "Info and relationships",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "9 § (Struktur et relationer)",
+        "dosLagenReference": "RGAA 4.1, Niveau A requis",
         "remediation": {
             "description": "La page doit avoir un titre de niveau 1 (<h1>).",
             "technicalGuidance": "Assurez-vous qu'il y a exactement un <h1> décrivant le contenu unique de la page.",
@@ -1723,7 +1723,7 @@
         "en301549Title": "Info and relationships",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "9 § (Struktur och relationer)",
+        "dosLagenReference": "RGAA 4.1, Niveau A requis",
         "remediation": {
             "description": "La hiérarchie des titres (h1-h6) doit être logique et ne pas sauter de niveaux.",
             "technicalGuidance": "Ne passez pas de h2 à h4. Utilisez CSS pour le style, et les balises h pour la structure.",
@@ -1761,7 +1761,7 @@
         "en301549Title": "Info and relationships",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "9 § (Struktur och relationer)",
+        "dosLagenReference": "RGAA 4.1, Niveau A requis",
         "remediation": {
             "description": "La région banner (<header>) doit être au niveau supérieur.",
             "technicalGuidance": "Ne placez pas <header> à l'intérieur d'un autre landmark s'il s'agit de la bannière principale de la page.",
@@ -1799,7 +1799,7 @@
         "en301549Title": "Info and relationships",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "9 § (Struktur och relationer)",
+        "dosLagenReference": "RGAA 4.1, Niveau A requis",
         "remediation": {
             "description": "La page ne doit avoir qu'un seul landmark 'banner' (généralement <header>).",
             "technicalGuidance": "Assurez-vous d'avoir un seul <header> au niveau supérieur.",
@@ -1837,7 +1837,7 @@
         "en301549Title": "Info and relationships",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "9 § (Struktur och relationer)",
+        "dosLagenReference": "RGAA 4.1, Niveau A requis",
         "remediation": {
             "description": "Les landmarks doivent avoir des rôles ou des étiquettes uniques.",
             "technicalGuidance": "Si vous avez plusieurs éléments <nav>, donnez-leur un 'aria-label' unique (ex : 'Menu principal', 'Menu pied de page').",
@@ -1875,7 +1875,7 @@
         "en301549Title": "Info and relationships",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "9 § (Struktur och relationer)",
+        "dosLagenReference": "RGAA 4.1, Niveau A requis",
         "remediation": {
             "description": "Tout le contenu de la page doit être contenu dans des landmarks (régions).",
             "technicalGuidance": "Assurez-vous que tout le contenu est à l'intérieur de <main>, <header>, <nav>, <footer>, ou <aside>.",
@@ -1914,7 +1914,7 @@
         "en301549Title": "Audio description (prerecorded)",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "100 § (Tidsberoende media)",
+        "dosLagenReference": "RGAA 4.1, Niveau AA requis",
         "remediation": {
             "description": "Une audiodescription est fournie pour tout contenu vidéo préenregistré.",
             "technicalGuidance": "Fournissez une piste audio alternative ou une version décrivant ce qui se passe visuellement.",

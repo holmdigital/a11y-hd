@@ -1644,7 +1644,7 @@
         "en301549Title": "Info and relationships",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "9 § (Struktur och relationer)",
+        "dosLagenReference": "BITV 2.0, Anlage 1, WCAG 2.1 A erforderlich",
         "remediation": {
             "description": "Die Seite muss genau eine Haupt-Landmark haben.",
             "technicalGuidance": "Verwenden Sie das <main>-Element, um den Hauptinhalt der Seite zu umschließen. Es sollte nur ein sichtbares <main>-Element geben.",
@@ -1684,7 +1684,7 @@
         "en301549Title": "Info and relationships",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "9 § (Struktur och relationer)",
+        "dosLagenReference": "BITV 2.0, Anlage 1, WCAG 2.1 A erforderlich",
         "remediation": {
             "description": "Die Seite muss eine Überschrift der Ebene 1 haben.",
             "technicalGuidance": "Stellen Sie sicher, dass es genau ein <h1> gibt, das den einzigartigen Inhalt der Seite beschreibt.",
@@ -1723,7 +1723,7 @@
         "en301549Title": "Info and relationships",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "9 § (Struktur och relationer)",
+        "dosLagenReference": "BITV 2.0, Anlage 1, WCAG 2.1 A erforderlich",
         "remediation": {
             "description": "Überschriften müssen einer logischen Reihenfolge folgen (h1 -> h2 -> h3).",
             "technicalGuidance": "Folgen Sie auf ein <h1> mit <h2>, nicht <h3> oder <h4>. Die Struktur sollte logisch sein.",
@@ -1761,7 +1761,7 @@
         "en301549Title": "Info and relationships",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "9 § (Struktur och relationer)",
+        "dosLagenReference": "BITV 2.0, Anlage 1, WCAG 2.1 A erforderlich",
         "remediation": {
             "description": "Das Banner (<header>) muss auf der obersten Ebene sein.",
             "technicalGuidance": "Platzieren Sie den <header> (mit role 'banner', implizit) nicht innerhalb von <main> oder anderen Landmarks. Er sollte ein direktes Kind des Body oder eines Wrapper-Divs sein.",
@@ -1799,7 +1799,7 @@
         "en301549Title": "Info and relationships",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "9 § (Struktur och relationer)",
+        "dosLagenReference": "BITV 2.0, Anlage 1, WCAG 2.1 A erforderlich",
         "remediation": {
             "description": "Die Seite darf nur eine 'Banner'-Landmark (normalerweise <header>) haben.",
             "technicalGuidance": "Stellen Sie sicher, dass Sie nur einen <header> auf der obersten Ebene haben.",
@@ -1837,7 +1837,7 @@
         "en301549Title": "Info and relationships",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "9 § (Struktur och relationer)",
+        "dosLagenReference": "BITV 2.0, Anlage 1, WCAG 2.1 A erforderlich",
         "remediation": {
             "description": "Landmarks müssen eindeutige Rollen oder Beschriftungen haben.",
             "technicalGuidance": "Wenn Sie mehrere <nav>-Elemente haben, geben Sie ihnen eindeutige 'aria-label' (z. B. 'Hauptmenü', 'Fußzeilenmenü').",
@@ -1875,7 +1875,7 @@
         "en301549Title": "Info and relationships",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "9 § (Struktur och relationer)",
+        "dosLagenReference": "BITV 2.0, Anlage 1, WCAG 2.1 A erforderlich",
         "remediation": {
             "description": "Alle Inhalte auf der Seite müssen in Landmarks (Regionen) enthalten sein.",
             "technicalGuidance": "Stellen Sie sicher, dass alle Inhalte in <main>, <header>, <nav>, <footer> oder <aside> enthalten sind.",
@@ -1914,7 +1914,7 @@
         "en301549Title": "Audio description (prerecorded)",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "100 § (Tidsberoende media)",
+        "dosLagenReference": "BITV 2.0, Anlage 1, WCAG 2.1 AA erforderlich",
         "remediation": {
             "description": "Voraufgezeichnete Videoinhalte müssen eine Audiodeskription haben, wenn visuelle Informationen kritisch sind.",
             "technicalGuidance": "Stellen Sie eine alternative Tonspur oder Version bereit, die beschreibt, was visuell passiert.",
