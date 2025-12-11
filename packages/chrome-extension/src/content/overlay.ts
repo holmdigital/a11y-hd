@@ -3,6 +3,9 @@
  * Highlights accessibility violations on the page
  */
 
+// Import CSS (will be injected by Vite)
+import './overlay.css';
+
 interface ViolationData {
     id: string;
     impact: 'critical' | 'serious' | 'moderate' | 'minor';

@@ -34,9 +34,6 @@
             "js": [
                 "src/content/overlay.ts"
             ],
-            "css": [
-                "src/content/overlay.css"
-            ],
             "run_at": "document_idle"
         }
     ],
