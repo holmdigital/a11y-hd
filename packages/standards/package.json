@@ -2,7 +2,8 @@
     "name": "@holmdigital/standards",
     "version": "0.2.0",
     "publishConfig": {
-        "access": "public"
+        "access": "public",
+        "registry": "https://npm.pkg.github.com"
     },
     "description": "Machine-readable regulatory database for WCAG, EN 301 549 and the DOS Act",
     "main": "./dist/index.js",
