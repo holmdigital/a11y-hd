@@ -1,6 +1,6 @@
 {
     "name": "@holmdigital/standards",
-    "version": "0.2.0",
+    "version": "0.2.2",
     "publishConfig": {
         "access": "public",
         "registry": "https://npm.pkg.github.com"
