@@ -156,12 +156,16 @@ export const MOCK_ARTICLES: Record<string, ArticleData> = {
                   <div className="text-slate-300 space-y-1">
                     <div className="flex">
                       <span className="text-green-400 mr-2">➜</span>
+                      <span>npm config set @holmdigital:registry https://npm.pkg.github.com</span>
+                    </div>
+                    <div className="flex">
+                      <span className="text-green-400 mr-2">➜</span>
                       <span>npm install @holmdigital/engine</span>
                     </div>
                     <div className="text-slate-500 pb-2">added 1 package in 2s</div>
                     <div className="flex">
                       <span className="text-green-400 mr-2">➜</span>
-                      <span>holm-engine scan https://mysite.com</span>
+                      <span>npx hd-a11y-scan https://mysite.com</span>
                     </div>
                     <div className="text-blue-400 pt-2">ℹ Starting accessibility scan...</div>
                     <div className="text-slate-300">✔ WCAG 2.1 AA check</div>
