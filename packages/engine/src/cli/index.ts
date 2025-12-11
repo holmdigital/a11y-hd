@@ -13,6 +13,18 @@ import { generateReportHTML } from '../reporting/html-template';
 import { generatePDF } from '../reporting/pdf-generator';
 import { setLanguage, t } from '../i18n';
 
+/**
+ * Validates URL format
+ */
+function isValidUrl(urlString: string): boolean {
+    try {
+        const url = new URL(urlString);
+        return url.protocol === 'http:' || url.protocol === 'https:';
+    } catch {
+        return false;
+    }
+}
+
 const program = new Command();
 
 program
@@ -30,6 +42,13 @@ program
     .option('--viewport <size>', 'Set viewport (e.g. "mobile", "desktop", "1024x768")')
     .action(async (url: string, options) => {
         setLanguage(options.lang);
+
+        // Validate URL format first
+        if (!isValidUrl(url)) {
+            console.error(chalk.red(`Error: Invalid URL format '${url}'`));
+            console.error(chalk.gray('URL must start with http:// or https://'));
+            process.exit(1);
+        }
 
         if (!options.json) {
             console.log(chalk.blue.bold(t('cli.title')));
@@ -55,7 +74,8 @@ program
             scanner = new RegulatoryScanner({
                 url,
                 failOnCritical: options.ci,
-                viewport
+                viewport,
+                silent: options.json // Suppress debug output for JSON mode
             });
 
             if (spinner) spinner.text = t('cli.analyzing');
@@ -155,7 +175,23 @@ program
 
         } catch (error) {
             if (spinner) spinner.fail(t('cli.scan_failed'));
-            console.error(error);
+
+            // Clean error output for users
+            const errorMessage = error instanceof Error ? error.message : String(error);
+
+            if (errorMessage.includes('ERR_NAME_NOT_RESOLVED')) {
+                console.error(chalk.red(`Error: Could not resolve domain for '${url}'`));
+                console.error(chalk.gray('Please check that the URL is correct and the site is accessible.'));
+            } else if (errorMessage.includes('ERR_CONNECTION_REFUSED')) {
+                console.error(chalk.red(`Error: Connection refused for '${url}'`));
+                console.error(chalk.gray('The server may be down or blocking automated access.'));
+            } else if (errorMessage.includes('Timeout')) {
+                console.error(chalk.red(`Error: Connection timed out for '${url}'`));
+                console.error(chalk.gray('The page took too long to respond.'));
+            } else {
+                console.error(chalk.red(`Error: ${errorMessage}`));
+            }
+
             process.exit(1);
         } finally {
             // Ensure browser is closed to avoid EBUSY/lockfiles

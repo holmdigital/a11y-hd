@@ -35,7 +35,7 @@ export interface ConvergenceRule {
 export interface Remediation {
     description: string;
     technicalGuidance: string;
-    component?: string;
+    component?: string | null;
     codeExample?: string;
     wcagTechnique?: string[];
 }
@@ -46,7 +46,8 @@ export interface Remediation {
 export interface HolmDigitalInsight {
     diggRisk: DiggRisk;
     eaaImpact: EAAImpact;
-    swedishInterpretation: string;
+    swedishInterpretation?: string;
+    [key: string]: any; // Allow for other languages interpretations
     commonMistakes?: string[];
     diggPrecedent?: string;
     priorityRationale?: string;

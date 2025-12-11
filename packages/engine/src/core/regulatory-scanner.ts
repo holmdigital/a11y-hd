@@ -14,6 +14,7 @@ export interface ScannerOptions {
     standard?: 'wcag' | 'en301549' | 'dos-lagen';
     failOnCritical?: boolean;
     viewport?: { width: number; height: number };
+    silent?: boolean; // Suppress debug output (for --json mode)
 }
 
 export interface ScanResult {
@@ -41,9 +42,17 @@ export class RegulatoryScanner {
         this.options = {
             headless: true,
             standard: 'dos-lagen', // Default till striktaste
+            silent: false,
             ...options
         };
         this.htmlValidator = new HtmlValidator();
+    }
+
+    /** Log only when not in silent mode */
+    private log(message: string) {
+        if (!this.options.silent) {
+            console.log(message);
+        }
     }
 
     /**
@@ -71,7 +80,7 @@ export class RegulatoryScanner {
                 } catch (e) {
                     retries--;
                     if (retries === 0) throw e;
-                    console.log(`Navigation failed, retrying... (${retries} attempts left)`);
+                    this.log(`Navigation failed, retrying... (${retries} attempts left)`);
                     await new Promise(resolve => setTimeout(resolve, 2000));
                 }
             }
@@ -84,14 +93,14 @@ export class RegulatoryScanner {
                     concurrency: 2
                 });
             } catch (e) {
-                console.log('Network busy, proceeding with scan anyway...');
+                this.log('Network busy, proceeding with scan anyway...');
             }
 
             // Capture HTML for validation
             const pageContent = await page.content();
             const htmlValidation = await this.htmlValidator.validate(pageContent);
             if (!htmlValidation.valid) {
-                console.log(`HTML Validation: Found ${htmlValidation.errors.length} structural issues.`);
+                this.log(`HTML Validation: Found ${htmlValidation.errors.length} structural issues.`);
             }
 
             // Bygg Virtual DOM för analys (används för avancerade regler senare)
@@ -100,7 +109,7 @@ export class RegulatoryScanner {
 
             // Kör axe-core
             await this.injectAxe(page);
-            console.log('Axe injected. Running analysis...');
+            this.log('Axe injected. Running analysis...');
             const axeResults = await page.evaluate(async () => {
                 // Safety check: Ensure we have a document to scan
                 if (!document || !document.documentElement) {
@@ -119,7 +128,7 @@ export class RegulatoryScanner {
                     */
                 });
             });
-            console.log(`Raw Axe Violations: ${axeResults.violations?.length || 0}`);
+            this.log(`Raw Axe Violations: ${axeResults.violations?.length || 0}`);
 
             // Transformera resultat med regulatorisk kontext
             const regulatoryReports = await this.enrichResults(axeResults);

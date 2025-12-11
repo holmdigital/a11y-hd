@@ -47,3 +47,6 @@ storybook-static/
 # Next.js (for wiki)
 .next/
 out/
+
+# Open Source Export
+public-export/
