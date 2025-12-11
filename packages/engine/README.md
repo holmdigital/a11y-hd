@@ -8,7 +8,7 @@ This engine bridges the gap between technical accessibility scanning (using `axe
 
 - **Regulatory Mapping**: Maps technical failures to EU laws.
 - **HTML Structure Validation**: built-in `html-validate` checks for semantic correctness.
-- **Internationalization (i18n)**: Supports English (`en`) and Swedish (`sv`) regulatory contexts.
+- **Internationalization (i18n)**: Supports English (`en`), Swedish (`sv`), German (`de`), French (`fr`), and Spanish (`es`).
 - **Pseudo-Automation**: Generates Playwright test scripts for manual verification.
 - **PDF Reporting**: Generates beautiful, compliant PDF reports.
 

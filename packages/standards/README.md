@@ -15,7 +15,7 @@ npm install @holmdigital/standards
 
 ## Features
 
-- **Multi-Language Support**: Separate data rules for English (`.en.json`) and Swedish (`.sv.json`).
+- **Multi-Language Support**: Separate data rules for English (`en`), Swedish (`sv`), German (`de`), French (`fr`), and Spanish (`es`).
 - **Risk Assessment**: DIGG-aligned risk levels (`critical`, `high`, `medium`, `low`).
 - **Remediation**: Maps issues to `@holmdigital/components` for fixing.
 
