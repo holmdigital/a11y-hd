@@ -383,15 +383,15 @@ export const MOCK_ARTICLES: Record<string, ArticleData> = {
           The scanner can be configured via a <code>holmdigital.config.js</code> file or CLI arguments.
         </p>
         <h3 className="text-lg font-bold text-slate-900 mb-4">CLI Options</h3>
-        <pre className="bg-slate-900 text-slate-50 p-4 rounded-md overflow-x-auto mb-6">
-          {`npx hd-a11y-scan <url> [options]
+        <pre className="bg-slate-900 text-slate-50 p-4 rounded-md overflow-x-auto mb-6">{`npx hd-a11y-scan <url> [options]
 
 Options:
-  --ci          Run in CI mode (exit code 1 on failure)
-  --json        Output results as JSON
-  --pdf         Generate a PDF report
-  --viewport    Set viewport size (e.g., "mobile", "desktop")`}
-        </pre>
+  --lang <code>       Language code (en, sv, de, fr, es). Default: en
+  --ci                Run in CI mode (exit code 1 on critical failures)
+  --json              Output results as JSON (clean, no debug messages)
+  --pdf <path>        Generate PDF report to specified file path
+  --viewport <size>   Set viewport: "mobile", "tablet", "desktop", or "WIDTHxHEIGHT"
+  --generate-tests    Generate Playwright pseudo-automation test scripts`}</pre>
       </>
     )
   },
