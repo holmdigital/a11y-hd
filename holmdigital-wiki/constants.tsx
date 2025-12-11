@@ -413,46 +413,60 @@ Options:
 
         <h2 id="github" className="text-2xl font-bold text-slate-900 mb-4 scroll-mt-24">GitHub Actions</h2>
         <div className="bg-slate-900 rounded-lg p-4 mb-8 overflow-x-auto">
-          <pre className="text-sm font-mono text-slate-50">
-            {`name: Accessibility Check
+          <pre className="text-sm font-mono text-slate-50">{`name: Accessibility Check
 on: [push, pull_request]
 
 jobs:
   a11y-scan:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          registry-url: 'https://npm.pkg.github.com'
+          scope: '@holmdigital'
+
       - name: Install dependencies
         run: npm ci
-      
+        env:
+          NODE_AUTH_TOKEN: \${{ secrets.GITHUB_TOKEN }}
+
       - name: Build Application
         run: npm run build
-      
+
       - name: Start Server
         run: npm start &
         env:
           PORT: 3000
-      
+
+      - name: Wait for Server
+        run: npx wait-on http://localhost:3000
+
       - name: Run Accessibility Scan
-        run: npx hd-a11y-scan http://localhost:3000 --ci
-        continue-on-error: false`}
-          </pre>
+        run: npx hd-a11y-scan http://localhost:3000 --ci --lang en
+        env:
+          NODE_AUTH_TOKEN: \${{ secrets.GITHUB_TOKEN }}`}</pre>
         </div>
 
         <h2 id="gitlab" className="text-2xl font-bold text-slate-900 mb-4 scroll-mt-24">GitLab CI</h2>
         <div className="bg-slate-900 rounded-lg p-4 mb-8 overflow-x-auto">
-          <pre className="text-sm font-mono text-slate-50">
-            {`a11y_check:
-  image: node:18
+          <pre className="text-sm font-mono text-slate-50">{`a11y_check:
+  image: node:20
   stage: test
+  before_script:
+    # Configure npm for GitHub Package Registry
+    - npm config set @holmdigital:registry https://npm.pkg.github.com
+    - npm config set //npm.pkg.github.com/:_authToken \${GITHUB_TOKEN}
   script:
     - npm ci
     - npm run build
     - npm start &
-    - sleep 10
-    - npx hd-a11y-scan http://localhost:3000 --ci
-  allow_failure: false`}
-          </pre>
+    - npx wait-on http://localhost:3000
+    - npx hd-a11y-scan http://localhost:3000 --ci --lang en
+  allow_failure: false`}</pre>
         </div>
 
         <div className="bg-amber-50 border-l-4 border-amber-500 p-4 my-6">
