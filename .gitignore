@@ -50,3 +50,6 @@ out/
 
 # Open Source Export
 public-export/
+
+# Separate Wiki Repository
+holmdigital-wiki-standalone/
