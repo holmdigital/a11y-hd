@@ -221,9 +221,12 @@ export const MOCK_ARTICLES: Record<string, ArticleData> = {
             <p className="text-slate-300 mb-8 flex-grow z-10">
               Motorn som driver våra analyser. Automatiserad WCAG-validering baserad på axe-core, men anpassad för svenska lagkrav.
             </p>
-            <div className="z-10 mt-auto">
+            <div className="z-10 mt-auto space-y-2">
+              <div className="text-xs text-slate-400 mb-1">Installation:</div>
               <div className="bg-slate-950 rounded p-3 font-mono text-xs text-slate-300 border border-slate-800">
-                npm i @holmdigital/engine
+                <div className="text-slate-500"># Konfigurera npm (en gång)</div>
+                <div>npm config set @holmdigital:registry https://npm.pkg.github.com</div>
+                <div className="mt-2">npm i @holmdigital/engine</div>
               </div>
             </div>
           </div>
