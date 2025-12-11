@@ -19,6 +19,10 @@ This monorepo contains three core NPM packages and a documentation wiki:
 Regulatory test engine with Virtual DOM architecture for Shadow DOM and SPA support. Now with internationalization (i18n).
 
 ```bash
+# First, configure npm to use GitHub Package Registry for @holmdigital scope:
+npm config set @holmdigital:registry https://npm.pkg.github.com
+
+# Then install:
 npm install @holmdigital/engine
 ```
 

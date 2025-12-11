@@ -15,6 +15,10 @@ This engine bridges the gap between technical accessibility scanning (using `axe
 ## Installation
 
 ```bash
+# First, configure npm to use GitHub Package Registry:
+npm config set @holmdigital:registry https://npm.pkg.github.com
+
+# Then install:
 npm install @holmdigital/engine
 ```
 
