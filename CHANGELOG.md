@@ -15,6 +15,11 @@ All notable changes to HolmDigital packages are documented here.
 ### @holmdigital/standards
 - **Fixed**: Type exports for `ConvergenceRule` and `EAAImpact`
 
+### @holmdigital/components
+- **New**: Initial public release of accessible React components
+- Includes `FormField`, `Button`, `Modal`, `Dialog`, `SkipLink` and more
+- Pre-configured for accessibility compliance (ARIA, keyboard nav)
+
 ### Documentation
 - **Added**: GitHub Package Registry installation instructions to all READMEs
 - **Added**: Prerequisites section to wiki Installation page

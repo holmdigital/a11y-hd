@@ -238,6 +238,14 @@ export const MOCK_ARTICLES: Record<string, ArticleData> = {
             <p className="text-slate-600 mb-8">
               En samling definitioner som mappar WCAG-regler till praktiska åtgärder och svenska lagtexter.
             </p>
+            <div className="z-10 mt-auto space-y-2">
+              <div className="text-xs text-slate-400 mb-1">Installation:</div>
+              <div className="bg-slate-950 rounded p-3 font-mono text-xs text-slate-300 border border-slate-800">
+                <div className="text-slate-500"># Konfigurera npm (en gång)</div>
+                <div>npm config set @holmdigital:registry https://npm.pkg.github.com</div>
+                <div className="mt-2">npm i @holmdigital/standards</div>
+              </div>
+            </div>
           </div>
 
           {/* Components */}
@@ -247,6 +255,14 @@ export const MOCK_ARTICLES: Record<string, ArticleData> = {
             <p className="text-slate-600 mb-8">
               Tillgängliga komponenter "out-of-the-box". Byggd på Radix UI och Tailwind CSS.
             </p>
+            <div className="z-10 mt-auto space-y-2">
+              <div className="text-xs text-slate-400 mb-1">Installation:</div>
+              <div className="bg-slate-950 rounded p-3 font-mono text-xs text-slate-300 border border-slate-800">
+                <div className="text-slate-500"># Konfigurera npm (en gång)</div>
+                <div>npm config set @holmdigital:registry https://npm.pkg.github.com</div>
+                <div className="mt-2">npm i @holmdigital/components</div>
+              </div>
+            </div>
           </div>
         </div>
 

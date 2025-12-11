@@ -1,9 +1,10 @@
 {
     "name": "@holmdigital/components",
     "author": "Holm Digital AB",
-    "version": "0.1.0",
+    "version": "0.3.1",
     "publishConfig": {
-        "access": "public"
+        "access": "public",
+        "registry": "https://npm.pkg.github.com"
     },
     "description": "Prescriptive, accessible React components for regulatory compliance",
     "main": "./dist/index.js",
