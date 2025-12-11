@@ -1,5 +1,12 @@
 # @holmdigital/standards
 
+## 0.3.0
+
+### Minor Changes
+
+- feat: localize accessibility rules to Swedish, German, French, and Spanish
+  fix: correct legal references in localized rules
+
 ## 0.2.2
 
 ### Patch Changes
