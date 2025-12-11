@@ -768,52 +768,68 @@ export const MOCK_ARTICLES: Record<string, ArticleData> = {
             Detta är kritiskt för att följa det nya EU-direktivet som träder i kraft för privat sektor i juni 2025.
           </p>
 
-          <div className="grid md:grid-cols-2 gap-8 mt-6">
-            <div className="bg-white p-6 rounded-lg border border-slate-200 shadow-sm col-span-2">
-              <h3 className="text-lg font-bold text-slate-900 mt-0 mb-4">Analyspaket</h3>
+          <div className="mt-8">
+            <div className="bg-white p-6 rounded-lg border border-slate-200 shadow-sm">
+              <h3 className="text-xl font-bold text-slate-900 mt-0 mb-2">Analyspaket</h3>
+              <p className="text-slate-600 mb-6">Alla analyser utgår från WCAG 2.2 AA och är manuellt genomförda av expert med erfarenhet av digital design, frontend och UX.</p>
               <div className="grid md:grid-cols-3 gap-6">
-                {/* Small */}
-                <div className="p-4 border border-slate-100 rounded bg-slate-50">
+                {/* Snabbanalys */}
+                <div className="p-5 border border-slate-200 rounded-lg bg-slate-50 flex flex-col">
                   <div className="text-primary-900 font-bold text-lg mb-1">Snabbanalys</div>
-                  <div className="text-slate-900 font-bold text-2xl mb-3">20 000 kr</div>
-                  <p className="text-xs text-slate-600 mb-4">För mindre webbplatser eller specifika flöden.</p>
-                  <ul className="text-sm space-y-2 text-slate-700 mb-4">
-                    <li>upp till 5 sidor</li>
-                    <li>Automatiska tester</li>
-                    <li>Manuell kontroll (rubriker, alt-texter)</li>
-                    <li>Rapport med prio</li>
+                  <div className="text-slate-900 font-bold text-2xl mb-2">20 000 kr</div>
+                  <p className="text-sm text-slate-600 mb-4">För mindre webbplatser, appar eller specifika flöden</p>
+                  <p className="text-xs text-slate-500 mb-4 italic">En effektiv översikt som identifierar de mest akuta bristerna i tillgänglighet.</p>
+                  <ul className="text-sm space-y-2 text-slate-700 mb-6 flex-grow">
+                    <li>✓ Granskning av upp till 5 sidor</li>
+                    <li>✓ Automatiska WCAG-tester (kontraster, struktur)</li>
+                    <li>✓ Manuell kontroll av rubriker, alt-texter, länkar</li>
+                    <li>✓ Skärmläsartest på utvalda sidor</li>
+                    <li>✓ Rapport med prioriterade rekommendationer</li>
                   </ul>
+                  <a href="https://holmdigital.se/kontakt/?plan=Snabbanalys" className="block text-center bg-slate-900 text-white py-2 px-4 rounded font-medium hover:bg-slate-800 transition-colors no-underline">Välj snabbanalys</a>
                 </div>
-                {/* Medium */}
-                <div className="p-4 border-2 border-primary-100 rounded bg-white shadow-sm relative overflow-hidden">
-                  <div className="absolute top-0 right-0 bg-primary-600 text-white text-[10px] px-2 py-1 font-bold rounded-bl">POPULÄR</div>
-                  <div className="text-primary-900 font-bold text-lg mb-1">Fördjupad</div>
-                  <div className="text-slate-900 font-bold text-2xl mb-3">40 000 kr</div>
-                  <p className="text-xs text-slate-600 mb-4">Säkerställ att tjänsten håller måttet.</p>
-                  <ul className="text-sm space-y-2 text-slate-700 mb-4">
-                    <li>5-10 sidor/flöden</li>
-                    <li>Manuell WCAG 2.2 AA</li>
-                    <li>Användartest med hjälpmedel</li>
-                    <li>Genomgångsmöte</li>
+                {/* Fördjupad */}
+                <div className="p-5 border-2 border-primary-500 rounded-lg bg-white shadow-md relative flex flex-col">
+                  <div className="absolute top-0 right-0 bg-primary-600 text-white text-[10px] px-3 py-1.5 font-bold rounded-bl-lg">POPULÄR</div>
+                  <div className="text-primary-900 font-bold text-lg mb-1">Fördjupad analys</div>
+                  <div className="text-slate-900 font-bold text-2xl mb-2">40 000 kr</div>
+                  <p className="text-sm text-slate-600 mb-4">För dig som vill säkerställa att tjänsten håller måttet</p>
+                  <p className="text-xs text-slate-500 mb-4 italic">En djupare analys ur användarens perspektiv, tekniskt och designmässigt.</p>
+                  <ul className="text-sm space-y-2 text-slate-700 mb-6 flex-grow">
+                    <li>✓ Granskning av 5-10 sidor/användarflöden</li>
+                    <li>✓ Manuell WCAG 2.2 AA-kontroll</li>
+                    <li>✓ Användartest med hjälpmedel (skärmläsare)</li>
+                    <li>✓ Test av kontraster, fokusordning, mobilläge</li>
+                    <li>✓ Omfattande rapport med prioriteringar</li>
+                    <li>✓ Genomgångsmöte där jag förklarar allt</li>
                   </ul>
+                  <a href="https://holmdigital.se/kontakt/?plan=Fördjupad%20analys" className="block text-center bg-primary-600 text-white py-2 px-4 rounded font-medium hover:bg-primary-700 transition-colors no-underline">Välj fördjupad analys</a>
                 </div>
-                {/* Large */}
-                <div className="p-4 border border-slate-100 rounded bg-slate-50">
-                  <div className="text-primary-900 font-bold text-lg mb-1">Fullständig</div>
-                  <div className="text-slate-900 font-bold text-2xl mb-3">70 000 kr</div>
-                  <p className="text-xs text-slate-600 mb-4">För större plattformar med lagkrav.</p>
-                  <ul className="text-sm space-y-2 text-slate-700 mb-4">
-                    <li>Fullskalig analys</li>
-                    <li>Manuella + auto tester</li>
-                    <li>Interaktiva komponenter</li>
-                    <li>Videogenomgång</li>
+                {/* Fullständig */}
+                <div className="p-5 border border-slate-200 rounded-lg bg-slate-50 flex flex-col">
+                  <div className="text-primary-900 font-bold text-lg mb-1">Fullständig analys</div>
+                  <div className="text-slate-900 font-bold text-2xl mb-2">70 000 kr</div>
+                  <p className="text-sm text-slate-600 mb-4">För större plattformar med komplexa flöden och juridiska krav</p>
+                  <p className="text-xs text-slate-500 mb-4 italic">Mitt mest genomarbetade paket med komplett beslutsunderlag.</p>
+                  <ul className="text-sm space-y-2 text-slate-700 mb-6 flex-grow">
+                    <li>✓ Fullskalig analys av hela webbplatsen/appen</li>
+                    <li>✓ Manuell + automatisk testning (WCAG 2.2 AA)</li>
+                    <li>✓ Test av rörligt innehåll och dynamiska funktioner</li>
+                    <li>✓ Stöd för DOS-lagen och EAA</li>
+                    <li>✓ Utförlig rapport med lösningar</li>
+                    <li>✓ Videogenomgång + teknisk rådgivning</li>
+                    <li>✓ <strong>Ingår:</strong> Uppföljande test efter åtgärder</li>
                   </ul>
+                  <a href="https://holmdigital.se/kontakt/?plan=Fullständig%20analys" className="block text-center bg-slate-900 text-white py-2 px-4 rounded font-medium hover:bg-slate-800 transition-colors no-underline">Välj fullständig analys</a>
                 </div>
               </div>
             </div>
           </div>
-          <div className="mt-6 p-4 bg-blue-50 text-blue-800 rounded-lg text-sm border border-blue-100">
-            <strong>Osäker?</strong> Hör av dig så kikar jag på din tjänst och guidar dig rätt.
+          <div className="mt-6 p-5 bg-blue-50 text-blue-800 rounded-lg border border-blue-100">
+            <strong>Osäker på vilket paket som passar dig?</strong> Hör av dig, så kikar jag på din tjänst och guidar dig rätt till den analys som passar dig bäst.
+            <div className="mt-3">
+              <a href="https://holmdigital.se/kontakt" className="inline-block bg-blue-600 text-white py-2 px-4 rounded font-medium hover:bg-blue-700 transition-colors no-underline">Kontakta mig</a>
+            </div>
           </div>
         </div>
       </>
