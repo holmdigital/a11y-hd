@@ -761,6 +761,23 @@ export const MyForm = () => (
           The HolmDigital suite is modular. You can install only what you need, but we recommend the full toolkit for the best experience.
         </p>
 
+        <h2 id="prerequisites" className="text-2xl font-bold text-slate-900 mb-4 mt-8 scroll-mt-24">0. Prerequisites</h2>
+        <p className="text-slate-600 mb-4">
+          Our packages are published to the <strong>GitHub Package Registry</strong>. Before installing, configure npm to use GitHub for the <code>@holmdigital</code> scope:
+        </p>
+        <div className="bg-slate-900 rounded-lg p-4 mb-6 overflow-x-auto">
+          <pre className="text-sm font-mono text-slate-50">
+            {`# One-time setup: Configure npm registry for @holmdigital scope
+npm config set @holmdigital:registry https://npm.pkg.github.com`}
+          </pre>
+        </div>
+        <div className="bg-amber-50 border-l-4 border-amber-500 p-4 mb-8">
+          <p className="text-sm text-amber-700">
+            <strong>Note:</strong> If you are in a CI/CD environment (like GitHub Actions), you may need to authenticate with a <code>GITHUB_TOKEN</code>.
+            See the <a href="?article=ci-cd" className="underline">CI/CD Integration</a> guide for details.
+          </p>
+        </div>
+
         <h2 id="packages" className="text-2xl font-bold text-slate-900 mb-4 mt-8 scroll-mt-24">1. The Packages</h2>
         <div className="space-y-4 mb-8">
           <div className="flex flex-col md:flex-row md:items-center justify-between p-5 rounded-xl border border-slate-200 bg-white shadow-sm hover:border-primary-400 hover:shadow-md transition-all gap-4">
