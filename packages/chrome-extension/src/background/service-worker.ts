@@ -46,70 +46,104 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
     if (message.type === 'SCAN_PAGE') {
         handleScan(message.tabId)
             .then(result => sendResponse({ result }))
-            .catch(error => sendResponse({ error: error.message }));
+            .catch(error => {
+                console.error('Scan error:', error);
+                sendResponse({ error: error.message });
+            });
         return true; // Keep message channel open for async response
     }
 });
 
 async function handleScan(tabId: number) {
-    // Inject axe-core and run scan
-    const results = await chrome.scripting.executeScript({
-        target: { tabId },
-        func: runAxeScan,
-    });
+    try {
+        // First inject axe-core from CDN
+        await chrome.scripting.executeScript({
+            target: { tabId },
+            func: injectAxeCore,
+        });
 
-    const axeResults = results[0]?.result;
+        // Wait a bit for axe to load
+        await new Promise(resolve => setTimeout(resolve, 500));
 
-    if (!axeResults) {
-        throw new Error('Failed to run accessibility scan');
-    }
+        // Then run the scan
+        const results = await chrome.scripting.executeScript({
+            target: { tabId },
+            func: runAxeScan,
+        });
 
-    // Map to our format
-    const violations = axeResults.violations.map((v: any) => {
-        const wcag = parseWcagTags(v.tags);
+        const axeResults = results[0]?.result;
+
+        if (!axeResults) {
+            throw new Error('No scan results returned');
+        }
+
+        if (axeResults.error) {
+            throw new Error(axeResults.error);
+        }
+
+        // Map to our format
+        const violations = axeResults.violations.map((v: any) => {
+            const wcag = parseWcagTags(v.tags);
+            return {
+                id: v.id,
+                impact: v.impact,
+                description: v.help,
+                wcagCriteria: wcag,
+                en301549: wcagToEN301549[wcag],
+                dosLagen: true,
+                nodes: v.nodes.length,
+                selectors: v.nodes.map((n: any) => n.target[0]),
+            };
+        });
+
         return {
-            id: v.id,
-            impact: v.impact,
-            description: v.help,
-            wcagCriteria: wcag,
-            en301549: wcagToEN301549[wcag],
-            dosLagen: true, // Simplified: all WCAG AA applies to DOS-lagen
-            nodes: v.nodes.length,
-            selectors: v.nodes.map((n: any) => n.target[0]),
+            violations,
+            passes: axeResults.passes?.length || 0,
+            url: axeResults.url,
+            timestamp: axeResults.timestamp,
         };
-    });
-
-    return {
-        violations,
-        passes: axeResults.passes?.length || 0,
-        url: axeResults.url,
-        timestamp: axeResults.timestamp,
-    };
+    } catch (err) {
+        console.error('handleScan error:', err);
+        throw err;
+    }
 }
 
-// This function is injected into the page
-async function runAxeScan() {
-    // Dynamically load axe-core
-    if (!(window as any).axe) {
+// Inject axe-core script into the page
+function injectAxeCore() {
+    return new Promise<void>((resolve, reject) => {
+        if ((window as any).axe) {
+            resolve();
+            return;
+        }
+
         const script = document.createElement('script');
         script.src = 'https://cdnjs.cloudflare.com/ajax/libs/axe-core/4.10.2/axe.min.js';
+        script.onload = () => resolve();
+        script.onerror = () => reject(new Error('Failed to load axe-core'));
         document.head.appendChild(script);
-
-        await new Promise<void>((resolve, reject) => {
-            script.onload = () => resolve();
-            script.onerror = () => reject(new Error('Failed to load axe-core'));
-        });
-    }
-
-    // Run axe
-    const results = await (window as any).axe.run(document, {
-        runOnly: {
-            type: 'tag',
-            values: ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa']
-        }
     });
+}
 
-    return results;
+// Run axe scan (called after axe-core is loaded)
+function runAxeScan() {
+    return new Promise((resolve) => {
+        // Check if axe is available
+        if (!(window as any).axe) {
+            resolve({ error: 'axe-core not loaded' });
+            return;
+        }
+
+        (window as any).axe.run(document, {
+            runOnly: {
+                type: 'tag',
+                values: ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa']
+            }
+        }).then((results: any) => {
+            resolve(results);
+        }).catch((err: any) => {
+            resolve({ error: err.message || 'Scan failed' });
+        });
+    });
 }
 
 export { };
