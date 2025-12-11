@@ -11,8 +11,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "Lag 2018:1937 §7, WCAG 2.1 nivå AA krävs",
         "remediation": {
-            "description": "Text and images of text must have a contrast ratio of at least 4.5:1 (3:1 for large text).",
-            "technicalGuidance": "Use tools like WebAIM Contrast Checker to verify contrast. Adjust color choices or add background opacity to achieve correct contrast.",
+            "description": "Text och bilder av text måste ha ett kontrastvärde på minst 4,5:1 (3:1 för stor text).",
+            "technicalGuidance": "Använd verktyg som WebAIM Contrast Checker för att verifiera kontrast. Justera färgval eller lägg till bakgrundsopacity för att uppnå korrekt kontrast.",
             "component": "@holmdigital/components/Button",
             "codeExample": "import { Button } from '@holmdigital/components';\n\n// Bad: Poor contrast\n<button style={{ background: '#777', color: '#999' }}>Click me</button>\n\n// Good: Use accessible component\n<Button variant=\"primary\">Click me</Button>",
             "wcagTechnique": [
@@ -24,11 +24,11 @@
         "holmdigitalInsight": {
             "diggRisk": "high",
             "eaaImpact": "critical",
-            "swedishInterpretation": "One of the most common reasons for fines from regulators. Especially important for public sector monitoring.",
+            "swedishInterpretation": "En av de vanligaste orsakerna till anmärkningar från tillsynsmyndigheter (DIGG). Särskilt viktigt för offentlig sektor.",
             "commonMistakes": [
-                "Gray text on white background (#777 on #FFF)",
-                "Light blue links without underline",
-                "Placeholder text with too low contrast"
+                "Grå text på vit bakgrund (#777 på #FFF)",
+                "Ljusblå länkar utan understrykning",
+                "Placeholder-text med för låg kontrast"
             ],
             "diggPrecedent": "Regulators often cite poor contrast in primary navigation elements.",
             "priorityRationale": "Critical for users with low vision. Affects readability for all users in varying lighting conditions."
@@ -59,8 +59,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "Lag 2018:1937 §7, WCAG 2.1 nivå A krävs",
         "remediation": {
-            "description": "All functionality must be accessible via keyboard.",
-            "technicalGuidance": "Use semantic HTML elements (button, a, input) instead of div/span with click handlers. Ensure tabindex is used correctly.",
+            "description": "All funktionalitet måste vara navigerbar med tangentbord.",
+            "technicalGuidance": "Använd semantiska HTML-element (button, a, input) istället för div/span med click handlers. Se till att tabindex används korrekt.",
             "component": "@holmdigital/components/Button",
             "codeExample": "// Bad: Div with onClick\n<div onClick={handleClick}>Click Me</div>\n\n// Good: Button element\n<button onClick={handleClick}>Click Me</button>\n\n// Best: Use HolmDigital component\nimport { Button } from '@holmdigital/components';\n<Button onClick={handleClick}>Click Me</Button>",
             "wcagTechnique": [
@@ -71,11 +71,11 @@
         "holmdigitalInsight": {
             "diggRisk": "critical",
             "eaaImpact": "critical",
-            "swedishInterpretation": "Keyboard access is fundamental and non-negotiable. Top priority in compliance audits.",
+            "swedishInterpretation": "Tangentbordsstyrning är grundläggande och icke-förhandlingsbart. Högsta prioritet vid granskning.",
             "commonMistakes": [
-                "Using div/span for clickable elements",
-                "Custom dropdown menus without keyboard support",
-                "Modal dialogs that trap focus incorrectly"
+                "Använder div/span för klickbara element",
+                "Egna dropdown-menyer utan tangentbordsstöd",
+                "Modala dialoger som inte fångar fokus korrekt"
             ],
             "diggPrecedent": "Auditors have issued fines for sites where core functions (e.g. forms, navigation) are not keyboard accessible.",
             "priorityRationale": "Critical for users with motor disabilities and screen reader users."
@@ -105,8 +105,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "Lag 2018:1937 §7, WCAG 2.1 nivå A krävs",
         "remediation": {
-            "description": "All images must have descriptive alternative text.",
-            "technicalGuidance": "Add alt attributes to all img elements. For decorative images, use alt=\"\". For informative images, concisely describe the content.",
+            "description": "Alla bilder måste ha beskrivande alternativtext.",
+            "technicalGuidance": "Lägg till alt-attribut på alla img-element. För dekorativa bilder, använd alt=\"\". För informativa bilder, beskriv innehållet koncist.",
             "codeExample": "// Bad: Msising alt\n<img src=\"logo.png\" />\n\n// Good: Descriptive alt\n<img src=\"logo.png\" alt=\"HolmDigital Logo\" />\n\n// Good: Decorative image\n<img src=\"decoration.png\" alt=\"\" role=\"presentation\" />",
             "wcagTechnique": [
                 "G94",
@@ -117,12 +117,12 @@
         "holmdigitalInsight": {
             "diggRisk": "high",
             "eaaImpact": "high",
-            "swedishInterpretation": "Especially important for logos and informational graphics. Frequently checked in audits.",
+            "swedishInterpretation": "Särskilt viktigt för logotyper och informativ grafik. Kontrolleras ofta i granskningar.",
             "commonMistakes": [
-                "Missing alt text entirely",
-                "Alt text that just says 'image' or 'icon'",
-                "Filename as alt text (e.g. 'IMG_1234.jpg')",
-                "Decorative images with unnecessary description"
+                "Saknar alt-text helt",
+                "Alt-text som bara säger 'bild' eller 'ikon'",
+                "Filnamn som alt-text (t.ex. 'IMG_1234.jpg')",
+                "Dekorativa bilder med onödig beskrivning"
             ],
             "diggPrecedent": "Audits frequently cite missing alt text, especially for vital infographics.",
             "priorityRationale": "Critical for screen reader users to access visual information."
@@ -152,7 +152,7 @@
         "dosLagenApplies": true,
         "dosLagenReference": "Lag 2018:1937 §7, WCAG 2.1 nivå A krävs",
         "remediation": {
-            "description": "Form fields must have clear labels or instructions.",
+            "description": "Formulärfält måste ha tydliga etiketter eller instruktioner.",
             "technicalGuidance": "Use label elements linked to input via for/id. For complex forms, use fieldset and legend. Use aria-describedby for extra instructions.",
             "component": "@holmdigital/components/FormField",
             "codeExample": "import { FormField } from '@holmdigital/components';\n\n// Bad: No label\n<input type=\"text\" placeholder=\"Name\" />\n\n// Good: With label\n<label htmlFor=\"name\">Name:</label>\n<input type=\"text\" id=\"name\" />\n\n// Best: Use HolmDigital component\n<FormField\n  label=\"Name\"\n  type=\"text\"\n  required\n  helpText=\"Enter your full name\"\n/>",
@@ -166,12 +166,12 @@
         "holmdigitalInsight": {
             "diggRisk": "high",
             "eaaImpact": "high",
-            "swedishInterpretation": "Forms are critical for e-services. Compliance is strictly enforced in public sector apps.",
+            "swedishInterpretation": "Formulär är kritiska för e-tjänster. Efterlevnad kontrolleras strikt i offentlig sektor.",
             "commonMistakes": [
-                "Only placeholder without label",
-                "Label and input not linked via for/id",
-                "Error messages without aria-describedby",
-                "Required fields not clearly marked"
+                "Endast placeholder utan label",
+                "Label och input är inte kopplade via for/id",
+                "Felmeddelanden utan aria-describedby",
+                "Obligatoriska fält markeras inte tydligt"
             ],
             "diggPrecedent": "Audit decisions often criticize poor form accessibility, especially for application and contact forms.",
             "priorityRationale": "Critical for users to successfully use e-services and submit information."
@@ -201,7 +201,7 @@
         "dosLagenApplies": true,
         "dosLagenReference": "Lag 2018:1937 §7, WCAG 2.1 nivå A krävs",
         "remediation": {
-            "description": "Each web page must have a descriptive title.",
+            "description": "Varje webbsida måste ha en beskrivande titel.",
             "technicalGuidance": "Use the title element in head. The title should be unique for each page and describe its purpose. Format: 'Page Name - Site Name'.",
             "codeExample": "// Bad: Generic title\n<title>Page</title>\n\n// Good: Descriptive title\n<title>Contact Us - HolmDigital</title>\n\n// React/Next.js\nimport Head from 'next/head';\n\n<Head>\n  <title>Contact Us - HolmDigital</title>\n</Head>",
             "wcagTechnique": [
@@ -212,12 +212,12 @@
         "holmdigitalInsight": {
             "diggRisk": "medium",
             "eaaImpact": "medium",
-            "swedishInterpretation": "Important for navigation, especially in SPAs where the title must update dynamically.",
+            "swedishInterpretation": "Viktigt för navigering, särskilt i SPA:er där titeln måste uppdateras dynamiskt.",
             "commonMistakes": [
-                "Same title on all pages",
-                "Title not updating in SPAs",
-                "Too long or too short title",
-                "Title missing entirely"
+                "Samma titel på alla sidor",
+                "Titel uppdateras inte i SPA:er",
+                "För lång eller för kort titel",
+                "Titel saknas helt"
             ],
             "diggPrecedent": "Audits have noted missing page titles, especially in Single Page Applications.",
             "priorityRationale": "Important for screen reader navigation and SEO."
@@ -247,8 +247,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "Lag 2018:1937 §7, WCAG 2.1 nivå A krävs",
         "remediation": {
-            "description": "Information, structure, and relationships conveyed through presentation can be programmatically determined or are available in text.",
-            "technicalGuidance": "Use semantic HTML: <header>, <nav>, <main>, <footer>, <h1>-<h6>, <ul>/ <ol>, <table>. Do not use visual styles to create 'fake' headings or lists.",
+            "description": "Information, struktur och relationer som förmedlas visuellt kan också bestämmas programmatiskt eller finns tillgängliga i text.",
+            "technicalGuidance": "Använd semantisk HTML: <header>, <nav>, <main>, <footer>, <h1>-<h6>, <ul>/ <ol>, <table>. Använd inte visuella stilar för att skapa 'falska' rubriker eller listor.",
             "component": null,
             "wcagTechnique": [
                 "H42",
@@ -259,11 +259,11 @@
         "holmdigitalInsight": {
             "diggRisk": "high",
             "eaaImpact": "high",
-            "swedishInterpretation": "Semantic structure is crucial for screen readers to navigate effectively. Auditors often cite 'div-soup' that looks like structure but lacks semantics.",
+            "swedishInterpretation": "Semantisk struktur är avgörande för att skärmläsare ska kunna navigera effektivt. Revisorer påpekar ofta 'div-soppa' som ser ut som struktur men saknar semantik.",
             "commonMistakes": [
-                "Using bold text instead of <h1>-<h6>",
-                "Using <br> for lists instead of <ul>",
-                "Tables for layout"
+                "Använder fetstil istället för <h1>-<h6>",
+                "Använder <br> för listor istället för <ul>",
+                "Tabeller för layout"
             ],
             "priorityRationale": "Fundamental for all assistive technology navigation."
         },
@@ -292,8 +292,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "Lag 2018:1937 §7, WCAG 2.1 nivå A krävs",
         "remediation": {
-            "description": "Color is not used as the only visual means of conveying information, indicating an action, prompting a response, or distinguishing a visual element.",
-            "technicalGuidance": "Complement color with text, icons, or underlining. E.g. links must have underlines or another visual marker besides color. Error messages need text/icon, not just a red border.",
+            "description": "Färg får inte användas som det enda visuella sättet att förmedla information, indikera en handling, uppmana till svar eller skilja på visuella element.",
+            "technicalGuidance": "Komplettera färg med text, ikoner eller understrykning. T.ex. länkar måste ha understrykning eller annan visuell markör utöver färg. Felmeddelanden behöver text/ikon, inte bara en röd ram.",
             "component": "@holmdigital/components/FormField",
             "wcagTechnique": [
                 "G14",
@@ -304,11 +304,11 @@
         "holmdigitalInsight": {
             "diggRisk": "medium",
             "eaaImpact": "medium",
-            "swedishInterpretation": "Common problem in graphs and maps where only color coding is used.",
+            "swedishInterpretation": "Vanligt problem i grafer och kartor där endast färgkodning används.",
             "commonMistakes": [
-                "Links that only differ by color from body text",
-                "Error messages only marked with red color",
-                "Graphs where only color distinguishes data points"
+                "Länkar som endast skiljer sig med färg från brödtext",
+                "Felmeddelanden som endast markeras med röd färg",
+                "Grafer där endast färg skiljer datapunkter"
             ],
             "priorityRationale": "Crucial for color blind users."
         },
@@ -337,8 +337,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "Lag 2018:1937 §7, WCAG 2.1 nivå AA krävs",
         "remediation": {
-            "description": "Content must be presentable without requiring scrolling in two dimensions down to 320px width.",
-            "technicalGuidance": "Use responsive design (CSS Media Queries, Flexbox, Grid). Avoid fixed widths in pixels. Ensure tables and images scale correctly.",
+            "description": "Innehåll måste vara presentabelt utan att kräva scrollning i två dimensioner ner till 320px bredd.",
+            "technicalGuidance": "Använd responsiv design (CSS Media Queries, Flexbox, Grid). Undvik fasta bredder i pixlar. Se till att tabeller och bilder skalar korrekt.",
             "component": null,
             "wcagTechnique": [
                 "C32",
@@ -348,11 +348,11 @@
         "holmdigitalInsight": {
             "diggRisk": "high",
             "eaaImpact": "high",
-            "swedishInterpretation": "A modern requirement (WCAG 2.1) critical for mobile use and magnified text. DIGG has zero tolerance for horizontal scroll on vertical sites.",
+            "swedishInterpretation": "Ett modernt krav (WCAG 2.1) kritiskt för mobilanvändning och uppförstorad text. DIGG har nolltolerans för horisontell scroll på vertikala sajter.",
             "commonMistakes": [
-                "Fixed widths on containers",
-                "Tables that are not responsive",
-                "Images wider than the screen"
+                "Fasta bredder på containrar",
+                "Tabeller som inte är responsiva",
+                "Bilder bredare än skärmen"
             ],
             "priorityRationale": "Critical for low vision users who zoom in heavily."
         },
@@ -381,8 +381,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "Lag 2018:1937 §7, WCAG 2.1 nivå AA krävs",
         "remediation": {
-            "description": "The visual presentation of user interface components and graphical objects must have a contrast ratio of at least 3:1 against adjacent colors.",
-            "technicalGuidance": "Applies to buttons, input borders, icons, and focus indicators. Ensure all interactive elements are clearly visible against the background.",
+            "description": "Den visuella presentationen av gränssnittskomponenter och grafiska objekt måste ha ett kontrastförhållande på minst 3:1 mot angränsande färger.",
+            "technicalGuidance": "Gäller knappar, input-ramar, ikoner och fokusindikatorer. Se till att alla interaktiva element syns tydligt mot bakgrunden.",
             "component": "@holmdigital/components/Button",
             "wcagTechnique": [
                 "G195",
@@ -392,9 +392,9 @@
         "holmdigitalInsight": {
             "diggRisk": "low",
             "eaaImpact": "low",
-            "swedishInterpretation": "Often missed requirement regarding focus rings and inactive (but visible) components. Important for understanding the interface.",
+            "swedishInterpretation": "Ofta missat krav gällande fokusringar och inaktiva (men synliga) komponenter. Viktigt för att förstå gränssnittet.",
             "commonMistakes": [
-                "Grayed out buttons with too low contrast"
+                "Utgråade knappar med för låg kontrast"
             ],
             "priorityRationale": "Important for distinguishing interactive elements."
         },
@@ -464,8 +464,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "Lag 2018:1937 §7, WCAG 2.1 nivå AA krävs",
         "remediation": {
-            "description": "Content shown on hover/focus (e.g. tooltips) must be Dismissable, Hoverable, and Persistent.",
-            "technicalGuidance": "Ensure tooltips do not disappear when moving mouse from trigger to the tooltip itself. Allow ESC to dismiss.",
+            "description": "Innehåll som visas vid hover/fokus (t.ex. tooltips) måste vara avfärdbart, hovringsbart och beständigt.",
+            "technicalGuidance": "Se till att tooltips inte försvinner när musen flyttas från utlösaren till själva tooltipen. Tillåt ESC för att avfärda.",
             "component": null,
             "wcagTechnique": [
                 "SCR39"
@@ -474,11 +474,11 @@
         "holmdigitalInsight": {
             "diggRisk": "medium",
             "eaaImpact": "medium",
-            "swedishInterpretation": "Common problem with custom tooltips and mega-menus.",
+            "swedishInterpretation": "Vanligt problem med egna tooltips och megamenyer.",
             "commonMistakes": [
-                "Tooltips that cannot be reached with mouse",
-                "Menus that close too easily",
-                "Content that cannot be dismissed without moving focus"
+                "Tooltips som inte kan nås med musen",
+                "Menyer som stänger för lätt",
+                "Innehåll som inte kan avfärdas utan att flytta fokus"
             ],
             "priorityRationale": "Important for users with magnification and motor difficulties."
         },
@@ -507,8 +507,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "Lag 2018:1937 §7, WCAG 2.1 nivå A krävs",
         "remediation": {
-            "description": "Captions must be provided for all prerecorded audio content in synchronized media.",
-            "technicalGuidance": "Use the <track> element with WebVTT files for HTML5 video. For social media embeds, ensure captions are enabled.",
+            "description": "Textning måste tillhandahållas för allt förinspelat ljudinnehåll i synkroniserad media.",
+            "technicalGuidance": "Använd <track>-elementet med WebVTT-filer för HTML5-video. För inbäddade sociala medier, se till att textning är aktiverad.",
             "component": null,
             "wcagTechnique": [
                 "G87",
@@ -518,11 +518,11 @@
         "holmdigitalInsight": {
             "diggRisk": "high",
             "eaaImpact": "high",
-            "swedishInterpretation": "One of the most common deficiencies in the public sector. The legal requirement is strict: video with audio MUST have captions.",
+            "swedishInterpretation": "En av de vanligaste bristerna i offentlig sektor. Lagkravet är strikt: video med ljud SKA ha textning.",
             "commonMistakes": [
-                "Auto-generated captions that satisfy no one",
-                "Captions missing entirely",
-                "Captions burned into video (not accessible for search/translation)"
+                "Autigenererad textning som ingen är nöjd med",
+                "Textning saknas helt",
+                "Textning inbränd i videon (ej tillgänglig för sök/översättning)"
             ],
             "priorityRationale": "Critical for deaf and hard of hearing users."
         },
@@ -551,8 +551,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "Lag 2018:1937 §7, WCAG 2.1 nivå AA krävs",
         "remediation": {
-            "description": "Audio description must be provided for all prerecorded video content.",
-            "technicalGuidance": "Either as a separate audio track, an alternative version of the video, or (if 'talking heads') ensuring all info is conveyed by audio.",
+            "description": "Syntolkning måste tillhandahållas för allt förinspelat videoinnehåll.",
+            "technicalGuidance": "Antingen som ett separat ljudspår, en alternativ version av videon, eller (om 'talking heads') genom att se till att all info förmedlas via ljud.",
             "component": null,
             "wcagTechnique": [
                 "G78",
@@ -562,9 +562,9 @@
         "holmdigitalInsight": {
             "diggRisk": "medium",
             "eaaImpact": "medium",
-            "swedishInterpretation": "Can often be solved by 'integrated description' (talking about what is seen), which is more cost-effective.",
+            "swedishInterpretation": "Kan ofta lösas genom 'integrerad syntolkning' (att man pratar om det som syns), vilket är mer kostnadseffektivt.",
             "commonMistakes": [
-                "Information shown only visually (graphics, text signs) without being mentioned in audio"
+                "Information visas endast visuellt (grafik, textskyltar) utan att nämnas i ljudet"
             ],
             "priorityRationale": "Critical for blind video users."
         },
@@ -593,8 +593,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "Lag 2018:1937 §7, WCAG 2.1 nivå AA krävs",
         "remediation": {
-            "description": "Content must not restrict its view and operation to a single display orientation, unless a specific orientation is essential.",
-            "technicalGuidance": "Do not lock screen to portrait or landscape via CSS or JS manifest. Use CSS media queries to handle layout changes.",
+            "description": "Innehåll får inte begränsa sin visning och användning till en enda skärmorientering, såvida inte en viss orientering är nödvändig.",
+            "technicalGuidance": "Lås inte skärmen till porträtt eller landskap via CSS eller JS-manifest. Använd CSS media queries för att hantera layoutändringar.",
             "component": null,
             "wcagTechnique": [
                 "F97"
@@ -603,9 +603,9 @@
         "holmdigitalInsight": {
             "diggRisk": "low",
             "eaaImpact": "medium",
-            "swedishInterpretation": "Important for tablets and users who have the device mounted (e.g., wheelchair).",
+            "swedishInterpretation": "Viktigt för surfplattor och användare som har enheten monterad (t.ex. på rullstol).",
             "commonMistakes": [
-                "Apps/sites that rotate interface 90 degrees against user will"
+                "Appar/sajter som roterar gränssnittet 90 grader mot användarens vilja"
             ],
             "priorityRationale": "Important for users who cannot rotate their device."
         },
@@ -634,8 +634,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "Lag 2018:1937 §7, WCAG 2.1 nivå AA krävs",
         "remediation": {
-            "description": "The purpose of each input field collecting information about the user can be programmatically determined.",
-            "technicalGuidance": "Use the 'autocomplete' attribute on input fields for personal data (name, email, tel, address etc.).",
+            "description": "Syftet med varje inmatningsfält som samlar in information om användaren kan bestämmas programmatiskt.",
+            "technicalGuidance": "Använd 'autocomplete'-attributet på inmatningsfält för personuppgifter (namn, e-post, tel, adress etc.).",
             "component": "@holmdigital/components/FormField",
             "wcagTechnique": [
                 "H98"
@@ -644,11 +644,11 @@
         "holmdigitalInsight": {
             "diggRisk": "medium",
             "eaaImpact": "high",
-            "swedishInterpretation": "Makes it much easier to fill confusing forms (autofill).",
+            "swedishInterpretation": "Gör det mycket enklare att fylla i förvirrande formulär (autofill).",
             "commonMistakes": [
-                "Missing autocomplete attribute",
-                "Incorrect autocomplete value",
-                "Turning off autocomplete (autocomplete='off') unnecessarily"
+                "Saknar autocomplete-attribut",
+                "Felaktigt autocomplete-värde",
+                "Stänger av autocomplete (autocomplete='off') i onödan"
             ],
             "priorityRationale": "Reduces cognitive load and motor requirements."
         },
@@ -676,8 +676,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "Lag 2018:1937 §7, WCAG 2.1 nivå A krävs",
         "remediation": {
-            "description": "If focus can be moved to a component of the page using a keyboard interface, then focus can be moved away from that component using only a keyboard interface.",
-            "technicalGuidance": "Be careful with JS widgets that trap focus (e.g. modal windows). Ensure there is always a way out (e.g. ESC or shift+tab).",
+            "description": "Om fokus kan flyttas till en komponent på sidan med tangentbord, måste fokus också kunna flyttas bort från den komponenten med endast tangentbord.",
+            "technicalGuidance": "Var försiktig med JS-widgets som fångar fokus (t.ex. modala fönster). Se till att det alltid finns en väg ut (t.ex. ESC eller shift+tab).",
             "component": null,
             "wcagTechnique": [
                 "G21"
@@ -686,10 +686,10 @@
         "holmdigitalInsight": {
             "diggRisk": "critical",
             "eaaImpact": "critical",
-            "swedishInterpretation": "A keyboard trap is a 'blocker' that makes the website unusable. Serious error.",
+            "swedishInterpretation": "En tangentbordsfälla är en 'blocker' som gör webbplatsen oanvändbar. Allvarligt fel.",
             "commonMistakes": [
-                "Custom widgets that loop focus infinitely",
-                "Embedded third-party components (maps, chats) without exit"
+                "Egna widgets som loopar fokus i oändlighet",
+                "Inbäddade tredjepartskomponenter (kartor, chattar) utan utgång"
             ],
             "priorityRationale": "Critical: The user gets stuck and must restart the browser."
         },
@@ -717,8 +717,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "Lag 2018:1937 §7, WCAG 2.1 nivå A krävs",
         "remediation": {
-            "description": "If a keyboard shortcut consists of only one character (letter, number, symbol), there must be a way to turn it off or remap it, or it must only be active on focus.",
-            "technicalGuidance": "Avoid single-key shortcuts if possible. If needed, ensure they do not conflict with voice control or accidental typing.",
+            "description": "Om ett kortkommando består av endast ett tecken (bokstav, siffra, symbol), måste det finnas ett sätt att stänga av det eller mappa om det, eller så får det bara vara aktivt vid fokus.",
+            "technicalGuidance": "Undvik en-teckens-genvägar om möjligt. Om det behövs, se till att de inte krockar med röststyrning eller oavsiktlig inmatning.",
             "component": null,
             "wcagTechnique": [
                 "G217"
@@ -727,9 +727,9 @@
         "holmdigitalInsight": {
             "diggRisk": "medium",
             "eaaImpact": "medium",
-            "swedishInterpretation": "Important for voice control users (Dragon etc.) where single words can trigger commands accidentally.",
+            "swedishInterpretation": "Viktigt för användare med röststyrning (Dragon etc.) där enstaka ord kan trigga kommandon av misstag.",
             "commonMistakes": [
-                "Gmail-like shortcuts that are on by default without option to disable"
+                "Gmail-liknande genvägar som är på som standard utan möjlighet att stänga av"
             ],
             "priorityRationale": "Important to avoid accidental activation."
         },
@@ -757,8 +757,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "Lag 2018:1937 §7, WCAG 2.1 nivå A krävs",
         "remediation": {
-            "description": "If a time limit (session, reading time) is set, the user must be able to turn off, adjust, or extend it.",
-            "technicalGuidance": "Provide a warning before the session expires with an 'Extend session' button. The time limit must be at least 20 seconds.",
+            "description": "Om en tidsgräns (session, lästid) är satt, måste användaren kunna stänga av, justera eller förlänga den.",
+            "technicalGuidance": "Ge en varning innan sessionen går ut med en 'Förläng session'-knapp. Tidsgränsen måste vara minst 20 sekunder.",
             "component": null,
             "wcagTechnique": [
                 "SCR16",
@@ -768,10 +768,10 @@
         "holmdigitalInsight": {
             "diggRisk": "high",
             "eaaImpact": "high",
-            "swedishInterpretation": "Critical for e-services/banking. Users who read slowly or use assistive technology need more time.",
+            "swedishInterpretation": "Kritiskt för e-tjänster/bank. Användare som läser långsamt eller använder hjälpmedel behöver mer tid.",
             "commonMistakes": [
-                "Logout without warning",
-                "Time limits that cannot be extended"
+                "Utloggning utan varning",
+                "Tidsgränser som inte kan förlängas"
             ],
             "priorityRationale": "Critical to avoid losing entered data."
         },
@@ -799,8 +799,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "Lag 2018:1937 §7, WCAG 2.1 nivå A krävs",
         "remediation": {
-            "description": "For moving, blinking, or scrolling content that starts automatically and lasts more than 5 seconds, there must be a way to pause, stop, or hide it.",
-            "technicalGuidance": "Applies to carousels (sliders), auto-updating news feeds, animated backgrounds. Add a clear pause button.",
+            "description": "För rörligt, blinkande eller rullande innehåll som startar automatiskt och varar längre än 5 sekunder, måste det finnas ett sätt att pausa, stoppa eller dölja det.",
+            "technicalGuidance": "Gäller karuseller (sliders), autouppdaterande nyhetsflöden, animerade bakgrunder. Lägg till en tydlig pausknapp.",
             "component": null,
             "wcagTechnique": [
                 "G4",
@@ -810,10 +810,10 @@
         "holmdigitalInsight": {
             "diggRisk": "medium",
             "eaaImpact": "medium",
-            "swedishInterpretation": "Important for users with concentration difficulties (ADHD/Autism) who are distracted by movement.",
+            "swedishInterpretation": "Viktigt för användare med koncentrationssvårigheter (ADHD/Autism) som distraheras av rörelse.",
             "commonMistakes": [
-                "Image carousels without pause button",
-                "Animated backgrounds that cannot be turned off"
+                "Bildkaruseller utan pausknapp",
+                "Animerade bakgrunder som inte kan stängas av"
             ],
             "priorityRationale": "Important for cognitive accessibility."
         },
@@ -842,8 +842,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "Lag 2018:1937 §7, WCAG 2.1 nivå A krävs",
         "remediation": {
-            "description": "Content must not flash more than three times per second (can cause seizures).",
-            "technicalGuidance": "Avoid rapid flashing in video and animations. Use tools to measure flash frequency (PEAT).",
+            "description": "Innehåll får inte blinka mer än tre gånger per sekund (kan orsaka anfall).",
+            "technicalGuidance": "Undvik snabbt blinkande i video och animationer. Använd verktyg för att mäta blinkfrekvens (PEAT).",
             "component": null,
             "wcagTechnique": [
                 "G19"
@@ -852,10 +852,10 @@
         "holmdigitalInsight": {
             "diggRisk": "critical",
             "eaaImpact": "critical",
-            "swedishInterpretation": "Health risk. Zero tolerance.",
+            "swedishInterpretation": "Hälsorisk. Nolltolerans.",
             "commonMistakes": [
-                "Stroboscopic effects in video",
-                "Misuse of blinking error messages"
+                "Stroboskopiska effekter i video",
+                "Felaktig användning av blinkande felmeddelanden"
             ],
             "priorityRationale": "Critical safety risk."
         },
@@ -884,8 +884,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "Lag 2018:1937 §7, WCAG 2.1 nivå A krävs",
         "remediation": {
-            "description": "There must be a way to skip blocks of content that are repeated on multiple pages (e.g. navigation).",
-            "technicalGuidance": "Implement a 'Skip to Main Content' link at the top of the page that becomes visible on focus. Use semantic landmarks (<main>, <nav>).",
+            "description": "Det måste finnas ett sätt att hoppa över block av innehåll som upprepas på flera sidor (t.ex. navigering).",
+            "technicalGuidance": "Implementera en 'Hoppa till huvudinnehåll'-länk högst upp på sidan som blir synlig vid fokus. Använd semantiska landmärken (<main>, <nav>).",
             "component": null,
             "wcagTechnique": [
                 "G1",
@@ -895,11 +895,11 @@
         "holmdigitalInsight": {
             "diggRisk": "medium",
             "eaaImpact": "medium",
-            "swedishInterpretation": "Standard on all public sector sites. Enormously helpful for keyboard users.",
+            "swedishInterpretation": "Standard på alla offentliga webbplatser. Enormt hjälpsamt för tangentbordsanvändare.",
             "commonMistakes": [
-                "Missing skip-link",
-                "Skip-link broken (does not move focus correctly)",
-                "Landmarks missing"
+                "Saknar skip-link",
+                "Skip-link trasig (flyttar inte fokus korrekt)",
+                "Landmärken saknas"
             ],
             "priorityRationale": "Important for efficient navigation."
         },
@@ -928,8 +928,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "Lag 2018:1937 §7, WCAG 2.1 nivå A krävs",
         "remediation": {
-            "description": "Focus order must be logical and follow meaning/structure.",
-            "technicalGuidance": "Match DOM order with visual order. Avoid tabindex greater than 0. Manage focus manually in modals and menus.",
+            "description": "Fokusordningen måste vara logisk och följa mening/struktur.",
+            "technicalGuidance": "Matcha DOM-ordning med visuell ordning. Undvik tabindex större än 0. Hantera fokus manuellt i modaler och menyer.",
             "component": null,
             "wcagTechnique": [
                 "G59",
@@ -939,11 +939,11 @@
         "holmdigitalInsight": {
             "diggRisk": "high",
             "eaaImpact": "high",
-            "swedishInterpretation": "Critical for complex layouts (Grid/Flexbox) where visual order may differ from DOM order.",
+            "swedishInterpretation": "Kritiskt för komplexa layouter (Grid/Flexbox) där visuell ordning kan skilja sig från DOM-ordning.",
             "commonMistakes": [
-                "Focus jumps illogically",
-                "Menus in wrong order",
-                "Modal closes and focus returns to top of page"
+                "Fokus hoppar ologiskt",
+                "Menyer i fel ordning",
+                "Modal stänger och fokus återgår till toppen av sidan"
             ],
             "priorityRationale": "Critical for keyboard navigation and understanding."
         },
@@ -972,8 +972,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "Lag 2018:1937 §7, WCAG 2.1 nivå A krävs",
         "remediation": {
-            "description": "The purpose of each link can be understood from the link text alone or from the link text together with its context.",
-            "technicalGuidance": "Avoid 'Read more' or 'Click here'. Write descriptive link texts. Use aria-label if visual space is limited but more info is needed.",
+            "description": "Syftet med varje länk kan förstås från länktexten ensam eller från länktexten tillsammans med dess sammanhang.",
+            "technicalGuidance": "Undvik 'Läs mer' eller 'Klicka här'. Skriv beskrivande länktexter. Använd aria-label om visuellt utrymme är begränsat men mer info behövs.",
             "component": null,
             "wcagTechnique": [
                 "G91",
@@ -983,10 +983,10 @@
         "holmdigitalInsight": {
             "diggRisk": "medium",
             "eaaImpact": "medium",
-            "swedishInterpretation": "Important for users navigating via link lists (screen readers).",
+            "swedishInterpretation": "Viktigt för användare som navigerar via länklistor (skärmläsare).",
             "commonMistakes": [
-                "Lots of 'Read more' links",
-                "Links that don't say where they lead"
+                "Många 'Läs mer'-länkar",
+                "Länkar som inte säger vart de leder"
             ],
             "priorityRationale": "Important for efficient navigation."
         },
@@ -1015,8 +1015,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "Lag 2018:1937 §7, WCAG 2.1 nivå AA krävs",
         "remediation": {
-            "description": "There must be more than one way to find a web page within a set of web pages.",
-            "technicalGuidance": "At least two of: Menu, Search, Sitemap, Links in content.",
+            "description": "Det måste finnas mer än ett sätt att hitta en webbsida inom en uppsättning webbsidor.",
+            "technicalGuidance": "Minst två av: Meny, Sök, Webbplatskarta, Länkar i innehållet.",
             "component": null,
             "wcagTechnique": [
                 "G125",
@@ -1026,9 +1026,9 @@
         "holmdigitalInsight": {
             "diggRisk": "low",
             "eaaImpact": "low",
-            "swedishInterpretation": "Often fulfilled by menu + search. Sitemap is best practice.",
+            "swedishInterpretation": "Ofta uppfyllt genom meny + sök. Webbplatskarta är bästa praxis.",
             "commonMistakes": [
-                "Missing search on sites with many pages"
+                "Saknar sökfunktion på sajter med många sidor"
             ],
             "priorityRationale": "Facilitates different navigation strategies."
         },
@@ -1057,8 +1057,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "Lag 2018:1937 §7, WCAG 2.1 nivå AA krävs",
         "remediation": {
-            "description": "Headings and labels must describe topic or purpose.",
-            "technicalGuidance": "Write clear, descriptive headings that give meaning to the content below them. Form labels must be understandable.",
+            "description": "Rubriker och etiketter måste beskriva ämne eller syfte.",
+            "technicalGuidance": "Skriv tydliga, beskrivande rubriker som ger mening åt innehållet under dem. Formuläretiketter måste vara begripliga.",
             "component": null,
             "wcagTechnique": [
                 "G130"
@@ -1067,10 +1067,10 @@
         "holmdigitalInsight": {
             "diggRisk": "medium",
             "eaaImpact": "medium",
-            "swedishInterpretation": "About editorial quality and comprehensibility.",
+            "swedishInterpretation": "Handlar om redaktionell kvalitet och begriplighet.",
             "commonMistakes": [
-                "Cryptic headings",
-                "Labels that don't match what needs to be filled in"
+                "Kryptiska rubriker",
+                "Etiketter som inte matchar det som ska fyllas i"
             ],
             "priorityRationale": "Important for cognitive accessibility."
         },
@@ -1099,8 +1099,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "Lag 2018:1937 §7, WCAG 2.1 nivå AA krävs",
         "remediation": {
-            "description": "Any user interface operable by keyboard must have a visible focus indicator.",
-            "technicalGuidance": "Never remove outline with CSS (outline: none) without replacing it with a clear visual indicator. Ensure contrast of focus ring is sufficient (see 1.4.11).",
+            "description": "Varje gränssnitt som kan hanteras med tangentbord måste ha en synlig fokusindikator.",
+            "technicalGuidance": "Ta aldrig bort outline med CSS (outline: none) utan att ersätta det med en tydlig visuell indikator. Se till att fokusringens kontrast är tillräcklig (se 1.4.11).",
             "component": "@holmdigital/components/Button",
             "wcagTechnique": [
                 "G149",
@@ -1111,10 +1111,10 @@
         "holmdigitalInsight": {
             "diggRisk": "high",
             "eaaImpact": "high",
-            "swedishInterpretation": "One of the most common errors. Often because designers dislike the 'blue ring'.",
+            "swedishInterpretation": "Ett av de vanligaste felen. Ofta för att designers ogillar den 'blå ringen'.",
             "commonMistakes": [
-                "outline: none in CSS reset",
-                "Custom buttons missing :focus style"
+                "outline: none i CSS-reset",
+                "Egna knappar som saknar :focus-stil"
             ],
             "priorityRationale": "Critical: Without visible focus, the keyboard user doesn't know where they are."
         },
@@ -1143,8 +1143,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "Lag 2018:1937 §7, WCAG 2.1 nivå A krävs",
         "remediation": {
-            "description": "The default human language of each web page must be programmatically determinable.",
-            "technicalGuidance": "Set the 'lang' attribute on the <html> element. E.g., <html lang='en'> for English.",
+            "description": "Det förvalda mänskliga språket för varje webbsida måste kunna bestämmas programmatiskt.",
+            "technicalGuidance": "Sätt 'lang'-attributet på <html>-elementet. T.ex. <html lang='sv'> för svenska.",
             "component": null,
             "wcagTechnique": [
                 "H57"
@@ -1153,10 +1153,10 @@
         "holmdigitalInsight": {
             "diggRisk": "high",
             "eaaImpact": "high",
-            "swedishInterpretation": "Fundamental for screen reading. Without this, the screen reader guesses the language, often leading to wrong pronunciation.",
+            "swedishInterpretation": "Grundläggande för skärmläsning. Utan detta gissar skärmläsaren språk, vilket ofta leder till fel uttal.",
             "commonMistakes": [
-                "Lang attribute missing",
-                "Wrong language code (e.g. 'en' on a Swedish page)"
+                "Lang-attribut saknas",
+                "Fel språkkod (t.ex. 'en' på en svensk sida)"
             ],
             "priorityRationale": "Critical for screen reader users."
         },
@@ -1184,8 +1184,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "Lag 2018:1937 §7, WCAG 2.1 nivå AA krävs",
         "remediation": {
-            "description": "The human language of each passage or phrase in the content must be programmatically determinable.",
-            "technicalGuidance": "Use the lang attribute on elements that differ from the page's main language. E.g. <span lang='fr'>Bonjour</span>.",
+            "description": "Det mänskliga språket för varje passage eller fras i innehållet måste kunna bestämmas programmatiskt.",
+            "technicalGuidance": "Använd lang-attributet på element som skiljer sig från sidans huvudspråk. T.ex. <span lang='en'>Hello</span> på en svensk sida.",
             "component": null,
             "wcagTechnique": [
                 "H58"
@@ -1194,9 +1194,9 @@
         "holmdigitalInsight": {
             "diggRisk": "low",
             "eaaImpact": "low",
-            "swedishInterpretation": "Rarely a critical error unless it significantly hinders understanding.",
+            "swedishInterpretation": "Sällan ett kritiskt fel om det inte avsevärt hindrar förståelsen.",
             "commonMistakes": [
-                "Foreign quotes in text without markup"
+                "Utländska citat i text utan uppmärkning"
             ],
             "priorityRationale": "Important for correct pronunciation."
         },
@@ -1224,8 +1224,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "Lag 2018:1937 §7, WCAG 2.1 nivå A krävs",
         "remediation": {
-            "description": "When a component receives focus, it must not initiate a change of context.",
-            "technicalGuidance": "Do not open new windows, submit forms, or move focus automatically just because user tabs to a field.",
+            "description": "När en komponent får fokus får den inte initiera en förändring av sammanhang.",
+            "technicalGuidance": "Öppna inte nya fönster, skicka inte formulär eller flytta fokus automatiskt bara för att användaren tabbar till ett fält.",
             "component": null,
             "wcagTechnique": [
                 "G107"
@@ -1234,10 +1234,10 @@
         "holmdigitalInsight": {
             "diggRisk": "high",
             "eaaImpact": "high",
-            "swedishInterpretation": "Very confusing for users. Creates a feeling of lack of control.",
+            "swedishInterpretation": "Mycket förvirrande för användare. Skapar en känsla av bristande kontroll.",
             "commonMistakes": [
-                "Dropdowns that navigate immediately upon selection (without 'Go' button)",
-                "Forms that auto-submit on last field focus"
+                "Dropdowns som navigerar direkt vid val (utan 'Gå'-knapp)",
+                "Formulär som auto-skickas vid fokus på sista fältet"
             ],
             "priorityRationale": "Important for predictability."
         },
@@ -1266,8 +1266,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "Lag 2018:1937 §7, WCAG 2.1 nivå A krävs",
         "remediation": {
-            "description": "Changing the setting of any component does not automatically cause a change of context unless the user has been advised of the behavior before using the component.",
-            "technicalGuidance": "Inform the user that selection in a list reloads the page. Preferably, add a button to confirm the choice.",
+            "description": "Att ändra inställningen för någon komponent orsakar inte automatiskt en förändring av sammanhang om inte användaren har informerats om beteendet innan komponenten används.",
+            "technicalGuidance": "Informera användaren om att val i en lista laddar om sidan. Helst, lägg till en knapp för att bekräfta valet.",
             "component": null,
             "wcagTechnique": [
                 "G13",
@@ -1277,10 +1277,10 @@
         "holmdigitalInsight": {
             "diggRisk": "medium",
             "eaaImpact": "medium",
-            "swedishInterpretation": "Common in filtering functions.",
+            "swedishInterpretation": "Vanligt i filtreringsfunktioner.",
             "commonMistakes": [
-                "Checkboxes that reload page immediately",
-                "Filtering that moves focus"
+                "Kryssrutor som laddar om sidan direkt",
+                "Filtrering som flyttar fokus"
             ],
             "priorityRationale": "Important for predictability."
         },
@@ -1309,8 +1309,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "Lag 2018:1937 §7, WCAG 2.1 nivå AA krävs",
         "remediation": {
-            "description": "Navigational mechanisms that are repeated on multiple Web pages occur in the same relative order each time they are repeated.",
-            "technicalGuidance": "Main menu should look the same and be in the same place on all pages. Search function as well.",
+            "description": "Navigeringsmekanismer som upprepas på flera webbsidor förekommer i samma relativa ordning varje gång de upprepas.",
+            "technicalGuidance": "Huvudmenyn ska se likadan ut och finnas på samma plats på alla sidor. Sökfunktionen likaså.",
             "component": null,
             "wcagTechnique": [
                 "G61"
@@ -1319,9 +1319,9 @@
         "holmdigitalInsight": {
             "diggRisk": "medium",
             "eaaImpact": "medium",
-            "swedishInterpretation": "Predictability is key to cognitive accessibility.",
+            "swedishInterpretation": "Förutsägbarhet är nyckeln till kognitiv tillgänglighet.",
             "commonMistakes": [
-                "Menus that change place or order on different pages"
+                "Menyer som byter plats eller ordning på olika sidor"
             ],
             "priorityRationale": "Facilitates learning."
         },
@@ -1350,8 +1350,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "Lag 2018:1937 §7, WCAG 2.1 nivå AA krävs",
         "remediation": {
-            "description": "Components that have the same functionality within a set of Web pages are identified consistently.",
-            "technicalGuidance": "Don't call search 'Search' on one page and 'Find' on another. Use the same icon for the same function.",
+            "description": "Komponenter som har samma funktionalitet inom en uppsättning webbsidor identifieras konsekvent.",
+            "technicalGuidance": "Kalla inte sök för 'Sök' på en sida och 'Hitta' på en annan. Använd samma ikon för samma funktion.",
             "component": null,
             "wcagTechnique": [
                 "G197"
@@ -1360,10 +1360,10 @@
         "holmdigitalInsight": {
             "diggRisk": "low",
             "eaaImpact": "low",
-            "swedishInterpretation": "Important for usability.",
+            "swedishInterpretation": "Viktigt för användbarhet.",
             "commonMistakes": [
-                "Inconsistent naming",
-                "Different icons for print/download"
+                "Inkonsekvent namngivning",
+                "Olika ikoner för skriv ut/ladda ner"
             ],
             "priorityRationale": "Reduces cognitive load."
         },
@@ -1392,8 +1392,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "Lag 2018:1937 §7, WCAG 2.1 nivå A krävs",
         "remediation": {
-            "description": "If an input error is automatically detected, the item that is in error is identified and the error is described to the user in text.",
-            "technicalGuidance": "Show error message close to the field. Link with aria-describedby or include in label. Do not just color the field red.",
+            "description": "Om ett inmatningsfel upptäcks automatiskt, identifieras objektet som har fel och felet beskrivs för användaren i text.",
+            "technicalGuidance": "Visa felmeddelande nära fältet. Koppla med aria-describedby eller inkludera i label. Färga inte bara fältet rött.",
             "component": "@holmdigital/components/FormField",
             "wcagTechnique": [
                 "G83",
@@ -1403,10 +1403,10 @@
         "holmdigitalInsight": {
             "diggRisk": "high",
             "eaaImpact": "high",
-            "swedishInterpretation": "Critical for completing tasks. Generic error messages ('Something went wrong') are not accepted if the error is specific.",
+            "swedishInterpretation": "Kritiskt för att kunna slutföra uppgifter. Generella felmeddelanden ('Något gick fel') godkänns inte om felet är specifikt.",
             "commonMistakes": [
-                "'Invalid value' without explanation",
-                "Error message not visible to screen readers"
+                "'Ogiltigt värde' utan förklaring",
+                "Felmeddelande inte synligt för skärmläsare"
             ],
             "priorityRationale": "Critical for error handling."
         },
@@ -1434,8 +1434,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "Lag 2018:1937 §7, WCAG 2.1 nivå AA krävs",
         "remediation": {
-            "description": "If an input error is automatically detected and suggestions for correction are known, then the suggestions are provided to the user.",
-            "technicalGuidance": "If date format is wrong, show required format (YYYY-MM-DD). Offer spelling suggestions for search ('Did you mean...?').",
+            "description": "Om ett inmatningsfel upptäcks automatiskt och förslag till korrigering är kända, ges förslagen till användaren.",
+            "technicalGuidance": "Om datumformat är fel, visa vilket format som krävs (ÅÅÅÅ-MM-DD). Erbjud stavningsförslag vid sök ('Menade du...?').",
             "component": "@holmdigital/components/FormField",
             "wcagTechnique": [
                 "G177"
@@ -1444,9 +1444,9 @@
         "holmdigitalInsight": {
             "diggRisk": "medium",
             "eaaImpact": "medium",
-            "swedishInterpretation": "About being helpful. Reduces support cases.",
+            "swedishInterpretation": "Handlar om att vara hjälpsam. Minskar supportärenden.",
             "commonMistakes": [
-                "Only saying 'Error' without saying how to fix it"
+                "Säger bara 'Fel' utan att säga hur man fixar det"
             ],
             "priorityRationale": "Facilitates correction."
         },
@@ -1475,8 +1475,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "Lag 2018:1937 §7, WCAG 2.1 nivå AA krävs",
         "remediation": {
-            "description": "For Web pages that cause legal commitments or financial transactions, users must be able to: Reverse, Check, or Confirm.",
-            "technicalGuidance": "Offer a summary page before final submission with ability to edit.",
+            "description": "För webbsidor som orsakar juridiska åtaganden eller finansiella transaktioner måste användare kunna: Ångra, Kontrollera eller Bekräfta.",
+            "technicalGuidance": "Erbjud en sammanfattningssida innan slutgiltig inskickning med möjlighet att redigera.",
             "component": null,
             "wcagTechnique": [
                 "G164",
@@ -1486,10 +1486,10 @@
         "holmdigitalInsight": {
             "diggRisk": "high",
             "eaaImpact": "high",
-            "swedishInterpretation": "Absolute requirement for e-commerce and legal decisions.",
+            "swedishInterpretation": "Absolut krav för e-handel och juridiska beslut.",
             "commonMistakes": [
-                "Direct purchase without confirmation",
-                "Submission of binding contracts without review"
+                "Direktköp utan bekräftelse",
+                "Inskickning av bindande avtal utan granskning"
             ],
             "priorityRationale": "Critical to avoid serious consequences of mistakes."
         },
@@ -1518,8 +1518,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "Lag 2018:1937 §7, WCAG 2.1 nivå A krävs",
         "remediation": {
-            "description": "Update: From WCAG 2.2 this criterion is removed/obsolete, but in WCAG 2.1/EN 301 549 it applies: IDs must be unique, elements correctly nested.",
-            "technicalGuidance": "Validate HTML. Ensure id attributes are unique on the page. Close all tags correctly.",
+            "description": "Uppdatering: Från WCAG 2.2 är detta kriterium borttaget/föråldrat, men i WCAG 2.1/EN 301 549 gäller det: ID:n måste vara unika, element korrekt nästlade.",
+            "technicalGuidance": "Validera HTML. Se till att id-attribut är unika på sidan. Stäng alla taggar korrekt.",
             "component": null,
             "wcagTechnique": [
                 "H88"
@@ -1528,10 +1528,10 @@
         "holmdigitalInsight": {
             "diggRisk": "low",
             "eaaImpact": "low",
-            "swedishInterpretation": "Less prioritized now as modern browsers handle errors well, but duplicate IDs can still break ARIA.",
+            "swedishInterpretation": "Mindre prioriterat nu då moderna webbläsare hanterar fel bra, men dubbla ID:n kan fortfarande förstöra ARIA.",
             "commonMistakes": [
-                "Duplicate IDs",
-                "Broken HTML structure"
+                "Dubbla ID:n",
+                "Trasig HTML-struktur"
             ],
             "priorityRationale": "Technical hygiene factor."
         },
@@ -1560,8 +1560,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "Lag 2018:1937 §7, WCAG 2.1 nivå A krävs",
         "remediation": {
-            "description": "For all components, name and role can be programmatically determined. Values can be set programmatically.",
-            "technicalGuidance": "Use native HTML elements when possible. If custom components are used, ARIA (role, aria-label, aria-valuenow) must be used correctly.",
+            "description": "För alla komponenter ska namn och roll kunna bestämmas programmatiskt. Värden ska kunna sättas programmatiskt.",
+            "technicalGuidance": "Använd nativa HTML-element när det går. Om anpassade komponenter används, måste ARIA (role, aria-label, aria-valuenow) användas korrekt.",
             "component": null,
             "wcagTechnique": [
                 "ARIA4",
@@ -1571,11 +1571,11 @@
         "holmdigitalInsight": {
             "diggRisk": "critical",
             "eaaImpact": "critical",
-            "swedishInterpretation": "This is the foundation for how screen readers work with modern web apps. Without this, the app is 'invisible' to assistive technology.",
+            "swedishInterpretation": "Detta är grunden för hur skärmläsare fungerar med moderna webbappar. Utan detta är appen 'osynlig' för hjälpmedel.",
             "commonMistakes": [
-                "Div buttons without role",
-                "Custom checkboxes without aria-checked",
-                "Missing accessible name"
+                "Div-knappar utan roll",
+                "Egna kryssrutor utan aria-checked",
+                "Saknar tillgängligt namn"
             ],
             "priorityRationale": "Absolutely critical for compatibility."
         },
@@ -1615,10 +1615,10 @@
         "holmdigitalInsight": {
             "diggRisk": "medium",
             "eaaImpact": "medium",
-            "swedishInterpretation": "Important in SPAs where page load does not happen. The user must know something happened.",
+            "swedishInterpretation": "Viktigt i SPA:er där sidladdning inte sker. Användaren måste veta att något hänt.",
             "commonMistakes": [
-                "Silent updates of cart/search results",
-                "Toast notifications not being announced"
+                "Tysta uppdateringar av varukorg/sökresultat",
+                "Toast-notiser som inte annonseras"
             ],
             "priorityRationale": "Provides feedback to users without sight."
         },
@@ -1647,8 +1647,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "9 § (Struktur och relationer)",
         "remediation": {
-            "description": "The page must have exactly one 'main' landmark.",
-            "technicalGuidance": "Use the <main> element once per page to identify the main content. Avoid having multiple <main> without unique labels, or missing it entirely.",
+            "description": "Sidan måste ha exakt ett 'main' (huvudsakligt innehåll) landmärke.",
+            "technicalGuidance": "Använd <main>-elementet en gång per sida för att identifiera huvudinnehållet. Undvik att ha flera <main> utan unika etiketter, eller att missa det helt.",
             "wcagTechnique": [
                 "ARIA11",
                 "H97"
@@ -1657,10 +1657,10 @@
         "holmdigitalInsight": {
             "diggRisk": "medium",
             "eaaImpact": "medium",
-            "swedishInterpretation": "Screen reader users rely on landmarks to navigate quickly to the content. Missing <main> makes it difficult to skip navigation.",
+            "swedishInterpretation": "Skärmläsaranvändare förlitar sig på landmärken för att snabbt navigera till innehållet. Saknad <main> gör det svårt att hoppa över navigering.",
             "commonMistakes": [
-                "Using <div id='main'> instead of <main>",
-                "Having multiple <main> elements"
+                "Använder <div id='main'> istället för <main>",
+                "Har flera <main>-element"
             ]
         },
         "testability": {
@@ -1687,8 +1687,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "9 § (Struktur och relationer)",
         "remediation": {
-            "description": "The page must have a level 1 heading (<h1>).",
-            "technicalGuidance": "Ensure there is exactly one <h1> describing the page's unique content.",
+            "description": "Sidan måste ha en rubrik på nivå 1 (<h1>).",
+            "technicalGuidance": "Se till att det finns exakt en <h1> som beskriver sidans unika innehåll.",
             "wcagTechnique": [
                 "H42"
             ]
@@ -1696,10 +1696,10 @@
         "holmdigitalInsight": {
             "diggRisk": "high",
             "eaaImpact": "high",
-            "swedishInterpretation": "A clear <h1> is critical for users to understand where they have landed. It is often the first thing a screen reader user looks for.",
+            "swedishInterpretation": "En tydlig <h1> är kritisk för att användare ska förstå var de hamnat. Det är ofta det första en skärmläsaranvändare letar efter.",
             "commonMistakes": [
-                "Starting headings at <h2>",
-                "Using logo as the only <h1> without text"
+                "Börjar rubriker på <h2>",
+                "Använder logotyp som enda <h1> utan text"
             ]
         },
         "testability": {
@@ -1726,8 +1726,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "9 § (Struktur och relationer)",
         "remediation": {
-            "description": "Headings must follow a logical order (h1 -> h2 -> h3).",
-            "technicalGuidance": "Do not skip heading levels (e.g. directly from h1 to h3).",
+            "description": "Rubriker måste följa en logisk ordning (h1 -> h2 -> h3).",
+            "technicalGuidance": "Hoppa inte över rubriknivåer (t.ex. direkt från h1 till h3).",
             "wcagTechnique": [
                 "G141"
             ]
@@ -1735,9 +1735,9 @@
         "holmdigitalInsight": {
             "diggRisk": "medium",
             "eaaImpact": "medium",
-            "swedishInterpretation": "Incorrect heading structure makes it difficult for screen readers to navigate. Never skip levels.",
+            "swedishInterpretation": "Felaktig rubrikstruktur gör det svårt för skärmläsare att navigera. Hoppa aldrig över nivåer.",
             "commonMistakes": [
-                "Using h3 for styling instead of structure"
+                "Använder h3 för utseende istället för struktur"
             ]
         },
         "testability": {
@@ -1764,8 +1764,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "9 § (Struktur och relationer)",
         "remediation": {
-            "description": "The banner (<header>) must be at the top level.",
-            "technicalGuidance": "Do not place <header> inside another landmark if it is the page's main banner.",
+            "description": "Bannern (<header>) måste ligga på toppnivå.",
+            "technicalGuidance": "Placera inte <header> inuti ett annat landmärke om det är sidans huvudbanner.",
             "wcagTechnique": [
                 "ARIA11"
             ]
@@ -1773,9 +1773,9 @@
         "holmdigitalInsight": {
             "diggRisk": "medium",
             "eaaImpact": "medium",
-            "swedishInterpretation": "The page's main menu/banner must be located correctly in the structure to be found quickly.",
+            "swedishInterpretation": "Sidans huvudmeny/banner måste ligga rätt i strukturen för att hittas snabbt.",
             "commonMistakes": [
-                "Nesting header inside main"
+                "Nästlar header inuti main"
             ]
         },
         "testability": {
@@ -1802,8 +1802,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "9 § (Struktur och relationer)",
         "remediation": {
-            "description": "The page must have only one 'banner' landmark (usually <header>).",
-            "technicalGuidance": "Ensure you only have one <header> at the top level.",
+            "description": "Sidan får bara ha ett 'banner' landmärke (vanligtvis <header>).",
+            "technicalGuidance": "Se till att du bara har en <header> på toppnivå.",
             "wcagTechnique": [
                 "ARIA11"
             ]
@@ -1811,9 +1811,9 @@
         "holmdigitalInsight": {
             "diggRisk": "medium",
             "eaaImpact": "medium",
-            "swedishInterpretation": "Multiple banners confuse navigation. There should be only one top header.",
+            "swedishInterpretation": "Flera banners förvirrar navigeringen. Det ska bara finnas en topp-header.",
             "commonMistakes": [
-                "Having header both at top and bottom"
+                "Har header både högst upp och längst ner"
             ]
         },
         "testability": {
@@ -1840,8 +1840,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "9 § (Struktur och relationer)",
         "remediation": {
-            "description": "Landmarks must have unique roles or labels.",
-            "technicalGuidance": "If you have multiple <nav> elements, give them unique 'aria-label' (e.g., 'Main Menu', 'Footer Menu').",
+            "description": "Landmärken måste ha unika roller eller etiketter.",
+            "technicalGuidance": "Om du har flera <nav>-element, ge dem unika 'aria-label' (t.ex. 'Huvudmeny', 'Sidfotsmeny').",
             "wcagTechnique": [
                 "ARIA11"
             ]
@@ -1849,9 +1849,9 @@
         "holmdigitalInsight": {
             "diggRisk": "medium",
             "eaaImpact": "medium",
-            "swedishInterpretation": "The user must be able to distinguish between different menus/regions. Give them names.",
+            "swedishInterpretation": "Användaren måste kunna skilja på olika menyer/regioner. Ge dem namn.",
             "commonMistakes": [
-                "Multiple nav elements without aria-label"
+                "Flera nav-element utan aria-label"
             ]
         },
         "testability": {
@@ -1878,8 +1878,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "9 § (Struktur och relationer)",
         "remediation": {
-            "description": "All content on the page must be contained within landmarks (regions).",
-            "technicalGuidance": "Ensure all content is inside <main>, <header>, <nav>, <footer>, or <aside>.",
+            "description": "Allt innehåll på sidan måste finnas inuti landmärken (regioner).",
+            "technicalGuidance": "Se till att allt innehåll finns inuti <main>, <header>, <nav>, <footer>, eller <aside>.",
             "component": null,
             "wcagTechnique": [
                 "ARIA11"
@@ -1888,10 +1888,10 @@
         "holmdigitalInsight": {
             "diggRisk": "medium",
             "eaaImpact": "medium",
-            "swedishInterpretation": "For screen reader users to navigate effectively, the page must be divided into logical regions.",
+            "swedishInterpretation": "För att skärmläsaranvändare ska kunna navigera effektivt måste sidan vara uppdelad i logiska regioner.",
             "commonMistakes": [
-                "Content directly in <body> without container",
-                "Using too many landmarks"
+                "Innehåll direkt i <body> utan container",
+                "Använder för många landmärken"
             ]
         },
         "testability": {
@@ -1917,8 +1917,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "100 § (Tidsberoende media)",
         "remediation": {
-            "description": "Prerecorded video content must have audio description if visual information is critical.",
-            "technicalGuidance": "Provide an alternative audio track or version describing what happens visually.",
+            "description": "Förinspelat videoinnehåll måste ha syntolkning om visuell information är kritisk.",
+            "technicalGuidance": "Tillhandahåll ett alternativt ljudspår eller version som beskriver vad som händer visuellt.",
             "component": null,
             "wcagTechnique": [
                 "G78"
@@ -1927,9 +1927,9 @@
         "holmdigitalInsight": {
             "diggRisk": "medium",
             "eaaImpact": "low",
-            "swedishInterpretation": "Video conveying information visually must be described for those who cannot see the screen.",
+            "swedishInterpretation": "Video som förmedlar information visuellt måste beskrivas för de som inte kan se skärmen.",
             "commonMistakes": [
-                "Video missing audio description despite important visual info"
+                "Video saknar syntolkning trots viktig visuell info"
             ]
         },
         "testability": {

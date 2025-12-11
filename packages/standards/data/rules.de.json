@@ -11,8 +11,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "BITV 2.0, Anlage 1, WCAG 2.1 AA erforderlich",
         "remediation": {
-            "description": "Text and images of text must have a contrast ratio of at least 4.5:1 (3:1 for large text).",
-            "technicalGuidance": "Use tools like WebAIM Contrast Checker to verify contrast. Adjust color choices or add background opacity to achieve correct contrast.",
+            "description": "Text und Bilder von Text müssen ein Kontrastverhältnis von mindestens 4,5:1 (3:1 für großen Text) haben.",
+            "technicalGuidance": "Verwenden Sie Tools wie den WebAIM Contrast Checker zur Überprüfung. Passen Sie Farben an oder fügen Sie Hintergrundtransparenz hinzu, um den korrekten Kontrast zu erreichen.",
             "component": "@holmdigital/components/Button",
             "codeExample": "import { Button } from '@holmdigital/components';\n\n// Bad: Poor contrast\n<button style={{ background: '#777', color: '#999' }}>Click me</button>\n\n// Good: Use accessible component\n<Button variant=\"primary\">Click me</Button>",
             "wcagTechnique": [
@@ -24,11 +24,11 @@
         "holmdigitalInsight": {
             "diggRisk": "high",
             "eaaImpact": "critical",
-            "swedishInterpretation": "One of the most common reasons for fines from regulators. Especially important for public sector monitoring.",
+            "germanInterpretation": "Einer der häufigsten Gründe für Beanstandungen durch Aufsichtsbehörden. Besonders wichtig für öffentliche Sektoren.",
             "commonMistakes": [
-                "Gray text on white background (#777 on #FFF)",
-                "Light blue links without underline",
-                "Placeholder text with too low contrast"
+                "Grauer Text auf weißem Hintergrund (#777 auf #FFF)",
+                "Hellblaue Links ohne Unterstreichung",
+                "Platzhaltertext mit zu geringem Kontrast"
             ],
             "diggPrecedent": "Regulators often cite poor contrast in primary navigation elements.",
             "priorityRationale": "Critical for users with low vision. Affects readability for all users in varying lighting conditions."
@@ -59,8 +59,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "BITV 2.0, Anlage 1, WCAG 2.1 A erforderlich",
         "remediation": {
-            "description": "All functionality must be accessible via keyboard.",
-            "technicalGuidance": "Use semantic HTML elements (button, a, input) instead of div/span with click handlers. Ensure tabindex is used correctly.",
+            "description": "Alle Funktionen müssen per Tastatur zugänglich sein.",
+            "technicalGuidance": "Verwenden Sie semantische HTML-Elemente (button, a, input) anstelle von div/span mit Click-Handlern. Stellen Sie sicher, dass tabindex korrekt verwendet wird.",
             "component": "@holmdigital/components/Button",
             "codeExample": "// Bad: Div with onClick\n<div onClick={handleClick}>Click Me</div>\n\n// Good: Button element\n<button onClick={handleClick}>Click Me</button>\n\n// Best: Use HolmDigital component\nimport { Button } from '@holmdigital/components';\n<Button onClick={handleClick}>Click Me</Button>",
             "wcagTechnique": [
@@ -71,11 +71,11 @@
         "holmdigitalInsight": {
             "diggRisk": "critical",
             "eaaImpact": "critical",
-            "swedishInterpretation": "Keyboard access is fundamental and non-negotiable. Top priority in compliance audits.",
+            "germanInterpretation": "Tastaturbedienung ist grundlegend und nicht verhandelbar. Höchste Priorität bei Prüfungen.",
             "commonMistakes": [
-                "Using div/span for clickable elements",
-                "Custom dropdown menus without keyboard support",
-                "Modal dialogs that trap focus incorrectly"
+                "Verwendung von div/span für klickbare Elemente",
+                "Benutzerdefinierte Dropdown-Menüs ohne Tastaturunterstützung",
+                "Modale Dialoge, die den Fokus nicht korrekt fangen"
             ],
             "diggPrecedent": "Auditors have issued fines for sites where core functions (e.g. forms, navigation) are not keyboard accessible.",
             "priorityRationale": "Critical for users with motor disabilities and screen reader users."
@@ -105,8 +105,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "BITV 2.0, Anlage 1, WCAG 2.1 A erforderlich",
         "remediation": {
-            "description": "All images must have descriptive alternative text.",
-            "technicalGuidance": "Add alt attributes to all img elements. For decorative images, use alt=\"\". For informative images, concisely describe the content.",
+            "description": "Alle Bilder müssen beschreibenden Alternativtext haben.",
+            "technicalGuidance": "Fügen Sie alt-Attribute zu allen img-Elementen hinzu. Für dekorative Bilder verwenden Sie alt=\"\". Für informative Bilder beschreiben Sie den Inhalt prägnant.",
             "codeExample": "// Bad: Msising alt\n<img src=\"logo.png\" />\n\n// Good: Descriptive alt\n<img src=\"logo.png\" alt=\"HolmDigital Logo\" />\n\n// Good: Decorative image\n<img src=\"decoration.png\" alt=\"\" role=\"presentation\" />",
             "wcagTechnique": [
                 "G94",
@@ -117,12 +117,12 @@
         "holmdigitalInsight": {
             "diggRisk": "high",
             "eaaImpact": "high",
-            "swedishInterpretation": "Especially important for logos and informational graphics. Frequently checked in audits.",
+            "germanInterpretation": "Besonders wichtig für Logos und informative Grafiken. Wird häufig in Prüfungen kontrolliert.",
             "commonMistakes": [
-                "Missing alt text entirely",
-                "Alt text that just says 'image' or 'icon'",
-                "Filename as alt text (e.g. 'IMG_1234.jpg')",
-                "Decorative images with unnecessary description"
+                "Fehlender Alt-Text",
+                "Alt-Text, der nur 'Bild' oder 'Icon' sagt",
+                "Dateiname als Alt-Text (z.B. 'IMG_1234.jpg')",
+                "Dekorative Bilder mit unnötiger Beschreibung"
             ],
             "diggPrecedent": "Audits frequently cite missing alt text, especially for vital infographics.",
             "priorityRationale": "Critical for screen reader users to access visual information."
@@ -152,8 +152,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "BITV 2.0, Anlage 1, WCAG 2.1 A erforderlich",
         "remediation": {
-            "description": "Form fields must have clear labels or instructions.",
-            "technicalGuidance": "Use label elements linked to input via for/id. For complex forms, use fieldset and legend. Use aria-describedby for extra instructions.",
+            "description": "Formularfelder müssen klare Beschriftungen oder Anweisungen haben.",
+            "technicalGuidance": "Verwenden Sie Label-Elemente, die über for/id mit dem Input verknüpft sind. Für komplexe Formulare verwenden Sie fieldset und legend. Nutzen Sie aria-describedby für zusätzliche Anweisungen.",
             "component": "@holmdigital/components/FormField",
             "codeExample": "import { FormField } from '@holmdigital/components';\n\n// Bad: No label\n<input type=\"text\" placeholder=\"Name\" />\n\n// Good: With label\n<label htmlFor=\"name\">Name:</label>\n<input type=\"text\" id=\"name\" />\n\n// Best: Use HolmDigital component\n<FormField\n  label=\"Name\"\n  type=\"text\"\n  required\n  helpText=\"Enter your full name\"\n/>",
             "wcagTechnique": [
@@ -166,12 +166,12 @@
         "holmdigitalInsight": {
             "diggRisk": "high",
             "eaaImpact": "high",
-            "swedishInterpretation": "Forms are critical for e-services. Compliance is strictly enforced in public sector apps.",
+            "germanInterpretation": "Formulare sind kritisch für E-Services. Die Einhaltung wird bei Anwendungen des öffentlichen Sektors streng kontrolliert.",
             "commonMistakes": [
-                "Only placeholder without label",
-                "Label and input not linked via for/id",
-                "Error messages without aria-describedby",
-                "Required fields not clearly marked"
+                "Nur Platzhalter ohne Label",
+                "Label und Input nicht über for/id verknüpft",
+                "Fehlermeldungen ohne aria-describedby",
+                "Pflichtfelder nicht deutlich gekennzeichnet"
             ],
             "diggPrecedent": "Audit decisions often criticize poor form accessibility, especially for application and contact forms.",
             "priorityRationale": "Critical for users to successfully use e-services and submit information."
@@ -201,8 +201,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "BITV 2.0, Anlage 1, WCAG 2.1 A erforderlich",
         "remediation": {
-            "description": "Each web page must have a descriptive title.",
-            "technicalGuidance": "Use the title element in head. The title should be unique for each page and describe its purpose. Format: 'Page Name - Site Name'.",
+            "description": "Jede Webseite muss einen beschreibenden Titel haben.",
+            "technicalGuidance": "Verwenden Sie das title-Element im Kopfbereich. Der Titel sollte für jede Seite eindeutig sein und ihren Zweck beschreiben. Format: 'Seitenname - Websitename'.",
             "codeExample": "// Bad: Generic title\n<title>Page</title>\n\n// Good: Descriptive title\n<title>Contact Us - HolmDigital</title>\n\n// React/Next.js\nimport Head from 'next/head';\n\n<Head>\n  <title>Contact Us - HolmDigital</title>\n</Head>",
             "wcagTechnique": [
                 "G88",
@@ -212,12 +212,12 @@
         "holmdigitalInsight": {
             "diggRisk": "medium",
             "eaaImpact": "medium",
-            "swedishInterpretation": "Important for navigation, especially in SPAs where the title must update dynamically.",
+            "germanInterpretation": "Wichtig für die Navigation, besonders in SPAs, wo der Titel dynamisch aktualisiert werden muss.",
             "commonMistakes": [
-                "Same title on all pages",
-                "Title not updating in SPAs",
-                "Too long or too short title",
-                "Title missing entirely"
+                "Gleicher Titel auf allen Seiten",
+                "Titel wird in SPAs nicht aktualisiert",
+                "Zu langer oder zu kurzer Titel",
+                "Titel fehlt gänzlich"
             ],
             "diggPrecedent": "Audits have noted missing page titles, especially in Single Page Applications.",
             "priorityRationale": "Important for screen reader navigation and SEO."
@@ -247,8 +247,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "BITV 2.0, Anlage 1, WCAG 2.1 A erforderlich",
         "remediation": {
-            "description": "Information, structure, and relationships conveyed through presentation can be programmatically determined or are available in text.",
-            "technicalGuidance": "Use semantic HTML: <header>, <nav>, <main>, <footer>, <h1>-<h6>, <ul>/ <ol>, <table>. Do not use visual styles to create 'fake' headings or lists.",
+            "description": "Informationen, Struktur und Beziehungen, die durch die Präsentation vermittelt werden, können programmatisch bestimmt werden oder stehen im Text zur Verfügung.",
+            "technicalGuidance": "Verwenden Sie semantisches HTML: <header>, <nav>, <main>, <footer>, <h1>-<h6>, <ul>/ <ol>, <table>. Verwenden Sie keine visuellen Stile, um 'falsche' Überschriften oder Listen zu erstellen.",
             "component": null,
             "wcagTechnique": [
                 "H42",
@@ -259,11 +259,11 @@
         "holmdigitalInsight": {
             "diggRisk": "high",
             "eaaImpact": "high",
-            "swedishInterpretation": "Semantic structure is crucial for screen readers to navigate effectively. Auditors often cite 'div-soup' that looks like structure but lacks semantics.",
+            "germanInterpretation": "Semantische Struktur ist entscheidend, damit Screenreader effektiv navigieren können. Prüfer bemängeln oft 'Div-Suppe', die wie Struktur aussieht, aber keine Semantik hat.",
             "commonMistakes": [
-                "Using bold text instead of <h1>-<h6>",
-                "Using <br> for lists instead of <ul>",
-                "Tables for layout"
+                "Verwendung von fettem Text anstelle von <h1>-<h6>",
+                "Verwendung von <br> für Listen anstelle von <ul>",
+                "Tabellen für Layout"
             ],
             "priorityRationale": "Fundamental for all assistive technology navigation."
         },
@@ -292,8 +292,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "BITV 2.0, Anlage 1, WCAG 2.1 A erforderlich",
         "remediation": {
-            "description": "Color is not used as the only visual means of conveying information, indicating an action, prompting a response, or distinguishing a visual element.",
-            "technicalGuidance": "Complement color with text, icons, or underlining. E.g. links must have underlines or another visual marker besides color. Error messages need text/icon, not just a red border.",
+            "description": "Farbe wird nicht als einziges visuelles Mittel verwendet, um Informationen zu vermitteln, eine Handlung anzuzeigen, eine Reaktion zu veranlassen oder ein visuelles Element zu unterscheiden.",
+            "technicalGuidance": "Ergänzen Sie Farbe mit Text, Symbolen oder Unterstreichungen. Z. B. müssen Links Unterstreichungen oder eine andere visuelle Markierung neben der Farbe haben. Fehlermeldungen benötigen Text/Symbol, nicht nur einen roten Rahmen.",
             "component": "@holmdigital/components/FormField",
             "wcagTechnique": [
                 "G14",
@@ -304,11 +304,11 @@
         "holmdigitalInsight": {
             "diggRisk": "medium",
             "eaaImpact": "medium",
-            "swedishInterpretation": "Common problem in graphs and maps where only color coding is used.",
+            "germanInterpretation": "Häufiges Problem in Diagrammen und Karten, wo nur Farbcodierung verwendet wird.",
             "commonMistakes": [
-                "Links that only differ by color from body text",
-                "Error messages only marked with red color",
-                "Graphs where only color distinguishes data points"
+                "Links, die sich nur durch Farbe vom Fließtext unterscheiden",
+                "Fehlermeldungen nur rot markiert",
+                "Diagramme, in denen nur Farbe Datenpunkte unterscheidet"
             ],
             "priorityRationale": "Crucial for color blind users."
         },
@@ -337,8 +337,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "BITV 2.0, Anlage 1, WCAG 2.1 AA erforderlich",
         "remediation": {
-            "description": "Content must be presentable without requiring scrolling in two dimensions down to 320px width.",
-            "technicalGuidance": "Use responsive design (CSS Media Queries, Flexbox, Grid). Avoid fixed widths in pixels. Ensure tables and images scale correctly.",
+            "description": "Inhalte müssen ohne Scrollen in zwei Dimensionen bis zu einer Breite von 320px darstellbar sein.",
+            "technicalGuidance": "Verwenden Sie responsives Design (CSS Media Queries, Flexbox, Grid). Vermeiden Sie feste Breiten in Pixeln. Stellen Sie sicher, dass Tabellen und Bilder korrekt skalieren.",
             "component": null,
             "wcagTechnique": [
                 "C32",
@@ -348,11 +348,11 @@
         "holmdigitalInsight": {
             "diggRisk": "high",
             "eaaImpact": "high",
-            "swedishInterpretation": "A modern requirement (WCAG 2.1) critical for mobile use and magnified text. DIGG has zero tolerance for horizontal scroll on vertical sites.",
+            "germanInterpretation": "Eine moderne Anforderung (WCAG 2.1), kritisch für die mobile Nutzung und vergrößerten Text. Aufsichtsbehörden haben null Toleranz für horizontales Scrollen auf vertikalen Seiten.",
             "commonMistakes": [
-                "Fixed widths on containers",
-                "Tables that are not responsive",
-                "Images wider than the screen"
+                "Feste Breiten auf Containern",
+                "Tabellen, die nicht responsiv sind",
+                "Bilder, die breiter als der Bildschirm sind"
             ],
             "priorityRationale": "Critical for low vision users who zoom in heavily."
         },
@@ -381,8 +381,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "BITV 2.0, Anlage 1, WCAG 2.1 AA erforderlich",
         "remediation": {
-            "description": "The visual presentation of user interface components and graphical objects must have a contrast ratio of at least 3:1 against adjacent colors.",
-            "technicalGuidance": "Applies to buttons, input borders, icons, and focus indicators. Ensure all interactive elements are clearly visible against the background.",
+            "description": "Die visuelle Darstellung von Benutzeroberflächenkomponenten und grafischen Objekten muss ein Kontrastverhältnis von mindestens 3:1 zu angrenzenden Farben haben.",
+            "technicalGuidance": "Gilt für Schaltflächen, Eingaberahmen, Symbole und Fokusindikatoren. Stellen Sie sicher, dass alle interaktiven Elemente klar vom Hintergrund sichtbar sind.",
             "component": "@holmdigital/components/Button",
             "wcagTechnique": [
                 "G195",
@@ -392,9 +392,9 @@
         "holmdigitalInsight": {
             "diggRisk": "low",
             "eaaImpact": "low",
-            "swedishInterpretation": "Often missed requirement regarding focus rings and inactive (but visible) components. Important for understanding the interface.",
+            "germanInterpretation": "Oft übersehener Aspekt in Bezug auf Fokusringe und inaktive (aber sichtbare) Komponenten. Wichtig für das Verständnis der Schnittstelle.",
             "commonMistakes": [
-                "Grayed out buttons with too low contrast"
+                "Ausgegraute Schaltflächen mit zu geringem Kontrast"
             ],
             "priorityRationale": "Important for distinguishing interactive elements."
         },
@@ -423,8 +423,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "BITV 2.0, Anlage 1, WCAG 2.1 AA erforderlich",
         "remediation": {
-            "description": "Content or functionality must not be lost when the user changes text spacing (line height, paragraph spacing, etc.).",
-            "technicalGuidance": "Avoid fixed heights on text containers. Let containers grow with content. Test with text spacing bookmarklet.",
+            "description": "Inhalt oder Funktionalität darf nicht verloren gehen, wenn der Benutzer die Textabstände ändert (Zeilenhöhe, Absatzabstand usw.).",
+            "technicalGuidance": "Vermeiden Sie feste Höhen auf Textcontainern. Lassen Sie Container mit dem Inhalt wachsen. Testen Sie mit dem Text Spacing Bookmarklet.",
             "component": null,
             "wcagTechnique": [
                 "C36"
@@ -433,10 +433,10 @@
         "holmdigitalInsight": {
             "diggRisk": "low",
             "eaaImpact": "medium",
-            "swedishInterpretation": "Important for dyslexia adaptations.",
+            "germanInterpretation": "Wichtig für Legasthenie-Anpassungen.",
             "commonMistakes": [
-                "Fixed line height in pixels",
-                "Text container that does not grow"
+                "Feste Zeilenhöhe in Pixeln",
+                "Textcontainer, der nicht wächst"
             ],
             "priorityRationale": "Important for readability during adaptations."
         },
@@ -464,8 +464,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "BITV 2.0, Anlage 1, WCAG 2.1 AA erforderlich",
         "remediation": {
-            "description": "Content shown on hover/focus (e.g. tooltips) must be Dismissable, Hoverable, and Persistent.",
-            "technicalGuidance": "Ensure tooltips do not disappear when moving mouse from trigger to the tooltip itself. Allow ESC to dismiss.",
+            "description": "Inhalte, die bei Hover/Fokus angezeigt werden (z. B. Tooltips), müssen ausblendbar, überfahrbar und dauerhaft sein.",
+            "technicalGuidance": "Stellen Sie sicher, dass Tooltips nicht verschwinden, wenn der Mauszeiger vom Auslöser auf den Tooltip selbst bewegt wird. Ermöglichen Sie ESC zum Schließen.",
             "component": null,
             "wcagTechnique": [
                 "SCR39"
@@ -474,11 +474,11 @@
         "holmdigitalInsight": {
             "diggRisk": "medium",
             "eaaImpact": "medium",
-            "swedishInterpretation": "Common problem with custom tooltips and mega-menus.",
+            "germanInterpretation": "Häufiges Problem bei benutzerdefinierten Tooltips und Mega-Menüs.",
             "commonMistakes": [
-                "Tooltips that cannot be reached with mouse",
-                "Menus that close too easily",
-                "Content that cannot be dismissed without moving focus"
+                "Tooltips, die nicht mit der Maus erreicht werden können",
+                "Menüs, die zu schnell schließen",
+                "Inhalt, der nicht ohne Fokusbewegung ausgeblendet werden kann"
             ],
             "priorityRationale": "Important for users with magnification and motor difficulties."
         },
@@ -507,8 +507,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "BITV 2.0, Anlage 1, WCAG 2.1 A erforderlich",
         "remediation": {
-            "description": "Captions must be provided for all prerecorded audio content in synchronized media.",
-            "technicalGuidance": "Use the <track> element with WebVTT files for HTML5 video. For social media embeds, ensure captions are enabled.",
+            "description": "Untertitel müssen für alle voraufgezeichneten Audioinhalte in synchronisierten Medien bereitgestellt werden.",
+            "technicalGuidance": "Verwenden Sie das <track>-Element mit WebVTT-Dateien für HTML5-Video. Stellen Sie sicher, dass Untertitel bei Social-Media-Einbettungen aktiviert sind.",
             "component": null,
             "wcagTechnique": [
                 "G87",
@@ -518,11 +518,11 @@
         "holmdigitalInsight": {
             "diggRisk": "high",
             "eaaImpact": "high",
-            "swedishInterpretation": "One of the most common deficiencies in the public sector. The legal requirement is strict: video with audio MUST have captions.",
+            "germanInterpretation": "Einer der häufigsten Mängel im öffentlichen Sektor. Die gesetzliche Anforderung ist strikt: Video mit Audio MUSS Untertitel haben.",
             "commonMistakes": [
-                "Auto-generated captions that satisfy no one",
-                "Captions missing entirely",
-                "Captions burned into video (not accessible for search/translation)"
+                "Automatisch generierte Untertitel, die niemanden zufriedenstellen",
+                "Untertitel fehlen gänzlich",
+                "Untertitel eingebrannt (nicht durchsuchbar/übersetzbar)"
             ],
             "priorityRationale": "Critical for deaf and hard of hearing users."
         },
@@ -551,8 +551,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "BITV 2.0, Anlage 1, WCAG 2.1 AA erforderlich",
         "remediation": {
-            "description": "Audio description must be provided for all prerecorded video content.",
-            "technicalGuidance": "Either as a separate audio track, an alternative version of the video, or (if 'talking heads') ensuring all info is conveyed by audio.",
+            "description": "Audiodeskription muss für alle voraufgezeichneten Videoinhalte bereitgestellt werden.",
+            "technicalGuidance": "Entweder als separate Tonspur, als alternative Version des Videos oder (bei 'Talking Heads') sicherstellen, dass alle Infos im Audio vermittelt werden.",
             "component": null,
             "wcagTechnique": [
                 "G78",
@@ -562,9 +562,9 @@
         "holmdigitalInsight": {
             "diggRisk": "medium",
             "eaaImpact": "medium",
-            "swedishInterpretation": "Can often be solved by 'integrated description' (talking about what is seen), which is more cost-effective.",
+            "germanInterpretation": "Kann oft durch 'integrierte Beschreibung' gelöst werden (Sprechen über das, was gesehen wird), was kosteneffizienter ist.",
             "commonMistakes": [
-                "Information shown only visually (graphics, text signs) without being mentioned in audio"
+                "Informationen, die nur visuell gezeigt werden (Grafiken, Textschilder), ohne im Audio erwähnt zu werden"
             ],
             "priorityRationale": "Critical for blind video users."
         },
@@ -593,8 +593,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "BITV 2.0, Anlage 1, WCAG 2.1 AA erforderlich",
         "remediation": {
-            "description": "Content must not restrict its view and operation to a single display orientation, unless a specific orientation is essential.",
-            "technicalGuidance": "Do not lock screen to portrait or landscape via CSS or JS manifest. Use CSS media queries to handle layout changes.",
+            "description": "Inhalte dürfen ihre Ansicht und Bedienung nicht auf eine einzige Displayausrichtung beschränken, es sei denn, eine bestimmte Ausrichtung ist notwendig.",
+            "technicalGuidance": "Sperren Sie den Bildschirm nicht per CSS oder JS-Manifest auf Hoch- oder Querformat. Verwenden Sie CSS Media Queries, um Layoutänderungen zu handhaben.",
             "component": null,
             "wcagTechnique": [
                 "F97"
@@ -603,9 +603,9 @@
         "holmdigitalInsight": {
             "diggRisk": "low",
             "eaaImpact": "medium",
-            "swedishInterpretation": "Important for tablets and users who have the device mounted (e.g., wheelchair).",
+            "germanInterpretation": "Wichtig für Tablets und Nutzer, die das Gerät montiert haben (z. B. Rollstuhl).",
             "commonMistakes": [
-                "Apps/sites that rotate interface 90 degrees against user will"
+                "Apps/Websites, die die Oberfläche gegen den Willen des Nutzers um 90 Grad drehen"
             ],
             "priorityRationale": "Important for users who cannot rotate their device."
         },
@@ -634,8 +634,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "BITV 2.0, Anlage 1, WCAG 2.1 AA erforderlich",
         "remediation": {
-            "description": "The purpose of each input field collecting information about the user can be programmatically determined.",
-            "technicalGuidance": "Use the 'autocomplete' attribute on input fields for personal data (name, email, tel, address etc.).",
+            "description": "Der Zweck jedes Eingabefeldes, das Informationen über den Benutzer sammelt, kann programmatisch bestimmt werden.",
+            "technicalGuidance": "Verwenden Sie das 'autocomplete'-Attribut für Eingabefelder mit persönlichen Daten (Name, E-Mail, Tel, Adresse usw.).",
             "component": "@holmdigital/components/FormField",
             "wcagTechnique": [
                 "H98"
@@ -644,11 +644,11 @@
         "holmdigitalInsight": {
             "diggRisk": "medium",
             "eaaImpact": "high",
-            "swedishInterpretation": "Makes it much easier to fill confusing forms (autofill).",
+            "germanInterpretation": "Macht das Ausfüllen verwirrender Formulare viel einfacher (Autofill).",
             "commonMistakes": [
-                "Missing autocomplete attribute",
-                "Incorrect autocomplete value",
-                "Turning off autocomplete (autocomplete='off') unnecessarily"
+                "Fehlendes autocomplete-Attribut",
+                "Falscher autocomplete-Wert",
+                "Unnötiges Abschalten von autocomplete (autocomplete='off')"
             ],
             "priorityRationale": "Reduces cognitive load and motor requirements."
         },
@@ -676,8 +676,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "BITV 2.0, Anlage 1, WCAG 2.1 A erforderlich",
         "remediation": {
-            "description": "If focus can be moved to a component of the page using a keyboard interface, then focus can be moved away from that component using only a keyboard interface.",
-            "technicalGuidance": "Be careful with JS widgets that trap focus (e.g. modal windows). Ensure there is always a way out (e.g. ESC or shift+tab).",
+            "description": "Wenn der Fokus mit einer Tastaturschnittstelle auf eine Komponente der Seite bewegt werden kann, muss der Fokus auch nur mit einer Tastaturschnittstelle wieder von dieser Komponente wegbewegt werden können.",
+            "technicalGuidance": "Seien Sie vorsichtig bei JS-Widgets, die den Fokus fangen (z. B. Modalfenster). Sorgen Sie immer für einen Ausweg (z. B. ESC oder Shift+Tab).",
             "component": null,
             "wcagTechnique": [
                 "G21"
@@ -686,10 +686,10 @@
         "holmdigitalInsight": {
             "diggRisk": "critical",
             "eaaImpact": "critical",
-            "swedishInterpretation": "A keyboard trap is a 'blocker' that makes the website unusable. Serious error.",
+            "germanInterpretation": "Eine Tastaturfalle ist ein 'Blocker', der die Website unbenutzbar macht. Schwerer Fehler.",
             "commonMistakes": [
-                "Custom widgets that loop focus infinitely",
-                "Embedded third-party components (maps, chats) without exit"
+                "Benutzerdefinierte Widgets, die den Fokus unendlich schleifen",
+                "Eingebettete Komponenten von Drittanbietern (Karten, Chats) ohne Ausgang"
             ],
             "priorityRationale": "Critical: The user gets stuck and must restart the browser."
         },
@@ -717,8 +717,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "BITV 2.0, Anlage 1, WCAG 2.1 A erforderlich",
         "remediation": {
-            "description": "If a keyboard shortcut consists of only one character (letter, number, symbol), there must be a way to turn it off or remap it, or it must only be active on focus.",
-            "technicalGuidance": "Avoid single-key shortcuts if possible. If needed, ensure they do not conflict with voice control or accidental typing.",
+            "description": "Wenn ein Tastaturkürzel aus nur einem Zeichen (Buchstabe, Zahl, Symbol) besteht, muss es eine Möglichkeit geben, es auszuschalten, neu zuzuordnen oder es darf nur bei Fokus aktiv sein.",
+            "technicalGuidance": "Vermeiden Sie Einzeltasten-Shortcuts, wenn möglich. Falls erforderlich, stellen Sie sicher, dass sie nicht mit Sprachsteuerung oder versehentlichem Tippen in Konflikt geraten.",
             "component": null,
             "wcagTechnique": [
                 "G217"
@@ -727,9 +727,9 @@
         "holmdigitalInsight": {
             "diggRisk": "medium",
             "eaaImpact": "medium",
-            "swedishInterpretation": "Important for voice control users (Dragon etc.) where single words can trigger commands accidentally.",
+            "germanInterpretation": "Wichtig für Nutzer von Sprachsteuerung (Dragon etc.), bei denen einzelne Wörter versehentlich Befehle auslösen können.",
             "commonMistakes": [
-                "Gmail-like shortcuts that are on by default without option to disable"
+                "Gmail-ähnliche Shortcuts, die standardmäßig aktiviert sind, ohne Option zum Deaktivieren"
             ],
             "priorityRationale": "Important to avoid accidental activation."
         },
@@ -757,8 +757,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "BITV 2.0, Anlage 1, WCAG 2.1 A erforderlich",
         "remediation": {
-            "description": "If a time limit (session, reading time) is set, the user must be able to turn off, adjust, or extend it.",
-            "technicalGuidance": "Provide a warning before the session expires with an 'Extend session' button. The time limit must be at least 20 seconds.",
+            "description": "Wenn ein Zeitlimit (Sitzung, Lesezeit) festgelegt ist, muss der Benutzer in der Lage sein, es auszuschalten, anzupassen oder zu verlängern.",
+            "technicalGuidance": "Geben Sie eine Warnung aus, bevor die Sitzung abläuft, mit einer Schaltfläche 'Sitzung verlängern'. Das Zeitlimit muss mindestens 20 Sekunden betragen.",
             "component": null,
             "wcagTechnique": [
                 "SCR16",
@@ -768,10 +768,10 @@
         "holmdigitalInsight": {
             "diggRisk": "high",
             "eaaImpact": "high",
-            "swedishInterpretation": "Critical for e-services/banking. Users who read slowly or use assistive technology need more time.",
+            "germanInterpretation": "Kritisch für E-Services/Banking. Nutzer, die langsam lesen oder assistive Technologien verwenden, benötigen mehr Zeit.",
             "commonMistakes": [
-                "Logout without warning",
-                "Time limits that cannot be extended"
+                "Logout ohne Warnung",
+                "Zeitlimits, die nicht verlängert werden können"
             ],
             "priorityRationale": "Critical to avoid losing entered data."
         },
@@ -799,7 +799,7 @@
         "dosLagenApplies": true,
         "dosLagenReference": "BITV 2.0, Anlage 1, WCAG 2.1 A erforderlich",
         "remediation": {
-            "description": "For moving, blinking, or scrolling content that starts automatically and lasts more than 5 seconds, there must be a way to pause, stop, or hide it.",
+            "description": "Für sich automatisch bewegende, blinkende oder scrollende Inhalte, die (1) automatisch starten, (2) länger als 5 Sekunden dauern und (3) parallel zu anderen Inhalten angezeigt werden, muss es eine Möglichkeit geben, sie anzuhalten, zu stoppen oder auszublenden.",
             "technicalGuidance": "Applies to carousels (sliders), auto-updating news feeds, animated backgrounds. Add a clear pause button.",
             "component": null,
             "wcagTechnique": [
@@ -810,10 +810,10 @@
         "holmdigitalInsight": {
             "diggRisk": "medium",
             "eaaImpact": "medium",
-            "swedishInterpretation": "Important for users with concentration difficulties (ADHD/Autism) who are distracted by movement.",
+            "germanInterpretation": "Wichtig für Nutzer mit Konzentrationsschwierigkeiten (ADHS/Autismus), die durch Bewegung abgelenkt werden.",
             "commonMistakes": [
-                "Image carousels without pause button",
-                "Animated backgrounds that cannot be turned off"
+                "Karussells ohne Pausentaste",
+                "Automatische Bildwechsel, die zu schnell sind"
             ],
             "priorityRationale": "Important for cognitive accessibility."
         },
@@ -842,7 +842,7 @@
         "dosLagenApplies": true,
         "dosLagenReference": "BITV 2.0, Anlage 1, WCAG 2.1 A erforderlich",
         "remediation": {
-            "description": "Content must not flash more than three times per second (can cause seizures).",
+            "description": "Webseiten dürfen nichts enthalten, was mehr als dreimal pro Sekunde blitzt.",
             "technicalGuidance": "Avoid rapid flashing in video and animations. Use tools to measure flash frequency (PEAT).",
             "component": null,
             "wcagTechnique": [
@@ -852,10 +852,10 @@
         "holmdigitalInsight": {
             "diggRisk": "critical",
             "eaaImpact": "critical",
-            "swedishInterpretation": "Health risk. Zero tolerance.",
+            "germanInterpretation": "Ernstes Gesundheitsrisiko für Menschen mit lichtempfindlicher Epilepsie.",
             "commonMistakes": [
-                "Stroboscopic effects in video",
-                "Misuse of blinking error messages"
+                "Videoinhalte mit Stroboskopeffekten ohne Warnung",
+                "Falsche Verwendung von blinkenden Fehlermeldungen"
             ],
             "priorityRationale": "Critical safety risk."
         },
@@ -884,8 +884,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "BITV 2.0, Anlage 1, WCAG 2.1 A erforderlich",
         "remediation": {
-            "description": "There must be a way to skip blocks of content that are repeated on multiple pages (e.g. navigation).",
-            "technicalGuidance": "Implement a 'Skip to Main Content' link at the top of the page that becomes visible on focus. Use semantic landmarks (<main>, <nav>).",
+            "description": "Es gibt einen Mechanismus, um Inhaltsblöcke zu überspringen, die sich auf mehreren Webseiten wiederholen.",
+            "technicalGuidance": "Fügen Sie einen 'Zum Inhalt springen'-Link als erstes fokussierbares Element auf der Seite hinzu. Verwenden Sie Landmarks (header, nav, main, aside, footer), um Screenreader-Navigation zu ermöglichen.",
             "component": null,
             "wcagTechnique": [
                 "G1",
@@ -895,11 +895,11 @@
         "holmdigitalInsight": {
             "diggRisk": "medium",
             "eaaImpact": "medium",
-            "swedishInterpretation": "Standard on all public sector sites. Enormously helpful for keyboard users.",
+            "germanInterpretation": "Standard auf fast allen Behörden-Websites. Ermöglicht schnelles Navigieren zum Hauptinhalt.",
             "commonMistakes": [
-                "Missing skip-link",
-                "Skip-link broken (does not move focus correctly)",
-                "Landmarks missing"
+                "Fehlender 'Skip-Link'",
+                "Skip-Link ist nicht sichtbar bei Fokus",
+                "Landmarks fehlen"
             ],
             "priorityRationale": "Important for efficient navigation."
         },
@@ -929,7 +929,7 @@
         "dosLagenReference": "BITV 2.0, Anlage 1, WCAG 2.1 A erforderlich",
         "remediation": {
             "description": "Focus order must be logical and follow meaning/structure.",
-            "technicalGuidance": "Match DOM order with visual order. Avoid tabindex greater than 0. Manage focus manually in modals and menus.",
+            "technicalGuidance": "Die DOM-Reihenfolge bestimmt die Fokus-Reihenfolge. Passen Sie nicht tab-index (> 0) manuell an. Ordnen Sie Elemente im HTML logisch an.",
             "component": null,
             "wcagTechnique": [
                 "G59",
@@ -939,11 +939,10 @@
         "holmdigitalInsight": {
             "diggRisk": "high",
             "eaaImpact": "high",
-            "swedishInterpretation": "Critical for complex layouts (Grid/Flexbox) where visual order may differ from DOM order.",
+            "germanInterpretation": "Logische Tab-Reihenfolge folgt der Leserichtung. Wichtig für Tastaturnutzer.",
             "commonMistakes": [
-                "Focus jumps illogically",
-                "Menus in wrong order",
-                "Modal closes and focus returns to top of page"
+                "Modale Dialoge am Ende des DOMs ohne Fokus-Management",
+                "Verwendung von float/flex-order, die die visuelle Reihenfolge von der DOM-Reihenfolge unterscheidet"
             ],
             "priorityRationale": "Critical for keyboard navigation and understanding."
         },
@@ -972,8 +971,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "BITV 2.0, Anlage 1, WCAG 2.1 A erforderlich",
         "remediation": {
-            "description": "The purpose of each link can be understood from the link text alone or from the link text together with its context.",
-            "technicalGuidance": "Avoid 'Read more' or 'Click here'. Write descriptive link texts. Use aria-label if visual space is limited but more info is needed.",
+            "description": "Der Zweck jedes Links kann aus dem Linktext allein oder aus dem Linktext zusammen mit seinem programmatisch bestimmten Linkkontext bestimmt werden.",
+            "technicalGuidance": "Vermeiden Sie 'Klicken Sie hier' oder 'Mehr lesen'. Der Linktext sollte sagen, wohin er führt (z. B. 'Lesen Sie mehr über unsere Dienstleistungen').",
             "component": null,
             "wcagTechnique": [
                 "G91",
@@ -983,10 +982,10 @@
         "holmdigitalInsight": {
             "diggRisk": "medium",
             "eaaImpact": "medium",
-            "swedishInterpretation": "Important for users navigating via link lists (screen readers).",
+            "germanInterpretation": "Einer der häufigsten redaktionellen Fehler. Links müssen verständlich sein, wenn sie aus dem Kontext gerissen werden (z. B. in einer 'Linkliste').",
             "commonMistakes": [
-                "Lots of 'Read more' links",
-                "Links that don't say where they lead"
+                "Mehrfach vorkommende 'Mehr lesen'-Links mit verschiedenen Zielen",
+                "Links mit URL als Text"
             ],
             "priorityRationale": "Important for efficient navigation."
         },
@@ -1015,8 +1014,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "BITV 2.0, Anlage 1, WCAG 2.1 AA erforderlich",
         "remediation": {
-            "description": "There must be more than one way to find a web page within a set of web pages.",
-            "technicalGuidance": "At least two of: Menu, Search, Sitemap, Links in content.",
+            "description": "Es muss mehr als einen Weg geben, eine Webseite innerhalb einer Reihe von Webseiten zu finden.",
+            "technicalGuidance": "Mindestens zwei von: Menü, Suche, Sitemap, Links im Inhalt.",
             "component": null,
             "wcagTechnique": [
                 "G125",
@@ -1026,9 +1025,9 @@
         "holmdigitalInsight": {
             "diggRisk": "low",
             "eaaImpact": "low",
-            "swedishInterpretation": "Often fulfilled by menu + search. Sitemap is best practice.",
+            "germanInterpretation": "Oft erfüllt durch Menü + Suche. Sitemap ist Best Practice.",
             "commonMistakes": [
-                "Missing search on sites with many pages"
+                "Fehlende Suchfunktion auf Seiten mit vielen Unterseiten"
             ],
             "priorityRationale": "Facilitates different navigation strategies."
         },
@@ -1057,8 +1056,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "BITV 2.0, Anlage 1, WCAG 2.1 AA erforderlich",
         "remediation": {
-            "description": "Headings and labels must describe topic or purpose.",
-            "technicalGuidance": "Write clear, descriptive headings that give meaning to the content below them. Form labels must be understandable.",
+            "description": "Überschriften und Beschriftungen müssen das Thema oder den Zweck beschreiben.",
+            "technicalGuidance": "Schreiben Sie klare, beschreibende Überschriften, die dem darunter liegenden Inhalt Sinn verleihen. Formularbeschriftungen müssen verständlich sein.",
             "component": null,
             "wcagTechnique": [
                 "G130"
@@ -1067,10 +1066,10 @@
         "holmdigitalInsight": {
             "diggRisk": "medium",
             "eaaImpact": "medium",
-            "swedishInterpretation": "About editorial quality and comprehensibility.",
+            "germanInterpretation": "Handelt von redaktioneller Qualität und Verständlichkeit.",
             "commonMistakes": [
-                "Cryptic headings",
-                "Labels that don't match what needs to be filled in"
+                "Kryptische Überschriften",
+                "Beschriftungen, die nicht zu dem passen, was ausgefüllt werden soll"
             ],
             "priorityRationale": "Important for cognitive accessibility."
         },
@@ -1099,8 +1098,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "BITV 2.0, Anlage 1, WCAG 2.1 AA erforderlich",
         "remediation": {
-            "description": "Any user interface operable by keyboard must have a visible focus indicator.",
-            "technicalGuidance": "Never remove outline with CSS (outline: none) without replacing it with a clear visual indicator. Ensure contrast of focus ring is sufficient (see 1.4.11).",
+            "description": "Jede Benutzeroberfläche, die mit der Tastatur bedient werden kann, muss einen sichtbaren Fokusindikator haben.",
+            "technicalGuidance": "Entfernen Sie niemals die Outline mit CSS (outline: none), ohne sie durch einen deutlichen visuellen Indikator zu ersetzen. Stellen Sie sicher, dass der Kontrast des Fokusrings ausreichend ist (siehe 1.4.11).",
             "component": "@holmdigital/components/Button",
             "wcagTechnique": [
                 "G149",
@@ -1111,10 +1110,10 @@
         "holmdigitalInsight": {
             "diggRisk": "high",
             "eaaImpact": "high",
-            "swedishInterpretation": "One of the most common errors. Often because designers dislike the 'blue ring'.",
+            "germanInterpretation": "Einer der häufigsten Fehler. Oft, weil Designer den 'blauen Ring' nicht mögen.",
             "commonMistakes": [
-                "outline: none in CSS reset",
-                "Custom buttons missing :focus style"
+                "outline: none im CSS-Reset",
+                "Benutzerdefinierte Schaltflächen ohne :focus-Stil"
             ],
             "priorityRationale": "Critical: Without visible focus, the keyboard user doesn't know where they are."
         },
@@ -1143,8 +1142,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "BITV 2.0, Anlage 1, WCAG 2.1 A erforderlich",
         "remediation": {
-            "description": "The default human language of each web page must be programmatically determinable.",
-            "technicalGuidance": "Set the 'lang' attribute on the <html> element. E.g., <html lang='en'> for English.",
+            "description": "Die Standardsprache jeder Webseite muss programmatisch bestimmt werden können.",
+            "technicalGuidance": "Setzen Sie das 'lang'-Attribut im <html>-Element. Z. B. <html lang='de'> für Deutsch.",
             "component": null,
             "wcagTechnique": [
                 "H57"
@@ -1153,10 +1152,10 @@
         "holmdigitalInsight": {
             "diggRisk": "high",
             "eaaImpact": "high",
-            "swedishInterpretation": "Fundamental for screen reading. Without this, the screen reader guesses the language, often leading to wrong pronunciation.",
+            "germanInterpretation": "Grundlegend für Screenreader. Ohne dies rät der Screenreader die Sprache, was oft zu falscher Aussprache führt.",
             "commonMistakes": [
-                "Lang attribute missing",
-                "Wrong language code (e.g. 'en' on a Swedish page)"
+                "Lang-Attribut fehlt",
+                "Falscher Sprachcode (z. B. 'en' auf einer deutschen Seite)"
             ],
             "priorityRationale": "Critical for screen reader users."
         },
@@ -1184,8 +1183,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "BITV 2.0, Anlage 1, WCAG 2.1 AA erforderlich",
         "remediation": {
-            "description": "The human language of each passage or phrase in the content must be programmatically determinable.",
-            "technicalGuidance": "Use the lang attribute on elements that differ from the page's main language. E.g. <span lang='fr'>Bonjour</span>.",
+            "description": "Die menschliche Sprache jedes Abschnitts oder jeder Phrase im Inhalt muss programmatisch bestimmt werden können.",
+            "technicalGuidance": "Verwenden Sie das lang-Attribut für Elemente, die sich von der Hauptsprache der Seite unterscheiden. Z. B. <span lang='fr'>Bonjour</span>.",
             "component": null,
             "wcagTechnique": [
                 "H58"
@@ -1194,9 +1193,9 @@
         "holmdigitalInsight": {
             "diggRisk": "low",
             "eaaImpact": "low",
-            "swedishInterpretation": "Rarely a critical error unless it significantly hinders understanding.",
+            "germanInterpretation": "Selten ein kritischer Fehler, es sei denn, er behindert das Verständnis erheblich.",
             "commonMistakes": [
-                "Foreign quotes in text without markup"
+                "Fremdsprachige Zitate im Text ohne Auszeichnung"
             ],
             "priorityRationale": "Important for correct pronunciation."
         },
@@ -1224,8 +1223,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "BITV 2.0, Anlage 1, WCAG 2.1 A erforderlich",
         "remediation": {
-            "description": "When a component receives focus, it must not initiate a change of context.",
-            "technicalGuidance": "Do not open new windows, submit forms, or move focus automatically just because user tabs to a field.",
+            "description": "Wenn eine Komponente den Fokus erhält, darf sie keine Änderung des Kontexts auslösen.",
+            "technicalGuidance": "Öffnen Sie keine neuen Fenster, senden Sie keine Formulare ab und verschieben Sie den Fokus nicht automatisch, nur weil der Benutzer zu einem Feld tabbt.",
             "component": null,
             "wcagTechnique": [
                 "G107"
@@ -1234,10 +1233,10 @@
         "holmdigitalInsight": {
             "diggRisk": "high",
             "eaaImpact": "high",
-            "swedishInterpretation": "Very confusing for users. Creates a feeling of lack of control.",
+            "germanInterpretation": "Sehr verwirrend für Benutzer. Erzeugt ein Gefühl von Kontrollverlust.",
             "commonMistakes": [
-                "Dropdowns that navigate immediately upon selection (without 'Go' button)",
-                "Forms that auto-submit on last field focus"
+                "Dropdowns, die bei Auswahl sofort navigieren (ohne 'Los'-Button)",
+                "Formulare, die beim Fokus auf das letzte Feld automatisch gesendet werden"
             ],
             "priorityRationale": "Important for predictability."
         },
@@ -1266,8 +1265,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "BITV 2.0, Anlage 1, WCAG 2.1 A erforderlich",
         "remediation": {
-            "description": "Changing the setting of any component does not automatically cause a change of context unless the user has been advised of the behavior before using the component.",
-            "technicalGuidance": "Inform the user that selection in a list reloads the page. Preferably, add a button to confirm the choice.",
+            "description": "Die Änderung der Einstellung einer Komponente verursacht nicht automatisch eine Änderung des Kontexts, es sei denn, der Benutzer wurde vor der Verwendung der Komponente auf das Verhalten hingewiesen.",
+            "technicalGuidance": "Informieren Sie den Benutzer, dass die Auswahl in einer Liste die Seite neu lädt. Fügen Sie vorzugsweise eine Schaltfläche hinzu, um die Auswahl zu bestätigen.",
             "component": null,
             "wcagTechnique": [
                 "G13",
@@ -1277,10 +1276,10 @@
         "holmdigitalInsight": {
             "diggRisk": "medium",
             "eaaImpact": "medium",
-            "swedishInterpretation": "Common in filtering functions.",
+            "germanInterpretation": "Häufig bei Filterfunktionen.",
             "commonMistakes": [
-                "Checkboxes that reload page immediately",
-                "Filtering that moves focus"
+                "Checkboxen, die die Seite sofort neu laden",
+                "Filterung, die den Fokus verschiebt"
             ],
             "priorityRationale": "Important for predictability."
         },
@@ -1309,8 +1308,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "BITV 2.0, Anlage 1, WCAG 2.1 AA erforderlich",
         "remediation": {
-            "description": "Navigational mechanisms that are repeated on multiple Web pages occur in the same relative order each time they are repeated.",
-            "technicalGuidance": "Main menu should look the same and be in the same place on all pages. Search function as well.",
+            "description": "Navigationsmechanismen, die auf mehreren Webseiten wiederholt werden, treten jedes Mal in derselben relativen Reihenfolge auf, wenn sie wiederholt werden.",
+            "technicalGuidance": "Hauptmenü sollte auf allen Seiten gleich aussehen und an derselben Stelle sein. Suchfunktion ebenfalls.",
             "component": null,
             "wcagTechnique": [
                 "G61"
@@ -1319,9 +1318,9 @@
         "holmdigitalInsight": {
             "diggRisk": "medium",
             "eaaImpact": "medium",
-            "swedishInterpretation": "Predictability is key to cognitive accessibility.",
+            "germanInterpretation": "Vorhersehbarkeit ist der Schlüssel zur kognitiven Barrierefreiheit.",
             "commonMistakes": [
-                "Menus that change place or order on different pages"
+                "Menüs, die auf verschiedenen Seiten Platz oder Reihenfolge ändern"
             ],
             "priorityRationale": "Facilitates learning."
         },
@@ -1350,8 +1349,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "BITV 2.0, Anlage 1, WCAG 2.1 AA erforderlich",
         "remediation": {
-            "description": "Components that have the same functionality within a set of Web pages are identified consistently.",
-            "technicalGuidance": "Don't call search 'Search' on one page and 'Find' on another. Use the same icon for the same function.",
+            "description": "Komponenten, die die gleiche Funktionalität innerhalb einer Reihe von Webseiten haben, werden konsistent identifiziert.",
+            "technicalGuidance": "Nennen Sie die Suche nicht auf einer Seite 'Suche' und auf einer anderen 'Finden'. Verwenden Sie das gleiche Symbol für die gleiche Funktion.",
             "component": null,
             "wcagTechnique": [
                 "G197"
@@ -1360,10 +1359,10 @@
         "holmdigitalInsight": {
             "diggRisk": "low",
             "eaaImpact": "low",
-            "swedishInterpretation": "Important for usability.",
+            "germanInterpretation": "Wichtig für die Benutzerfreundlichkeit.",
             "commonMistakes": [
-                "Inconsistent naming",
-                "Different icons for print/download"
+                "Inkonsistente Benennung",
+                "Unterschiedliche Icons für Drucken/Download"
             ],
             "priorityRationale": "Reduces cognitive load."
         },
@@ -1392,8 +1391,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "BITV 2.0, Anlage 1, WCAG 2.1 A erforderlich",
         "remediation": {
-            "description": "If an input error is automatically detected, the item that is in error is identified and the error is described to the user in text.",
-            "technicalGuidance": "Show error message close to the field. Link with aria-describedby or include in label. Do not just color the field red.",
+            "description": "Wenn ein Eingabefehler automatisch erkannt wird, wird das fehlerhafte Element identifiziert und der Fehler dem Benutzer in Textform beschrieben.",
+            "technicalGuidance": "Zeigen Sie die Fehlermeldung in der Nähe des Feldes an. Verknüpfen Sie sie mit aria-describedby oder schließen Sie sie in das Label ein. Färben Sie das Feld nicht nur rot.",
             "component": "@holmdigital/components/FormField",
             "wcagTechnique": [
                 "G83",
@@ -1403,10 +1402,10 @@
         "holmdigitalInsight": {
             "diggRisk": "high",
             "eaaImpact": "high",
-            "swedishInterpretation": "Critical for completing tasks. Generic error messages ('Something went wrong') are not accepted if the error is specific.",
+            "germanInterpretation": "Kritisch für den Abschluss von Aufgaben. Generische Fehlermeldungen ('Etwas ist schief gelaufen') werden nicht akzeptiert, wenn der Fehler spezifisch ist.",
             "commonMistakes": [
-                "'Invalid value' without explanation",
-                "Error message not visible to screen readers"
+                "'Ungültiger Wert' ohne Erklärung",
+                "Fehlermeldung für Screenreader nicht sichtbar"
             ],
             "priorityRationale": "Critical for error handling."
         },
@@ -1434,8 +1433,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "BITV 2.0, Anlage 1, WCAG 2.1 AA erforderlich",
         "remediation": {
-            "description": "If an input error is automatically detected and suggestions for correction are known, then the suggestions are provided to the user.",
-            "technicalGuidance": "If date format is wrong, show required format (YYYY-MM-DD). Offer spelling suggestions for search ('Did you mean...?').",
+            "description": "Wenn ein Eingabefehler automatisch erkannt wird und Vorschläge zur Korrektur bekannt sind, werden die Vorschläge dem Benutzer zur Verfügung gestellt.",
+            "technicalGuidance": "Wenn der Benutzer 'Okt' für einen Monat eingibt und das System 'Oktober' erwartet, schlagen Sie 'Oktober' vor. Wenn das Datumsformat falsch ist, zeigen Sie das erwartete Format (JJJJ-MM-TT) an. Bieten Sie Rechtschreibvorschläge für die Suche an ('Meinten Sie...?').",
             "component": "@holmdigital/components/FormField",
             "wcagTechnique": [
                 "G177"
@@ -1444,9 +1443,9 @@
         "holmdigitalInsight": {
             "diggRisk": "medium",
             "eaaImpact": "medium",
-            "swedishInterpretation": "About being helpful. Reduces support cases.",
+            "germanInterpretation": "Hilft Benutzern, Fehler schneller zu korrigieren.",
             "commonMistakes": [
-                "Only saying 'Error' without saying how to fix it"
+                "Fehlermeldung sagt nur 'Fehler', erklärt aber nicht das erwartete Format"
             ],
             "priorityRationale": "Facilitates correction."
         },
@@ -1475,8 +1474,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "BITV 2.0, Anlage 1, WCAG 2.1 AA erforderlich",
         "remediation": {
-            "description": "For Web pages that cause legal commitments or financial transactions, users must be able to: Reverse, Check, or Confirm.",
-            "technicalGuidance": "Offer a summary page before final submission with ability to edit.",
+            "description": "Für Webseiten, die rechtliche Verpflichtungen oder finanzielle Transaktionen bewirken, müssen die Daten umkehrbar sein, überprüft werden oder bestätigt werden.",
+            "technicalGuidance": "Verwenden Sie eine Bestätigungsseite vor dem endgültigen Absenden (Bestellübersicht). Erlauben Sie Benutzern, Bestellungen innerhalb eines bestimmten Zeitrahmens zu stornieren.",
             "component": null,
             "wcagTechnique": [
                 "G164",
@@ -1486,9 +1485,9 @@
         "holmdigitalInsight": {
             "diggRisk": "high",
             "eaaImpact": "high",
-            "swedishInterpretation": "Absolute requirement for e-commerce and legal decisions.",
+            "germanInterpretation": "Standard im E-Commerce und E-Government. Kritisch, um teure Fehler zu vermeiden.",
             "commonMistakes": [
-                "Direct purchase without confirmation",
+                "Keine Bestätigungsseite vor dem Absenden einer wichtigen Aktion",
                 "Submission of binding contracts without review"
             ],
             "priorityRationale": "Critical to avoid serious consequences of mistakes."
@@ -1518,8 +1517,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "BITV 2.0, Anlage 1, WCAG 2.1 A erforderlich",
         "remediation": {
-            "description": "Update: From WCAG 2.2 this criterion is removed/obsolete, but in WCAG 2.1/EN 301 549 it applies: IDs must be unique, elements correctly nested.",
-            "technicalGuidance": "Validate HTML. Ensure id attributes are unique on the page. Close all tags correctly.",
+            "description": "In Inhalten, die mit Markup-Sprachen implementiert sind, müssen Elemente vollständige Start- und End-Tags haben, gemäß den Spezifikationen verschachtelt sein, keine doppelten Attribute enthalten und alle IDs müssen eindeutig sein.",
+            "technicalGuidance": "Verwenden Sie einen HTML-Validator. 'ID must be unique' ist der häufigste Fehler. Doppelte IDs zerstören aria-describedby und Label-Verbindungen.",
             "component": null,
             "wcagTechnique": [
                 "H88"
@@ -1528,10 +1527,10 @@
         "holmdigitalInsight": {
             "diggRisk": "low",
             "eaaImpact": "low",
-            "swedishInterpretation": "Less prioritized now as modern browsers handle errors well, but duplicate IDs can still break ARIA.",
+            "germanInterpretation": "Strukturiert die Seite und bestätigt dem Benutzer, wo er sich befindet.",
             "commonMistakes": [
-                "Duplicate IDs",
-                "Broken HTML structure"
+                "Doppelte IDs (oft durch Copy-Paste)",
+                "Falsch verschachtelte Tags (z. B. <div> innerhalb von <span>)"
             ],
             "priorityRationale": "Technical hygiene factor."
         },
@@ -1560,7 +1559,7 @@
         "dosLagenApplies": true,
         "dosLagenReference": "BITV 2.0, Anlage 1, WCAG 2.1 A erforderlich",
         "remediation": {
-            "description": "For all components, name and role can be programmatically determined. Values can be set programmatically.",
+            "description": "Für alle Benutzeroberflächenkomponenten können Name und Rolle programmatisch bestimmt werden; Werte können gesetzt werden; und Benachrichtigungen über Änderungen sind verfügbar.",
             "technicalGuidance": "Use native HTML elements when possible. If custom components are used, ARIA (role, aria-label, aria-valuenow) must be used correctly.",
             "component": null,
             "wcagTechnique": [
@@ -1571,11 +1570,11 @@
         "holmdigitalInsight": {
             "diggRisk": "critical",
             "eaaImpact": "critical",
-            "swedishInterpretation": "This is the foundation for how screen readers work with modern web apps. Without this, the app is 'invisible' to assistive technology.",
+            "germanInterpretation": "Der technisch komplexeste Teil der WCAG. Hier scheitern die meisten modernen JavaScript-Frameworks, wenn Entwickler ARIA nicht verstehen.",
             "commonMistakes": [
-                "Div buttons without role",
-                "Custom checkboxes without aria-checked",
-                "Missing accessible name"
+                "Clickable <div> ohne role='button' oder tabindex",
+                "Akkordeons ohne aria-expanded",
+                "Tabs ohne korrekte aria-Attribute"
             ],
             "priorityRationale": "Absolutely critical for compatibility."
         },
@@ -1604,8 +1603,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "BITV 2.0, Anlage 1, WCAG 2.1 AA erforderlich",
         "remediation": {
-            "description": "Statusmeddelanden ska kunna presenteras för användaren utan att motta fokus (via skärmläsare).",
-            "technicalGuidance": "Använd aria-live regioner (polite/assertive) eller role='status'/'alert' för meddelanden som dyker upp dynamiskt (t.ex. 'Sparat', 'Sökning klar').",
+            "description": "Statusmeldungen sollen dem Benutzer ohne Fokus (über Screenreader) präsentiert werden können.",
+            "technicalGuidance": "Verwenden Sie aria-live-Regionen für Toast-Nachrichten, Suchergebnisse oder Warenkorb-Updates. aria-live='polite' ist meistens am besten.",
             "component": null,
             "wcagTechnique": [
                 "ARIA19",
@@ -1615,10 +1614,10 @@
         "holmdigitalInsight": {
             "diggRisk": "medium",
             "eaaImpact": "medium",
-            "swedishInterpretation": "Important in SPAs where page load does not happen. The user must know something happened.",
+            "germanInterpretation": "Kritisch für dynamische Anwendungen (SPA), wo sich Inhalte ändern, ohne dass die Seite neu geladen wird.",
             "commonMistakes": [
-                "Silent updates of cart/search results",
-                "Toast notifications not being announced"
+                "Fehlermeldungen, die visuell erscheinen, aber nicht vorgelesen werden",
+                "Warenkorb-Updates, die stillschweigend erfolgen"
             ],
             "priorityRationale": "Provides feedback to users without sight."
         },
@@ -1647,8 +1646,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "9 § (Struktur och relationer)",
         "remediation": {
-            "description": "The page must have exactly one 'main' landmark.",
-            "technicalGuidance": "Use the <main> element once per page to identify the main content. Avoid having multiple <main> without unique labels, or missing it entirely.",
+            "description": "Die Seite muss genau eine Haupt-Landmark haben.",
+            "technicalGuidance": "Verwenden Sie das <main>-Element, um den Hauptinhalt der Seite zu umschließen. Es sollte nur ein sichtbares <main>-Element geben.",
             "wcagTechnique": [
                 "ARIA11",
                 "H97"
@@ -1657,7 +1656,7 @@
         "holmdigitalInsight": {
             "diggRisk": "medium",
             "eaaImpact": "medium",
-            "swedishInterpretation": "Screen reader users rely on landmarks to navigate quickly to the content. Missing <main> makes it difficult to skip navigation.",
+            "germanInterpretation": "Ermöglicht Benutzern, direkt zum Hauptinhalt zu springen.",
             "commonMistakes": [
                 "Using <div id='main'> instead of <main>",
                 "Having multiple <main> elements"
@@ -1687,8 +1686,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "9 § (Struktur och relationer)",
         "remediation": {
-            "description": "The page must have a level 1 heading (<h1>).",
-            "technicalGuidance": "Ensure there is exactly one <h1> describing the page's unique content.",
+            "description": "Die Seite muss eine Überschrift der Ebene 1 haben.",
+            "technicalGuidance": "Stellen Sie sicher, dass es genau ein <h1> gibt, das den einzigartigen Inhalt der Seite beschreibt.",
             "wcagTechnique": [
                 "H42"
             ]
@@ -1696,10 +1695,10 @@
         "holmdigitalInsight": {
             "diggRisk": "high",
             "eaaImpact": "high",
-            "swedishInterpretation": "A clear <h1> is critical for users to understand where they have landed. It is often the first thing a screen reader user looks for.",
+            "germanInterpretation": "Ein klares <h1> ist entscheidend, damit Benutzer verstehen, wo sie gelandet sind. Es ist oft das Erste, wonach ein Screenreader-Benutzer sucht.",
             "commonMistakes": [
-                "Starting headings at <h2>",
-                "Using logo as the only <h1> without text"
+                "Überschriften mit <h2> beginnen",
+                "Logo als einziges <h1> ohne Text verwenden"
             ]
         },
         "testability": {
@@ -1726,8 +1725,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "9 § (Struktur och relationer)",
         "remediation": {
-            "description": "Headings must follow a logical order (h1 -> h2 -> h3).",
-            "technicalGuidance": "Do not skip heading levels (e.g. directly from h1 to h3).",
+            "description": "Überschriften müssen einer logischen Reihenfolge folgen (h1 -> h2 -> h3).",
+            "technicalGuidance": "Folgen Sie auf ein <h1> mit <h2>, nicht <h3> oder <h4>. Die Struktur sollte logisch sein.",
             "wcagTechnique": [
                 "G141"
             ]
@@ -1735,9 +1734,9 @@
         "holmdigitalInsight": {
             "diggRisk": "medium",
             "eaaImpact": "medium",
-            "swedishInterpretation": "Incorrect heading structure makes it difficult for screen readers to navigate. Never skip levels.",
+            "germanInterpretation": "Erstellt eine logische Gliederung für Screenreader-Benutzer.",
             "commonMistakes": [
-                "Using h3 for styling instead of structure"
+                "Überspringen von Ebenen aus visuellen Gründen (z. B. <h1> dann <h4>)"
             ]
         },
         "testability": {
@@ -1764,8 +1763,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "9 § (Struktur och relationer)",
         "remediation": {
-            "description": "The banner (<header>) must be at the top level.",
-            "technicalGuidance": "Do not place <header> inside another landmark if it is the page's main banner.",
+            "description": "Das Banner (<header>) muss auf der obersten Ebene sein.",
+            "technicalGuidance": "Platzieren Sie den <header> (mit role 'banner', implizit) nicht innerhalb von <main> oder anderen Landmarks. Er sollte ein direktes Kind des Body oder eines Wrapper-Divs sein.",
             "wcagTechnique": [
                 "ARIA11"
             ]
@@ -1773,9 +1772,9 @@
         "holmdigitalInsight": {
             "diggRisk": "medium",
             "eaaImpact": "medium",
-            "swedishInterpretation": "The page's main menu/banner must be located correctly in the structure to be found quickly.",
+            "germanInterpretation": "Stellt sicher, dass der Header als globaler Bereich erkannt wird.",
             "commonMistakes": [
-                "Nesting header inside main"
+                "Header innerhalb von Main verschachtelt"
             ]
         },
         "testability": {
@@ -1802,8 +1801,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "9 § (Struktur och relationer)",
         "remediation": {
-            "description": "The page must have only one 'banner' landmark (usually <header>).",
-            "technicalGuidance": "Ensure you only have one <header> at the top level.",
+            "description": "Die Seite darf nur eine 'Banner'-Landmark (normalerweise <header>) haben.",
+            "technicalGuidance": "Stellen Sie sicher, dass Sie nur einen <header> auf der obersten Ebene haben.",
             "wcagTechnique": [
                 "ARIA11"
             ]
@@ -1811,9 +1810,9 @@
         "holmdigitalInsight": {
             "diggRisk": "medium",
             "eaaImpact": "medium",
-            "swedishInterpretation": "Multiple banners confuse navigation. There should be only one top header.",
+            "germanInterpretation": "Mehrere Banner verwirren die Navigation. Es sollte nur einen Top-Header geben.",
             "commonMistakes": [
-                "Having header both at top and bottom"
+                "Header sowohl oben als auch unten haben"
             ]
         },
         "testability": {
@@ -1840,8 +1839,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "9 § (Struktur och relationer)",
         "remediation": {
-            "description": "Landmarks must have unique roles or labels.",
-            "technicalGuidance": "If you have multiple <nav> elements, give them unique 'aria-label' (e.g., 'Main Menu', 'Footer Menu').",
+            "description": "Landmarks müssen eindeutige Rollen oder Beschriftungen haben.",
+            "technicalGuidance": "Wenn Sie mehrere <nav>-Elemente haben, geben Sie ihnen eindeutige 'aria-label' (z. B. 'Hauptmenü', 'Fußzeilenmenü').",
             "wcagTechnique": [
                 "ARIA11"
             ]
@@ -1849,9 +1848,9 @@
         "holmdigitalInsight": {
             "diggRisk": "medium",
             "eaaImpact": "medium",
-            "swedishInterpretation": "The user must be able to distinguish between different menus/regions. Give them names.",
+            "germanInterpretation": "Der Benutzer muss zwischen verschiedenen Menüs/Regionen unterscheiden können. Geben Sie ihnen Namen.",
             "commonMistakes": [
-                "Multiple nav elements without aria-label"
+                "Mehrere nav-Elemente ohne aria-label"
             ]
         },
         "testability": {
@@ -1878,8 +1877,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "9 § (Struktur och relationer)",
         "remediation": {
-            "description": "All content on the page must be contained within landmarks (regions).",
-            "technicalGuidance": "Ensure all content is inside <main>, <header>, <nav>, <footer>, or <aside>.",
+            "description": "Alle Inhalte auf der Seite müssen in Landmarks (Regionen) enthalten sein.",
+            "technicalGuidance": "Stellen Sie sicher, dass alle Inhalte in <main>, <header>, <nav>, <footer> oder <aside> enthalten sind.",
             "component": null,
             "wcagTechnique": [
                 "ARIA11"
@@ -1888,10 +1887,10 @@
         "holmdigitalInsight": {
             "diggRisk": "medium",
             "eaaImpact": "medium",
-            "swedishInterpretation": "For screen reader users to navigate effectively, the page must be divided into logical regions.",
+            "germanInterpretation": "Damit Screenreader-Benutzer effektiv navigieren können, muss die Seite in logische Regionen unterteilt sein.",
             "commonMistakes": [
-                "Content directly in <body> without container",
-                "Using too many landmarks"
+                "Inhalt direkt im <body> ohne Container",
+                "Zu viele Landmarks verwenden"
             ]
         },
         "testability": {
@@ -1917,8 +1916,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "100 § (Tidsberoende media)",
         "remediation": {
-            "description": "Prerecorded video content must have audio description if visual information is critical.",
-            "technicalGuidance": "Provide an alternative audio track or version describing what happens visually.",
+            "description": "Voraufgezeichnete Videoinhalte müssen eine Audiodeskription haben, wenn visuelle Informationen kritisch sind.",
+            "technicalGuidance": "Stellen Sie eine alternative Tonspur oder Version bereit, die beschreibt, was visuell passiert.",
             "component": null,
             "wcagTechnique": [
                 "G78"
@@ -1927,9 +1926,9 @@
         "holmdigitalInsight": {
             "diggRisk": "medium",
             "eaaImpact": "low",
-            "swedishInterpretation": "Video conveying information visually must be described for those who cannot see the screen.",
+            "germanInterpretation": "Video, das Informationen visuell vermittelt, muss für diejenigen beschrieben werden, die den Bildschirm nicht sehen können.",
             "commonMistakes": [
-                "Video missing audio description despite important visual info"
+                "Video fehlt Audiodeskription trotz wichtiger visueller Infos"
             ]
         },
         "testability": {

@@ -11,8 +11,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "UNE 139803:2012, Nivel AA requerido",
         "remediation": {
-            "description": "Text and images of text must have a contrast ratio of at least 4.5:1 (3:1 for large text).",
-            "technicalGuidance": "Use tools like WebAIM Contrast Checker to verify contrast. Adjust color choices or add background opacity to achieve correct contrast.",
+            "description": "El texto y las imágenes de texto deben tener una relación de contraste de al menos 4.5:1 (3:1 para texto grande).",
+            "technicalGuidance": "Utilice herramientas como WebAIM Contrast Checker para verificar. Ajuste los colores o añada opacidad al fondo.",
             "component": "@holmdigital/components/Button",
             "codeExample": "import { Button } from '@holmdigital/components';\n\n// Bad: Poor contrast\n<button style={{ background: '#777', color: '#999' }}>Click me</button>\n\n// Good: Use accessible component\n<Button variant=\"primary\">Click me</Button>",
             "wcagTechnique": [
@@ -24,11 +24,11 @@
         "holmdigitalInsight": {
             "diggRisk": "high",
             "eaaImpact": "critical",
-            "swedishInterpretation": "One of the most common reasons for fines from regulators. Especially important for public sector monitoring.",
+            "spanishInterpretation": "Una de las razones más comunes de multas. Especialmente importante para el sector público.",
             "commonMistakes": [
-                "Gray text on white background (#777 on #FFF)",
-                "Light blue links without underline",
-                "Placeholder text with too low contrast"
+                "Texto gris sobre fondo blanco (#777 en #FFF)",
+                "Enlaces azul claro sin subrayado",
+                "Texto de marcador de posición (placeholder) con bajo contraste"
             ],
             "diggPrecedent": "Regulators often cite poor contrast in primary navigation elements.",
             "priorityRationale": "Critical for users with low vision. Affects readability for all users in varying lighting conditions."
@@ -59,8 +59,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "UNE 139803:2012, Nivel A requerido",
         "remediation": {
-            "description": "All functionality must be accessible via keyboard.",
-            "technicalGuidance": "Use semantic HTML elements (button, a, input) instead of div/span with click handlers. Ensure tabindex is used correctly.",
+            "description": "Todas las funcionalidades del contenido se pueden operar a través de una interfaz de teclado.",
+            "technicalGuidance": "Asegúrese de que todos los elementos interactivos se puedan enfocar y activar usando Tab, Enter o Espacio. Use elementos HTML nativos (<button>, <a>) siempre que sea posible. Asegúrese de que `tabindex` se use correctamente.",
             "component": "@holmdigital/components/Button",
             "codeExample": "// Bad: Div with onClick\n<div onClick={handleClick}>Click Me</div>\n\n// Good: Button element\n<button onClick={handleClick}>Click Me</button>\n\n// Best: Use HolmDigital component\nimport { Button } from '@holmdigital/components';\n<Button onClick={handleClick}>Click Me</Button>",
             "wcagTechnique": [
@@ -71,14 +71,14 @@
         "holmdigitalInsight": {
             "diggRisk": "critical",
             "eaaImpact": "critical",
-            "swedishInterpretation": "Keyboard access is fundamental and non-negotiable. Top priority in compliance audits.",
+            "spanishInterpretation": "Requisito básico absoluto. Si no puedes usarlo sin un ratón, no es accesible.",
             "commonMistakes": [
-                "Using div/span for clickable elements",
-                "Custom dropdown menus without keyboard support",
-                "Modal dialogs that trap focus incorrectly"
+                "Elementos `div` o `span` con `onClick` pero sin `role=\"button\"` ni `tabIndex`",
+                "Falta de estilos de foco visible (interactúa con 2.4.7)",
+                "Interacciones que requieren un movimiento específico del ratón (arrastrar y soltar) sin alternativa de teclado"
             ],
-            "diggPrecedent": "Auditors have issued fines for sites where core functions (e.g. forms, navigation) are not keyboard accessible.",
-            "priorityRationale": "Critical for users with motor disabilities and screen reader users."
+            "diggPrecedent": "Los auditores han impuesto multas a sitios donde las funciones principales (por ejemplo, formularios, navegación) no son accesibles mediante teclado.",
+            "priorityRationale": "Crítico para usuarios con discapacidades motoras y usuarios de lectores de pantalla."
         },
         "testability": {
             "automated": false,
@@ -105,8 +105,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "UNE 139803:2012, Nivel A requerido",
         "remediation": {
-            "description": "All images must have descriptive alternative text.",
-            "technicalGuidance": "Add alt attributes to all img elements. For decorative images, use alt=\"\". For informative images, concisely describe the content.",
+            "description": "Todo el contenido no textual que se presenta al usuario tiene una alternativa textual que sirve para el mismo propósito.",
+            "technicalGuidance": "Añada el atributo `alt` a todas las imágenes `<img>`. Si es decorativa, use `alt=\"\"`. Para imágenes complejas, use figuras con subtítulos.",
             "codeExample": "// Bad: Msising alt\n<img src=\"logo.png\" />\n\n// Good: Descriptive alt\n<img src=\"logo.png\" alt=\"HolmDigital Logo\" />\n\n// Good: Decorative image\n<img src=\"decoration.png\" alt=\"\" role=\"presentation\" />",
             "wcagTechnique": [
                 "G94",
@@ -117,15 +117,14 @@
         "holmdigitalInsight": {
             "diggRisk": "high",
             "eaaImpact": "high",
-            "swedishInterpretation": "Especially important for logos and informational graphics. Frequently checked in audits.",
+            "spanishInterpretation": "A menudo se pasa por alto o se hace mal ('imagen.jpg'). Esencial para los usuarios de lectores de pantalla.",
             "commonMistakes": [
-                "Missing alt text entirely",
-                "Alt text that just says 'image' or 'icon'",
-                "Filename as alt text (e.g. 'IMG_1234.jpg')",
-                "Decorative images with unnecessary description"
+                "Atributo `alt` faltante",
+                "Texto alternativo no descriptivo ('imagen', 'foto')",
+                "Imágenes de texto sin texto alternativo"
             ],
-            "diggPrecedent": "Audits frequently cite missing alt text, especially for vital infographics.",
-            "priorityRationale": "Critical for screen reader users to access visual information."
+            "diggPrecedent": "Las auditorías citan con frecuencia la falta de texto alternativo, especialmente para infografías vitales.",
+            "priorityRationale": "Crítico para que los usuarios de lectores de pantalla accedan a la información visual."
         },
         "testability": {
             "automated": true,
@@ -152,8 +151,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "UNE 139803:2012, Nivel A requerido",
         "remediation": {
-            "description": "Form fields must have clear labels or instructions.",
-            "technicalGuidance": "Use label elements linked to input via for/id. For complex forms, use fieldset and legend. Use aria-describedby for extra instructions.",
+            "description": "Si un componente de entrada acepta texto, la identificación de ese componente es un texto presentado visualmente.",
+            "technicalGuidance": "Todos los inputs deben tener una etiqueta asociada. Use `<label for=\"id\">`, envolver en `<label>`, o `aria-label`/`aria-labelledby`.",
             "component": "@holmdigital/components/FormField",
             "codeExample": "import { FormField } from '@holmdigital/components';\n\n// Bad: No label\n<input type=\"text\" placeholder=\"Name\" />\n\n// Good: With label\n<label htmlFor=\"name\">Name:</label>\n<input type=\"text\" id=\"name\" />\n\n// Best: Use HolmDigital component\n<FormField\n  label=\"Name\"\n  type=\"text\"\n  required\n  helpText=\"Enter your full name\"\n/>",
             "wcagTechnique": [
@@ -166,15 +165,15 @@
         "holmdigitalInsight": {
             "diggRisk": "high",
             "eaaImpact": "high",
-            "swedishInterpretation": "Forms are critical for e-services. Compliance is strictly enforced in public sector apps.",
+            "spanishInterpretation": "Los formularios son críticos para los servicios electrónicos. El cumplimiento se aplica estrictamente en las aplicaciones del sector público.",
             "commonMistakes": [
-                "Only placeholder without label",
-                "Label and input not linked via for/id",
-                "Error messages without aria-describedby",
-                "Required fields not clearly marked"
+                "Solo marcador de posición sin etiqueta",
+                "Etiqueta y entrada no vinculadas a través de for/id",
+                "Mensajes de error sin aria-describedby",
+                "Campos obligatorios no marcados claramente"
             ],
-            "diggPrecedent": "Audit decisions often criticize poor form accessibility, especially for application and contact forms.",
-            "priorityRationale": "Critical for users to successfully use e-services and submit information."
+            "diggPrecedent": "Las decisiones de auditoría a menudo critican la mala accesibilidad de los formularios, especialmente para las solicitudes y los formularios de contacto.",
+            "priorityRationale": "Crítico para que los usuarios utilicen con éxito los servicios electrónicos y envíen información."
         },
         "testability": {
             "automated": true,
@@ -201,8 +200,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "UNE 139803:2012, Nivel A requerido",
         "remediation": {
-            "description": "Each web page must have a descriptive title.",
-            "technicalGuidance": "Use the title element in head. The title should be unique for each page and describe its purpose. Format: 'Page Name - Site Name'.",
+            "description": "Las páginas web tienen títulos que describen su tema o propósito.",
+            "technicalGuidance": "El elemento `<title>` en el `<head>` debe ser único y descriptivo para cada página. Formato: 'Nombre de la página - Nombre del sitio'.",
             "codeExample": "// Bad: Generic title\n<title>Page</title>\n\n// Good: Descriptive title\n<title>Contact Us - HolmDigital</title>\n\n// React/Next.js\nimport Head from 'next/head';\n\n<Head>\n  <title>Contact Us - HolmDigital</title>\n</Head>",
             "wcagTechnique": [
                 "G88",
@@ -212,15 +211,15 @@
         "holmdigitalInsight": {
             "diggRisk": "medium",
             "eaaImpact": "medium",
-            "swedishInterpretation": "Important for navigation, especially in SPAs where the title must update dynamically.",
+            "spanishInterpretation": "La primera información que recibe un usuario de lector de pantalla. Esencial para la orientación.",
             "commonMistakes": [
-                "Same title on all pages",
-                "Title not updating in SPAs",
-                "Too long or too short title",
-                "Title missing entirely"
+                "Todas las páginas se llaman 'Inicio' o 'Nombre de la empresa'",
+                "Título predeterminado ('React App', 'Untitled Document')",
+                "Demasiado largo o demasiado corto",
+                "Título completamente ausente"
             ],
-            "diggPrecedent": "Audits have noted missing page titles, especially in Single Page Applications.",
-            "priorityRationale": "Important for screen reader navigation and SEO."
+            "diggPrecedent": "Las auditorías han señalado la falta de títulos de página, especialmente en las aplicaciones de una sola página (SPA).",
+            "priorityRationale": "Importante para la navegación de lectores de pantalla y SEO."
         },
         "testability": {
             "automated": true,
@@ -247,8 +246,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "UNE 139803:2012, Nivel A requerido",
         "remediation": {
-            "description": "Information, structure, and relationships conveyed through presentation can be programmatically determined or are available in text.",
-            "technicalGuidance": "Use semantic HTML: <header>, <nav>, <main>, <footer>, <h1>-<h6>, <ul>/ <ol>, <table>. Do not use visual styles to create 'fake' headings or lists.",
+            "description": "La información, estructura y relaciones transmitidas a través de la presentación pueden ser determinadas por programa o están disponibles en texto.",
+            "technicalGuidance": "Use HTML semántico: <header>, <nav>, <main>, <footer>, <h1>-<h6>, <ul>/ <ol>, <table>. No use estilos visuales para crear encabezados o listas 'falsos'.",
             "component": null,
             "wcagTechnique": [
                 "H42",
@@ -259,13 +258,13 @@
         "holmdigitalInsight": {
             "diggRisk": "high",
             "eaaImpact": "high",
-            "swedishInterpretation": "Semantic structure is crucial for screen readers to navigate effectively. Auditors often cite 'div-soup' that looks like structure but lacks semantics.",
+            "spanishInterpretation": "La estructura semántica es crucial para que los lectores de pantalla naveguen eficazmente. Los auditores a menudo citan la 'sopa de divs' que parece estructura pero carece de semántica.",
             "commonMistakes": [
-                "Using bold text instead of <h1>-<h6>",
-                "Using <br> for lists instead of <ul>",
-                "Tables for layout"
+                "Uso de texto en negrita en lugar de <h1>-<h6>",
+                "Uso de <br> para listas en lugar de <ul>",
+                "Tablas para diseño"
             ],
-            "priorityRationale": "Fundamental for all assistive technology navigation."
+            "priorityRationale": "Fundamental para la navegación de toda tecnología de asistencia."
         },
         "testability": {
             "automated": true,
@@ -292,8 +291,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "UNE 139803:2012, Nivel A requerido",
         "remediation": {
-            "description": "Color is not used as the only visual means of conveying information, indicating an action, prompting a response, or distinguishing a visual element.",
-            "technicalGuidance": "Complement color with text, icons, or underlining. E.g. links must have underlines or another visual marker besides color. Error messages need text/icon, not just a red border.",
+            "description": "El color no se usa como el único medio visual para transmitir información, indicar una acción, solicitar una respuesta o distinguir un elemento visual.",
+            "technicalGuidance": "Acompañe el color con texto, iconos o subrayado. Por ejemplo, los enlaces deben tener subrayado u otro marcador visual además del color. Los mensajes de error necesitan texto/icono, no solo un borde rojo.",
             "component": "@holmdigital/components/FormField",
             "wcagTechnique": [
                 "G14",
@@ -304,13 +303,13 @@
         "holmdigitalInsight": {
             "diggRisk": "medium",
             "eaaImpact": "medium",
-            "swedishInterpretation": "Common problem in graphs and maps where only color coding is used.",
+            "spanishInterpretation": "Problema común en gráficos y mapas donde solo se usa la codificación por colores.",
             "commonMistakes": [
-                "Links that only differ by color from body text",
-                "Error messages only marked with red color",
-                "Graphs where only color distinguishes data points"
+                "Enlaces que solo difieren por color del texto del cuerpo",
+                "Mensajes de error solo marcados con color rojo",
+                "Gráficos donde solo el color distingue los puntos de datos"
             ],
-            "priorityRationale": "Crucial for color blind users."
+            "priorityRationale": "Crucial para usuarios daltónicos."
         },
         "testability": {
             "automated": false,
@@ -337,8 +336,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "UNE 139803:2012, Nivel AA requerido",
         "remediation": {
-            "description": "Content must be presentable without requiring scrolling in two dimensions down to 320px width.",
-            "technicalGuidance": "Use responsive design (CSS Media Queries, Flexbox, Grid). Avoid fixed widths in pixels. Ensure tables and images scale correctly.",
+            "description": "El contenido se puede presentar sin pérdida de información o funcionalidad, y sin requerir desplazamiento en dos dimensiones.",
+            "technicalGuidance": "Use diseño responsivo (CSS Media Queries, Flexbox, Grid). Evite anchos fijos en píxeles. Asegúrese de que las tablas y las imágenes se escalen correctamente.",
             "component": null,
             "wcagTechnique": [
                 "C32",
@@ -348,13 +347,13 @@
         "holmdigitalInsight": {
             "diggRisk": "high",
             "eaaImpact": "high",
-            "swedishInterpretation": "A modern requirement (WCAG 2.1) critical for mobile use and magnified text. DIGG has zero tolerance for horizontal scroll on vertical sites.",
+            "spanishInterpretation": "Un requisito moderno (WCAG 2.1) crítico para el uso móvil y el texto ampliado. DIGG tiene tolerancia cero para el desplazamiento horizontal en sitios verticales.",
             "commonMistakes": [
-                "Fixed widths on containers",
-                "Tables that are not responsive",
-                "Images wider than the screen"
+                "Anchos fijos en contenedores",
+                "Tablas que no son responsivas",
+                "Imágenes más anchas que la pantalla"
             ],
-            "priorityRationale": "Critical for low vision users who zoom in heavily."
+            "priorityRationale": "Crítico para usuarios con baja visión que hacen mucho zoom."
         },
         "testability": {
             "automated": false,
@@ -381,8 +380,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "UNE 139803:2012, Nivel AA requerido",
         "remediation": {
-            "description": "The visual presentation of user interface components and graphical objects must have a contrast ratio of at least 3:1 against adjacent colors.",
-            "technicalGuidance": "Applies to buttons, input borders, icons, and focus indicators. Ensure all interactive elements are clearly visible against the background.",
+            "description": "La presentación visual de los componentes de la interfaz de usuario y los objetos gráficos tiene una relación de contraste de al menos 3:1 contra los colores adyacentes.",
+            "technicalGuidance": "Se aplica a botones, bordes de entrada, iconos e indicadores de enfoque. Asegúrese de que todos los elementos interactivos sean claramente visibles contra el fondo.",
             "component": "@holmdigital/components/Button",
             "wcagTechnique": [
                 "G195",
@@ -392,11 +391,11 @@
         "holmdigitalInsight": {
             "diggRisk": "low",
             "eaaImpact": "low",
-            "swedishInterpretation": "Often missed requirement regarding focus rings and inactive (but visible) components. Important for understanding the interface.",
+            "spanishInterpretation": "Requisito a menudo pasado por alto con respecto a los anillos de enfoque y los componentes inactivos (pero visibles). Importante para comprender la interfaz.",
             "commonMistakes": [
-                "Grayed out buttons with too low contrast"
+                "Botones atenuados con muy bajo contraste"
             ],
-            "priorityRationale": "Important for distinguishing interactive elements."
+            "priorityRationale": "Importante para distinguir elementos interactivos."
         },
         "testability": {
             "automated": false,
@@ -423,8 +422,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "UNE 139803:2012, Nivel AA requerido",
         "remediation": {
-            "description": "Content or functionality must not be lost when the user changes text spacing (line height, paragraph spacing, etc.).",
-            "technicalGuidance": "Avoid fixed heights on text containers. Let containers grow with content. Test with text spacing bookmarklet.",
+            "description": "En el contenido implementado utilizando lenguajes de marcado, no se produce ninguna pérdida de contenido o funcionalidad al ajustar el espaciado del texto.",
+            "technicalGuidance": "Evite alturas fijas en los contenedores de texto. Deje que los contenedores crezcan con el contenido. Pruebe con el bookmarklet de espaciado de texto.",
             "component": null,
             "wcagTechnique": [
                 "C36"
@@ -433,12 +432,12 @@
         "holmdigitalInsight": {
             "diggRisk": "low",
             "eaaImpact": "medium",
-            "swedishInterpretation": "Important for dyslexia adaptations.",
+            "spanishInterpretation": "Importante para las adaptaciones de dislexia.",
             "commonMistakes": [
-                "Fixed line height in pixels",
-                "Text container that does not grow"
+                "Altura de línea fija en píxeles",
+                "Contenedor de texto que no crece"
             ],
-            "priorityRationale": "Important for readability during adaptations."
+            "priorityRationale": "Importante para la legibilidad durante las adaptaciones."
         },
         "testability": {
             "automated": false,
@@ -464,8 +463,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "UNE 139803:2012, Nivel AA requerido",
         "remediation": {
-            "description": "Content shown on hover/focus (e.g. tooltips) must be Dismissable, Hoverable, and Persistent.",
-            "technicalGuidance": "Ensure tooltips do not disappear when moving mouse from trigger to the tooltip itself. Allow ESC to dismiss.",
+            "description": "Cuando el puntero o el foco del teclado activan contenido adicional, dicho contenido es descartable, cernible y persistente.",
+            "technicalGuidance": "Asegúrese de que los tooltips no desaparezcan al mover el ratón del activador al propio tooltip. Permita que ESC lo cierre.",
             "component": null,
             "wcagTechnique": [
                 "SCR39"
@@ -474,13 +473,13 @@
         "holmdigitalInsight": {
             "diggRisk": "medium",
             "eaaImpact": "medium",
-            "swedishInterpretation": "Common problem with custom tooltips and mega-menus.",
+            "spanishInterpretation": "Problema común con tooltips personalizados y mega-menús.",
             "commonMistakes": [
-                "Tooltips that cannot be reached with mouse",
-                "Menus that close too easily",
-                "Content that cannot be dismissed without moving focus"
+                "Tooltips a los que no se puede llegar con el ratón",
+                "Menús que se cierran con demasiada facilidad",
+                "Contenido que no se puede descartar sin mover el foco"
             ],
-            "priorityRationale": "Important for users with magnification and motor difficulties."
+            "priorityRationale": "Importante para usuarios con magnificación y dificultades motoras."
         },
         "testability": {
             "automated": false,
@@ -507,8 +506,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "UNE 139803:2012, Nivel A requerido",
         "remediation": {
-            "description": "Captions must be provided for all prerecorded audio content in synchronized media.",
-            "technicalGuidance": "Use the <track> element with WebVTT files for HTML5 video. For social media embeds, ensure captions are enabled.",
+            "description": "Se proporcionan subtítulos para todo el contenido de audio pregrabado dentro de medios sincronizados.",
+            "technicalGuidance": "Use el elemento `<track>` con archivos WebVTT para video HTML5. Para redes sociales, asegúrese de que los subtítulos estén activados.",
             "component": null,
             "wcagTechnique": [
                 "G87",
@@ -518,11 +517,11 @@
         "holmdigitalInsight": {
             "diggRisk": "high",
             "eaaImpact": "high",
-            "swedishInterpretation": "One of the most common deficiencies in the public sector. The legal requirement is strict: video with audio MUST have captions.",
+            "spanishInterpretation": "Una de las carencias más comunes. Obligatorio por ley que los videos tengan subtítulos.",
             "commonMistakes": [
-                "Auto-generated captions that satisfy no one",
-                "Captions missing entirely",
-                "Captions burned into video (not accessible for search/translation)"
+                "Subtítulos automáticos de mala calidad",
+                "Falta de subtítulos",
+                "Subtítulos incrustados (open captions) no accesibles para búsqueda/traducción"
             ],
             "priorityRationale": "Critical for deaf and hard of hearing users."
         },
@@ -551,8 +550,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "UNE 139803:2012, Nivel AA requerido",
         "remediation": {
-            "description": "Audio description must be provided for all prerecorded video content.",
-            "technicalGuidance": "Either as a separate audio track, an alternative version of the video, or (if 'talking heads') ensuring all info is conveyed by audio.",
+            "description": "Se proporciona audiodescripción para todo el contenido de video pregrabado.",
+            "technicalGuidance": "Ya sea como una pista de audio separada, una versión alternativa del video, o (si son 'bustos parlantes') asegurando que toda la información visual se transmita por audio.",
             "component": null,
             "wcagTechnique": [
                 "G78",
@@ -562,9 +561,9 @@
         "holmdigitalInsight": {
             "diggRisk": "medium",
             "eaaImpact": "medium",
-            "swedishInterpretation": "Can often be solved by 'integrated description' (talking about what is seen), which is more cost-effective.",
+            "spanishInterpretation": "A menudo se puede resolver con 'descripción integrada' (hablar de lo que se ve), lo cual es más económico.",
             "commonMistakes": [
-                "Information shown only visually (graphics, text signs) without being mentioned in audio"
+                "Información mostrada solo visualmente sin mención en el audio"
             ],
             "priorityRationale": "Critical for blind video users."
         },
@@ -593,8 +592,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "UNE 139803:2012, Nivel AA requerido",
         "remediation": {
-            "description": "Content must not restrict its view and operation to a single display orientation, unless a specific orientation is essential.",
-            "technicalGuidance": "Do not lock screen to portrait or landscape via CSS or JS manifest. Use CSS media queries to handle layout changes.",
+            "description": "El contenido no restringe su visión y operación a una sola orientación de pantalla, a menos que una orientación específica sea esencial.",
+            "technicalGuidance": "No bloquee la pantalla en retrato o paisaje mediante CSS o manifiesto JS. Use media queries para gestionar el diseño.",
             "component": null,
             "wcagTechnique": [
                 "F97"
@@ -603,9 +602,9 @@
         "holmdigitalInsight": {
             "diggRisk": "low",
             "eaaImpact": "medium",
-            "swedishInterpretation": "Important for tablets and users who have the device mounted (e.g., wheelchair).",
+            "spanishInterpretation": "Importante para tabletas y usuarios con dispositivos montados (sillas de ruedas).",
             "commonMistakes": [
-                "Apps/sites that rotate interface 90 degrees against user will"
+                "Apps que rotan la interfaz 90 grados contra la voluntad del usuario"
             ],
             "priorityRationale": "Important for users who cannot rotate their device."
         },
@@ -634,8 +633,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "UNE 139803:2012, Nivel AA requerido",
         "remediation": {
-            "description": "The purpose of each input field collecting information about the user can be programmatically determined.",
-            "technicalGuidance": "Use the 'autocomplete' attribute on input fields for personal data (name, email, tel, address etc.).",
+            "description": "El propósito de cada campo de entrada que recopila información sobre el usuario puede ser determinado por programa.",
+            "technicalGuidance": "Use el atributo 'autocomplete' en los campos de entrada para datos personales (nombre, correo electrónico, teléfono, dirección, etc.).",
             "component": "@holmdigital/components/FormField",
             "wcagTechnique": [
                 "H98"
@@ -644,11 +643,11 @@
         "holmdigitalInsight": {
             "diggRisk": "medium",
             "eaaImpact": "high",
-            "swedishInterpretation": "Makes it much easier to fill confusing forms (autofill).",
+            "spanishInterpretation": "Facilita enormemente el autocompletado de formularios.",
             "commonMistakes": [
-                "Missing autocomplete attribute",
-                "Incorrect autocomplete value",
-                "Turning off autocomplete (autocomplete='off') unnecessarily"
+                "Falta atributo autocomplete",
+                "Valor autocomplete incorrecto",
+                "Desactivar autocomplete innecesariamente"
             ],
             "priorityRationale": "Reduces cognitive load and motor requirements."
         },
@@ -676,8 +675,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "UNE 139803:2012, Nivel A requerido",
         "remediation": {
-            "description": "If focus can be moved to a component of the page using a keyboard interface, then focus can be moved away from that component using only a keyboard interface.",
-            "technicalGuidance": "Be careful with JS widgets that trap focus (e.g. modal windows). Ensure there is always a way out (e.g. ESC or shift+tab).",
+            "description": "Si el foco se puede mover a un componente de la página mediante el teclado, entonces se puede mover fuera de ese componente usando solo el teclado.",
+            "technicalGuidance": "Cuidado con widgets JS que atrapan el foco (ej: ventanas modales). Asegúrese de que siempre haya una salida (ej: ESC o shift+tab).",
             "component": null,
             "wcagTechnique": [
                 "G21"
@@ -686,10 +685,10 @@
         "holmdigitalInsight": {
             "diggRisk": "critical",
             "eaaImpact": "critical",
-            "swedishInterpretation": "A keyboard trap is a 'blocker' that makes the website unusable. Serious error.",
+            "spanishInterpretation": "Una trampa de teclado es un bloqueo crítico. Error grave.",
             "commonMistakes": [
-                "Custom widgets that loop focus infinitely",
-                "Embedded third-party components (maps, chats) without exit"
+                "Widgets personalizados que ciclan el foco infinitamente",
+                "Componentes de terceros integrados (mapas, chats) sin salida"
             ],
             "priorityRationale": "Critical: The user gets stuck and must restart the browser."
         },
@@ -717,8 +716,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "UNE 139803:2012, Nivel A requerido",
         "remediation": {
-            "description": "If a keyboard shortcut consists of only one character (letter, number, symbol), there must be a way to turn it off or remap it, or it must only be active on focus.",
-            "technicalGuidance": "Avoid single-key shortcuts if possible. If needed, ensure they do not conflict with voice control or accidental typing.",
+            "description": "Si un atajo de teclado se implementa usando solo letras, signos de puntuación, números o símbolos caracteres, entonces se puede desactivar, reasignar o activar solo al enfocar.",
+            "technicalGuidance": "Evite atajos de una sola tecla si es posible. Si son necesarios, asegúrese de que no entren en conflicto con el dictado por voz o la escritura accidental.",
             "component": null,
             "wcagTechnique": [
                 "G217"
@@ -727,9 +726,9 @@
         "holmdigitalInsight": {
             "diggRisk": "medium",
             "eaaImpact": "medium",
-            "swedishInterpretation": "Important for voice control users (Dragon etc.) where single words can trigger commands accidentally.",
+            "spanishInterpretation": "Importante para usuarios de control por voz (Dragon, etc.) donde palabras simples pueden activar comandos accidentalmente.",
             "commonMistakes": [
-                "Gmail-like shortcuts that are on by default without option to disable"
+                "Atajos tipo Gmail activados por defecto sin opción de desactivar"
             ],
             "priorityRationale": "Important to avoid accidental activation."
         },
@@ -757,8 +756,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "UNE 139803:2012, Nivel A requerido",
         "remediation": {
-            "description": "If a time limit (session, reading time) is set, the user must be able to turn off, adjust, or extend it.",
-            "technicalGuidance": "Provide a warning before the session expires with an 'Extend session' button. The time limit must be at least 20 seconds.",
+            "description": "Si se establece un límite de tiempo (sesión, tiempo de lectura), el usuario debe poder desactivarlo, ajustarlo o extenderlo.",
+            "technicalGuidance": "Proporcione una advertencia antes de que expire la sesión con un botón 'Extender sesión'. El límite de tiempo debe ser de al menos 20 segundos.",
             "component": null,
             "wcagTechnique": [
                 "SCR16",
@@ -768,10 +767,10 @@
         "holmdigitalInsight": {
             "diggRisk": "high",
             "eaaImpact": "high",
-            "swedishInterpretation": "Critical for e-services/banking. Users who read slowly or use assistive technology need more time.",
+            "spanishInterpretation": "Crítico para servicios en línea/bancos. Los usuarios que leen despacio o usan tecnologías de asistencia necesitan más tiempo.",
             "commonMistakes": [
-                "Logout without warning",
-                "Time limits that cannot be extended"
+                "Cierre de sesión sin advertencia",
+                "Límites de tiempo imposibles de extender"
             ],
             "priorityRationale": "Critical to avoid losing entered data."
         },
@@ -799,8 +798,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "UNE 139803:2012, Nivel A requerido",
         "remediation": {
-            "description": "For moving, blinking, or scrolling content that starts automatically and lasts more than 5 seconds, there must be a way to pause, stop, or hide it.",
-            "technicalGuidance": "Applies to carousels (sliders), auto-updating news feeds, animated backgrounds. Add a clear pause button.",
+            "description": "Para la información en movimiento, parpadeante, desplazable o de actualización automática, existe un mecanismo para que el usuario pueda pausarla, detenerla u ocultarla.",
+            "technicalGuidance": "Proporcione un botón de pausa para carruseles, tickers de valores o videos de fondo con reproducción automática.",
             "component": null,
             "wcagTechnique": [
                 "G4",
@@ -810,10 +809,10 @@
         "holmdigitalInsight": {
             "diggRisk": "medium",
             "eaaImpact": "medium",
-            "swedishInterpretation": "Important for users with concentration difficulties (ADHD/Autism) who are distracted by movement.",
+            "spanishInterpretation": "Importante para usuarios con dificultades de concentración (TDAH/Autismo) que se distraen con el movimiento.",
             "commonMistakes": [
-                "Image carousels without pause button",
-                "Animated backgrounds that cannot be turned off"
+                "Carruseles sin botón de pausa",
+                "Sliders de rotación automática sin control"
             ],
             "priorityRationale": "Important for cognitive accessibility."
         },
@@ -842,8 +841,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "UNE 139803:2012, Nivel A requerido",
         "remediation": {
-            "description": "Content must not flash more than three times per second (can cause seizures).",
-            "technicalGuidance": "Avoid rapid flashing in video and animations. Use tools to measure flash frequency (PEAT).",
+            "description": "Las páginas web no contienen nada que parpadee más de tres veces en un segundo, o el parpadeo está por debajo de los umbrales de parpadeo general y rojo.",
+            "technicalGuidance": "Evite el contenido que parpadea rápidamente (efectos estroboscópicos). Esto puede provocar convulsiones.",
             "component": null,
             "wcagTechnique": [
                 "G19"
@@ -852,10 +851,10 @@
         "holmdigitalInsight": {
             "diggRisk": "critical",
             "eaaImpact": "critical",
-            "swedishInterpretation": "Health risk. Zero tolerance.",
+            "spanishInterpretation": "Requisito de salud estricto. El contenido que provoca convulsiones es un fallo crítico.",
             "commonMistakes": [
-                "Stroboscopic effects in video",
-                "Misuse of blinking error messages"
+                "Videojuegos o intros con parpadeos rápidos",
+                "Uso indebido de mensajes de error parpadeantes"
             ],
             "priorityRationale": "Critical safety risk."
         },
@@ -884,8 +883,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "UNE 139803:2012, Nivel A requerido",
         "remediation": {
-            "description": "There must be a way to skip blocks of content that are repeated on multiple pages (e.g. navigation).",
-            "technicalGuidance": "Implement a 'Skip to Main Content' link at the top of the page that becomes visible on focus. Use semantic landmarks (<main>, <nav>).",
+            "description": "Existe un mecanismo disponible para saltar bloques de contenido que se repiten en múltiples páginas web.",
+            "technicalGuidance": "Añada un enlace 'Saltar al contenido' como el primer elemento enfocable de la página. Use landmarks (header, nav, main, aside, footer) para permitir la navegación con lector de pantalla.",
             "component": null,
             "wcagTechnique": [
                 "G1",
@@ -895,11 +894,11 @@
         "holmdigitalInsight": {
             "diggRisk": "medium",
             "eaaImpact": "medium",
-            "swedishInterpretation": "Standard on all public sector sites. Enormously helpful for keyboard users.",
+            "spanishInterpretation": "Enlace 'Saltar al contenido' casi obligatorio. Los landmarks también son clave.",
             "commonMistakes": [
-                "Missing skip-link",
-                "Skip-link broken (does not move focus correctly)",
-                "Landmarks missing"
+                "Falta enlace 'Saltar al contenido'",
+                "Enlace oculto con display:none (inlocalizable)",
+                "Faltan landmarks"
             ],
             "priorityRationale": "Important for efficient navigation."
         },
@@ -928,8 +927,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "UNE 139803:2012, Nivel A requerido",
         "remediation": {
-            "description": "Focus order must be logical and follow meaning/structure.",
-            "technicalGuidance": "Match DOM order with visual order. Avoid tabindex greater than 0. Manage focus manually in modals and menus.",
+            "description": "Si una página web se puede navegar secuencialmente y las secuencias de navegación afectan el significado o la operación, los componentes enfocables reciben el foco en un orden que preserva el significado y la operatividad.",
+            "technicalGuidance": "El orden del DOM determina el orden del foco. No manipule tab-index (> 0). Organice los elementos lógicamente en el HTML.",
             "component": null,
             "wcagTechnique": [
                 "G59",
@@ -939,11 +938,11 @@
         "holmdigitalInsight": {
             "diggRisk": "high",
             "eaaImpact": "high",
-            "swedishInterpretation": "Critical for complex layouts (Grid/Flexbox) where visual order may differ from DOM order.",
+            "spanishInterpretation": "Crítico para diseños complejos (Grid/Flexbox) donde el orden visual puede diferir del orden del DOM.",
             "commonMistakes": [
-                "Focus jumps illogically",
-                "Menus in wrong order",
-                "Modal closes and focus returns to top of page"
+                "El foco salta ilógicamente",
+                "Menús en orden incorrecto",
+                "El modal se cierra y el foco vuelve a la parte superior de la página"
             ],
             "priorityRationale": "Critical for keyboard navigation and understanding."
         },
@@ -972,8 +971,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "UNE 139803:2012, Nivel A requerido",
         "remediation": {
-            "description": "The purpose of each link can be understood from the link text alone or from the link text together with its context.",
-            "technicalGuidance": "Avoid 'Read more' or 'Click here'. Write descriptive link texts. Use aria-label if visual space is limited but more info is needed.",
+            "description": "El propósito de cada enlace se puede determinar solo con el texto del enlace o con el texto del enlace junto con su contexto determinado por programa.",
+            "technicalGuidance": "Evite 'Leer más' o 'Haga clic aquí'. El texto del enlace debe indicar el destino (ej: 'Leer más sobre nuestros servicios').",
             "component": null,
             "wcagTechnique": [
                 "G91",
@@ -983,10 +982,10 @@
         "holmdigitalInsight": {
             "diggRisk": "medium",
             "eaaImpact": "medium",
-            "swedishInterpretation": "Important for users navigating via link lists (screen readers).",
+            "spanishInterpretation": "Importante para usuarios que navegan a través de listas de enlaces (lectores de pantalla).",
             "commonMistakes": [
-                "Lots of 'Read more' links",
-                "Links that don't say where they lead"
+                "Muchos enlaces 'Leer más'",
+                "Enlaces que no indican a dónde llevan"
             ],
             "priorityRationale": "Important for efficient navigation."
         },
@@ -1015,8 +1014,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "UNE 139803:2012, Nivel AA requerido",
         "remediation": {
-            "description": "There must be more than one way to find a web page within a set of web pages.",
-            "technicalGuidance": "At least two of: Menu, Search, Sitemap, Links in content.",
+            "description": "Debe haber más de una forma de encontrar una página web dentro de un conjunto de páginas web.",
+            "technicalGuidance": "Al menos dos de: Menú, Búsqueda, Mapa del sitio, Enlaces en el contenido.",
             "component": null,
             "wcagTechnique": [
                 "G125",
@@ -1026,9 +1025,9 @@
         "holmdigitalInsight": {
             "diggRisk": "low",
             "eaaImpact": "low",
-            "swedishInterpretation": "Often fulfilled by menu + search. Sitemap is best practice.",
+            "spanishInterpretation": "A menudo se cumple con menú + búsqueda. El mapa del sitio es una buena práctica.",
             "commonMistakes": [
-                "Missing search on sites with many pages"
+                "Falta de búsqueda en sitios con muchas páginas"
             ],
             "priorityRationale": "Facilitates different navigation strategies."
         },
@@ -1057,8 +1056,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "UNE 139803:2012, Nivel AA requerido",
         "remediation": {
-            "description": "Headings and labels must describe topic or purpose.",
-            "technicalGuidance": "Write clear, descriptive headings that give meaning to the content below them. Form labels must be understandable.",
+            "description": "Los encabezados y las etiquetas deben describir el tema o propósito.",
+            "technicalGuidance": "Escriba encabezados claros y descriptivos que den significado al contenido debajo de ellos. Las etiquetas de formulario deben ser comprensibles.",
             "component": null,
             "wcagTechnique": [
                 "G130"
@@ -1067,10 +1066,10 @@
         "holmdigitalInsight": {
             "diggRisk": "medium",
             "eaaImpact": "medium",
-            "swedishInterpretation": "About editorial quality and comprehensibility.",
+            "spanishInterpretation": "Sobre la calidad editorial y la comprensibilidad.",
             "commonMistakes": [
-                "Cryptic headings",
-                "Labels that don't match what needs to be filled in"
+                "Encabezados crípticos",
+                "Etiquetas que no coinciden con lo que se debe rellenar"
             ],
             "priorityRationale": "Important for cognitive accessibility."
         },
@@ -1099,8 +1098,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "UNE 139803:2012, Nivel AA requerido",
         "remediation": {
-            "description": "Any user interface operable by keyboard must have a visible focus indicator.",
-            "technicalGuidance": "Never remove outline with CSS (outline: none) without replacing it with a clear visual indicator. Ensure contrast of focus ring is sufficient (see 1.4.11).",
+            "description": "Cualquier interfaz de usuario operable por teclado debe tener un indicador de foco visible.",
+            "technicalGuidance": "Nunca elimine el contorno con CSS (outline: none) sin reemplazarlo con un indicador visual claro. Asegúrese de que el contraste del anillo de foco sea suficiente (ver 1.4.11).",
             "component": "@holmdigital/components/Button",
             "wcagTechnique": [
                 "G149",
@@ -1111,10 +1110,10 @@
         "holmdigitalInsight": {
             "diggRisk": "high",
             "eaaImpact": "high",
-            "swedishInterpretation": "One of the most common errors. Often because designers dislike the 'blue ring'.",
+            "spanishInterpretation": "Uno de los errores más comunes. A menudo porque a los diseñadores no les gusta el 'anillo azul'.",
             "commonMistakes": [
-                "outline: none in CSS reset",
-                "Custom buttons missing :focus style"
+                "outline: none en CSS reset",
+                "Botones personalizados sin estilo :focus"
             ],
             "priorityRationale": "Critical: Without visible focus, the keyboard user doesn't know where they are."
         },
@@ -1143,8 +1142,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "UNE 139803:2012, Nivel A requerido",
         "remediation": {
-            "description": "The default human language of each web page must be programmatically determinable.",
-            "technicalGuidance": "Set the 'lang' attribute on the <html> element. E.g., <html lang='en'> for English.",
+            "description": "El idioma humano predeterminado de cada página web debe ser determinable por programa.",
+            "technicalGuidance": "Establezca el atributo 'lang' en el elemento <html>. Por ejemplo, <html lang='en'> para inglés.",
             "component": null,
             "wcagTechnique": [
                 "H57"
@@ -1153,10 +1152,10 @@
         "holmdigitalInsight": {
             "diggRisk": "high",
             "eaaImpact": "high",
-            "swedishInterpretation": "Fundamental for screen reading. Without this, the screen reader guesses the language, often leading to wrong pronunciation.",
+            "spanishInterpretation": "Fundamental para la lectura de pantalla. Sin esto, el lector de pantalla adivina el idioma, lo que a menudo lleva a una pronunciación incorrecta.",
             "commonMistakes": [
-                "Lang attribute missing",
-                "Wrong language code (e.g. 'en' on a Swedish page)"
+                "Falta el atributo Lang",
+                "Código de idioma incorrecto (ej. 'en' en una página sueca)"
             ],
             "priorityRationale": "Critical for screen reader users."
         },
@@ -1184,8 +1183,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "UNE 139803:2012, Nivel AA requerido",
         "remediation": {
-            "description": "The human language of each passage or phrase in the content must be programmatically determinable.",
-            "technicalGuidance": "Use the lang attribute on elements that differ from the page's main language. E.g. <span lang='fr'>Bonjour</span>.",
+            "description": "El idioma humano de cada pasaje o frase en el contenido debe ser determinable por programa.",
+            "technicalGuidance": "Use el atributo lang en elementos que difieran del idioma principal de la página. Por ejemplo, <span lang='fr'>Bonjour</span>.",
             "component": null,
             "wcagTechnique": [
                 "H58"
@@ -1194,9 +1193,9 @@
         "holmdigitalInsight": {
             "diggRisk": "low",
             "eaaImpact": "low",
-            "swedishInterpretation": "Rarely a critical error unless it significantly hinders understanding.",
+            "spanishInterpretation": "Rara vez es un error crítico a menos que dificulte significativamente la comprensión.",
             "commonMistakes": [
-                "Foreign quotes in text without markup"
+                "Citas extranjeras en texto sin marcado"
             ],
             "priorityRationale": "Important for correct pronunciation."
         },
@@ -1224,8 +1223,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "UNE 139803:2012, Nivel A requerido",
         "remediation": {
-            "description": "When a component receives focus, it must not initiate a change of context.",
-            "technicalGuidance": "Do not open new windows, submit forms, or move focus automatically just because user tabs to a field.",
+            "description": "Cuando un componente recibe el foco, no debe iniciar un cambio de contexto.",
+            "technicalGuidance": "No abra nuevas ventanas, envíe formularios o mueva el foco automáticamente solo porque el usuario tabula a un campo.",
             "component": null,
             "wcagTechnique": [
                 "G107"
@@ -1234,10 +1233,10 @@
         "holmdigitalInsight": {
             "diggRisk": "high",
             "eaaImpact": "high",
-            "swedishInterpretation": "Very confusing for users. Creates a feeling of lack of control.",
+            "spanishInterpretation": "Muy confuso para los usuarios. Crea una sensación de falta de control.",
             "commonMistakes": [
-                "Dropdowns that navigate immediately upon selection (without 'Go' button)",
-                "Forms that auto-submit on last field focus"
+                "Des desplegables que navegan inmediatamente al seleccionar (sin botón 'Ir')",
+                "Formularios que se envían automáticamente al enfocar el último campo"
             ],
             "priorityRationale": "Important for predictability."
         },
@@ -1266,8 +1265,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "UNE 139803:2012, Nivel A requerido",
         "remediation": {
-            "description": "Changing the setting of any component does not automatically cause a change of context unless the user has been advised of the behavior before using the component.",
-            "technicalGuidance": "Inform the user that selection in a list reloads the page. Preferably, add a button to confirm the choice.",
+            "description": "Cambiar la configuración de cualquier componente no causa automáticamente un cambio de contexto a menos que se haya informado al usuario del comportamiento antes de usar el componente.",
+            "technicalGuidance": "Informe al usuario que la selección en una lista recarga la página. Preferiblemente, añada un botón para confirmar la elección.",
             "component": null,
             "wcagTechnique": [
                 "G13",
@@ -1277,10 +1276,10 @@
         "holmdigitalInsight": {
             "diggRisk": "medium",
             "eaaImpact": "medium",
-            "swedishInterpretation": "Common in filtering functions.",
+            "spanishInterpretation": "Común en funciones de filtrado.",
             "commonMistakes": [
-                "Checkboxes that reload page immediately",
-                "Filtering that moves focus"
+                "Casillas de verificación que recargan la página inmediatamente",
+                "Filtrado que mueve el foco"
             ],
             "priorityRationale": "Important for predictability."
         },
@@ -1309,8 +1308,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "UNE 139803:2012, Nivel AA requerido",
         "remediation": {
-            "description": "Navigational mechanisms that are repeated on multiple Web pages occur in the same relative order each time they are repeated.",
-            "technicalGuidance": "Main menu should look the same and be in the same place on all pages. Search function as well.",
+            "description": "Los mecanismos de navegación que se repiten en varias páginas web aparecen en el mismo orden relativo cada vez que se repiten.",
+            "technicalGuidance": "El menú principal debe verse igual y estar en el mismo lugar en todas las páginas. La función de búsqueda también.",
             "component": null,
             "wcagTechnique": [
                 "G61"
@@ -1319,9 +1318,9 @@
         "holmdigitalInsight": {
             "diggRisk": "medium",
             "eaaImpact": "medium",
-            "swedishInterpretation": "Predictability is key to cognitive accessibility.",
+            "spanishInterpretation": "La previsibilidad es clave para la accesibilidad cognitiva.",
             "commonMistakes": [
-                "Menus that change place or order on different pages"
+                "Menús que cambian de lugar o de orden en diferentes páginas"
             ],
             "priorityRationale": "Facilitates learning."
         },
@@ -1350,8 +1349,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "UNE 139803:2012, Nivel AA requerido",
         "remediation": {
-            "description": "Components that have the same functionality within a set of Web pages are identified consistently.",
-            "technicalGuidance": "Don't call search 'Search' on one page and 'Find' on another. Use the same icon for the same function.",
+            "description": "Los componentes que tienen la misma funcionalidad dentro de un conjunto de páginas web se identifican de manera consistente.",
+            "technicalGuidance": "No llame a la búsqueda 'Buscar' en una página y 'Encontrar' en otra. Use el mismo icono para la misma función.",
             "component": null,
             "wcagTechnique": [
                 "G197"
@@ -1360,10 +1359,10 @@
         "holmdigitalInsight": {
             "diggRisk": "low",
             "eaaImpact": "low",
-            "swedishInterpretation": "Important for usability.",
+            "spanishInterpretation": "Importante para la usabilidad.",
             "commonMistakes": [
-                "Inconsistent naming",
-                "Different icons for print/download"
+                "Nombres inconsistentes",
+                "Diferentes iconos para imprimir/descargar"
             ],
             "priorityRationale": "Reduces cognitive load."
         },
@@ -1392,8 +1391,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "UNE 139803:2012, Nivel A requerido",
         "remediation": {
-            "description": "If an input error is automatically detected, the item that is in error is identified and the error is described to the user in text.",
-            "technicalGuidance": "Show error message close to the field. Link with aria-describedby or include in label. Do not just color the field red.",
+            "description": "Si se detecta automáticamente un error de entrada, el elemento que está en error se identifica y el error se describe al usuario en texto.",
+            "technicalGuidance": "Muestre el mensaje de error cerca del campo. Enlace con aria-describedby o incluya en la etiqueta. No solo coloree el campo de rojo.",
             "component": "@holmdigital/components/FormField",
             "wcagTechnique": [
                 "G83",
@@ -1403,10 +1402,10 @@
         "holmdigitalInsight": {
             "diggRisk": "high",
             "eaaImpact": "high",
-            "swedishInterpretation": "Critical for completing tasks. Generic error messages ('Something went wrong') are not accepted if the error is specific.",
+            "spanishInterpretation": "Crítico para completar tareas. Los mensajes de error genéricos ('Algo salió mal') no se aceptan si el error es específico.",
             "commonMistakes": [
-                "'Invalid value' without explanation",
-                "Error message not visible to screen readers"
+                "'Valor no válido' sin explicación",
+                "Mensaje de error no visible para lectores de pantalla"
             ],
             "priorityRationale": "Critical for error handling."
         },
@@ -1434,8 +1433,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "UNE 139803:2012, Nivel AA requerido",
         "remediation": {
-            "description": "If an input error is automatically detected and suggestions for correction are known, then the suggestions are provided to the user.",
-            "technicalGuidance": "If date format is wrong, show required format (YYYY-MM-DD). Offer spelling suggestions for search ('Did you mean...?').",
+            "description": "Si se detecta automáticamente un error de entrada y se conocen sugerencias para la corrección, se proporcionan las sugerencias al usuario.",
+            "technicalGuidance": "Si el formato de fecha es incorrecto, muestre el formato requerido (AAAA-MM-DD). Ofrezca sugerencias de ortografía para la búsqueda ('¿Quiso decir...?').",
             "component": "@holmdigital/components/FormField",
             "wcagTechnique": [
                 "G177"
@@ -1444,9 +1443,9 @@
         "holmdigitalInsight": {
             "diggRisk": "medium",
             "eaaImpact": "medium",
-            "swedishInterpretation": "About being helpful. Reduces support cases.",
+            "spanishInterpretation": "Se trata de ser útil. Reduce los casos de soporte.",
             "commonMistakes": [
-                "Only saying 'Error' without saying how to fix it"
+                "Solo decir 'Error' sin decir cómo solucionarlo"
             ],
             "priorityRationale": "Facilitates correction."
         },
@@ -1475,8 +1474,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "UNE 139803:2012, Nivel AA requerido",
         "remediation": {
-            "description": "For Web pages that cause legal commitments or financial transactions, users must be able to: Reverse, Check, or Confirm.",
-            "technicalGuidance": "Offer a summary page before final submission with ability to edit.",
+            "description": "Para las páginas web que causan compromisos legales o transacciones financieras, los usuarios deben poder: Revertir, Verificar o Confirmar.",
+            "technicalGuidance": "Ofrezca una página de resumen antes del envío final con la posibilidad de editar.",
             "component": null,
             "wcagTechnique": [
                 "G164",
@@ -1486,10 +1485,10 @@
         "holmdigitalInsight": {
             "diggRisk": "high",
             "eaaImpact": "high",
-            "swedishInterpretation": "Absolute requirement for e-commerce and legal decisions.",
+            "spanishInterpretation": "Requisito absoluto para el comercio electrónico y las decisiones legales.",
             "commonMistakes": [
-                "Direct purchase without confirmation",
-                "Submission of binding contracts without review"
+                "Compra directa sin confirmación",
+                "Envío de contratos vinculantes sin revisión"
             ],
             "priorityRationale": "Critical to avoid serious consequences of mistakes."
         },
@@ -1528,10 +1527,10 @@
         "holmdigitalInsight": {
             "diggRisk": "low",
             "eaaImpact": "low",
-            "swedishInterpretation": "Less prioritized now as modern browsers handle errors well, but duplicate IDs can still break ARIA.",
+            "spanishInterpretation": "Menos crítico ahora que los navegadores perdonan errores, pero IDs duplicados siguen rompiendo ARIA.",
             "commonMistakes": [
-                "Duplicate IDs",
-                "Broken HTML structure"
+                "IDs duplicados (copy-paste)",
+                "Etiquetas mal anidadas (div dentro de span)"
             ],
             "priorityRationale": "Technical hygiene factor."
         },
@@ -1560,8 +1559,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "UNE 139803:2012, Nivel A requerido",
         "remediation": {
-            "description": "For all components, name and role can be programmatically determined. Values can be set programmatically.",
-            "technicalGuidance": "Use native HTML elements when possible. If custom components are used, ARIA (role, aria-label, aria-valuenow) must be used correctly.",
+            "description": "Para todos los componentes de la interfaz de usuario, el nombre y la función pueden ser determinados por programa; los estados, propiedades y valores pueden ser configurados por programa; y la notificación de cambios está disponible.",
+            "technicalGuidance": "Use elementos HTML nativos cuando sea posible. Si usa componentes personalizados, asegúrese de usar ARIA correctamente (role, aria-label, aria-valuenow).",
             "component": null,
             "wcagTechnique": [
                 "ARIA4",
@@ -1571,11 +1570,11 @@
         "holmdigitalInsight": {
             "diggRisk": "critical",
             "eaaImpact": "critical",
-            "swedishInterpretation": "This is the foundation for how screen readers work with modern web apps. Without this, the app is 'invisible' to assistive technology.",
+            "spanishInterpretation": "Crítico. Sin esto, la aplicación es 'invisible' o inoperable para lectores de pantalla.",
             "commonMistakes": [
-                "Div buttons without role",
-                "Custom checkboxes without aria-checked",
-                "Missing accessible name"
+                "Botones div sin role",
+                "Checkboxes personalizados sin aria-checked",
+                "Falta de nombre accesible"
             ],
             "priorityRationale": "Absolutely critical for compatibility."
         },
@@ -1604,8 +1603,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "UNE 139803:2012, Nivel AA requerido",
         "remediation": {
-            "description": "Statusmeddelanden ska kunna presenteras för användaren utan att motta fokus (via skärmläsare).",
-            "technicalGuidance": "Använd aria-live regioner (polite/assertive) eller role='status'/'alert' för meddelanden som dyker upp dynamiskt (t.ex. 'Sparat', 'Sökning klar').",
+            "description": "Los mensajes de estado deben poder presentarse al usuario sin recibir el foco (a través de lectores de pantalla).",
+            "technicalGuidance": "Use regiones aria-live (polite/assertive) o role='status'/'alert' para mensajes que aparecen dinámicamente (ej. 'Guardado', 'Búsqueda completada').",
             "component": null,
             "wcagTechnique": [
                 "ARIA19",
@@ -1615,10 +1614,10 @@
         "holmdigitalInsight": {
             "diggRisk": "medium",
             "eaaImpact": "medium",
-            "swedishInterpretation": "Important in SPAs where page load does not happen. The user must know something happened.",
+            "spanishInterpretation": "Importante en SPAs. Los usuarios ciegos a menudo se pierden las notificaciones 'toast' si no se anuncian.",
             "commonMistakes": [
-                "Silent updates of cart/search results",
-                "Toast notifications not being announced"
+                "Actualizaciones silenciosas del carrito/resultados de búsqueda",
+                "Notificaciones Toast no anunciadas"
             ],
             "priorityRationale": "Provides feedback to users without sight."
         },
@@ -1647,8 +1646,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "9 § (Struktur och relationer)",
         "remediation": {
-            "description": "The page must have exactly one 'main' landmark.",
-            "technicalGuidance": "Use the <main> element once per page to identify the main content. Avoid having multiple <main> without unique labels, or missing it entirely.",
+            "description": "La página debe tener una (y solo una) región principal (<main>).",
+            "technicalGuidance": "Use el elemento <main> para el contenido principal. Si tiene varios, use aria-label, pero generalmente uno es mejor. Evite tener múltiples <main> sin etiquetas únicas, o que falte por completo.",
             "wcagTechnique": [
                 "ARIA11",
                 "H97"
@@ -1657,10 +1656,10 @@
         "holmdigitalInsight": {
             "diggRisk": "medium",
             "eaaImpact": "medium",
-            "swedishInterpretation": "Screen reader users rely on landmarks to navigate quickly to the content. Missing <main> makes it difficult to skip navigation.",
+            "spanishInterpretation": "Los usuarios de lectores de pantalla dependen de los landmarks para navegar rápidamente al contenido. La falta de <main> dificulta saltar la navegación.",
             "commonMistakes": [
-                "Using <div id='main'> instead of <main>",
-                "Having multiple <main> elements"
+                "Usar <div id='main'> en lugar de <main>",
+                "Tener múltiples elementos <main>"
             ]
         },
         "testability": {
@@ -1687,8 +1686,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "9 § (Struktur och relationer)",
         "remediation": {
-            "description": "The page must have a level 1 heading (<h1>).",
-            "technicalGuidance": "Ensure there is exactly one <h1> describing the page's unique content.",
+            "description": "La página debe tener un título de nivel 1 (<h1>).",
+            "technicalGuidance": "Asegúrese de que hay exactamente un <h1> describiendo el contenido único de la página.",
             "wcagTechnique": [
                 "H42"
             ]
@@ -1696,10 +1695,10 @@
         "holmdigitalInsight": {
             "diggRisk": "high",
             "eaaImpact": "high",
-            "swedishInterpretation": "A clear <h1> is critical for users to understand where they have landed. It is often the first thing a screen reader user looks for.",
+            "spanishInterpretation": "Un <h1> claro es vital para que los usuarios comprendan dónde han aterrizado. A menudo es lo primero que busca un usuario de lector de pantalla.",
             "commonMistakes": [
-                "Starting headings at <h2>",
-                "Using logo as the only <h1> without text"
+                "Comenzar los encabezados en <h2>",
+                "Usar el logo como único <h1> sin texto"
             ]
         },
         "testability": {
@@ -1726,8 +1725,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "9 § (Struktur och relationer)",
         "remediation": {
-            "description": "Headings must follow a logical order (h1 -> h2 -> h3).",
-            "technicalGuidance": "Do not skip heading levels (e.g. directly from h1 to h3).",
+            "description": "Los encabezados deben seguir un orden lógico (h1 -> h2 -> h3).",
+            "technicalGuidance": "No salte niveles de encabezado (ej: directamente de h1 a h3).",
             "wcagTechnique": [
                 "G141"
             ]
@@ -1735,9 +1734,9 @@
         "holmdigitalInsight": {
             "diggRisk": "medium",
             "eaaImpact": "medium",
-            "swedishInterpretation": "Incorrect heading structure makes it difficult for screen readers to navigate. Never skip levels.",
+            "spanishInterpretation": "Una estructura de encabezados incorrecta dificulta la navegación de los lectores de pantalla. Nunca salte niveles.",
             "commonMistakes": [
-                "Using h3 for styling instead of structure"
+                "Usar h3 para estilo en lugar de estructura"
             ]
         },
         "testability": {
@@ -1764,8 +1763,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "9 § (Struktur och relationer)",
         "remediation": {
-            "description": "The banner (<header>) must be at the top level.",
-            "technicalGuidance": "Do not place <header> inside another landmark if it is the page's main banner.",
+            "description": "El banner (<header>) debe estar en el nivel superior.",
+            "technicalGuidance": "No coloque <header> dentro de otro landmark si es el banner principal de la página.",
             "wcagTechnique": [
                 "ARIA11"
             ]
@@ -1773,9 +1772,9 @@
         "holmdigitalInsight": {
             "diggRisk": "medium",
             "eaaImpact": "medium",
-            "swedishInterpretation": "The page's main menu/banner must be located correctly in the structure to be found quickly.",
+            "spanishInterpretation": "El menú principal/banner de la página debe estar ubicado correctamente en la estructurapara ser encontrado rápidamente.",
             "commonMistakes": [
-                "Nesting header inside main"
+                "Anidar el header dentro de main"
             ]
         },
         "testability": {
@@ -1802,8 +1801,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "9 § (Struktur och relationer)",
         "remediation": {
-            "description": "The page must have only one 'banner' landmark (usually <header>).",
-            "technicalGuidance": "Ensure you only have one <header> at the top level.",
+            "description": "La página debe tener solo un landmark 'banner' (generalmente <header>).",
+            "technicalGuidance": "Solo un <header> fuera de artículos/secciones. Asegúrese de tener un solo <header> en el nivel superior.",
             "wcagTechnique": [
                 "ARIA11"
             ]
@@ -1811,9 +1810,9 @@
         "holmdigitalInsight": {
             "diggRisk": "medium",
             "eaaImpact": "medium",
-            "swedishInterpretation": "Multiple banners confuse navigation. There should be only one top header.",
+            "spanishInterpretation": "Múltiples banners confunden la navegación. Debe quedar claro cuál es el principal.",
             "commonMistakes": [
-                "Having header both at top and bottom"
+                "Tener header tanto arriba como abajo"
             ]
         },
         "testability": {
@@ -1840,8 +1839,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "9 § (Struktur och relationer)",
         "remediation": {
-            "description": "Landmarks must have unique roles or labels.",
-            "technicalGuidance": "If you have multiple <nav> elements, give them unique 'aria-label' (e.g., 'Main Menu', 'Footer Menu').",
+            "description": "Los landmarks deben tener roles o etiquetas únicos.",
+            "technicalGuidance": "Si tiene múltiples elementos <nav>, déles un 'aria-label' único (ej: 'Menú principal', 'Menú pie de página').",
             "wcagTechnique": [
                 "ARIA11"
             ]
@@ -1849,9 +1848,9 @@
         "holmdigitalInsight": {
             "diggRisk": "medium",
             "eaaImpact": "medium",
-            "swedishInterpretation": "The user must be able to distinguish between different menus/regions. Give them names.",
+            "spanishInterpretation": "Si hay dos menús, el usuario debe saber cuál es cuál.",
             "commonMistakes": [
-                "Multiple nav elements without aria-label"
+                "Múltiples elementos nav sin aria-label"
             ]
         },
         "testability": {
@@ -1878,8 +1877,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "9 § (Struktur och relationer)",
         "remediation": {
-            "description": "All content on the page must be contained within landmarks (regions).",
-            "technicalGuidance": "Ensure all content is inside <main>, <header>, <nav>, <footer>, or <aside>.",
+            "description": "Todo el contenido de la página debe estar contenido dentro de landmarks (regiones).",
+            "technicalGuidance": "Asegúrese de que todo el contenido esté dentro de <main>, <header>, <nav>, <footer> o <aside>.",
             "component": null,
             "wcagTechnique": [
                 "ARIA11"
@@ -1888,10 +1887,10 @@
         "holmdigitalInsight": {
             "diggRisk": "medium",
             "eaaImpact": "medium",
-            "swedishInterpretation": "For screen reader users to navigate effectively, the page must be divided into logical regions.",
+            "spanishInterpretation": "Todo el contenido debe pertenecer a una región. Texto huérfano en el body es difícil de encontrar.",
             "commonMistakes": [
-                "Content directly in <body> without container",
-                "Using too many landmarks"
+                "Contenido directamente en <body> sin contenedor",
+                "Uso de demasiados landmarks"
             ]
         },
         "testability": {
@@ -1917,8 +1916,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "100 § (Tidsberoende media)",
         "remediation": {
-            "description": "Prerecorded video content must have audio description if visual information is critical.",
-            "technicalGuidance": "Provide an alternative audio track or version describing what happens visually.",
+            "description": "Se proporciona audiodescripción para todo el contenido de video pregrabado.",
+            "technicalGuidance": "Proporcione una pista de audio alternativa o una versión que describa lo que sucede visualmente.",
             "component": null,
             "wcagTechnique": [
                 "G78"
@@ -1927,9 +1926,9 @@
         "holmdigitalInsight": {
             "diggRisk": "medium",
             "eaaImpact": "low",
-            "swedishInterpretation": "Video conveying information visually must be described for those who cannot see the screen.",
+            "spanishInterpretation": "El video que transmite información visualmente debe ser descrito para aquellos que no pueden ver la pantalla.",
             "commonMistakes": [
-                "Video missing audio description despite important visual info"
+                "Video sin audiodescripción a pesar de tener información visual importante"
             ]
         },
         "testability": {
