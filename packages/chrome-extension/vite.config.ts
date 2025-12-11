@@ -14,6 +14,16 @@ export default defineConfig({
             input: {
                 popup: 'src/popup/popup.html',
             },
+            output: {
+                // Use consistent names for content scripts
+                entryFileNames: (chunkInfo) => {
+                    if (chunkInfo.name === 'overlay.ts') {
+                        return 'assets/overlay.js';
+                    }
+                    return 'assets/[name]-[hash].js';
+                },
+            },
         },
     },
+    publicDir: 'public',
 });

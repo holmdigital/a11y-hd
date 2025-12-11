@@ -56,18 +56,20 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
 
 async function handleScan(tabId: number) {
     try {
-        // First inject axe-core from CDN
+        // First inject the bundled axe-core script from public folder
         await chrome.scripting.executeScript({
             target: { tabId },
-            func: injectAxeCore,
+            files: ['axe.min.js'],
+            world: 'MAIN',
         });
 
-        // Wait a bit for axe to load
-        await new Promise(resolve => setTimeout(resolve, 500));
+        // Wait for axe to be available
+        await new Promise(resolve => setTimeout(resolve, 200));
 
         // Then run the scan
         const results = await chrome.scripting.executeScript({
             target: { tabId },
+            world: 'MAIN',
             func: runAxeScan,
         });
 
@@ -108,42 +110,24 @@ async function handleScan(tabId: number) {
     }
 }
 
-// Inject axe-core script into the page
-function injectAxeCore() {
-    return new Promise<void>((resolve, reject) => {
-        if ((window as any).axe) {
-            resolve();
-            return;
-        }
-
-        const script = document.createElement('script');
-        script.src = 'https://cdnjs.cloudflare.com/ajax/libs/axe-core/4.10.2/axe.min.js';
-        script.onload = () => resolve();
-        script.onerror = () => reject(new Error('Failed to load axe-core'));
-        document.head.appendChild(script);
-    });
-}
-
-// Run axe scan (called after axe-core is loaded)
-function runAxeScan() {
-    return new Promise((resolve) => {
-        // Check if axe is available
+// Run axe scan - executed in MAIN world after axe is injected
+async function runAxeScan(): Promise<any> {
+    try {
         if (!(window as any).axe) {
-            resolve({ error: 'axe-core not loaded' });
-            return;
+            return { error: 'axe-core not available' };
         }
 
-        (window as any).axe.run(document, {
+        const results = await (window as any).axe.run(document, {
             runOnly: {
                 type: 'tag',
                 values: ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa']
             }
-        }).then((results: any) => {
-            resolve(results);
-        }).catch((err: any) => {
-            resolve({ error: err.message || 'Scan failed' });
         });
-    });
+
+        return results;
+    } catch (err: any) {
+        return { error: err.message || 'Scan failed' };
+    }
 }
 
 export { };

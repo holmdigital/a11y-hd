@@ -54,12 +54,27 @@ export function Popup() {
 
             setResult(response.result);
 
-            // Send violations to content script for highlighting
+            // Inject content script and highlight violations
             if (response.result.violations.length > 0) {
-                await chrome.tabs.sendMessage(tab.id, {
-                    type: 'HIGHLIGHT_VIOLATIONS',
-                    violations: response.result.violations
-                });
+                try {
+                    // First inject the overlay script
+                    await chrome.scripting.executeScript({
+                        target: { tabId: tab.id },
+                        files: ['assets/overlay.ts-DObSc-pB.js'],
+                    });
+
+                    // Small delay to ensure script is ready
+                    await new Promise(r => setTimeout(r, 100));
+
+                    // Then send highlight message
+                    await chrome.tabs.sendMessage(tab.id, {
+                        type: 'HIGHLIGHT_VIOLATIONS',
+                        violations: response.result.violations
+                    });
+                } catch (highlightErr) {
+                    // Highlighting is optional - don't fail the whole scan
+                    console.log('Could not highlight violations:', highlightErr);
+                }
             }
         } catch (err) {
             setError(err instanceof Error ? err.message : 'Scan failed');
