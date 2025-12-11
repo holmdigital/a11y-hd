@@ -766,10 +766,8 @@ export const MyForm = () => (
           Our packages are published to the <strong>GitHub Package Registry</strong>. Before installing, configure npm to use GitHub for the <code>@holmdigital</code> scope:
         </p>
         <div className="bg-slate-900 rounded-lg p-4 mb-6 overflow-x-auto">
-          <pre className="text-sm font-mono text-slate-50">
-            {`# One-time setup: Configure npm registry for @holmdigital scope
-npm config set @holmdigital:registry https://npm.pkg.github.com`}
-          </pre>
+          <pre className="text-sm font-mono text-slate-50">{`# One-time setup: Configure npm registry for @holmdigital scope
+npm config set @holmdigital:registry https://npm.pkg.github.com`}</pre>
         </div>
         <div className="bg-amber-50 border-l-4 border-amber-500 p-4 mb-8">
           <p className="text-sm text-amber-700">
