@@ -1,0 +1,16 @@
+/* Content script overlay styles */
+.hd-a11y-overlay {
+    animation: hd-pulse 2s infinite;
+}
+
+@keyframes hd-pulse {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.7;
+    }
+}
