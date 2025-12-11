@@ -123,7 +123,7 @@ export const MOCK_ARTICLES: Record<string, ArticleData> = {
               <p className="text-slate-600 text-sm mb-4">
                 Accessible-by-default React components that automatically pass our audits.
               </p>
-              <a href="#components" className="text-primary-600 font-medium text-sm hover:underline">View Components →</a>
+              <a href="?article=components" className="text-primary-600 font-medium text-sm hover:underline">View Components →</a>
             </div>
 
             <div className="p-6 rounded-lg border border-slate-200 bg-white shadow-sm">
@@ -134,7 +134,7 @@ export const MOCK_ARTICLES: Record<string, ArticleData> = {
               <p className="text-slate-600 text-sm mb-4">
                 Our engine checks for compliance against 50+ rules derived from EU law.
               </p>
-              <a href="#standards" className="text-primary-600 font-medium text-sm hover:underline">Explore Rules →</a>
+              <a href="?article=standards" className="text-primary-600 font-medium text-sm hover:underline">Explore Rules →</a>
             </div>
           </div>
         </div>
@@ -314,27 +314,7 @@ export const MOCK_ARTICLES: Record<string, ArticleData> = {
       </>
     )
   },
-  'about': {
-    id: 'about',
-    title: 'About HolmDigital',
-    description: 'We enable digital inclusion through rigorous standards and prescriptive tooling.',
-    lastUpdated: 'December 08, 2025',
-    sections: [],
-    content: (
-      <>
-        <p className="text-lg text-slate-600 leading-relaxed mb-6">
-          HolmDigital is more than just a set of tools; it's a commitment to making the digital world accessible to everyone.
-          Our mission is to bridge the gap between complex regulations (WCAG 2.x, EN 301 549, DOS-lagen) and practical software engineering.
-        </p>
-        <h2 className="text-2xl font-bold text-slate-900 mb-4 mt-8">Our Toolkit</h2>
-        <ul className="list-disc pl-6 space-y-2 text-slate-700 mb-6">
-          <li><strong>@holmdigital/standards:</strong> The single source of truth for accessibility rules.</li>
-          <li><strong>@holmdigital/engine:</strong> An automated scanning engine that understands Single Page Applications.</li>
-          <li><strong>@holmdigital/components:</strong> Pre-validated React components that solve accessibility challenges out of the box.</li>
-        </ul>
-      </>
-    )
-  },
+
   'philosophy': {
     id: 'philosophy',
     title: 'Accessibility Philosophy',

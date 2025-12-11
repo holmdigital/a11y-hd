@@ -205,14 +205,9 @@ export default function App() {
                       href="#"
                       onClick={(e) => { e.preventDefault(); handleNavigate('intro'); }}
                       className="flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-primary-500 rounded-md px-1"
-                      aria-label="HolmDigital Wiki - Home"
+                      aria-label="Holm Digital - Home"
                     >
-                      <div className="bg-primary-600 p-1.5 rounded-lg">
-                        <BookOpen className="h-5 w-5 text-white" />
-                      </div>
-                      <span className="text-slate-900 font-bold hidden sm:inline-block">
-                        holmdigital<span className="text-primary-900">.se</span>
-                      </span>
+                      <img src="/logo.jpg" alt="Holm Digital" className="h-14 md:h-16 w-auto object-contain" />
                     </a>
 
                     <div className="h-6 w-px bg-slate-200 mx-4 hidden sm:block"></div>
@@ -349,7 +344,7 @@ export default function App() {
             onNavigate={(id) => handleNavigate(id)}
           />
         </div>
-      </ToastProvider>
+      </ToastProvider >
     </BlogProvider >
   );
 }

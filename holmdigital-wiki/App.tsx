@@ -12,10 +12,28 @@ import { ArticleData } from './types';
 export default function App() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
-  const [currentRoute, setCurrentRoute] = useState('intro');
+  // Initialize state from URL query parameter
+  const getInitialState = () => {
+    const params = new URLSearchParams(window.location.search);
+    return params.get('article') || 'intro';
+  };
+
+  const [currentRoute, setCurrentRoute] = useState(getInitialState);
+
+  // Handle browser back/forward buttons
+  useEffect(() => {
+    const handlePopState = () => {
+      const params = new URLSearchParams(window.location.search);
+      setCurrentRoute(params.get('article') || 'intro');
+    };
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
 
   // Simple routing logic for SPA
   const handleNavigate = (id: string) => {
+    const newUrl = id === 'intro' ? '/' : `?article=${id}`;
+    window.history.pushState({}, '', newUrl);
     setCurrentRoute(id);
     setSidebarOpen(false);
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -37,6 +55,24 @@ export default function App() {
   };
 
   const breadcrumbs = getBreadcrumbs(currentRoute);
+
+  // Intercept internal link clicks for SPA navigation
+  useEffect(() => {
+    const handleClick = (e: MouseEvent) => {
+      const target = (e.target as HTMLElement).closest('a');
+      if (target && target.href) {
+        const url = new URL(target.href);
+        // Check if it's a local link with ?article=
+        if (url.origin === window.location.origin && url.searchParams.has('article')) {
+          e.preventDefault();
+          const articleId = url.searchParams.get('article');
+          if (articleId) handleNavigate(articleId);
+        }
+      }
+    };
+    document.addEventListener('click', handleClick);
+    return () => document.removeEventListener('click', handleClick);
+  }, []);
 
   // Keyboard shortcut for search
   useEffect(() => {
@@ -82,14 +118,9 @@ export default function App() {
                     href="#"
                     onClick={(e) => { e.preventDefault(); handleNavigate('intro'); }}
                     className="flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-primary-500 rounded-md px-1"
-                    aria-label="HolmDigital Wiki - Home"
+                    aria-label="Holm Digital Wiki - Home"
                   >
-                    <div className="bg-primary-600 p-1.5 rounded-lg">
-                      <BookOpen className="h-5 w-5 text-white" />
-                    </div>
-                    <span className="text-slate-900 font-bold hidden sm:inline-block">
-                      wiki<span className="text-primary-600">.holmdigital</span>
-                    </span>
+                    <img src="/logo.jpg" alt="Holm Digital" className="h-14 md:h-16 w-auto object-contain" />
                   </a>
 
                   <div className="h-6 w-px bg-slate-200 mx-4 hidden sm:block"></div>
@@ -208,7 +239,7 @@ export default function App() {
           onClose={() => setSearchOpen(false)}
           onNavigate={handleNavigate}
         />
-      </div>
-    </ToastProvider>
+      </div >
+    </ToastProvider >
   );
 }
