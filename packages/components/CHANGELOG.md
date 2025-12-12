@@ -1,4 +1,4 @@
-# @holmdigital/engine
+# @holmdigital/components
 
 ## 1.0.0
 
@@ -29,11 +29,6 @@
   - **Core Components**: Button, FormField, Modal, Dialog, NavigationMenu, and more.
   - **Compliance Built-in**: Pre-configured ARIA attributes, keyboard navigation, and contrast ratios.
 
-### Patch Changes
-
-- Updated dependencies
-  - @holmdigital/standards@1.0.0
-
 ## 1.0.0
 
 ### Major Changes
@@ -62,47 +57,3 @@
   A library of accessible-by-default React components.
   - **Core Components**: Button, FormField, Modal, Dialog, NavigationMenu, and more.
   - **Compliance Built-in**: Pre-configured ARIA attributes, keyboard navigation, and contrast ratios.
-
-### Patch Changes
-
-- Updated dependencies
-  - @holmdigital/standards@1.0.0
-
-## 0.3.0
-
-### Minor Changes
-
-- feat: localize accessibility rules to Swedish, German, French, and Spanish
-  fix: correct legal references in localized rules
-
-### Patch Changes
-
-- Updated dependencies
-  - @holmdigital/standards@0.3.0
-
-## 0.2.2
-
-### Patch Changes
-
-- chore: ensure license files are included in package
-- Updated dependencies
-  - @holmdigital/standards@0.2.2
-
-## 0.2.1
-
-### Patch Changes
-
-- docs: update README with HTML validation feature
-- Updated dependencies
-  - @holmdigital/standards@0.2.1
-
-## 0.2.0
-
-### Minor Changes
-
-- Initial public release of the engine and standards packages.
-
-### Patch Changes
-
-- Updated dependencies
-  - @holmdigital/standards@0.2.0

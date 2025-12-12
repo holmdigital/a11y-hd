@@ -1,13 +1,18 @@
 {
     "name": "@holmdigital/components",
     "author": "Holm Digital AB",
-    "version": "0.3.1",
+    "version": "1.0.0",
     "private": false,
     "publishConfig": {
         "access": "public",
         "registry": "https://npm.pkg.github.com"
     },
     "description": "Prescriptive, accessible React components for regulatory compliance",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/holmdigital/a11y-hd.git",
+        "directory": "packages/components"
+    },
     "main": "./dist/index.js",
     "module": "./dist/index.mjs",
     "types": "./dist/index.d.ts",

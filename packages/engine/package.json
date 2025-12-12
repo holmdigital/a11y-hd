@@ -1,12 +1,17 @@
 {
     "name": "@holmdigital/engine",
-    "version": "0.3.1",
+    "version": "1.0.0",
     "private": false,
     "publishConfig": {
         "access": "public",
         "registry": "https://npm.pkg.github.com"
     },
     "description": "Regulatory accessibility test engine with Virtual DOM and Shadow DOM support",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/holmdigital/a11y-hd.git",
+        "directory": "packages/engine"
+    },
     "main": "./dist/index.js",
     "module": "./dist/index.mjs",
     "types": "./dist/index.d.ts",
