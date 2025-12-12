@@ -7,6 +7,10 @@ These components are built to automatically solve common accessibility challenge
 ## Installation
 
 ```bash
+# First, configure npm to use GitHub Package Registry:
+npm config set @holmdigital:registry https://npm.pkg.github.com
+
+# Then install:
 npm install @holmdigital/components
 ```
 

@@ -29,7 +29,7 @@ npx hd-a11y-scan <url> [options]
 ```
 
 **Options:**
-- `--lang <code`> - Language code (`en` or `sv`)
+- `--lang <code>` - Language code (`en`, `sv`, `de`, `fr`, `es`)
 - `--ci` - Run in CI mode (exit code 1 on failure)
 - `--json` - Output results as JSON
 - `--pdf <path>` - Generate a PDF report

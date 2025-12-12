@@ -1,6 +1,7 @@
 {
     "name": "@holmdigital/engine",
     "version": "0.3.1",
+    "private": false,
     "publishConfig": {
         "access": "public",
         "registry": "https://npm.pkg.github.com"
