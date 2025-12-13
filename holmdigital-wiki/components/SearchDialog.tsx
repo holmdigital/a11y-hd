@@ -33,7 +33,8 @@ export const SearchDialog: React.FC<SearchDialogProps> = ({ isOpen, onClose, onN
   const filteredItems = query
     ? allItems.filter(item =>
       item.title.toLowerCase().includes(query.toLowerCase()) ||
-      (item.parent && item.parent.toLowerCase().includes(query.toLowerCase()))
+      (item.parent && item.parent.toLowerCase().includes(query.toLowerCase())) ||
+      (MOCK_ARTICLES[item.id]?.description?.toLowerCase().includes(query.toLowerCase())) // Search description too
     )
     : allItems;
 

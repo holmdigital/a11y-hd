@@ -3,92 +3,58 @@
 
 <head>
   <meta charset="UTF-8" />
-  <link rel="icon" type="image/svg+xml" href="https://lucide.dev/logo.svg" />
+  <link rel="icon" type="image/jpeg" href="/logo.jpg" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description"
-    content="Holmdigital Wiki - Documentation and Standards Explorer for Accessibility and Development." />
-  <title>HolmDigital Wiki</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          maxWidth: {
-            '8xl': '90rem',
-          },
-          colors: {
-            primary: {
-              50: '#f0f9ff',
-              100: '#e0f2fe',
-              200: '#bae6fd',
-              300: '#7dd3fc',
-              400: '#38bdf8',
-              500: '#0ea5e9',
-              600: '#0284c7',
-              700: '#0369a1',
-              800: '#075985',
-              900: '#0c4a6e',
-              950: '#082f49',
-            },
-            slate: {
-              50: '#f8fafc',
-              100: '#f1f5f9',
-              200: '#e2e8f0',
-              300: '#cbd5e1',
-              400: '#94a3b8',
-              500: '#64748b',
-              600: '#475569',
-              700: '#334155',
-              800: '#1e293b',
-              900: '#0f172a',
-              950: '#020617',
-            }
-          },
-          fontFamily: {
-            sans: ['Inter', 'system-ui', 'sans-serif'],
-          },
-        },
-      },
-    }
-  </script>
+    content="Official documentation for @holmdigital/engine, standards & components. Build accessible web apps with WCAG 2.1, EN 301 549 & DOS-lagen compliance." />
+  <title>HolmDigital Wiki – Web Accessibility Documentation & Tools</title>
+
+  <!-- Open Graph / Facebook / LinkedIn -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://wiki.holmdigital.se/" />
+  <meta property="og:title" content="HolmDigital Wiki – Web Accessibility Documentation & Tools" />
+  <meta property="og:description"
+    content="Official documentation for @holmdigital/engine, standards & components. Build accessible web apps with WCAG 2.1, EN 301 549 & DOS-lagen compliance." />
+  <meta property="og:image" content="https://wiki.holmdigital.se/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="HolmDigital Wiki - Web Accessibility Documentation" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:site_name" content="HolmDigital" />
+
+  <!-- LinkedIn specific -->
+  <meta property="article:author" content="Holm Digital AB" />
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:url" content="https://wiki.holmdigital.se/" />
+  <meta name="twitter:title" content="HolmDigital Wiki – Web Accessibility Documentation & Tools" />
+  <meta name="twitter:description"
+    content="Official documentation for @holmdigital/engine, standards & components. Build accessible web apps with WCAG 2.1, EN 301 549 & DOS-lagen compliance." />
+  <meta name="twitter:image" content="https://wiki.holmdigital.se/og-image.png" />
+
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <style>
-    /* Accessibility Focus Ring Defaults */
-    :focus-visible {
-      outline: 2px solid #0369a1;
-      outline-offset: 2px;
-      border-radius: 4px;
-    }
-
-    body {
-      font-family: 'Inter', sans-serif;
-      background-color: #ffffff;
-      color: #0f172a;
-    }
-
-
-
-    /* Custom Scrollbar for better aesthetics */
-    ::-webkit-scrollbar {
-      width: 8px;
-      height: 8px;
-    }
-
-    ::-webkit-scrollbar-track {
-      background: #f1f5f9;
-    }
-
-    ::-webkit-scrollbar-thumb {
-      background: #cbd5e1;
-      border-radius: 4px;
-    }
-
-    ::-webkit-scrollbar-thumb:hover {
-      background: #94a3b8;
-    }
-  </style>
-
   <link rel="stylesheet" href="/index.css">
+
+  <!-- Google Analytics with Consent Mode -->
+  <script>
+    // Initialize dataLayer and consent defaults BEFORE loading gtag
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+
+    // Default: deny all until user consents (GDPR compliant)
+    gtag('consent', 'default', {
+      'analytics_storage': 'denied',
+      'ad_storage': 'denied',
+      'wait_for_update': 500
+    });
+
+    gtag('js', new Date());
+    gtag('config', 'G-2RQ0G3WKE8', {
+      'anonymize_ip': true
+    });
+  </script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-2RQ0G3WKE8"></script>
 </head>
 
 <body>

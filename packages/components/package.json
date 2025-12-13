@@ -69,6 +69,10 @@
         "./Tooltip": {
             "import": "./dist/Tooltip/Tooltip.mjs",
             "types": "./dist/Tooltip/Tooltip.d.ts"
+        },
+        "./Heading": {
+            "import": "./dist/Heading/Heading.mjs",
+            "types": "./dist/Heading/Heading.d.ts"
         }
     },
     "files": [
@@ -76,8 +80,8 @@
         "README.md"
     ],
     "scripts": {
-        "build": "tsup src/index.ts src/Button/Button.tsx src/FormField/FormField.tsx src/Dialog/Dialog.tsx src/Modal/Modal.tsx src/SkipLink/SkipLink.tsx src/NavigationMenu/NavigationMenu.tsx src/Checkbox/Checkbox.tsx src/RadioGroup/RadioGroup.tsx src/Select/Select.tsx src/Switch/Switch.tsx src/Toast/Toast.tsx src/Tooltip/Tooltip.tsx --format cjs,esm --dts --clean --external react",
-        "dev": "tsup src/index.ts src/Button/Button.tsx src/FormField/FormField.tsx src/Dialog/Dialog.tsx src/Modal/Modal.tsx src/SkipLink/SkipLink.tsx src/NavigationMenu/NavigationMenu.tsx src/Checkbox/Checkbox.tsx src/RadioGroup/RadioGroup.tsx src/Select/Select.tsx src/Switch/Switch.tsx src/Toast/Toast.tsx src/Tooltip/Tooltip.tsx --format cjs,esm --dts --watch --external react",
+        "build": "tsup src/index.ts src/Button/Button.tsx src/FormField/FormField.tsx src/Dialog/Dialog.tsx src/Modal/Modal.tsx src/SkipLink/SkipLink.tsx src/NavigationMenu/NavigationMenu.tsx src/Checkbox/Checkbox.tsx src/RadioGroup/RadioGroup.tsx src/Select/Select.tsx src/Switch/Switch.tsx src/Toast/Toast.tsx src/Tooltip/Tooltip.tsx src/Heading/Heading.tsx --format cjs,esm --dts --clean --external react",
+        "dev": "tsup src/index.ts src/Button/Button.tsx src/FormField/FormField.tsx src/Dialog/Dialog.tsx src/Modal/Modal.tsx src/SkipLink/SkipLink.tsx src/NavigationMenu/NavigationMenu.tsx src/Checkbox/Checkbox.tsx src/RadioGroup/RadioGroup.tsx src/Select/Select.tsx src/Switch/Switch.tsx src/Toast/Toast.tsx src/Tooltip/Tooltip.tsx src/Heading/Heading.tsx --format cjs,esm --dts --watch --external react",
         "lint": "eslint src --ext .ts,.tsx",
         "storybook": "storybook dev -p 6006",
         "build-storybook": "storybook build"

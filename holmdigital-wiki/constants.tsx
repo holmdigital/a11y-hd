@@ -26,7 +26,8 @@ const mapImpact = (impact: EAAImpact): 'Critical' | 'Serious' | 'Moderate' | 'Mi
 
 // Fetch real data from standards package
 const realRules = getAllConvergenceRules();
-const manualChecks = getICTManualChecklist();
+// Export for use in manual checks page
+export const MOCK_MANUAL_CHECKS = getICTManualChecklist();
 
 export const RULES_DATA: Rule[] = realRules.map((r: any) => ({
   id: r.ruleId,
@@ -52,6 +53,7 @@ export const NAV_ITEMS: NavItem[] = [
     href: 'intro',
     children: [
       { id: 'about', title: 'About HolmDigital', href: 'about' },
+      { id: 'features', title: 'Features & Compliance', href: 'features' },
       { id: 'philosophy', title: 'Accessibility Philosophy', href: 'philosophy' },
     ],
   },
@@ -107,7 +109,7 @@ export const MOCK_ARTICLES: Record<string, ArticleData> = {
             </p>
           </div>
 
-          <h2>Overview</h2>
+          <h2 id="overview" className="scroll-mt-24">Overview</h2>
           <p>
             Our mission is to build digital experiences that are accessible to everyone. This wiki documents
             the tools and standards we use to achieve that goal, specifically mapped to <strong>WCAG 2.1 AA</strong>,
@@ -277,7 +279,7 @@ export const MOCK_ARTICLES: Record<string, ArticleData> = {
           </p>
 
           <div className="space-y-6">
-            {manualChecks.map((check) => (
+            {MOCK_MANUAL_CHECKS.map((check) => (
               <div key={check.id} className="bg-white border border-slate-200 rounded-lg p-6 shadow-sm">
                 <div className="flex items-center justify-between mb-3">
                   <span className="text-xs font-mono font-bold text-slate-600 bg-slate-100 px-2 py-1 rounded">
@@ -883,14 +885,67 @@ npm config set @holmdigital:registry https://npm.pkg.github.com`}</pre>
   'content-structure': {
     id: 'content-structure',
     title: 'Structure & Content',
-    description: 'Components for organizing content: Accordion, Tabs, and specialized lists.',
-    lastUpdated: 'December 09, 2025',
+    description: 'Semantic structure components including Headings, Accordions, and Tabs.',
+    lastUpdated: 'December 13, 2025',
     sections: [],
     content: (
       <>
         <p className="text-lg text-slate-600 leading-relaxed mb-8">
-          Structuring content correctly is vital for cognitive accessibility.
-          <strong> Accordions</strong> and <strong>Tabs</strong> help reduce cognitive load by progressive disclosure.
+          Semantic structure is the backbone of accessibility. Correct usage of Headings, landmarks, and progressive disclosure patterns helps all users understand content hierarchy.
+        </p>
+
+        {/* HEADINGS SECTION */}
+        <h2 className="text-2xl font-bold text-slate-900 mb-4">Headings</h2>
+        <div className="bg-blue-50 border-l-4 border-blue-500 p-4 mb-6 rounded-r-md">
+          <h4 className="font-bold text-blue-900 mb-1 flex items-center gap-2">
+            <Info className="h-4 w-4" />
+            Regulatory Context
+          </h4>
+          <p className="text-sm text-blue-800">
+            <strong>Heading Order (1.3.1)</strong> is a common failure. Headings must follow a logical sequence (h1, then h2, then h3).
+            Skipping levels (e.g. h1 to h3) confuses navigation structure.
+          </p>
+        </div>
+
+        <div className="bg-slate-50 border border-slate-200 p-6 rounded-lg mb-12">
+          <h3 className="font-bold text-slate-900 mb-4">Heading Component</h3>
+          <p className="text-slate-600 mb-4">
+            Use our <code>Heading</code> component to ensure consistent styling and semantic markup.
+          </p>
+          <div className="mb-4">
+            <pre className="text-sm overflow-x-auto bg-white p-4 rounded border border-slate-100">
+              {`import { Heading } from '@holmdigital/components';
+
+<Heading level={1}>Page Title</Heading>
+<Heading level={2}>Section Title</Heading>`}
+            </pre>
+          </div>
+
+          <h4 className="font-bold text-slate-900 mb-2 mt-4">Props</h4>
+          <div className="overflow-hidden shadow ring-1 ring-black ring-opacity-5 rounded-lg">
+            <table className="min-w-full divide-y divide-slate-300">
+              <thead className="bg-slate-50">
+                <tr>
+                  <th className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-slate-900">Prop</th>
+                  <th className="px-3 py-3.5 text-left text-sm font-semibold text-slate-900">Type</th>
+                  <th className="px-3 py-3.5 text-left text-sm font-semibold text-slate-900">Description</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-200 bg-white text-sm">
+                <tr>
+                  <td className="whitespace-nowrap py-4 pl-4 pr-3 font-mono text-blue-600">level</td>
+                  <td className="whitespace-nowrap px-3 py-4 text-slate-600">1 | 2 | 3 | 4 | 5 | 6</td>
+                  <td className="px-3 py-4 text-slate-600">The heading level. Renders as &lt;h1&gt; through &lt;h6&gt;.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        {/* EXISTING ACCORDION/TABS CONTENT */}
+        <h2 className="text-2xl font-bold text-slate-900 mb-4">Interactive Structure</h2>
+        <p className="text-slate-600 mb-6">
+          <strong>Accordions</strong> and <strong>Tabs</strong> help reduce cognitive load by progressive disclosure.
         </p>
 
         <ContentDemo />
@@ -951,5 +1006,5 @@ npm config set @holmdigital:registry https://npm.pkg.github.com`}</pre>
         <TooltipDemo />
       </>
     )
-  }
+  },
 };

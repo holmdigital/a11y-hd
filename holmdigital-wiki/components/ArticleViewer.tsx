@@ -1,14 +1,15 @@
 import React from 'react';
-import { ArticleData } from '../types';
-import { ChevronRight, Calendar, Edit3 } from 'lucide-react';
+import { ArticleData, NavItem } from '../types';
+import { ChevronRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 interface ArticleViewerProps {
   article: ArticleData;
   breadcrumb: string[];
+  navItems: NavItem[];
 }
 
-export const ArticleViewer: React.FC<ArticleViewerProps> = ({ article, breadcrumb }) => {
+export const ArticleViewer: React.FC<ArticleViewerProps> = ({ article, breadcrumb, navItems }) => {
   return (
     <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
       <div className="lg:grid lg:grid-cols-12 lg:gap-8">
@@ -43,14 +44,9 @@ export const ArticleViewer: React.FC<ArticleViewerProps> = ({ article, breadcrum
               <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight mb-4">
                 {article.title}
               </h1>
-              <p className="text-xl text-slate-600 leading-relaxed mb-6">
+              <p className="text-xl text-slate-600 leading-relaxed">
                 {article.description}
               </p>
-              <div className="flex items-center gap-2">
-                <Calendar className="h-4 w-4" />
-                <time dateTime={article.lastUpdated}>{article.lastUpdated}</time>
-              </div>
-
             </header>
 
             {/* Content Body */}
@@ -60,9 +56,42 @@ export const ArticleViewer: React.FC<ArticleViewerProps> = ({ article, breadcrum
 
             {/* Article Footer Navigation */}
             <div className="mt-16 pt-8 border-t border-slate-200 flex justify-between">
-              <div className="text-right ml-auto">
-                {/* Placeholder for 'Next Article' logic if implemented */}
-              </div>
+              {(() => {
+                // Flatten nav items to find next/prev
+                const flattenNav = (items: any[]): any[] => {
+                  return items.reduce((acc, item) => {
+                    acc.push(item);
+                    if (item.children) acc.push(...item.children);
+                    return acc;
+                  }, []);
+                };
+
+                const flatNav = flattenNav(navItems);
+                const currentIndex = flatNav.findIndex(item => item.href === article.id);
+                const prevItem = currentIndex > 0 ? flatNav[currentIndex - 1] : null;
+                const nextItem = currentIndex < flatNav.length - 1 ? flatNav[currentIndex + 1] : null;
+
+                return (
+                  <>
+                    <div className="flex-1">
+                      {prevItem && (
+                        <a href={`?article=${prevItem.href}`} className="group flex flex-col text-slate-600 hover:text-primary-600 no-underline">
+                          <span className="text-sm text-slate-500 font-medium mb-1">← Previous</span>
+                          <span className="text-lg font-bold group-hover:underline">{prevItem.title}</span>
+                        </a>
+                      )}
+                    </div>
+                    <div className="flex-1 text-right">
+                      {nextItem && (
+                        <a href={`?article=${nextItem.href}`} className="group flex flex-col items-end text-slate-600 hover:text-primary-600 no-underline">
+                          <span className="text-sm text-slate-500 font-medium mb-1">Next →</span>
+                          <span className="text-lg font-bold group-hover:underline">{nextItem.title}</span>
+                        </a>
+                      )}
+                    </div>
+                  </>
+                );
+              })()}
             </div>
           </motion.div>
         </main>
@@ -97,11 +126,16 @@ export const ArticleViewer: React.FC<ArticleViewerProps> = ({ article, breadcrum
             <div className="bg-slate-50 rounded-lg p-4 border border-slate-100">
               <h3 className="text-sm font-semibold text-slate-900 mb-2">Need help?</h3>
               <p className="text-xs text-slate-600 mb-3">
-                Join our accessibility slack channel or open an issue on GitHub.
+                Get expert accessibility auditing and consulting from Holm Digital.
               </p>
-              <button className="text-xs font-medium text-primary-700 hover:text-primary-800">
-                Contact Support &rarr;
-              </button>
+              <a
+                href="https://holmdigital.se/#kontakt"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-xs font-medium text-primary-700 hover:text-primary-800"
+              >
+                Contact us &rarr;
+              </a>
             </div>
           </div>
         </aside>

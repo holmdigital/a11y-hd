@@ -12,6 +12,7 @@ import { PseudoAutomationEngine } from '../automation/pseudo-automation';
 import { generateReportHTML } from '../reporting/html-template';
 import { generatePDF } from '../reporting/pdf-generator';
 import { setLanguage, t } from '../i18n';
+import { sendToCloud, CloudConfig } from './cloud-client';
 
 /**
  * Validates URL format
@@ -40,6 +41,8 @@ program
     .option('--json', 'Output as JSON')
     .option('--pdf <path>', 'Generate PDF report to path')
     .option('--viewport <size>', 'Set viewport (e.g. "mobile", "desktop", "1024x768")')
+    .option('--api-key <key>', 'API key for HolmDigital Cloud authentication')
+    .option('--cloud-url <url>', 'Cloud API URL', 'https://cloud.holmdigital.se')
     .action(async (url: string, options) => {
         setLanguage(options.lang);
 
@@ -171,6 +174,30 @@ program
             if (options.ci && result.stats.critical > 0) {
                 if (!options.json) console.error(chalk.red(t('cli.critical_failure')));
                 process.exit(1);
+            }
+
+            // Cloud Integration: Send results if API key is provided
+            if (options.apiKey) {
+                const cloudSpinner = !options.json ? ora('Uploading results to HolmDigital Cloud...').start() : null;
+
+                const cloudConfig: CloudConfig = {
+                    apiKey: options.apiKey,
+                    cloudUrl: options.cloudUrl
+                };
+
+                const cloudResponse = await sendToCloud(cloudConfig, result);
+
+                if (cloudResponse.success) {
+                    if (cloudSpinner) cloudSpinner.succeed('Results uploaded to HolmDigital Cloud');
+                    if (!options.json) {
+                        console.log(chalk.green(`✓ ${cloudResponse.message}`));
+                    }
+                } else {
+                    if (cloudSpinner) cloudSpinner.fail('Cloud upload failed');
+                    if (!options.json) {
+                        console.error(chalk.red(`Cloud error: ${cloudResponse.error}`));
+                    }
+                }
             }
 
         } catch (error) {

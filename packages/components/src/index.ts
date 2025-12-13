@@ -13,3 +13,5 @@ export * from './Select/Select';
 export * from './Switch/Switch';
 export * from './Toast/Toast';
 export * from './Tooltip/Tooltip';
+export * from './Heading/Heading';
+

@@ -6,8 +6,10 @@ import { Button, ToastProvider } from '@holmdigital/components';
 import { Sidebar } from './components/Sidebar';
 import { ArticleViewer } from './components/ArticleViewer';
 import { SearchDialog } from './components/SearchDialog';
-import { NAV_ITEMS, MOCK_ARTICLES } from './constants';
-import { ArticleData } from './types';
+import { CookieConsent } from './components/CookieConsent';
+import { NAV_ITEMS, RULES_DATA } from './constants';
+import { ARTICLES } from './content';
+import { NavItem, ArticleData } from './types';
 
 export default function App() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -39,22 +41,22 @@ export default function App() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  // Resolve current article or fallback
-  const currentArticle: ArticleData = MOCK_ARTICLES[currentRoute] || MOCK_ARTICLES['intro'];
+  // Determine current article data
+  const currentArticle = ARTICLES[currentRoute] || ARTICLES['intro'];
 
-  // Calculate breadcrumbs based on nav structure
-  const getBreadcrumbs = (id: string): string[] => {
+  // Breadcrumb logic
+  const findBreadcrumb = (items: NavItem[], targetId: string, path: string[] = []): string[] | null => {
     for (const item of NAV_ITEMS) {
-      if (item.href === id) return [item.title];
+      if (item.href === targetId) return [item.title];
       if (item.children) {
-        const child = item.children.find(c => c.href === id);
+        const child = item.children.find(c => c.href === targetId);
         if (child) return [item.title, child.title];
       }
     }
     return ['Documentation'];
   };
 
-  const breadcrumbs = getBreadcrumbs(currentRoute);
+  const breadcrumbs = findBreadcrumb(NAV_ITEMS, currentRoute) || ['Documentation'];
 
   // Intercept internal link clicks for SPA navigation
   useEffect(() => {
@@ -126,7 +128,7 @@ export default function App() {
                   <div className="h-6 w-px bg-slate-200 mx-4 hidden sm:block"></div>
 
                   <a
-                    href={import.meta.env.PROD ? "/" : "http://localhost:3004"}
+                    href="https://holmdigital.se"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-primary-500 rounded-md px-1 opacity-75 hover:opacity-100 transition-opacity"
@@ -175,7 +177,7 @@ export default function App() {
 
         <div className="relative max-w-8xl mx-auto px-4 sm:px-6 md:px-8">
           {/* Desktop Sidebar */}
-          <div className="hidden lg:block fixed z-20 inset-0 top-[3.8125rem] left-[max(0px,calc(50%-45rem))] right-auto w-[19rem] pb-10 pl-8 pr-6 overflow-y-auto border-r border-slate-900/10 bg-white/50 backdrop-blur-[2px]">
+          <div className="hidden lg:block fixed z-20 inset-0 top-[6rem] left-[max(0px,calc(50%-45rem))] right-auto w-[19rem] pb-10 pl-8 pr-6 overflow-y-auto border-r border-slate-900/10 bg-white/50 backdrop-blur-[2px]">
             <Sidebar
               items={NAV_ITEMS}
               activeId={currentRoute}
@@ -185,7 +187,22 @@ export default function App() {
 
           {/* Main Content Area */}
           <div className="lg:pl-[19rem] relative z-10">
-            <ArticleViewer article={currentArticle} breadcrumb={breadcrumbs} />
+            <ArticleViewer article={currentArticle} breadcrumb={breadcrumbs} navItems={NAV_ITEMS} />
+
+            {/* Footer */}
+            <footer className="border-t border-slate-200 mt-16 py-8 px-4 sm:px-6 lg:px-8">
+              <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-slate-600">
+                <p>© {new Date().getFullYear()} Holm Digital AB. All rights reserved.</p>
+                <div className="flex items-center gap-6">
+                  <a href="https://holmdigital.se" target="_blank" rel="noopener noreferrer" className="hover:text-primary-600 transition-colors">
+                    holmdigital.se
+                  </a>
+                  <a href="https://github.com/holmdigital" target="_blank" rel="noopener noreferrer" className="hover:text-primary-600 transition-colors">
+                    GitHub
+                  </a>
+                </div>
+              </div>
+            </footer>
           </div>
         </div>
 
@@ -239,6 +256,8 @@ export default function App() {
           onClose={() => setSearchOpen(false)}
           onNavigate={handleNavigate}
         />
+
+        <CookieConsent />
       </div >
     </ToastProvider >
   );
