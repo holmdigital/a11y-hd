@@ -17,11 +17,12 @@ npm install @holmdigital/components
 ## Usage
 
 ```tsx
-import { Button, FormField } from '@holmdigital/components';
+import { Button, FormField, Heading } from '@holmdigital/components';
 
 function App() {
   return (
     <form>
+      <Heading level={1}>Contact Us</Heading>
       <FormField 
         label="Email Address" 
         type="email" 

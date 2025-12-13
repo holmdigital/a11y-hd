@@ -34,6 +34,8 @@ npx hd-a11y-scan <url> [options]
 - `--json` - Output results as JSON
 - `--pdf <path>` - Generate a PDF report
 - `--viewport <size>` - Set viewport size (e.g., "mobile", "desktop")
+- `--api-key <key>` - API Key for HolmDigital Cloud (sends results to dashboard)
+- `--cloud-url <url>` - Custom URL for HolmDigital Cloud API (optional)
 
 ## Programmatic Usage
 

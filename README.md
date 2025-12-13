@@ -111,16 +111,12 @@ npm run build
 
 ## 🏗️ Architecture
 
-```
 @holmdigital/a11y-monorepo/
 ├── packages/
-│   ├── engine/          # Test engine (Puppeteer/Axe) with i18n
-│   ├── components/      # React components
+│   ├── engine/          # Test engine (Puppeteer/Axe) with i18n & Cloud Support
+│   ├── components/      # React components (Heading, Button, etc.)
 │   └── standards/       # Regulatory database (EN/SV/DE/FR/ES)
-├── holmdigital-website/ # Public Marketing Website & Dashboard
-├── holmdigital-wiki/    # Private Internal Wiki / Documentation
 └── package.json         # Monorepo root
-```
 
 ## 🤝 Contributing
 
