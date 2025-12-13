@@ -33,10 +33,13 @@ npx hd-a11y-scan <url> [options]
 
 **Options:**
 - `--lang <code>` - Language code (`en`, `sv`, `de`, `fr`, `es`)
-- `--ci` - Run in CI mode (exit code 1 on failure)
+- `--ci` - Run in CI mode (exit code 1 on critical failures)
 - `--json` - Output results as JSON
 - `--pdf <path>` - Generate a PDF report
-- `--viewport <size>` - Set viewport size (e.g., "mobile", "desktop")
+- `--viewport <size>` - Set viewport size (e.g., "mobile", "desktop", "1024x768")
+- `--generate-tests` - Generate pseudo-code automation scripts for verification
+- `--api-key <key>` - Upload results to HolmDigital Cloud Dashboard
+- `--cloud-url <url>` - Custom Cloud API Endpoint (default: cloud.holmdigital.se)
 
 ### 2. [@holmdigital/components](./packages/components)
 Accessible React components with built-in regulatory compliance.
