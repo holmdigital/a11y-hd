@@ -4,7 +4,7 @@
     "private": false,
     "publishConfig": {
         "access": "public",
-        "registry": "https://npm.pkg.github.com"
+        "registry": "https://registry.npmjs.org/"
     },
     "description": "Machine-readable regulatory database for WCAG, EN 301 549 and the DOS Act",
     "repository": {

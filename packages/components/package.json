@@ -5,7 +5,7 @@
     "private": false,
     "publishConfig": {
         "access": "public",
-        "registry": "https://npm.pkg.github.com"
+        "registry": "https://registry.npmjs.org/"
     },
     "description": "Prescriptive, accessible React components for regulatory compliance",
     "repository": {

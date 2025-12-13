@@ -4,7 +4,7 @@
     "private": false,
     "publishConfig": {
         "access": "public",
-        "registry": "https://npm.pkg.github.com"
+        "registry": "https://registry.npmjs.org/"
     },
     "description": "Regulatory accessibility test engine with Virtual DOM and Shadow DOM support",
     "repository": {
