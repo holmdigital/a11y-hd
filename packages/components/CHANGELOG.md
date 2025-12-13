@@ -1,5 +1,11 @@
 # @holmdigital/components
 
+## 1.1.0
+
+### Minor Changes
+
+- 4c06ccf: feat: add Heading component
+
 ## 1.0.0
 
 ### Major Changes

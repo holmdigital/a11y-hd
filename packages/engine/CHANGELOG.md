@@ -1,5 +1,11 @@
 # @holmdigital/engine
 
+## 1.2.0
+
+### Minor Changes
+
+- 4c06ccf: feat: add cloud integration and CLI options
+
 ## 1.0.0
 
 ### Major Changes

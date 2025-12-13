@@ -6,9 +6,7 @@
     "workspaces": [
         "packages/engine",
         "packages/components",
-        "packages/standards",
-        "holmdigital-wiki",
-        "holmdigital-website"
+        "packages/standards"
     ],
     "scripts": {
         "build": "npm run build --workspaces --if-present",
