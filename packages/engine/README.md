@@ -29,10 +29,10 @@ npx hd-a11y-scan <url> [options]
 - `--ci` - Run in CI mode (exit code 1 on failure)
 - `--json` - Output results as JSON
 - `--pdf <path>` - Generate a PDF report
-- `--viewport <size>` - Set viewport size (e.g., "mobile", "desktop")
+- `--viewport <size>` - Set viewport size (`mobile`, `tablet`, `desktop`, or custom `1024x768`)
 - `--generate-tests` - Generate Pseudo-Automation tests
 - `--api-key <key>` - API Key for HolmDigital Cloud (sends results to dashboard)
-- `--cloud-url <url>` - Custom URL for HolmDigital Cloud API (optional)
+- `--cloud-url <url>` - Custom URL for HolmDigital Cloud API (default: `https://cloud.holmdigital.se`)
 
 ## Programmatic Usage
 
