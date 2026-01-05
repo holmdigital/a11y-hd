@@ -8,7 +8,7 @@ This engine bridges the gap between technical accessibility scanning (using `axe
 
 - **Regulatory Mapping**: Maps technical failures to EU laws.
 - **HTML Structure Validation**: built-in `html-validate` checks for semantic correctness.
-- **Internationalization (i18n)**: Supports English (`en`), Swedish (`sv`), German (`de`), French (`fr`), and Spanish (`es`).
+- **Internationalization (i18n)**: Supports English (`en`), Swedish (`sv`), German (`de`), French (`fr`), Spanish (`es`), and Dutch (`nl`). Supports region-specific rules (e.g. `en-us`, `en-gb`).
 - **Pseudo-Automation**: Generates Playwright test scripts for manual verification.
 - **PDF Reporting**: Generates beautiful, compliant PDF reports.
 
@@ -25,7 +25,7 @@ npx hd-a11y-scan <url> [options]
 ```
 
 **Options:**
-- `--lang <code>` - Language code (`en`, `sv`, `de`, `fr`, `es`)
+- `--lang <code>` - Language code (`en`, `sv`, `de`, `fr`, `es`, `nl`, `en-us`, `en-gb`)
 - `--ci` - Run in CI mode (exit code 1 on failure)
 - `--json` - Output results as JSON
 - `--pdf <path>` - Generate a PDF report

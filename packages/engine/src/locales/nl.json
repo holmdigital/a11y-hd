@@ -1,0 +1,34 @@
+{
+    "cli": {
+        "title": "\n🌐 HolmDigital Regulatory Scanner\n",
+        "scanning": "Scannen van {url}...\n",
+        "initializing": "Scanner initialiseren...",
+        "analyzing": "Analyseren van DOM & Shadow DOM...",
+        "complete": "Scan voltooid!",
+        "generating_pdf": "PDF-rapport genereren...",
+        "pdf_saved": "PDF-rapport opgeslagen op {path}",
+        "scan_failed": "Scan mislukt",
+        "critical_failure": "\nCI/CD Fout: Kritieke wettelijke overtredingen gevonden.",
+        "score": "\nNalevingsscore: {score}/100",
+        "status": "Nalevingsstatus: {status}",
+        "not_compliant": "  (Niet in overeenstemming met wettelijke vereisten)",
+        "viewport": "Viewport: {width}x{height}",
+        "prescriptive_fix": "\n💡 Voorgeschreven oplossing:",
+        "use_component": "Gebruik component: {component}",
+        "pseudo_tests": "\n🧬 Pseudo-automatiseringstests genereren...\n",
+        "test_for": "Test voor {ruleId}:"
+    },
+    "report": {
+        "title": "Toegankelijkheidsrapport - {url}",
+        "generated": "Gegenereerd: {date}",
+        "scan_target": "Scandoel: {url}",
+        "overall_score": "Totale Score",
+        "critical_issues": "Kritieke problemen",
+        "high_issues": "Hoge prioriteit problemen",
+        "total_issues": "Totaal aantal problemen",
+        "detailed_violations": "Gedetailleerde overtredingen",
+        "prescriptive_fix": "💡 Voorgeschreven oplossing",
+        "use": "Gebruik",
+        "footer": "Gegenereerd door @holmdigital/engine v0.1.0 • Standaarden: WCAG 2.1 AA, EN 301 549, Besluit digitale toegankelijkheid overheid"
+    }
+}

@@ -4,6 +4,8 @@ import de from '../locales/de.json';
 import fr from '../locales/fr.json';
 import es from '../locales/es.json';
 
+import nl from '../locales/nl.json';
+
 type LocaleData = typeof en;
 type Paths<T> = T extends object ? { [K in keyof T]: `${Exclude<K, symbol>}${"" | `.${Paths<T[K]>}`}` }[keyof T] : never;
 type LocaleKey = Paths<LocaleData>;
@@ -13,7 +15,11 @@ const locales: Record<string, LocaleData> = {
     sv,
     de,
     fr,
-    es
+    es,
+    nl,
+    'en-gb': en,
+    'en-us': en,
+    'en-ca': en
 };
 
 let currentLang = 'en';

@@ -15,7 +15,15 @@ npm install @holmdigital/standards
 
 ## Features
 
-- **Multi-Language Support**: Separate data rules for English (`en`), Swedish (`sv`), German (`de`), French (`fr`), and Spanish (`es`).
+- **Multi-Language Support**:
+  - `en` (Generic / UK PSBAR)
+  - `sv` (Sweden / DOS-lagen)
+  - `de` (Germany / BITV 2.0)
+  - `fr` (France / RGAA)
+  - `es` (Spain / UNE 139803)
+  - `nl` (Netherlands / Digitoegankelijk)
+  - `en-us` (USA / Section 508 & ADA)
+  - `en-ca` (Canada / AODA)
 - **Risk Assessment**: DIGG-aligned risk levels (`critical`, `high`, `medium`, `low`).
 - **Remediation**: Maps issues to `@holmdigital/components` for fixing.
 

@@ -5,10 +5,17 @@ A professional accessibility ecosystem bridging the gap between technical code v
 
 ## 🎯 Value Proposition
 
-- **Regulatory Mapping**: Automatically maps WCAG failures to EN 301 549 and national laws (e.g., Sweden's DOS-lagen).
-- **Risk Assessment**: Classifies every violation based on regulatory enforcement practices (e.g., DIGG).
+- **Regulatory Mapping**: Automatically maps WCAG failures to EN 301 549 and national laws:
+    - 🇸🇪 **DOS-lagen** (Sweden)
+    - 🇳🇱 **Digitoegankelijk** (Netherlands)
+    - 🇩🇪 **BITV 2.0** (Germany)
+    - 🇫🇷 **RGAA** (France)
+    - 🇬🇧 **PSBAR** (UK)
+    - 🇺🇸 **Section 508 / ADA** (USA)
+    - 🇨🇦 **AODA** (Canada)
+- **Risk Assessment**: Classifies every violation based on regulatory enforcement practices (e.g., DIGG, Logius).
 - **Prescriptive Design**: Provides concrete component-based solutions, not just error descriptions.
-- **European Focus**: Built-in support for multiple languages and national regulations.
+- **Global Compliance**: Built-in support for multiple languages and national regulations.
 - **CI/CD Integration**: Automatically breaks builds on critical regulatory violations.
 
 ## 📦 Packages
@@ -28,7 +35,7 @@ npx hd-a11y-scan <url> [options]
 ```
 
 **Options:**
-- `--lang <code>` - Language code (`en`, `sv`, `de`, `fr`, `es`)
+- `--lang <code>` - Language code (`en`, `sv`, `de`, `fr`, `es`, `nl`)
 - `--ci` - Run in CI mode (exit code 1 on critical failures)
 - `--json` - Output results as JSON
 - `--pdf <path>` - Generate a PDF report

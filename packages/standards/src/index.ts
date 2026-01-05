@@ -8,6 +8,10 @@ import rulesSv from '../data/rules.sv.json';
 import rulesDe from '../data/rules.de.json';
 import rulesFr from '../data/rules.fr.json';
 import rulesEs from '../data/rules.es.json';
+import rulesNl from '../data/rules.nl.json';
+import rulesEnGb from '../data/rules.en-gb.json';
+import rulesEnUs from '../data/rules.en-us.json';
+import rulesEnCa from '../data/rules.en-ca.json';
 import ictManualChecksData from '../data/ict-manual-checks.json';
 
 import type {
@@ -39,11 +43,15 @@ export type {
 };
 
 function getData(lang: string = 'en'): ConvergenceRule[] {
-    switch (lang) {
+    switch (lang.toLowerCase()) {
         case 'sv': return rulesSv as ConvergenceRule[];
         case 'de': return rulesDe as ConvergenceRule[];
         case 'fr': return rulesFr as ConvergenceRule[];
         case 'es': return rulesEs as ConvergenceRule[];
+        case 'nl': return rulesNl as ConvergenceRule[];
+        case 'en-gb': return rulesEnGb as ConvergenceRule[];
+        case 'en-us': return rulesEnUs as ConvergenceRule[];
+        case 'en-ca': return rulesEnCa as ConvergenceRule[];
         default: return rulesEn as ConvergenceRule[];
     }
 }
