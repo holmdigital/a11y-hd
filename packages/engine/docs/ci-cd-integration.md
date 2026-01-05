@@ -2,14 +2,11 @@
 
 ## Prerequisites
 
-The packages are hosted on **GitHub Package Registry**. Configure npm before installation:
+The packages are hosted on **npmjs**. No special configuration is usually required.
 
 ```bash
-# Configure npm to use GitHub Package Registry for @holmdigital packages
-npm config set @holmdigital:registry https://npm.pkg.github.com
-
-# Authenticate (use a GitHub PAT with read:packages scope)
-npm login --registry=https://npm.pkg.github.com
+# Ensure you are using the public npm registry (default)
+npm config set registry https://registry.npmjs.org/
 ```
 
 ## Quick Start
@@ -68,13 +65,10 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
-          registry-url: 'https://npm.pkg.github.com'
-          scope: '@holmdigital'
       
       - name: Install scanner
         run: npm install -g @holmdigital/engine
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       
       - name: Run accessibility scan
         run: hd-a11y-scan ${{ vars.SITE_URL || 'https://your-site.com' }} --ci
@@ -85,8 +79,7 @@ jobs:
 ```yaml
       - name: Run scan with report
         run: hd-a11y-scan https://your-site.com --ci --json > a11y-report.json
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       
       - name: Upload report
         uses: actions/upload-artifact@v4
@@ -105,8 +98,7 @@ accessibility:
   image: node:20
   stage: test
   before_script:
-    - npm config set @holmdigital:registry https://npm.pkg.github.com
-    - npm config set //npm.pkg.github.com/:_authToken ${GITHUB_NPM_TOKEN}
+
   script:
     - npm install -g @holmdigital/engine
     - hd-a11y-scan https://your-site.com --ci --json > a11y-report.json
@@ -116,7 +108,7 @@ accessibility:
       - a11y-report.json
 ```
 
-> **Note:** Create a GitLab CI variable `GITHUB_NPM_TOKEN` with a GitHub PAT that has `read:packages` scope.
+
 
 ---
 
@@ -128,14 +120,13 @@ accessibility:
     versionSpec: '20.x'
 
 - script: |
-    npm config set @holmdigital:registry https://npm.pkg.github.com
-    npm config set //npm.pkg.github.com/:_authToken $(GITHUB_NPM_TOKEN)
+
     npm install -g @holmdigital/engine
     hd-a11y-scan $(SITE_URL) --ci
   displayName: 'Accessibility Scan'
 ```
 
-> **Note:** Create a pipeline variable `GITHUB_NPM_TOKEN` with a GitHub PAT that has `read:packages` scope.
+
 
 ---
 
