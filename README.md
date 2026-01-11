@@ -96,7 +96,7 @@ jobs:
 
       # 2. Run Regulatory Scan
       - name: Run HolmDigital Compliance Scan
-        run: npx @holmdigital/engine --ci --lang en http://localhost:3000
+        run: npx hd-a11y-scan http://localhost:3000 --ci --lang en
 ```
 
 ## 🚀 Quick Start

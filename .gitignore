@@ -53,3 +53,16 @@ public-export/
 
 # Separate Wiki Repository
 holmdigital-wiki-standalone/
+
+# AI Agent Documentation (private)
+CLAUDE.md
+.skills/
+
+# Private docs (articles, drafts)
+docs/
+
+# Deploy workflows (security)
+.github/workflows/deploy-wiki.yml
+
+# Build artifacts
+*.tgz

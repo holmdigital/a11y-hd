@@ -1,8 +1,22 @@
 # @holmdigital/components
 
+[![npm version](https://img.shields.io/npm/v/@holmdigital/components.svg)](https://www.npmjs.com/package/@holmdigital/components)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+![TypeScript](https://img.shields.io/badge/TypeScript-Ready-blue)
+[![Downloads](https://img.shields.io/npm/dm/@holmdigital/components.svg)](https://www.npmjs.com/package/@holmdigital/components)
+
 > Prescriptive, accessible React components for regulatory compliance.
 
-These components are built to automatically solve common accessibility challenges found in regulatory audits. Using them ensures compliance "by default" for many WCAG criteria.
+## Why this package?
+
+Building accessible components from scratch is hard. Ensuring they comply with **EN 301 549** and national laws is even harder.
+
+These components are **Compliant by Default**. They automatically handle:
+-   **ARIA attributes**: No need to manually manage `aria-expanded`, `aria-controls`, etc.
+-   **Focus Management**: Built-in keyboard navigation for modal traps, dropdowns, and menus.
+-   **Contrast**: Default styles are tested against WCAG AA/AAA requirements.
+
+Using these components significantly reduces the risk of regulatory violations in your UI.
 
 ## Installation
 

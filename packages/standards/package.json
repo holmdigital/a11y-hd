@@ -1,6 +1,6 @@
 {
     "name": "@holmdigital/standards",
-    "version": "1.2.0",
+    "version": "1.2.1",
     "private": false,
     "publishConfig": {
         "access": "public",
@@ -46,7 +46,15 @@
         "dos-lagen",
         "standards",
         "regulatory",
-        "compliance"
+        "compliance",
+        "legislation",
+        "regulation",
+        "section508",
+        "ada",
+        "aoda",
+        "bitv",
+        "rgaa",
+        "digitoegankelijk"
     ],
     "author": "Holm Digital AB",
     "license": "MIT",

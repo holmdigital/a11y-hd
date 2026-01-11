@@ -1,6 +1,6 @@
 {
     "name": "@holmdigital/engine",
-    "version": "1.4.0",
+    "version": "1.4.4",
     "private": false,
     "publishConfig": {
         "access": "public",
@@ -16,14 +16,15 @@
     "module": "./dist/index.mjs",
     "types": "./dist/index.d.ts",
     "bin": {
-        "hd-a11y-scan": "dist/cli/index.js"
+        "hd-a11y-scan": "./dist/cli/index.js"
     },
     "exports": {
         ".": {
             "types": "./dist/index.d.ts",
             "import": "./dist/index.mjs",
             "require": "./dist/index.js"
-        }
+        },
+        "./cli": "./dist/cli/index.js"
     },
     "files": [
         "dist",
@@ -34,18 +35,27 @@
         "dev": "tsup src/index.ts src/cli/index.ts --format cjs,esm --dts --watch",
         "test": "vitest",
         "test:integration": "vitest run --config vitest.integration.config.ts",
-        "lint": "eslint src --ext .ts"
+        "lint": "eslint src --ext .ts",
+        "prepublishOnly": "npm run build"
     },
     "keywords": [
         "accessibility",
         "a11y",
-        "scanner",
-        "regulatory",
         "wcag",
         "en301549",
-        "dos-lagen",
+        "compliance",
+        "automation",
         "testing",
-        "virtual-dom"
+        "regulatory",
+        "html-validate",
+        "axe-core",
+        "ead",
+        "european-accessibility-act",
+        "holmdigital",
+        "section508",
+        "ada",
+        "dos-lagen",
+        "digitale-barrierefreiheit"
     ],
     "author": "Holm Digital AB",
     "license": "MIT",

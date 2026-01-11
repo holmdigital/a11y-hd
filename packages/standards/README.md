@@ -1,11 +1,21 @@
 # @holmdigital/standards
 
+[![npm version](https://img.shields.io/npm/v/@holmdigital/standards.svg)](https://www.npmjs.com/package/@holmdigital/standards)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+![TypeScript](https://img.shields.io/badge/TypeScript-Ready-blue)
+[![Downloads](https://img.shields.io/npm/dm/@holmdigital/standards.svg)](https://www.npmjs.com/package/@holmdigital/standards)
+
 > Machine-readable regulatory database for WCAG, EN 301 549, and the DOS Act.
 
-This package provides the "truth" for accessibility compliance mapping. It connects:
-1.  **WCAG 2.1 Criteria** (Technical)
-2.  **EN 301 549** (EU Standard)
-3.  **National Laws** (e.g., Sweden's *Lag (2018:1937) om tillgänglighet till digital offentlig service*)
+## Why this package?
+
+This package serves as the **Single Source of Truth** for accessibility compliance mapping in the HolmDigital ecosystem. It eliminates the need to manually cross-reference standard documents by providing:
+
+1.  **WCAG 2.1 Criteria** (Technical Base)
+2.  **EN 301 549** (EU Standard Mapping)
+3.  **National Laws** (Specific legal references for SE, NL, DE, etc.)
+
+It allows developers to query: *"Which law mandates WCAG 1.4.3 in Sweden?"* and get the exact legal paragraph (`Lag (2018:1937) 12 §`).
 
 ## Installation
 

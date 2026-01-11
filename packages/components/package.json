@@ -1,7 +1,7 @@
 {
     "name": "@holmdigital/components",
     "author": "Holm Digital AB",
-    "version": "1.2.0",
+    "version": "1.2.2",
     "private": false,
     "publishConfig": {
         "access": "public",
@@ -18,61 +18,61 @@
     "types": "./dist/index.d.ts",
     "exports": {
         ".": {
+            "types": "./dist/index.d.ts",
             "import": "./dist/index.mjs",
-            "require": "./dist/index.js",
-            "types": "./dist/index.d.ts"
+            "require": "./dist/index.js"
         },
         "./Button": {
-            "import": "./dist/Button/Button.mjs",
-            "types": "./dist/Button/Button.d.ts"
+            "types": "./dist/Button/Button.d.ts",
+            "import": "./dist/Button/Button.mjs"
         },
         "./FormField": {
-            "import": "./dist/FormField/FormField.mjs",
-            "types": "./dist/FormField/FormField.d.ts"
+            "types": "./dist/FormField/FormField.d.ts",
+            "import": "./dist/FormField/FormField.mjs"
         },
         "./Dialog": {
-            "import": "./dist/Dialog/Dialog.mjs",
-            "types": "./dist/Dialog/Dialog.d.ts"
+            "types": "./dist/Dialog/Dialog.d.ts",
+            "import": "./dist/Dialog/Dialog.mjs"
         },
         "./Modal": {
-            "import": "./dist/Modal/Modal.mjs",
-            "types": "./dist/Modal/Modal.d.ts"
+            "types": "./dist/Modal/Modal.d.ts",
+            "import": "./dist/Modal/Modal.mjs"
         },
         "./SkipLink": {
-            "import": "./dist/SkipLink/SkipLink.mjs",
-            "types": "./dist/SkipLink/SkipLink.d.ts"
+            "types": "./dist/SkipLink/SkipLink.d.ts",
+            "import": "./dist/SkipLink/SkipLink.mjs"
         },
         "./NavigationMenu": {
-            "import": "./dist/NavigationMenu/NavigationMenu.mjs",
-            "types": "./dist/NavigationMenu/NavigationMenu.d.ts"
+            "types": "./dist/NavigationMenu/NavigationMenu.d.ts",
+            "import": "./dist/NavigationMenu/NavigationMenu.mjs"
         },
         "./Checkbox": {
-            "import": "./dist/Checkbox/Checkbox.mjs",
-            "types": "./dist/Checkbox/Checkbox.d.ts"
+            "types": "./dist/Checkbox/Checkbox.d.ts",
+            "import": "./dist/Checkbox/Checkbox.mjs"
         },
         "./RadioGroup": {
-            "import": "./dist/RadioGroup/RadioGroup.mjs",
-            "types": "./dist/RadioGroup/RadioGroup.d.ts"
+            "types": "./dist/RadioGroup/RadioGroup.d.ts",
+            "import": "./dist/RadioGroup/RadioGroup.mjs"
         },
         "./Select": {
-            "import": "./dist/Select/Select.mjs",
-            "types": "./dist/Select/Select.d.ts"
+            "types": "./dist/Select/Select.d.ts",
+            "import": "./dist/Select/Select.mjs"
         },
         "./Switch": {
-            "import": "./dist/Switch/Switch.mjs",
-            "types": "./dist/Switch/Switch.d.ts"
+            "types": "./dist/Switch/Switch.d.ts",
+            "import": "./dist/Switch/Switch.mjs"
         },
         "./Toast": {
-            "import": "./dist/Toast/Toast.mjs",
-            "types": "./dist/Toast/Toast.d.ts"
+            "types": "./dist/Toast/Toast.d.ts",
+            "import": "./dist/Toast/Toast.mjs"
         },
         "./Tooltip": {
-            "import": "./dist/Tooltip/Tooltip.mjs",
-            "types": "./dist/Tooltip/Tooltip.d.ts"
+            "types": "./dist/Tooltip/Tooltip.d.ts",
+            "import": "./dist/Tooltip/Tooltip.mjs"
         },
         "./Heading": {
-            "import": "./dist/Heading/Heading.mjs",
-            "types": "./dist/Heading/Heading.d.ts"
+            "types": "./dist/Heading/Heading.d.ts",
+            "import": "./dist/Heading/Heading.mjs"
         }
     },
     "files": [
@@ -92,7 +92,10 @@
         "accessibility",
         "a11y",
         "wcag",
-        "design-system"
+        "design-system",
+        "ui-kit",
+        "accessible-components",
+        "wcag-compliant"
     ],
     "peerDependencies": {
         "react": ">=18.0.0",

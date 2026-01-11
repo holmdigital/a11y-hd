@@ -20,13 +20,9 @@ export interface HeadingProps extends React.HTMLAttributes<HTMLHeadingElement> {
  */
 export const Heading = React.forwardRef<HTMLHeadingElement, HeadingProps>(
     ({ level, children, className, ...props }, ref) => {
-        const Tag = `h${level}` as keyof JSX.IntrinsicElements;
+        const Tag = `h${level}` as 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
 
-        return (
-            <Tag ref={ref} className={className} {...props}>
-                {children}
-            </Tag>
-        );
+        return React.createElement(Tag, { ref, className, ...props }, children);
     }
 );
 

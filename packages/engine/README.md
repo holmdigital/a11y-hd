@@ -1,16 +1,29 @@
 # @holmdigital/engine
 
-> Regulatory accessibility test engine with Virtual DOM and Shadow DOM support.
+[![npm version](https://img.shields.io/npm/v/@holmdigital/engine.svg)](https://www.npmjs.com/package/@holmdigital/engine)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+![TypeScript](https://img.shields.io/badge/TypeScript-Ready-blue)
+[![Downloads](https://img.shields.io/npm/dm/@holmdigital/engine.svg)](https://www.npmjs.com/package/@holmdigital/engine)
 
-This engine bridges the gap between technical accessibility scanning (using `axe-core`) and legal compliance reporting (EN 301 549). It provides prescriptive remediation advice and localized reporting.
+> Regulatory accessibility test engine with Virtual DOM, Shadow DOM support, and built-in legal compliance reporting.
+
+## Why this package?
+
+Most accessibility tools give you technical errors (e.g., "Color contrast must be 4.5:1"). This engine bridges the gap between **technical code validation** (using `axe-core`) and **legal compliance** (EN 301 549, Section 508, DOS-lagen).
+
+It handles the heavy lifting of:
+1.  **Mapping** technical failures to specific legal clauses.
+2.  **Validating** HTML structure to ensure test accuracy.
+3.  **Reporting** in multiple languages (EN, SV, NL, DE, FR, ES) for non-technical stakeholders.
 
 ## Features
 
-- **Regulatory Mapping**: Maps technical failures to EU laws.
-- **HTML Structure Validation**: built-in `html-validate` checks for semantic correctness.
-- **Internationalization (i18n)**: Supports English (`en`), Swedish (`sv`), German (`de`), French (`fr`), Spanish (`es`), and Dutch (`nl`). Supports region-specific rules (e.g. `en-us`, `en-gb`).
-- **Pseudo-Automation**: Generates Playwright test scripts for manual verification.
-- **PDF Reporting**: Generates beautiful, compliant PDF reports.
+- **Regulatory Mapping**: Maps technical failures to EU laws (EN 301 549, EAA).
+- **HTML Structure Validation**: Built-in `html-validate` checks to prevent false positives/negatives.
+- **Internationalization (i18n)**: Supports English (`en`), Swedish (`sv`), German (`de`), French (`fr`), Spanish (`es`), and Dutch (`nl`).
+- **Pseudo-Automation**: Automatically generates Playwright/Puppeteer test scripts for manual verification steps.
+- **PDF Reporting**: Generates beautiful, compliant PDF reports out of the box.
+- **TypeScript**: Written in TypeScript with full type definitions included.
 
 ## Installation
 
@@ -37,8 +50,7 @@ npx hd-a11y-scan <url> [options]
 ## Programmatic Usage
 
 ```typescript
-import { RegulatoryScanner } from '@holmdigital/engine';
-import { setLanguage } from '@holmdigital/engine/dist/i18n';
+import { RegulatoryScanner, setLanguage } from '@holmdigital/engine';
 
 // Initialize Scanner
 const scanner = new RegulatoryScanner({
