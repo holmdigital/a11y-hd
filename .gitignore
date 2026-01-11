@@ -66,3 +66,8 @@ docs/
 
 # Build artifacts
 *.tgz
+
+# Internal scripts (translation, extraction)
+extract_strings.py
+translate_nl.py
+*.py
