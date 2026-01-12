@@ -32,6 +32,7 @@ export interface DialogProps extends React.DialogHTMLAttributes<HTMLDialogElemen
 export const Dialog = forwardRef<HTMLDialogElement, DialogProps>(
     ({ isOpen, onClose, title, children, variant = 'default', description, className, ...props }, ref) => {
         const dialogRef = useRef<HTMLDialogElement>(null);
+        const scrollLockRef = useRef<boolean>(false);
 
         useImperativeHandle(ref, () => dialogRef.current as HTMLDialogElement);
 
@@ -42,16 +43,30 @@ export const Dialog = forwardRef<HTMLDialogElement, DialogProps>(
             if (isOpen) {
                 if (!dialog.open) {
                     dialog.showModal();
-                    // Lock body scroll
-                    document.body.style.overflow = 'hidden';
+                    // Lock body scroll (track state to prevent race)
+                    if (!scrollLockRef.current) {
+                        document.body.style.overflow = 'hidden';
+                        scrollLockRef.current = true;
+                    }
                 }
             } else {
                 if (dialog.open) {
                     dialog.close();
-                    // Restore body scroll
+                }
+                // Restore body scroll
+                if (scrollLockRef.current) {
                     document.body.style.overflow = '';
+                    scrollLockRef.current = false;
                 }
             }
+
+            // Cleanup on unmount
+            return () => {
+                if (scrollLockRef.current) {
+                    document.body.style.overflow = '';
+                    scrollLockRef.current = false;
+                }
+            };
         }, [isOpen]);
 
         // Handle ESC key manually if needed, though native dialog does it. 

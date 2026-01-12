@@ -108,12 +108,13 @@ export const SelectTrigger = ({ children, className = '', placeholder = 'Select.
 export const SelectContent = ({ children }: { children: React.ReactNode }) => {
     const context = useContext(SelectContext);
 
-    // Reset options ref when content renders
+    // Reset options ref when content renders or closes
     useEffect(() => {
-        if (context && context.isOpen) {
+        if (context) {
+            // Always reset when content mounts or isOpen changes
             context.optionsRef.current = [];
         }
-    }, [context?.isOpen]);
+    }, [context?.isOpen, children]);
 
     if (!context || !context.isOpen) return null;
 

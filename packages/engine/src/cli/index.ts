@@ -35,7 +35,7 @@ program
 
 program
     .argument('<url>', 'URL to scan')
-    .option('--lang <code', 'Language code (en, sv)', 'en')
+    .option('--lang <code>', 'Language code (en, sv)', 'en')
     .option('--ci', 'Run in CI/CD mode (exit code 1 on critical failures)')
     .option('--generate-tests', 'Generate Pseudo-Automation tests')
     .option('--json', 'Output as JSON')

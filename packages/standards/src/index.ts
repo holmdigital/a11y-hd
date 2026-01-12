@@ -43,6 +43,10 @@ export type {
 };
 
 function getData(lang: string = 'en'): ConvergenceRule[] {
+    const supportedLangs = ['sv', 'de', 'fr', 'es', 'nl', 'en-gb', 'en-us', 'en-ca', 'en'];
+    if (!supportedLangs.includes(lang.toLowerCase())) {
+        console.warn(`[standards] Language '${lang}' not supported, falling back to 'en'. Supported: ${supportedLangs.join(', ')}`);
+    }
     switch (lang.toLowerCase()) {
         case 'sv': return rulesSv as ConvergenceRule[];
         case 'de': return rulesDe as ConvergenceRule[];

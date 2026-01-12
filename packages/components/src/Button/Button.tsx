@@ -82,9 +82,9 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         // Minst 44x44px för touch (omvandlat till padding/height)
         const sizes = {
             small: {
-                padding: '0.25rem 0.5rem',
+                padding: '0.5rem 0.75rem',
                 fontSize: '0.875rem',
-                minHeight: '32px', // OBS: Kan bryta mot 44px om inte hanteras med margin
+                minHeight: '44px', // Touch target safe (EN 301 549 9.2.5.5)
             },
             medium: {
                 padding: '0.5rem 1rem',

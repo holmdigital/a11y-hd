@@ -5,8 +5,8 @@
 
 import type { ScanResult } from '../core/regulatory-scanner';
 
-// Read version from package.json at build time
-const ENGINE_VERSION = '1.1.0';
+// Engine version - keep in sync with package.json
+const ENGINE_VERSION = '1.4.4';
 
 export interface CloudConfig {
     apiKey: string;
