@@ -41,6 +41,7 @@ program
     .option('--json', 'Output as JSON')
     .option('--pdf <path>', 'Generate PDF report to path')
     .option('--viewport <size>', 'Set viewport (e.g. "mobile", "desktop", "1024x768")')
+    .option('--threshold <level>', 'Severity threshold for compliance (critical, high, medium, low)', 'high')
     .option('--api-key <key>', 'API key for HolmDigital Cloud authentication')
     .option('--cloud-url <url>', 'Cloud API URL', 'https://cloud.holmdigital.se')
     .action(async (url: string, options) => {
@@ -78,7 +79,8 @@ program
                 url,
                 failOnCritical: options.ci,
                 viewport,
-                silent: options.json // Suppress debug output for JSON mode
+                silent: options.json, // Suppress debug output for JSON mode
+                severityThreshold: options.threshold as 'critical' | 'high' | 'medium' | 'low'
             });
 
             if (spinner) spinner.text = t('cli.analyzing');

@@ -15,13 +15,25 @@ export interface ScannerOptions {
     failOnCritical?: boolean;
     viewport?: { width: number; height: number };
     silent?: boolean; // Suppress debug output (for --json mode)
+    severityThreshold?: 'critical' | 'high' | 'medium' | 'low'; // CI fail threshold
+}
+
+export interface ScanMetadata {
+    engineVersion: string;
+    axeCoreVersion: string;
+    standardsVersion: string;
+    scanDuration: number; // milliseconds
+    pageTitle?: string;
+    pageLanguage?: string;
 }
 
 export interface ScanResult {
     url: string;
     timestamp: string;
+    metadata: ScanMetadata;
     reports: RegulatoryReport[];
     stats: {
+        passed: number;
         critical: number;
         high: number;
         medium: number;
@@ -59,6 +71,11 @@ export class RegulatoryScanner {
      * Kör en fullständig regulatorisk scan
      */
     async scan(): Promise<ScanResult> {
+        const startTime = Date.now();
+        let pageTitle: string | undefined;
+        let pageLanguage: string | undefined;
+        let passedCount = 0;
+
         try {
             await this.initBrowser();
             const page = await this.getPage();
@@ -96,6 +113,10 @@ export class RegulatoryScanner {
                 this.log('Network busy, proceeding with scan anyway...');
             }
 
+            // Capture page metadata
+            pageTitle = await page.title();
+            pageLanguage = await page.evaluate(() => document.documentElement.lang || undefined);
+
             // Capture HTML for validation
             const pageContent = await page.content();
             const htmlValidation = await this.htmlValidator.validate(pageContent);
@@ -113,7 +134,7 @@ export class RegulatoryScanner {
             const axeResults = await page.evaluate(async () => {
                 // Safety check: Ensure we have a document to scan
                 if (!document || !document.documentElement) {
-                    return { violations: [] }; // Fail gracefully
+                    return { violations: [], passes: [] }; // Fail gracefully
                 }
 
                 // @ts-ignore
@@ -129,11 +150,13 @@ export class RegulatoryScanner {
                 });
             });
             this.log(`Raw Axe Violations: ${axeResults.violations?.length || 0}`);
+            passedCount = axeResults.passes?.length || 0;
 
             // Transformera resultat med regulatorisk kontext
             const regulatoryReports = await this.enrichResults(axeResults);
 
-            const result = this.generateResultPackage(regulatoryReports);
+            const scanDuration = Date.now() - startTime;
+            const result = this.generateResultPackage(regulatoryReports, passedCount, scanDuration, pageTitle, pageLanguage);
             result.htmlValidation = htmlValidation; // Attach validation result
             return result;
 
@@ -235,8 +258,15 @@ export class RegulatoryScanner {
         return reports;
     }
 
-    private generateResultPackage(reports: RegulatoryReport[]): ScanResult {
+    private generateResultPackage(
+        reports: RegulatoryReport[],
+        passedCount: number,
+        scanDuration: number,
+        pageTitle?: string,
+        pageLanguage?: string
+    ): ScanResult {
         const stats = {
+            passed: passedCount,
             critical: reports.filter(r => r.holmdigitalInsight.diggRisk === 'critical').length,
             high: reports.filter(r => r.holmdigitalInsight.diggRisk === 'high').length,
             medium: reports.filter(r => r.holmdigitalInsight.diggRisk === 'medium').length,
@@ -256,12 +286,39 @@ export class RegulatoryScanner {
         // Score 100 är bäst, drar av poäng för fel
         const score = Math.max(0, 100 - weightedScore);
 
-        // Strict Compliance: Pass requires 0 violations
-        const complianceStatus = stats.total === 0 ? 'PASS' : 'FAIL';
+        // Compliance status based on severity threshold (default: fail on critical or high)
+        const threshold = this.options.severityThreshold || 'high';
+        let complianceStatus: 'PASS' | 'FAIL' = 'PASS';
+        switch (threshold) {
+            case 'critical':
+                complianceStatus = stats.critical > 0 ? 'FAIL' : 'PASS';
+                break;
+            case 'high':
+                complianceStatus = (stats.critical > 0 || stats.high > 0) ? 'FAIL' : 'PASS';
+                break;
+            case 'medium':
+                complianceStatus = (stats.critical > 0 || stats.high > 0 || stats.medium > 0) ? 'FAIL' : 'PASS';
+                break;
+            case 'low':
+                complianceStatus = stats.total > 0 ? 'FAIL' : 'PASS';
+                break;
+        }
+
+        // Get version info
+        const axeCore = require('axe-core');
+        const metadata: ScanMetadata = {
+            engineVersion: '1.4.5',
+            axeCoreVersion: axeCore.version || '4.10.2',
+            standardsVersion: '1.2.2',
+            scanDuration,
+            pageTitle,
+            pageLanguage
+        };
 
         return {
             url: this.options.url,
             timestamp: new Date().toISOString(),
+            metadata,
             reports,
             stats,
             score,
