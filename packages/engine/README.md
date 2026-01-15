@@ -88,6 +88,42 @@ npx hd-a11y-scan https://example.com --json
 }
 ```
 
+## Severity Threshold
+
+The `--threshold` flag controls when `complianceStatus` becomes `FAIL`:
+
+| Threshold | Fails on |
+|-----------|----------|
+| `critical` | Only critical violations |
+| `high` (default) | Critical + high violations |
+| `medium` | Critical + high + medium violations |
+| `low` | Any violation |
+
+**Why this matters for CI/CD:**
+
+```bash
+# Strict: Block deployment on any serious issue
+npx hd-a11y-scan https://staging.example.com --ci --threshold high
+
+# Lenient: Only block on critical issues (like missing alt text)
+npx hd-a11y-scan https://staging.example.com --ci --threshold critical
+```
+
+Medium violations (like missing `<main>` landmark) won't fail your CI by default, but are still reported for awareness.
+
+## Metadata Fields
+
+| Field | Description |
+|-------|-------------|
+| `engineVersion` | Version of @holmdigital/engine |
+| `axeCoreVersion` | Version of axe-core used |
+| `standardsVersion` | Version of @holmdigital/standards database |
+| `scanDuration` | Scan time in milliseconds |
+| `pageTitle` | HTML `<title>` of scanned page |
+| `pageLanguage` | `lang` attribute of `<html>` |
+| `stats.passed` | Number of accessibility checks that passed |
+
+
 ## Programmatic Usage
 
 ```typescript
