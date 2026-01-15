@@ -307,7 +307,7 @@ export class RegulatoryScanner {
         // Get version info
         const axeCore = require('axe-core');
         const metadata: ScanMetadata = {
-            engineVersion: '1.4.6',
+            engineVersion: '1.4.7',
             axeCoreVersion: axeCore.version || '4.10.2',
             standardsVersion: '1.2.2',
             scanDuration,
