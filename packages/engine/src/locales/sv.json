@@ -26,6 +26,7 @@
         "critical_issues": "Kritiska fel",
         "high_issues": "Allvarliga fel",
         "total_issues": "Antal brister",
+        "html_errors": "HTML-fel",
         "detailed_violations": "Detaljerade brister",
         "prescriptive_fix": "💡 Preskriptiv Lösning",
         "use": "Använd",

@@ -24,7 +24,7 @@ It handles the heavy lifting of:
 - **Configurable Severity Threshold**: Fail CI only on critical/high issues (configurable).
 - **Rich Metadata**: Includes scan duration, page title, language, and version info.
 - **Pseudo-Automation**: Automatically generates Playwright/Puppeteer test scripts for manual verification steps.
-- **PDF Reporting**: Generates beautiful, compliant PDF reports out of the box.
+- **PDF Reporting**: Generates beautiful, compliant PDF reports with severity-sorted violations, HTML error counts, and `@HolmDigital/engine` branding.
 - **TypeScript**: Written in TypeScript with full type definitions included.
 
 ## Installation

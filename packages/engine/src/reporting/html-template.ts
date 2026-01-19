@@ -5,6 +5,7 @@ import { t, getCurrentLang } from '../i18n';
 export function generateReportHTML(result: ScanResult): string {
     const criticalCount = result.stats.critical;
     const highCount = result.stats.high;
+    const htmlErrorsCount = result.htmlValidation?.errors?.length ?? 0;
     const scoreColor = result.score > 90 ? '#16a34a' : result.score > 70 ? '#eab308' : '#dc2626';
 
     const formatDate = (dateString: string) => {
@@ -60,7 +61,7 @@ export function generateReportHTML(result: ScanResult): string {
             }
             .summary-grid {
                 display: grid;
-                grid-template-columns: repeat(4, 1fr);
+                grid-template-columns: repeat(5, 1fr);
                 gap: 1.5rem;
                 margin-bottom: 3rem;
             }
@@ -79,6 +80,7 @@ export function generateReportHTML(result: ScanResult): string {
                 color: #64748b;
                 margin-bottom: 0.5rem;
                 font-weight: 500;
+                min-height: 2.5rem;
             }
             .metric-value {
                 font-size: 2rem;
@@ -159,7 +161,7 @@ export function generateReportHTML(result: ScanResult): string {
     </head>
     <body>
         <div class="header">
-            <div class="brand">Holm<span>Digital</span></div>
+            <div class="brand">@HolmDigital/<span>engine</span></div>
             <div class="meta">
                 <div>${t('report.scan_target', { url: result.url })}</div>
                 <div>${t('report.generated', { date: formatDate(result.timestamp) })}</div>
@@ -183,11 +185,20 @@ export function generateReportHTML(result: ScanResult): string {
                 <div class="metric-label">${t('report.total_issues')}</div>
                 <div class="metric-value">${result.stats.total}</div>
             </div>
+            <div class="card">
+                <div class="metric-label">${t('report.html_errors')}</div>
+                <div class="metric-value" style="color: ${htmlErrorsCount > 0 ? '#9333ea' : '#16a34a'};">${htmlErrorsCount}</div>
+            </div>
         </div>
 
         <div class="section-title">${t('report.detailed_violations')}</div>
 
-        ${result.reports.map(report => {
+        ${[...result.reports].sort((a, b) => {
+        const severityOrder = { critical: 0, high: 1, medium: 2, low: 3 };
+        const aRisk = a.holmdigitalInsight.diggRisk.toLowerCase() as keyof typeof severityOrder;
+        const bRisk = b.holmdigitalInsight.diggRisk.toLowerCase() as keyof typeof severityOrder;
+        return (severityOrder[aRisk] ?? 4) - (severityOrder[bRisk] ?? 4);
+    }).map(report => {
         const riskClass = `badge-${report.holmdigitalInsight.diggRisk}`;
         return `
             <div class="violation-card">

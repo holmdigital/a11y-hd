@@ -26,6 +26,7 @@
         "critical_issues": "Kritieke problemen",
         "high_issues": "Hoge prioriteit problemen",
         "total_issues": "Totaal aantal problemen",
+        "html_errors": "HTML-fouten",
         "detailed_violations": "Gedetailleerde overtredingen",
         "prescriptive_fix": "💡 Voorgeschreven oplossing",
         "use": "Gebruik",

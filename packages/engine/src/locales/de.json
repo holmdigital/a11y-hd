@@ -26,6 +26,7 @@
         "critical_issues": "Kritische Probleme",
         "high_issues": "Hohe Probleme",
         "total_issues": "Gesamtprobleme",
+        "html_errors": "HTML-Fehler",
         "detailed_violations": "Detaillierte Verstöße",
         "prescriptive_fix": "💡 Vorschriftsmäßige Lösung",
         "use": "Verwenden",
