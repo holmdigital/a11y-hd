@@ -36,13 +36,17 @@ npx hd-a11y-scan <url> [options]
 
 **Options:**
 - `--lang <code>` - Language code (`en`, `sv`, `de`, `fr`, `es`, `nl`)
+- `--threshold <level>` - Severity threshold (`critical`, `high`, `medium`, `low`). Default: `high`
 - `--ci` - Run in CI mode (exit code 1 on critical failures)
 - `--json` - Output results as JSON
 - `--pdf <path>` - Generate a PDF report
 - `--viewport <size>` - Set viewport size (e.g., "mobile", "desktop", "1024x768")
 - `--generate-tests` - Generate pseudo-code automation scripts for verification
+- `--invalid-https-cert` - Allow scanning sites with invalid/self-signed certs ⚠️
 - `--api-key <key>` - Upload results to HolmDigital Cloud Dashboard
 - `--cloud-url <url>` - Custom Cloud API Endpoint (default: cloud.holmdigital.se)
+
+> **⚠️ Security:** `--invalid-https-cert` should only be used in trusted environments. *(Contributed by [@FerdiStro](https://github.com/FerdiStro))*
 
 ### 2. [@holmdigital/components](./packages/components)
 Accessible React components with built-in regulatory compliance.
