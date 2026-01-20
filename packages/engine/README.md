@@ -49,8 +49,11 @@ npx hd-a11y-scan <url> [options]
 | `--pdf <path>` | Generate a PDF report |
 | `--viewport <size>` | Set viewport size (`mobile`, `tablet`, `desktop`, or custom `1024x768`) |
 | `--generate-tests` | Generate Pseudo-Automation tests |
+| `--invalid-https-cert` | Allow scanning sites with invalid/self-signed HTTPS certificates ⚠️ |
 | `--api-key <key>` | API Key for HolmDigital Cloud |
 | `--cloud-url <url>` | Custom URL for HolmDigital Cloud API |
+
+> **⚠️ Security Note:** The `--invalid-https-cert` flag should only be used in trusted environments (local dev, staging). It disables certificate validation and is not recommended for production. *(Contributed by [@FerdiStro](https://github.com/FerdiStro))*
 
 **Example:**
 ```bash
