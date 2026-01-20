@@ -16,6 +16,7 @@ export interface ScannerOptions {
     viewport?: { width: number; height: number };
     silent?: boolean; // Suppress debug output (for --json mode)
     severityThreshold?: 'critical' | 'high' | 'medium' | 'low'; // CI fail threshold
+    invalidHttpsCert?: boolean;
 }
 
 export interface ScanMetadata {
@@ -55,6 +56,7 @@ export class RegulatoryScanner {
             headless: true,
             standard: 'dos-lagen', // Default till striktaste
             silent: false,
+            invalidHttpsCert: false,
             ...options
         };
         this.htmlValidator = new HtmlValidator();
@@ -171,7 +173,8 @@ export class RegulatoryScanner {
             args: [
                 '--no-sandbox',
                 '--disable-setuid-sandbox',
-                '--disable-blink-features=AutomationControlled' // Gömmer att det är en robot
+                '--disable-blink-features=AutomationControlled', // Gömmer att det är en robot
+                ...(this.options.invalidHttpsCert ? ['--ignore-certificate-errors', '--allow-insecure-localhost'] : [])
             ]
         });
     }

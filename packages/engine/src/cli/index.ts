@@ -44,6 +44,7 @@ program
     .option('--threshold <level>', 'Severity threshold for compliance (critical, high, medium, low)', 'high')
     .option('--api-key <key>', 'API key for HolmDigital Cloud authentication')
     .option('--cloud-url <url>', 'Cloud API URL', 'https://cloud.holmdigital.se')
+    .option('--invalid-https-cert', 'Allow scanning on pages with invalid https certificate')
     .action(async (url: string, options) => {
         setLanguage(options.lang);
 
@@ -80,7 +81,8 @@ program
                 failOnCritical: options.ci,
                 viewport,
                 silent: options.json, // Suppress debug output for JSON mode
-                severityThreshold: options.threshold as 'critical' | 'high' | 'medium' | 'low'
+                severityThreshold: options.threshold as 'critical' | 'high' | 'medium' | 'low',
+                invalidHttpsCert: options.invalidHttpsCert
             });
 
             if (spinner) spinner.text = t('cli.analyzing');
