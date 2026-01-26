@@ -11,6 +11,7 @@ import { RegulatoryScanner } from '../core/regulatory-scanner';
 import { PseudoAutomationEngine } from '../automation/pseudo-automation';
 import { generateReportHTML } from '../reporting/html-template';
 import { generatePDF } from '../reporting/pdf-generator';
+import { generateBadgeMarkdown } from '../reporting/badge-generator';
 import { setLanguage, t } from '../i18n';
 import { sendToCloud, CloudConfig } from './cloud-client';
 
@@ -109,6 +110,14 @@ program
                 console.log(statusColor.bold(t('cli.status', { status: result.complianceStatus })));
                 if (result.complianceStatus === 'FAIL') {
                     console.log(chalk.red(t('cli.not_compliant')));
+                }
+
+                if (result.score === 100) {
+                    const badge = generateBadgeMarkdown(result.score);
+                    if (badge) {
+                        console.log(chalk.green.bold('\n🏆 Perfect Score! Here is your accessibility badge:'));
+                        console.log(chalk.white(badge));
+                    }
                 }
 
                 console.log(chalk.gray('----------------------------------------'));

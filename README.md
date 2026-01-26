@@ -23,7 +23,7 @@ A professional accessibility ecosystem bridging the gap between technical code v
 This monorepo contains three core NPM packages and a documentation wiki:
 
 ### 1. [@holmdigital/engine](./packages/engine)
-Regulatory test engine with Virtual DOM architecture for Shadow DOM and SPA support. Now with internationalization (i18n).
+Regulatory test engine with Virtual DOM architecture for Shadow DOM and SPA support. Now with internationalization (i18n) and **automatic accessibility badge generation**.
 
 ```bash
 npm install @holmdigital/engine

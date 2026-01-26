@@ -51,7 +51,14 @@ npx hd-a11y-scan <url> [options]
 | `--generate-tests` | Generate Pseudo-Automation tests |
 | `--invalid-https-cert` | Allow scanning sites with invalid/self-signed HTTPS certificates ⚠️ |
 | `--api-key <key>` | API Key for HolmDigital Cloud |
-| `--cloud-url <url>` | Custom URL for HolmDigital Cloud API |
+| `--cloud-url <url>` | Custom Cloud API Endpoint (default: cloud.holmdigital.se) |
+
+### 🏆 Accessibility Badge
+If your site achieves a **100% score**, the CLI will generate a [Shields.io](https://shields.io/) badge that you can add to your project's README:
+
+![Accessibility Status: 100% Compliant](https://img.shields.io/badge/HolmDigital_Engine-100%25-00703C?style=flat-square)
+
+The badge uses accessible colors (AAA compliant contrast) and is included in both the CLI output and the HTML report.
 
 > **⚠️ Security Note:** The `--invalid-https-cert` flag should only be used in trusted environments (local dev, staging). It disables certificate validation and is not recommended for production. *(Contributed by [@FerdiStro](https://github.com/FerdiStro))*
 
