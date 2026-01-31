@@ -78,9 +78,9 @@ npx hd-a11y-scan https://example.com --json
   "url": "https://example.com",
   "timestamp": "2026-01-13T17:05:11.749Z",
   "metadata": {
-    "engineVersion": "1.4.6",
+    "engineVersion": "1.4.12",
     "axeCoreVersion": "4.10.2",
-    "standardsVersion": "1.2.2",
+    "standardsVersion": "1.2.3",
     "scanDuration": 2891,
     "pageTitle": "Example Domain",
     "pageLanguage": "en"
