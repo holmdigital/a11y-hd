@@ -35,6 +35,7 @@ export function setLanguage(lang: string) {
 
 export function t(key: LocaleKey, params?: Record<string, string | number>): string {
     const keys = key.split('.');
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     let value: any = locales[currentLang];
 
     for (const k of keys) {
@@ -42,6 +43,7 @@ export function t(key: LocaleKey, params?: Record<string, string | number>): str
             value = value[k as keyof typeof value];
         } else {
             // Fallback to English if key missing in current lang
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             let fallbackValue: any = locales['en'];
             for (const fk of keys) {
                 if (fallbackValue && typeof fallbackValue === 'object' && fk in fallbackValue) {

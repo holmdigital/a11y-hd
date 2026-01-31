@@ -33,7 +33,7 @@ export const Tooltip = ({ children }: TooltipProps) => {
 };
 
 // --- Trigger ---
-export const TooltipTrigger = ({ children, asChild = false, ...props }: React.HTMLAttributes<HTMLElement> & { asChild?: boolean }) => {
+export const TooltipTrigger = ({ children, asChild: _asChild = false, ...props }: React.HTMLAttributes<HTMLElement> & { asChild?: boolean }) => {
     const context = useContext(TooltipContext);
     if (!context) throw new Error("TooltipTrigger must be used within Tooltip");
 
@@ -43,7 +43,7 @@ export const TooltipTrigger = ({ children, asChild = false, ...props }: React.HT
     const handleClose = () => setOpen(false);
 
     if (React.isValidElement(children)) {
-        return React.cloneElement(children as React.ReactElement<any>, {
+        return React.cloneElement(children as React.ReactElement<React.HTMLAttributes<HTMLElement>>, {
             'aria-describedby': context.open ? id : undefined,
             onMouseEnter: (e: React.MouseEvent) => {
                 handleOpen();

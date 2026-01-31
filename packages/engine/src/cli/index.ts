@@ -126,12 +126,10 @@ program
                     console.log(chalk.blue(t('cli.viewport', { width: viewport.width, height: viewport.height })));
                 }
 
-                // @ts-ignore
                 if (result.htmlValidation && !result.htmlValidation.valid) {
                     console.log(chalk.red.bold('\n⚠️  Structural HTML Issues Detected'));
                     console.log(chalk.yellow('    These issues may affect accessibility tool accuracy (e.g. contrast calculations)\n'));
 
-                    // @ts-ignore
                     result.htmlValidation.errors.forEach((error: any) => {
                         console.log(chalk.red(`    [${error.rule}] ${error.message}`));
                         if (error.selector) console.log(chalk.gray(`    ${error.selector}`));
@@ -152,17 +150,16 @@ program
                         console.log(t('cli.use_component', { component: chalk.bold(report.remediation.component) }));
                     }
 
-                    // @ts-ignore
+
                     if (report.failingNodes && report.failingNodes.length > 0) {
                         console.log(chalk.gray('\nAffected Elements:'));
-                        // @ts-ignore
                         report.failingNodes.forEach((node: any, index: number) => {
                             if (index < 5) { // Limit output
                                 console.log(chalk.cyan(`➜ ${node.target}`));
                                 console.log(chalk.gray(`  ${node.html}`));
                             }
                         });
-                        // @ts-ignore
+
                         if (report.failingNodes.length > 5) {
                             console.log(chalk.gray(`  ...and ${report.failingNodes.length - 5} more`));
                         }

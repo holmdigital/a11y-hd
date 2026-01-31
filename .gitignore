@@ -56,7 +56,12 @@ holmdigital-wiki-standalone/
 
 # AI Agent Documentation (private)
 CLAUDE.md
+GEMINI.md
 .skills/
+.agent/
+.gemini/
+.antigravity/
+.system_generated/
 
 # Private docs (articles, drafts)
 docs/
@@ -66,6 +71,7 @@ docs/
 
 # Build artifacts
 *.tgz
+*.pdf
 
 # Internal scripts (translation, extraction)
 extract_strings.py

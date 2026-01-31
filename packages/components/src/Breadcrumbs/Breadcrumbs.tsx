@@ -52,7 +52,7 @@ export const Breadcrumbs = ({ separator, children, className, ...props }: Breadc
                     return (
                         <React.Fragment key={index}>
                             {cloneElement(child as React.ReactElement<BreadcrumbItemProps>, {
-                                isCurrent: isLast || (child.props as any).isCurrent
+                                isCurrent: isLast || (child as React.ReactElement<BreadcrumbItemProps>).props.isCurrent
                             })}
                             {!isLast && (
                                 <li aria-hidden="true" className="flex items-center select-none">

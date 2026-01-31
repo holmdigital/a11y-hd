@@ -36,8 +36,8 @@ export class HtmlValidator {
 
         return {
             valid: report.valid,
-            errors: report.results.flatMap((result: any) =>
-                result.messages.map((msg: any) => ({
+            errors: report.results.flatMap((result) =>
+                result.messages.map((msg) => ({
                     rule: msg.ruleId,
                     message: msg.message,
                     line: msg.line,

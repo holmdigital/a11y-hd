@@ -3,6 +3,7 @@
  * Kärnan i @holmdigital/engine som kombinerar teknisk scanning med regulatorisk data
  */
 
+import axeCore from 'axe-core';
 import puppeteer, { Browser, Page } from 'puppeteer';
 import type { RegulatoryReport } from '@holmdigital/standards';
 import { VirtualDOMBuilder } from './virtual-dom';
@@ -188,7 +189,7 @@ export class RegulatoryScanner {
     }
 
     private async injectAxe(page: Page) {
-        const axeSource = require('axe-core').source;
+        const axeSource = axeCore.source;
         await page.evaluate(axeSource);
     }
 
@@ -308,7 +309,7 @@ export class RegulatoryScanner {
         }
 
         // Get version info
-        const axeCore = require('axe-core');
+        // const axeCore = require('axe-core'); // Replaced by import
         const metadata: ScanMetadata = {
             engineVersion: '1.4.7',
             axeCoreVersion: axeCore.version || '4.10.2',

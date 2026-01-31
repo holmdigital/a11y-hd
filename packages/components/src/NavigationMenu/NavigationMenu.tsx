@@ -43,7 +43,7 @@ NavigationMenu.displayName = 'NavigationMenu';
 const MenuItem = ({ item }: { item: NavItem }) => {
     const [isOpen, setIsOpen] = useState(false);
     const containerRef = useRef<HTMLLIElement>(null);
-    const timeoutRef = useRef<NodeJS.Timeout>();
+    const timeoutRef = useRef<ReturnType<typeof setTimeout>>();
 
     const hasChildren = item.children && item.children.length > 0;
 

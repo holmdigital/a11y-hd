@@ -100,7 +100,7 @@ export class VirtualDOMBuilder {
                 if (!isShadowRoot && config.includeComputedStyle) {
                     const style = window.getComputedStyle(element as Element);
                     computedStyle = {};
-                    config.includeComputedStyle.forEach((prop: any) => {
+                    config.includeComputedStyle.forEach((prop: string) => {
                         computedStyle![prop] = style.getPropertyValue(prop);
                     });
                 }
@@ -152,6 +152,6 @@ export class VirtualDOMBuilder {
                 };
             }
             return traverse(document.body);
-        }, config as any) as unknown as VirtualNode;
+        }, config) as unknown as VirtualNode;
     }
 }

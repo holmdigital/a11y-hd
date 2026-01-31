@@ -1,6 +1,6 @@
 {
     "name": "@holmdigital/engine",
-    "version": "1.4.11",
+    "version": "1.4.12",
     "private": false,
     "publishConfig": {
         "access": "public",
@@ -34,8 +34,9 @@
         "build": "tsup src/index.ts src/cli/index.ts --format cjs,esm --dts --clean",
         "dev": "tsup src/index.ts src/cli/index.ts --format cjs,esm --dts --watch",
         "test": "vitest",
+        "test:ci": "vitest run",
         "test:integration": "vitest run --config vitest.integration.config.ts",
-        "lint": "eslint src --ext .ts",
+        "lint": "eslint src",
         "prepublishOnly": "npm run build"
     },
     "keywords": [

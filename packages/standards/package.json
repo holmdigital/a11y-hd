@@ -1,6 +1,6 @@
 {
     "name": "@holmdigital/standards",
-    "version": "1.2.2",
+    "version": "1.2.3",
     "private": false,
     "publishConfig": {
         "access": "public",
@@ -34,7 +34,8 @@
         "build": "tsup src/index.ts --format cjs,esm --dts --clean",
         "dev": "tsup src/index.ts --format cjs,esm --dts --watch",
         "test": "vitest",
-        "lint": "eslint src --ext .ts",
+        "test:ci": "vitest run",
+        "lint": "eslint src",
         "validate-schema": "node scripts/validate-schema.js",
         "validate-data": "node scripts/validate-data.js"
     },

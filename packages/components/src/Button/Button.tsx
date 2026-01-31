@@ -108,12 +108,12 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         return (
             <button
                 ref={ref}
-                style={style as any}
+                style={style as React.CSSProperties}
                 disabled={disabled || isLoading}
                 aria-busy={isLoading}
                 // Garantera att vi inte har negativ tabindex av misstag (WCAG 2.1.1)
                 tabIndex={props.tabIndex}
-                {...props}
+                className={className}
             >
                 {isLoading ? (
                     <span aria-hidden="true" style={{ marginRight: '8px' }}>⏳</span>

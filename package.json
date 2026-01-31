@@ -12,6 +12,7 @@
         "build": "npm run build --workspaces --if-present",
         "dev": "npm run dev --workspaces --if-present",
         "test": "npm run test --workspaces --if-present",
+        "test:ci": "npm run test:ci --workspaces --if-present",
         "lint": "npm run lint --workspaces --if-present",
         "clean": "npm run clean --workspaces --if-present && rimraf node_modules",
         "typecheck": "npm run typecheck --workspaces --if-present",
