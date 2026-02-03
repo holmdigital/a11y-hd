@@ -109,100 +109,220 @@ export const AccessibilityStatement: React.FC<AccessibilityStatementProps> = ({
         });
     };
 
-    // Compliance status text
-    const complianceText = {
-        'full': 'This website is fully compliant with accessibility requirements.',
-        'partial': 'This website is partially compliant with accessibility requirements.',
-        'non-compliant': 'This website is not yet compliant with accessibility requirements.'
-    };
-
-    // Swedish compliance text
-    const complianceTextSv = {
-        'full': 'Denna webbplats är helt förenlig med tillgänglighetskraven.',
-        'partial': 'Denna webbplats är delvis förenlig med tillgänglighetskraven.',
-        'non-compliant': 'Denna webbplats uppfyller ännu inte tillgänglighetskraven.'
-    };
-
-    const isSv = locale === 'sv';
-
-    const styles: Record<string, React.CSSProperties> = {
-        container: {
-            fontFamily: 'system-ui, -apple-system, sans-serif',
-            lineHeight: 1.6,
-            maxWidth: '800px',
-            padding: '2rem',
-            backgroundColor: '#f8fafc',
-            border: '1px solid #e2e8f0',
-            borderRadius: '8px'
+    // Localization dictionary
+    const translations: Record<string, any> = {
+        en: {
+            title: 'Accessibility Statement',
+            about: 'About this statement',
+            appliesTo: (org: string) => `This accessibility statement applies to ${org}.`,
+            website: 'Website:',
+            lastUpdated: 'Last updated:',
+            compliance: 'Compliance status',
+            knownIssues: 'Known issues:',
+            legalBasis: 'Legal basis',
+            readLaw: '📜 Read the legislation',
+            euFramework: 'EU Framework:',
+            enforcement: 'Enforcement Authority',
+            monitoringPortal: '🔍 Monitoring Portal',
+            contact: 'Contact',
+            contactIntro: 'If you encounter accessibility issues, please contact us:',
+            generatedBy: 'Generated using',
+            statuses: {
+                full: 'This website is fully compliant with accessibility requirements.',
+                partial: 'This website is partially compliant with accessibility requirements.',
+                'non-compliant': 'This website is not yet compliant with accessibility requirements.'
+            },
+            frameworks: {
+                WAD: 'Web Accessibility Directive (2016/2102)',
+                EAA: 'European Accessibility Act (2019/882)'
+            }
         },
-        heading: {
-            fontSize: '1.5rem',
-            fontWeight: 700,
-            marginBottom: '1.5rem',
-            color: '#0f172a'
+        sv: {
+            title: 'Tillgänglighetsredogörelse',
+            about: 'Om denna redogörelse',
+            appliesTo: (org: string) => `Denna tillgänglighetsredogörelse gäller för ${org}.`,
+            website: 'Webbplats:',
+            lastUpdated: 'Senast uppdaterad:',
+            compliance: 'Efterlevnadsstatus',
+            knownIssues: 'Kända problem:',
+            legalBasis: 'Rättslig grund',
+            readLaw: '📜 Läs lagtexten',
+            euFramework: 'EU-ramverk:',
+            enforcement: 'Tillsynsmyndighet',
+            monitoringPortal: '🔍 Tillsynsportal',
+            contact: 'Kontakt',
+            contactIntro: 'Om du upptäcker tillgänglighetsproblem, vänligen kontakta oss:',
+            generatedBy: 'Genererad med hjälp av',
+            statuses: {
+                full: 'Denna webbplats är helt förenlig med tillgänglighetskraven.',
+                partial: 'Denna webbplats är delvis förenlig med tillgänglighetskraven.',
+                'non-compliant': 'Denna webbplats uppfyller ännu inte tillgänglighetskraven.'
+            },
+            frameworks: {
+                WAD: 'Webbtillgänglighetsdirektivet (2016/2102)',
+                EAA: 'Tillgänglighetsdirektivet (2019/882)'
+            }
         },
-        section: {
-            marginBottom: '1.5rem'
+        no: {
+            title: 'Tilgjengelighetserklæring',
+            about: 'Om denne erklæringen',
+            appliesTo: (org: string) => `Denne tilgjengelighetserklæringen gjelder for ${org}.`,
+            website: 'Nettsted:',
+            lastUpdated: 'Sist oppdatert:',
+            compliance: 'Status for etterlevelse',
+            knownIssues: 'Kjente problemer:',
+            legalBasis: 'Rettslig grunnlag',
+            readLaw: '📜 Les lovteksten',
+            euFramework: 'EU-rammeverk:',
+            enforcement: 'Tilsynsmyndighet',
+            monitoringPortal: '🔍 Tilsynsportal',
+            contact: 'Kontakt',
+            contactIntro: 'Hvis du opplever tilgjengelighetsproblemer, vennligst kontakt oss:',
+            generatedBy: 'Generert ved hjelp av',
+            statuses: {
+                full: 'Dette nettstedet er i samsvar med kravene til universell utforming.',
+                partial: 'Dette nettstedet er delvis i samsvar med kravene til universell utforming.',
+                'non-compliant': 'Dette nettstedet oppfyller ennå ikke kravene til universell utforming.'
+            },
+            frameworks: {
+                WAD: 'Webdirektivet (2016/2102)',
+                EAA: 'Tilgjengelighetsdirektivet (2019/882)'
+            }
         },
-        sectionTitle: {
-            fontSize: '1.125rem',
-            fontWeight: 600,
-            marginBottom: '0.5rem',
-            color: '#1e293b'
+        dk: {
+            title: 'Tilgængelighedserklæring',
+            about: 'Om denne erklæring',
+            appliesTo: (org: string) => `Denne tilgængelighedserklæring gælder for ${org}.`,
+            website: 'Websted:',
+            lastUpdated: 'Sidst opdateret:',
+            compliance: 'Overensstemmelsesstatus',
+            knownIssues: 'Kendte problemer:',
+            legalBasis: 'Retsgrundlag',
+            readLaw: '📜 Læs lovteksten',
+            euFramework: 'EU-ramme:',
+            enforcement: 'Håndhævelsesmyndighed',
+            monitoringPortal: '🔍 Tilsynsportal',
+            contact: 'Kontakt',
+            contactIntro: 'Hvis du oplever tilgængelighedsproblemer, bedes du kontakte os:',
+            generatedBy: 'Genereret ved hjælp af',
+            statuses: {
+                full: 'Dette websted overholder fuldt ud tilgængelighedskravene.',
+                partial: 'Dette websted overholder delvist tilgængelighedskravene.',
+                'non-compliant': 'Dette websted overholder endnu ikke tilgængelighedskravene.'
+            },
+            frameworks: {
+                WAD: 'Webtilgængelighedsdirektivet (2016/2102)',
+                EAA: 'Tilgængelighedsdirektivet (2019/882)'
+            }
         },
-        paragraph: {
-            margin: '0.5rem 0',
-            color: '#334155'
+        fi: {
+            title: 'Saavutettavuusseloste',
+            about: 'Tietoa tästä selosteesta',
+            appliesTo: (org: string) => `Tämä saavutettavuusseloste koskee organisaatiota ${org}.`,
+            website: 'Verkkosivusto:',
+            lastUpdated: 'Viimeksi päivitetty:',
+            compliance: 'Vaatimustenmukaisuus',
+            knownIssues: 'Tunnetut ongelmat:',
+            legalBasis: 'Oikeusperusta',
+            readLaw: '📜 Lue lakiteksti',
+            euFramework: 'EU-kehys:',
+            enforcement: 'Valvontaviranomainen',
+            monitoringPortal: '🔍 Valvontaportaali',
+            contact: 'Yhteystiedot',
+            contactIntro: 'Jos havaitset saavutettavuusongelmia, ota meihin yhteyttä:',
+            generatedBy: 'Luotu käyttäen',
+            statuses: {
+                full: 'Tämä verkkosivusto on täysin vaatimusten mukainen.',
+                partial: 'Tämä verkkosivusto on osittain vaatimusten mukainen.',
+                'non-compliant': 'Tämä verkkosivusto ei vielä täytä vaatimuksia.'
+            },
+            frameworks: {
+                WAD: 'Saavutettavuusdirektiivi (2016/2102)',
+                EAA: 'Esteettömyysdirektiivi (2019/882)'
+            }
         },
-        link: {
-            color: '#0056b3',
-            textDecoration: 'underline'
+        de: {
+            title: 'Barrierefreiheitserklärung',
+            about: 'Über diese Erklärung',
+            appliesTo: (org: string) => `Diese Barrierefreiheitserklärung gilt für ${org}.`,
+            website: 'Website:',
+            lastUpdated: 'Zuletzt aktualisiert:',
+            compliance: 'Vereinbarkeit mit den Anforderungen',
+            knownIssues: 'Bekannte Probleme:',
+            legalBasis: 'Rechtsgrundlage',
+            readLaw: '📜 Gesetzestext lesen',
+            euFramework: 'EU-Rahmen:',
+            enforcement: 'Durchsetzungsstelle',
+            monitoringPortal: '🔍 Überwachungsportal',
+            contact: 'Kontakt',
+            contactIntro: 'Wenn Sie Barrieren melden möchten, kontaktieren Sie uns bitte:',
+            generatedBy: 'Erstellt mit',
+            statuses: {
+                full: 'Diese Website ist vollständig mit den Anforderungen vereinbar.',
+                partial: 'Diese Website ist teilweise mit den Anforderungen vereinbar.',
+                'non-compliant': 'Diese Website ist noch nicht mit den Anforderungen vereinbar.'
+            },
+            frameworks: {
+                WAD: 'EU-Richtlinie 2016/2102',
+                EAA: 'European Accessibility Act (2019/882)'
+            }
         },
-        list: {
-            margin: '0.5rem 0',
-            paddingLeft: '1.5rem'
+        fr: {
+            title: 'Déclaration d\'accessibilité',
+            about: 'À propos de cette déclaration',
+            appliesTo: (org: string) => `Cette déclaration d'accessibilité s'applique à ${org}.`,
+            website: 'Site web:',
+            lastUpdated: 'Dernière mise à jour:',
+            compliance: 'État de conformité',
+            knownIssues: 'Problèmes connus:',
+            legalBasis: 'Base légale',
+            readLaw: '📜 Lire la législation',
+            euFramework: 'Cadre de l\'UE:',
+            enforcement: 'Autorité de contrôle',
+            monitoringPortal: '🔍 Portail de surveillance',
+            contact: 'Contact',
+            contactIntro: 'Si vous rencontrez des problèmes d\'accessibilité, veuillez nous contacter:',
+            generatedBy: 'Généré à l\'aide de',
+            statuses: {
+                full: 'Ce site est totalement conforme aux exigences d\'accessibilité.',
+                partial: 'Ce site est partiellement conforme aux exigences d\'accessibilité.',
+                'non-compliant': 'Ce site n\'est pas encore conforme aux exigences d\'accessibilité.'
+            },
+            frameworks: {
+                WAD: 'Directive Accessibilité Web (2016/2102)',
+                EAA: 'Acte Européen sur l\'Accessibilité (2019/882)'
+            }
         },
-        legalBox: {
-            backgroundColor: '#eff6ff',
-            border: '1px solid #bfdbfe',
-            borderRadius: '6px',
-            padding: '1rem',
-            marginTop: '1rem'
-        },
-        contactBox: {
-            backgroundColor: '#f0fdf4',
-            border: '1px solid #bbf7d0',
-            borderRadius: '6px',
-            padding: '1rem',
-            marginTop: '1rem'
-        },
-        badge: {
-            display: 'inline-block',
-            padding: '0.25rem 0.75rem',
-            borderRadius: '9999px',
-            fontSize: '0.875rem',
-            fontWeight: 600,
-            marginLeft: '0.5rem'
-        },
-        badgeFull: {
-            backgroundColor: '#dcfce7',
-            color: '#166534'
-        },
-        badgePartial: {
-            backgroundColor: '#fef3c7',
-            color: '#92400e'
-        },
-        badgeNonCompliant: {
-            backgroundColor: '#fee2e2',
-            color: '#991b1b'
+        es: {
+            title: 'Declaración de accesibilidad',
+            about: 'Sobre esta declaración',
+            appliesTo: (org: string) => `Esta declaración de accesibilidad se aplica a ${org}.`,
+            website: 'Sitio web:',
+            lastUpdated: 'Última actualización:',
+            compliance: 'Estado de cumplimiento',
+            knownIssues: 'Problemas conocidos:',
+            legalBasis: 'Base legal',
+            readLaw: '📜 Leer la legislación',
+            euFramework: 'Marco de la UE:',
+            enforcement: 'Autoridad de control',
+            monitoringPortal: '🔍 Portal de seguimiento',
+            contact: 'Contacto',
+            contactIntro: 'Si encuentra problemas de accesibilidad, contáctenos:',
+            generatedBy: 'Generado usando',
+            statuses: {
+                full: 'Este sitio web cumple totalmente con los requisitos de accesibilidad.',
+                partial: 'Este sitio web cumple parcialmente con los requisitos de accesibilidad.',
+                'non-compliant': 'Este sitio web aún no cumple con los requisitos de accesibilidad.'
+            },
+            frameworks: {
+                WAD: 'Directiva de Accesibilidad Web (2016/2102)',
+                EAA: 'Acta Europea de Accesibilidad (2019/882)'
+            }
         }
     };
 
-    const badgeStyle = complianceLevel === 'full'
-        ? { ...styles.badge, ...styles.badgeFull }
-        : complianceLevel === 'partial'
-            ? { ...styles.badge, ...styles.badgePartial }
-            : { ...styles.badge, ...styles.badgeNonCompliant };
+    // Use selected locale or default to English
+    const t = translations[locale] || translations['en'];
 
     return (
         <article
@@ -211,7 +331,7 @@ export const AccessibilityStatement: React.FC<AccessibilityStatementProps> = ({
             aria-labelledby="a11y-statement-title"
         >
             <h1 id="a11y-statement-title" style={styles.heading}>
-                {isSv ? 'Tillgänglighetsredogörelse' : 'Accessibility Statement'}
+                {t.title}
                 <span style={badgeStyle}>
                     {complianceLevel === 'full' ? '✓' : complianceLevel === 'partial' ? '⚠' : '✕'}
                 </span>
@@ -220,20 +340,17 @@ export const AccessibilityStatement: React.FC<AccessibilityStatementProps> = ({
             {/* Organization & Scope */}
             <section style={styles.section}>
                 <h2 style={styles.sectionTitle}>
-                    {isSv ? 'Om denna redogörelse' : 'About this statement'}
+                    {t.about}
                 </h2>
                 <p style={styles.paragraph}>
-                    {isSv
-                        ? `Denna tillgänglighetsredogörelse gäller för ${organizationName}.`
-                        : `This accessibility statement applies to ${organizationName}.`
-                    }
+                    {t.appliesTo(organizationName)}
                 </p>
                 <p style={styles.paragraph}>
-                    <strong>{isSv ? 'Webbplats:' : 'Website:'}</strong>{' '}
+                    <strong>{t.website}</strong>{' '}
                     <a href={websiteUrl} style={styles.link}>{websiteUrl}</a>
                 </p>
                 <p style={styles.paragraph}>
-                    <strong>{isSv ? 'Senast uppdaterad:' : 'Last updated:'}</strong>{' '}
+                    <strong>{t.lastUpdated}</strong>{' '}
                     {formatDate(lastReviewDate)}
                 </p>
             </section>
@@ -241,16 +358,16 @@ export const AccessibilityStatement: React.FC<AccessibilityStatementProps> = ({
             {/* Compliance Status */}
             <section style={styles.section}>
                 <h2 style={styles.sectionTitle}>
-                    {isSv ? 'Efterlevnadsstatus' : 'Compliance status'}
+                    {t.compliance}
                 </h2>
                 <p style={styles.paragraph}>
-                    {isSv ? complianceTextSv[complianceLevel] : complianceText[complianceLevel]}
+                    {t.statuses[complianceLevel]}
                 </p>
                 {nonComplianceItems.length > 0 && (
                     <>
                         <p style={styles.paragraph}>
                             <strong>
-                                {isSv ? 'Kända problem:' : 'Known issues:'}
+                                {t.knownIssues}
                             </strong>
                         </p>
                         <ul style={styles.list}>
@@ -265,7 +382,7 @@ export const AccessibilityStatement: React.FC<AccessibilityStatementProps> = ({
             {/* Legal Basis */}
             <section style={styles.section}>
                 <h2 style={styles.sectionTitle}>
-                    {isSv ? 'Rättslig grund' : 'Legal basis'}
+                    {t.legalBasis}
                 </h2>
                 <div style={styles.legalBox}>
                     {nationalLaw ? (
@@ -278,15 +395,15 @@ export const AccessibilityStatement: React.FC<AccessibilityStatementProps> = ({
                             {nationalLaw.lawUrl && (
                                 <p style={styles.paragraph}>
                                     <a href={nationalLaw.lawUrl} style={styles.link} target="_blank" rel="noopener noreferrer">
-                                        {isSv ? '📜 Läs lagtexten' : '📜 Read the legislation'}
+                                        {t.readLaw}
                                     </a>
                                 </p>
                             )}
                             <p style={styles.paragraph}>
-                                <strong>{isSv ? 'EU-ramverk:' : 'EU Framework:'}</strong>{' '}
+                                <strong>{t.euFramework}</strong>{' '}
                                 {framework === 'WAD'
-                                    ? 'Web Accessibility Directive (2016/2102)'
-                                    : 'European Accessibility Act (2019/882)'
+                                    ? t.frameworks.WAD
+                                    : t.frameworks.EAA
                                 }
                             </p>
                         </>
@@ -305,7 +422,7 @@ export const AccessibilityStatement: React.FC<AccessibilityStatementProps> = ({
             {authority && (
                 <section style={styles.section}>
                     <h2 style={styles.sectionTitle}>
-                        {isSv ? 'Tillsynsmyndighet' : 'Enforcement Authority'}
+                        {t.enforcement}
                     </h2>
                     <p style={styles.paragraph}>
                         <strong>{authority.name}</strong>
@@ -318,7 +435,7 @@ export const AccessibilityStatement: React.FC<AccessibilityStatementProps> = ({
                     {authority.monitoringPortal && (
                         <p style={styles.paragraph}>
                             <a href={authority.monitoringPortal} style={styles.link} target="_blank" rel="noopener noreferrer">
-                                {isSv ? '🔍 Tillsynsportal' : '🔍 Monitoring Portal'}
+                                {t.monitoringPortal}
                             </a>
                         </p>
                     )}
@@ -328,14 +445,11 @@ export const AccessibilityStatement: React.FC<AccessibilityStatementProps> = ({
             {/* Contact */}
             <section style={styles.section}>
                 <h2 style={styles.sectionTitle}>
-                    {isSv ? 'Kontakt' : 'Contact'}
+                    {t.contact}
                 </h2>
                 <div style={styles.contactBox}>
                     <p style={styles.paragraph}>
-                        {isSv
-                            ? 'Om du upptäcker tillgänglighetsproblem, vänligen kontakta oss:'
-                            : 'If you encounter accessibility issues, please contact us:'
-                        }
+                        {t.contactIntro}
                     </p>
                     <p style={styles.paragraph}>
                         <a href={`mailto:${contactEmail}`} style={styles.link}>
@@ -349,7 +463,7 @@ export const AccessibilityStatement: React.FC<AccessibilityStatementProps> = ({
             {recommendedTool && (
                 <footer style={{ marginTop: '2rem', fontSize: '0.875rem', color: '#64748b' }}>
                     <p>
-                        {isSv ? 'Genererad med hjälp av' : 'Generated using'}{' '}
+                        {t.generatedBy}{' '}
                         <a href={recommendedTool.url} style={styles.link} target="_blank" rel="noopener noreferrer">
                             {recommendedTool.name}
                         </a>
