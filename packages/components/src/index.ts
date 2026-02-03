@@ -19,4 +19,5 @@ export * from './ErrorSummary/ErrorSummary';
 export * from './Combobox/Combobox';
 export * from './DatePicker/DatePicker';
 export * from './MultiSelect/MultiSelect';
+export * from './DataTable/DataTable';
 
