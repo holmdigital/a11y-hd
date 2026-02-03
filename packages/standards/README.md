@@ -99,6 +99,47 @@ const tools = getStatementTools();
 // [{ id: "digg-generator", url: "https://webbriktlinjer.se/...", ... }]
 ```
 
+### National Laws & Sanctions
+
+```typescript
+import { 
+  getNationalLaws,
+  getNationalLaw,
+  getSanctions,
+  getMaxSanction,
+  getSectorAuthorities
+} from '@holmdigital/standards';
+
+// Get all laws for Sweden
+const seLaws = getNationalLaws('SE');
+// [{ id: "dos-lagen", law: "DOS-lagen", ... }, { id: "lptt", law: "LPTT", ... }]
+
+// Get sanctions for a specific law
+const sanctions = getSanctions('lptt', 'SE');
+// { type: "Sanktionsavgift", maxAmount: 10000000, currency: "SEK" }
+
+// Get maximum sanction for a country
+const maxSanction = getMaxSanction('DE');
+// { law: "BFSG", amount: 500000, currency: "EUR" }
+
+// Get sector-specific EAA authorities
+const sectors = getSectorAuthorities('SE');
+// [{ authority: "Konsumentverket", responsibility: "Transport" }, ...]
+```
+
+## Supported Countries & Maximum Sanctions
+
+| Country | WAD Law | EAA Law | Max Sanction |
+|---------|---------|---------|--------------|
+| 🇸🇪 SE | DOS-lagen | LPTT | 10M SEK |
+| 🇩🇪 DE | BITV 2.0 | BFSG | 500k EUR |
+| 🇫🇷 FR | RGAA | - | 300k EUR |
+| 🇪🇸 ES | UNE 139803 | - | 1M EUR |
+| 🇮🇪 IE | S.I. 358/2020 | - | 60k EUR |
+| 🇳🇴 NO | IKT-forskrift | - | Daily fines |
+| 🇫🇮 FI | 306/2019 | EAA | Vite |
+| 🇩🇰 DK | Tilgængelighed | - | Fines |
+
 ## API Reference
 
 ### Core Functions
@@ -123,6 +164,17 @@ const tools = getStatementTools();
 | `getStatementTools()` | Get statement generator tools |
 | `getEAADeadlineRules(lang?)` | Get rules with EAA deadlines |
 
+### National Laws & Sanctions Functions
+| Function | Description |
+|----------|-------------|
+| `getNationalLaws(country)` | Get all laws for a country |
+| `getNationalLaw(id, country?)` | Get specific law by ID |
+| `getNationalLawByFramework(framework, country?)` | Get law by WAD/EAA |
+| `getSanctions(lawId, country?)` | Get sanctions for a law |
+| `getMaxSanction(country?)` | Get maximum sanction amount |
+| `getSectorAuthorities(country?)` | Get EAA sector authorities |
+
 ## License
 
 MIT © Holm Digital AB
+
