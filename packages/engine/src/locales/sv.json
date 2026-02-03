@@ -16,7 +16,8 @@
         "prescriptive_fix": "\n💡 Preskriptiv Lösning:",
         "use_component": "Använd komponent: {component}",
         "pseudo_tests": "\n🧬 Genererar Pseudo-automationstester...\n",
-        "test_for": "Test för {ruleId}:"
+        "test_for": "Test för {ruleId}:",
+        "junit_saved": "JUnit XML-rapport sparad till {path}"
     },
     "report": {
         "title": "Tillgänglighetsrapport - {url}",

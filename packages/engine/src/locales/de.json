@@ -16,7 +16,8 @@
         "prescriptive_fix": "\n💡 Vorschriftsmäßige Lösung:",
         "use_component": "Verwenden Sie die Komponente: {component}",
         "pseudo_tests": "\n🧬 Generiere Pseudo-Automatisierungstests...\n",
-        "test_for": "Test für {ruleId}:"
+        "test_for": "Test für {ruleId}:",
+        "junit_saved": "JUnit XML-Bericht gespeichert unter {path}"
     },
     "report": {
         "title": "Barrierefreiheitsbericht - {url}",

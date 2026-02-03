@@ -16,7 +16,8 @@
         "prescriptive_fix": "\n💡 Voorgeschreven oplossing:",
         "use_component": "Gebruik component: {component}",
         "pseudo_tests": "\n🧬 Pseudo-automatiseringstests genereren...\n",
-        "test_for": "Test voor {ruleId}:"
+        "test_for": "Test voor {ruleId}:",
+        "junit_saved": "JUnit XML-rapport opgeslagen op {path}"
     },
     "report": {
         "title": "Toegankelijkheidsrapport - {url}",

@@ -16,7 +16,8 @@
         "prescriptive_fix": "\n💡 Solución Prescriptiva:",
         "use_component": "Use el componente: {component}",
         "pseudo_tests": "\n🧬 Generando pruebas de pseudo-automatización...\n",
-        "test_for": "Prueba para {ruleId}:"
+        "test_for": "Prueba para {ruleId}:",
+        "junit_saved": "Informe JUnit XML guardado en {path}"
     },
     "report": {
         "title": "Informe de Accesibilidad - {url}",
