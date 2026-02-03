@@ -115,3 +115,165 @@ function checkDeadlineRisks() {
   }
 }
 ```
+
+## Recipe 5: GitLab CI Pipeline
+**Goal:** Run accessibility checks in GitLab CI/CD with merge request annotations.
+
+```yaml
+# .gitlab-ci.yml
+accessibility-check:
+  stage: test
+  image: node:20
+  script:
+    - npm ci
+    - npm run build
+    - npm run start &
+    - npx wait-on http://localhost:3000
+    - npx @holmdigital/engine http://localhost:3000 
+        --ci 
+        --junit a11y-report.xml 
+        --threshold high
+  artifacts:
+    when: always
+    reports:
+      junit: a11y-report.xml
+    paths:
+      - a11y-report.xml
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+```
+
+## Recipe 6: JUnit Report for Test Runners
+**Goal:** Generate JUnit XML output for integration with test dashboards (Jenkins, Azure DevOps, etc.)
+
+```bash
+# Generate JUnit report
+npx @holmdigital/engine https://example.com --junit ./reports/a11y-results.xml
+
+# Combine with existing test results
+npx @holmdigital/engine https://example.com \
+  --junit ./test-results/accessibility.xml \
+  --threshold critical \
+  --ci
+```
+
+Example JUnit output:
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="HolmDigital Accessibility Scan" tests="46" failures="2">
+  <testsuite name="WCAG 2.1 AA" tests="46" failures="2">
+    <testcase name="landmark-one-main" classname="WCAG.1.3.1">
+      <failure message="Page must have exactly one main landmark">
+        Element: document
+        Impact: moderate
+      </failure>
+    </testcase>
+    <testcase name="color-contrast" classname="WCAG.1.4.3" />
+  </testsuite>
+</testsuites>
+```
+
+## Recipe 7: Configuration File (.a11yrc)
+**Goal:** Store scan settings in a config file for consistent team usage.
+
+Create `.a11yrc` in your project root:
+
+```json
+{
+  "url": "http://localhost:3000",
+  "lang": "sv",
+  "threshold": "high",
+  "viewport": "desktop",
+  "ci": true,
+  "pages": [
+    "/",
+    "/about",
+    "/contact",
+    "/products"
+  ],
+  "exclude": [
+    "/admin",
+    "/api"
+  ],
+  "output": {
+    "json": "./reports/a11y.json",
+    "junit": "./reports/a11y-junit.xml",
+    "pdf": "./reports/accessibility-report.pdf"
+  }
+}
+```
+
+Then run without arguments:
+```bash
+npx @holmdigital/engine
+# Reads settings from .a11yrc automatically
+```
+
+## Recipe 8: Azure DevOps Pipeline
+**Goal:** Integrate accessibility testing in Azure Pipelines.
+
+```yaml
+# azure-pipelines.yml
+trigger:
+  - main
+  - develop
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+  - task: NodeTool@0
+    inputs:
+      versionSpec: '20.x'
+    displayName: 'Install Node.js'
+
+  - script: npm ci
+    displayName: 'Install dependencies'
+
+  - script: npm run build && npm run start &
+    displayName: 'Start application'
+
+  - script: npx wait-on http://localhost:3000
+    displayName: 'Wait for server'
+
+  - script: |
+      npx @holmdigital/engine http://localhost:3000 \
+        --junit $(Build.ArtifactStagingDirectory)/a11y-results.xml \
+        --ci \
+        --lang sv
+    displayName: 'Run Accessibility Scan'
+
+  - task: PublishTestResults@2
+    inputs:
+      testResultsFormat: 'JUnit'
+      testResultsFiles: '$(Build.ArtifactStagingDirectory)/a11y-results.xml'
+      testRunTitle: 'Accessibility Tests'
+    condition: always()
+```
+
+## Recipe 9: Pre-commit Hook
+**Goal:** Catch accessibility issues before code is committed.
+
+Install husky and lint-staged:
+```bash
+npm install -D husky lint-staged
+npx husky init
+```
+
+Add to `package.json`:
+```json
+{
+  "lint-staged": {
+    "*.{html,tsx,jsx}": [
+      "npx @holmdigital/engine --threshold critical --ci"
+    ]
+  }
+}
+```
+
+Create `.husky/pre-commit`:
+```bash
+#!/bin/sh
+npx lint-staged
+```
+

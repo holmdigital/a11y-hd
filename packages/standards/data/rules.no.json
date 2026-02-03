@@ -9,10 +9,10 @@
         "en301549Title": "Contrast (minimum)",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "AODA, WCAG 2.0 AA required",
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level AA required",
         "remediation": {
-            "description": "Text and images of text must have a contrast ratio of at least 4.5:1 (3:1 for large text).",
-            "technicalGuidance": "Use tools like WebAIM Contrast Checker to verify contrast. Adjust colour choices or add background opacity to achieve correct contrast.",
+            "description": "Tekst og bilder av tekst må ha et kontrastforhold på minst 4,5:1 (3:1 for stor tekst).",
+            "technicalGuidance": "Bruk verktøy som WebAIM Contrast Checker for å verifisere kontrast. Juster fargevalg eller legg til bakgrunnsopasitet for å oppnå riktig kontrast.",
             "component": "@holmdigital/components/Button",
             "codeExample": "import { Button } from '@holmdigital/components';\n\n// Bad: Poor contrast\n<button style={{ background: '#777', color: '#999' }}>Click me</button>\n\n// Good: Use accessible component\n<Button variant=\"primary\">Click me</Button>",
             "wcagTechnique": [
@@ -24,14 +24,14 @@
         "holmdigitalInsight": {
             "diggRisk": "high",
             "eaaImpact": "critical",
+            "norwegianInterpretation": "En av de vanligste årsakene til bøter fra tilsynsmyndigheter. Særlig viktig for offentlig sektor ovenvåking.",
             "commonMistakes": [
-                "Gray text on white background (#777 on #FFF)",
-                "Light blue links without underline",
-                "Placeholder text with too low contrast"
+                "Grå tekst på hvit bakgrunn (#777 på #FFF)",
+                "Lyseblå lenker uten understreking",
+                "Plassholdertekst med for lav kontrast"
             ],
-            "diggPrecedent": "Regulators often cite poor contrast in primary navigation elements.",
-            "priorityRationale": "Critical for users with low vision. Affects readability for all users in varying lighting conditions.",
-            "canadianInterpretation": "One of the most common reasons for fines from regulators. Especially important for public sector monitoring."
+            "diggPrecedent": "Tilsynsmyndigheter påpeker ofte dårlig kontrast i primære navigasjonselementer.",
+            "priorityRationale": "Kritisk for brukere med nedsatt syn. Påvirker lesbarhet for alle brukere under varierende lysforhold."
         },
         "testability": {
             "automated": true,
@@ -80,10 +80,10 @@
         "en301549Title": "Keyboard",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "AODA, WCAG 2.0 AA required",
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level A required",
         "remediation": {
-            "description": "All functionality must be accessible via keyboard.",
-            "technicalGuidance": "Use semantic HTML elements (button, a, input) instead of div/span with click handlers. Ensure tabindex is used correctly.",
+            "description": "All funksjonalitet må være tilgjengelig via tastatur.",
+            "technicalGuidance": "Bruk semantiske HTML-elementer (button, a, input) i stedet for div/span med klikk-håndterere. Sørg for at tabindex brukes riktig.",
             "component": "@holmdigital/components/Button",
             "codeExample": "// Bad: Div with onClick\n<div onClick={handleClick}>Click Me</div>\n\n// Good: Button element\n<button onClick={handleClick}>Click Me</button>\n\n// Best: Use HolmDigital component\nimport { Button } from '@holmdigital/components';\n<Button onClick={handleClick}>Click Me</Button>",
             "wcagTechnique": [
@@ -94,14 +94,14 @@
         "holmdigitalInsight": {
             "diggRisk": "critical",
             "eaaImpact": "critical",
+            "norwegianInterpretation": "Tastaturtilgang er grunnleggende og ikke forhandlingsbart. Topp prioritet i samsvarsrevisjoner.",
             "commonMistakes": [
-                "Using div/span for clickable elements",
-                "Custom dropdown menus without keyboard support",
-                "Modal dialogs that trap focus incorrectly"
+                "Bruk av div/span for klikkbare elementer",
+                "Egendefinerte nedtrekksmenyer uten tastaturststøtte",
+                "Modaldialogbokser som fanger fokus feil"
             ],
-            "diggPrecedent": "Auditors have issued fines for sites where core functions (e.g. forms, navigation) are not keyboard accessible.",
-            "priorityRationale": "Critical for users with motor disabilities and screen reader users.",
-            "canadianInterpretation": "Keyboard access is fundamental and non-negotiable. Top priority in compliance audits."
+            "diggPrecedent": "Revisorer har utført bøter for nettsteder hvor kjernefunksjoner (f.eks. skjemaer, navigasjon) ikke er tastatur-tilgjengelige.",
+            "priorityRationale": "Kritisk for brukere med motoriske funksjonshemninger og skjermleserbrukere."
         },
         "testability": {
             "automated": false,
@@ -149,10 +149,10 @@
         "en301549Title": "Non-text content",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "AODA, WCAG 2.0 AA required",
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level A required",
         "remediation": {
-            "description": "All images must have descriptive alternative text.",
-            "technicalGuidance": "Add alt attributes to all img elements. For decorative images, use alt=\"\". For informative images, concisely describe the content.",
+            "description": "Alle bilder må ha beskrivende alternativ tekst.",
+            "technicalGuidance": "Legg til alt-attributter på alle img-elementer. For dekorative bilder, bruk alt=\"\". For informative bilder, beskriv innholdet kort og konsist.",
             "codeExample": "// Bad: Msising alt\n<img src=\"logo.png\" />\n\n// Good: Descriptive alt\n<img src=\"logo.png\" alt=\"HolmDigital Logo\" />\n\n// Good: Decorative image\n<img src=\"decoration.png\" alt=\"\" role=\"presentation\" />",
             "wcagTechnique": [
                 "G94",
@@ -163,15 +163,15 @@
         "holmdigitalInsight": {
             "diggRisk": "high",
             "eaaImpact": "high",
+            "norwegianInterpretation": "Særlig viktig for logoer og informasjonsgrafikk. Ofte kontrollert i revisjoner.",
             "commonMistakes": [
-                "Missing alt text entirely",
-                "Alt text that just says 'image' or 'icon'",
-                "Filename as alt text (e.g. 'IMG_1234.jpg')",
-                "Decorative images with unnecessary description"
+                "Manglende alt-tekst",
+                "Alt-tekst som bare sier 'bilde' eller 'ikon'",
+                "Filnavn som alt-tekst (f.eks. 'IMG_1234.jpg')",
+                "Dekorative bilder med unødvendig beskrivelse"
             ],
-            "diggPrecedent": "Audits frequently cite missing alt text, especially for vital infographics.",
-            "priorityRationale": "Critical for screen reader users to access visual information.",
-            "canadianInterpretation": "Especially important for logos and informational graphics. Frequently checked in audits."
+            "diggPrecedent": "Revisjoner påpeker ofte manglende alt-tekst, særlig for viktige infografikker.",
+            "priorityRationale": "Kritisk for skjermleserbrukere for å få tilgang til visuell informasjon."
         },
         "testability": {
             "automated": true,
@@ -219,10 +219,10 @@
         "en301549Title": "Labels or instructions",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "AODA, WCAG 2.0 AA required",
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level A required",
         "remediation": {
-            "description": "Form fields must have clear labels or instructions.",
-            "technicalGuidance": "Use label elements linked to input via for/id. For complex forms, use fieldset and legend. Use aria-describedby for extra instructions.",
+            "description": "Skjemafelt må ha tydelige etiketter eller instruksjoner.",
+            "technicalGuidance": "Bruk label-elementer koblet til input via for/id. For komplekse skjemaer, bruk fieldset og legend. Bruk aria-describedby for ekstra instruksjoner.",
             "component": "@holmdigital/components/FormField",
             "codeExample": "import { FormField } from '@holmdigital/components';\n\n// Bad: No label\n<input type=\"text\" placeholder=\"Name\" />\n\n// Good: With label\n<label htmlFor=\"name\">Name:</label>\n<input type=\"text\" id=\"name\" />\n\n// Best: Use HolmDigital component\n<FormField\n  label=\"Name\"\n  type=\"text\"\n  required\n  helpText=\"Enter your full name\"\n/>",
             "wcagTechnique": [
@@ -235,15 +235,15 @@
         "holmdigitalInsight": {
             "diggRisk": "high",
             "eaaImpact": "high",
+            "norwegianInterpretation": "Skjemaer er kritiske for e-tjenester. Overholdelse håndheves strengt i offentlig sektor-applikasjoner.",
             "commonMistakes": [
-                "Only placeholder without label",
-                "Label and input not linked via for/id",
-                "Error messages without aria-describedby",
-                "Required fields not clearly marked"
+                "Bare plassholder uten etikett",
+                "Etikett og input ikke koblet via for/id",
+                "Feilmeldinger uten aria-describedby",
+                "Obligatoriske felt ikke tydelig merket"
             ],
-            "diggPrecedent": "Audit decisions often criticize poor form accessibility, especially for application and contact forms.",
-            "priorityRationale": "Critical for users to successfully use e-services and submit information.",
-            "canadianInterpretation": "Forms are critical for e-services. Compliance is strictly enforced in public sector apps."
+            "diggPrecedent": "Revisjonsbeslutninger kritiserer ofte dårlig skjematilgjengelighet, særlig for søknads- og kontaktskjemaer.",
+            "priorityRationale": "Kritisk for at brukere med suksess kan bruke e-tjenester og sende inn informasjon."
         },
         "testability": {
             "automated": true,
@@ -291,10 +291,10 @@
         "en301549Title": "Page titled",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "AODA, WCAG 2.0 AA required",
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level A required",
         "remediation": {
-            "description": "Each web page must have a descriptive title.",
-            "technicalGuidance": "Use the title element in head. The title should be unique for each page and describe its purpose. Format: 'Page Name - Site Name'.",
+            "description": "Hver nettside må ha en beskrivende tittel.",
+            "technicalGuidance": "Bruk title-elementet i head. Tittelen skal være unik for hver side og beskrive formålet. Format: 'Sidenavn - Nettstedsnavn'.",
             "codeExample": "// Bad: Generic title\n<title>Page</title>\n\n// Good: Descriptive title\n<title>Contact Us - HolmDigital</title>\n\n// React/Next.js\nimport Head from 'next/head';\n\n<Head>\n  <title>Contact Us - HolmDigital</title>\n</Head>",
             "wcagTechnique": [
                 "G88",
@@ -304,15 +304,15 @@
         "holmdigitalInsight": {
             "diggRisk": "medium",
             "eaaImpact": "medium",
+            "norwegianInterpretation": "Viktig for navigasjon, særlig i SPA-er hvor tittelen må oppdateres dynamisk.",
             "commonMistakes": [
-                "Same title on all pages",
-                "Title not updating in SPAs",
-                "Too long or too short title",
-                "Title missing entirely"
+                "Samme tittel på alle sider",
+                "Tittel oppdateres ikke i SPA-er",
+                "For lang eller for kort tittel",
+                "Tittel mangler helt"
             ],
-            "diggPrecedent": "Audits have noted missing page titles, especially in Single Page Applications.",
-            "priorityRationale": "Important for screen reader navigation and SEO.",
-            "canadianInterpretation": "Important for navigation, especially in SPAs where the title must update dynamically."
+            "diggPrecedent": "Revisjoner har bemerket manglende sidetitler, særlig i Single Page Applications.",
+            "priorityRationale": "Viktig for skjermleser-navigasjon og SEO."
         },
         "testability": {
             "automated": true,
@@ -360,10 +360,10 @@
         "en301549Title": "Info and relationships",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "AODA, WCAG 2.0 AA required",
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level A required",
         "remediation": {
-            "description": "Information, structure, and relationships conveyed through presentation can be programmatically determined or are available in text.",
-            "technicalGuidance": "Use semantic HTML: <header>, <nav>, <main>, <footer>, <h1>-<h6>, <ul>/ <ol>, <table>. Do not use visual styles to create 'fake' headings or lists.",
+            "description": "Informasjon, struktur og relasjoner formidlet gjennom presentasjon kan programmatisk bestemmes eller er tilgjengelig i tekst.",
+            "technicalGuidance": "Bruk semantisk HTML: <header>, <nav>, <main>, <footer>, <h1>-<h6>, <ul>/<ol>, <table>. Ikke bruk visuelle stiler for å lage 'falske' overskrifter eller lister.",
             "component": null,
             "wcagTechnique": [
                 "H42",
@@ -374,13 +374,13 @@
         "holmdigitalInsight": {
             "diggRisk": "high",
             "eaaImpact": "high",
+            "norwegianInterpretation": "Semantisk struktur er avgørende for skjermlesere for å navigere effektivt. Revisorer påpeker ofte 'div-suppe' som ser ut som struktur men mangler semantikk.",
             "commonMistakes": [
-                "Using bold text instead of <h1>-<h6>",
-                "Using <br> for lists instead of <ul>",
-                "Tables for layout"
+                "Bruk av fet tekst i stedet for <h1>-<h6>",
+                "Bruk av <br> for lister i stedet for <ul>",
+                "Tabeller for layout"
             ],
-            "priorityRationale": "Fundamental for all assistive technology navigation.",
-            "canadianInterpretation": "Semantic structure is crucial for screen readers to navigate effectively. Auditors often cite 'div-soup' that looks like structure but lacks semantics."
+            "priorityRationale": "Grunnleggende for all hjelpeteknologi-navigasjon."
         },
         "testability": {
             "automated": true,
@@ -428,10 +428,10 @@
         "en301549Title": "Use of color",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "AODA, WCAG 2.0 AA required",
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level A required",
         "remediation": {
-            "description": "Color is not used as the only visual means of conveying information, indicating an action, prompting a response, or distinguishing a visual element.",
-            "technicalGuidance": "Complement colour with text, icons, or underlining. E.g. links must have underlines or another visual marker besides colour. Error messages need text/icon, not just a red border.",
+            "description": "Farge brukes ikke som eneste visuelle middel for å formidle informasjon, indikere en handling, be om et svar, eller skille et visuelt element.",
+            "technicalGuidance": "Suppler farge med tekst, ikoner eller understreking. F.eks. lenker må ha understreking eller en annen visuell markør i tillegg til farge. Feilmeldinger trenger tekst/ikon, ikke bare en rød ramme.",
             "component": "@holmdigital/components/FormField",
             "wcagTechnique": [
                 "G14",
@@ -442,13 +442,13 @@
         "holmdigitalInsight": {
             "diggRisk": "medium",
             "eaaImpact": "medium",
+            "norwegianInterpretation": "Vanlig problem i grafer og kart hvor kun fargekoding brukes.",
             "commonMistakes": [
-                "Links that only differ by colour from body text",
-                "Error messages only marked with red colour",
-                "Graphs where only colour distinguishes data points"
+                "Lenker som bare skiller seg fra brødtekst ved farge",
+                "Feilmeldinger kun merket med rød farge",
+                "Grafer hvor kun farge skiller datapunkter"
             ],
-            "priorityRationale": "Crucial for colour blind users.",
-            "canadianInterpretation": "Common problem in graphs and maps where only color coding is used."
+            "priorityRationale": "Avgørende for fargeblinde brukere."
         },
         "testability": {
             "automated": false,
@@ -496,10 +496,10 @@
         "en301549Title": "Reflow",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "AODA Best Practice, WCAG 2.1 AA recommended",
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level AA required",
         "remediation": {
-            "description": "Content must be presentable without requiring scrolling in two dimensions down to 320px width.",
-            "technicalGuidance": "Use responsive design (CSS Media Queries, Flexbox, Grid). Avoid fixed widths in pixels. Ensure tables and images scale correctly.",
+            "description": "Innhold må kunne presenteres uten å kreve rulling i to retninger ned til 320px bredde.",
+            "technicalGuidance": "Bruk responsiv design (CSS Media Queries, Flexbox, Grid). Unngå faste bredder i piksler. Sørg for at tabeller og bilder skalerer riktig.",
             "component": null,
             "wcagTechnique": [
                 "C32",
@@ -509,13 +509,13 @@
         "holmdigitalInsight": {
             "diggRisk": "high",
             "eaaImpact": "high",
+            "norwegianInterpretation": "Et moderne krav (WCAG 2.1) kritisk for mobilbruk og forstørret tekst. Tilsynet har nulltoleranse for horisontal rulling på vertikale nettsteder.",
             "commonMistakes": [
-                "Fixed widths on containers",
-                "Tables that are not responsive",
-                "Images wider than the screen"
+                "Faste bredder på containere",
+                "Tabeller som ikke er responsive",
+                "Bilder bredere enn skjermen"
             ],
-            "priorityRationale": "Critical for low vision users who zoom in heavily.",
-            "canadianInterpretation": "A modern requirement (WCAG 2.1) critical for mobile use and magnified text. DIGG has zero tolerance for horizontal scroll on vertical sites."
+            "priorityRationale": "Kritisk for brukere med nedsatt syn som zoomer mye."
         },
         "testability": {
             "automated": false,
@@ -563,10 +563,10 @@
         "en301549Title": "Non-text contrast",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "AODA Best Practice, WCAG 2.1 AA recommended",
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level AA required",
         "remediation": {
-            "description": "The visual presentation of user interface components and graphical objects must have a contrast ratio of at least 3:1 against adjacent colours.",
-            "technicalGuidance": "Applies to buttons, input borders, icons, and focus indicators. Ensure all interactive elements are clearly visible against the background.",
+            "description": "Den visuelle presentasjonen av brukergrensesnittkomponenter og grafiske objekter må ha et kontrastforhold på minst 3:1 mot tilstøtende farger.",
+            "technicalGuidance": "Gjelder knapper, input-rammer, ikoner og fokusindikatorer. Sørg for at alle interaktive elementer er tydelig synlige mot bakgrunnen.",
             "component": "@holmdigital/components/Button",
             "wcagTechnique": [
                 "G195",
@@ -576,11 +576,11 @@
         "holmdigitalInsight": {
             "diggRisk": "low",
             "eaaImpact": "low",
+            "norwegianInterpretation": "Ofte oversett krav angående fokusringer og inaktive (men synlige) komponenter. Viktig for å forstå grensesnittet.",
             "commonMistakes": [
-                "Grayed out buttons with too low contrast"
+                "Nedtonede knapper med for lav kontrast"
             ],
-            "priorityRationale": "Important for distinguishing interactive elements.",
-            "canadianInterpretation": "Often missed requirement regarding focus rings and inactive (but visible) components. Important for understanding the interface."
+            "priorityRationale": "Viktig for å skille interaktive elementer."
         },
         "testability": {
             "automated": false,
@@ -628,10 +628,10 @@
         "en301549Title": "Text spacing",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "AODA Best Practice, WCAG 2.1 AA recommended",
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level AA required",
         "remediation": {
-            "description": "Content or functionality must not be lost when the user changes text spacing (line height, paragraph spacing, etc.).",
-            "technicalGuidance": "Avoid fixed heights on text containers. Let containers grow with content. Test with text spacing bookmarklet.",
+            "description": "Innhold eller funksjonalitet må ikke gå tapt når brukeren endrer tekstavstand (linjehøyde, avsnittavstand, osv.).",
+            "technicalGuidance": "Unngå faste høyder på tekstcontainere. La containere vokse med innholdet. Test med text spacing bookmarklet.",
             "component": null,
             "wcagTechnique": [
                 "C36"
@@ -640,12 +640,12 @@
         "holmdigitalInsight": {
             "diggRisk": "low",
             "eaaImpact": "medium",
+            "norwegianInterpretation": "Viktig for dysleksitilpasninger.",
             "commonMistakes": [
-                "Fixed line height in pixels",
-                "Text container that does not grow"
+                "Fast linjehøyde i piksler",
+                "Tekstcontainer som ikke vokser"
             ],
-            "priorityRationale": "Important for readability during adaptations.",
-            "canadianInterpretation": "Important for dyslexia adaptations."
+            "priorityRationale": "Viktig for lesbarhet under tilpasninger."
         },
         "testability": {
             "automated": false,
@@ -692,10 +692,10 @@
         "en301549Title": "Content on hover or focus",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "AODA Best Practice, WCAG 2.1 AA recommended",
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level AA required",
         "remediation": {
-            "description": "Content shown on hover/focus (e.g. tooltips) must be Dismissable, Hoverable, and Persistent.",
-            "technicalGuidance": "Ensure tooltips do not disappear when moving mouse from trigger to the tooltip itself. Allow ESC to dismiss.",
+            "description": "Innhold vist ved hover/fokus (f.eks. tooltips) må være avvisbart, svævbart og vedvarende.",
+            "technicalGuidance": "Sørg for at tooltips ikke forsvinner når du flytter musen fra utløseren til selve tooltipet. Tillat ESC for å avvise.",
             "component": null,
             "wcagTechnique": [
                 "SCR39"
@@ -704,13 +704,13 @@
         "holmdigitalInsight": {
             "diggRisk": "medium",
             "eaaImpact": "medium",
+            "norwegianInterpretation": "Vanlig problem med egendefinerte tooltips og mega-menyer.",
             "commonMistakes": [
-                "Tooltips that cannot be reached with mouse",
-                "Menus that close too easily",
-                "Content that cannot be dismissed without moving focus"
+                "Tooltips som ikke kan nås med mus",
+                "Menyer som lukker for lett",
+                "Innhold som ikke kan avvises uten å flytte fokus"
             ],
-            "priorityRationale": "Important for users with magnification and motor difficulties.",
-            "canadianInterpretation": "Common problem with custom tooltips and mega-menus."
+            "priorityRationale": "Viktig for brukere med forstørring og motoriske vansker."
         },
         "testability": {
             "automated": false,
@@ -758,10 +758,10 @@
         "en301549Title": "Captions (prerecorded)",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "AODA, WCAG 2.0 AA required",
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level A required",
         "remediation": {
-            "description": "Captions must be provided for all prerecorded audio content in synchronized media.",
-            "technicalGuidance": "Use the <track> element with WebVTT files for HTML5 video. For social media embeds, ensure captions are enabled.",
+            "description": "Tekstinger må tilbys for alt forhåndsinnspilt lydinnhold i synkroniserte medier.",
+            "technicalGuidance": "Bruk <track>-elementet med WebVTT-filer for HTML5-video. For sosiale medier-innbygginger, sørg for at tekstinger er aktivert.",
             "component": null,
             "wcagTechnique": [
                 "G87",
@@ -771,13 +771,13 @@
         "holmdigitalInsight": {
             "diggRisk": "high",
             "eaaImpact": "high",
+            "norwegianInterpretation": "En av de vanligste manglene i offentlig sektor. Lovkravet er strengt: video med lyd MÅ ha tekstinger.",
             "commonMistakes": [
-                "Auto-generated captions that satisfy no one",
-                "Captions missing entirely",
-                "Captions burned into video (not accessible for search/translation)"
+                "Autogenererte tekstinger som ikke tilfredsstiller noen",
+                "Tekstinger mangler helt",
+                "Tekstinger brent inn i video (ikke tilgjengelig for søk/oversettelse)"
             ],
-            "priorityRationale": "Critical for deaf and hard of hearing users.",
-            "canadianInterpretation": "One of the most common deficiencies in the public sector. The legal requirement is strict: video with audio MUST have captions."
+            "priorityRationale": "Kritisk for døve og tunghørte brukere."
         },
         "testability": {
             "automated": false,
@@ -825,10 +825,10 @@
         "en301549Title": "Audio description (prerecorded)",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "AODA, WCAG 2.0 AA required",
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level AA required",
         "remediation": {
-            "description": "Audio description must be provided for all prerecorded video content.",
-            "technicalGuidance": "Either as a separate audio track, an alternative version of the video, or (if 'talking heads') ensuring all info is conveyed by audio.",
+            "description": "Synstolkning må tilbys for alt forhåndsinnspilt videoinnhold.",
+            "technicalGuidance": "Enten som et separat lydspor, en alternativ versjon av videoen, eller (hvis 'snakkende hoder') sikre at all info formidles via lyd.",
             "component": null,
             "wcagTechnique": [
                 "G78",
@@ -838,11 +838,11 @@
         "holmdigitalInsight": {
             "diggRisk": "medium",
             "eaaImpact": "medium",
+            "norwegianInterpretation": "Kan ofte løses med 'integrert beskrivelse' (snakker om det som vises), noe som er mer kostnadseffektivt.",
             "commonMistakes": [
-                "Information shown only visually (graphics, text signs) without being mentioned in audio"
+                "Informasjon vises kun visuelt (grafikk, tekstskilt) uten å nevnes i lyden"
             ],
-            "priorityRationale": "Critical for blind video users.",
-            "canadianInterpretation": "Can often be solved by 'integrated description' (talking about what is seen), which is more cost-effective."
+            "priorityRationale": "Kritisk for blinde videobrukere."
         },
         "testability": {
             "automated": false,
@@ -890,10 +890,10 @@
         "en301549Title": "Orientation",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "AODA Best Practice, WCAG 2.1 AA recommended",
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level AA required",
         "remediation": {
-            "description": "Content must not restrict its view and operation to a single display orientation, unless a specific orientation is essential.",
-            "technicalGuidance": "Do not lock screen to portrait or landscape via CSS or JS manifest. Use CSS media queries to handle layout changes.",
+            "description": "Innhold må ikke begrense visning og bruk til én enkelt skjermretning, med mindre en spesifikk retning er essensiell.",
+            "technicalGuidance": "Ikke lås skjermen til stående eller liggende via CSS eller JS manifest. Bruk CSS media queries for å håndtere layoutendringer.",
             "component": null,
             "wcagTechnique": [
                 "F97"
@@ -902,11 +902,11 @@
         "holmdigitalInsight": {
             "diggRisk": "low",
             "eaaImpact": "medium",
+            "norwegianInterpretation": "Viktig for nettbrett og brukere som har enheten montert (f.eks. rullestol).",
             "commonMistakes": [
-                "Apps/sites that rotate interface 90 degrees against user will"
+                "Apper/nettsteder som roterer grensesnittet 90 grader mot brukerens vilje"
             ],
-            "priorityRationale": "Important for users who cannot rotate their device.",
-            "canadianInterpretation": "Important for tablets and users who have the device mounted (e.g., wheelchair)."
+            "priorityRationale": "Viktig for brukere som ikke kan rotere enheten sin."
         },
         "testability": {
             "automated": false,
@@ -954,10 +954,10 @@
         "en301549Title": "Identify input purpose",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "AODA Best Practice, WCAG 2.1 AA recommended",
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level AA required",
         "remediation": {
-            "description": "The purpose of each input field collecting information about the user can be programmatically determined.",
-            "technicalGuidance": "Use the 'autocomplete' attribute on input fields for personal data (name, email, tel, address etc.).",
+            "description": "Formålet med hvert inndatafelt som samler informasjon om brukeren kan bestemmes programmatisk.",
+            "technicalGuidance": "Bruk 'autocomplete'-attributtet på inndatafelt for personlige data (navn, e-post, telefon, adresse osv.).",
             "component": "@holmdigital/components/FormField",
             "wcagTechnique": [
                 "H98"
@@ -966,13 +966,13 @@
         "holmdigitalInsight": {
             "diggRisk": "medium",
             "eaaImpact": "high",
+            "norwegianInterpretation": "Gjør det mye enklere å fylle ut forvirrende skjemaer (autofyll).",
             "commonMistakes": [
-                "Missing autocomplete attribute",
-                "Incorrect autocomplete value",
-                "Turning off autocomplete (autocomplete='off') unnecessarily"
+                "Manglende autocomplete-attributt",
+                "Feil autocomplete-verdi",
+                "Slår av autocomplete (autocomplete='off') unødvendig"
             ],
-            "priorityRationale": "Reduces cognitive load and motor requirements.",
-            "canadianInterpretation": "Makes it much easier to fill confusing forms (autofill)."
+            "priorityRationale": "Reduserer kognitiv belastning og motoriske krav."
         },
         "testability": {
             "automated": true,
@@ -1019,10 +1019,10 @@
         "en301549Title": "No keyboard trap",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "AODA, WCAG 2.0 AA required",
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level A required",
         "remediation": {
-            "description": "If focus can be moved to a component of the page using a keyboard interface, then focus can be moved away from that component using only a keyboard interface.",
-            "technicalGuidance": "Be careful with JS widgets that trap focus (e.g. modal windows). Ensure there is always a way out (e.g. ESC or shift+tab).",
+            "description": "Hvis fokus kan flyttes til en komponent på siden ved hjelp av et tastaturgrensesnitt, kan fokus også flyttes bort fra den komponenten kun ved hjelp av et tastaturgrensesnitt.",
+            "technicalGuidance": "Vær forsiktig med JS-widgets som fanger fokus (f.eks. modaldialogbokser). Sørg for at det alltid finnes en vei ut (f.eks. ESC eller shift+tab).",
             "component": null,
             "wcagTechnique": [
                 "G21"
@@ -1031,12 +1031,12 @@
         "holmdigitalInsight": {
             "diggRisk": "critical",
             "eaaImpact": "critical",
+            "norwegianInterpretation": "En tastaturfelle er en 'blokkering' som gjør nettstedet ubrukelig. Alvorlig feil.",
             "commonMistakes": [
-                "Custom widgets that loop focus infinitely",
-                "Embedded third-party components (maps, chats) without exit"
+                "Egendefinerte widgets som sirkler fokus uendelig",
+                "Innebygde tredjepartskomponenter (kart, chatter) uten utgang"
             ],
-            "priorityRationale": "Critical: The user gets stuck and must restart the browser.",
-            "canadianInterpretation": "A keyboard trap is a 'blocker' that makes the website unusable. Serious error."
+            "priorityRationale": "Kritisk: Brukeren blir sittende fast og må starte nettleseren på nytt."
         },
         "testability": {
             "automated": false,
@@ -1083,10 +1083,10 @@
         "en301549Title": "Character key shortcuts",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "AODA Best Practice, WCAG 2.1 AA recommended",
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level A required",
         "remediation": {
-            "description": "If a keyboard shortcut consists of only one character (letter, number, symbol), there must be a way to turn it off or remap it, or it must only be active on focus.",
-            "technicalGuidance": "Avoid single-key shortcuts if possible. If needed, ensure they do not conflict with voice control or accidental typing.",
+            "description": "Hvis en tastaturgenvåei består av bare én karakter (bokstav, tall, symbol), må det finnes en måte å slå den av eller omtilordne den, eller den må kun være aktiv ved fokus.",
+            "technicalGuidance": "Unngå enkelttast-snarveier hvis mulig. Hvis nødvendig, sørg for at de ikke kommer i konflikt med talestyring eller utilsiktet skriving.",
             "component": null,
             "wcagTechnique": [
                 "G217"
@@ -1095,11 +1095,11 @@
         "holmdigitalInsight": {
             "diggRisk": "medium",
             "eaaImpact": "medium",
+            "norwegianInterpretation": "Viktig for talestyringbrukere (Dragon osv.) hvor enkeltord kan utløse kommandoer ved et uhell.",
             "commonMistakes": [
-                "Gmail-like shortcuts that are on by default without option to disable"
+                "Gmail-lignende snarveier som er på som standard uten mulighet for å deaktivere"
             ],
-            "priorityRationale": "Important to avoid accidental activation.",
-            "canadianInterpretation": "Important for voice control users (Dragon etc.) where single words can trigger commands accidentally."
+            "priorityRationale": "Viktig for å unngå utilsiktet aktivering."
         },
         "testability": {
             "automated": false,
@@ -1146,10 +1146,10 @@
         "en301549Title": "Timing adjustable",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "AODA, WCAG 2.0 AA required",
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level A required",
         "remediation": {
-            "description": "If a time limit (session, reading time) is set, the user must be able to turn off, adjust, or extend it.",
-            "technicalGuidance": "Provide a warning before the session expires with an 'Extend session' button. The time limit must be at least 20 seconds.",
+            "description": "Hvis en tidsfrist (sesjon, lesetid) er satt, må brukeren kunne slå den av, justere eller forlenge den.",
+            "technicalGuidance": "Gi en advarsel før sesjonen utløper med en 'Forleng sesjon'-knapp. Tidsfristen må være minst 20 sekunder.",
             "component": null,
             "wcagTechnique": [
                 "SCR16",
@@ -1159,12 +1159,12 @@
         "holmdigitalInsight": {
             "diggRisk": "high",
             "eaaImpact": "high",
+            "norwegianInterpretation": "Kritisk for e-tjenester/bank. Brukere som leser sakte eller bruker hjelpeteknologi trenger mer tid.",
             "commonMistakes": [
-                "Logout without warning",
-                "Time limits that cannot be extended"
+                "Utlogging uten advarsel",
+                "Tidsfrister som ikke kan forlenges"
             ],
-            "priorityRationale": "Critical to avoid losing entered data.",
-            "canadianInterpretation": "Critical for e-services/banking. Users who read slowly or use assistive technology need more time."
+            "priorityRationale": "Kritisk for å unngå å miste innfylte data."
         },
         "testability": {
             "automated": false,
@@ -1211,10 +1211,10 @@
         "en301549Title": "Pause, stop, hide",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "AODA, WCAG 2.0 AA required",
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level A required",
         "remediation": {
-            "description": "For moving, blinking, or scrolling content that starts automatically and lasts more than 5 seconds, there must be a way to pause, stop, or hide it.",
-            "technicalGuidance": "Applies to carousels (sliders), auto-updating news feeds, animated backgrounds. Add a clear pause button.",
+            "description": "For bevegelig, blinkende eller rullende innhold som starter automatisk og varer mer enn 5 sekunder, må det finnes en måte å pause, stoppe eller skjule det.",
+            "technicalGuidance": "Gjelder karuseller (slidere), automatisk oppdaterte nyhetstråder, animerte bakgrunner. Legg til en tydelig pauseknapp.",
             "component": null,
             "wcagTechnique": [
                 "G4",
@@ -1224,12 +1224,12 @@
         "holmdigitalInsight": {
             "diggRisk": "medium",
             "eaaImpact": "medium",
+            "norwegianInterpretation": "Viktig for brukere med konsentrasjonsvansker (ADHD/Autisme) som blir distrahert av bevegelse.",
             "commonMistakes": [
-                "Image carousels without pause button",
-                "Animated backgrounds that cannot be turned off"
+                "Bildekaruseller uten pauseknapp",
+                "Animerte bakgrunner som ikke kan slås av"
             ],
-            "priorityRationale": "Important for cognitive accessibility.",
-            "canadianInterpretation": "Important for users with concentration difficulties (ADHD/Autism) who are distracted by movement."
+            "priorityRationale": "Viktig for kognitiv tilgjengelighet."
         },
         "testability": {
             "automated": false,
@@ -1277,10 +1277,10 @@
         "en301549Title": "Three flashes or below threshold",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "AODA, WCAG 2.0 AA required",
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level A required",
         "remediation": {
-            "description": "Content must not flash more than three times per second (can cause seizures).",
-            "technicalGuidance": "Avoid rapid flashing in video and animations. Use tools to measure flash frequency (PEAT).",
+            "description": "Innhold må ikke blinke mer enn tre ganger per sekund (kan forårsake anfall).",
+            "technicalGuidance": "Unngå rask blinking i video og animasjoner. Bruk verktøy for å måle blinkefrekvens (PEAT).",
             "component": null,
             "wcagTechnique": [
                 "G19"
@@ -1289,12 +1289,12 @@
         "holmdigitalInsight": {
             "diggRisk": "critical",
             "eaaImpact": "critical",
+            "norwegianInterpretation": "Helserisiko. Nulltoleranse.",
             "commonMistakes": [
-                "Stroboscopic effects in video",
-                "Misuse of blinking error messages"
+                "Stroboskopiske effekter i video",
+                "Misbruk av blinkende feilmeldinger"
             ],
-            "priorityRationale": "Critical safety risk.",
-            "canadianInterpretation": "Health risk. Zero tolerance."
+            "priorityRationale": "Kritisk sikkerhetsrisiko."
         },
         "testability": {
             "automated": false,
@@ -1342,10 +1342,10 @@
         "en301549Title": "Bypass blocks",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "AODA, WCAG 2.0 AA required",
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level A required",
         "remediation": {
-            "description": "There must be a way to skip blocks of content that are repeated on multiple pages (e.g. navigation).",
-            "technicalGuidance": "Implement a 'Skip to Main Content' link at the top of the page that becomes visible on focus. Use semantic landmarks (<main>, <nav>).",
+            "description": "Det må finnes en måte å hoppe over innholdsblokker som gjentas på flere sider (f.eks. navigasjon).",
+            "technicalGuidance": "Implementer en 'Hopp til hovedinnhold'-lenke øverst på siden som blir synlig ved fokus. Bruk semantiske landemerker (<main>, <nav>).",
             "component": null,
             "wcagTechnique": [
                 "G1",
@@ -1355,13 +1355,13 @@
         "holmdigitalInsight": {
             "diggRisk": "medium",
             "eaaImpact": "medium",
+            "norwegianInterpretation": "Standard på alle offentlige nettsteder. Enormt nyttig for tastaturbrukere.",
             "commonMistakes": [
-                "Missing skip-link",
-                "Skip-link broken (does not move focus correctly)",
-                "Landmarks missing"
+                "Manglende hopp-lenke",
+                "Hopp-lenke ødelagt (flytter ikke fokus riktig)",
+                "Landemerker mangler"
             ],
-            "priorityRationale": "Important for efficient navigation.",
-            "canadianInterpretation": "Standard on all public sector sites. Enormously helpful for keyboard users."
+            "priorityRationale": "Viktig for effektiv navigasjon."
         },
         "testability": {
             "automated": true,
@@ -1409,10 +1409,10 @@
         "en301549Title": "Focus order",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "AODA, WCAG 2.0 AA required",
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level A required",
         "remediation": {
-            "description": "Focus order must be logical and follow meaning/structure.",
-            "technicalGuidance": "Match DOM order with visual order. Avoid tabindex greater than 0. Manage focus manually in modals and menus.",
+            "description": "Fokusrekkefølge må være logisk og følge mening/struktur.",
+            "technicalGuidance": "Match DOM-rekkefølge med visuell rekkefølge. Unngå tabindex større enn 0. Håndter fokus manuelt i modaler og menyer.",
             "component": null,
             "wcagTechnique": [
                 "G59",
@@ -1422,13 +1422,13 @@
         "holmdigitalInsight": {
             "diggRisk": "high",
             "eaaImpact": "high",
+            "norwegianInterpretation": "Kritisk for komplekse layouter (Grid/Flexbox) hvor visuell rekkefølge kan avvike fra DOM-rekkefølge.",
             "commonMistakes": [
-                "Focus jumps illogically",
-                "Menus in wrong order",
-                "Modal closes and focus returns to top of page"
+                "Fokus hopper ulogisk",
+                "Menyer i feil rekkefølge",
+                "Modal lukkes og fokus returnerer til toppen av siden"
             ],
-            "priorityRationale": "Critical for keyboard navigation and understanding.",
-            "canadianInterpretation": "Critical for complex layouts (Grid/Flexbox) where visual order may differ from DOM order."
+            "priorityRationale": "Kritisk for tastaturnavigasjon og forståelse."
         },
         "testability": {
             "automated": false,
@@ -1476,10 +1476,10 @@
         "en301549Title": "Link purpose (in context)",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "AODA, WCAG 2.0 AA required",
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level A required",
         "remediation": {
-            "description": "The purpose of each link can be understood from the link text alone or from the link text together with its context.",
-            "technicalGuidance": "Avoid 'Read more' or 'Click here'. Write descriptive link texts. Use aria-label if visual space is limited but more info is needed.",
+            "description": "Formålet med hver lenke kan forstås fra lenketeksten alene eller fra lenketeksten sammen med konteksten.",
+            "technicalGuidance": "Unngå 'Les mer' eller 'Klikk her'. Skriv beskrivende lenketekster. Bruk aria-label hvis visuell plass er begrenset men mer info trengs.",
             "component": null,
             "wcagTechnique": [
                 "G91",
@@ -1489,12 +1489,12 @@
         "holmdigitalInsight": {
             "diggRisk": "medium",
             "eaaImpact": "medium",
+            "norwegianInterpretation": "Viktig for brukere som navigerer via lenkelister (skjermlesere).",
             "commonMistakes": [
-                "Lots of 'Read more' links",
-                "Links that don't say where they lead"
+                "Mange 'Les mer'-lenker",
+                "Lenker som ikke sier hvor de fører"
             ],
-            "priorityRationale": "Important for efficient navigation.",
-            "canadianInterpretation": "Important for users navigating via link lists (screen readers)."
+            "priorityRationale": "Viktig for effektiv navigasjon."
         },
         "testability": {
             "automated": true,
@@ -1542,10 +1542,10 @@
         "en301549Title": "Multiple ways",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "AODA, WCAG 2.0 AA required",
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level AA required",
         "remediation": {
-            "description": "There must be more than one way to find a web page within a set of web pages.",
-            "technicalGuidance": "At least two of: Menu, Search, Sitemap, Links in content.",
+            "description": "Det må finnes mer enn én måte å finne en nettside på innenfor et sett med nettsider.",
+            "technicalGuidance": "Minst to av: Meny, Søk, Sidekart, Lenker i innhold.",
             "component": null,
             "wcagTechnique": [
                 "G125",
@@ -1555,11 +1555,11 @@
         "holmdigitalInsight": {
             "diggRisk": "low",
             "eaaImpact": "low",
+            "norwegianInterpretation": "Ofte oppfylt av meny + søk. Sidekart er beste praksis.",
             "commonMistakes": [
-                "Missing search on sites with many pages"
+                "Manglende søk på nettsteder med mange sider"
             ],
-            "priorityRationale": "Facilitates different navigation strategies.",
-            "canadianInterpretation": "Often fulfilled by menu + search. Sitemap is best practice."
+            "priorityRationale": "Tilrettelegger for ulike navigasjonsstrategier."
         },
         "testability": {
             "automated": false,
@@ -1607,10 +1607,10 @@
         "en301549Title": "Headings and labels",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "AODA, WCAG 2.0 AA required",
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level AA required",
         "remediation": {
-            "description": "Headings and labels must describe topic or purpose.",
-            "technicalGuidance": "Write clear, descriptive headings that give meaning to the content below them. Form labels must be understandable.",
+            "description": "Overskrifter og etiketter må beskrive tema eller formål.",
+            "technicalGuidance": "Skriv klare, beskrivende overskrifter som gir mening til innholdet under. Skjemaetiketter må være forståelige.",
             "component": null,
             "wcagTechnique": [
                 "G130"
@@ -1619,12 +1619,12 @@
         "holmdigitalInsight": {
             "diggRisk": "medium",
             "eaaImpact": "medium",
+            "norwegianInterpretation": "Handler om redaksjonell kvalitet og forståelighet.",
             "commonMistakes": [
-                "Cryptic headings",
-                "Labels that don't match what needs to be filled in"
+                "Kryptiske overskrifter",
+                "Etiketter som ikke matcher det som skal fylles ut"
             ],
-            "priorityRationale": "Important for cognitive accessibility.",
-            "canadianInterpretation": "About editorial quality and comprehensibility."
+            "priorityRationale": "Viktig for kognitiv tilgjengelighet."
         },
         "testability": {
             "automated": false,
@@ -1672,10 +1672,10 @@
         "en301549Title": "Focus visible",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "AODA, WCAG 2.0 AA required",
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level AA required",
         "remediation": {
-            "description": "Any user interface operable by keyboard must have a visible focus indicator.",
-            "technicalGuidance": "Never remove outline with CSS (outline: none) without replacing it with a clear visual indicator. Ensure contrast of focus ring is sufficient (see 1.4.11).",
+            "description": "Ethvert brukergrensesnitt som kan betjenes med tastatur må ha en synlig fokusindikator.",
+            "technicalGuidance": "Fjern aldri outline med CSS (outline: none) uten å erstatte den med en tydelig visuell indikator. Sørg for at kontrasten til fokusringen er tilstrekkelig (se 1.4.11).",
             "component": "@holmdigital/components/Button",
             "wcagTechnique": [
                 "G149",
@@ -1686,12 +1686,12 @@
         "holmdigitalInsight": {
             "diggRisk": "high",
             "eaaImpact": "high",
+            "norwegianInterpretation": "En av de vanligste feilene. Ofte fordi designere misliker den 'blå ringen'.",
             "commonMistakes": [
-                "outline: none in CSS reset",
-                "Custom buttons missing :focus style"
+                "outline: none i CSS reset",
+                "Egendefinerte knapper mangler :focus-stil"
             ],
-            "priorityRationale": "Critical: Without visible focus, the keyboard user doesn't know where they are.",
-            "canadianInterpretation": "One of the most common errors. Often because designers dislike the 'blue ring'."
+            "priorityRationale": "Kritisk: Uten synlig fokus vet ikke tastaturbrukeren hvor de er."
         },
         "testability": {
             "automated": true,
@@ -1739,10 +1739,10 @@
         "en301549Title": "Language of page",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "AODA, WCAG 2.0 AA required",
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level A required",
         "remediation": {
-            "description": "The default human language of each web page must be programmatically determinable.",
-            "technicalGuidance": "Set the 'lang' attribute on the <html> element. E.g., <html lang='en'> for English.",
+            "description": "Standardhuman-språket for hver nettside må kunne bestemmes programmatisk.",
+            "technicalGuidance": "Sett 'lang'-attributtet på <html>-elementet. F.eks. <html lang='no'> for norsk.",
             "component": null,
             "wcagTechnique": [
                 "H57"
@@ -1751,12 +1751,12 @@
         "holmdigitalInsight": {
             "diggRisk": "high",
             "eaaImpact": "high",
+            "norwegianInterpretation": "Grunnleggende for skjermlesing. Uten dette gjetter skjermleseren språket, ofte med feil uttale.",
             "commonMistakes": [
-                "Lang attribute missing",
-                "Wrong language code (e.g. 'en' on a Swedish page)"
+                "Lang-attributt mangler",
+                "Feil språkkode (f.eks. 'en' på en norsk side)"
             ],
-            "priorityRationale": "Critical for screen reader users.",
-            "canadianInterpretation": "Fundamental for screen reading. Without this, the screen reader guesses the language, often leading to wrong pronunciation."
+            "priorityRationale": "Kritisk for skjermleserbrukere."
         },
         "testability": {
             "automated": true,
@@ -1803,10 +1803,10 @@
         "en301549Title": "Language of parts",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "AODA, WCAG 2.0 AA required",
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level AA required",
         "remediation": {
-            "description": "The human language of each passage or phrase in the content must be programmatically determinable.",
-            "technicalGuidance": "Use the lang attribute on elements that differ from the page's main language. E.g. <span lang='fr'>Bonjour</span>.",
+            "description": "Human-språket for hver passasje eller frase i innholdet må kunne bestemmes programmatisk.",
+            "technicalGuidance": "Bruk lang-attributtet på elementer som avviker fra sidens hovedspråk. F.eks. <span lang='fr'>Bonjour</span>.",
             "component": null,
             "wcagTechnique": [
                 "H58"
@@ -1815,11 +1815,11 @@
         "holmdigitalInsight": {
             "diggRisk": "low",
             "eaaImpact": "low",
+            "norwegianInterpretation": "Sjelden en kritisk feil med mindre det vesentlig hindrer forståelsen.",
             "commonMistakes": [
-                "Foreign quotes in text without markup"
+                "Fremmede sitater i tekst uten markering"
             ],
-            "priorityRationale": "Important for correct pronunciation.",
-            "canadianInterpretation": "Rarely a critical error unless it significantly hinders understanding."
+            "priorityRationale": "Viktig for riktig uttale."
         },
         "testability": {
             "automated": false,
@@ -1866,10 +1866,10 @@
         "en301549Title": "On focus",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "AODA, WCAG 2.0 AA required",
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level A required",
         "remediation": {
-            "description": "When a component receives focus, it must not initiate a change of context.",
-            "technicalGuidance": "Do not open new windows, submit forms, or move focus automatically just because user tabs to a field.",
+            "description": "Når en komponent mottar fokus, må den ikke initiere en kontekstendring.",
+            "technicalGuidance": "Ikke åpne nye vinduer, send inn skjemaer eller flytt fokus automatisk bare fordi brukeren tabulerer til et felt.",
             "component": null,
             "wcagTechnique": [
                 "G107"
@@ -1878,12 +1878,12 @@
         "holmdigitalInsight": {
             "diggRisk": "high",
             "eaaImpact": "high",
+            "norwegianInterpretation": "Svært forvirrende for brukere. Skaper en følelse av mangel på kontroll.",
             "commonMistakes": [
-                "Dropdowns that navigate immediately upon selection (without 'Go' button)",
-                "Forms that auto-submit on last field focus"
+                "Nedtrekkslister som navigerer umiddelbart ved valg (uten 'Gå'-knapp)",
+                "Skjemaer som automatisk sendes inn når siste felt får fokus"
             ],
-            "priorityRationale": "Important for predictability.",
-            "canadianInterpretation": "Very confusing for users. Creates a feeling of lack of control."
+            "priorityRationale": "Viktig for forutsigbarhet."
         },
         "testability": {
             "automated": false,
@@ -1931,10 +1931,10 @@
         "en301549Title": "On input",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "AODA, WCAG 2.0 AA required",
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level A required",
         "remediation": {
-            "description": "Changing the setting of any component does not automatically cause a change of context unless the user has been advised of the behavior before using the component.",
-            "technicalGuidance": "Inform the user that selection in a list reloads the page. Preferably, add a button to confirm the choice.",
+            "description": "Endring av innstillingen for en komponent forårsaker ikke automatisk en kontekstendring med mindre brukeren har blitt informert om atferden før de bruker komponenten.",
+            "technicalGuidance": "Informer brukeren om at valg i en liste laster siden på nytt. Legg helst til en knapp for å bekrefte valget.",
             "component": null,
             "wcagTechnique": [
                 "G13",
@@ -1944,12 +1944,12 @@
         "holmdigitalInsight": {
             "diggRisk": "medium",
             "eaaImpact": "medium",
+            "norwegianInterpretation": "Vanlig i filtreringsfunksjoner.",
             "commonMistakes": [
-                "Checkboxes that reload page immediately",
-                "Filtering that moves focus"
+                "Avmerkingsbokser som laster siden på nytt umiddelbart",
+                "Filtrering som flytter fokus"
             ],
-            "priorityRationale": "Important for predictability.",
-            "canadianInterpretation": "Common in filtering functions."
+            "priorityRationale": "Viktig for forutsigbarhet."
         },
         "testability": {
             "automated": false,
@@ -1997,10 +1997,10 @@
         "en301549Title": "Consistent navigation",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "AODA, WCAG 2.0 AA required",
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level AA required",
         "remediation": {
-            "description": "Navigational mechanisms that are repeated on multiple Web pages occur in the same relative order each time they are repeated.",
-            "technicalGuidance": "Main menu should look the same and be in the same place on all pages. Search function as well.",
+            "description": "Navigasjonsmekanismer som gjentas på flere nettsider foregår i samme relative rekkefølge hver gang de gjentas.",
+            "technicalGuidance": "Hovedmenyen bør se lik ut og være på samme sted på alle sider. Søkefunksjonen også.",
             "component": null,
             "wcagTechnique": [
                 "G61"
@@ -2009,11 +2009,11 @@
         "holmdigitalInsight": {
             "diggRisk": "medium",
             "eaaImpact": "medium",
+            "norwegianInterpretation": "Forutsigbarhet er nøkkelen til kognitiv tilgjengelighet.",
             "commonMistakes": [
-                "Menus that change place or order on different pages"
+                "Menyer som endrer plass eller rekkefølge på ulike sider"
             ],
-            "priorityRationale": "Facilitates learning.",
-            "canadianInterpretation": "Predictability is key to cognitive accessibility."
+            "priorityRationale": "Tilrettelegger for læring."
         },
         "testability": {
             "automated": false,
@@ -2061,10 +2061,10 @@
         "en301549Title": "Consistent identification",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "AODA, WCAG 2.0 AA required",
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level AA required",
         "remediation": {
-            "description": "Components that have the same functionality within a set of Web pages are identified consistently.",
-            "technicalGuidance": "Don't call search 'Search' on one page and 'Find' on another. Use the same icon for the same function.",
+            "description": "Komponenter som har samme funksjonalitet innenfor et sett med nettsider identifiseres konsekvent.",
+            "technicalGuidance": "Ikke kall søk 'Søk' på én side og 'Finn' på en annen. Bruk samme ikon for samme funksjon.",
             "component": null,
             "wcagTechnique": [
                 "G197"
@@ -2073,12 +2073,12 @@
         "holmdigitalInsight": {
             "diggRisk": "low",
             "eaaImpact": "low",
+            "norwegianInterpretation": "Viktig for brukervennlighet.",
             "commonMistakes": [
-                "Inconsistent naming",
-                "Different icons for print/download"
+                "Inkonsekvent navngivning",
+                "Ulike ikoner for utskrift/nedlasting"
             ],
-            "priorityRationale": "Reduces cognitive load.",
-            "canadianInterpretation": "Important for usability."
+            "priorityRationale": "Reduserer kognitiv belastning."
         },
         "testability": {
             "automated": false,
@@ -2126,10 +2126,10 @@
         "en301549Title": "Error identification",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "AODA, WCAG 2.0 AA required",
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level A required",
         "remediation": {
-            "description": "If an input error is automatically detected, the item that is in error is identified and the error is described to the user in text.",
-            "technicalGuidance": "Show error message close to the field. Link with aria-describedby or include in label. Do not just color the field red.",
+            "description": "Hvis en inndatafeil oppdages automatisk, blir elementet som har feil identifisert og feilen beskrives til brukeren i tekst.",
+            "technicalGuidance": "Vis feilmelding nær feltet. Koble med aria-describedby eller inkluder i etikett. Ikke bare fargelegg feltet rødt.",
             "component": "@holmdigital/components/FormField",
             "wcagTechnique": [
                 "G83",
@@ -2139,12 +2139,12 @@
         "holmdigitalInsight": {
             "diggRisk": "high",
             "eaaImpact": "high",
+            "norwegianInterpretation": "Kritisk for å fullføre oppgaver. Generiske feilmeldinger ('Noe gikk galt') aksepteres ikke hvis feilen er spesifikk.",
             "commonMistakes": [
-                "'Invalid value' without explanation",
-                "Error message not visible to screen readers"
+                "'Ugyldig verdi' uten forklaring",
+                "Feilmelding ikke synlig for skjermlesere"
             ],
-            "priorityRationale": "Critical for error handling.",
-            "canadianInterpretation": "Critical for completing tasks. Generic error messages ('Something went wrong') are not accepted if the error is specific."
+            "priorityRationale": "Kritisk for feilhåndtering."
         },
         "testability": {
             "automated": false,
@@ -2191,10 +2191,10 @@
         "en301549Title": "Error suggestion",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "AODA, WCAG 2.0 AA required",
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level AA required",
         "remediation": {
-            "description": "If an input error is automatically detected and suggestions for correction are known, then the suggestions are provided to the user.",
-            "technicalGuidance": "If date format is wrong, show required format (YYYY-MM-DD). Offer spelling suggestions for search ('Did you mean...?').",
+            "description": "Hvis en inndatafeil oppdages automatisk og forslag til retting er kjent, gis forslagene til brukeren.",
+            "technicalGuidance": "Hvis datoformatet er feil, vis påkrevd format (ÅÅÅÅ-MM-DD). Tilby staveforslag for søk ('Mente du...?').",
             "component": "@holmdigital/components/FormField",
             "wcagTechnique": [
                 "G177"
@@ -2203,11 +2203,11 @@
         "holmdigitalInsight": {
             "diggRisk": "medium",
             "eaaImpact": "medium",
+            "norwegianInterpretation": "Handler om å være hjelpsom. Reduserer støttesaker.",
             "commonMistakes": [
-                "Only saying 'Error' without saying how to fix it"
+                "Bare si 'Feil' uten å si hvordan det rettes"
             ],
-            "priorityRationale": "Facilitates correction.",
-            "canadianInterpretation": "About being helpful. Reduces support cases."
+            "priorityRationale": "Tilrettelegger for korrigering."
         },
         "testability": {
             "automated": false,
@@ -2255,10 +2255,10 @@
         "en301549Title": "Error prevention (legal, financial, data)",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "AODA, WCAG 2.0 AA required",
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level AA required",
         "remediation": {
-            "description": "For Web pages that cause legal commitments or financial transactions, users must be able to: Reverse, Check, or Confirm.",
-            "technicalGuidance": "Offer a summary page before final submission with ability to edit.",
+            "description": "For nettsider som medfører juridiske forpliktelser eller økonomiske transaksjoner, må brukere kunne: Reversere, Sjekke, eller Bekrefte.",
+            "technicalGuidance": "Tilby en oppsummeringsside før endelig innsending med mulighet for å redigere.",
             "component": null,
             "wcagTechnique": [
                 "G164",
@@ -2268,12 +2268,12 @@
         "holmdigitalInsight": {
             "diggRisk": "high",
             "eaaImpact": "high",
+            "norwegianInterpretation": "Absolutt krav for e-handel og juridiske beslutninger.",
             "commonMistakes": [
-                "Direct purchase without confirmation",
-                "Submission of binding contracts without review"
+                "Direkte kjøp uten bekreftelse",
+                "Innsending av bindende kontrakter uten gjennomgang"
             ],
-            "priorityRationale": "Critical to avoid serious consequences of mistakes.",
-            "canadianInterpretation": "Absolute requirement for e-commerce and legal decisions."
+            "priorityRationale": "Kritisk for å unngå alvorlige konsekvenser av feil."
         },
         "testability": {
             "automated": false,
@@ -2321,10 +2321,10 @@
         "en301549Title": "Parsing",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "AODA, WCAG 2.0 AA required",
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level A required",
         "remediation": {
-            "description": "Update: From WCAG 2.2 this criterion is removed/obsolete, but in WCAG 2.1/EN 301 549 it applies: IDs must be unique, elements correctly nested.",
-            "technicalGuidance": "Validate HTML. Ensure id attributes are unique on the page. Close all tags correctly.",
+            "description": "Oppdatering: Fra WCAG 2.2 er dette kriteriet fjernet/foreldet, men i WCAG 2.1/EN 301 549 gjelder det: ID-er må være unike, elementer korrekt nestet.",
+            "technicalGuidance": "Valider HTML. Sørg for at id-attributter er unike på siden. Lukk alle tagger korrekt.",
             "component": null,
             "wcagTechnique": [
                 "H88"
@@ -2333,12 +2333,12 @@
         "holmdigitalInsight": {
             "diggRisk": "low",
             "eaaImpact": "low",
+            "norwegianInterpretation": "Mindre prioritert nå da moderne nettlesere håndterer feil godt, men dupliserte ID-er kan fortsatt ødelegge ARIA.",
             "commonMistakes": [
-                "Duplicate IDs",
-                "Broken HTML structure"
+                "Dupliserte ID-er",
+                "Ødelagt HTML-struktur"
             ],
-            "priorityRationale": "Technical hygiene factor.",
-            "canadianInterpretation": "Less prioritized now as modern browsers handle errors well, but duplicate IDs can still break ARIA."
+            "priorityRationale": "Teknisk hygienefaktor."
         },
         "testability": {
             "automated": true,
@@ -2386,11 +2386,12 @@
         "en301549Title": "Name, role, value",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "AODA, WCAG 2.0 AA required",
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level A required",
         "remediation": {
-            "description": "For all components, name and role can be programmatically determined. Values can be set programmatically.",
-            "technicalGuidance": "Use native HTML elements when possible. If custom components are used, ARIA (role, aria-label, aria-valuenow) must be used correctly.",
-            "component": null,
+            "description": "For alle komponenter kan navn og rolle bestemmes programmatisk. Verdier kan settes programmatisk.",
+            "technicalGuidance": "Bruk native HTML-elementer når mulig. Hvis egendefinerte komponenter brukes, må ARIA (role, aria-label, aria-valuenow) brukes riktig.",
+            "component": "@holmdigital/components/ProgressBar",
+            "codeExample": "import { ProgressBar } from '@holmdigital/components';\n\n// Bad: Div without role\n<div style={{ width: '50%' }}>50%</div>\n\n// Good: Accessible Component\n<ProgressBar value={50} label=\"Loading...\" />",
             "wcagTechnique": [
                 "ARIA4",
                 "ARIA5"
@@ -2399,13 +2400,13 @@
         "holmdigitalInsight": {
             "diggRisk": "critical",
             "eaaImpact": "critical",
+            "norwegianInterpretation": "Dette er grunnlaget for hvordan skjermlesere fungerer med moderne webapper. Uten dette er appen 'usynlig' for hjelpeteknologi.",
             "commonMistakes": [
-                "Div buttons without role",
-                "Custom checkboxes without aria-checked",
-                "Missing accessible name"
+                "Div-knapper uten role",
+                "Egendefinerte avmerkingsbokser uten aria-checked",
+                "Manglende tilgjengelig navn"
             ],
-            "priorityRationale": "Absolutely critical for compatibility.",
-            "canadianInterpretation": "This is the foundation for how screen readers work with modern web apps. Without this, the app is 'invisible' to assistive technology."
+            "priorityRationale": "Absolutt kritisk for kompatibilitet."
         },
         "testability": {
             "automated": true,
@@ -2453,11 +2454,12 @@
         "en301549Title": "Status messages",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "AODA Best Practice, WCAG 2.1 AA recommended",
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level AA required",
         "remediation": {
-            "description": "Statusmeddelanden ska kunna presenteras för användaren utan att motta fokus (via skärmläsare).",
-            "technicalGuidance": "Använd aria-live regioner (polite/assertive) eller role='status'/'alert' för meddelanden som dyker upp dynamiskt (t.ex. 'Sparat', 'Sökning klar').",
-            "component": null,
+            "description": "Statusmeldinger må kunne presenteres for brukeren uten å motta fokus (via skjermleser).",
+            "technicalGuidance": "Bruk aria-live-regioner (polite/assertive) eller role='status'/'alert' for meldinger som dukker opp dynamisk (f.eks. 'Lagret', 'Søk fullført').",
+            "component": "@holmdigital/components/LiveRegion",
+            "codeExample": "import { LiveRegion } from '@holmdigital/components';\n\n// Assertive for errors\n<LiveRegion politeness=\"assertive\">Error: Failed to save.</LiveRegion>\n\n// Polite for status updates\n<LiveRegion politeness=\"polite\">Saved successfully.</LiveRegion>",
             "wcagTechnique": [
                 "ARIA19",
                 "ARIA22"
@@ -2466,12 +2468,12 @@
         "holmdigitalInsight": {
             "diggRisk": "medium",
             "eaaImpact": "medium",
+            "norwegianInterpretation": "Viktig i SPA-er hvor sideinnlasting ikke skjer. Brukeren må vite at noe skjedde.",
             "commonMistakes": [
-                "Silent updates of cart/search results",
-                "Toast notifications not being announced"
+                "Stille oppdateringer av handlekurv/søkeresultater",
+                "Toast-varsler som ikke annonseres"
             ],
-            "priorityRationale": "Provides feedback to users without sight.",
-            "canadianInterpretation": "Important in SPAs where page load does not happen. The user must know something happened."
+            "priorityRationale": "Gir tilbakemelding til brukere uten syn."
         },
         "testability": {
             "automated": false,
@@ -2519,10 +2521,10 @@
         "en301549Title": "Info and relationships",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "AODA, WCAG 2.0 AA required",
+        "dosLagenReference": "9 § (Struktur och relationer)",
         "remediation": {
-            "description": "The page must have exactly one 'main' landmark.",
-            "technicalGuidance": "Use the <main> element once per page to identify the main content. Avoid having multiple <main> without unique labels, or missing it entirely.",
+            "description": "Siden må ha nøyaktig ett 'main'-landemerke.",
+            "technicalGuidance": "Bruk <main>-elementet én gang per side for å identifisere hovedinnholdet. Unngå å ha flere <main> uten unike etiketter, eller at det mangler helt.",
             "wcagTechnique": [
                 "ARIA11",
                 "H97"
@@ -2531,11 +2533,11 @@
         "holmdigitalInsight": {
             "diggRisk": "medium",
             "eaaImpact": "medium",
+            "norwegianInterpretation": "Skjermleserbrukere stoler på landemerker for å navigere raskt til innholdet. Manglende <main> gjør det vanskelig å hoppe over navigasjon.",
             "commonMistakes": [
-                "Using <div id='main'> instead of <main>",
-                "Having multiple <main> elements"
-            ],
-            "canadianInterpretation": "Screen reader users rely on landmarks to navigate quickly to the content. Missing <main> makes it difficult to skip navigation."
+                "Bruk av <div id='main'> i stedet for <main>",
+                "Ha flere <main>-elementer"
+            ]
         },
         "testability": {
             "automated": true,
@@ -2582,10 +2584,10 @@
         "en301549Title": "Info and relationships",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "AODA, WCAG 2.0 AA required",
+        "dosLagenReference": "9 § (Struktur och relationer)",
         "remediation": {
-            "description": "The page must have a level 1 heading (<h1>).",
-            "technicalGuidance": "Ensure there is exactly one <h1> describing the page's unique content.",
+            "description": "Siden må ha en nivå 1-overskrift (<h1>).",
+            "technicalGuidance": "Sørg for at det er nøyaktig én <h1> som beskriver sidens unike innhold.",
             "wcagTechnique": [
                 "H42"
             ]
@@ -2593,11 +2595,11 @@
         "holmdigitalInsight": {
             "diggRisk": "high",
             "eaaImpact": "high",
+            "norwegianInterpretation": "En tydelig <h1> er kritisk for at brukere skal forstå hvor de har kommet. Det er ofte det første en skjermleserbruker leter etter.",
             "commonMistakes": [
-                "Starting headings at <h2>",
-                "Using logo as the only <h1> without text"
-            ],
-            "canadianInterpretation": "A clear <h1> is critical for users to understand where they have landed. It is often the first thing a screen reader user looks for."
+                "Starter overskrifter på <h2>",
+                "Bruk av logo som eneste <h1> uten tekst"
+            ]
         },
         "testability": {
             "automated": true,
@@ -2644,10 +2646,10 @@
         "en301549Title": "Info and relationships",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "AODA, WCAG 2.0 AA required",
+        "dosLagenReference": "9 § (Struktur och relationer)",
         "remediation": {
-            "description": "Headings must follow a logical order (h1 -> h2 -> h3).",
-            "technicalGuidance": "Do not skip heading levels (e.g. directly from h1 to h3).",
+            "description": "Overskrifter må følge en logisk rekkefølge (h1 -> h2 -> h3).",
+            "technicalGuidance": "Ikke hopp over overskriftsnivåer (f.eks. direkte fra h1 til h3).",
             "wcagTechnique": [
                 "G141"
             ]
@@ -2655,10 +2657,10 @@
         "holmdigitalInsight": {
             "diggRisk": "medium",
             "eaaImpact": "medium",
+            "norwegianInterpretation": "Feil overskriftstruktur gjør det vanskelig for skjermlesere å navigere. Aldri hopp over nivåer.",
             "commonMistakes": [
-                "Using h3 for styling instead of structure"
-            ],
-            "canadianInterpretation": "Incorrect heading structure makes it difficult for screen readers to navigate. Never skip levels."
+                "Bruk av h3 for styling i stedet for struktur"
+            ]
         },
         "testability": {
             "automated": true,
@@ -2705,10 +2707,10 @@
         "en301549Title": "Info and relationships",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "AODA, WCAG 2.0 AA required",
+        "dosLagenReference": "9 § (Struktur och relationer)",
         "remediation": {
-            "description": "The banner (<header>) must be at the top level.",
-            "technicalGuidance": "Do not place <header> inside another landmark if it is the page's main banner.",
+            "description": "Banneret (<header>) må være på toppnivå.",
+            "technicalGuidance": "Ikke plasser <header> inne i et annet landemerke hvis det er sidens hovedbanner.",
             "wcagTechnique": [
                 "ARIA11"
             ]
@@ -2716,10 +2718,10 @@
         "holmdigitalInsight": {
             "diggRisk": "medium",
             "eaaImpact": "medium",
+            "norwegianInterpretation": "Sidens hovedmeny/banner må være plassert riktig i strukturen for å bli funnet raskt.",
             "commonMistakes": [
-                "Nesting header inside main"
-            ],
-            "canadianInterpretation": "The page's main menu/banner must be located correctly in the structure to be found quickly."
+                "Nesting av header inne i main"
+            ]
         },
         "testability": {
             "automated": true,
@@ -2766,10 +2768,10 @@
         "en301549Title": "Info and relationships",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "AODA, WCAG 2.0 AA required",
+        "dosLagenReference": "9 § (Struktur och relationer)",
         "remediation": {
-            "description": "The page must have only one 'banner' landmark (usually <header>).",
-            "technicalGuidance": "Ensure you only have one <header> at the top level.",
+            "description": "Siden må bare ha ett 'banner'-landemerke (vanligvis <header>).",
+            "technicalGuidance": "Sørg for at du bare har én <header> på toppnivå.",
             "wcagTechnique": [
                 "ARIA11"
             ]
@@ -2777,10 +2779,10 @@
         "holmdigitalInsight": {
             "diggRisk": "medium",
             "eaaImpact": "medium",
+            "norwegianInterpretation": "Flere bannere forvirrer navigasjonen. Det bør bare være én toppheader.",
             "commonMistakes": [
-                "Having header both at top and bottom"
-            ],
-            "canadianInterpretation": "Multiple banners confuse navigation. There should be only one top header."
+                "Ha header både på toppen og bunnen"
+            ]
         },
         "testability": {
             "automated": true,
@@ -2827,10 +2829,10 @@
         "en301549Title": "Info and relationships",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "AODA, WCAG 2.0 AA required",
+        "dosLagenReference": "9 § (Struktur och relationer)",
         "remediation": {
-            "description": "Landmarks must have unique roles or labels.",
-            "technicalGuidance": "If you have multiple <nav> elements, give them unique 'aria-label' (e.g., 'Main Menu', 'Footer Menu').",
+            "description": "Landemerker må ha unike roller eller etiketter.",
+            "technicalGuidance": "Hvis du har flere <nav>-elementer, gi dem unike 'aria-label' (f.eks. 'Hovedmeny', 'Bunntekstmeny').",
             "wcagTechnique": [
                 "ARIA11"
             ]
@@ -2838,10 +2840,10 @@
         "holmdigitalInsight": {
             "diggRisk": "medium",
             "eaaImpact": "medium",
+            "norwegianInterpretation": "Brukeren må kunne skille mellom ulike menyer/regioner. Gi dem navn.",
             "commonMistakes": [
-                "Multiple nav elements without aria-label"
-            ],
-            "canadianInterpretation": "The user must be able to distinguish between different menus/regions. Give them names."
+                "Flere nav-elementer uten aria-label"
+            ]
         },
         "testability": {
             "automated": true,
@@ -2888,10 +2890,10 @@
         "en301549Title": "Info and relationships",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "AODA, WCAG 2.0 AA required",
+        "dosLagenReference": "9 § (Struktur och relationer)",
         "remediation": {
-            "description": "All content on the page must be contained within landmarks (regions).",
-            "technicalGuidance": "Ensure all content is inside <main>, <header>, <nav>, <footer>, or <aside>.",
+            "description": "Alt innhold på siden må være inneholdt i landemerker (regioner).",
+            "technicalGuidance": "Sørg for at alt innhold er inne i <main>, <header>, <nav>, <footer>, eller <aside>.",
             "component": null,
             "wcagTechnique": [
                 "ARIA11"
@@ -2900,11 +2902,11 @@
         "holmdigitalInsight": {
             "diggRisk": "medium",
             "eaaImpact": "medium",
+            "norwegianInterpretation": "For at skjermleserbrukere skal navigere effektivt, må siden være delt inn i logiske regioner.",
             "commonMistakes": [
-                "Content directly in <body> without container",
-                "Using too many landmarks"
-            ],
-            "canadianInterpretation": "For screen reader users to navigate effectively, the page must be divided into logical regions."
+                "Innhold direkte i <body> uten container",
+                "Bruk av for mange landemerker"
+            ]
         },
         "testability": {
             "automated": true,
@@ -2950,10 +2952,10 @@
         "en301549Title": "Audio description (prerecorded)",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "AODA, WCAG 2.0 AA required",
+        "dosLagenReference": "100 § (Tidsberoende media)",
         "remediation": {
-            "description": "Prerecorded video content must have audio description if visual information is critical.",
-            "technicalGuidance": "Provide an alternative audio track or version describing what happens visually.",
+            "description": "Forhåndsinnspilt videoinnhold må ha synstolkning hvis visuell informasjon er kritisk.",
+            "technicalGuidance": "Tilby et alternativt lydspor eller versjon som beskriver hva som skjer visuelt.",
             "component": null,
             "wcagTechnique": [
                 "G78"
@@ -2962,10 +2964,10 @@
         "holmdigitalInsight": {
             "diggRisk": "medium",
             "eaaImpact": "low",
+            "norwegianInterpretation": "Video som formidler informasjon visuelt må beskrives for de som ikke kan se skjermen.",
             "commonMistakes": [
-                "Video missing audio description despite important visual info"
-            ],
-            "canadianInterpretation": "Video conveying information visually must be described for those who cannot see the screen."
+                "Video mangler synstolkning til tross for viktig visuell info"
+            ]
         },
         "testability": {
             "automated": false,

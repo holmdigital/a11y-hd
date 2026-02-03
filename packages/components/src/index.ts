@@ -23,4 +23,8 @@ export * from './DataTable/DataTable';
 export * from './Pagination/Pagination';
 export * from './Card/Card';
 export * from './TreeView/TreeView';
+export * from './LiveRegion/LiveRegion';
+export * from './ProgressBar/ProgressBar';
+export * from './Skeleton/Skeleton';
+export * from './HelpText/HelpText';
 

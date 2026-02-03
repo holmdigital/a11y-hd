@@ -12,7 +12,7 @@
         "dosLagenReference": "PSBAR 2018, WCAG 2.1 AA required",
         "remediation": {
             "description": "Text and images of text must have a contrast ratio of at least 4.5:1 (3:1 for large text).",
-            "technicalGuidance": "Use tools like WebAIM Contrast Checker to verify contrast. Adjust color choices or add background opacity to achieve correct contrast.",
+            "technicalGuidance": "Use tools like WebAIM Contrast Checker to verify contrast. Adjust colour choices or add background opacity to achieve correct contrast.",
             "component": "@holmdigital/components/Button",
             "codeExample": "import { Button } from '@holmdigital/components';\n\n// Bad: Poor contrast\n<button style={{ background: '#777', color: '#999' }}>Click me</button>\n\n// Good: Use accessible component\n<Button variant=\"primary\">Click me</Button>",
             "wcagTechnique": [
@@ -431,7 +431,7 @@
         "dosLagenReference": "PSBAR 2018, WCAG 2.1 AA required",
         "remediation": {
             "description": "Color is not used as the only visual means of conveying information, indicating an action, prompting a response, or distinguishing a visual element.",
-            "technicalGuidance": "Complement color with text, icons, or underlining. E.g. links must have underlines or another visual marker besides color. Error messages need text/icon, not just a red border.",
+            "technicalGuidance": "Complement colour with text, icons, or underlining. E.g. links must have underlines or another visual marker besides colour. Error messages need text/icon, not just a red border.",
             "component": "@holmdigital/components/FormField",
             "wcagTechnique": [
                 "G14",
@@ -443,11 +443,11 @@
             "diggRisk": "medium",
             "eaaImpact": "medium",
             "commonMistakes": [
-                "Links that only differ by color from body text",
-                "Error messages only marked with red color",
-                "Graphs where only color distinguishes data points"
+                "Links that only differ by colour from body text",
+                "Error messages only marked with red colour",
+                "Graphs where only colour distinguishes data points"
             ],
-            "priorityRationale": "Crucial for color blind users.",
+            "priorityRationale": "Crucial for colour blind users.",
             "ukInterpretation": "Common problem in graphs and maps where only color coding is used."
         },
         "testability": {
@@ -565,7 +565,7 @@
         "dosLagenApplies": true,
         "dosLagenReference": "PSBAR 2018, WCAG 2.1 AA required",
         "remediation": {
-            "description": "The visual presentation of user interface components and graphical objects must have a contrast ratio of at least 3:1 against adjacent colors.",
+            "description": "The visual presentation of user interface components and graphical objects must have a contrast ratio of at least 3:1 against adjacent colours.",
             "technicalGuidance": "Applies to buttons, input borders, icons, and focus indicators. Ensure all interactive elements are clearly visible against the background.",
             "component": "@holmdigital/components/Button",
             "wcagTechnique": [

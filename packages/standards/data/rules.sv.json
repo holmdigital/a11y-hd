@@ -222,7 +222,7 @@
         "dosLagenReference": "Lag 2018:1937 §7, WCAG 2.1 nivå A krävs",
         "remediation": {
             "description": "Formulärfält måste ha tydliga etiketter eller instruktioner.",
-            "technicalGuidance": "Use label elements linked to input via for/id. For complex forms, use fieldset and legend. Use aria-describedby for extra instructions.",
+            "technicalGuidance": "Använd label-element kopplade till input via for/id. För komplexa formulär, använd fieldset och legend. Använd aria-describedby för extra instruktioner.",
             "component": "@holmdigital/components/FormField",
             "codeExample": "import { FormField } from '@holmdigital/components';\n\n// Bad: No label\n<input type=\"text\" placeholder=\"Name\" />\n\n// Good: With label\n<label htmlFor=\"name\">Name:</label>\n<input type=\"text\" id=\"name\" />\n\n// Best: Use HolmDigital component\n<FormField\n  label=\"Name\"\n  type=\"text\"\n  required\n  helpText=\"Enter your full name\"\n/>",
             "wcagTechnique": [
@@ -294,7 +294,7 @@
         "dosLagenReference": "Lag 2018:1937 §7, WCAG 2.1 nivå A krävs",
         "remediation": {
             "description": "Varje webbsida måste ha en beskrivande titel.",
-            "technicalGuidance": "Use the title element in head. The title should be unique for each page and describe its purpose. Format: 'Page Name - Site Name'.",
+            "technicalGuidance": "Använd title-elementet i head. Titeln ska vara unik för varje sida och beskriva dess syfte. Format: 'Sidnamn - Webbplatsnamn'.",
             "codeExample": "// Bad: Generic title\n<title>Page</title>\n\n// Good: Descriptive title\n<title>Contact Us - HolmDigital</title>\n\n// React/Next.js\nimport Head from 'next/head';\n\n<Head>\n  <title>Contact Us - HolmDigital</title>\n</Head>",
             "wcagTechnique": [
                 "G88",
@@ -2390,7 +2390,8 @@
         "remediation": {
             "description": "För alla komponenter ska namn och roll kunna bestämmas programmatiskt. Värden ska kunna sättas programmatiskt.",
             "technicalGuidance": "Använd nativa HTML-element när det går. Om anpassade komponenter används, måste ARIA (role, aria-label, aria-valuenow) användas korrekt.",
-            "component": null,
+            "component": "@holmdigital/components/ProgressBar",
+            "codeExample": "import { ProgressBar } from '@holmdigital/components';\n\n// Dåligt: Div utan roll\n<div style={{ width: '50%' }}>50%</div>\n\n// Bra: Tillgänglig komponent\n<ProgressBar value={50} label=\"Laddar...\" />",
             "wcagTechnique": [
                 "ARIA4",
                 "ARIA5"
@@ -2457,7 +2458,8 @@
         "remediation": {
             "description": "Statusmeddelanden ska kunna presenteras för användaren utan att motta fokus (via skärmläsare).",
             "technicalGuidance": "Använd aria-live regioner (polite/assertive) eller role='status'/'alert' för meddelanden som dyker upp dynamiskt (t.ex. 'Sparat', 'Sökning klar').",
-            "component": null,
+            "component": "@holmdigital/components/LiveRegion",
+            "codeExample": "import { LiveRegion } from '@holmdigital/components';\n\n// Assertive för fel\n<LiveRegion politeness=\"assertive\">Fel: Kunde inte spara.</LiveRegion>\n\n// Polite för statusuppdateringar\n<LiveRegion politeness=\"polite\">Sparat.</LiveRegion>",
             "wcagTechnique": [
                 "ARIA19",
                 "ARIA22"

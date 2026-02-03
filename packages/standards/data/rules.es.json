@@ -2322,8 +2322,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "UNE 139803:2012, Nivel A requerido",
         "remediation": {
-            "description": "Update: From WCAG 2.2 this criterion is removed/obsolete, but in WCAG 2.1/EN 301 549 it applies: IDs must be unique, elements correctly nested.",
-            "technicalGuidance": "Validate HTML. Ensure id attributes are unique on the page. Close all tags correctly.",
+            "description": "Actualización: Desde WCAG 2.2 este criterio ha sido eliminado/obsoleto, pero en WCAG 2.1/EN 301 549 se aplica: Los IDs deben ser únicos, los elementos estar correctamente anidados.",
+            "technicalGuidance": "Valide el HTML. Asegúrese de que los atributos id sean únicos en la página. Cierre todas las etiquetas correctamente.",
             "component": null,
             "wcagTechnique": [
                 "H88"
@@ -2389,7 +2389,8 @@
         "remediation": {
             "description": "Para todos los componentes de la interfaz de usuario, el nombre y la función pueden ser determinados por programa; los estados, propiedades y valores pueden ser configurados por programa; y la notificación de cambios está disponible.",
             "technicalGuidance": "Use elementos HTML nativos cuando sea posible. Si usa componentes personalizados, asegúrese de usar ARIA correctamente (role, aria-label, aria-valuenow).",
-            "component": null,
+            "component": "@holmdigital/components/ProgressBar",
+            "codeExample": "import { ProgressBar } from '@holmdigital/components';\n\n// Malo: Div sin role\n<div style={{ width: '50%' }}>50%</div>\n\n// Bueno: Componente accesible\n<ProgressBar value={50} label=\"Cargando...\" />",
             "wcagTechnique": [
                 "ARIA4",
                 "ARIA5"
@@ -2456,7 +2457,8 @@
         "remediation": {
             "description": "Los mensajes de estado deben poder presentarse al usuario sin recibir el foco (a través de lectores de pantalla).",
             "technicalGuidance": "Use regiones aria-live (polite/assertive) o role='status'/'alert' para mensajes que aparecen dinámicamente (ej. 'Guardado', 'Búsqueda completada').",
-            "component": null,
+            "component": "@holmdigital/components/LiveRegion",
+            "codeExample": "import { LiveRegion } from '@holmdigital/components';\n\n// Assertive para errores\n<LiveRegion politeness=\"assertive\">Error: Error al guardar.</LiveRegion>\n\n// Polite para actualizaciones de estado\n<LiveRegion politeness=\"polite\">Guardado con éxito.</LiveRegion>",
             "wcagTechnique": [
                 "ARIA19",
                 "ARIA22"

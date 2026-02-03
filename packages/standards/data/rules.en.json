@@ -2390,7 +2390,8 @@
         "remediation": {
             "description": "For all components, name and role can be programmatically determined. Values can be set programmatically.",
             "technicalGuidance": "Use native HTML elements when possible. If custom components are used, ARIA (role, aria-label, aria-valuenow) must be used correctly.",
-            "component": null,
+            "component": "@holmdigital/components/ProgressBar",
+            "codeExample": "import { ProgressBar } from '@holmdigital/components';\n\n// Bad: Div without role\n<div style={{ width: '50%' }}>50%</div>\n\n// Good: Accessible Component\n<ProgressBar value={50} label=\"Loading...\" />",
             "wcagTechnique": [
                 "ARIA4",
                 "ARIA5"
@@ -2457,7 +2458,8 @@
         "remediation": {
             "description": "Statusmeddelanden ska kunna presenteras för användaren utan att motta fokus (via skärmläsare).",
             "technicalGuidance": "Använd aria-live regioner (polite/assertive) eller role='status'/'alert' för meddelanden som dyker upp dynamiskt (t.ex. 'Sparat', 'Sökning klar').",
-            "component": null,
+            "component": "@holmdigital/components/LiveRegion",
+            "codeExample": "import { LiveRegion } from '@holmdigital/components';\n\n// Assertive for errors\n<LiveRegion politeness=\"assertive\">Error: Failed to save.</LiveRegion>\n\n// Polite for status updates\n<LiveRegion politeness=\"polite\">Saved successfully.</LiveRegion>",
             "wcagTechnique": [
                 "ARIA19",
                 "ARIA22"

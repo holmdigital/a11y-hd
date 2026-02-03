@@ -11,8 +11,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "Besluit digitale toegankelijkheid overheid, WCAG 2.1 AA verplicht",
         "remediation": {
-            "description": "Text and images of text must have a contrast ratio of at least 4.5:1 (3:1 for large text).",
-            "technicalGuidance": "Use tools like WebAIM Contrast Checker to verify contrast. Adjust color choices or add background opacity to achieve correct contrast.",
+            "description": "Tekst en afbeeldingen van tekst moeten een contrastverhouding hebben van minimaal 4,5:1 (3:1 voor grote tekst).",
+            "technicalGuidance": "Gebruik tools zoals WebAIM Contrast Checker om contrast te verifiëren. Pas kleurkeuzes aan of voeg achtergrondtransparantie toe om correct contrast te bereiken.",
             "component": "@holmdigital/components/Button",
             "codeExample": "import { Button } from '@holmdigital/components';\n\n// Bad: Poor contrast\n<button style={{ background: '#777', color: '#999' }}>Click me</button>\n\n// Good: Use accessible component\n<Button variant=\"primary\">Click me</Button>",
             "wcagTechnique": [
@@ -25,12 +25,12 @@
             "diggRisk": "high",
             "eaaImpact": "critical",
             "commonMistakes": [
-                "Gray text on white background (#777 on #FFF)",
-                "Light blue links without underline",
-                "Placeholder text with too low contrast"
+                "Grijze tekst op witte achtergrond (#777 op #FFF)",
+                "Lichtblauwe links zonder onderstreping",
+                "Placeholder-tekst met te laag contrast"
             ],
-            "diggPrecedent": "Regulators often cite poor contrast in primary navigation elements.",
-            "priorityRationale": "Critical for users with low vision. Affects readability for all users in varying lighting conditions.",
+            "diggPrecedent": "Toezichthouders citeren vaak slecht contrast in primaire navigatie-elementen.",
+            "priorityRationale": "Kritiek voor gebruikers met slechtziendheid. Beïnvloedt leesbaarheid voor alle gebruikers bij wisselende lichtomstandigheden.",
             "dutchInterpretation": "Een van de meest voorkomende redenen voor boetes van toezichthouders. Vooral belangrijk voor monitoring van de publieke sector."
         },
         "testability": {
@@ -82,8 +82,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "Besluit digitale toegankelijkheid overheid, WCAG 2.1 AA verplicht",
         "remediation": {
-            "description": "All functionality must be accessible via keyboard.",
-            "technicalGuidance": "Use semantic HTML elements (button, a, input) instead of div/span with click handlers. Ensure tabindex is used correctly.",
+            "description": "Alle functionaliteit moet toegankelijk zijn via het toetsenbord.",
+            "technicalGuidance": "Gebruik semantische HTML-elementen (button, a, input) in plaats van div/span met click handlers. Zorg ervoor dat tabindex correct wordt gebruikt.",
             "component": "@holmdigital/components/Button",
             "codeExample": "// Bad: Div with onClick\n<div onClick={handleClick}>Click Me</div>\n\n// Good: Button element\n<button onClick={handleClick}>Click Me</button>\n\n// Best: Use HolmDigital component\nimport { Button } from '@holmdigital/components';\n<Button onClick={handleClick}>Click Me</Button>",
             "wcagTechnique": [
@@ -95,12 +95,12 @@
             "diggRisk": "critical",
             "eaaImpact": "critical",
             "commonMistakes": [
-                "Using div/span for clickable elements",
-                "Custom dropdown menus without keyboard support",
-                "Modal dialogs that trap focus incorrectly"
+                "Gebruik van div/span voor klikbare elementen",
+                "Aangepaste dropdown-menu's zonder toetsenbordondersteuning",
+                "Modale dialogen die focus onjuist vasthouden"
             ],
-            "diggPrecedent": "Auditors have issued fines for sites where core functions (e.g. forms, navigation) are not keyboard accessible.",
-            "priorityRationale": "Critical for users with motor disabilities and screen reader users.",
+            "diggPrecedent": "Auditors hebben boetes uitgevaardigd voor sites waar kernfuncties (bijv. formulieren, navigatie) niet toetsenbordtoegankelijk zijn.",
+            "priorityRationale": "Kritiek voor gebruikers met motorische beperkingen en schermlezergebruikers.",
             "dutchInterpretation": "Toetsenbordtoegang is fundamenteel en niet onderhandelbaar. Hoogste prioriteit bij compliance-audits."
         },
         "testability": {
@@ -151,8 +151,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "Besluit digitale toegankelijkheid overheid, WCAG 2.1 AA verplicht",
         "remediation": {
-            "description": "All images must have descriptive alternative text.",
-            "technicalGuidance": "Add alt attributes to all img elements. For decorative images, use alt=\"\". For informative images, concisely describe the content.",
+            "description": "Alle afbeeldingen moeten beschrijvende alternatieve tekst hebben.",
+            "technicalGuidance": "Voeg alt-attributen toe aan alle img-elementen. Voor decoratieve afbeeldingen, gebruik alt=\"\". Voor informatieve afbeeldingen, beschrijf de inhoud beknopt.",
             "codeExample": "// Bad: Msising alt\n<img src=\"logo.png\" />\n\n// Good: Descriptive alt\n<img src=\"logo.png\" alt=\"HolmDigital Logo\" />\n\n// Good: Decorative image\n<img src=\"decoration.png\" alt=\"\" role=\"presentation\" />",
             "wcagTechnique": [
                 "G94",
@@ -164,13 +164,13 @@
             "diggRisk": "high",
             "eaaImpact": "high",
             "commonMistakes": [
-                "Missing alt text entirely",
-                "Alt text that just says 'image' or 'icon'",
-                "Filename as alt text (e.g. 'IMG_1234.jpg')",
-                "Decorative images with unnecessary description"
+                "Alt-tekst volledig ontbreekt",
+                "Alt-tekst die alleen 'afbeelding' of 'icoon' zegt",
+                "Bestandsnaam als alt-tekst (bijv. 'IMG_1234.jpg')",
+                "Decoratieve afbeeldingen met onnodige beschrijving"
             ],
-            "diggPrecedent": "Audits frequently cite missing alt text, especially for vital infographics.",
-            "priorityRationale": "Critical for screen reader users to access visual information.",
+            "diggPrecedent": "Audits citeren vaak ontbrekende alt-tekst, vooral voor vitale infographics.",
+            "priorityRationale": "Kritiek voor schermlezergebruikers om visuele informatie te kunnen lezen.",
             "dutchInterpretation": "Vooral belangrijk voor logo's en informatieve afbeeldingen. Vaak gecontroleerd bij audits."
         },
         "testability": {
@@ -221,8 +221,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "Besluit digitale toegankelijkheid overheid, WCAG 2.1 AA verplicht",
         "remediation": {
-            "description": "Form fields must have clear labels or instructions.",
-            "technicalGuidance": "Use label elements linked to input via for/id. For complex forms, use fieldset and legend. Use aria-describedby for extra instructions.",
+            "description": "Formuliervelden moeten duidelijke labels of instructies hebben.",
+            "technicalGuidance": "Gebruik label-elementen gekoppeld aan input via for/id. Voor complexe formulieren, gebruik fieldset en legend. Gebruik aria-describedby voor extra instructies.",
             "component": "@holmdigital/components/FormField",
             "codeExample": "import { FormField } from '@holmdigital/components';\n\n// Bad: No label\n<input type=\"text\" placeholder=\"Name\" />\n\n// Good: With label\n<label htmlFor=\"name\">Name:</label>\n<input type=\"text\" id=\"name\" />\n\n// Best: Use HolmDigital component\n<FormField\n  label=\"Name\"\n  type=\"text\"\n  required\n  helpText=\"Enter your full name\"\n/>",
             "wcagTechnique": [
@@ -236,13 +236,13 @@
             "diggRisk": "high",
             "eaaImpact": "high",
             "commonMistakes": [
-                "Only placeholder without label",
-                "Label and input not linked via for/id",
-                "Error messages without aria-describedby",
-                "Required fields not clearly marked"
+                "Alleen placeholder zonder label",
+                "Label en input niet gekoppeld via for/id",
+                "Foutmeldingen zonder aria-describedby",
+                "Verplichte velden niet duidelijk gemarkeerd"
             ],
-            "diggPrecedent": "Audit decisions often criticize poor form accessibility, especially for application and contact forms.",
-            "priorityRationale": "Critical for users to successfully use e-services and submit information.",
+            "diggPrecedent": "Auditbeslissingen bekritiseren vaak slechte formuliertoegankelijkheid, vooral voor aanvraag- en contactformulieren.",
+            "priorityRationale": "Kritiek voor gebruikers om e-services succesvol te gebruiken en informatie in te dienen.",
             "dutchInterpretation": "Formulieren zijn essentieel voor e-services. Naleving wordt strikt gehandhaafd in apps van de publieke sector."
         },
         "testability": {
@@ -293,8 +293,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "Besluit digitale toegankelijkheid overheid, WCAG 2.1 AA verplicht",
         "remediation": {
-            "description": "Each web page must have a descriptive title.",
-            "technicalGuidance": "Use the title element in head. The title should be unique for each page and describe its purpose. Format: 'Page Name - Site Name'.",
+            "description": "Elke webpagina moet een beschrijvende titel hebben.",
+            "technicalGuidance": "Gebruik het title-element in head. De titel moet uniek zijn voor elke pagina en het doel beschrijven. Formaat: 'Paginanaam - Sitenaam'.",
             "codeExample": "// Bad: Generic title\n<title>Page</title>\n\n// Good: Descriptive title\n<title>Contact Us - HolmDigital</title>\n\n// React/Next.js\nimport Head from 'next/head';\n\n<Head>\n  <title>Contact Us - HolmDigital</title>\n</Head>",
             "wcagTechnique": [
                 "G88",
@@ -305,13 +305,13 @@
             "diggRisk": "medium",
             "eaaImpact": "medium",
             "commonMistakes": [
-                "Same title on all pages",
-                "Title not updating in SPAs",
-                "Too long or too short title",
-                "Title missing entirely"
+                "Zelfde titel op alle pagina's",
+                "Titel wordt niet bijgewerkt in SPA's",
+                "Te lange of te korte titel",
+                "Titel ontbreekt volledig"
             ],
-            "diggPrecedent": "Audits have noted missing page titles, especially in Single Page Applications.",
-            "priorityRationale": "Important for screen reader navigation and SEO.",
+            "diggPrecedent": "Audits hebben ontbrekende paginatitels opgemerkt, vooral in Single Page Applications.",
+            "priorityRationale": "Belangrijk voor schermlezernavigatie en SEO.",
             "dutchInterpretation": "Belangrijk voor navigatie, vooral in SPA's waar de titel dynamisch moet worden bijgewerkt."
         },
         "testability": {
@@ -362,8 +362,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "Besluit digitale toegankelijkheid overheid, WCAG 2.1 AA verplicht",
         "remediation": {
-            "description": "Information, structure, and relationships conveyed through presentation can be programmatically determined or are available in text.",
-            "technicalGuidance": "Use semantic HTML: <header>, <nav>, <main>, <footer>, <h1>-<h6>, <ul>/ <ol>, <table>. Do not use visual styles to create 'fake' headings or lists.",
+            "description": "Informatie, structuur en relaties die door presentatie worden overgebracht, kunnen programmatisch worden bepaald of zijn beschikbaar in tekst.",
+            "technicalGuidance": "Gebruik semantische HTML: <header>, <nav>, <main>, <footer>, <h1>-<h6>, <ul>/<ol>, <table>. Gebruik geen visuele stijlen om 'nep' koppen of lijsten te maken.",
             "component": null,
             "wcagTechnique": [
                 "H42",
@@ -375,11 +375,11 @@
             "diggRisk": "high",
             "eaaImpact": "high",
             "commonMistakes": [
-                "Using bold text instead of <h1>-<h6>",
-                "Using <br> for lists instead of <ul>",
-                "Tables for layout"
+                "Gebruik van vetgedrukte tekst in plaats van <h1>-<h6>",
+                "Gebruik van <br> voor lijsten in plaats van <ul>",
+                "Tabellen voor lay-out"
             ],
-            "priorityRationale": "Fundamental for all assistive technology navigation.",
+            "priorityRationale": "Fundamenteel voor alle hulptechnologie-navigatie.",
             "dutchInterpretation": "Semantische structuur is cruciaal voor schermlezers om effectief te navigeren. Auditors citeren vaak 'div-soup' die op structuur lijkt maar semantiek mist."
         },
         "testability": {
@@ -430,8 +430,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "Besluit digitale toegankelijkheid overheid, WCAG 2.1 AA verplicht",
         "remediation": {
-            "description": "Color is not used as the only visual means of conveying information, indicating an action, prompting a response, or distinguishing a visual element.",
-            "technicalGuidance": "Complement color with text, icons, or underlining. E.g. links must have underlines or another visual marker besides color. Error messages need text/icon, not just a red border.",
+            "description": "Kleur wordt niet gebruikt als enige visuele manier om informatie over te brengen, een actie aan te geven, een reactie uit te lokken of een visueel element te onderscheiden.",
+            "technicalGuidance": "Vul kleur aan met tekst, iconen of onderstreping. Bijv. links moeten onderstrepingen of een andere visuele markering behalve kleur hebben. Foutmeldingen hebben tekst/icoon nodig, niet alleen een rode rand.",
             "component": "@holmdigital/components/FormField",
             "wcagTechnique": [
                 "G14",
@@ -443,11 +443,11 @@
             "diggRisk": "medium",
             "eaaImpact": "medium",
             "commonMistakes": [
-                "Links that only differ by color from body text",
-                "Error messages only marked with red color",
-                "Graphs where only color distinguishes data points"
+                "Links die alleen door kleur verschillen van bodytekst",
+                "Foutmeldingen alleen gemarkeerd met rode kleur",
+                "Grafieken waar alleen kleur datapunten onderscheidt"
             ],
-            "priorityRationale": "Crucial for color blind users.",
+            "priorityRationale": "Cruciaal voor kleurenblinde gebruikers.",
             "dutchInterpretation": "Veelvoorkomend probleem in grafieken en kaarten waar alleen kleurcodering wordt gebruikt."
         },
         "testability": {
@@ -498,8 +498,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "Besluit digitale toegankelijkheid overheid, WCAG 2.1 AA verplicht",
         "remediation": {
-            "description": "Content must be presentable without requiring scrolling in two dimensions down to 320px width.",
-            "technicalGuidance": "Use responsive design (CSS Media Queries, Flexbox, Grid). Avoid fixed widths in pixels. Ensure tables and images scale correctly.",
+            "description": "Inhoud moet weergeefbaar zijn zonder scrollen in twee dimensies tot 320px breedte.",
+            "technicalGuidance": "Gebruik responsive design (CSS Media Queries, Flexbox, Grid). Vermijd vaste breedtes in pixels. Zorg dat tabellen en afbeeldingen correct schalen.",
             "component": null,
             "wcagTechnique": [
                 "C32",
@@ -510,11 +510,11 @@
             "diggRisk": "high",
             "eaaImpact": "high",
             "commonMistakes": [
-                "Fixed widths on containers",
-                "Tables that are not responsive",
-                "Images wider than the screen"
+                "Vaste breedtes op containers",
+                "Tabellen die niet responsief zijn",
+                "Afbeeldingen breder dan het scherm"
             ],
-            "priorityRationale": "Critical for low vision users who zoom in heavily.",
+            "priorityRationale": "Kritiek voor slechtziende gebruikers die sterk inzoomen.",
             "dutchInterpretation": "Een moderne eis (WCAG 2.1), essentieel voor mobiel gebruik en vergrote tekst. Logius heeft nultolerantie voor horizontaal scrollen op verticale sites."
         },
         "testability": {
@@ -565,8 +565,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "Besluit digitale toegankelijkheid overheid, WCAG 2.1 AA verplicht",
         "remediation": {
-            "description": "The visual presentation of user interface components and graphical objects must have a contrast ratio of at least 3:1 against adjacent colors.",
-            "technicalGuidance": "Applies to buttons, input borders, icons, and focus indicators. Ensure all interactive elements are clearly visible against the background.",
+            "description": "De visuele presentatie van gebruikersinterface-componenten en grafische objecten moet een contrastverhouding hebben van minimaal 3:1 tegen aangrenzende kleuren.",
+            "technicalGuidance": "Geldt voor knoppen, invoergrenslijnen, iconen en focusindicatoren. Zorg dat alle interactieve elementen duidelijk zichtbaar zijn tegen de achtergrond.",
             "component": "@holmdigital/components/Button",
             "wcagTechnique": [
                 "G195",
@@ -577,9 +577,9 @@
             "diggRisk": "low",
             "eaaImpact": "low",
             "commonMistakes": [
-                "Grayed out buttons with too low contrast"
+                "Grijs gemaakte knoppen met te laag contrast"
             ],
-            "priorityRationale": "Important for distinguishing interactive elements.",
+            "priorityRationale": "Belangrijk voor het onderscheiden van interactieve elementen.",
             "dutchInterpretation": "Vaak gemiste eis betreffende focusringen en inactieve (maar zichtbare) componenten. Belangrijk voor het begrijpen van de interface."
         },
         "testability": {
@@ -630,8 +630,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "Besluit digitale toegankelijkheid overheid, WCAG 2.1 AA verplicht",
         "remediation": {
-            "description": "Content or functionality must not be lost when the user changes text spacing (line height, paragraph spacing, etc.).",
-            "technicalGuidance": "Avoid fixed heights on text containers. Let containers grow with content. Test with text spacing bookmarklet.",
+            "description": "Inhoud of functionaliteit mag niet verloren gaan wanneer de gebruiker tekstspatiëring wijzigt (regelhoogte, alinea-afstand, etc.).",
+            "technicalGuidance": "Vermijd vaste hoogtes op tekstcontainers. Laat containers meegroeien met inhoud. Test met text spacing bookmarklet.",
             "component": null,
             "wcagTechnique": [
                 "C36"
@@ -641,10 +641,10 @@
             "diggRisk": "low",
             "eaaImpact": "medium",
             "commonMistakes": [
-                "Fixed line height in pixels",
-                "Text container that does not grow"
+                "Vaste regelhoogte in pixels",
+                "Tekstcontainer die niet meegroeit"
             ],
-            "priorityRationale": "Important for readability during adaptations.",
+            "priorityRationale": "Belangrijk voor leesbaarheid bij aanpassingen.",
             "dutchInterpretation": "Belangrijk voor aanpassingen voor dyslexie."
         },
         "testability": {
@@ -694,8 +694,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "Besluit digitale toegankelijkheid overheid, WCAG 2.1 AA verplicht",
         "remediation": {
-            "description": "Content shown on hover/focus (e.g. tooltips) must be Dismissable, Hoverable, and Persistent.",
-            "technicalGuidance": "Ensure tooltips do not disappear when moving mouse from trigger to the tooltip itself. Allow ESC to dismiss.",
+            "description": "Inhoud getoond bij hover/focus (bijv. tooltips) moet Afwijsbaar, Bereikbaar en Persistent zijn.",
+            "technicalGuidance": "Zorg dat tooltips niet verdwijnen bij het bewegen van de muis van trigger naar de tooltip zelf. Sta ESC toe om af te wijzen.",
             "component": null,
             "wcagTechnique": [
                 "SCR39"
@@ -705,11 +705,11 @@
             "diggRisk": "medium",
             "eaaImpact": "medium",
             "commonMistakes": [
-                "Tooltips that cannot be reached with mouse",
-                "Menus that close too easily",
-                "Content that cannot be dismissed without moving focus"
+                "Tooltips die niet met de muis bereikt kunnen worden",
+                "Menu's die te gemakkelijk sluiten",
+                "Inhoud die niet afgewezen kan worden zonder focus te verplaatsen"
             ],
-            "priorityRationale": "Important for users with magnification and motor difficulties.",
+            "priorityRationale": "Belangrijk voor gebruikers met vergroting en motorische problemen.",
             "dutchInterpretation": "Veelvoorkomend probleem bij aangepaste tooltips en megamenu's."
         },
         "testability": {
@@ -760,8 +760,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "Besluit digitale toegankelijkheid overheid, WCAG 2.1 AA verplicht",
         "remediation": {
-            "description": "Captions must be provided for all prerecorded audio content in synchronized media.",
-            "technicalGuidance": "Use the <track> element with WebVTT files for HTML5 video. For social media embeds, ensure captions are enabled.",
+            "description": "Ondertiteling moet worden verstrekt voor alle vooraf opgenomen audio-inhoud in gesynchroniseerde media.",
+            "technicalGuidance": "Gebruik het <track> element met WebVTT-bestanden voor HTML5 video. Zorg bij social media embeds dat ondertiteling is ingeschakeld.",
             "component": null,
             "wcagTechnique": [
                 "G87",
@@ -772,11 +772,11 @@
             "diggRisk": "high",
             "eaaImpact": "high",
             "commonMistakes": [
-                "Auto-generated captions that satisfy no one",
-                "Captions missing entirely",
-                "Captions burned into video (not accessible for search/translation)"
+                "Automatisch gegenereerde ondertiteling die niemand tevreden stelt",
+                "Ondertiteling ontbreekt volledig",
+                "Ondertiteling ingebrand in video (niet toegankelijk voor zoeken/vertaling)"
             ],
-            "priorityRationale": "Critical for deaf and hard of hearing users.",
+            "priorityRationale": "Kritiek voor dove en slechthorende gebruikers.",
             "dutchInterpretation": "Een van de grootste tekortkomingen in de publieke sector. De wettelijke eis is strikt: video met audio MOET ondertiteling hebben."
         },
         "testability": {
@@ -827,8 +827,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "Besluit digitale toegankelijkheid overheid, WCAG 2.1 AA verplicht",
         "remediation": {
-            "description": "Audio description must be provided for all prerecorded video content.",
-            "technicalGuidance": "Either as a separate audio track, an alternative version of the video, or (if 'talking heads') ensuring all info is conveyed by audio.",
+            "description": "Audiobeschrijving moet worden verstrekt voor alle vooraf opgenomen video-inhoud.",
+            "technicalGuidance": "Ofwel als aparte audiotrack, een alternatieve versie van de video, of (bij 'pratende hoofden') zorgen dat alle informatie via audio wordt overgebracht.",
             "component": null,
             "wcagTechnique": [
                 "G78",
@@ -839,9 +839,9 @@
             "diggRisk": "medium",
             "eaaImpact": "medium",
             "commonMistakes": [
-                "Information shown only visually (graphics, text signs) without being mentioned in audio"
+                "Informatie alleen visueel getoond (graphics, tekstborden) zonder vermelding in audio"
             ],
-            "priorityRationale": "Critical for blind video users.",
+            "priorityRationale": "Kritiek voor blinde videogebruikers.",
             "dutchInterpretation": "Kan vaak worden opgelost door 'geïntegreerde beschrijving' (praten over wat er te zien is), wat kosteneffectiever is."
         },
         "testability": {
@@ -892,8 +892,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "Besluit digitale toegankelijkheid overheid, WCAG 2.1 AA verplicht",
         "remediation": {
-            "description": "Content must not restrict its view and operation to a single display orientation, unless a specific orientation is essential.",
-            "technicalGuidance": "Do not lock screen to portrait or landscape via CSS or JS manifest. Use CSS media queries to handle layout changes.",
+            "description": "Inhoud mag zijn weergave en bediening niet beperken tot één schermoriëntatie, tenzij een specifieke oriëntatie essentieel is.",
+            "technicalGuidance": "Vergrendel het scherm niet op portrait of landscape via CSS of JS manifest. Gebruik CSS media queries om lay-outwijzigingen af te handelen.",
             "component": null,
             "wcagTechnique": [
                 "F97"
@@ -903,9 +903,9 @@
             "diggRisk": "low",
             "eaaImpact": "medium",
             "commonMistakes": [
-                "Apps/sites that rotate interface 90 degrees against user will"
+                "Apps/sites die interface 90 graden draaien tegen de wil van de gebruiker"
             ],
-            "priorityRationale": "Important for users who cannot rotate their device.",
+            "priorityRationale": "Belangrijk voor gebruikers die hun apparaat niet kunnen draaien.",
             "dutchInterpretation": "Belangrijk voor tablets en gebruikers die het apparaat gemonteerd hebben (bijv. rolstoel)."
         },
         "testability": {
@@ -956,8 +956,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "Besluit digitale toegankelijkheid overheid, WCAG 2.1 AA verplicht",
         "remediation": {
-            "description": "The purpose of each input field collecting information about the user can be programmatically determined.",
-            "technicalGuidance": "Use the 'autocomplete' attribute on input fields for personal data (name, email, tel, address etc.).",
+            "description": "Het doel van elk invoerveld dat informatie over de gebruiker verzamelt, kan programmatisch worden bepaald.",
+            "technicalGuidance": "Gebruik het 'autocomplete'-attribuut op invoervelden voor persoonlijke gegevens (naam, e-mail, tel, adres etc.).",
             "component": "@holmdigital/components/FormField",
             "wcagTechnique": [
                 "H98"
@@ -967,11 +967,11 @@
             "diggRisk": "medium",
             "eaaImpact": "high",
             "commonMistakes": [
-                "Missing autocomplete attribute",
-                "Incorrect autocomplete value",
-                "Turning off autocomplete (autocomplete='off') unnecessarily"
+                "Ontbrekend autocomplete-attribuut",
+                "Onjuiste autocomplete-waarde",
+                "Onnodig uitschakelen van autocomplete (autocomplete='off')"
             ],
-            "priorityRationale": "Reduces cognitive load and motor requirements.",
+            "priorityRationale": "Vermindert cognitieve belasting en motorische vereisten.",
             "dutchInterpretation": "Maakt het invullen van verwarrende formulieren veel makkelijker (autofill)."
         },
         "testability": {
@@ -1021,8 +1021,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "Besluit digitale toegankelijkheid overheid, WCAG 2.1 AA verplicht",
         "remediation": {
-            "description": "If focus can be moved to a component of the page using a keyboard interface, then focus can be moved away from that component using only a keyboard interface.",
-            "technicalGuidance": "Be careful with JS widgets that trap focus (e.g. modal windows). Ensure there is always a way out (e.g. ESC or shift+tab).",
+            "description": "Als focus met een toetsenbordinterface naar een component van de pagina kan worden verplaatst, dan kan focus ook met alleen een toetsenbordinterface daarvan worden verplaatst.",
+            "technicalGuidance": "Wees voorzichtig met JS-widgets die focus vasthouden (bijv. modale vensters). Zorg dat er altijd een uitweg is (bijv. ESC of shift+tab).",
             "component": null,
             "wcagTechnique": [
                 "G21"
@@ -1032,10 +1032,10 @@
             "diggRisk": "critical",
             "eaaImpact": "critical",
             "commonMistakes": [
-                "Custom widgets that loop focus infinitely",
-                "Embedded third-party components (maps, chats) without exit"
+                "Aangepaste widgets die focus oneindig laten rondgaan",
+                "Ingebedde componenten van derden (kaarten, chats) zonder uitweg"
             ],
-            "priorityRationale": "Critical: The user gets stuck and must restart the browser.",
+            "priorityRationale": "Kritiek: De gebruiker zit vast en moet de browser herstarten.",
             "dutchInterpretation": "Een toetsenbordval is een 'blocker' die de website onbruikbaar maakt. Ernstige fout."
         },
         "testability": {
@@ -1085,8 +1085,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "Besluit digitale toegankelijkheid overheid, WCAG 2.1 AA verplicht",
         "remediation": {
-            "description": "If a keyboard shortcut consists of only one character (letter, number, symbol), there must be a way to turn it off or remap it, or it must only be active on focus.",
-            "technicalGuidance": "Avoid single-key shortcuts if possible. If needed, ensure they do not conflict with voice control or accidental typing.",
+            "description": "Als een sneltoets uit slechts één teken bestaat (letter, cijfer, symbool), moet er een manier zijn om deze uit te schakelen of opnieuw toe te wijzen, of deze mag alleen actief zijn bij focus.",
+            "technicalGuidance": "Vermijd sneltoetsen met één toets indien mogelijk. Indien nodig, zorg dat ze niet conflicteren met spraakbesturing of per ongeluk typen.",
             "component": null,
             "wcagTechnique": [
                 "G217"
@@ -1096,9 +1096,9 @@
             "diggRisk": "medium",
             "eaaImpact": "medium",
             "commonMistakes": [
-                "Gmail-like shortcuts that are on by default without option to disable"
+                "Gmail-achtige sneltoetsen die standaard aan staan zonder uitschakeloptie"
             ],
-            "priorityRationale": "Important to avoid accidental activation.",
+            "priorityRationale": "Belangrijk om onbedoelde activering te voorkomen.",
             "dutchInterpretation": "Belangrijk voor gebruikers van spraakbesturing (Dragon enz.) waarbij enkele woorden per ongeluk commando's kunnen activeren."
         },
         "testability": {
@@ -1148,8 +1148,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "Besluit digitale toegankelijkheid overheid, WCAG 2.1 AA verplicht",
         "remediation": {
-            "description": "If a time limit (session, reading time) is set, the user must be able to turn off, adjust, or extend it.",
-            "technicalGuidance": "Provide a warning before the session expires with an 'Extend session' button. The time limit must be at least 20 seconds.",
+            "description": "Als een tijdslimiet (sessie, leestijd) is ingesteld, moet de gebruiker deze kunnen uitschakelen, aanpassen of verlengen.",
+            "technicalGuidance": "Geef een waarschuwing voordat de sessie verloopt met een 'Sessie verlengen'-knop. De tijdslimiet moet minimaal 20 seconden zijn.",
             "component": null,
             "wcagTechnique": [
                 "SCR16",
@@ -1160,10 +1160,10 @@
             "diggRisk": "high",
             "eaaImpact": "high",
             "commonMistakes": [
-                "Logout without warning",
-                "Time limits that cannot be extended"
+                "Uitloggen zonder waarschuwing",
+                "Tijdslimieten die niet verlengd kunnen worden"
             ],
-            "priorityRationale": "Critical to avoid losing entered data.",
+            "priorityRationale": "Kritiek om verlies van ingevoerde gegevens te voorkomen.",
             "dutchInterpretation": "Kritiek voor e-services/bankieren. Gebruikers die langzaam lezen of ondersteunende technologie gebruiken, hebben meer tijd nodig."
         },
         "testability": {
@@ -1213,8 +1213,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "Besluit digitale toegankelijkheid overheid, WCAG 2.1 AA verplicht",
         "remediation": {
-            "description": "For moving, blinking, or scrolling content that starts automatically and lasts more than 5 seconds, there must be a way to pause, stop, or hide it.",
-            "technicalGuidance": "Applies to carousels (sliders), auto-updating news feeds, animated backgrounds. Add a clear pause button.",
+            "description": "Voor bewegende, knipperende of scrollende inhoud die automatisch start en langer dan 5 seconden duurt, moet er een manier zijn om te pauzeren, stoppen of verbergen.",
+            "technicalGuidance": "Geldt voor carrousels (sliders), automatisch bijwerkende nieuwsfeeds, geanimeerde achtergronden. Voeg een duidelijke pauzeknop toe.",
             "component": null,
             "wcagTechnique": [
                 "G4",
@@ -1225,11 +1225,11 @@
             "diggRisk": "medium",
             "eaaImpact": "medium",
             "commonMistakes": [
-                "Image carousels without pause button",
-                "Animated backgrounds that cannot be turned off"
+                "Afbeeldingscarrousels zonder pauzeknop",
+                "Geanimeerde achtergronden die niet uitgeschakeld kunnen worden"
             ],
-            "priorityRationale": "Important for cognitive accessibility.",
-            "dutchInterpretation": "Important for users with concentration difficulties (ADHD/Autism) who are distracted by movement."
+            "priorityRationale": "Belangrijk voor cognitieve toegankelijkheid.",
+            "dutchInterpretation": "Belangrijk voor gebruikers met concentratieproblemen (ADHD/Autisme) die worden afgeleid door beweging."
         },
         "testability": {
             "automated": false,
@@ -1279,8 +1279,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "Besluit digitale toegankelijkheid overheid, WCAG 2.1 AA verplicht",
         "remediation": {
-            "description": "Content must not flash more than three times per second (can cause seizures).",
-            "technicalGuidance": "Avoid rapid flashing in video and animations. Use tools to measure flash frequency (PEAT).",
+            "description": "Inhoud mag niet meer dan drie keer per seconde flitsen (kan epileptische aanvallen veroorzaken).",
+            "technicalGuidance": "Vermijd snel flitsen in video en animaties. Gebruik tools om flitsfrequentie te meten (PEAT).",
             "component": null,
             "wcagTechnique": [
                 "G19"
@@ -1290,10 +1290,10 @@
             "diggRisk": "critical",
             "eaaImpact": "critical",
             "commonMistakes": [
-                "Stroboscopic effects in video",
-                "Misuse of blinking error messages"
+                "Stroboscopische effecten in video",
+                "Misbruik van knipperende foutmeldingen"
             ],
-            "priorityRationale": "Critical safety risk.",
+            "priorityRationale": "Kritiek veiligheidsrisico.",
             "dutchInterpretation": "Gezondheidsrisico. Nultolerantie."
         },
         "testability": {
@@ -1344,8 +1344,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "Besluit digitale toegankelijkheid overheid, WCAG 2.1 AA verplicht",
         "remediation": {
-            "description": "There must be a way to skip blocks of content that are repeated on multiple pages (e.g. navigation).",
-            "technicalGuidance": "Implement a 'Skip to Main Content' link at the top of the page that becomes visible on focus. Use semantic landmarks (<main>, <nav>).",
+            "description": "Er moet een manier zijn om inhoudsblokken over te slaan die op meerdere pagina's worden herhaald (bijv. navigatie).",
+            "technicalGuidance": "Implementeer een 'Ga naar hoofdinhoud'-link bovenaan de pagina die zichtbaar wordt bij focus. Gebruik semantische landmarks (<main>, <nav>).",
             "component": null,
             "wcagTechnique": [
                 "G1",
@@ -1356,12 +1356,12 @@
             "diggRisk": "medium",
             "eaaImpact": "medium",
             "commonMistakes": [
-                "Missing skip-link",
-                "Skip-link broken (does not move focus correctly)",
-                "Landmarks missing"
+                "Ontbrekende skip-link",
+                "Kapotte skip-link (verplaatst focus niet correct)",
+                "Ontbrekende landmarks"
             ],
-            "priorityRationale": "Important for efficient navigation.",
-            "dutchInterpretation": "Standard on all publieke sector sites. Enormously helpful for keyboard users."
+            "priorityRationale": "Belangrijk voor efficiënte navigatie.",
+            "dutchInterpretation": "Standaard op alle publieke sector sites. Enorm behulpzaam voor toetsenbordgebruikers."
         },
         "testability": {
             "automated": true,
@@ -1411,8 +1411,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "Besluit digitale toegankelijkheid overheid, WCAG 2.1 AA verplicht",
         "remediation": {
-            "description": "Focus order must be logical and follow meaning/structure.",
-            "technicalGuidance": "Match DOM order with visual order. Avoid tabindex greater than 0. Manage focus manually in modals and menus.",
+            "description": "Focusvolgorde moet logisch zijn en betekenis/structuur volgen.",
+            "technicalGuidance": "Laat DOM-volgorde overeenkomen met visuele volgorde. Vermijd tabindex groter dan 0. Beheer focus handmatig in modals en menu's.",
             "component": null,
             "wcagTechnique": [
                 "G59",
@@ -1423,12 +1423,12 @@
             "diggRisk": "high",
             "eaaImpact": "high",
             "commonMistakes": [
-                "Focus jumps illogically",
-                "Menus in wrong order",
-                "Modal closes and focus returns to top of page"
+                "Focus springt onlogisch",
+                "Menu's in verkeerde volgorde",
+                "Modal sluit en focus gaat terug naar bovenkant pagina"
             ],
-            "priorityRationale": "Critical for keyboard navigation and understanding.",
-            "dutchInterpretation": "Critical for complex layouts (Grid/Flexbox) where visual order may differ from DOM order."
+            "priorityRationale": "Kritiek voor toetsenbordnavigatie en begrip.",
+            "dutchInterpretation": "Kritiek voor complexe lay-outs (Grid/Flexbox) waar visuele volgorde kan afwijken van DOM-volgorde."
         },
         "testability": {
             "automated": false,
@@ -1478,8 +1478,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "Besluit digitale toegankelijkheid overheid, WCAG 2.1 AA verplicht",
         "remediation": {
-            "description": "The purpose of each link can be understood from the link text alone or from the link text together with its context.",
-            "technicalGuidance": "Avoid 'Read more' or 'Click here'. Write descriptive link texts. Use aria-label if visual space is limited but more info is needed.",
+            "description": "Het doel van elke link kan worden begrepen uit de linktekst alleen of uit de linktekst samen met de context.",
+            "technicalGuidance": "Vermijd 'Lees meer' of 'Klik hier'. Schrijf beschrijvende linkteksten. Gebruik aria-label als visuele ruimte beperkt is maar meer info nodig is.",
             "component": null,
             "wcagTechnique": [
                 "G91",
@@ -1490,11 +1490,11 @@
             "diggRisk": "medium",
             "eaaImpact": "medium",
             "commonMistakes": [
-                "Lots of 'Read more' links",
-                "Links that don't say where they lead"
+                "Veel 'Lees meer'-links",
+                "Links die niet zeggen waar ze naartoe leiden"
             ],
-            "priorityRationale": "Important for efficient navigation.",
-            "dutchInterpretation": "Important for users navigating via link lists (screen readers)."
+            "priorityRationale": "Belangrijk voor efficiënte navigatie.",
+            "dutchInterpretation": "Belangrijk voor gebruikers die navigeren via linklijsten (schermlezers)."
         },
         "testability": {
             "automated": true,
@@ -1544,8 +1544,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "Besluit digitale toegankelijkheid overheid, WCAG 2.1 AA verplicht",
         "remediation": {
-            "description": "There must be more than one way to find a web page within a set of web pages.",
-            "technicalGuidance": "At least two of: Menu, Search, Sitemap, Links in content.",
+            "description": "Er moet meer dan één manier zijn om een webpagina te vinden binnen een set webpagina's.",
+            "technicalGuidance": "Minimaal twee van: Menu, Zoeken, Sitemap, Links in inhoud.",
             "component": null,
             "wcagTechnique": [
                 "G125",
@@ -1556,10 +1556,10 @@
             "diggRisk": "low",
             "eaaImpact": "low",
             "commonMistakes": [
-                "Missing search on sites with many pages"
+                "Zoekfunctie ontbreekt op sites met veel pagina's"
             ],
-            "priorityRationale": "Facilitates different navigation strategies.",
-            "dutchInterpretation": "Often fulfilled by menu + search. Sitemap is best practice."
+            "priorityRationale": "Faciliteert verschillende navigatiestrategieën.",
+            "dutchInterpretation": "Vaak vervuld door menu + zoeken. Sitemap is best practice."
         },
         "testability": {
             "automated": false,
@@ -1609,8 +1609,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "Besluit digitale toegankelijkheid overheid, WCAG 2.1 AA verplicht",
         "remediation": {
-            "description": "Headings and labels must describe topic or purpose.",
-            "technicalGuidance": "Write clear, descriptive headings that give meaning to the content below them. Form labels must be understandable.",
+            "description": "Koppen en labels moeten onderwerp of doel beschrijven.",
+            "technicalGuidance": "Schrijf duidelijke, beschrijvende koppen die betekenis geven aan de inhoud eronder. Formulierlabels moeten begrijpelijk zijn.",
             "component": null,
             "wcagTechnique": [
                 "G130"
@@ -1620,11 +1620,11 @@
             "diggRisk": "medium",
             "eaaImpact": "medium",
             "commonMistakes": [
-                "Cryptic headings",
-                "Labels that don't match what needs to be filled in"
+                "Cryptische koppen",
+                "Labels die niet overeenkomen met wat moet worden ingevuld"
             ],
-            "priorityRationale": "Important for cognitive accessibility.",
-            "dutchInterpretation": "About editorial quality and comprehensibility."
+            "priorityRationale": "Belangrijk voor cognitieve toegankelijkheid.",
+            "dutchInterpretation": "Gaat over redactionele kwaliteit en begrijpelijkheid."
         },
         "testability": {
             "automated": false,
@@ -1674,8 +1674,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "Besluit digitale toegankelijkheid overheid, WCAG 2.1 AA verplicht",
         "remediation": {
-            "description": "Any user interface operable by keyboard must have a visible focus indicator.",
-            "technicalGuidance": "Never remove outline with CSS (outline: none) without replacing it with a clear visual indicator. Ensure contrast of focus ring is sufficient (see 1.4.11).",
+            "description": "Elke gebruikersinterface die met het toetsenbord bedienbaar is, moet een zichtbare focusindicator hebben.",
+            "technicalGuidance": "Verwijder nooit outline met CSS (outline: none) zonder deze te vervangen door een duidelijke visuele indicator. Zorg dat contrast van focusring voldoende is (zie 1.4.11).",
             "component": "@holmdigital/components/Button",
             "wcagTechnique": [
                 "G149",
@@ -1688,10 +1688,10 @@
             "eaaImpact": "high",
             "commonMistakes": [
                 "outline: none in CSS reset",
-                "Custom buttons missing :focus style"
+                "Aangepaste knoppen zonder :focus stijl"
             ],
-            "priorityRationale": "Critical: Without visible focus, the keyboard user doesn't know where they are.",
-            "dutchInterpretation": "One of the most common errors. Often because designers dislike the 'blue ring'."
+            "priorityRationale": "Kritiek: Zonder zichtbare focus weet de toetsenbordgebruiker niet waar hij is.",
+            "dutchInterpretation": "Een van de meest voorkomende fouten. Vaak omdat ontwerpers de 'blauwe ring' niet mooi vinden."
         },
         "testability": {
             "automated": true,
@@ -1741,8 +1741,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "Besluit digitale toegankelijkheid overheid, WCAG 2.1 AA verplicht",
         "remediation": {
-            "description": "The default human language of each web page must be programmatically determinable.",
-            "technicalGuidance": "Set the 'lang' attribute on the <html> element. E.g., <html lang='en'> for English.",
+            "description": "De standaard menselijke taal van elke webpagina moet programmatisch bepaalbaar zijn.",
+            "technicalGuidance": "Stel het 'lang'-attribuut in op het <html>-element. Bijv. <html lang='nl'> voor Nederlands.",
             "component": null,
             "wcagTechnique": [
                 "H57"
@@ -1752,11 +1752,11 @@
             "diggRisk": "high",
             "eaaImpact": "high",
             "commonMistakes": [
-                "Lang attribute missing",
-                "Wrong language code (e.g. 'en' on a Swedish page)"
+                "Lang-attribuut ontbreekt",
+                "Verkeerde taalcode (bijv. 'en' op een Nederlandse pagina)"
             ],
-            "priorityRationale": "Critical for screen reader users.",
-            "dutchInterpretation": "Fundamental for screen reading. Without this, the screen reader guesses the language, often leading to wrong pronunciation."
+            "priorityRationale": "Kritiek voor schermlezergebruikers.",
+            "dutchInterpretation": "Fundamenteel voor schermlezing. Zonder dit raadt de schermlezer de taal, wat vaak leidt tot verkeerde uitspraak."
         },
         "testability": {
             "automated": true,
@@ -1805,8 +1805,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "Besluit digitale toegankelijkheid overheid, WCAG 2.1 AA verplicht",
         "remediation": {
-            "description": "The human language of each passage or phrase in the content must be programmatically determinable.",
-            "technicalGuidance": "Use the lang attribute on elements that differ from the page's main language. E.g. <span lang='fr'>Bonjour</span>.",
+            "description": "De menselijke taal van elk fragment of elke zin in de inhoud moet programmatisch bepaalbaar zijn.",
+            "technicalGuidance": "Gebruik het lang-attribuut op elementen die afwijken van de hoofdtaal van de pagina. Bijv. <span lang='fr'>Bonjour</span>.",
             "component": null,
             "wcagTechnique": [
                 "H58"
@@ -1816,10 +1816,10 @@
             "diggRisk": "low",
             "eaaImpact": "low",
             "commonMistakes": [
-                "Foreign quotes in text without markup"
+                "Buitenlandse citaten in tekst zonder markup"
             ],
-            "priorityRationale": "Important for correct pronunciation.",
-            "dutchInterpretation": "Rarely a critical error unless it significantly hinders understanding."
+            "priorityRationale": "Belangrijk voor correcte uitspraak.",
+            "dutchInterpretation": "Zelden een kritieke fout tenzij het begrip aanzienlijk belemmert."
         },
         "testability": {
             "automated": false,
@@ -1868,8 +1868,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "Besluit digitale toegankelijkheid overheid, WCAG 2.1 AA verplicht",
         "remediation": {
-            "description": "When a component receives focus, it must not initiate a change of context.",
-            "technicalGuidance": "Do not open new windows, submit forms, or move focus automatically just because user tabs to a field.",
+            "description": "Wanneer een component focus ontvangt, mag het geen contextwijziging initiëren.",
+            "technicalGuidance": "Open geen nieuwe vensters, verstuur geen formulieren, en verplaats focus niet automatisch alleen omdat de gebruiker naar een veld tabt.",
             "component": null,
             "wcagTechnique": [
                 "G107"
@@ -1879,11 +1879,11 @@
             "diggRisk": "high",
             "eaaImpact": "high",
             "commonMistakes": [
-                "Dropdowns that navigate immediately upon selection (without 'Go' button)",
-                "Forms that auto-submit on last field focus"
+                "Dropdowns die direct navigeren bij selectie (zonder 'Ga'-knop)",
+                "Formulieren die automatisch versturen bij laatste veld focus"
             ],
-            "priorityRationale": "Important for predictability.",
-            "dutchInterpretation": "Very confusing for users. Creates a feeling of lack of control."
+            "priorityRationale": "Belangrijk voor voorspelbaarheid.",
+            "dutchInterpretation": "Zeer verwarrend voor gebruikers. Creëert een gevoel van gebrek aan controle."
         },
         "testability": {
             "automated": false,
@@ -1933,8 +1933,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "Besluit digitale toegankelijkheid overheid, WCAG 2.1 AA verplicht",
         "remediation": {
-            "description": "Changing the setting of any component does not automatically cause a change of context unless the user has been advised of the behavior before using the component.",
-            "technicalGuidance": "Inform the user that selection in a list reloads the page. Preferably, add a button to confirm the choice.",
+            "description": "Het wijzigen van de instelling van een component veroorzaakt niet automatisch een contextwijziging, tenzij de gebruiker vooraf is geïnformeerd over dit gedrag.",
+            "technicalGuidance": "Informeer de gebruiker dat selectie in een lijst de pagina herlaadt. Voeg bij voorkeur een knop toe om de keuze te bevestigen.",
             "component": null,
             "wcagTechnique": [
                 "G13",
@@ -1945,11 +1945,11 @@
             "diggRisk": "medium",
             "eaaImpact": "medium",
             "commonMistakes": [
-                "Checkboxes that reload page immediately",
-                "Filtering that moves focus"
+                "Selectievakjes die pagina direct herladen",
+                "Filtering die focus verplaatst"
             ],
-            "priorityRationale": "Important for predictability.",
-            "dutchInterpretation": "Common in filtering functions."
+            "priorityRationale": "Belangrijk voor voorspelbaarheid.",
+            "dutchInterpretation": "Veelvoorkomend bij filterfuncties."
         },
         "testability": {
             "automated": false,
@@ -1999,8 +1999,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "Besluit digitale toegankelijkheid overheid, WCAG 2.1 AA verplicht",
         "remediation": {
-            "description": "Navigational mechanisms that are repeated on multiple Web pages occur in the same relative order each time they are repeated.",
-            "technicalGuidance": "Main menu should look the same and be in the same place on all pages. Search function as well.",
+            "description": "Navigatiemechanismen die op meerdere webpagina's worden herhaald, verschijnen telkens in dezelfde relatieve volgorde.",
+            "technicalGuidance": "Hoofdmenu moet er hetzelfde uitzien en op dezelfde plek staan op alle pagina's. Zoekfunctie ook.",
             "component": null,
             "wcagTechnique": [
                 "G61"
@@ -2010,10 +2010,10 @@
             "diggRisk": "medium",
             "eaaImpact": "medium",
             "commonMistakes": [
-                "Menus that change place or order on different pages"
+                "Menu's die van plaats of volgorde veranderen op verschillende pagina's"
             ],
-            "priorityRationale": "Facilitates learning.",
-            "dutchInterpretation": "Predictability is key to cognitive accessibility."
+            "priorityRationale": "Bevordert het leren.",
+            "dutchInterpretation": "Voorspelbaarheid is essentieel voor cognitieve toegankelijkheid."
         },
         "testability": {
             "automated": false,
@@ -2063,8 +2063,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "Besluit digitale toegankelijkheid overheid, WCAG 2.1 AA verplicht",
         "remediation": {
-            "description": "Components that have the same functionality within a set of Web pages are identified consistently.",
-            "technicalGuidance": "Don't call search 'Search' on one page and 'Find' on another. Use the same icon for the same function.",
+            "description": "Componenten die dezelfde functionaliteit hebben binnen een reeks webpagina's, worden consistent geïdentificeerd.",
+            "technicalGuidance": "Noem zoekfunctie niet 'Zoeken' op de ene pagina en 'Vinden' op de andere. Gebruik hetzelfde pictogram voor dezelfde functie.",
             "component": null,
             "wcagTechnique": [
                 "G197"
@@ -2074,11 +2074,11 @@
             "diggRisk": "low",
             "eaaImpact": "low",
             "commonMistakes": [
-                "Inconsistent naming",
-                "Different icons for print/download"
+                "Inconsistente naamgeving",
+                "Verschillende pictogrammen voor afdrukken/downloaden"
             ],
-            "priorityRationale": "Reduces cognitive load.",
-            "dutchInterpretation": "Important for usability."
+            "priorityRationale": "Vermindert cognitieve belasting.",
+            "dutchInterpretation": "Belangrijk voor bruikbaarheid."
         },
         "testability": {
             "automated": false,
@@ -2128,8 +2128,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "Besluit digitale toegankelijkheid overheid, WCAG 2.1 AA verplicht",
         "remediation": {
-            "description": "If an input error is automatically detected, the item that is in error is identified and the error is described to the user in text.",
-            "technicalGuidance": "Show error message close to the field. Link with aria-describedby or include in label. Do not just color the field red.",
+            "description": "Als een invoerfout automatisch wordt gedetecteerd, wordt het foutieve item geïdentificeerd en wordt de fout in tekst beschreven.",
+            "technicalGuidance": "Toon de foutmelding dicht bij het veld. Koppel met aria-describedby of neem op in het label. Maak het veld niet alleen rood.",
             "component": "@holmdigital/components/FormField",
             "wcagTechnique": [
                 "G83",
@@ -2140,11 +2140,11 @@
             "diggRisk": "high",
             "eaaImpact": "high",
             "commonMistakes": [
-                "'Invalid value' without explanation",
-                "Error message not visible to screen readers"
+                "'Ongeldige waarde' zonder uitleg",
+                "Foutmelding niet zichtbaar voor schermlezers"
             ],
-            "priorityRationale": "Critical for error handling.",
-            "dutchInterpretation": "Critical for completing tasks. Generic error messages ('Something went wrong') are not accepted if the error is specific."
+            "priorityRationale": "Kritiek voor foutafhandeling.",
+            "dutchInterpretation": "Kritisch voor het voltooien van taken. Generieke foutmeldingen ('Er is iets misgegaan') worden niet geaccepteerd als de fout specifiek is."
         },
         "testability": {
             "automated": false,
@@ -2193,8 +2193,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "Besluit digitale toegankelijkheid overheid, WCAG 2.1 AA verplicht",
         "remediation": {
-            "description": "If an input error is automatically detected and suggestions for correction are known, then the suggestions are provided to the user.",
-            "technicalGuidance": "If date format is wrong, show required format (YYYY-MM-DD). Offer spelling suggestions for search ('Did you mean...?').",
+            "description": "Als een invoerfout automatisch wordt gedetecteerd en suggesties voor correctie bekend zijn, worden de suggesties aan de gebruiker verstrekt.",
+            "technicalGuidance": "Als de datumindeling verkeerd is, toon dan de vereiste indeling (JJJJ-MM-DD). Bied spellingsuggesties aan voor zoeken ('Bedoelde u...?').",
             "component": "@holmdigital/components/FormField",
             "wcagTechnique": [
                 "G177"
@@ -2204,10 +2204,10 @@
             "diggRisk": "medium",
             "eaaImpact": "medium",
             "commonMistakes": [
-                "Only saying 'Error' without saying how to fix it"
+                "Alleen 'Fout' zeggen zonder te zeggen hoe het te corrigeren"
             ],
-            "priorityRationale": "Facilitates correction.",
-            "dutchInterpretation": "About being helpful. Reduces support cases."
+            "priorityRationale": "Bevordert correctie.",
+            "dutchInterpretation": "Gaat over behulpzaam zijn. Vermindert ondersteuningsvragen."
         },
         "testability": {
             "automated": false,
@@ -2257,8 +2257,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "Besluit digitale toegankelijkheid overheid, WCAG 2.1 AA verplicht",
         "remediation": {
-            "description": "For Web pages that cause legal commitments or financial transactions, users must be able to: Reverse, Check, or Confirm.",
-            "technicalGuidance": "Offer a summary page before final submission with ability to edit.",
+            "description": "Voor webpagina's die juridische verplichtingen of financiële transacties met zich meebrengen, moeten gebruikers kunnen: Terugdraaien, Controleren of Bevestigen.",
+            "technicalGuidance": "Bied een overzichtspagina aan vóór de definitieve verzending met de mogelijkheid om te bewerken.",
             "component": null,
             "wcagTechnique": [
                 "G164",
@@ -2269,11 +2269,11 @@
             "diggRisk": "high",
             "eaaImpact": "high",
             "commonMistakes": [
-                "Direct purchase without confirmation",
-                "Submission of binding contracts without review"
+                "Directe aankoop zonder bevestiging",
+                "Indienen van bindende contracten zonder review"
             ],
-            "priorityRationale": "Critical to avoid serious consequences of mistakes.",
-            "dutchInterpretation": "Absolute requirement for e-commerce and legal decisions."
+            "priorityRationale": "Kritiek om ernstige gevolgen van fouten te voorkomen.",
+            "dutchInterpretation": "Absoluut vereiste voor e-commerce en juridische beslissingen."
         },
         "testability": {
             "automated": false,
@@ -2323,8 +2323,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "Besluit digitale toegankelijkheid overheid, WCAG 2.1 AA verplicht",
         "remediation": {
-            "description": "Update: From WCAG 2.2 this criterion is removed/obsolete, but in WCAG 2.1/EN 301 549 it applies: IDs must be unique, elements correctly nested.",
-            "technicalGuidance": "Validate HTML. Ensure id attributes are unique on the page. Close all tags correctly.",
+            "description": "Update: Vanaf WCAG 2.2 is dit criterium verwijderd/verouderd, maar in WCAG 2.1/EN 301 549 is het van toepassing: ID's moeten uniek zijn.",
+            "technicalGuidance": "Valideer HTML. Zorg ervoor dat id-attributen uniek zijn op de pagina. Sluit alle tags correct.",
             "component": null,
             "wcagTechnique": [
                 "H88"
@@ -2334,11 +2334,11 @@
             "diggRisk": "low",
             "eaaImpact": "low",
             "commonMistakes": [
-                "Duplicate IDs",
-                "Broken HTML structure"
+                "Dubbele ID's",
+                "Kapotte HTML-structuur"
             ],
-            "priorityRationale": "Technical hygiene factor.",
-            "dutchInterpretation": "Less prioritized now as modern browsers handle errors well, but duplicate IDs can still break ARIA."
+            "priorityRationale": "Technische hygiënefactor.",
+            "dutchInterpretation": "Minder prioriteit nu moderne browsers fouten goed afhandelen, maar dubbele ID's kunnen ARIA nog steeds breken."
         },
         "testability": {
             "automated": true,
@@ -2388,9 +2388,10 @@
         "dosLagenApplies": true,
         "dosLagenReference": "Besluit digitale toegankelijkheid overheid, WCAG 2.1 AA verplicht",
         "remediation": {
-            "description": "For all components, name and role can be programmatically determined. Values can be set programmatically.",
-            "technicalGuidance": "Use native HTML elements when possible. If custom components are used, ARIA (role, aria-label, aria-valuenow) must be used correctly.",
-            "component": null,
+            "description": "Voor alle gebruikersinterfacecomponenten kunnen naam en rol programmatisch worden bepaald; waarden kunnen programmatisch worden ingesteld.",
+            "technicalGuidance": "Gebruik indien mogelijk native HTML-elementen. Als aangepaste componenten worden gebruikt, moet ARIA (role, aria-label, aria-valuenow) correct worden gebruikt.",
+            "component": "@holmdigital/components/ProgressBar",
+            "codeExample": "import { ProgressBar } from '@holmdigital/components';\n\n// Slecht: Div zonder rol\n<div style={{ width: '50%' }}>50%</div>\n\n// Goed: Toegankelijke component\n<ProgressBar value={50} label=\"Laden...\" />",
             "wcagTechnique": [
                 "ARIA4",
                 "ARIA5"
@@ -2400,12 +2401,12 @@
             "diggRisk": "critical",
             "eaaImpact": "critical",
             "commonMistakes": [
-                "Div buttons without role",
-                "Custom checkboxes without aria-checked",
-                "Missing accessible name"
+                "Div-knoppen zonder rol",
+                "Aangepaste selectievakjes zonder aria-checked",
+                "Ontbrekende toegankelijke naam"
             ],
-            "priorityRationale": "Absolutely critical for compatibility.",
-            "dutchInterpretation": "This is the foundation for how screen readers work with modern web apps. Without this, the app is 'invisible' to assistive technology."
+            "priorityRationale": "Absoluut kritiek voor compatibiliteit.",
+            "dutchInterpretation": "Dit is de basis voor hoe schermlezers werken met moderne webapps. Zonder dit is de app 'onzichtbaar' voor hulptechnologie."
         },
         "testability": {
             "automated": true,
@@ -2455,9 +2456,10 @@
         "dosLagenApplies": true,
         "dosLagenReference": "Besluit digitale toegankelijkheid overheid, WCAG 2.1 AA verplicht",
         "remediation": {
-            "description": "Statusmeddelanden ska kunna presenteras för användaren utan att motta fokus (via skärmläsare).",
-            "technicalGuidance": "Använd aria-live regioner (polite/assertive) eller role='status'/'alert' för meddelanden som dyker upp dynamiskt (t.ex. 'Sparat', 'Sökning klar').",
-            "component": null,
+            "description": "Statusberichten moeten aan de gebruiker kunnen worden gepresenteerd zonder focus (via schermlezer).",
+            "technicalGuidance": "Gebruik aria-live regio's (polite/assertive) of role='status'/'alert' voor berichten die dynamisch verschijnen (bijv. 'Opgeslagen', 'Zoekopdracht voltooid').",
+            "component": "@holmdigital/components/LiveRegion",
+            "codeExample": "import { LiveRegion } from '@holmdigital/components';\n\n// Assertive voor fouten\n<LiveRegion politeness=\"assertive\">Fout: Opslaan mislukt.</LiveRegion>\n\n// Polite voor statusupdates\n<LiveRegion politeness=\"polite\">Succesvol opgeslagen.</LiveRegion>",
             "wcagTechnique": [
                 "ARIA19",
                 "ARIA22"
@@ -2467,11 +2469,11 @@
             "diggRisk": "medium",
             "eaaImpact": "medium",
             "commonMistakes": [
-                "Silent updates of cart/search results",
-                "Toast notifications not being announced"
+                "Stille updates van winkelwagen/zoekresultaten",
+                "Toast-meldingen die niet worden aangekondigd"
             ],
-            "priorityRationale": "Provides feedback to users without sight.",
-            "dutchInterpretation": "Important in SPAs where page load does not happen. The user must know something happened."
+            "priorityRationale": "Geeft feedback aan gebruikers zonder zicht.",
+            "dutchInterpretation": "Belangrijk in SPA's waar de pagina niet opnieuw wordt geladen. De gebruiker moet weten dat er iets is gebeurd."
         },
         "testability": {
             "automated": false,
@@ -2521,8 +2523,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "Besluit digitale toegankelijkheid overheid, WCAG 2.1 AA verplicht",
         "remediation": {
-            "description": "The page must have exactly one 'main' landmark.",
-            "technicalGuidance": "Use the <main> element once per page to identify the main content. Avoid having multiple <main> without unique labels, or missing it entirely.",
+            "description": "De pagina moet exact één 'main' landmark hebben.",
+            "technicalGuidance": "Gebruik het <main>-element één keer per pagina om de hoofdinhoud te identificeren. Vermijd meerdere <main> zonder unieke labels, of het helemaal missen.",
             "wcagTechnique": [
                 "ARIA11",
                 "H97"
@@ -2532,10 +2534,10 @@
             "diggRisk": "medium",
             "eaaImpact": "medium",
             "commonMistakes": [
-                "Using <div id='main'> instead of <main>",
-                "Having multiple <main> elements"
+                "<div id='main'> gebruiken in plaats van <main>",
+                "Meerdere <main>-elementen hebben"
             ],
-            "dutchInterpretation": "Screen reader users rely on landmarks to navigate quickly to the content. Missing <main> makes it difficult to skip navigation."
+            "dutchInterpretation": "Schermlezergebruikers vertrouwen op landmarks om snel naar de inhoud te navigeren. Ontbrekende <main> maakt het moeilijk om navigatie over te slaan."
         },
         "testability": {
             "automated": true,
@@ -2584,8 +2586,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "Besluit digitale toegankelijkheid overheid, WCAG 2.1 AA verplicht",
         "remediation": {
-            "description": "The page must have a level 1 heading (<h1>).",
-            "technicalGuidance": "Ensure there is exactly one <h1> describing the page's unique content.",
+            "description": "De pagina moet een kop van niveau 1 (<h1>) hebben.",
+            "technicalGuidance": "Zorg ervoor dat er precies één <h1> is die de unieke inhoud van de pagina beschrijft.",
             "wcagTechnique": [
                 "H42"
             ]
@@ -2594,10 +2596,10 @@
             "diggRisk": "high",
             "eaaImpact": "high",
             "commonMistakes": [
-                "Starting headings at <h2>",
-                "Using logo as the only <h1> without text"
+                "Koppen beginnen bij <h2>",
+                "Logo gebruiken als enige <h1> zonder tekst"
             ],
-            "dutchInterpretation": "A clear <h1> is critical for users to understand where they have landed. It is often the first thing a screen reader user looks for."
+            "dutchInterpretation": "Een duidelijke <h1> is kritiek voor gebruikers om te begrijpen waar ze zijn geland. Het is vaak het eerste wat een schermlezergebruiker zoekt."
         },
         "testability": {
             "automated": true,
@@ -2646,8 +2648,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "Besluit digitale toegankelijkheid overheid, WCAG 2.1 AA verplicht",
         "remediation": {
-            "description": "Headings must follow a logical order (h1 -> h2 -> h3).",
-            "technicalGuidance": "Do not skip heading levels (e.g. directly from h1 to h3).",
+            "description": "Koppen moeten een logische volgorde volgen (h1 -> h2 -> h3).",
+            "technicalGuidance": "Sla geen kopniveaus over (bijv. direct van h1 naar h3).",
             "wcagTechnique": [
                 "G141"
             ]
@@ -2656,9 +2658,9 @@
             "diggRisk": "medium",
             "eaaImpact": "medium",
             "commonMistakes": [
-                "Using h3 for styling instead of structure"
+                "h3 gebruiken voor styling in plaats van structuur"
             ],
-            "dutchInterpretation": "Incorrect heading structure makes it difficult for screen readers to navigate. Never skip levels."
+            "dutchInterpretation": "Onjuiste kopstructuur maakt het moeilijk voor schermlezers om te navigeren. Sla nooit niveaus over."
         },
         "testability": {
             "automated": true,
@@ -2707,8 +2709,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "Besluit digitale toegankelijkheid overheid, WCAG 2.1 AA verplicht",
         "remediation": {
-            "description": "The banner (<header>) must be at the top level.",
-            "technicalGuidance": "Do not place <header> inside another landmark if it is the page's main banner.",
+            "description": "De banner (<header>) moet op het hoogste niveau staan.",
+            "technicalGuidance": "Plaats <header> niet binnen een andere landmark als het de hoofdbanner van de pagina is.",
             "wcagTechnique": [
                 "ARIA11"
             ]
@@ -2717,9 +2719,9 @@
             "diggRisk": "medium",
             "eaaImpact": "medium",
             "commonMistakes": [
-                "Nesting header inside main"
+                "Header nesten binnen main"
             ],
-            "dutchInterpretation": "The page's main menu/banner must be located correctly in the structure to be found quickly."
+            "dutchInterpretation": "Het hoofdmenu/banner van de pagina moet correct in de structuur staan om snel gevonden te worden."
         },
         "testability": {
             "automated": true,
@@ -2768,8 +2770,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "Besluit digitale toegankelijkheid overheid, WCAG 2.1 AA verplicht",
         "remediation": {
-            "description": "The page must have only one 'banner' landmark (usually <header>).",
-            "technicalGuidance": "Ensure you only have one <header> at the top level.",
+            "description": "De pagina mag slechts één 'banner' landmark hebben (meestal <header>).",
+            "technicalGuidance": "Zorg dat u slechts één <header> op het hoogste niveau hebt.",
             "wcagTechnique": [
                 "ARIA11"
             ]
@@ -2778,9 +2780,9 @@
             "diggRisk": "medium",
             "eaaImpact": "medium",
             "commonMistakes": [
-                "Having header both at top and bottom"
+                "Header zowel boven als onder"
             ],
-            "dutchInterpretation": "Multiple banners confuse navigation. There should be only one top header."
+            "dutchInterpretation": "Meerdere banners verwarren navigatie. Er mag slechts één top header zijn."
         },
         "testability": {
             "automated": true,
@@ -2829,8 +2831,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "Besluit digitale toegankelijkheid overheid, WCAG 2.1 AA verplicht",
         "remediation": {
-            "description": "Landmarks must have unique roles or labels.",
-            "technicalGuidance": "If you have multiple <nav> elements, give them unique 'aria-label' (e.g., 'Main Menu', 'Footer Menu').",
+            "description": "Landmarks moeten unieke rollen of labels hebben.",
+            "technicalGuidance": "Als u meerdere <nav>-elementen hebt, geef ze unieke 'aria-label' (bijv. 'Hoofdmenu', 'Voettekstmenu').",
             "wcagTechnique": [
                 "ARIA11"
             ]
@@ -2839,9 +2841,9 @@
             "diggRisk": "medium",
             "eaaImpact": "medium",
             "commonMistakes": [
-                "Multiple nav elements without aria-label"
+                "Meerdere nav-elementen zonder aria-label"
             ],
-            "dutchInterpretation": "The user must be able to distinguish between different menus/regions. Give them names."
+            "dutchInterpretation": "De gebruiker moet verschillende menu's/regio's kunnen onderscheiden. Geef ze namen."
         },
         "testability": {
             "automated": true,
@@ -2890,8 +2892,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "Besluit digitale toegankelijkheid overheid, WCAG 2.1 AA verplicht",
         "remediation": {
-            "description": "All content on the page must be contained within landmarks (regions).",
-            "technicalGuidance": "Ensure all content is inside <main>, <header>, <nav>, <footer>, or <aside>.",
+            "description": "Alle inhoud op de pagina moet binnen landmarks (regio's) staan.",
+            "technicalGuidance": "Zorg dat alle inhoud binnen <main>, <header>, <nav>, <footer> of <aside> staat.",
             "component": null,
             "wcagTechnique": [
                 "ARIA11"
@@ -2901,10 +2903,10 @@
             "diggRisk": "medium",
             "eaaImpact": "medium",
             "commonMistakes": [
-                "Content directly in <body> without container",
-                "Using too many landmarks"
+                "Inhoud direct in <body> zonder container",
+                "Te veel landmarks gebruiken"
             ],
-            "dutchInterpretation": "For screen reader users to navigate effectively, the page must be divided into logical regions."
+            "dutchInterpretation": "Voor schermlezergebruikers om effectief te navigeren, moet de pagina worden verdeeld in logische regio's."
         },
         "testability": {
             "automated": true,
@@ -2952,8 +2954,8 @@
         "dosLagenApplies": true,
         "dosLagenReference": "Besluit digitale toegankelijkheid overheid, WCAG 2.1 AA verplicht",
         "remediation": {
-            "description": "Prerecorded video content must have audio description if visual information is critical.",
-            "technicalGuidance": "Provide an alternative audio track or version describing what happens visually.",
+            "description": "Vooraf opgenomen video-inhoud moet audiobeschrijving hebben als visuele informatie kritiek is.",
+            "technicalGuidance": "Bied een alternatieve audiotrack of versie aan die beschrijft wat er visueel gebeurt.",
             "component": null,
             "wcagTechnique": [
                 "G78"
@@ -2963,9 +2965,9 @@
             "diggRisk": "medium",
             "eaaImpact": "low",
             "commonMistakes": [
-                "Video missing audio description despite important visual info"
+                "Video mist audiobeschrijving ondanks belangrijke visuele informatie"
             ],
-            "dutchInterpretation": "Video conveying information visually must be described for those who cannot see the screen."
+            "dutchInterpretation": "Video die informatie visueel overbrengt, moet worden beschreven voor degenen die het scherm niet kunnen zien."
         },
         "testability": {
             "automated": false,

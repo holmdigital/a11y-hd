@@ -9,10 +9,10 @@
         "en301549Title": "Contrast (minimum)",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "AODA, WCAG 2.0 AA required",
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level AA required",
         "remediation": {
-            "description": "Text and images of text must have a contrast ratio of at least 4.5:1 (3:1 for large text).",
-            "technicalGuidance": "Use tools like WebAIM Contrast Checker to verify contrast. Adjust colour choices or add background opacity to achieve correct contrast.",
+            "description": "Tekstin ja tekstikuvien kontrastisuhteen on oltava vähintään 4.5:1 (3:1 suurelle tekstille).",
+            "technicalGuidance": "Käytä työkaluja kuten WebAIM Contrast Checker kontrastin tarkistamiseen. Säädä värivalintoja tai lisää taustan läpinäkyvyyttä oikean kontrastin saavuttamiseksi.",
             "component": "@holmdigital/components/Button",
             "codeExample": "import { Button } from '@holmdigital/components';\n\n// Bad: Poor contrast\n<button style={{ background: '#777', color: '#999' }}>Click me</button>\n\n// Good: Use accessible component\n<Button variant=\"primary\">Click me</Button>",
             "wcagTechnique": [
@@ -24,14 +24,14 @@
         "holmdigitalInsight": {
             "diggRisk": "high",
             "eaaImpact": "critical",
+            "finnishInterpretation": "Yksi yleisimpiä syitä sakkoihin viranomaisilta. Erityisen tärkeää julkisen sektorin valvonnassa.",
             "commonMistakes": [
-                "Gray text on white background (#777 on #FFF)",
-                "Light blue links without underline",
-                "Placeholder text with too low contrast"
+                "Harmaa teksti valkoisella taustalla (#777 #FFF:llä)",
+                "Vaaleansininen linkki ilman alleviivausta",
+                "Placeholder-teksti liian alhaisella kontrastilla"
             ],
-            "diggPrecedent": "Regulators often cite poor contrast in primary navigation elements.",
-            "priorityRationale": "Critical for users with low vision. Affects readability for all users in varying lighting conditions.",
-            "canadianInterpretation": "One of the most common reasons for fines from regulators. Especially important for public sector monitoring."
+            "diggPrecedent": "Viranomaiset viittaavat usein heikkoon kontrastiin päänavigaatioelementeissä.",
+            "priorityRationale": "Kriittinen heikkonäköisille käyttäjille. Vaikuttaa luettavuuteen kaikille käyttäjille vaihtelevissa valaistusolosuhteissa."
         },
         "testability": {
             "automated": true,
@@ -80,10 +80,10 @@
         "en301549Title": "Keyboard",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "AODA, WCAG 2.0 AA required",
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level A required",
         "remediation": {
-            "description": "All functionality must be accessible via keyboard.",
-            "technicalGuidance": "Use semantic HTML elements (button, a, input) instead of div/span with click handlers. Ensure tabindex is used correctly.",
+            "description": "Kaikkien toimintojen on oltava käytettävissä näppäimistöllä.",
+            "technicalGuidance": "Käytä semanttisia HTML-elementtejä (button, a, input) div/span-elementtien sijaan click-käsittelijöillä. Varmista että tabindex on käytetty oikein.",
             "component": "@holmdigital/components/Button",
             "codeExample": "// Bad: Div with onClick\n<div onClick={handleClick}>Click Me</div>\n\n// Good: Button element\n<button onClick={handleClick}>Click Me</button>\n\n// Best: Use HolmDigital component\nimport { Button } from '@holmdigital/components';\n<Button onClick={handleClick}>Click Me</Button>",
             "wcagTechnique": [
@@ -94,14 +94,14 @@
         "holmdigitalInsight": {
             "diggRisk": "critical",
             "eaaImpact": "critical",
+            "finnishInterpretation": "Näppäimistökäyttö on perustavanlaatuinen ja ehdoton vaatimus. Tärkein prioriteetti vaatimustenmukaisuuden tarkastuksissa.",
             "commonMistakes": [
-                "Using div/span for clickable elements",
-                "Custom dropdown menus without keyboard support",
-                "Modal dialogs that trap focus incorrectly"
+                "Div/span-elementtien käyttö klikattaviin elementteihin",
+                "Mukautetut pudotusvalikot ilman näppäimistötukea",
+                "Modaali-ikkunat jotka vangitsevat fokuksen virheellisesti"
             ],
-            "diggPrecedent": "Auditors have issued fines for sites where core functions (e.g. forms, navigation) are not keyboard accessible.",
-            "priorityRationale": "Critical for users with motor disabilities and screen reader users.",
-            "canadianInterpretation": "Keyboard access is fundamental and non-negotiable. Top priority in compliance audits."
+            "diggPrecedent": "Tarkastajat ovat määränneet sakkoja sivustoille joissa ydintoiminnot (esim. lomakkeet, navigointi) eivät ole näppäimistökäytettäviä.",
+            "priorityRationale": "Kriittinen liikuntarajoitteisille käyttäjille ja ruudunlukijan käyttäjille."
         },
         "testability": {
             "automated": false,
@@ -149,10 +149,10 @@
         "en301549Title": "Non-text content",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "AODA, WCAG 2.0 AA required",
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level A required",
         "remediation": {
-            "description": "All images must have descriptive alternative text.",
-            "technicalGuidance": "Add alt attributes to all img elements. For decorative images, use alt=\"\". For informative images, concisely describe the content.",
+            "description": "Kaikilla kuvilla on oltava kuvaava vaihtoehtoinen teksti.",
+            "technicalGuidance": "Lisää alt-attribuutit kaikkiin img-elementteihin. Käytä koristeellisille kuville alt=\"\". Informatiivisille kuville kuvaile sisältö tiiviisti.",
             "codeExample": "// Bad: Msising alt\n<img src=\"logo.png\" />\n\n// Good: Descriptive alt\n<img src=\"logo.png\" alt=\"HolmDigital Logo\" />\n\n// Good: Decorative image\n<img src=\"decoration.png\" alt=\"\" role=\"presentation\" />",
             "wcagTechnique": [
                 "G94",
@@ -163,15 +163,15 @@
         "holmdigitalInsight": {
             "diggRisk": "high",
             "eaaImpact": "high",
+            "finnishInterpretation": "Erityisen tärkeä logoille ja informatiivisille grafiikoille. Tarkastetaan usein auditoinneissa.",
             "commonMistakes": [
-                "Missing alt text entirely",
-                "Alt text that just says 'image' or 'icon'",
-                "Filename as alt text (e.g. 'IMG_1234.jpg')",
-                "Decorative images with unnecessary description"
+                "Vaihtoehtoinen teksti puuttuu kokonaan",
+                "Vaihtoehtoinen teksti joka sanoo vain 'kuva' tai 'ikoni'",
+                "Tiedostonimi vaihtoehtoisena tekstinä (esim. 'IMG_1234.jpg')",
+                "Koristekuvat turhalla kuvauksella"
             ],
-            "diggPrecedent": "Audits frequently cite missing alt text, especially for vital infographics.",
-            "priorityRationale": "Critical for screen reader users to access visual information.",
-            "canadianInterpretation": "Especially important for logos and informational graphics. Frequently checked in audits."
+            "diggPrecedent": "Auditoinnit viittaavat usein puuttuvaan vaihtoehtoiseen tekstiin, erityisesti tärkeille infografiikoille.",
+            "priorityRationale": "Kriittinen ruudunlukijan käyttäjille visuaalisen tiedon saamiseksi."
         },
         "testability": {
             "automated": true,
@@ -219,10 +219,10 @@
         "en301549Title": "Labels or instructions",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "AODA, WCAG 2.0 AA required",
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level A required",
         "remediation": {
-            "description": "Form fields must have clear labels or instructions.",
-            "technicalGuidance": "Use label elements linked to input via for/id. For complex forms, use fieldset and legend. Use aria-describedby for extra instructions.",
+            "description": "Lomakekenttien on sisällettävä selkeät nimilaput tai ohjeet.",
+            "technicalGuidance": "Käytä label-elementtejä yhdistettynä inputiin for/id:llä. Monimutkaisille lomakkeille käytä fieldset ja legend. Käytä aria-describedby lisäohjeisiin.",
             "component": "@holmdigital/components/FormField",
             "codeExample": "import { FormField } from '@holmdigital/components';\n\n// Bad: No label\n<input type=\"text\" placeholder=\"Name\" />\n\n// Good: With label\n<label htmlFor=\"name\">Name:</label>\n<input type=\"text\" id=\"name\" />\n\n// Best: Use HolmDigital component\n<FormField\n  label=\"Name\"\n  type=\"text\"\n  required\n  helpText=\"Enter your full name\"\n/>",
             "wcagTechnique": [
@@ -235,15 +235,15 @@
         "holmdigitalInsight": {
             "diggRisk": "high",
             "eaaImpact": "high",
+            "finnishInterpretation": "Lomakkeet ovat kriittisiä sähköisille palveluille. Vaatimustenmukaisuutta valvotaan tiukasti julkisen sektorin sovelluksissa.",
             "commonMistakes": [
-                "Only placeholder without label",
-                "Label and input not linked via for/id",
-                "Error messages without aria-describedby",
-                "Required fields not clearly marked"
+                "Vain placeholder ilman nimilappua",
+                "Nimilappu ja input eivät ole yhdistetty for/id:llä",
+                "Virheilmoitukset ilman aria-describedbyä",
+                "Pakolliset kentät eivät ole selkeästi merkitty"
             ],
-            "diggPrecedent": "Audit decisions often criticize poor form accessibility, especially for application and contact forms.",
-            "priorityRationale": "Critical for users to successfully use e-services and submit information.",
-            "canadianInterpretation": "Forms are critical for e-services. Compliance is strictly enforced in public sector apps."
+            "diggPrecedent": "Tarkastuspäätökset kritisoivat usein huonoa lomakesaavutettavuutta, erityisesti hakemus- ja yhteydenottolomakkeissa.",
+            "priorityRationale": "Kriittinen käyttäjille sähköisten palveluiden onnistuneeseen käyttöön ja tietojen lähettämiseen."
         },
         "testability": {
             "automated": true,
@@ -291,10 +291,10 @@
         "en301549Title": "Page titled",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "AODA, WCAG 2.0 AA required",
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level A required",
         "remediation": {
-            "description": "Each web page must have a descriptive title.",
-            "technicalGuidance": "Use the title element in head. The title should be unique for each page and describe its purpose. Format: 'Page Name - Site Name'.",
+            "description": "Jokaisella verkkosivulla on oltava kuvaava otsikko.",
+            "technicalGuidance": "Käytä title-elementtiä head-osiossa. Otsikon tulee olla yksilöllinen jokaiselle sivulle ja kuvata sen tarkoitus. Muoto: 'Sivun nimi - Sivuston nimi'.",
             "codeExample": "// Bad: Generic title\n<title>Page</title>\n\n// Good: Descriptive title\n<title>Contact Us - HolmDigital</title>\n\n// React/Next.js\nimport Head from 'next/head';\n\n<Head>\n  <title>Contact Us - HolmDigital</title>\n</Head>",
             "wcagTechnique": [
                 "G88",
@@ -304,15 +304,15 @@
         "holmdigitalInsight": {
             "diggRisk": "medium",
             "eaaImpact": "medium",
+            "finnishInterpretation": "Tärkeä navigoinnille, erityisesti SPA-sovelluksissa joissa otsikon täytyy päivittyä dynaamisesti.",
             "commonMistakes": [
-                "Same title on all pages",
-                "Title not updating in SPAs",
-                "Too long or too short title",
-                "Title missing entirely"
+                "Sama otsikko kaikilla sivuilla",
+                "Otsikko ei päivity SPA-sovelluksissa",
+                "Liian pitkä tai liian lyhyt otsikko",
+                "Otsikko puuttuu kokonaan"
             ],
-            "diggPrecedent": "Audits have noted missing page titles, especially in Single Page Applications.",
-            "priorityRationale": "Important for screen reader navigation and SEO.",
-            "canadianInterpretation": "Important for navigation, especially in SPAs where the title must update dynamically."
+            "diggPrecedent": "Auditoinnit ovat huomauttaneet puuttuvista sivuotsikoista, erityisesti SPA-sovelluksissa.",
+            "priorityRationale": "Tärkeä ruudunlukijanavigaatioon ja SEO:on."
         },
         "testability": {
             "automated": true,
@@ -360,10 +360,10 @@
         "en301549Title": "Info and relationships",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "AODA, WCAG 2.0 AA required",
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level A required",
         "remediation": {
-            "description": "Information, structure, and relationships conveyed through presentation can be programmatically determined or are available in text.",
-            "technicalGuidance": "Use semantic HTML: <header>, <nav>, <main>, <footer>, <h1>-<h6>, <ul>/ <ol>, <table>. Do not use visual styles to create 'fake' headings or lists.",
+            "description": "Esityksen kautta välitetty tieto, rakenne ja suhteet voidaan määrittää ohjelmallisesti tai ne ovat saatavilla tekstinä.",
+            "technicalGuidance": "Käytä semanttista HTML:ää: <header>, <nav>, <main>, <footer>, <h1>-<h6>, <ul>/<ol>, <table>. Älä käytä visuaalisia tyylejlä 'väärien' otsikoiden tai listojen luomiseen.",
             "component": null,
             "wcagTechnique": [
                 "H42",
@@ -374,13 +374,13 @@
         "holmdigitalInsight": {
             "diggRisk": "high",
             "eaaImpact": "high",
+            "finnishInterpretation": "Semanttinen rakenne on ratkaisevan tärkeä ruudunlukijoille tehokkaaseen navigointiin. Tarkastajat viittaavat usein 'div-keittoon' joka näyttää rakenteelta mutta puuttuu semantiikkaa.",
             "commonMistakes": [
-                "Using bold text instead of <h1>-<h6>",
-                "Using <br> for lists instead of <ul>",
-                "Tables for layout"
+                "Lihavoidun tekstin käyttö <h1>-<h6>:n sijaan",
+                "<br>:n käyttö listoille <ul>:n sijaan",
+                "Taulukot asetteluun"
             ],
-            "priorityRationale": "Fundamental for all assistive technology navigation.",
-            "canadianInterpretation": "Semantic structure is crucial for screen readers to navigate effectively. Auditors often cite 'div-soup' that looks like structure but lacks semantics."
+            "priorityRationale": "Perustavanlaatuinen kaikelle avustavalle teknologianavigaatiolle."
         },
         "testability": {
             "automated": true,
@@ -428,10 +428,10 @@
         "en301549Title": "Use of color",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "AODA, WCAG 2.0 AA required",
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level A required",
         "remediation": {
-            "description": "Color is not used as the only visual means of conveying information, indicating an action, prompting a response, or distinguishing a visual element.",
-            "technicalGuidance": "Complement colour with text, icons, or underlining. E.g. links must have underlines or another visual marker besides colour. Error messages need text/icon, not just a red border.",
+            "description": "Väriä ei käytetä ainoana visuaalisena keinona tiedon välittämiseen, toiminnon osoittamiseen, vastauksen pyytämiseen tai visuaalisen elementin erottamiseen.",
+            "technicalGuidance": "Täydennä väriä tekstillä, ikoneilla tai alleviivauksella. Esim. linkeillä on oltava alleviivaus tai muu visuaalinen merkki värin lisäksi. Virheilmoitukset tarvitsevat tekstin/ikonin, ei pelkästään punaista reunaa.",
             "component": "@holmdigital/components/FormField",
             "wcagTechnique": [
                 "G14",
@@ -442,13 +442,13 @@
         "holmdigitalInsight": {
             "diggRisk": "medium",
             "eaaImpact": "medium",
+            "finnishInterpretation": "Yleinen ongelma kaavioissa ja kartoissa joissa käytetään vain värikoodausta.",
             "commonMistakes": [
-                "Links that only differ by colour from body text",
-                "Error messages only marked with red colour",
-                "Graphs where only colour distinguishes data points"
+                "Linkit jotka eroavat leipätekistä vain väriltään",
+                "Virheilmoitukset merkitty vain punaisella värillä",
+                "Kaaviot joissa vain väri erottaa datapisteet"
             ],
-            "priorityRationale": "Crucial for colour blind users.",
-            "canadianInterpretation": "Common problem in graphs and maps where only color coding is used."
+            "priorityRationale": "Ratkaisevan tärkeä värisokeille käyttäjille."
         },
         "testability": {
             "automated": false,
@@ -496,10 +496,10 @@
         "en301549Title": "Reflow",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "AODA Best Practice, WCAG 2.1 AA recommended",
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level AA required",
         "remediation": {
-            "description": "Content must be presentable without requiring scrolling in two dimensions down to 320px width.",
-            "technicalGuidance": "Use responsive design (CSS Media Queries, Flexbox, Grid). Avoid fixed widths in pixels. Ensure tables and images scale correctly.",
+            "description": "Sisältö on esitettävissä ilman kahdensuuntaista vieritystä 320px leveyteen asti.",
+            "technicalGuidance": "Käytä responsiivista suunnittelua (CSS Media Queries, Flexbox, Grid). Vältä kiinteitä leveyksiä pikseleissä. Varmista että taulukot ja kuvat skaalautuvat oikein.",
             "component": null,
             "wcagTechnique": [
                 "C32",
@@ -509,13 +509,13 @@
         "holmdigitalInsight": {
             "diggRisk": "high",
             "eaaImpact": "high",
+            "finnishInterpretation": "Moderni vaatimus (WCAG 2.1) kriittinen mobiiliktäytölle ja suurennetulle tekstille. Viranomaiset eivät hyväksy vaakasuuntaista vieritystä pystysuuntaisilla sivuilla.",
             "commonMistakes": [
-                "Fixed widths on containers",
-                "Tables that are not responsive",
-                "Images wider than the screen"
+                "Kiinteät leveydet säilöissä",
+                "Taulukot jotka eivät ole responsiivisia",
+                "Kuvat leveämpiä kuin näyttö"
             ],
-            "priorityRationale": "Critical for low vision users who zoom in heavily.",
-            "canadianInterpretation": "A modern requirement (WCAG 2.1) critical for mobile use and magnified text. DIGG has zero tolerance for horizontal scroll on vertical sites."
+            "priorityRationale": "Kriittinen heikkonäköisille käyttäjille jotka zoomaavat paljon."
         },
         "testability": {
             "automated": false,
@@ -563,10 +563,10 @@
         "en301549Title": "Non-text contrast",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "AODA Best Practice, WCAG 2.1 AA recommended",
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level AA required",
         "remediation": {
-            "description": "The visual presentation of user interface components and graphical objects must have a contrast ratio of at least 3:1 against adjacent colours.",
-            "technicalGuidance": "Applies to buttons, input borders, icons, and focus indicators. Ensure all interactive elements are clearly visible against the background.",
+            "description": "Käyttöliittymäkomponenttien ja graafisten objektien visuaalisen esityksen kontrastisuhteen on oltava vähintään 3:1 vierekkisiin väreihin nähden.",
+            "technicalGuidance": "Koskee painikkeita, input-reunoja, ikoneja ja fokusindikaattoreita. Varmista että kaikki interaktiiviset elementit erottuvat selkeästi taustasta.",
             "component": "@holmdigital/components/Button",
             "wcagTechnique": [
                 "G195",
@@ -576,11 +576,11 @@
         "holmdigitalInsight": {
             "diggRisk": "low",
             "eaaImpact": "low",
+            "finnishInterpretation": "Usein unohdettu vaatimus fokusrenkaiden ja ei-aktiivisten (mutta näkyvien) komponenttien osalta. Tärkeä käyttöliittymän ymmärtämiselle.",
             "commonMistakes": [
-                "Grayed out buttons with too low contrast"
+                "Harmaannutetut painikkeet liian alhaisella kontrastilla"
             ],
-            "priorityRationale": "Important for distinguishing interactive elements.",
-            "canadianInterpretation": "Often missed requirement regarding focus rings and inactive (but visible) components. Important for understanding the interface."
+            "priorityRationale": "Tärkeä interaktiivisten elementtien erottamiseen."
         },
         "testability": {
             "automated": false,
@@ -628,10 +628,10 @@
         "en301549Title": "Text spacing",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "AODA Best Practice, WCAG 2.1 AA recommended",
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level AA required",
         "remediation": {
-            "description": "Content or functionality must not be lost when the user changes text spacing (line height, paragraph spacing, etc.).",
-            "technicalGuidance": "Avoid fixed heights on text containers. Let containers grow with content. Test with text spacing bookmarklet.",
+            "description": "Sisältö tai toiminnallisuus ei saa menettää toimintaansa kun käyttäjä muuttaa tekstivälistystä (rivikorkeus, kappalevälistys jne.).",
+            "technicalGuidance": "Vältä kiinteitä korkeuksia tekstisäilöissä. Anna säilöiden kasvaa sisällön mukana. Testaa tekstivälistyksen kirjanmerkillä.",
             "component": null,
             "wcagTechnique": [
                 "C36"
@@ -640,12 +640,12 @@
         "holmdigitalInsight": {
             "diggRisk": "low",
             "eaaImpact": "medium",
+            "finnishInterpretation": "Tärkeä lukivaikeusmuutoksia varten.",
             "commonMistakes": [
-                "Fixed line height in pixels",
-                "Text container that does not grow"
+                "Kiinteä rivikorkeus pikseleissä",
+                "Tekstisäiliö joka ei kasva"
             ],
-            "priorityRationale": "Important for readability during adaptations.",
-            "canadianInterpretation": "Important for dyslexia adaptations."
+            "priorityRationale": "Tärkeä luettavuudelle mukauttamisen aikana."
         },
         "testability": {
             "automated": false,
@@ -692,10 +692,10 @@
         "en301549Title": "Content on hover or focus",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "AODA Best Practice, WCAG 2.1 AA recommended",
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level AA required",
         "remediation": {
-            "description": "Content shown on hover/focus (e.g. tooltips) must be Dismissable, Hoverable, and Persistent.",
-            "technicalGuidance": "Ensure tooltips do not disappear when moving mouse from trigger to the tooltip itself. Allow ESC to dismiss.",
+            "description": "Hover/fokuksessa näytetty sisältö (esim. työkaluvihjeet) on oltava Sulettavissa, Vietävissä ja Pysyvä.",
+            "technicalGuidance": "Varmista että työkaluvihjeet eivät katoa kun hiirtä siirretään liipaisimesta itse työkaluvihjeeseen. Salli ESC:llä sulkeminen.",
             "component": null,
             "wcagTechnique": [
                 "SCR39"
@@ -704,13 +704,13 @@
         "holmdigitalInsight": {
             "diggRisk": "medium",
             "eaaImpact": "medium",
+            "finnishInterpretation": "Yleinen ongelma mukautetuissa työkaluvihjeissä ja mega-valikoissa.",
             "commonMistakes": [
-                "Tooltips that cannot be reached with mouse",
-                "Menus that close too easily",
-                "Content that cannot be dismissed without moving focus"
+                "Työkaluvihjeet joita ei voi tavoittaa hiirellä",
+                "Valikot jotka sulkeutuvat liian helposti",
+                "Sisältö jota ei voi sulkea ilman fokuksen siirtämistä"
             ],
-            "priorityRationale": "Important for users with magnification and motor difficulties.",
-            "canadianInterpretation": "Common problem with custom tooltips and mega-menus."
+            "priorityRationale": "Tärkeä käyttäjille joilla on suurennus ja motorisia vaikeuksia."
         },
         "testability": {
             "automated": false,
@@ -758,10 +758,10 @@
         "en301549Title": "Captions (prerecorded)",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "AODA, WCAG 2.0 AA required",
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level A required",
         "remediation": {
-            "description": "Captions must be provided for all prerecorded audio content in synchronized media.",
-            "technicalGuidance": "Use the <track> element with WebVTT files for HTML5 video. For social media embeds, ensure captions are enabled.",
+            "description": "Tekstitykset on tarjottava kaikelle esinauhitetulle äänisällölle synkronoidussa mediassa.",
+            "technicalGuidance": "Käytä <track>-elementtiä WebVTT-tiedostojen kanssa HTML5-videoon. Sosiaalisissa medioissa varmista että tekstitykset on käytössä.",
             "component": null,
             "wcagTechnique": [
                 "G87",
@@ -771,13 +771,13 @@
         "holmdigitalInsight": {
             "diggRisk": "high",
             "eaaImpact": "high",
+            "finnishInterpretation": "Yksi yleisimmiät puutteista julkisella sektorilla. Lakisääteinen vaatimus on tiukka: videolla äänellä ON OLTAVA tekstitykset.",
             "commonMistakes": [
-                "Auto-generated captions that satisfy no one",
-                "Captions missing entirely",
-                "Captions burned into video (not accessible for search/translation)"
+                "Automaattisesti luodut tekstitykset jotka eivät tyydytä ketään",
+                "Tekstitykset puuttuvat kokonaan",
+                "Tekstitykset poltettuna videoon (ei saavutettava haulle/käännöksille)"
             ],
-            "priorityRationale": "Critical for deaf and hard of hearing users.",
-            "canadianInterpretation": "One of the most common deficiencies in the public sector. The legal requirement is strict: video with audio MUST have captions."
+            "priorityRationale": "Kriittinen kuuroille ja huonokuuloisille käyttäjille."
         },
         "testability": {
             "automated": false,
@@ -825,10 +825,10 @@
         "en301549Title": "Audio description (prerecorded)",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "AODA, WCAG 2.0 AA required",
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level AA required",
         "remediation": {
-            "description": "Audio description must be provided for all prerecorded video content.",
-            "technicalGuidance": "Either as a separate audio track, an alternative version of the video, or (if 'talking heads') ensuring all info is conveyed by audio.",
+            "description": "Kuvailutulkkaus on tarjottava kaikelle esinauhitetulle videolle.",
+            "technicalGuidance": "Joko erillisenä ääniraitana, vaihtoehtoisena versiona videosta tai (jos 'puhuvat päät') varmistaen että kaikki tieto välitetään äänellä.",
             "component": null,
             "wcagTechnique": [
                 "G78",
@@ -838,11 +838,11 @@
         "holmdigitalInsight": {
             "diggRisk": "medium",
             "eaaImpact": "medium",
+            "finnishInterpretation": "Voidaan usein ratkaista 'integroidulla kuvauksella' (puhutaan siitä mitä näkyy), mikä on kustannustehokkaampaa.",
             "commonMistakes": [
-                "Information shown only visually (graphics, text signs) without being mentioned in audio"
+                "Tieto näytetään vain visuaalisesti (grafiikat, tekstikyltit) mainitsematta äänessä"
             ],
-            "priorityRationale": "Critical for blind video users.",
-            "canadianInterpretation": "Can often be solved by 'integrated description' (talking about what is seen), which is more cost-effective."
+            "priorityRationale": "Kriittinen sokeille videonkäyttäjille."
         },
         "testability": {
             "automated": false,
@@ -890,10 +890,10 @@
         "en301549Title": "Orientation",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "AODA Best Practice, WCAG 2.1 AA recommended",
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level AA required",
         "remediation": {
-            "description": "Content must not restrict its view and operation to a single display orientation, unless a specific orientation is essential.",
-            "technicalGuidance": "Do not lock screen to portrait or landscape via CSS or JS manifest. Use CSS media queries to handle layout changes.",
+            "description": "Sisältöä ei saa rajoittaa yhteen näyttösuuntaan, ellei tietty suunta ole välttämätön.",
+            "technicalGuidance": "Älä lukitse näyttöä pysty- tai vaakasuuntaan CSS:llä tai JS-manifestilla. Käytä CSS media queries -kyselyitä asettelun muutosten käsittelyyn.",
             "component": null,
             "wcagTechnique": [
                 "F97"
@@ -902,11 +902,11 @@
         "holmdigitalInsight": {
             "diggRisk": "low",
             "eaaImpact": "medium",
+            "finnishInterpretation": "Tärkeä tableteille ja käyttäjille joilla laite on kiinnitetty (esim. pyörätuoli).",
             "commonMistakes": [
-                "Apps/sites that rotate interface 90 degrees against user will"
+                "Sovellukset/sivustot jotka kääntävät käyttöliittymän 90 astetta käyttäjän tahtoa vastaan"
             ],
-            "priorityRationale": "Important for users who cannot rotate their device.",
-            "canadianInterpretation": "Important for tablets and users who have the device mounted (e.g., wheelchair)."
+            "priorityRationale": "Tärkeä käyttäjille jotka eivät voi kääntää laitettaan."
         },
         "testability": {
             "automated": false,
@@ -954,10 +954,10 @@
         "en301549Title": "Identify input purpose",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "AODA Best Practice, WCAG 2.1 AA recommended",
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level AA required",
         "remediation": {
-            "description": "The purpose of each input field collecting information about the user can be programmatically determined.",
-            "technicalGuidance": "Use the 'autocomplete' attribute on input fields for personal data (name, email, tel, address etc.).",
+            "description": "Jokaisen käyttäjästä tietoa keräävän syötekentän tarkoitus voidaan määrittää ohjelmallisesti.",
+            "technicalGuidance": "Käytä 'autocomplete'-attribuuttia syötekentissä henkilökohtaisille tiedoille (nimi, sähköposti, puh, osoite jne.).",
             "component": "@holmdigital/components/FormField",
             "wcagTechnique": [
                 "H98"
@@ -966,13 +966,13 @@
         "holmdigitalInsight": {
             "diggRisk": "medium",
             "eaaImpact": "high",
+            "finnishInterpretation": "Tekee hankalia lomakkeita paljon helpommaksi täyttää (automaattitäyttö).",
             "commonMistakes": [
-                "Missing autocomplete attribute",
-                "Incorrect autocomplete value",
-                "Turning off autocomplete (autocomplete='off') unnecessarily"
+                "Puuttuva autocomplete-attribuutti",
+                "Väärä autocomplete-arvo",
+                "Automaattitäytön pois kytkeminen (autocomplete='off') tarpeettomasti"
             ],
-            "priorityRationale": "Reduces cognitive load and motor requirements.",
-            "canadianInterpretation": "Makes it much easier to fill confusing forms (autofill)."
+            "priorityRationale": "Vähentää kognitiivista kuormitusta ja motorisia vaatimuksia."
         },
         "testability": {
             "automated": true,
@@ -1019,10 +1019,10 @@
         "en301549Title": "No keyboard trap",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "AODA, WCAG 2.0 AA required",
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level A required",
         "remediation": {
-            "description": "If focus can be moved to a component of the page using a keyboard interface, then focus can be moved away from that component using only a keyboard interface.",
-            "technicalGuidance": "Be careful with JS widgets that trap focus (e.g. modal windows). Ensure there is always a way out (e.g. ESC or shift+tab).",
+            "description": "Jos fokus voidaan siirtää sivun komponenttiin näppäimistöä käyttäen, fokus voidaan myös siirtää pois kyseisestä komponentista pelkästään näppäimistöä käyttäen.",
+            "technicalGuidance": "Ole varovainen JS-widgettien kanssa jotka vangitsevat fokuksen (esim. modaali-ikkunat). Varmista että on aina keino poistua (esim. ESC tai shift+tab).",
             "component": null,
             "wcagTechnique": [
                 "G21"
@@ -1031,12 +1031,12 @@
         "holmdigitalInsight": {
             "diggRisk": "critical",
             "eaaImpact": "critical",
+            "finnishInterpretation": "Näppäimistöansa on 'esto' joka tekee sivustosta käyttökelvottoman. Vakava virhe.",
             "commonMistakes": [
-                "Custom widgets that loop focus infinitely",
-                "Embedded third-party components (maps, chats) without exit"
+                "Mukautetut widgetit jotka silmukkoivat fokusta loputtomasti",
+                "Upotetut kolmannen osapuolen komponentit (kartat, chatit) ilman uloskeinoa"
             ],
-            "priorityRationale": "Critical: The user gets stuck and must restart the browser.",
-            "canadianInterpretation": "A keyboard trap is a 'blocker' that makes the website unusable. Serious error."
+            "priorityRationale": "Kriittinen: Käyttäjä jumiutuu ja joutuu käynnistämään selaimen uudelleen."
         },
         "testability": {
             "automated": false,
@@ -1083,10 +1083,10 @@
         "en301549Title": "Character key shortcuts",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "AODA Best Practice, WCAG 2.1 AA recommended",
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level A required",
         "remediation": {
-            "description": "If a keyboard shortcut consists of only one character (letter, number, symbol), there must be a way to turn it off or remap it, or it must only be active on focus.",
-            "technicalGuidance": "Avoid single-key shortcuts if possible. If needed, ensure they do not conflict with voice control or accidental typing.",
+            "description": "Jos näppäinoikotie koostuu vain yhdestä merkistä (kirjain, numero, symboli), on oltava tapa poistaa se käytöstä tai määrittää uudelleen, tai sen on oltava aktiivinen vain fokuksessa.",
+            "technicalGuidance": "Vältä yhden näppäimen oikoteitä mahdollisuuksien mukaan. Jos tarpeen, varmista että ne eivät ole ristiriidassa ääniohjauksen tai vahingossa kirjoittamisen kanssa.",
             "component": null,
             "wcagTechnique": [
                 "G217"
@@ -1095,11 +1095,11 @@
         "holmdigitalInsight": {
             "diggRisk": "medium",
             "eaaImpact": "medium",
+            "finnishInterpretation": "Tärkeä ääniohjauskäyttäjille (Dragon jne.) joilla yksittäiset sanat voivat laukaista komentoja vahingossa.",
             "commonMistakes": [
-                "Gmail-like shortcuts that are on by default without option to disable"
+                "Gmail-tyyppiset oikotiet jotka ovat oletuksena päällä ilman vaihtoehtoa poistaa"
             ],
-            "priorityRationale": "Important to avoid accidental activation.",
-            "canadianInterpretation": "Important for voice control users (Dragon etc.) where single words can trigger commands accidentally."
+            "priorityRationale": "Tärkeä vahingossa aktivoinnin välttämiseksi."
         },
         "testability": {
             "automated": false,
@@ -1146,10 +1146,10 @@
         "en301549Title": "Timing adjustable",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "AODA, WCAG 2.0 AA required",
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level A required",
         "remediation": {
-            "description": "If a time limit (session, reading time) is set, the user must be able to turn off, adjust, or extend it.",
-            "technicalGuidance": "Provide a warning before the session expires with an 'Extend session' button. The time limit must be at least 20 seconds.",
+            "description": "Jos aikarajoitus (istunto, lukuaika) on asetettu, käyttäjän on voitava poistaa se käytöstä, säätää tai pidentää sitä.",
+            "technicalGuidance": "Tarjoa varoitus ennen istunnon päättymistä 'Jatka istuntoa' -painikkeella. Aikarajan on oltava vähintään 20 sekuntia.",
             "component": null,
             "wcagTechnique": [
                 "SCR16",
@@ -1159,12 +1159,12 @@
         "holmdigitalInsight": {
             "diggRisk": "high",
             "eaaImpact": "high",
+            "finnishInterpretation": "Kriittinen sähköisille palveluille/pankkipalveluille. Käyttäjät jotka lukevat hitaasti tai käyttävät avustavaa teknologiaa tarvitsevat lisäaikaa.",
             "commonMistakes": [
-                "Logout without warning",
-                "Time limits that cannot be extended"
+                "Uloskirjautuminen ilman varoitusta",
+                "Aikarajat joita ei voi pidentää"
             ],
-            "priorityRationale": "Critical to avoid losing entered data.",
-            "canadianInterpretation": "Critical for e-services/banking. Users who read slowly or use assistive technology need more time."
+            "priorityRationale": "Kriittinen syötettyjen tietojen menettämisen välttämiseksi."
         },
         "testability": {
             "automated": false,
@@ -1211,10 +1211,10 @@
         "en301549Title": "Pause, stop, hide",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "AODA, WCAG 2.0 AA required",
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level A required",
         "remediation": {
-            "description": "For moving, blinking, or scrolling content that starts automatically and lasts more than 5 seconds, there must be a way to pause, stop, or hide it.",
-            "technicalGuidance": "Applies to carousels (sliders), auto-updating news feeds, animated backgrounds. Add a clear pause button.",
+            "description": "Liikkuvalla, vilkkuvalla tai vierittyvällä sisällöllä joka alkaa automaattisesti ja kestää yli 5 sekuntia, on oltava tapa pysäyttää, lopettaa tai piilottaa se.",
+            "technicalGuidance": "Koskee karuselleja (liukusäätimet), automaattisesti päivittyviä uutissyötteitä, animoituja taustoja. Lisää selkeä taukopainike.",
             "component": null,
             "wcagTechnique": [
                 "G4",
@@ -1224,12 +1224,12 @@
         "holmdigitalInsight": {
             "diggRisk": "medium",
             "eaaImpact": "medium",
+            "finnishInterpretation": "Tärkeä käyttäjille joilla on keskittymisvaikeuksia (ADHD/Autismi) jotka häiriintyvät liikkeestä.",
             "commonMistakes": [
-                "Image carousels without pause button",
-                "Animated backgrounds that cannot be turned off"
+                "Kuvakarusellit ilman taukopainiketta",
+                "Animoidut taustat joita ei voi sulkea"
             ],
-            "priorityRationale": "Important for cognitive accessibility.",
-            "canadianInterpretation": "Important for users with concentration difficulties (ADHD/Autism) who are distracted by movement."
+            "priorityRationale": "Tärkeä kognitiiviselle saavutettavuudelle."
         },
         "testability": {
             "automated": false,
@@ -1277,10 +1277,10 @@
         "en301549Title": "Three flashes or below threshold",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "AODA, WCAG 2.0 AA required",
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level A required",
         "remediation": {
-            "description": "Content must not flash more than three times per second (can cause seizures).",
-            "technicalGuidance": "Avoid rapid flashing in video and animations. Use tools to measure flash frequency (PEAT).",
+            "description": "Sisältö ei saa vilkkua enemmän kuin kolme kertaa sekunnissa (voi aiheuttaa kohtauksia).",
+            "technicalGuidance": "Vältä nopeaa vilkkumista videoissa ja animaatioissa. Käytä työkaluja vilkkumistaajuuden mittaamiseen (PEAT).",
             "component": null,
             "wcagTechnique": [
                 "G19"
@@ -1289,12 +1289,12 @@
         "holmdigitalInsight": {
             "diggRisk": "critical",
             "eaaImpact": "critical",
+            "finnishInterpretation": "Terveysriski. Nollatoleranssi.",
             "commonMistakes": [
-                "Stroboscopic effects in video",
-                "Misuse of blinking error messages"
+                "Stroboskooppiefektit videossa",
+                "Vilkkuvien virheilmoitusten väärinkäyttö"
             ],
-            "priorityRationale": "Critical safety risk.",
-            "canadianInterpretation": "Health risk. Zero tolerance."
+            "priorityRationale": "Kriittinen turvallisuusriski."
         },
         "testability": {
             "automated": false,
@@ -1342,10 +1342,10 @@
         "en301549Title": "Bypass blocks",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "AODA, WCAG 2.0 AA required",
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level A required",
         "remediation": {
-            "description": "There must be a way to skip blocks of content that are repeated on multiple pages (e.g. navigation).",
-            "technicalGuidance": "Implement a 'Skip to Main Content' link at the top of the page that becomes visible on focus. Use semantic landmarks (<main>, <nav>).",
+            "description": "On oltava tapa ohittaa sisältölohkot jotka toistuvat useilla sivuilla (esim. navigaatio).",
+            "technicalGuidance": "Toteuta 'Siirry pääsisältöön' -linkki sivun yläosaan joka tulee näkyviin fokuksessa. Käytä semanttisia landmarkkeja (<main>, <nav>).",
             "component": null,
             "wcagTechnique": [
                 "G1",
@@ -1355,13 +1355,13 @@
         "holmdigitalInsight": {
             "diggRisk": "medium",
             "eaaImpact": "medium",
+            "finnishInterpretation": "Standardi kaikilla julkisen sektorin sivustoilla. Eräänlainen valtava apu näppäimistökäyttäjille.",
             "commonMistakes": [
-                "Missing skip-link",
-                "Skip-link broken (does not move focus correctly)",
-                "Landmarks missing"
+                "Puuttuva skip-linkki",
+                "Skip-linkki rikki (ei siirrä fokusta oikein)",
+                "Landmarkit puuttuvat"
             ],
-            "priorityRationale": "Important for efficient navigation.",
-            "canadianInterpretation": "Standard on all public sector sites. Enormously helpful for keyboard users."
+            "priorityRationale": "Tärkeä tehokkaalle navigoinnille."
         },
         "testability": {
             "automated": true,
@@ -1409,10 +1409,10 @@
         "en301549Title": "Focus order",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "AODA, WCAG 2.0 AA required",
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level A required",
         "remediation": {
-            "description": "Focus order must be logical and follow meaning/structure.",
-            "technicalGuidance": "Match DOM order with visual order. Avoid tabindex greater than 0. Manage focus manually in modals and menus.",
+            "description": "Fokusjärjestyksen on oltava looginen ja seurattava merkitystä/rakennetta.",
+            "technicalGuidance": "Vastaa DOM-järjestys visuaaliseen järjestykseen. Vältä tabindex suurempi kuin 0. Hallitse fokusta manuaalisesti modaaleissa ja valikoissa.",
             "component": null,
             "wcagTechnique": [
                 "G59",
@@ -1422,13 +1422,13 @@
         "holmdigitalInsight": {
             "diggRisk": "high",
             "eaaImpact": "high",
+            "finnishInterpretation": "Kriittinen monimutkaisille asetteluille (Grid/Flexbox) joissa visuaalinen järjestys voi erota DOM-järjestyksestä.",
             "commonMistakes": [
-                "Focus jumps illogically",
-                "Menus in wrong order",
-                "Modal closes and focus returns to top of page"
+                "Fokus hyppii epäloogisesti",
+                "Valikot väärässä järjestyksessä",
+                "Modaali sulkeutuu ja fokus palaa sivun alkuun"
             ],
-            "priorityRationale": "Critical for keyboard navigation and understanding.",
-            "canadianInterpretation": "Critical for complex layouts (Grid/Flexbox) where visual order may differ from DOM order."
+            "priorityRationale": "Kriittinen näppäimistönavigaatiolle ja ymmärrykselle."
         },
         "testability": {
             "automated": false,
@@ -1476,10 +1476,10 @@
         "en301549Title": "Link purpose (in context)",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "AODA, WCAG 2.0 AA required",
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level A required",
         "remediation": {
-            "description": "The purpose of each link can be understood from the link text alone or from the link text together with its context.",
-            "technicalGuidance": "Avoid 'Read more' or 'Click here'. Write descriptive link texts. Use aria-label if visual space is limited but more info is needed.",
+            "description": "Jokaisen linkin tarkoitus voidaan ymmärtää linkkitekstistä yksistään tai linkkitekstistä yhdessä sen kontekstin kanssa.",
+            "technicalGuidance": "Vältä 'Lue lisää' tai 'Klikkaa tästä'. Kirjoita kuvaavia linkkitekstejä. Käytä aria-labelia jos visuaalinen tila on rajallinen mutta lisätietoa tarvitaan.",
             "component": null,
             "wcagTechnique": [
                 "G91",
@@ -1489,12 +1489,12 @@
         "holmdigitalInsight": {
             "diggRisk": "medium",
             "eaaImpact": "medium",
+            "finnishInterpretation": "Tärkeä käyttäjille jotka navigoivat linkkilistojen kautta (ruudunlukijat).",
             "commonMistakes": [
-                "Lots of 'Read more' links",
-                "Links that don't say where they lead"
+                "Paljon 'Lue lisää' -linkkejä",
+                "Linkit jotka eivät kerro minne ne johtavat"
             ],
-            "priorityRationale": "Important for efficient navigation.",
-            "canadianInterpretation": "Important for users navigating via link lists (screen readers)."
+            "priorityRationale": "Tärkeä tehokkaalle navigoinnille."
         },
         "testability": {
             "automated": true,
@@ -1542,10 +1542,10 @@
         "en301549Title": "Multiple ways",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "AODA, WCAG 2.0 AA required",
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level AA required",
         "remediation": {
-            "description": "There must be more than one way to find a web page within a set of web pages.",
-            "technicalGuidance": "At least two of: Menu, Search, Sitemap, Links in content.",
+            "description": "On oltava useampi kuin yksi tapa löytää verkkosivu verkkosivukokonaisuudesta.",
+            "technicalGuidance": "Vähintään kaksi seuraavista: Valikko, Haku, Sivustokartta, Linkit sisällössä.",
             "component": null,
             "wcagTechnique": [
                 "G125",
@@ -1555,11 +1555,11 @@
         "holmdigitalInsight": {
             "diggRisk": "low",
             "eaaImpact": "low",
+            "finnishInterpretation": "Usein täytetty valikolla + haulla. Sivustokartta on paras käytäntö.",
             "commonMistakes": [
-                "Missing search on sites with many pages"
+                "Puuttuva haku sivustoilla joilla on monta sivua"
             ],
-            "priorityRationale": "Facilitates different navigation strategies.",
-            "canadianInterpretation": "Often fulfilled by menu + search. Sitemap is best practice."
+            "priorityRationale": "Helpottaa erilaisia navigointistrategioita."
         },
         "testability": {
             "automated": false,
@@ -1607,10 +1607,10 @@
         "en301549Title": "Headings and labels",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "AODA, WCAG 2.0 AA required",
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level AA required",
         "remediation": {
-            "description": "Headings and labels must describe topic or purpose.",
-            "technicalGuidance": "Write clear, descriptive headings that give meaning to the content below them. Form labels must be understandable.",
+            "description": "Otsikoiden ja nimilappujen on kuvattava aihetta tai tarkoitusta.",
+            "technicalGuidance": "Kirjoita selkeitä, kuvaavia otsikoita jotka antavat merkityksen alla olevalle sisällölle. Lomakenimilappujen on oltava ymmärrettäviä.",
             "component": null,
             "wcagTechnique": [
                 "G130"
@@ -1619,12 +1619,12 @@
         "holmdigitalInsight": {
             "diggRisk": "medium",
             "eaaImpact": "medium",
+            "finnishInterpretation": "Koskee toimituksellista laatua ja ymmärrettävyyttä.",
             "commonMistakes": [
-                "Cryptic headings",
-                "Labels that don't match what needs to be filled in"
+                "Salaperutut otsikot",
+                "Nimilaput jotka eivät vastaa sitä mitä pitää täyttää"
             ],
-            "priorityRationale": "Important for cognitive accessibility.",
-            "canadianInterpretation": "About editorial quality and comprehensibility."
+            "priorityRationale": "Tärkeä kognitiiviselle saavutettavuudelle."
         },
         "testability": {
             "automated": false,
@@ -1672,10 +1672,10 @@
         "en301549Title": "Focus visible",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "AODA, WCAG 2.0 AA required",
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level AA required",
         "remediation": {
-            "description": "Any user interface operable by keyboard must have a visible focus indicator.",
-            "technicalGuidance": "Never remove outline with CSS (outline: none) without replacing it with a clear visual indicator. Ensure contrast of focus ring is sufficient (see 1.4.11).",
+            "description": "Jokaisessa näppäimistöllä käytettävässä käyttöliittymässä on oltava näkyvä fokusindikaattori.",
+            "technicalGuidance": "Älä koskaan poista outlineä CSS:llä (outline: none) korvaamatta sitä selkeällä visuaalisella indikaattorilla. Varmista fokusrenkaan riittävä kontrasti (ks. 1.4.11).",
             "component": "@holmdigital/components/Button",
             "wcagTechnique": [
                 "G149",
@@ -1686,12 +1686,12 @@
         "holmdigitalInsight": {
             "diggRisk": "high",
             "eaaImpact": "high",
+            "finnishInterpretation": "Yksi yleisimmistä virheistä. Usein koska suunnittelijat eivät pidä 'sinisestä renkaasta'.",
             "commonMistakes": [
-                "outline: none in CSS reset",
-                "Custom buttons missing :focus style"
+                "outline: none CSS-resetissä",
+                "Mukautetut painikkeet joilta puuttuu :focus-tyyli"
             ],
-            "priorityRationale": "Critical: Without visible focus, the keyboard user doesn't know where they are.",
-            "canadianInterpretation": "One of the most common errors. Often because designers dislike the 'blue ring'."
+            "priorityRationale": "Kriittinen: Ilman näkyvää fokusta näppäimistökäyttäjä ei tiedä missä on."
         },
         "testability": {
             "automated": true,
@@ -1739,10 +1739,10 @@
         "en301549Title": "Language of page",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "AODA, WCAG 2.0 AA required",
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level A required",
         "remediation": {
-            "description": "The default human language of each web page must be programmatically determinable.",
-            "technicalGuidance": "Set the 'lang' attribute on the <html> element. E.g., <html lang='en'> for English.",
+            "description": "Jokaisen verkkosivun oletuskieli on voitava määrittää ohjelmallisesti.",
+            "technicalGuidance": "Aseta 'lang'-attribuutti <html>-elementtiin. Esim. <html lang='fi'> suomeksi.",
             "component": null,
             "wcagTechnique": [
                 "H57"
@@ -1751,12 +1751,12 @@
         "holmdigitalInsight": {
             "diggRisk": "high",
             "eaaImpact": "high",
+            "finnishInterpretation": "Perustavanlaatuinen ruudunlukemiselle. Ilman tätä ruudunlukija arvaa kielen, mikä johtaa usein väärään ääntämiseen.",
             "commonMistakes": [
-                "Lang attribute missing",
-                "Wrong language code (e.g. 'en' on a Swedish page)"
+                "Lang-attribuutti puuttuu",
+                "Väärä kielikoodi (esim. 'en' suomenkielisellä sivulla)"
             ],
-            "priorityRationale": "Critical for screen reader users.",
-            "canadianInterpretation": "Fundamental for screen reading. Without this, the screen reader guesses the language, often leading to wrong pronunciation."
+            "priorityRationale": "Kriittinen ruudunlukijan käyttäjille."
         },
         "testability": {
             "automated": true,
@@ -1803,10 +1803,10 @@
         "en301549Title": "Language of parts",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "AODA, WCAG 2.0 AA required",
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level AA required",
         "remediation": {
-            "description": "The human language of each passage or phrase in the content must be programmatically determinable.",
-            "technicalGuidance": "Use the lang attribute on elements that differ from the page's main language. E.g. <span lang='fr'>Bonjour</span>.",
+            "description": "Jokaisen sisällön kappaleen tai lauseen kieli on voitava määrittää ohjelmallisesti.",
+            "technicalGuidance": "Käytä lang-attribuuttia elementeillä jotka eroavat sivun pääkielestä. Esim. <span lang='en'>Hello</span>.",
             "component": null,
             "wcagTechnique": [
                 "H58"
@@ -1815,11 +1815,11 @@
         "holmdigitalInsight": {
             "diggRisk": "low",
             "eaaImpact": "low",
+            "finnishInterpretation": "Harvoin kriittinen virhe ellei se merkittävästi haittaa ymmärrettävyyttä.",
             "commonMistakes": [
-                "Foreign quotes in text without markup"
+                "Vieraskieliset lainaukset tekstissä ilman merkintää"
             ],
-            "priorityRationale": "Important for correct pronunciation.",
-            "canadianInterpretation": "Rarely a critical error unless it significantly hinders understanding."
+            "priorityRationale": "Tärkeä oikealle ääntämiselle."
         },
         "testability": {
             "automated": false,
@@ -1866,10 +1866,10 @@
         "en301549Title": "On focus",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "AODA, WCAG 2.0 AA required",
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level A required",
         "remediation": {
-            "description": "When a component receives focus, it must not initiate a change of context.",
-            "technicalGuidance": "Do not open new windows, submit forms, or move focus automatically just because user tabs to a field.",
+            "description": "Kun komponentti saa fokuksen, se ei saa aloittaa kontekstin muutosta.",
+            "technicalGuidance": "Älä avaa uusia ikkunoita, lähetä lomakkeita tai siirrä fokusta automaattisesti vain koska käyttäjä siirtyy tabilla kenttään.",
             "component": null,
             "wcagTechnique": [
                 "G107"
@@ -1878,12 +1878,12 @@
         "holmdigitalInsight": {
             "diggRisk": "high",
             "eaaImpact": "high",
+            "finnishInterpretation": "Erittäin hämmentävää käyttäjille. Luo tunteen hallinnan puutteesta.",
             "commonMistakes": [
-                "Dropdowns that navigate immediately upon selection (without 'Go' button)",
-                "Forms that auto-submit on last field focus"
+                "Pudotusvalikot jotka navigoivat heti valinnan jälkeen (ilman 'Siirry'-painiketta)",
+                "Lomakkeet jotka lähetäytyvät automaattisesti viimeisen kentän fokuksessa"
             ],
-            "priorityRationale": "Important for predictability.",
-            "canadianInterpretation": "Very confusing for users. Creates a feeling of lack of control."
+            "priorityRationale": "Tärkeä ennustettavuudelle."
         },
         "testability": {
             "automated": false,
@@ -1931,10 +1931,10 @@
         "en301549Title": "On input",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "AODA, WCAG 2.0 AA required",
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level A required",
         "remediation": {
-            "description": "Changing the setting of any component does not automatically cause a change of context unless the user has been advised of the behavior before using the component.",
-            "technicalGuidance": "Inform the user that selection in a list reloads the page. Preferably, add a button to confirm the choice.",
+            "description": "Minkään komponentin asetuksen muuttaminen ei saa automaattisesti aiheuttaa kontekstin muutosta ellei käyttäjälle ole kerrottu tästä käyttäytymisestä ennen komponentin käyttöä.",
+            "technicalGuidance": "Kerro käyttäjälle että valinta listassa lataa sivun uudelleen. Lisää mieluiten painike valinnan vahvistamiseksi.",
             "component": null,
             "wcagTechnique": [
                 "G13",
@@ -1944,12 +1944,12 @@
         "holmdigitalInsight": {
             "diggRisk": "medium",
             "eaaImpact": "medium",
+            "finnishInterpretation": "Yleinen suodatustoiminnoissa.",
             "commonMistakes": [
-                "Checkboxes that reload page immediately",
-                "Filtering that moves focus"
+                "Valintaruudut jotka lataavat sivun heti uudelleen",
+                "Suodatus joka siirtää fokusta"
             ],
-            "priorityRationale": "Important for predictability.",
-            "canadianInterpretation": "Common in filtering functions."
+            "priorityRationale": "Tärkeä ennustettavuudelle."
         },
         "testability": {
             "automated": false,
@@ -1997,10 +1997,10 @@
         "en301549Title": "Consistent navigation",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "AODA, WCAG 2.0 AA required",
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level AA required",
         "remediation": {
-            "description": "Navigational mechanisms that are repeated on multiple Web pages occur in the same relative order each time they are repeated.",
-            "technicalGuidance": "Main menu should look the same and be in the same place on all pages. Search function as well.",
+            "description": "Navigaatiomekanismit jotka toistuvat useilla verkkosivuilla esiintyvät samassa suhteellisessa järjestyksessä joka kerta kun ne toistuvat.",
+            "technicalGuidance": "Päävalikon tulee näyttää samalta ja olla samassa paikassa kaikilla sivuilla. Hakutoiminto myös.",
             "component": null,
             "wcagTechnique": [
                 "G61"
@@ -2009,11 +2009,11 @@
         "holmdigitalInsight": {
             "diggRisk": "medium",
             "eaaImpact": "medium",
+            "finnishInterpretation": "Ennustettavuus on avain kognitiiviselle saavutettavuudelle.",
             "commonMistakes": [
-                "Menus that change place or order on different pages"
+                "Valikot jotka vaihtavat paikkaa tai järjestystä eri sivuilla"
             ],
-            "priorityRationale": "Facilitates learning.",
-            "canadianInterpretation": "Predictability is key to cognitive accessibility."
+            "priorityRationale": "Helpottaa oppimista."
         },
         "testability": {
             "automated": false,
@@ -2061,10 +2061,10 @@
         "en301549Title": "Consistent identification",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "AODA, WCAG 2.0 AA required",
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level AA required",
         "remediation": {
-            "description": "Components that have the same functionality within a set of Web pages are identified consistently.",
-            "technicalGuidance": "Don't call search 'Search' on one page and 'Find' on another. Use the same icon for the same function.",
+            "description": "Komponentit joilla on sama toiminnallisuus verkkosivukokonaisuudessa tunnistetaan johdonmukaisesti.",
+            "technicalGuidance": "Älä kutsu hakua 'Haku' yhdellä sivulla ja 'Etsi' toisella. Käytä samaa kuvaketta samalle toiminnolle.",
             "component": null,
             "wcagTechnique": [
                 "G197"
@@ -2073,12 +2073,12 @@
         "holmdigitalInsight": {
             "diggRisk": "low",
             "eaaImpact": "low",
+            "finnishInterpretation": "Tärkeä käytettävyydelle.",
             "commonMistakes": [
-                "Inconsistent naming",
-                "Different icons for print/download"
+                "Epäjohdonmukainen nimeäminen",
+                "Eri kuvakkeet tulostukselle/lataukselle"
             ],
-            "priorityRationale": "Reduces cognitive load.",
-            "canadianInterpretation": "Important for usability."
+            "priorityRationale": "Vähentää kognitiivista kuormitusta."
         },
         "testability": {
             "automated": false,
@@ -2126,10 +2126,10 @@
         "en301549Title": "Error identification",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "AODA, WCAG 2.0 AA required",
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level A required",
         "remediation": {
-            "description": "If an input error is automatically detected, the item that is in error is identified and the error is described to the user in text.",
-            "technicalGuidance": "Show error message close to the field. Link with aria-describedby or include in label. Do not just color the field red.",
+            "description": "Jos syötössä havaitaan automaattisesti virhe, virheellinen kohta tunnistetaan ja virhe kuvataan käyttäjälle tekstinä.",
+            "technicalGuidance": "Näytä virheviesti kentän lähellä. Linkki aria-describedby:llä tai sisällytä nimilappuun. Älä vain väritä kenttää punaiseksi.",
             "component": "@holmdigital/components/FormField",
             "wcagTechnique": [
                 "G83",
@@ -2139,12 +2139,12 @@
         "holmdigitalInsight": {
             "diggRisk": "high",
             "eaaImpact": "high",
+            "finnishInterpretation": "Kriittinen tehtävien suorittamiselle. Yleiset virheviestit ('Jotain meni pieleen') eivät ole hyväksyttäviä jos virhe on spesifinen.",
             "commonMistakes": [
-                "'Invalid value' without explanation",
-                "Error message not visible to screen readers"
+                "'Virheellinen arvo' ilman selitystä",
+                "Virheviesti ei näy ruudunlukijoille"
             ],
-            "priorityRationale": "Critical for error handling.",
-            "canadianInterpretation": "Critical for completing tasks. Generic error messages ('Something went wrong') are not accepted if the error is specific."
+            "priorityRationale": "Kriittinen virheenkäsittelylle."
         },
         "testability": {
             "automated": false,
@@ -2191,10 +2191,10 @@
         "en301549Title": "Error suggestion",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "AODA, WCAG 2.0 AA required",
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level AA required",
         "remediation": {
-            "description": "If an input error is automatically detected and suggestions for correction are known, then the suggestions are provided to the user.",
-            "technicalGuidance": "If date format is wrong, show required format (YYYY-MM-DD). Offer spelling suggestions for search ('Did you mean...?').",
+            "description": "Jos syöttövirhe havaitaan automaattisesti ja korjausehdotukset tunnetaan, ehdotukset tarjotaan käyttäjälle.",
+            "technicalGuidance": "Jos päivämäärän muoto on väärä, näytä vaadittu muoto (VVVV-KK-PP). Tarjoa kirjoitusehdotuksia haulle ('Tarkoititko...?').",
             "component": "@holmdigital/components/FormField",
             "wcagTechnique": [
                 "G177"
@@ -2203,11 +2203,11 @@
         "holmdigitalInsight": {
             "diggRisk": "medium",
             "eaaImpact": "medium",
+            "finnishInterpretation": "Koskee avuliaisuutta. Vähentää tukitapauksia.",
             "commonMistakes": [
-                "Only saying 'Error' without saying how to fix it"
+                "Vain 'Virhe' sanomatta miten korjata"
             ],
-            "priorityRationale": "Facilitates correction.",
-            "canadianInterpretation": "About being helpful. Reduces support cases."
+            "priorityRationale": "Helpottaa korjaamista."
         },
         "testability": {
             "automated": false,
@@ -2255,10 +2255,10 @@
         "en301549Title": "Error prevention (legal, financial, data)",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "AODA, WCAG 2.0 AA required",
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level AA required",
         "remediation": {
-            "description": "For Web pages that cause legal commitments or financial transactions, users must be able to: Reverse, Check, or Confirm.",
-            "technicalGuidance": "Offer a summary page before final submission with ability to edit.",
+            "description": "Verkkosivuilla jotka aiheuttavat oikeudellisia sitoumuksia tai taloudellisia tapahtumia, käyttäjien on voitava: Peruuttaa, Tarkistaa tai Vahvistaa.",
+            "technicalGuidance": "Tarjoa yhteenvetosivu ennen lopullista lähetystä mahdollisuudella muokata.",
             "component": null,
             "wcagTechnique": [
                 "G164",
@@ -2268,12 +2268,12 @@
         "holmdigitalInsight": {
             "diggRisk": "high",
             "eaaImpact": "high",
+            "finnishInterpretation": "Ehdoton vaatimus verkkokaupalle ja oikeudellisille päätöksille.",
             "commonMistakes": [
-                "Direct purchase without confirmation",
-                "Submission of binding contracts without review"
+                "Suora osto ilman vahvistusta",
+                "Sitovien sopimusten lähettäminen ilman tarkistusta"
             ],
-            "priorityRationale": "Critical to avoid serious consequences of mistakes.",
-            "canadianInterpretation": "Absolute requirement for e-commerce and legal decisions."
+            "priorityRationale": "Kriittinen virheiden vakavien seurausten välttämiseksi."
         },
         "testability": {
             "automated": false,
@@ -2321,10 +2321,10 @@
         "en301549Title": "Parsing",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "AODA, WCAG 2.0 AA required",
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level A required",
         "remediation": {
-            "description": "Update: From WCAG 2.2 this criterion is removed/obsolete, but in WCAG 2.1/EN 301 549 it applies: IDs must be unique, elements correctly nested.",
-            "technicalGuidance": "Validate HTML. Ensure id attributes are unique on the page. Close all tags correctly.",
+            "description": "Päivitys: WCAG 2.2:sta lähtien tämä kriteeri on poistettu/vanhentunut, mutta WCAG 2.1/EN 301 549:ssa se koskee: ID:iden on oltava uniikkeja, elementit oikein sisäkkäin.",
+            "technicalGuidance": "Validoi HTML. Varmista että id-attribuutit ovat uniikkeja sivulla. Sulje kaikki tagit oikein.",
             "component": null,
             "wcagTechnique": [
                 "H88"
@@ -2333,12 +2333,12 @@
         "holmdigitalInsight": {
             "diggRisk": "low",
             "eaaImpact": "low",
+            "finnishInterpretation": "Vähemmän priorisoitu nyt kun modernit selaimet käsittelevät virheitä hyvin, mutta duplikaatti-ID:t voivat silti rikkoa ARIA:n.",
             "commonMistakes": [
-                "Duplicate IDs",
-                "Broken HTML structure"
+                "Duplikaatti-ID:t",
+                "Rikkininen HTML-rakenne"
             ],
-            "priorityRationale": "Technical hygiene factor.",
-            "canadianInterpretation": "Less prioritized now as modern browsers handle errors well, but duplicate IDs can still break ARIA."
+            "priorityRationale": "Tekninen hygieniatekijä."
         },
         "testability": {
             "automated": true,
@@ -2386,11 +2386,12 @@
         "en301549Title": "Name, role, value",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "AODA, WCAG 2.0 AA required",
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level A required",
         "remediation": {
-            "description": "For all components, name and role can be programmatically determined. Values can be set programmatically.",
-            "technicalGuidance": "Use native HTML elements when possible. If custom components are used, ARIA (role, aria-label, aria-valuenow) must be used correctly.",
-            "component": null,
+            "description": "Kaikille komponenteille nimi ja rooli voidaan määrittää ohjelmallisesti. Arvot voidaan asettaa ohjelmallisesti.",
+            "technicalGuidance": "Käytä natiiveja HTML-elementtejä mahdollisuuksien mukaan. Jos mukautettuja komponentteja käytetään, ARIA (role, aria-label, aria-valuenow) on käytettävä oikein.",
+            "component": "@holmdigital/components/ProgressBar",
+            "codeExample": "import { ProgressBar } from '@holmdigital/components';\n\n// Bad: Div without role\n<div style={{ width: '50%' }}>50%</div>\n\n// Good: Accessible Component\n<ProgressBar value={50} label=\"Loading...\" />",
             "wcagTechnique": [
                 "ARIA4",
                 "ARIA5"
@@ -2399,13 +2400,13 @@
         "holmdigitalInsight": {
             "diggRisk": "critical",
             "eaaImpact": "critical",
+            "finnishInterpretation": "Tämä on perusta sille miten ruudunlukijat toimivat modernien verkkosovellusten kanssa. Ilman tätä sovellus on 'näkymätön' avustavalle teknologialle.",
             "commonMistakes": [
-                "Div buttons without role",
-                "Custom checkboxes without aria-checked",
-                "Missing accessible name"
+                "Div-painikkeet ilman roolia",
+                "Mukautetut valintaruudut ilman aria-checkediä",
+                "Puuttuva saavutettava nimi"
             ],
-            "priorityRationale": "Absolutely critical for compatibility.",
-            "canadianInterpretation": "This is the foundation for how screen readers work with modern web apps. Without this, the app is 'invisible' to assistive technology."
+            "priorityRationale": "Ehdottoman kriittinen yhteensopivuudelle."
         },
         "testability": {
             "automated": true,
@@ -2453,11 +2454,12 @@
         "en301549Title": "Status messages",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "AODA Best Practice, WCAG 2.1 AA recommended",
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level AA required",
         "remediation": {
-            "description": "Statusmeddelanden ska kunna presenteras för användaren utan att motta fokus (via skärmläsare).",
-            "technicalGuidance": "Använd aria-live regioner (polite/assertive) eller role='status'/'alert' för meddelanden som dyker upp dynamiskt (t.ex. 'Sparat', 'Sökning klar').",
-            "component": null,
+            "description": "Tilaviestit on voitava esittää käyttäjälle ilman fokuksen siirtämistä (ruudunlukijan kautta).",
+            "technicalGuidance": "Käytä aria-live -alueita (polite/assertive) tai role='status'/'alert' viestille jotka ilmestyvät dynaamisesti (esim. 'Tallennettu', 'Haku valmis').",
+            "component": "@holmdigital/components/LiveRegion",
+            "codeExample": "import { LiveRegion } from '@holmdigital/components';\n\n// Assertive for errors\n<LiveRegion politeness=\"assertive\">Error: Failed to save.</LiveRegion>\n\n// Polite for status updates\n<LiveRegion politeness=\"polite\">Saved successfully.</LiveRegion>",
             "wcagTechnique": [
                 "ARIA19",
                 "ARIA22"
@@ -2466,12 +2468,12 @@
         "holmdigitalInsight": {
             "diggRisk": "medium",
             "eaaImpact": "medium",
+            "finnishInterpretation": "Tärkeä SPA-sovelluksissa joissa sivun latausta ei tapahdu. Käyttäjän on tiedettävä että jotain tapahtui.",
             "commonMistakes": [
-                "Silent updates of cart/search results",
-                "Toast notifications not being announced"
+                "Hiljaiset päivitykset ostoskoriin/hakutuloksiin",
+                "Toast-ilmoitukset joita ei kuuluteta"
             ],
-            "priorityRationale": "Provides feedback to users without sight.",
-            "canadianInterpretation": "Important in SPAs where page load does not happen. The user must know something happened."
+            "priorityRationale": "Antaa palautetta käyttäjille joilla ei ole näköä."
         },
         "testability": {
             "automated": false,
@@ -2519,10 +2521,10 @@
         "en301549Title": "Info and relationships",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "AODA, WCAG 2.0 AA required",
+        "dosLagenReference": "9 § (Struktur och relationer)",
         "remediation": {
-            "description": "The page must have exactly one 'main' landmark.",
-            "technicalGuidance": "Use the <main> element once per page to identify the main content. Avoid having multiple <main> without unique labels, or missing it entirely.",
+            "description": "Sivulla on oltava tasan yksi 'main'-landmark.",
+            "technicalGuidance": "Käytä <main>-elementtiä kerran per sivu tunnistaaksesi pääsisällön. Vältä useita <main>-elementtejä ilman uniikkeja nimilappuja, tai sen puuttumista kokonaan.",
             "wcagTechnique": [
                 "ARIA11",
                 "H97"
@@ -2531,11 +2533,11 @@
         "holmdigitalInsight": {
             "diggRisk": "medium",
             "eaaImpact": "medium",
+            "finnishInterpretation": "Ruudunlukijan käyttäjät luottavat landmarkkeihin navigoidakseen nopeasti sisältöön. Puuttuva <main> vaikeuttaa navigaation ohittamista.",
             "commonMistakes": [
-                "Using <div id='main'> instead of <main>",
-                "Having multiple <main> elements"
-            ],
-            "canadianInterpretation": "Screen reader users rely on landmarks to navigate quickly to the content. Missing <main> makes it difficult to skip navigation."
+                "<div id='main'> käyttö <main>:n sijaan",
+                "Useita <main>-elementtejä"
+            ]
         },
         "testability": {
             "automated": true,
@@ -2582,10 +2584,10 @@
         "en301549Title": "Info and relationships",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "AODA, WCAG 2.0 AA required",
+        "dosLagenReference": "9 § (Struktur och relationer)",
         "remediation": {
-            "description": "The page must have a level 1 heading (<h1>).",
-            "technicalGuidance": "Ensure there is exactly one <h1> describing the page's unique content.",
+            "description": "Sivulla on oltava tason 1 otsikko (<h1>).",
+            "technicalGuidance": "Varmista että on tasan yksi <h1> joka kuvaa sivun uniikkia sisältöä.",
             "wcagTechnique": [
                 "H42"
             ]
@@ -2593,11 +2595,11 @@
         "holmdigitalInsight": {
             "diggRisk": "high",
             "eaaImpact": "high",
+            "finnishInterpretation": "Selkeä <h1> on kriittinen käyttäjille ymmärtääkseen minne he ovat saapuneet. Se on usein ensimmäinen asia jota ruudunlukijan käyttäjä etsii.",
             "commonMistakes": [
-                "Starting headings at <h2>",
-                "Using logo as the only <h1> without text"
-            ],
-            "canadianInterpretation": "A clear <h1> is critical for users to understand where they have landed. It is often the first thing a screen reader user looks for."
+                "Otsikot alkavat <h2>:sta",
+                "Logo ainoana <h1>:nä ilman tekstiä"
+            ]
         },
         "testability": {
             "automated": true,
@@ -2644,10 +2646,10 @@
         "en301549Title": "Info and relationships",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "AODA, WCAG 2.0 AA required",
+        "dosLagenReference": "9 § (Struktur och relationer)",
         "remediation": {
-            "description": "Headings must follow a logical order (h1 -> h2 -> h3).",
-            "technicalGuidance": "Do not skip heading levels (e.g. directly from h1 to h3).",
+            "description": "Otsikoiden on seurattava loogista järjestystä (h1 -> h2 -> h3).",
+            "technicalGuidance": "Älä ohita otsikkotasoja (esim. suoraan h1:stä h3:een).",
             "wcagTechnique": [
                 "G141"
             ]
@@ -2655,10 +2657,10 @@
         "holmdigitalInsight": {
             "diggRisk": "medium",
             "eaaImpact": "medium",
+            "finnishInterpretation": "Väärä otsikkorakenne vaikeuttaa ruudunlukijoiden navigointia. Älä koskaan ohita tasoja.",
             "commonMistakes": [
-                "Using h3 for styling instead of structure"
-            ],
-            "canadianInterpretation": "Incorrect heading structure makes it difficult for screen readers to navigate. Never skip levels."
+                "h3:n käyttö tyylittelyyn rakenteen sijaan"
+            ]
         },
         "testability": {
             "automated": true,
@@ -2705,10 +2707,10 @@
         "en301549Title": "Info and relationships",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "AODA, WCAG 2.0 AA required",
+        "dosLagenReference": "9 § (Struktur och relationer)",
         "remediation": {
-            "description": "The banner (<header>) must be at the top level.",
-            "technicalGuidance": "Do not place <header> inside another landmark if it is the page's main banner.",
+            "description": "Bannerin (<header>) on oltava ylimmällä tasolla.",
+            "technicalGuidance": "Älä aseta <header>ia toisen landmarkin sisään jos se on sivun pääbanneri.",
             "wcagTechnique": [
                 "ARIA11"
             ]
@@ -2716,10 +2718,10 @@
         "holmdigitalInsight": {
             "diggRisk": "medium",
             "eaaImpact": "medium",
+            "finnishInterpretation": "Sivun päävalikko/banneri on sijoitettava oikein rakenteessa löytyakseen nopeasti.",
             "commonMistakes": [
-                "Nesting header inside main"
-            ],
-            "canadianInterpretation": "The page's main menu/banner must be located correctly in the structure to be found quickly."
+                "Header sisällä mainin sisällä"
+            ]
         },
         "testability": {
             "automated": true,
@@ -2766,10 +2768,10 @@
         "en301549Title": "Info and relationships",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "AODA, WCAG 2.0 AA required",
+        "dosLagenReference": "9 § (Struktur och relationer)",
         "remediation": {
-            "description": "The page must have only one 'banner' landmark (usually <header>).",
-            "technicalGuidance": "Ensure you only have one <header> at the top level.",
+            "description": "Sivulla saa olla vain yksi 'banner'-landmark (yleensä <header>).",
+            "technicalGuidance": "Varmista että sinulla on vain yksi <header> ylimmällä tasolla.",
             "wcagTechnique": [
                 "ARIA11"
             ]
@@ -2777,10 +2779,10 @@
         "holmdigitalInsight": {
             "diggRisk": "medium",
             "eaaImpact": "medium",
+            "finnishInterpretation": "Useita bannereita sekoittaa navigoinnin. Yläbanneria saa olla vain yksi.",
             "commonMistakes": [
-                "Having header both at top and bottom"
-            ],
-            "canadianInterpretation": "Multiple banners confuse navigation. There should be only one top header."
+                "Header sekä ylä- että alaosassa"
+            ]
         },
         "testability": {
             "automated": true,
@@ -2827,10 +2829,10 @@
         "en301549Title": "Info and relationships",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "AODA, WCAG 2.0 AA required",
+        "dosLagenReference": "9 § (Struktur och relationer)",
         "remediation": {
-            "description": "Landmarks must have unique roles or labels.",
-            "technicalGuidance": "If you have multiple <nav> elements, give them unique 'aria-label' (e.g., 'Main Menu', 'Footer Menu').",
+            "description": "Landmarkeilla on oltava uniikit roolit tai nimilaput.",
+            "technicalGuidance": "Jos sinulla on useita <nav>-elementtejä, anna niille uniikit 'aria-label' (esim. 'Päävalikko', 'Alatunnistevalikko').",
             "wcagTechnique": [
                 "ARIA11"
             ]
@@ -2838,10 +2840,10 @@
         "holmdigitalInsight": {
             "diggRisk": "medium",
             "eaaImpact": "medium",
+            "finnishInterpretation": "Käyttäjän on pystyttävä erottamaan eri valikot/alueet. Anna niille nimet.",
             "commonMistakes": [
-                "Multiple nav elements without aria-label"
-            ],
-            "canadianInterpretation": "The user must be able to distinguish between different menus/regions. Give them names."
+                "Useita nav-elementtejä ilman aria-labelia"
+            ]
         },
         "testability": {
             "automated": true,
@@ -2888,10 +2890,10 @@
         "en301549Title": "Info and relationships",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "AODA, WCAG 2.0 AA required",
+        "dosLagenReference": "9 § (Struktur och relationer)",
         "remediation": {
-            "description": "All content on the page must be contained within landmarks (regions).",
-            "technicalGuidance": "Ensure all content is inside <main>, <header>, <nav>, <footer>, or <aside>.",
+            "description": "Kaiken sisällön sivulla on oltava landmarkkien (alueiden) sisällä.",
+            "technicalGuidance": "Varmista että kaikki sisältö on <main>-, <header>-, <nav>-, <footer>- tai <aside>-elementin sisällä.",
             "component": null,
             "wcagTechnique": [
                 "ARIA11"
@@ -2900,11 +2902,11 @@
         "holmdigitalInsight": {
             "diggRisk": "medium",
             "eaaImpact": "medium",
+            "finnishInterpretation": "Jotta ruudunlukijan käyttäjät voivat navigoida tehokkaasti, sivun on oltava jaettu loogisiin alueisiin.",
             "commonMistakes": [
-                "Content directly in <body> without container",
-                "Using too many landmarks"
-            ],
-            "canadianInterpretation": "For screen reader users to navigate effectively, the page must be divided into logical regions."
+                "Sisältö suoraan <body>:ssä ilman säiliötä",
+                "Liian monta landmarkkia"
+            ]
         },
         "testability": {
             "automated": true,
@@ -2950,10 +2952,10 @@
         "en301549Title": "Audio description (prerecorded)",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "AODA, WCAG 2.0 AA required",
+        "dosLagenReference": "100 § (Tidsberoende media)",
         "remediation": {
-            "description": "Prerecorded video content must have audio description if visual information is critical.",
-            "technicalGuidance": "Provide an alternative audio track or version describing what happens visually.",
+            "description": "Esinauhitetulle videolle on oltava kuvailutulkkaus jos visuaalinen tieto on kriittistä.",
+            "technicalGuidance": "Tarjoa vaihtoehtoinen ääniraita tai versio joka kuvaa mitä tapahtuu visuaalisesti.",
             "component": null,
             "wcagTechnique": [
                 "G78"
@@ -2962,10 +2964,10 @@
         "holmdigitalInsight": {
             "diggRisk": "medium",
             "eaaImpact": "low",
+            "finnishInterpretation": "Video joka välittää tietoa visuaalisesti on kuvattava niille jotka eivät näe ruutua.",
             "commonMistakes": [
-                "Video missing audio description despite important visual info"
-            ],
-            "canadianInterpretation": "Video conveying information visually must be described for those who cannot see the screen."
+                "Videolta puuttuu kuvailutulkkaus vaikka tärkeää visuaalista tietoa on"
+            ]
         },
         "testability": {
             "automated": false,

@@ -2388,8 +2388,9 @@
         "dosLagenReference": "BITV 2.0, Anlage 1, WCAG 2.1 A erforderlich",
         "remediation": {
             "description": "Für alle Benutzeroberflächenkomponenten können Name und Rolle programmatisch bestimmt werden; Werte können gesetzt werden; und Benachrichtigungen über Änderungen sind verfügbar.",
-            "technicalGuidance": "Use native HTML elements when possible. If custom components are used, ARIA (role, aria-label, aria-valuenow) must be used correctly.",
-            "component": null,
+            "technicalGuidance": "Verwenden Sie nach Möglichkeit native HTML-Elemente. Wenn benutzerdefinierte Komponenten verwendet werden, muss ARIA (role, aria-label, aria-valuenow) korrekt eingesetzt werden.",
+            "component": "@holmdigital/components/ProgressBar",
+            "codeExample": "import { ProgressBar } from '@holmdigital/components';\n\n// Schlecht: Div ohne Rolle\n<div style={{ width: '50%' }}>50%</div>\n\n// Gut: Zugängliche Komponente\n<ProgressBar value={50} label=\"Laden...\" />",
             "wcagTechnique": [
                 "ARIA4",
                 "ARIA5"
@@ -2456,7 +2457,8 @@
         "remediation": {
             "description": "Statusmeldungen sollen dem Benutzer ohne Fokus (über Screenreader) präsentiert werden können.",
             "technicalGuidance": "Verwenden Sie aria-live-Regionen für Toast-Nachrichten, Suchergebnisse oder Warenkorb-Updates. aria-live='polite' ist meistens am besten.",
-            "component": null,
+            "component": "@holmdigital/components/LiveRegion",
+            "codeExample": "import { LiveRegion } from '@holmdigital/components';\n\n// Assertive für Fehler\n<LiveRegion politeness=\"assertive\">Fehler: Speichern fehlgeschlagen.</LiveRegion>\n\n// Polite für Status-Updates\n<LiveRegion politeness=\"polite\">Erfolgreich gespeichert.</LiveRegion>",
             "wcagTechnique": [
                 "ARIA19",
                 "ARIA22"

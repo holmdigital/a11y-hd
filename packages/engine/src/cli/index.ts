@@ -7,7 +7,7 @@
 import { Command } from 'commander';
 import chalk from 'chalk';
 import ora from 'ora';
-import { RegulatoryScanner } from '../core/regulatory-scanner';
+import { RegulatoryScanner, ScannerOptions } from '../core/regulatory-scanner';
 import { PseudoAutomationEngine } from '../automation/pseudo-automation';
 import { generateReportHTML } from '../reporting/html-template';
 import { generatePDF } from '../reporting/pdf-generator';
@@ -34,30 +34,67 @@ program
     .description('HolmDigital Regulatory Scanner')
     .version('0.1.0');
 
+import { cosmiconfig } from 'cosmiconfig';
+
+// ... imports ...
+
+// ... program setup ...
+
 program
     .argument('<url>', 'URL to scan')
-    .option('--lang <code>', 'Language code (en, sv)', 'en')
+    .option('--lang <code>', 'Language code (en, sv)')
     .option('--ci', 'Run in CI/CD mode (exit code 1 on critical failures)')
     .option('--generate-tests', 'Generate Pseudo-Automation tests')
     .option('--json', 'Output as JSON')
+    .option('--junit <path>', 'Generate JUnit XML report')
     .option('--pdf <path>', 'Generate PDF report to path')
     .option('--viewport <size>', 'Set viewport (e.g. "mobile", "desktop", "1024x768")')
-    .option('--threshold <level>', 'Severity threshold for compliance (critical, high, medium, low)', 'high')
-    .option('--api-key <key>', 'API key for HolmDigital Cloud authentication')
-    .option('--cloud-url <url>', 'Cloud API URL', 'https://cloud.holmdigital.se')
+    .option('--threshold <level>', 'Severity threshold (critical, high, medium, low)')
+    .option('--api-key <key>', 'API key for HolmDigital Cloud')
+    .option('--cloud-url <url>', 'Cloud API URL')
     .option('--invalid-https-cert', 'Allow scanning on pages with invalid https certificate')
-    .action(async (url: string, options) => {
+    .action(async (url: string, cliOptions) => {
+        // 1. Load Config from file (.a11yrc, package.json, etc.)
+        const explorer = cosmiconfig('a11y');
+        const configResult = await explorer.search();
+        const fileConfig = configResult ? configResult.config : {};
+
+        // 2. Merge Options: CLI > File > Defaults
+        const options = {
+            lang: cliOptions.lang || fileConfig.lang || 'en',
+            ci: cliOptions.ci ?? fileConfig.ci ?? false,
+            generateTests: cliOptions.generateTests ?? fileConfig.generateTests ?? false,
+            json: cliOptions.json ?? fileConfig.json ?? false,
+            junit: cliOptions.junit || fileConfig.junit,
+            pdf: cliOptions.pdf || fileConfig.pdf,
+            viewport: cliOptions.viewport || fileConfig.viewport, // Handled specifically below
+            threshold: cliOptions.threshold || fileConfig.threshold || 'high',
+            apiKey: cliOptions.apiKey || fileConfig.apiKey,
+            cloudUrl: cliOptions.cloudUrl || fileConfig.cloudUrl || 'https://cloud.holmdigital.se',
+            invalidHttpsCert: cliOptions.invalidHttpsCert ?? fileConfig.invalidHttpsCert ?? false
+        } as ScannerOptions & {
+            lang: string;
+            ci: boolean;
+            generateTests: boolean;
+            json: boolean;
+            junit?: string;
+            pdf?: string;
+            viewport?: any;
+            threshold: string;
+            apiKey?: string;
+            cloudUrl: string;
+            invalidHttpsCert: boolean;
+        };
+
         setLanguage(options.lang);
 
-        // Validate URL format first
         if (!isValidUrl(url)) {
-            console.error(chalk.red(`Error: Invalid URL format '${url}'`));
-            console.error(chalk.gray('URL must start with http:// or https://'));
-            process.exit(1);
+            // ... validation ...
         }
 
         if (!options.json) {
             console.log(chalk.blue.bold(t('cli.title')));
+            if (configResult) console.log(chalk.gray(`Loaded config from ${configResult.filepath}`));
             console.log(chalk.gray(t('cli.scanning', { url })));
         }
 
@@ -67,7 +104,8 @@ program
         try {
             // Parse viewport options
             let viewport = { width: 1280, height: 720 }; // Default Desktop
-            if (options.viewport) {
+            // Check formatted viewport string from CLI
+            if (options.viewport && typeof options.viewport === 'string') {
                 if (options.viewport === 'mobile') viewport = { width: 375, height: 667 };
                 else if (options.viewport === 'desktop') viewport = { width: 1920, height: 1080 };
                 else if (options.viewport === 'tablet') viewport = { width: 768, height: 1024 };
@@ -75,6 +113,10 @@ program
                     const [w, h] = options.viewport.split('x').map(Number);
                     if (w && h) viewport = { width: w, height: h };
                 }
+            }
+            // Handle object config from file
+            else if (options.viewport && typeof options.viewport === 'object') {
+                viewport = options.viewport;
             }
 
             scanner = new RegulatoryScanner({
@@ -109,6 +151,15 @@ program
                 console.log('\n');
                 const scoreColor = result.score >= 90 ? chalk.green : (result.score >= 70 ? chalk.yellow : chalk.red);
                 console.log(chalk.bold(`[ Compliance Score: ${scoreColor(result.score + '/100')} ] ${result.score >= 90 ? '🟢' : (result.score >= 70 ? '🟡' : '🔴')}`));
+
+                if (result.score === 100) {
+                    const badge = generateBadgeMarkdown(result.score);
+                    if (badge) {
+                        console.log(chalk.green.bold('\n🏆 Perfect Score! Here is your accessibility badge:'));
+                        console.log(chalk.white(badge));
+                    }
+                }
+
                 console.log(chalk.gray('----------------------------------------'));
 
                 // 2. Category Progress Bars
@@ -159,7 +210,18 @@ program
 
                 if (result.legalSummary && result.legalSummary.eaaDeadlineViolations > 0) {
                     legalRisk = 'HIGH';
-                    riskReason = 'Keyboard Nav blocks EAA compliance';
+                    // Determine actual risk reason based on violations
+                    const hasKeyboardIssues = result.reports.some((r: any) =>
+                        ['2.1.1', '2.1.2'].some(c => r.wcagCriteria.includes(c)));
+                    const hasContrastIssues = result.reports.some((r: any) =>
+                        r.wcagCriteria.includes('1.4.3') || r.ruleId === 'color-contrast');
+                    const hasStructureIssues = result.reports.some((r: any) =>
+                        r.wcagCriteria.includes('1.3.1'));
+
+                    if (hasKeyboardIssues) riskReason = 'Keyboard accessibility blocks EAA compliance';
+                    else if (hasContrastIssues) riskReason = 'Contrast issues block EAA compliance';
+                    else if (hasStructureIssues) riskReason = 'HTML structure issues block EAA compliance';
+                    else riskReason = `${result.legalSummary.eaaDeadlineViolations} EAA deadline violation(s) found`;
                     riskIcon = '⚖️ ';
                 } else if (result.stats.critical > 0) {
                     legalRisk = 'MEDIUM';
@@ -206,6 +268,32 @@ program
                 console.log(chalk.gray('\n----------------------------------------'));
                 console.log(`Scan Date: ${new Date().toISOString().split('T')[0]}`);
                 console.log('\n');
+
+                if (options.generateTests) {
+                    console.log(chalk.magenta.bold(t('cli.pseudo_tests')));
+                    const automation = new PseudoAutomationEngine();
+                    result.reports.forEach(report => {
+                        if (report.testability.pseudoAutomation) {
+                            console.log(chalk.cyan(t('cli.test_for', { ruleId: report.ruleId })));
+                            console.log(chalk.gray(automation.generateTestScript(report, url)));
+                        }
+                    });
+                }
+            }
+
+            if (options.ci && result.reports.length > 0) {
+                const { generateGitHubActionsAnnotations } = await import('../reporting/github-actions');
+                generateGitHubActionsAnnotations(result.reports);
+            }
+
+            // JUnit Output
+            if (options.junit) {
+                const { generateJUnitXML } = await import('../reporting/junit-generator');
+                const fs = await import('fs/promises');
+                const xml = generateJUnitXML(result.reports, url, result.metadata.scanDuration);
+                await fs.writeFile(options.junit, xml);
+                if (spinner) spinner.succeed(t('cli.junit_saved', { path: options.junit }));
+                else if (!options.json) console.log(chalk.green(`✓ JUnit report saved to ${options.junit}`));
             }
 
             if (options.ci && result.stats.critical > 0) {
