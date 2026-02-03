@@ -15,4 +15,5 @@ export * from './Toast/Toast';
 export * from './Tooltip/Tooltip';
 export * from './Heading/Heading';
 export * from './AccessibilityStatement/AccessibilityStatement';
+export * from './ErrorSummary/ErrorSummary';
 
