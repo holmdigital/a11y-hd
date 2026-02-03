@@ -27,7 +27,7 @@ npm install @holmdigital/components
 ## Usage
 
 ```tsx
-import { Button, FormField, Heading, ErrorSummary, Combobox, DatePicker, MultiSelect, DataTable, Pagination, Card } from '@holmdigital/components';
+import { Button, FormField, Heading, ErrorSummary, Combobox, DatePicker, MultiSelect, DataTable, Pagination, Card, TreeView } from '@holmdigital/components';
 
 function App() {
   return (
@@ -91,6 +91,16 @@ function App() {
         currentPage={1} 
         totalPages={10} 
         onPageChange={(page) => console.log(page)} 
+      />
+
+      <TreeView 
+        data={[
+            { id: '1', label: 'Documents', children: [
+                { id: '1-1', label: 'Work' },
+                { id: '1-2', label: 'Private' }
+            ]},
+            { id: '2', label: 'Images' }
+        ]}
       />
       
       <Button variant="primary" type="submit">

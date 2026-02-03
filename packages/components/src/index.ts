@@ -22,4 +22,5 @@ export * from './MultiSelect/MultiSelect';
 export * from './DataTable/DataTable';
 export * from './Pagination/Pagination';
 export * from './Card/Card';
+export * from './TreeView/TreeView';
 
