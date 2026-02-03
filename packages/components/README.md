@@ -27,7 +27,7 @@ npm install @holmdigital/components
 ## Usage
 
 ```tsx
-import { Button, FormField, Heading, ErrorSummary, Combobox, DatePicker, MultiSelect } from '@holmdigital/components';
+import { Button, FormField, Heading, ErrorSummary, Combobox, DatePicker, MultiSelect, DataTable, Pagination, Card } from '@holmdigital/components';
 
 function App() {
   return (
@@ -72,6 +72,25 @@ function App() {
         ]}
         selected={['a11y']}
         onChange={(val) => console.log(val)}
+      />
+
+      <Card title="Latest Updates" href="/updates">
+          Checking out the new components!
+      </Card>
+
+      <DataTable 
+        caption="Users"
+        data={[{ id: 1, name: 'Alice' }, { id: 2, name: 'Bob' }]}
+        columns={[
+            { header: 'ID', accessor: 'id', sortable: true },
+            { header: 'Name', accessor: 'name' }
+        ]}
+      />
+
+      <Pagination 
+        currentPage={1} 
+        totalPages={10} 
+        onPageChange={(page) => console.log(page)} 
       />
       
       <Button variant="primary" type="submit">

@@ -97,6 +97,14 @@
         "./DataTable": {
             "types": "./dist/DataTable/DataTable.d.ts",
             "import": "./dist/DataTable/DataTable.mjs"
+        },
+        "./Pagination": {
+            "types": "./dist/Pagination/Pagination.d.ts",
+            "import": "./dist/Pagination/Pagination.mjs"
+        },
+        "./Card": {
+            "types": "./dist/Card/Card.d.ts",
+            "import": "./dist/Card/Card.mjs"
         }
     },
     "files": [
@@ -104,8 +112,8 @@
         "README.md"
     ],
     "scripts": {
-        "build": "tsup src/index.ts src/Button/Button.tsx src/FormField/FormField.tsx src/Dialog/Dialog.tsx src/Modal/Modal.tsx src/SkipLink/SkipLink.tsx src/NavigationMenu/NavigationMenu.tsx src/Checkbox/Checkbox.tsx src/RadioGroup/RadioGroup.tsx src/Select/Select.tsx src/Switch/Switch.tsx src/Toast/Toast.tsx src/Tooltip/Tooltip.tsx src/Heading/Heading.tsx src/AccessibilityStatement/AccessibilityStatement.tsx src/ErrorSummary/ErrorSummary.tsx src/Combobox/Combobox.tsx src/DatePicker/DatePicker.tsx src/MultiSelect/MultiSelect.tsx src/DataTable/DataTable.tsx --format cjs,esm --dts --clean --external react --external @holmdigital/standards",
-        "dev": "tsup src/index.ts src/Button/Button.tsx src/FormField/FormField.tsx src/Dialog/Dialog.tsx src/Modal/Modal.tsx src/SkipLink/SkipLink.tsx src/NavigationMenu/NavigationMenu.tsx src/Checkbox/Checkbox.tsx src/RadioGroup/RadioGroup.tsx src/Select/Select.tsx src/Switch/Switch.tsx src/Toast/Toast.tsx src/Tooltip/Tooltip.tsx src/Heading/Heading.tsx src/AccessibilityStatement/AccessibilityStatement.tsx src/ErrorSummary/ErrorSummary.tsx src/Combobox/Combobox.tsx src/DatePicker/DatePicker.tsx src/MultiSelect/MultiSelect.tsx src/DataTable/DataTable.tsx --format cjs,esm --dts --watch --external react --external @holmdigital/standards",
+        "build": "tsup src/index.ts src/Button/Button.tsx src/FormField/FormField.tsx src/Dialog/Dialog.tsx src/Modal/Modal.tsx src/SkipLink/SkipLink.tsx src/NavigationMenu/NavigationMenu.tsx src/Checkbox/Checkbox.tsx src/RadioGroup/RadioGroup.tsx src/Select/Select.tsx src/Switch/Switch.tsx src/Toast/Toast.tsx src/Tooltip/Tooltip.tsx src/Heading/Heading.tsx src/AccessibilityStatement/AccessibilityStatement.tsx src/ErrorSummary/ErrorSummary.tsx src/Combobox/Combobox.tsx src/DatePicker/DatePicker.tsx src/MultiSelect/MultiSelect.tsx src/DataTable/DataTable.tsx src/Pagination/Pagination.tsx src/Card/Card.tsx --format cjs,esm --dts --clean --external react --external @holmdigital/standards",
+        "dev": "tsup src/index.ts src/Button/Button.tsx src/FormField/FormField.tsx src/Dialog/Dialog.tsx src/Modal/Modal.tsx src/SkipLink/SkipLink.tsx src/NavigationMenu/NavigationMenu.tsx src/Checkbox/Checkbox.tsx src/RadioGroup/RadioGroup.tsx src/Select/Select.tsx src/Switch/Switch.tsx src/Toast/Toast.tsx src/Tooltip/Tooltip.tsx src/Heading/Heading.tsx src/AccessibilityStatement/AccessibilityStatement.tsx src/ErrorSummary/ErrorSummary.tsx src/Combobox/Combobox.tsx src/DatePicker/DatePicker.tsx src/MultiSelect/MultiSelect.tsx src/DataTable/DataTable.tsx src/Pagination/Pagination.tsx src/Card/Card.tsx --format cjs,esm --dts --watch --external react --external @holmdigital/standards",
         "lint": "eslint src --ext .ts,.tsx",
         "test": "vitest",
         "test:ci": "vitest run",

@@ -20,4 +20,6 @@ export * from './Combobox/Combobox';
 export * from './DatePicker/DatePicker';
 export * from './MultiSelect/MultiSelect';
 export * from './DataTable/DataTable';
+export * from './Pagination/Pagination';
+export * from './Card/Card';
 
