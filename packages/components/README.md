@@ -27,18 +27,51 @@ npm install @holmdigital/components
 ## Usage
 
 ```tsx
-import { Button, FormField, Heading } from '@holmdigital/components';
+import { Button, FormField, Heading, ErrorSummary, Combobox, DatePicker, MultiSelect } from '@holmdigital/components';
 
 function App() {
   return (
-    <form>
+      <ErrorSummary 
+        errors={[
+          { id: 'email', message: 'Enter a valid email address' },
+          { id: 'country', message: 'Select a country' }
+        ]} 
+      />
+
       <Heading level={1}>Contact Us</Heading>
+      
       <FormField 
         label="Email Address" 
+        id="email"
         type="email" 
         required 
         autoComplete="email" 
         helpText="We'll never share your email."
+      />
+
+      <Combobox 
+        label="Country" 
+        id="country"
+        options={[
+          { label: 'Sweden', value: 'se' },
+          { label: 'Norway', value: 'no' }
+        ]}
+        onChange={(val) => console.log(val)}
+      />
+
+      <DatePicker 
+        label="Preferred Date" 
+        required
+      />
+
+      <MultiSelect
+        label="Interests"
+        options={[
+          { label: 'Accessibility', value: 'a11y' },
+          { label: 'Performance', value: 'perf' }
+        ]}
+        selected={['a11y']}
+        onChange={(val) => console.log(val)}
       />
       
       <Button variant="primary" type="submit">
