@@ -11,7 +11,7 @@ export type TestComplexity = 'simple' | 'moderate' | 'complex';
 // EU Legal Framework types
 export type LegalFramework = 'WAD' | 'EAA';
 export type Sector = 'public' | 'private' | 'both';
-export type Country = 'SE' | 'NO' | 'DK' | 'FI' | 'NL' | 'EU';
+export type Country = 'SE' | 'NO' | 'DK' | 'FI' | 'NL' | 'DE' | 'FR' | 'ES' | 'IE' | 'EU';
 
 /**
  * Convergence Schema Rule
@@ -193,4 +193,47 @@ export interface StatementTool {
     recommended?: boolean;
     legalBasis?: string;
     comment?: string;
+}
+
+/**
+ * Sanction information for accessibility violations
+ */
+export interface Sanction {
+    type: string;
+    description: string;
+    minAmount: number;
+    maxAmount: number;
+    currency: string;
+    example?: string;
+}
+
+/**
+ * Sector-specific authority
+ */
+export interface SectorAuthority {
+    authority: string;
+    responsibility: string;
+}
+
+/**
+ * National law implementation of EU directives
+ */
+export interface NationalLaw {
+    id: string;
+    law: string;
+    fullName: string;
+    euFramework: LegalFramework;
+    scope: Sector;
+    lawUrl?: string;
+    enforcement: {
+        authority: string;
+        authorityName: string;
+        responsibility: string;
+        website: string;
+    };
+    sectorAuthorities?: SectorAuthority[];
+    sanctions: Sanction;
+    inForce: boolean;
+    effectiveDate: string;
+    note?: string;
 }

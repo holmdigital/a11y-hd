@@ -18,6 +18,7 @@ import ictManualChecksData from '../data/ict-manual-checks.json';
 import frameworksData from '../data/legal/frameworks.json';
 import nordicAuthoritiesData from '../data/legal/nordic-authorities.json';
 import statementToolsData from '../data/legal/statement-tools.json';
+import nationalLawsData from '../data/legal/national-laws.json';
 
 import type {
     ConvergenceRule,
@@ -39,6 +40,9 @@ import type {
     EUDirective,
     NordicAuthority,
     StatementTool,
+    NationalLaw,
+    Sanction,
+    SectorAuthority,
 } from './types';
 
 export type {
@@ -61,6 +65,9 @@ export type {
     EUDirective,
     NordicAuthority,
     StatementTool,
+    NationalLaw,
+    Sanction,
+    SectorAuthority,
 };
 
 function getData(lang: string = 'en'): ConvergenceRule[] {
@@ -371,4 +378,69 @@ export function getEAADeadlineRules(lang: string = 'en'): ConvergenceRule[] {
     return getData(lang).filter((rule) =>
         rule.legalContext?.eaaDeadline !== undefined
     );
+}
+
+// ============================================
+// National Laws & Sanctions API
+// ============================================
+
+/**
+ * Get all national laws for a country
+ */
+export function getNationalLaws(country: Country): NationalLaw[] {
+    const countryLaws = (nationalLawsData.laws as Record<string, NationalLaw[]>)[country];
+    return countryLaws || [];
+}
+
+/**
+ * Get a specific national law by ID
+ */
+export function getNationalLaw(id: string, country: Country = 'SE'): NationalLaw | null {
+    const countryLaws = getNationalLaws(country);
+    return countryLaws.find(law => law.id === id) || null;
+}
+
+/**
+ * Get national law by EU framework (WAD or EAA)
+ */
+export function getNationalLawByFramework(
+    framework: LegalFramework,
+    country: Country = 'SE'
+): NationalLaw | null {
+    const countryLaws = getNationalLaws(country);
+    return countryLaws.find(law => law.euFramework === framework) || null;
+}
+
+/**
+ * Get sanctions information for a specific law
+ */
+export function getSanctions(lawId: string, country: Country = 'SE'): Sanction | null {
+    const law = getNationalLaw(lawId, country);
+    return law?.sanctions || null;
+}
+
+/**
+ * Get maximum potential sanction amount for a country
+ */
+export function getMaxSanction(country: Country = 'SE'): { law: string; amount: number; currency: string } | null {
+    const laws = getNationalLaws(country);
+    if (laws.length === 0) return null;
+
+    const maxLaw = laws.reduce((max, current) =>
+        current.sanctions.maxAmount > max.sanctions.maxAmount ? current : max
+    );
+
+    return {
+        law: maxLaw.law,
+        amount: maxLaw.sanctions.maxAmount,
+        currency: maxLaw.sanctions.currency
+    };
+}
+
+/**
+ * Get all sector-specific authorities for EAA enforcement
+ */
+export function getSectorAuthorities(country: Country = 'SE'): SectorAuthority[] {
+    const eaaLaw = getNationalLawByFramework('EAA', country);
+    return eaaLaw?.sectorAuthorities || [];
 }

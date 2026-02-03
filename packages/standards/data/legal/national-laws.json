@@ -1,0 +1,313 @@
+{
+    "laws": {
+        "SE": [
+            {
+                "id": "dos-lagen",
+                "law": "DOS-lagen",
+                "fullName": "Lag (2018:1937) om tillgänglighet till digital offentlig service",
+                "euFramework": "WAD",
+                "scope": "public",
+                "lawUrl": "https://www.riksdagen.se/sv/dokument-lagar/dokument/svensk-forfattningssamling/lag-20181937-om-tillganglighet-till-digital_sfs-2018-1937",
+                "enforcement": {
+                    "authority": "se-digg",
+                    "authorityName": "Digg (Myndigheten för digital förvaltning)",
+                    "responsibility": "Granskar webbplatser, appar och tillgänglighetsredogörelser för offentliga aktörer.",
+                    "website": "https://www.digg.se"
+                },
+                "sanctions": {
+                    "type": "Vitesföreläggande",
+                    "description": "Om brister inte åtgärdas efter tillsyn kan Digg förelägga aktören att vidta åtgärder vid vite.",
+                    "minAmount": 100000,
+                    "maxAmount": 1000000,
+                    "currency": "SEK",
+                    "example": "Sanktioner har historiskt rört sig mellan 100 000 kr och uppåt mot 1 000 000 kr."
+                },
+                "inForce": true,
+                "effectiveDate": "2019-09-23"
+            },
+            {
+                "id": "lptt",
+                "law": "Tillgänglighetslagen / LPTT",
+                "fullName": "Lag (2023:254) om vissa produkters och tjänsters tillgänglighet",
+                "euFramework": "EAA",
+                "scope": "private",
+                "lawUrl": "https://www.riksdagen.se/sv/dokument-lagar/dokument/svensk-forfattningssamling/lag-2023254-om-vissa-produkters-och-tjansters_sfs-2023-254",
+                "enforcement": {
+                    "authority": "se-pts",
+                    "authorityName": "PTS (Post- och telestyrelsen)",
+                    "responsibility": "Marknadskontrollmyndighet och samordnare för övriga sektorsmyndigheter.",
+                    "website": "https://pts.se"
+                },
+                "sectorAuthorities": [
+                    {
+                        "authority": "Konsumentverket",
+                        "responsibility": "Persontransporter (buss, tåg, flyg, båt)."
+                    },
+                    {
+                        "authority": "Mediemyndigheten",
+                        "responsibility": "Audiovisuella medietjänster (streaming)."
+                    },
+                    {
+                        "authority": "MTM",
+                        "responsibility": "E-böcker och programvara för e-böcker."
+                    },
+                    {
+                        "authority": "Transportstyrelsen",
+                        "responsibility": "Teknisk utrustning inom transport."
+                    }
+                ],
+                "sanctions": {
+                    "type": "Sanktionsavgift",
+                    "description": "Beloppet avgörs av överträdelsens allvar, företagets omsättning och om det skett upprepat.",
+                    "minAmount": 10000,
+                    "maxAmount": 10000000,
+                    "currency": "SEK"
+                },
+                "inForce": false,
+                "effectiveDate": "2025-06-28"
+            }
+        ],
+        "FI": [
+            {
+                "id": "fi-wad",
+                "law": "Laki digitaalisten palvelujen saavutettavuudesta",
+                "fullName": "Lag om tillhandahållande av digitala tjänster (306/2019)",
+                "euFramework": "WAD",
+                "scope": "public",
+                "lawUrl": "https://www.finlex.fi/sv/laki/ajantasa/2019/20190306",
+                "enforcement": {
+                    "authority": "fi-avi",
+                    "authorityName": "Regionförvaltningsverket i Södra Finland (AVI)",
+                    "responsibility": "Tillsyn av offentliga webbplatser och appar.",
+                    "website": "https://saavutettavuusvaatimukset.fi"
+                },
+                "sanctions": {
+                    "type": "Vitesföreläggande",
+                    "description": "Beloppet bestäms utifrån organisationens storlek och bristernas natur.",
+                    "minAmount": 0,
+                    "maxAmount": 0,
+                    "currency": "EUR"
+                },
+                "inForce": true,
+                "effectiveDate": "2019-04-01"
+            },
+            {
+                "id": "fi-eaa",
+                "law": "EAA-implementering",
+                "fullName": "Lag om tillgänglighetskrav för produkter och tjänster (EAA)",
+                "euFramework": "EAA",
+                "scope": "private",
+                "enforcement": {
+                    "authority": "fi-traficom",
+                    "authorityName": "Traficom",
+                    "responsibility": "Transport och kommunikation.",
+                    "website": "https://www.traficom.fi"
+                },
+                "sectorAuthorities": [
+                    {
+                        "authority": "Traficom",
+                        "responsibility": "Transport och kommunikation."
+                    },
+                    {
+                        "authority": "Valvira",
+                        "responsibility": "Social- och hälsovård."
+                    }
+                ],
+                "sanctions": {
+                    "type": "Vitesföreläggande",
+                    "description": "Beloppet bestäms utifrån organisationens storlek och bristernas natur.",
+                    "minAmount": 0,
+                    "maxAmount": 0,
+                    "currency": "EUR"
+                },
+                "inForce": false,
+                "effectiveDate": "2025-06-28"
+            }
+        ],
+        "NO": [
+            {
+                "id": "no-ikt",
+                "law": "Forskrift om universell utforming av IKT",
+                "fullName": "Forskrift om universell utforming av informasjons- og kommunikasjonsteknologi (IKT)",
+                "euFramework": "WAD",
+                "scope": "both",
+                "lawUrl": "https://lovdata.no/dokument/SF/forskrift/2013-06-21-732",
+                "enforcement": {
+                    "authority": "no-uutilsynet",
+                    "authorityName": "UU-tilsynet",
+                    "responsibility": "Norge följer direktiven via EES-avtalet. Mycket aktiva med kontroller.",
+                    "website": "https://uutilsynet.no"
+                },
+                "sanctions": {
+                    "type": "Tvangsmulkt (löpande dagsböter)",
+                    "description": "Löpande dagsböter tills bristerna är åtgärdade.",
+                    "minAmount": 0,
+                    "maxAmount": 0,
+                    "currency": "NOK"
+                },
+                "inForce": true,
+                "effectiveDate": "2014-07-01",
+                "note": "Norge är inte med i EU men följer direktiven via EES-avtalet."
+            }
+        ],
+        "DK": [
+            {
+                "id": "dk-wad",
+                "law": "Lov om tilgængelighed",
+                "fullName": "Lov om tilgængelighed af offentlige organers websteder og mobilapplikationer",
+                "euFramework": "WAD",
+                "scope": "public",
+                "lawUrl": "https://www.retsinformation.dk/eli/lta/2018/693",
+                "enforcement": {
+                    "authority": "dk-digst",
+                    "authorityName": "Digitaliseringsstyrelsen",
+                    "responsibility": "Tillsyn av offentliga webbplatser.",
+                    "website": "https://digst.dk"
+                },
+                "sanctions": {
+                    "type": "Böter / Polisanmälan",
+                    "description": "Polisanmälan och böter kan förekomma vid grova eller upprepade överträdelser.",
+                    "minAmount": 0,
+                    "maxAmount": 0,
+                    "currency": "DKK"
+                },
+                "inForce": true,
+                "effectiveDate": "2018-09-23"
+            }
+        ],
+        "DE": [
+            {
+                "id": "de-bitv",
+                "law": "BITV 2.0",
+                "fullName": "Barrierefreie-Informationstechnik-Verordnung",
+                "euFramework": "WAD",
+                "scope": "public",
+                "lawUrl": "https://www.gesetze-im-internet.de/bitv_2_0/",
+                "enforcement": {
+                    "authority": "de-bfit",
+                    "authorityName": "BFIT-Bund (Zentralstelle für barrierefreie Informationstechnik)",
+                    "responsibility": "Federal tillsyn av offentlig sektor.",
+                    "website": "https://www.bfit-bund.de"
+                },
+                "sanctions": {
+                    "type": "Böter",
+                    "description": "Marknadskontroll sker på delstatsnivå (Länder) samt via federala myndigheter.",
+                    "minAmount": 0,
+                    "maxAmount": 500000,
+                    "currency": "EUR",
+                    "example": "Böter upp till 500 000 EUR för allvarliga brott mot EAA."
+                },
+                "inForce": true,
+                "effectiveDate": "2019-09-23"
+            },
+            {
+                "id": "de-bfsg",
+                "law": "BFSG (Barrierefreiheitsstärkungsgesetz)",
+                "fullName": "Barrierefreiheitsstärkungsgesetz - EAA-implementering",
+                "euFramework": "EAA",
+                "scope": "private",
+                "lawUrl": "https://www.gesetze-im-internet.de/bfsg/",
+                "enforcement": {
+                    "authority": "de-bfit",
+                    "authorityName": "Marknadskontroll på delstatsnivå",
+                    "responsibility": "Specifika federala myndigheter per sektor.",
+                    "website": "https://www.bmas.de"
+                },
+                "sanctions": {
+                    "type": "Böter",
+                    "description": "Allvarliga böter för brott mot tillgänglighetskrav.",
+                    "minAmount": 0,
+                    "maxAmount": 500000,
+                    "currency": "EUR"
+                },
+                "inForce": false,
+                "effectiveDate": "2025-06-28"
+            }
+        ],
+        "FR": [
+            {
+                "id": "fr-rgaa",
+                "law": "RGAA",
+                "fullName": "Référentiel Général d'Amélioration de l'Accessibilité",
+                "euFramework": "WAD",
+                "scope": "public",
+                "lawUrl": "https://www.legifrance.gouv.fr/loda/article_lc/LEGIARTI000037387342/",
+                "enforcement": {
+                    "authority": "fr-arcom",
+                    "authorityName": "Arcom",
+                    "responsibility": "Autorité de régulation de la communication audiovisuelle et numérique.",
+                    "website": "https://www.arcom.fr"
+                },
+                "sectorAuthorities": [
+                    {
+                        "authority": "DGCCRF",
+                        "responsibility": "Konsumentskydd."
+                    },
+                    {
+                        "authority": "Banque de France",
+                        "responsibility": "Banktjänster."
+                    }
+                ],
+                "sanctions": {
+                    "type": "Böter",
+                    "description": "Böter per överträdelse för företag.",
+                    "minAmount": 0,
+                    "maxAmount": 300000,
+                    "currency": "EUR"
+                },
+                "inForce": true,
+                "effectiveDate": "2019-09-23"
+            }
+        ],
+        "ES": [
+            {
+                "id": "es-une",
+                "law": "UNE 139803",
+                "fullName": "Real Decreto sobre accesibilidad de sitios web y aplicaciones móviles",
+                "euFramework": "WAD",
+                "scope": "public",
+                "enforcement": {
+                    "authority": "es-mtdfp",
+                    "authorityName": "Ministerio para la Transformación Digital y de la Función Pública",
+                    "responsibility": "Nationell tillsyn av digital tillgänglighet.",
+                    "website": "https://administracionelectronica.gob.es"
+                },
+                "sanctions": {
+                    "type": "Böter",
+                    "description": "Mycket stränga böter under EAA för mycket allvarliga överträdelser.",
+                    "minAmount": 0,
+                    "maxAmount": 1000000,
+                    "currency": "EUR"
+                },
+                "inForce": true,
+                "effectiveDate": "2018-09-23"
+            }
+        ],
+        "IE": [
+            {
+                "id": "ie-wad",
+                "law": "S.I. No. 358/2020",
+                "fullName": "European Union (Accessibility of the Websites and Mobile Applications of Public Sector Bodies) Regulations 2020",
+                "euFramework": "WAD",
+                "scope": "public",
+                "lawUrl": "https://www.irishstatutebook.ie/eli/2020/si/358/made/en/print",
+                "enforcement": {
+                    "authority": "ie-nda",
+                    "authorityName": "National Disability Authority (NDA)",
+                    "responsibility": "Tillsyn av offentliga tjänster.",
+                    "website": "https://nda.ie"
+                },
+                "sanctions": {
+                    "type": "Böter / Fängelse",
+                    "description": "Böter eller fängelse för extrema fall av bristande efterlevnad.",
+                    "minAmount": 0,
+                    "maxAmount": 60000,
+                    "currency": "EUR",
+                    "example": "Böter upp till 60 000 EUR eller fängelse i upp till 18 månader."
+                },
+                "inForce": true,
+                "effectiveDate": "2020-09-23"
+            }
+        ]
+    }
+}
