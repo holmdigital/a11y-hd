@@ -103,82 +103,109 @@ program
             if (options.json) {
                 console.log(JSON.stringify(result, null, 2));
             } else {
-                // Human readable output
-                console.log(chalk.bold(t('cli.score', { score: result.score })));
+                // --- CLI DASHBOARD IMPLEMENTATION ---
 
-                const statusColor = result.complianceStatus === 'PASS' ? chalk.green : chalk.red;
-                console.log(statusColor.bold(t('cli.status', { status: result.complianceStatus })));
-                if (result.complianceStatus === 'FAIL') {
-                    console.log(chalk.red(t('cli.not_compliant')));
-                }
+                // 1. Header & Score
+                console.log('\n');
+                const scoreColor = result.score >= 90 ? chalk.green : (result.score >= 70 ? chalk.yellow : chalk.red);
+                console.log(chalk.bold(`[ Compliance Score: ${scoreColor(result.score + '/100')} ] ${result.score >= 90 ? '🟢' : (result.score >= 70 ? '🟡' : '🔴')}`));
+                console.log(chalk.gray('----------------------------------------'));
 
-                if (result.score === 100) {
-                    const badge = generateBadgeMarkdown(result.score);
-                    if (badge) {
-                        console.log(chalk.green.bold('\n🏆 Perfect Score! Here is your accessibility badge:'));
-                        console.log(chalk.white(badge));
+                // 2. Category Progress Bars
+                // Provide a rough visualization based on types of failures found
+                const calculateCategoryScore = (filterFn: (r: any) => boolean) => {
+                    const failures = result.reports.filter(filterFn).length;
+                    // Formula: Start at 100, deduct 20 per failure, min 10.
+                    return Math.max(10, 100 - (failures * 20));
+                };
+
+                const cats = [
+                    {
+                        name: 'HTML Structure',
+                        score: calculateCategoryScore(r => ['1.3.1', '4.1.1', '4.1.2'].some(c => r.wcagCriteria.includes(c))),
+                        critical: false
+                    },
+                    {
+                        name: 'Keyboard Nav  ',
+                        score: calculateCategoryScore(r => ['2.1.1', '2.1.2', '2.4.3', '2.4.7'].some(c => r.wcagCriteria.includes(c))),
+                        critical: result.reports.some(r => ['2.1.1', '2.1.2'].some(c => r.wcagCriteria.includes(c)) && r.holmdigitalInsight.diggRisk === 'critical')
+                    },
+                    {
+                        name: 'Contrast      ',
+                        score: calculateCategoryScore(r => r.wcagCriteria.includes('1.4.3') || r.ruleId === 'color-contrast'),
+                        critical: false
                     }
-                }
+                ];
+
+                cats.forEach(cat => {
+                    const width = 10;
+                    const filled = Math.round((cat.score / 100) * width);
+                    const empty = width - filled;
+                    const bar = '█'.repeat(filled) + '░'.repeat(empty);
+
+                    let statusText = `${cat.score}%`;
+                    if (cat.critical) statusText += chalk.red(' (CRITICAL FAIL)');
+                    else if (cat.score < 100) statusText += chalk.gray(' (Minor issues)');
+
+                    console.log(`${cat.name}   [${cat.score >= 80 ? chalk.green(bar) : (cat.score >= 50 ? chalk.yellow(bar) : chalk.red(bar))}] ${statusText}`);
+                });
 
                 console.log(chalk.gray('----------------------------------------'));
 
-                if (options.viewport) {
-                    console.log(chalk.blue(t('cli.viewport', { width: viewport.width, height: viewport.height })));
+                // 3. Legal Risk Assessment
+                let legalRisk = 'LOW';
+                let riskReason = 'No critical violations found.';
+                let riskIcon = '✅';
+
+                if (result.legalSummary && result.legalSummary.eaaDeadlineViolations > 0) {
+                    legalRisk = 'HIGH';
+                    riskReason = 'Keyboard Nav blocks EAA compliance';
+                    riskIcon = '⚖️ ';
+                } else if (result.stats.critical > 0) {
+                    legalRisk = 'MEDIUM';
+                    riskReason = 'Critical violations found.';
+                    riskIcon = '⚠️ ';
                 }
 
+                console.log(`${riskIcon} Legal Risk: ${legalRisk === 'HIGH' ? chalk.red.bold(legalRisk) : (legalRisk === 'MEDIUM' ? chalk.yellow.bold(legalRisk) : chalk.green(legalRisk))} (${chalk.white(riskReason)})`);
+                console.log('\n');
+
+                // 4. Detailed Validation Errors (HTML)
                 if (result.htmlValidation && !result.htmlValidation.valid) {
-                    console.log(chalk.red.bold('\n⚠️  Structural HTML Issues Detected'));
+                    console.log(chalk.red.bold('⚠️  Structural HTML Issues Detected'));
                     console.log(chalk.yellow('    These issues may affect accessibility tool accuracy (e.g. contrast calculations)\n'));
 
                     result.htmlValidation.errors.forEach((error: any) => {
                         console.log(chalk.red(`    [${error.rule}] ${error.message}`));
-                        if (error.selector) console.log(chalk.gray(`    ${error.selector}`));
-                        console.log(chalk.gray(`    Line: ${error.line}, Col: ${error.column}\n`));
                     });
+                    console.log(chalk.gray('    ... and more (run with --json for full details)'));
                     console.log(chalk.gray('----------------------------------------'));
                 }
 
-                result.reports.forEach((report: any) => {
-                    const color = report.holmdigitalInsight.diggRisk === 'critical' ? chalk.red : chalk.yellow;
+                // 5. Report Details
+                if (result.reports.length > 0) {
+                    console.log(chalk.bold('Top Violations:'));
+                }
 
+                result.reports.forEach((report: any, i: number) => {
+                    if (i > 5) return; // Limit to top 5 for CLI readability
+
+                    const color = report.holmdigitalInsight.diggRisk === 'critical' ? chalk.red : chalk.yellow;
                     console.log(color.bold(`\n[${report.holmdigitalInsight.diggRisk.toUpperCase()}] ${report.ruleId}`));
                     console.log(chalk.white(`WCAG: ${report.wcagCriteria} | EN 301 549: ${report.en301549Criteria}`));
-                    console.log(chalk.gray(`Legitimitet: ${report.dosLagenReference}`));
 
                     if (report.remediation.component) {
-                        console.log(chalk.green(t('cli.prescriptive_fix')));
-                        console.log(t('cli.use_component', { component: chalk.bold(report.remediation.component) }));
-                    }
-
-
-                    if (report.failingNodes && report.failingNodes.length > 0) {
-                        console.log(chalk.gray('\nAffected Elements:'));
-                        report.failingNodes.forEach((node: any, index: number) => {
-                            if (index < 5) { // Limit output
-                                console.log(chalk.cyan(`➜ ${node.target}`));
-                                console.log(chalk.gray(`  ${node.html}`));
-                            }
-                        });
-
-                        if (report.failingNodes.length > 5) {
-                            console.log(chalk.gray(`  ...and ${report.failingNodes.length - 5} more`));
-                        }
+                        console.log(chalk.green(`Fix: Use component <${report.remediation.component} />`));
                     }
                 });
 
-                console.log(chalk.gray('\n----------------------------------------'));
-                console.log(`Critical: ${result.stats.critical} | High: ${result.stats.high} | Medium: ${result.stats.medium} | Total: ${result.stats.total}\n`);
-
-                if (options.generateTests) {
-                    console.log(chalk.magenta.bold(t('cli.pseudo_tests')));
-                    const automation = new PseudoAutomationEngine();
-                    result.reports.forEach(report => {
-                        if (report.testability.pseudoAutomation) {
-                            console.log(chalk.cyan(t('cli.test_for', { ruleId: report.ruleId })));
-                            console.log(chalk.gray(automation.generateTestScript(report, url)));
-                        }
-                    });
+                if (result.reports.length > 5) {
+                    console.log(chalk.gray(`\n... and ${result.reports.length - 5} more issues.`));
                 }
+
+                console.log(chalk.gray('\n----------------------------------------'));
+                console.log(`Scan Date: ${new Date().toISOString().split('T')[0]}`);
+                console.log('\n');
             }
 
             if (options.ci && result.stats.critical > 0) {
