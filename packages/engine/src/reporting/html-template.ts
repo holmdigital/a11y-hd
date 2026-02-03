@@ -125,6 +125,37 @@ export function generateReportHTML(result: ScanResult): string {
             .badge-high { background: #fffbeb; color: #d97706; border: 1px solid #fde68a; }
             .badge-medium { background: #fefce8; color: #ca8a04; border: 1px solid #fef08a; }
             .badge-low { background: #f8fafc; color: #475569; border: 1px solid #e2e8f0; }
+            .badge-wad { background: #eff6ff; color: #1d4ed8; border: 1px solid #bfdbfe; margin-left: 0.5rem; }
+            .badge-eaa { background: #faf5ff; color: #7c3aed; border: 1px solid #ddd6fe; margin-left: 0.5rem; }
+            .legal-summary {
+                background: linear-gradient(135deg, #eff6ff 0%, #faf5ff 100%);
+                border: 1px solid #c7d2fe;
+                border-radius: 12px;
+                padding: 1.5rem;
+                margin-bottom: 2rem;
+            }
+            .legal-summary-title {
+                font-size: 1rem;
+                font-weight: 600;
+                color: #3730a3;
+                margin-bottom: 1rem;
+            }
+            .legal-grid {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 1rem;
+            }
+            .legal-stat {
+                text-align: center;
+            }
+            .legal-stat-value {
+                font-size: 1.5rem;
+                font-weight: 700;
+            }
+            .legal-stat-label {
+                font-size: 0.75rem;
+                color: #64748b;
+            }
 
             .violation-meta {
                 font-size: 0.875rem;
@@ -193,6 +224,26 @@ export function generateReportHTML(result: ScanResult): string {
             </div>
         </div>
 
+        ${result.legalSummary ? `
+        <div class="legal-summary">
+            <div class="legal-summary-title">🇪🇺 EU Legal Framework Impact</div>
+            <div class="legal-grid">
+                <div class="legal-stat">
+                    <div class="legal-stat-value" style="color: #1d4ed8;">${result.legalSummary.wadApplicable}</div>
+                    <div class="legal-stat-label">WAD (Public Sector) Violations</div>
+                </div>
+                <div class="legal-stat">
+                    <div class="legal-stat-value" style="color: #7c3aed;">${result.legalSummary.eaaApplicable}</div>
+                    <div class="legal-stat-label">EAA (Private Sector) Violations</div>
+                </div>
+                <div class="legal-stat">
+                    <div class="legal-stat-value" style="color: #dc2626;">${result.legalSummary.eaaDeadlineViolations}</div>
+                    <div class="legal-stat-label">EAA 2025 Deadline Issues</div>
+                </div>
+            </div>
+        </div>
+        ` : ''}
+
         <div class="section-title">${t('report.detailed_violations')}</div>
 
         ${[...result.reports].sort((a, b) => {
@@ -206,11 +257,16 @@ export function generateReportHTML(result: ScanResult): string {
             <div class="violation-card">
                 <div class="violation-header">
                     <div class="violation-title">${report.ruleId}</div>
-                    <span class="badge ${riskClass}">${report.holmdigitalInsight.diggRisk}</span>
+                    <div>
+                        <span class="badge ${riskClass}">${report.holmdigitalInsight.diggRisk}</span>
+                        ${(report as any).legalContext?.appliesTo?.includes('WAD') ? '<span class="badge badge-wad">WAD</span>' : ''}
+                        ${(report as any).legalContext?.appliesTo?.includes('EAA') ? '<span class="badge badge-eaa">EAA</span>' : ''}
+                    </div>
                 </div>
                 <div class="violation-meta">
                     WCAG ${report.wcagCriteria} • EN 301 549 ${report.en301549Criteria}
                     ${report.dosLagenReference ? `• ${report.dosLagenReference}` : ''}
+                    ${(report as any).legalContext?.eaaDeadline ? `<br/><strong>⚠️ EAA Deadline:</strong> ${(report as any).legalContext.eaaDeadline}` : ''}
                 </div>
                 <div style="font-size: 0.95rem; color: #334155; line-height: 1.5;">
                     ${report.holmdigitalInsight.swedishInterpretation}
