@@ -1,0 +1,45 @@
+{
+    "frameworks": {
+        "WAD": {
+            "id": "2016/2102",
+            "name": "Web Accessibility Directive",
+            "fullName": "Directive (EU) 2016/2102 on the accessibility of websites and mobile applications of public sector bodies",
+            "scope": "public",
+            "eurLexUrl": "https://eur-lex.europa.eu/eli/dir/2016/2102/oj",
+            "adoptionDate": "2016-10-26",
+            "transpositionDeadline": "2018-09-23",
+            "wcagVersion": "2.1",
+            "wcagLevel": "AA",
+            "technicalStandard": "EN 301 549 V3.2.1"
+        },
+        "EAA": {
+            "id": "2019/882",
+            "name": "European Accessibility Act",
+            "fullName": "Directive (EU) 2019/882 on the accessibility requirements for products and services",
+            "scope": "private",
+            "eurLexUrl": "https://eur-lex.europa.eu/eli/dir/2019/882/oj",
+            "adoptionDate": "2019-04-17",
+            "transpositionDeadline": "2022-06-28",
+            "applicationDeadline": "2025-06-28",
+            "wcagVersion": "2.1",
+            "wcagLevel": "AA",
+            "technicalStandard": "EN 301 549",
+            "productScopes": [
+                "computers",
+                "smartphones",
+                "tablets",
+                "e-readers",
+                "atm-machines",
+                "ticketing-machines",
+                "check-in-machines"
+            ],
+            "serviceScopes": [
+                "e-commerce",
+                "banking",
+                "e-books",
+                "transport",
+                "telecommunications"
+            ]
+        }
+    }
+}

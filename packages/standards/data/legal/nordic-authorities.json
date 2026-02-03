@@ -1,0 +1,59 @@
+{
+    "authorities": [
+        {
+            "id": "se-digg",
+            "name": "Myndigheten för digital förvaltning (Digg)",
+            "country": "SE",
+            "scope": "public",
+            "framework": "WAD",
+            "website": "https://digg.se",
+            "monitoringPortal": "https://digg.se/tillganglighetstillsyn",
+            "statementTool": "https://webbriktlinjer.se/tillganglighetsredogorelse/",
+            "guidesUrl": "https://digg.se/webbriktlinjer",
+            "nationalLaw": "DOS-lagen (Lag 2018:1937)"
+        },
+        {
+            "id": "se-pts",
+            "name": "Post- och telestyrelsen (PTS)",
+            "country": "SE",
+            "scope": "private",
+            "framework": "EAA",
+            "website": "https://pts.se",
+            "nationalLaw": "Lag om tillgänglighetskrav för produkter och tjänster",
+            "comment": "Ansvarar för tillsyn av EAA i Sverige från 2025-06-28"
+        },
+        {
+            "id": "no-uutilsynet",
+            "name": "Tilsynet for universell utforming av ikt (UU-tilsynet)",
+            "country": "NO",
+            "scope": "both",
+            "framework": "WAD",
+            "website": "https://uutilsynet.no",
+            "monitoringPortal": "https://uutilsynet.no/verktoy/",
+            "guidesUrl": "https://uutilsynet.no/regelverk/veiledning/",
+            "nationalLaw": "Forskrift om universell utforming av IKT",
+            "reputation": "Ledande i Norden på praktiska tester och pedagogiska guider"
+        },
+        {
+            "id": "dk-digst",
+            "name": "Digitaliseringsstyrelsen",
+            "country": "DK",
+            "scope": "public",
+            "framework": "WAD",
+            "website": "https://digst.dk",
+            "guidesUrl": "https://digst.dk/digital-inklusion/webtilgaengelighed/",
+            "nationalLaw": "Lov om tilgængelighed af offentlige organers websteder og mobilapplikationer"
+        },
+        {
+            "id": "fi-avi",
+            "name": "Regionförvaltningsverket (AVI) / Tillgänglighetskrav.fi",
+            "country": "FI",
+            "scope": "public",
+            "framework": "WAD",
+            "website": "https://saavutettavuusvaatimukset.fi",
+            "guidesUrl": "https://www.saavutettavuusvaatimukset.fi/ohjeet/",
+            "nationalLaw": "Laki digitaalisten palvelujen saavutettavuudesta (306/2019)",
+            "comment": "Myndighetsgemensam portal för lagkrav och stöd"
+        }
+    ]
+}

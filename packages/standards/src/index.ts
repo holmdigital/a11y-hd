@@ -14,6 +14,11 @@ import rulesEnUs from '../data/rules.en-us.json';
 import rulesEnCa from '../data/rules.en-ca.json';
 import ictManualChecksData from '../data/ict-manual-checks.json';
 
+// EU Legal Framework data
+import frameworksData from '../data/legal/frameworks.json';
+import nordicAuthoritiesData from '../data/legal/nordic-authorities.json';
+import statementToolsData from '../data/legal/statement-tools.json';
+
 import type {
     ConvergenceRule,
     EN301549Mapping,
@@ -26,6 +31,14 @@ import type {
     EAAImpact,
     Remediation,
     Testability,
+    // EU Legal Framework types
+    LegalFramework,
+    Sector,
+    Country,
+    LegalContext,
+    EUDirective,
+    NordicAuthority,
+    StatementTool,
 } from './types';
 
 export type {
@@ -40,6 +53,14 @@ export type {
     EAAImpact,
     Remediation,
     Testability,
+    // EU Legal Framework types
+    LegalFramework,
+    Sector,
+    Country,
+    LegalContext,
+    EUDirective,
+    NordicAuthority,
+    StatementTool,
 };
 
 function getData(lang: string = 'en'): ConvergenceRule[] {
@@ -249,4 +270,105 @@ export function getDatabaseStats(lang: string = 'en') {
         manualRules: rules.filter((r) => r.testability.requiresManualCheck).length,
         pseudoAutomationRules: rules.filter((r) => r.testability.pseudoAutomation).length,
     };
+}
+
+// ============================================
+// EU Legal Framework Functions
+// ============================================
+
+/**
+ * Get rules filtered by EU legal framework (WAD or EAA)
+ */
+export function getRulesByFramework(
+    framework: LegalFramework,
+    lang: string = 'en'
+): ConvergenceRule[] {
+    return getData(lang).filter((rule) =>
+        rule.legalContext?.appliesTo?.includes(framework) ||
+        rule.tags.includes(framework)
+    );
+}
+
+/**
+ * Get rules filtered by sector (public, private, or both)
+ */
+export function getRulesBySector(
+    sector: Sector,
+    lang: string = 'en'
+): ConvergenceRule[] {
+    return getData(lang).filter((rule) => {
+        if (rule.legalContext?.sectors) {
+            return rule.legalContext.sectors.includes(sector) ||
+                rule.legalContext.sectors.includes('both');
+        }
+        // Fallback to tag-based filtering
+        return rule.tags.includes(`${sector}-sector`);
+    });
+}
+
+/**
+ * Get all EU legal frameworks
+ */
+export function getLegalFrameworks(): Record<string, EUDirective> {
+    return frameworksData.frameworks as unknown as Record<string, EUDirective>;
+}
+
+/**
+ * Get specific legal framework by ID
+ */
+export function getLegalFramework(id: LegalFramework): EUDirective | null {
+    const frameworks = frameworksData.frameworks as Record<string, unknown>;
+    return (frameworks[id] as EUDirective) || null;
+}
+
+/**
+ * Get all Nordic authorities
+ */
+export function getNordicAuthorities(): NordicAuthority[] {
+    return nordicAuthoritiesData.authorities as NordicAuthority[];
+}
+
+/**
+ * Get Nordic authority by ID
+ */
+export function getNordicAuthority(id: string): NordicAuthority | null {
+    const authority = nordicAuthoritiesData.authorities.find(
+        (a: { id: string }) => a.id === id
+    );
+    return (authority as NordicAuthority) || null;
+}
+
+/**
+ * Get Nordic authorities by country
+ */
+export function getNordicAuthoritiesByCountry(country: Country): NordicAuthority[] {
+    return nordicAuthoritiesData.authorities.filter(
+        (a: { country: string }) => a.country === country
+    ) as NordicAuthority[];
+}
+
+/**
+ * Get all accessibility statement tools
+ */
+export function getStatementTools(): StatementTool[] {
+    return statementToolsData.tools as StatementTool[];
+}
+
+/**
+ * Get statement tools by country
+ */
+export function getStatementToolsByCountry(country: Country): StatementTool[] {
+    return statementToolsData.tools.filter(
+        (t: { country?: string; international?: boolean }) =>
+            t.country === country || t.international
+    ) as StatementTool[];
+}
+
+/**
+ * Get rules with EAA deadline
+ */
+export function getEAADeadlineRules(lang: string = 'en'): ConvergenceRule[] {
+    return getData(lang).filter((rule) =>
+        rule.legalContext?.eaaDeadline !== undefined
+    );
 }
