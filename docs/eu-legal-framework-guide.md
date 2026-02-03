@@ -14,6 +14,33 @@ This guide explains how @holmdigital packages integrate with EU accessibility di
 **Deadline:** June 28, 2025  
 **Scope:** E-commerce, banking, transport, e-books, streaming
 
+## Visual Overview
+
+### Does WAD or EAA apply?
+
+```mermaid
+graph TD
+    A[Start: Analysis] --> B{Sector?}
+    B -- Public Sector --> C[WAD Directive]
+    B -- Private Sector --> D{Service Type?}
+    D -- E-commerce / Banking / Transport / Media --> E[EAA Directive]
+    D -- Other B2B / Internal Tools --> F[Not directly covered (yet)]
+    C --> G[WCAG 2.1 AA Compliance]
+    E --> H[WCAG 2.1 AA Compliance + Specific Functional Criteria]
+    E --> I[Deadline: June 2025]
+```
+
+### Hierarchy of Enforcement
+
+```mermaid
+graph LR
+    EU[EU Commission] -->|Directives| Nation[Member State]
+    Nation -->|National Law e.g. DOS-lagen| Authority[Enforcement Body e.g. Digg]
+    Authority -->|Monitoring & Fines| Org[Organization]
+    Org -->|Accessibility Statement| User[End User]
+    User -->| Complaint| Authority
+```
+
 ## National Implementations
 
 | Country | WAD Law | EAA Law | Max Sanction |
