@@ -93,10 +93,39 @@ npx hd-a11y-scan https://example.com --json
     "low": 0,
     "total": 2
   },
+  "legalSummary": {
+    "wadApplicable": 2,
+    "eaaApplicable": 2,
+    "eaaDeadlineViolations": 2
+  },
   "score": 90,
   "complianceStatus": "PASS"
 }
 ```
+
+## EU Legal Framework
+
+The engine maps violations to EU legal frameworks:
+
+| Framework | Description | Deadline |
+|-----------|-------------|----------|
+| **WAD** | Web Accessibility Directive 2016/2102 (Public Sector) | Already in force |
+| **EAA** | European Accessibility Act 2019/882 (Private Sector) | **June 28, 2025** |
+
+### legalSummary Fields
+
+| Field | Description |
+|-------|-------------|
+| `wadApplicable` | Violations that affect WAD compliance (public sector) |
+| `eaaApplicable` | Violations that affect EAA compliance (private sector) |
+| `eaaDeadlineViolations` | Issues that must be fixed before EAA 2025 deadline |
+
+### HTML Report Enhancements
+
+The HTML/PDF report now includes:
+- **EU Legal Framework Impact** summary section
+- **WAD/EAA badges** on each violation card
+- **EAA deadline warnings** for issues requiring immediate attention
 
 ## Severity Threshold
 
