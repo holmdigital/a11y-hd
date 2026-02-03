@@ -8,11 +8,15 @@ describe('Components Package', () => {
         expect(exports).toContain('Button');
         expect(exports).toContain('Dialog');
         expect(exports).toContain('Modal');
-        // Add more checks as needed
+        expect(exports).toContain('AccessibilityStatement');
         expect(exports.length).toBeGreaterThan(10);
     });
 
     it('should have Button component', () => {
         expect(Components.Button).toBeDefined();
+    });
+
+    it('should have AccessibilityStatement component', () => {
+        expect(Components.AccessibilityStatement).toBeDefined();
     });
 });
