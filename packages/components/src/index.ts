@@ -17,4 +17,5 @@ export * from './Heading/Heading';
 export * from './AccessibilityStatement/AccessibilityStatement';
 export * from './ErrorSummary/ErrorSummary';
 export * from './Combobox/Combobox';
+export * from './DatePicker/DatePicker';
 
