@@ -100,18 +100,19 @@ export function LegalPage() {
 }
 ```
 
-## Recipe 4: EAA Deadline Check
-**Goal:** programmatic check if your app runs within the EAA deadline warning window.
+## Recipe 4: EAA Compliance Check
+**Goal:** Programmatic check if your app complies with the now-active European Accessibility Act (EAA).
 
 ```typescript
 import { getEAADeadlineRules } from '@holmdigital/standards';
 
-function checkDeadlineRisks() {
-  const riskyRules = getEAADeadlineRules();
+function checkLegalRisks() {
+  const violatingRules = getEAADeadlineRules();
   
-  if (riskyRules.length > 0) {
-    console.warn(`⚠️ Warning: ${riskyRules.length} rules have an upcoming June 2025 deadline!`);
-    riskyRules.forEach(r => console.log(`- ${r.id}: ${r.description}`));
+  if (violatingRules.length > 0) {
+    console.error(`🚨 CRITICAL: ${violatingRules.length} violations of the European Accessibility Act (EAA)!`);
+    console.error(`   The deadline (June 2025) has passed. These issues must be fixed immediately.`);
+    violatingRules.forEach(r => console.groupCollapsed(`- ${r.id}: ${r.description}`));
   }
 }
 ```
