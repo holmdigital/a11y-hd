@@ -88,21 +88,17 @@ const mapping = getEN301549Mapping('1.4.3', 'sv');
 
 The engine is designed to run in CI/CD pipelines (GitHub Actions, GitLab CI, etc.). It returns exit code `1` if critical violations are found.
 
-### GitHub Actions Example
-
-Create `.github/workflows/accessibility.yml`:
-
+### 1. GitHub Actions
 ```yaml
 name: Accessibility Scan
 on: [push, pull_request]
 
 jobs:
-  a11y-scan:
+  a11y:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       
-      # 1. Start your local server (e.g., Next.js, Vite)
       - name: Start Server
         run: npm run dev &
         env:
@@ -111,10 +107,65 @@ jobs:
       - name: Wait for Server
         run: npx wait-on http://localhost:3000
 
-      # 2. Run Regulatory Scan
-      - name: Run HolmDigital Compliance Scan
-        run: npx hd-a11y-scan http://localhost:3000 --ci --lang en
+      - name: Run Scan
+        run: npx hd-a11y-scan http://localhost:3000 --ci --lang en --junit report.xml --pdf report.pdf
+
+      - name: Upload Artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: a11y-reports
+          path: report.*
 ```
+
+### 2. GitLab CI
+```yaml
+a11y-check:
+  image: node:20
+  script:
+    - npm install
+    - npm run dev &
+    - npx wait-on http://localhost:3000
+    - npx hd-a11y-scan http://localhost:3000 --ci --junit report.xml --pdf report.pdf
+  artifacts:
+    when: always
+    paths:
+      - report.xml
+      - report.pdf
+    reports:
+      junit: report.xml
+```
+
+### 3. Azure DevOps
+```yaml
+trigger:
+- main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+- script: |
+    npm install
+    npm run dev &
+    npx wait-on http://localhost:3000
+    npx hd-a11y-scan http://localhost:3000 --ci --junit report.xml
+  displayName: 'Run Accessibility Scan'
+
+- task: PublishTestResults@2
+  condition: succeededOrFailed()
+  inputs:
+    testResultsFormat: 'JUnit'
+    testResultsFiles: 'report.xml'
+```
+
+### 🛑 Build Breaking Logic
+The engine returns exit code `1` only when it finds violations that meet your `--threshold`.
+
+- `--threshold critical` = Fails only on critical issues (e.g., missing alt text).
+- `--threshold high` (default) = Fails on critical + high issues.
+- `--threshold low` = Fails on everything (zero tolerance).
+
 
 ## 🚀 Quick Start
 
