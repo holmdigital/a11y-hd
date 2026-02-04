@@ -98,7 +98,7 @@ export const AccessibilityStatement: React.FC<AccessibilityStatementProps> = ({
 
     // Get statement tools for this country
     const statementTools = getStatementToolsByCountry(country);
-    const recommendedTool = statementTools.find(t => t.recommended) || statementTools[0];
+    const recommendedTool = statementTools.find((t: any) => t.recommended) || statementTools[0];
 
     // Format date according to locale
     const formatDate = (date: Date) => {

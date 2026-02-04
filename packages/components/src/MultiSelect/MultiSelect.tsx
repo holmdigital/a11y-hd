@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, KeyboardEvent, useId } from 'react';
+import React, { useState, useRef, KeyboardEvent, useId } from 'react';
 
 export interface MultiSelectOption {
     value: string;
@@ -40,11 +40,11 @@ export const MultiSelect: React.FC<MultiSelectProps> = ({
     const [isOpen, setIsOpen] = useState(false);
     const [inputValue, setInputValue] = useState('');
     const [focusedIndex, setFocusedIndex] = useState(-1);
-    const [activeTokenIndex, setActiveTokenIndex] = useState(-1);
+    const [activeTokenIndex] = useState(-1);
 
     const inputRef = useRef<HTMLInputElement>(null);
     const containerRef = useRef<HTMLDivElement>(null);
-    const tokensRef = useRef<HTMLButtonElement[]>([]);
+
 
     const id = useId();
     const listboxId = `${id}-listbox`;
@@ -113,7 +113,7 @@ export const MultiSelect: React.FC<MultiSelectProps> = ({
         }
     };
 
-    const handleTokenNavigation = (e: KeyboardEvent) => {
+    const handleTokenNavigation = (_e: KeyboardEvent) => {
         // Placeholder for advanced token navigation logic if needed
     };
 
@@ -217,7 +217,7 @@ export const MultiSelect: React.FC<MultiSelectProps> = ({
             )}
 
             <div style={styles.inputWrapper}>
-                {selected.map((value, index) => {
+                {selected.map((value) => {
                     const option = options.find(o => o.value === value);
                     return (
                         <span key={value} style={styles.token}>
