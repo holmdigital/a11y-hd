@@ -24,6 +24,20 @@ interface AccordionProps {
 }
 ```
 
+**Usage Example:**
+```tsx
+import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '@holmdigital/components';
+
+<Accordion type="single" defaultValue="item-1">
+  <AccordionItem value="item-1">
+    <AccordionTrigger>Is this accessible?</AccordionTrigger>
+    <AccordionContent>
+      Yes, it handles aria-expanded and keyboard navigation automatically.
+    </AccordionContent>
+  </AccordionItem>
+</Accordion>
+```
+
 ### 2. Dialog & Modal
 **[Source Code](../../packages/components/src/Modal)** | Status: ✅ Available
 
@@ -32,12 +46,48 @@ interface AccordionProps {
 *   **Role Management:** Defaults to `role="dialog"` and `aria-modal="true"`.
 *   **Backdrop:** Automatic backdrop with click-to-dismiss support.
 
+**Usage Example:**
+```tsx
+import { Modal, Button } from '@holmdigital/components';
+import { useState } from 'react';
+
+const MyDialog = () => {
+    const [open, setOpen] = useState(false);
+
+    return (
+        <Modal open={open} onOpenChange={setOpen}>
+            <h2 id="modal-title">Confirm Deletion</h2>
+            <p>Are you sure you want to delete this item?</p>
+            <div className="flex gap-2 mt-4">
+                <Button onClick={() => setOpen(false)}>Cancel</Button>
+                <Button variant="danger">Delete</Button>
+            </div>
+        </Modal>
+    );
+};
+```
+
 ### 3. Skeleton
 **[Source Code](../../packages/components/src/Skeleton)** | Status: ✅ Available
 
 **Features:**
 *   **Reduced Motion:** Respects user's OS preference (`prefers-reduced-motion`).
 *   **Layout Stability:** Prevents Cumulative Layout Shift (CLS) penalties.
+
+**Usage Example:**
+```tsx
+import { Skeleton } from '@holmdigital/components';
+
+const LoadingCard = () => (
+  <div className="p-4 border rounded">
+    {/* Simulate H2 headline */}
+    <Skeleton className="h-8 w-3/4 mb-4" /> 
+    {/* Simulate paragraph lines */}
+    <Skeleton className="h-4 w-full mb-2" />
+    <Skeleton className="h-4 w-5/6" />
+  </div>
+);
+```
 
 ### 💡 Structure Examples
 
