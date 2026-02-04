@@ -57,8 +57,6 @@ a11y-hd/
 │   ├── engine/          # Core scanning engine
 │   ├── standards/       # Regulatory rules database
 │   └── components/      # Accessible React components
-├── holmdigital-wiki/    # Documentation site
-└── holmdigital-website/ # Marketing site
 ```
 
 ## Contribution Guidelines
