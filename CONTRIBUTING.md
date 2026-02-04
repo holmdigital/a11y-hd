@@ -63,28 +63,35 @@ a11y-hd/
 
 ## Contribution Guidelines
 
-### Adding New WCAG Rules
+### Adding New WCAG Rules ⚖️
+**Strict Requirement:** All regulatory contributions MUST be backed by an official government source.
 
-1. Add the rule to `packages/standards/data/rules.en.json`
-2. Add translations to other locale files (`rules.sv.json`, `rules.de.json`, etc.)
-3. Ensure the rule includes all required fields:
-   - `ruleId`: axe-core rule identifier
-   - `wcagCriteria`: WCAG success criterion (e.g., "1.1.1")
-   - `en301549Criteria`: EN 301 549 mapping
-   - `holmdigitalInsight`: Risk levels and interpretation
+1. Add the rule to `packages/standards/data/rules.en.json`.
+2. **Cite your source**: You must include a link to the legislation (e.g., `laws.ghana.gov.gh`) in the Pull Request description.
+3. Add translations to other locale files (`rules.sv.json`, etc.).
+4. Ensure the rule includes:
+   - `wcagCriteria`: Exact Success Criterion (e.g., "1.1.1").
+   - `en301549Criteria`: EN 301 549 Clause (e.g., "9.1.1.1").
+   - `holmdigitalInsight`: A helpful, non-technical explanation.
 
-### Adding Translations
+### Contributing Components 🧩
+We follow a **Compliance-First** design philosophy.
 
-1. Edit the locale file in `packages/engine/src/locales/`
-2. Ensure all keys from `en.json` are present
-3. Test with `npx hd-a11y-scan <url> --lang <code>`
+- **No `<div>` Soup**: Use semantic HTML elements (`<nav>`, `<main>`, `<article>`) always.
+- **Strict Props**: Don't allow users to break accessibility.
+    - *Bad*: `aria-label?: string` (Optional)
+    - *Good*: `aria-label: string` (Required if no visible label exists)
+- **Forward Regs**: All functional components must use `React.forwardRef`.
+
+### Documentation 📚
+Code without documentation is technical debt.
+- **New Features**: Must update `README.md` and `docs/`.
+- **Bug Fixes**: Should include a reproduction case in the PR description.
 
 ### Code Style
-
-- Use TypeScript for all source files
-- Follow existing patterns in the codebase
-- Write tests for new functionality
-- Run linting before committing
+- **TypeScript**: Strict mode enabled. No `any`.
+- **Linting**: Run `npm run lint` before committing.
+- **Tests**: 100% coverage for compliance logic.
 
 ### Versioning & Releases (Important!) 🚨
 
@@ -117,6 +124,17 @@ When reporting issues, please include:
 - Steps to reproduce
 - Expected vs actual behavior
 - Any error messages or logs
+
+## Code of Conduct 💖
+
+We are committed to making participation in this project a harassment-free experience for everyone, regardless of level of experience, gender, gender identity and expression, sexual orientation, disability, personal appearance, body size, race, ethnicity, age, religion, or nationality.
+
+Examples of unacceptable behavior include:
+- The use of sexualized language or imagery.
+- Personal attacks, trolling, or insulting/derogatory comments.
+- Public or private harassment.
+
+Project maintainers have the right and responsibility to remove, edit, or reject comments, commits, code, wiki edits, issues, and other contributions that are not aligned with this Code of Conduct.
 
 ## License
 
