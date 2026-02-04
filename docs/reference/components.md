@@ -47,22 +47,29 @@ import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '@h
 *   **Backdrop:** Automatic backdrop with click-to-dismiss support.
 
 **Usage Example:**
+**Usage:**
 ```tsx
-import { Modal, Button } from '@holmdigital/components';
+import { Dialog, Button } from '@holmdigital/components';
 import { useState } from 'react';
 
 const MyDialog = () => {
-    const [open, setOpen] = useState(false);
+    const [isOpen, setIsOpen] = useState(false);
 
     return (
-        <Modal open={open} onOpenChange={setOpen}>
-            <h2 id="modal-title">Confirm Deletion</h2>
-            <p>Are you sure you want to delete this item?</p>
-            <div className="flex gap-2 mt-4">
-                <Button onClick={() => setOpen(false)}>Cancel</Button>
-                <Button variant="danger">Delete</Button>
-            </div>
-        </Modal>
+        <>
+            <Button onClick={() => setIsOpen(true)}>Open Dialog</Button>
+            <Dialog 
+                isOpen={isOpen} 
+                onClose={() => setIsOpen(false)}
+                title="Confirm Action"
+                description="This action cannot be undone."
+            >
+                <div className="flex gap-2 justify-end mt-4">
+                    <Button variant="ghost" onClick={() => setIsOpen(false)}>Cancel</Button>
+                    <Button variant="danger">Confirm</Button>
+                </div>
+            </Dialog>
+        </>
     );
 };
 ```
@@ -141,10 +148,68 @@ import { Card } from '@holmdigital/components';
 ### Other Navigation Components
 | Component | Description |
 |-----------|-------------|
-| **[Breadcrumbs](../../packages/components/src/Breadcrumbs)** | Navigation hierarchy trail. |
-| **[NavigationMenu](../../packages/components/src/NavigationMenu)** | Accessible site navigation menus. |
-| **[Pagination](../../packages/components/src/Pagination)** | Page navigation with `aria-current` support. |
-| **[TreeView](../../packages/components/src/TreeView)** | Hierarchical lists with roving tabindex. |
+### 16. Breadcrumbs
+**[Source Code](../../packages/components/src/Breadcrumbs)** | Status: ✅ Available
+
+**Usage:**
+```tsx
+<Breadcrumbs>
+  <BreadcrumbItem href="/">Home</BreadcrumbItem>
+  <BreadcrumbItem href="/settings">Settings</BreadcrumbItem>
+  <BreadcrumbItem isCurrent>Profile</BreadcrumbItem>
+</Breadcrumbs>
+```
+
+### 17. NavigationMenu
+**[Source Code](../../packages/components/src/NavigationMenu)** | Status: ✅ Available
+
+**Usage:**
+```tsx
+const items = [
+  { label: 'Home', href: '/' },
+  { 
+    label: 'Products', 
+    children: [
+      { label: 'Cloud', href: '/cloud' },
+      { label: 'On-Prem', href: '/on-prem' }
+    ] 
+  }
+];
+
+<NavigationMenu items={items} aria-label="Main" />
+```
+
+### 18. Pagination
+**[Source Code](../../packages/components/src/Pagination)** | Status: ✅ Available
+
+**Usage:**
+```tsx
+<Pagination
+  currentPage={page}
+  totalPages={10}
+  onPageChange={setPage}
+  ariaLabel="Search results pagination"
+/>
+```
+
+### 19. TreeView
+**[Source Code](../../packages/components/src/TreeView)** | Status: ✅ Available
+
+**Usage:**
+```tsx
+const files = [
+  { 
+    id: 'src', 
+    label: 'src', 
+    children: [{ id: 'app.tsx', label: 'App.tsx' }] 
+  }
+];
+
+<TreeView 
+  data={files} 
+  onSelect={(node) => console.log('Selected:', node.label)} 
+/>
+```
 
 ### 💡 Navigation Examples
 
@@ -169,16 +234,124 @@ export const App = () => (
 
 | Component | Description | Status |
 |-----------|-------------|--------|
-| **[Button](../../packages/components/src/Button)** | Standard interactive buttons. | ✅ Available |
-| **[Checkbox](../../packages/components/src/Checkbox)** | Tri-state checkboxes and groups. | ✅ Available |
-| **[Combobox](../../packages/components/src/Combobox)** | Accessible autocomplete/typeahead. | ✅ Available |
-| **[DatePicker](../../packages/components/src/DatePicker)** | Calendar input accessible to screen readers. | ✅ Available |
-| **[ErrorSummary](../../packages/components/src/ErrorSummary)** | Top-of-page error listing for form validation. | ✅ Available |
-| **[FormField](../../packages/components/src/FormField)** | Wrapper for labels, inputs, and error messages. | ✅ Available |
-| **[MultiSelect](../../packages/components/src/MultiSelect)** | Select multiple items with token management. | ✅ Available |
-| **[RadioGroup](../../packages/components/src/RadioGroup)** | Mutually exclusive option groups. | ✅ Available |
-| **[Select](../../packages/components/src/Select)** | Native or custom accessible dropdowns. | ✅ Available |
-| **[Switch](../../packages/components/src/Switch)** | Toggle switch for binary states. | ✅ Available |
+### 6. Button
+**[Source Code](../../packages/components/src/Button)** | Status: ✅ Available
+
+**Usage:**
+```tsx
+<div className="flex gap-2">
+  <Button variant="primary" onClick={save}>Save</Button>
+  <Button variant="secondary" onClick={cancel}>Cancel</Button>
+  <Button variant="danger" isLoading={isDeleting}>Delete</Button>
+</div>
+```
+
+### 7. Checkbox
+**[Source Code](../../packages/components/src/Checkbox)** | Status: ✅ Available
+
+**Usage:**
+```tsx
+<Checkbox 
+  label="I agree to terms" 
+  checked={agreed} 
+  onCheckedChange={setAgreed} 
+/>
+```
+
+### 8. Combobox
+**[Source Code](../../packages/components/src/Combobox)** | Status: ✅ Available
+
+**Usage:**
+```tsx
+const frameworks = [
+  { value: 'react', label: 'React' },
+  { value: 'vue', label: 'Vue' }
+];
+
+<Combobox
+  label="Choose Framework"
+  options={frameworks}
+  value={selected}
+  onChange={setSelected}
+  description="Select your primary JS framework."
+/>
+```
+
+### 9. DatePicker
+**[Source Code](../../packages/components/src/DatePicker)** | Status: ✅ Available
+
+**Usage:**
+```tsx
+<DatePicker
+  label="Birth Date"
+  error={errors.dob} // "Invalid date"
+  required
+/>
+```
+
+### 10. ErrorSummary
+**[Source Code](../../packages/components/src/ErrorSummary)** | Status: ✅ Available
+
+**Usage:**
+```tsx
+// Place at top of form
+<ErrorSummary 
+  errors={[
+    { id: 'email-input', message: 'Email is required' },
+    { id: 'password-input', message: 'Password is too short' }
+  ]} 
+/>
+```
+
+### 11. FormField
+**[Source Code](../../packages/components/src/FormField)** | Status: ✅ Available (See Forms & Input)
+
+### 12. MultiSelect
+**[Source Code](../../packages/components/src/MultiSelect)** | Status: ✅ Available (See Forms & Input)
+
+### 13. RadioGroup
+**[Source Code](../../packages/components/src/RadioGroup)** | Status: ✅ Available
+
+**Usage:**
+```tsx
+<RadioGroup
+  name="notifications"
+  label="Notification Settings"
+  options={[
+    { label: 'All Emails', value: 'all' },
+    { label: 'Mentions Only', value: 'mentions' }
+  ]}
+  value={pref}
+  onChange={setPref}
+/>
+```
+
+### 14. Select
+**[Source Code](../../packages/components/src/Select)** | Status: ✅ Available
+
+**Usage:**
+```tsx
+<Select value={role} onChange={setRole}>
+  <SelectTrigger placeholder="Pick a role" />
+  <SelectContent>
+    <SelectItem value="admin">Admin</SelectItem>
+    <SelectItem value="editor">Editor</SelectItem>
+    <SelectItem value="viewer">Viewer</SelectItem>
+  </SelectContent>
+</Select>
+```
+
+### 15. Switch
+**[Source Code](../../packages/components/src/Switch)** | Status: ✅ Available
+
+**Usage:**
+```tsx
+<Switch
+  label="Enable Dark Mode"
+  checked={isDark}
+  onCheckedChange={setIsDark}
+/>
+```
 
 ### 💡 Form Examples
 
@@ -219,11 +392,78 @@ import { MultiSelect } from '@holmdigital/components';
 
 | Component | Description | Status |
 |-----------|-------------|--------|
-| **[HelpText](../../packages/components/src/HelpText)** | Contextual help and instructions. | ✅ Available |
-| **[LiveRegion](../../packages/components/src/LiveRegion)** | Announce dynamic changes to screen readers. | ✅ Available |
-| **[ProgressBar](../../packages/components/src/ProgressBar)** | Visual and semantic progress indication. | ✅ Available |
-| **[Toast](../../packages/components/src/Toast)** | Transient notifications. | ✅ Available |
-| **[Tooltip](../../packages/components/src/Tooltip)** | Contextual information on hover/focus. | ✅ Available |
+### 20. HelpText
+**[Source Code](../../packages/components/src/HelpText)** | Status: ✅ Available
+
+**Usage:**
+```tsx
+<label htmlFor="pass">Password</label>
+<input id="pass" aria-describedby="pass-help" />
+<HelpText id="pass-help" variant="default" showIcon>
+  Must be at least 8 characters.
+</HelpText>
+```
+
+### 21. LiveRegion
+**[Source Code](../../packages/components/src/LiveRegion)** | Status: ✅ Available
+
+**Usage:**
+```tsx
+<LiveRegion 
+  message={statusMessage} // e.g., "Saving..." -> "Saved!"
+  ariaLive="polite" 
+  clearAfter={3000}
+/>
+```
+
+### 22. ProgressBar
+**[Source Code](../../packages/components/src/ProgressBar)** | Status: ✅ Available
+
+**Usage:**
+```tsx
+<ProgressBar 
+  value={75} 
+  label="Upload progress" 
+  showValueLabel 
+/>
+```
+
+### 23. Toast
+**[Source Code](../../packages/components/src/Toast)** | Status: ✅ Available
+
+**Usage:**
+```tsx
+// 1. Wrap app in Provider
+<ToastProvider>
+  <App />
+</ToastProvider>
+
+// 2. Use hook in components
+const { addToast } = useToast();
+
+const save = () => {
+  addToast({
+    title: 'Success',
+    description: 'Data saved successfully.',
+    type: 'success'
+  });
+};
+```
+
+### 24. Tooltip
+**[Source Code](../../packages/components/src/Tooltip)** | Status: ✅ Available
+
+**Usage:**
+```tsx
+<Tooltip>
+  <TooltipTrigger>
+    <button>Hover me</button>
+  </TooltipTrigger>
+  <TooltipContent>
+    This is accessible helper text
+  </TooltipContent>
+</Tooltip>
+```
 
 ### 💡 Feedback Examples
 
