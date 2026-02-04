@@ -18,7 +18,7 @@ These components are **Compliant by Default**. They automatically handle:
 
 Using these components significantly reduces the risk of regulatory violations in your UI.
 
-For a full list of all 29 accessible components, including practical code examples and advanced usage patterns, see the **[Component Library Catalog](../../docs/component-library.md)**.
+For a full list of all 29 accessible components, including practical code examples and advanced usage patterns, see the **[Component Library Catalog](../../docs/reference/components.md)**.
 
 ## Installation
 

@@ -19,7 +19,7 @@ This package serves as the **Single Source of Truth** for accessibility complian
 
 It allows developers to query: *"Which law mandates WCAG 1.4.3 in Sweden?"* and get the exact legal paragraph (`Lag (2018:1937) 12 §`).
 
-For the full regulatory database details, API reference, and legal framework mappings (WAD/EAA), see the **[Standards Library Catalog](../../docs/standards-library.md)**.
+For the full regulatory database details, API reference, and legal framework mappings (WAD/EAA), see the **[Standards Library Catalog](../../docs/reference/standards.md)**.
 
 ## Installation
 

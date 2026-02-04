@@ -27,9 +27,9 @@ A professional accessibility ecosystem bridging the gap between technical code v
 
 Comprehensive guides for each layer of the ecosystem:
 
-*   **[Component Library Catalog](./docs/component-library.md)** - 29+ accessible React components with usage examples.
-*   **[Standards Library Catalog](./docs/standards-library.md)** - Regulatory database, legal mappings (WAD/EAA), and localized rules.
-*   **[Engine Library Catalog](./docs/engine-library.md)** - CLI reference, configuration guides, and CI/CD integration.
+*   **[Component Library Catalog](./docs/reference/components.md)** - 29+ accessible React components with usage examples.
+*   **[Standards Library Catalog](./docs/reference/standards.md)** - Regulatory database, legal mappings (WAD/EAA), and localized rules.
+*   **[Engine Library Catalog](./docs/reference/engine.md)** - CLI reference, configuration guides, and CI/CD integration.
 
 ## 📦 Packages
 
