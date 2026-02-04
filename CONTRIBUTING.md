@@ -86,14 +86,29 @@ a11y-hd/
 - Write tests for new functionality
 - Run linting before committing
 
+### Versioning & Releases (Important!) 🚨
+
+We use [Changesets](https://github.com/changesets/changesets) to manage versions.
+
+**If your PR contains a user-facing change (bug fix, new feature), you MUST run:**
+```bash
+npx changeset
+```
+1. Select the packages you modified.
+2. Choose the bump type (`major`, `minor`, or `patch`).
+3. Write a summary of your change.
+
+This creates a markdown file in `.changeset/`. Without this, your changes will be merged but **never published to npm**.
+
 ## Pull Request Process
 
 1. Fork the repository
 2. Create a feature branch (`git checkout -b feature/my-feature`)
 3. Make your changes
-4. Run tests (`npm test -w @holmdigital/engine`)
-5. Commit with conventional commits (`feat:`, `fix:`, `docs:`, etc.)
-6. Push and open a Pull Request
+4. Run tests (`npm test`)
+5. **Run `npx changeset` (if applicable)**
+6. Commit with conventional commits (`feat:`, `fix:`, `docs:`, etc.)
+7. Push and open a Pull Request
 
 ## Reporting Issues
 
