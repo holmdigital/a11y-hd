@@ -104,3 +104,37 @@ The standard for modern monorepos.
 - **Zero manual publishing.**
 - **Synchronized versions.**
 - **Changelogs are auto-generated.**
+
+## 5. Visual Workflow
+
+This diagram illustrates how the Open Source SDK and Private Wiki interact via automated pipelines.
+
+```mermaid
+graph TD
+    %% Roles
+    Dev[👱 Developer]
+    CI[🤖 GitHub Actions]
+    NPM[📦 npm Registry]
+    Wiki[🌐 Wiki Repo]
+
+    %% Flow
+    Dev -- "1. Push Code + Changeset" --> Main[Main Branch]
+    
+    subgraph "Public Repo (SDK)"
+        Main -- "2. Auto-create PR" --> VersionPR[📝 Version Packages PR]
+        VersionPR -- "3. Merge PR" --> ReleaseJob[🚀 Release Job]
+        ReleaseJob -- "4. Publish" --> NPM
+    end
+
+    subgraph "Private Repo (Wiki)"
+        NPM -- "5. Detect Update" --> Renovate[🤖 Renovate/Dependabot]
+        Renovate -- "6. Open PR" --> WikiPR[📝 Update Deps PR]
+        WikiPR -- "7. Merge" --> BuildWiki[🏗️ Build & Deploy]
+        BuildWiki -- "8. Publish" --> Website[🌍 wiki.holmdigital.se]
+    end
+
+    %% Styles
+    style Dev fill:#f9f,stroke:#333
+    style NPM fill:#cc3534,color:white
+    style Website fill:#4caf50,color:white
+```
