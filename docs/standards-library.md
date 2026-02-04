@@ -8,23 +8,27 @@ It is designed to protect you from legal complexity by hard-coding compliance lo
 ## 📦 What's Inside?
 
 ### 1. 🌍 Localized Rule Engines
-Instead of generic English error messages, we provide native translations for 12+ locales, customized for local legal terminology.
-
-| Language | Locale | Status |
-|----------|--------|--------|
-| **Swedish** | `sv` | ✅ Complete (matches DOS-lagen) |
-| **English (UK)** | `en-gb` | ✅ Complete (matches UK PSBAR) |
-| **English (EU)** | `en` | ✅ Complete (matches EN 301 549) |
-| **German** | `de` | ✅ Complete (matches BITV 2.0) |
-| **French** | `fr` | ✅ Complete (matches RGAA) |
-| **Spanish** | `es` | ✅ Complete (matches UNE 139803) |
-| **Finnish** | `fi` | ✅ Complete (matches Digi-laki) |
-| **Norwegian** | `no` | ✅ Complete (matches Uu-tilsynet) |
-| **Danish** | `da` | ✅ Complete (matches WAD-DK) |
-| **Dutch** | `nl` | ✅ Complete (matches Digitoegankelijk) |
+The package includes localized translations for rules and remediations:
+- **Swedish** (`sv`) - Full DOS-lagen alignment.
+- **English (EU)** (`en`) - Baseline WAD criteria.
+- **English (UK)** (`en-gb`) - PSBAR terminology.
+- **English (US)** (`en-us`) - Section 508 / ADA context.
+- **English (CA)** (`en-ca`) - AODA implementation.
+- **German** (`de`) - BITV 2.0 terminology.
+- **French** (`fr`) - RGAA compatibility.
+- **Spanish** (`es`) - UNE 139803 alignment.
+- **Finnish** (`fi`) - 306/2019 alignment.
+- **Norwegian** (`no`) - Universell utforming context.
+- **Danish** (`da`) - Tilgængelighed compliance.
+- **Dutch** (`nl`) - Digitoegankelijk alignment.
 
 ### 2. ⚖️ Legal Frameworks (The "Law Layer")
 We map technical rules to actual legislation.
+
+- **UK (PSBAR)**: Full mapping of Public Sector Bodies Regulations 2018.
+- **USA (Section 508 / ADA)**: Support for Rehabilitation Act and ADA standards.
+- **Canada (AODA)**: Alignment with Ontario and Federal accessibility acts.
+- **EAA Ready**: All rules are tagged for the June 2025 European Accessibility Act deadline.
 
 | Framework | Description |
 |-----------|-------------|

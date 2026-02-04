@@ -308,6 +308,128 @@
                 "inForce": true,
                 "effectiveDate": "2020-09-23"
             }
+        ],
+        "NL": [
+            {
+                "id": "nl-wad",
+                "law": "Tijdelijk besluit digitale toegankelijkheid overheid",
+                "fullName": "Besluit av 30 juni 2018, houdende regels voor de toegankelijkheid av digitale overheidsdienstverlening",
+                "euFramework": "WAD",
+                "scope": "public",
+                "lawUrl": "https://wetten.overheid.nl/BWBR0040990/",
+                "enforcement": {
+                    "authority": "nl-bzk",
+                    "authorityName": "Ministerie van Binnenlandse Zaken en Koninkrijksrelaties",
+                    "responsibility": "Monitoring en rapportage over naleving door overheidsinstanties.",
+                    "website": "https://www.digitoegankelijk.nl"
+                },
+                "sanctions": {
+                    "type": "Feedback / Rapportage",
+                    "description": "Naleving wordt gecontroleerd via periodieke audits och dashboards (A-E score).",
+                    "minAmount": 0,
+                    "maxAmount": 0,
+                    "currency": "EUR"
+                },
+                "inForce": true,
+                "effectiveDate": "2018-07-01"
+            },
+            {
+                "id": "nl-eaa",
+                "law": "Warenwetbesluit toegankelijkheidseisen producten en diensten",
+                "fullName": "Implementatie van de Richtlijn (EU) 2019/882 (EAA)",
+                "euFramework": "EAA",
+                "scope": "private",
+                "enforcement": {
+                    "authority": "nl-acm",
+                    "authorityName": "Autoriteit Consument & Markt (ACM)",
+                    "responsibility": "Markttoezicht op digitale diensten en e-commerce.",
+                    "website": "https://www.acm.nl"
+                },
+                "sanctions": {
+                    "type": "Bestuurlijke boete",
+                    "description": "Boetes bij overtreding van de Warenwet eller EAA-voorschriften.",
+                    "minAmount": 0,
+                    "maxAmount": 900000,
+                    "currency": "EUR"
+                },
+                "inForce": false,
+                "effectiveDate": "2025-06-28"
+            }
+        ],
+        "GB": [
+            {
+                "id": "gb-psbar",
+                "law": "PSBAR 2018",
+                "fullName": "The Public Sector Bodies (Websites and Mobile Applications) (No. 2) Accessibility Regulations 2018",
+                "euFramework": "WAD",
+                "scope": "public",
+                "lawUrl": "https://www.legislation.gov.uk/uksi/2018/952/contents/made",
+                "enforcement": {
+                    "authority": "gb-cddo",
+                    "authorityName": "Central Digital and Data Office (CDDO)",
+                    "responsibility": "Monitoring and reporting on public sector compliance.",
+                    "website": "https://www.gov.uk/guidance/accessibility-requirements-for-public-sector-websites-and-apps"
+                },
+                "sanctions": {
+                    "type": "Unlawful Act Notice / Legal Action",
+                    "description": "Enforced via the Equality Act 2010. EHRC can issue unlawful act notices.",
+                    "minAmount": 0,
+                    "maxAmount": 0,
+                    "currency": "GBP"
+                },
+                "inForce": true,
+                "effectiveDate": "2018-09-23"
+            }
+        ],
+        "US": [
+            {
+                "id": "us-508",
+                "law": "Section 508",
+                "fullName": "Section 508 of the Rehabilitation Act of 1973",
+                "euFramework": "WAD",
+                "scope": "public",
+                "lawUrl": "https://www.section508.gov/",
+                "enforcement": {
+                    "authority": "us-gsa",
+                    "authorityName": "General Services Administration (GSA)",
+                    "responsibility": "Management and oversight of accessibility in federal agencies.",
+                    "website": "https://www.section508.gov"
+                },
+                "sanctions": {
+                    "type": "Complaint / Lawsuit",
+                    "description": "Individuals can file complaints or lawsuits under Section 508 or ADA.",
+                    "minAmount": 0,
+                    "maxAmount": 0,
+                    "currency": "USD"
+                },
+                "inForce": true,
+                "effectiveDate": "2001-06-21"
+            }
+        ],
+        "CA": [
+            {
+                "id": "ca-aoda",
+                "law": "AODA",
+                "fullName": "Accessibility for Ontarians with Disabilities Act, 2005",
+                "euFramework": "WAD",
+                "scope": "both",
+                "lawUrl": "https://www.ontario.ca/laws/statute/05a11",
+                "enforcement": {
+                    "authority": "ca-ado",
+                    "authorityName": "Accessibility Directorate of Ontario",
+                    "responsibility": "Oversight and enforcement of accessibility standards in Ontario.",
+                    "website": "https://www.ontario.ca/page/accessibility-laws"
+                },
+                "sanctions": {
+                    "type": "Daily Fines",
+                    "description": "Significant fines for major violations, up to $100,000 per day for corporations.",
+                    "minAmount": 200,
+                    "maxAmount": 100000,
+                    "currency": "CAD"
+                },
+                "inForce": true,
+                "effectiveDate": "2005-06-13"
+            }
         ]
     }
 }

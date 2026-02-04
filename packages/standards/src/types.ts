@@ -11,7 +11,7 @@ export type TestComplexity = 'simple' | 'moderate' | 'complex';
 // EU Legal Framework types
 export type LegalFramework = 'WAD' | 'EAA';
 export type Sector = 'public' | 'private' | 'both';
-export type Country = 'SE' | 'NO' | 'DK' | 'FI' | 'NL' | 'DE' | 'FR' | 'ES' | 'IE' | 'EU';
+export type Country = 'SE' | 'NO' | 'DK' | 'FI' | 'NL' | 'DE' | 'FR' | 'ES' | 'IE' | 'GB' | 'US' | 'CA' | 'EU';
 
 /**
  * Convergence Schema Rule

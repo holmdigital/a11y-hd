@@ -7,9 +7,14 @@ A professional accessibility ecosystem bridging the gap between technical code v
 
 - **Regulatory Mapping**: Automatically maps WCAG failures to EN 301 549 and national laws:
     - 🇸🇪 **DOS-lagen** (Sweden)
+    - 🇫🇮 **Laki digitaalisten palvelujen saavutettavuudesta** (Finland)
+    - 🇳🇴 **Forskrift om universell utforming av IKT** (Norway)
+    - 🇩🇰 **Lov om tilgængelighed** (Denmark)
     - 🇳🇱 **Digitoegankelijk** (Netherlands)
     - 🇩🇪 **BITV 2.0** (Germany)
     - 🇫🇷 **RGAA** (France)
+    - 🇪🇸 **UNE 139803** (Spain)
+    - 🇮🇪 **S.I. No. 358/2020** (Ireland)
     - 🇬🇧 **PSBAR** (UK)
     - 🇺🇸 **Section 508 / ADA** (USA)
     - 🇨🇦 **AODA** (Canada)

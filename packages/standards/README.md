@@ -133,14 +133,18 @@ const sectors = getSectorAuthorities('SE');
 
 | Country | WAD Law | EAA Law | Max Sanction |
 |---------|---------|---------|--------------|
-| 🇸🇪 SE | DOS-lagen | LPTT | 10M SEK |
+| 🇸🇪 SE | DOS-lagen | LPTT | 1M SEK (Vite) / 10M SEK (EAA) |
+| 🇳🇱 NL | Digitoegankelijk | Warenwet | 900k EUR |
 | 🇩🇪 DE | BITV 2.0 | BFSG | 500k EUR |
 | 🇫🇷 FR | RGAA | - | 300k EUR |
-| 🇪🇸 ES | UNE 139803 | - | 1M EUR |
+| 🇪🇸 ES | Real Decreto | - | 1M EUR |
 | 🇮🇪 IE | S.I. 358/2020 | - | 60k EUR |
 | 🇳🇴 NO | IKT-forskrift | - | Daily fines |
 | 🇫🇮 FI | 306/2019 | EAA | Vite |
 | 🇩🇰 DK | Tilgængelighed | - | Fines |
+| 🇬🇧 GB | PSBAR | - | Unlawful Act Notice |
+| 🇺🇸 US | Section 508 | - | Civil Rights Complaint |
+| 🇨🇦 CA | AODA | - | $100k per day |
 
 ## API Reference
 

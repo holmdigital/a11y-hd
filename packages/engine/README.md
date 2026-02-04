@@ -45,7 +45,7 @@ npx hd-a11y-scan <url> [options]
 **Options:**
 | Option | Description |
 |--------|-------------|
-| `--lang <code>` | Language code (`en`, `sv`, `de`, `fr`, `es`, `nl`, `en-us`, `en-gb`) |
+| `--lang <code>` | Language code (`en`, `sv`, `de`, `fr`, `es`, `nl`, `no`, `fi`, `da`, `en-gb`, `en-us`, `en-ca`) |
 | `--threshold <level>` | Severity threshold for compliance (`critical`, `high`, `medium`, `low`). Default: `high` |
 | `--ci` | Run in CI mode (exit code 1 on failure) |
 | `--json` | Output results as JSON |
