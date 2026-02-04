@@ -92,13 +92,13 @@ The standard for modern monorepos.
 2.  **Intent:** You run `npx changeset` locally and type a summary (e.g., "Added EAA rules"). This creates a small Markdown file in the repo.
 3.  **PR:** You push the code + the changeset file.
 4.  **Merge:** When you merge to `main`:
-    *   GitHub Actions sees the changeset file.
-    *   It creates a **"Version Packages" Pull Request**.
-    *   This PR calculates all new versions (handling dependencies automatically).
+    - GitHub Actions sees the changeset file.
+    - It creates a **"Version Packages" Pull Request**.
+    - This PR calculates all new versions (handling dependencies automatically).
 5.  **Release:** When you merge *that* "Version Packages" PR:
-    *   GitHub Actions runs `npm publish`.
-    *   It pushes new git tags (`v1.2.0`).
-    *   It creates GitHub Releases with changelogs.
+    - GitHub Actions runs `npm publish`.
+    - It pushes new git tags (`v1.2.0`).
+    - It creates GitHub Releases with changelogs.
 
 **Benefits:**
 - **Zero manual publishing.**
