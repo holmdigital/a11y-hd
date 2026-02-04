@@ -1,67 +1,75 @@
 import React, { useEffect, useState, useRef } from 'react';
 
-export interface LiveRegionProps {
+export type LiveRegionProps = {
     /**
-     * The content to be announced. Changing this content triggers the announcement.
+     * The message to announce to screen readers.
+     * Changing this prop will trigger a new announcement.
      */
-    children?: React.ReactNode;
+    message?: string;
+
     /**
      * The politeness level of the announcement.
-     * - 'polite': Waiting for the user to be idle (default).
-     * - 'assertive': Interrupts the user immediately.
-     * - 'off': Updates are not announced.
+     * 'polite': Waits for the user to pause functionality before speaking (default).
+     * 'assertive': Interrupts the user immediately. Use sparingly!
      */
-    politeness?: 'polite' | 'assertive' | 'off';
+    ariaLive?: 'polite' | 'assertive';
+
     /**
-     * Optional class name for the container.
+     * Optional cleanup time in ms. 
+     * Useful if you want the region to clear itself after announcing.
      */
-    className?: string;
-    /**
-     * If true, the container is visually hidden but available to screen readers.
-     * Default: true
-     */
-    visuallyHidden?: boolean;
-}
+    clearAfter?: number;
+};
 
 /**
- * LiveRegion
- * 
- * A utility component to announce dynamic content changes to screen readers.
- * Useful for status updates, form errors, or external events.
+ * LiveRegion component for making dynamic announcements to screen readers.
+ * This component is visually hidden but essential for accessibility in SPAs.
  * 
  * @example
- * <LiveRegion politeness="assertive">
- *   {hasError ? "Error: Invalid Input" : ""}
- * </LiveRegion>
+ * <LiveRegion message="Search results updated" ariaLive="polite" />
  */
 export const LiveRegion: React.FC<LiveRegionProps> = ({
-    children,
-    politeness = 'polite',
-    className = '',
-    visuallyHidden = true
+    message,
+    ariaLive = 'polite',
+    clearAfter
 }) => {
-    // Styles for visually hidden content (SR-only)
-    const hiddenStyle: React.CSSProperties = visuallyHidden ? {
-        position: 'absolute',
-        width: '1px',
-        height: '1px',
-        padding: '0',
-        margin: '-1px',
-        overflow: 'hidden',
-        clip: 'rect(0, 0, 0, 0)',
-        whiteSpace: 'nowrap',
-        border: '0'
-    } : {};
+    const [announcement, setAnnouncement] = useState<string>('');
+    const timeoutRef = useRef<NodeJS.Timeout>();
+
+    useEffect(() => {
+        if (message) {
+            // Clear any existing timeout
+            if (timeoutRef.current) clearTimeout(timeoutRef.current);
+
+            // Set the announcement
+            setAnnouncement(message);
+
+            // Optional: Clear after X ms (often needed so if the same message comes again, it is re-announced)
+            if (clearAfter) {
+                timeoutRef.current = setTimeout(() => {
+                    setAnnouncement('');
+                }, clearAfter);
+            }
+        }
+    }, [message, clearAfter]);
 
     return (
         <div
-            role={politeness === 'assertive' ? 'alert' : 'status'}
-            aria-live={politeness}
+            aria-live={ariaLive}
             aria-atomic="true"
-            className={`hd-live-region ${className}`}
-            style={hiddenStyle}
+            style={{
+                position: 'absolute',
+                width: 1,
+                height: 1,
+                padding: 0,
+                margin: -1,
+                overflow: 'hidden',
+                clip: 'rect(0, 0, 0, 0)',
+                whiteSpace: 'nowrap',
+                border: 0,
+            }}
         >
-            {children}
+            {announcement}
         </div>
     );
 };

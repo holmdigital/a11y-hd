@@ -324,6 +324,57 @@ export const AccessibilityStatement: React.FC<AccessibilityStatementProps> = ({
     // Use selected locale or default to English
     const t = translations[locale] || translations['en'];
 
+    const styles: Record<string, React.CSSProperties> = {
+        container: {
+            fontFamily: 'system-ui, sans-serif',
+            maxWidth: '800px',
+            margin: '0 auto',
+            padding: '2rem',
+            backgroundColor: '#ffffff',
+            border: '1px solid #e2e8f0',
+            borderRadius: '8px',
+            color: '#1e293b'
+        },
+        heading: {
+            fontSize: '2rem',
+            fontWeight: 700,
+            marginBottom: '1.5rem',
+            borderBottom: '2px solid #e2e8f0',
+            paddingBottom: '0.5rem'
+        },
+        section: {
+            marginBottom: '2rem'
+        },
+        sectionTitle: {
+            fontSize: '1.25rem',
+            fontWeight: 600,
+            marginBottom: '1rem',
+            color: '#0f172a'
+        },
+        paragraph: {
+            marginBottom: '1rem',
+            lineHeight: 1.6
+        },
+        link: {
+            color: '#2563eb',
+            textDecoration: 'underline'
+        },
+        list: {
+            listStyleType: 'disc',
+            paddingLeft: '1.5rem',
+            marginBottom: '1rem'
+        },
+        listItem: {
+            marginBottom: '0.5rem'
+        }
+    };
+
+    const badgeStyle: React.CSSProperties = {
+        marginLeft: '1rem',
+        fontSize: '0.8em',
+        verticalAlign: 'middle'
+    };
+
     return (
         <article
             className={className}

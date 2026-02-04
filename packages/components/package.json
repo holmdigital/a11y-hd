@@ -109,6 +109,10 @@
         "./TreeView": {
             "types": "./dist/TreeView/TreeView.d.ts",
             "import": "./dist/TreeView/TreeView.mjs"
+        },
+        "./LiveRegion": {
+            "types": "./dist/LiveRegion/LiveRegion.d.ts",
+            "import": "./dist/LiveRegion/LiveRegion.mjs"
         }
     },
     "files": [
@@ -116,8 +120,8 @@
         "README.md"
     ],
     "scripts": {
-        "build": "tsup src/index.ts src/Button/Button.tsx src/FormField/FormField.tsx src/Dialog/Dialog.tsx src/Modal/Modal.tsx src/SkipLink/SkipLink.tsx src/NavigationMenu/NavigationMenu.tsx src/Checkbox/Checkbox.tsx src/RadioGroup/RadioGroup.tsx src/Select/Select.tsx src/Switch/Switch.tsx src/Toast/Toast.tsx src/Tooltip/Tooltip.tsx src/Heading/Heading.tsx src/AccessibilityStatement/AccessibilityStatement.tsx src/ErrorSummary/ErrorSummary.tsx src/Combobox/Combobox.tsx src/DatePicker/DatePicker.tsx src/MultiSelect/MultiSelect.tsx src/DataTable/DataTable.tsx src/Pagination/Pagination.tsx src/Card/Card.tsx src/TreeView/TreeView.tsx --format cjs,esm --dts --clean --external react --external @holmdigital/standards",
-        "dev": "tsup src/index.ts src/Button/Button.tsx src/FormField/FormField.tsx src/Dialog/Dialog.tsx src/Modal/Modal.tsx src/SkipLink/SkipLink.tsx src/NavigationMenu/NavigationMenu.tsx src/Checkbox/Checkbox.tsx src/RadioGroup/RadioGroup.tsx src/Select/Select.tsx src/Switch/Switch.tsx src/Toast/Toast.tsx src/Tooltip/Tooltip.tsx src/Heading/Heading.tsx src/AccessibilityStatement/AccessibilityStatement.tsx src/ErrorSummary/ErrorSummary.tsx src/Combobox/Combobox.tsx src/DatePicker/DatePicker.tsx src/MultiSelect/MultiSelect.tsx src/DataTable/DataTable.tsx src/Pagination/Pagination.tsx src/Card/Card.tsx src/TreeView/TreeView.tsx --format cjs,esm --dts --watch --external react --external @holmdigital/standards",
+        "build": "tsup src/index.ts src/Button/Button.tsx src/FormField/FormField.tsx src/Dialog/Dialog.tsx src/Modal/Modal.tsx src/SkipLink/SkipLink.tsx src/NavigationMenu/NavigationMenu.tsx src/Checkbox/Checkbox.tsx src/RadioGroup/RadioGroup.tsx src/Select/Select.tsx src/Switch/Switch.tsx src/Toast/Toast.tsx src/Tooltip/Tooltip.tsx src/Heading/Heading.tsx src/AccessibilityStatement/AccessibilityStatement.tsx src/ErrorSummary/ErrorSummary.tsx src/Combobox/Combobox.tsx src/DatePicker/DatePicker.tsx src/MultiSelect/MultiSelect.tsx src/DataTable/DataTable.tsx src/Pagination/Pagination.tsx src/Card/Card.tsx src/TreeView/TreeView.tsx src/LiveRegion/LiveRegion.tsx --format cjs,esm --dts --clean --external react --external @holmdigital/standards",
+        "dev": "tsup src/index.ts src/Button/Button.tsx src/FormField/FormField.tsx src/Dialog/Dialog.tsx src/Modal/Modal.tsx src/SkipLink/SkipLink.tsx src/NavigationMenu/NavigationMenu.tsx src/Checkbox/Checkbox.tsx src/RadioGroup/RadioGroup.tsx src/Select/Select.tsx src/Switch/Switch.tsx src/Toast/Toast.tsx src/Tooltip/Tooltip.tsx src/Heading/Heading.tsx src/AccessibilityStatement/AccessibilityStatement.tsx src/ErrorSummary/ErrorSummary.tsx src/Combobox/Combobox.tsx src/DatePicker/DatePicker.tsx src/MultiSelect/MultiSelect.tsx src/DataTable/DataTable.tsx src/Pagination/Pagination.tsx src/Card/Card.tsx src/TreeView/TreeView.tsx src/LiveRegion/LiveRegion.tsx --format cjs,esm --dts --watch --external react --external @holmdigital/standards",
         "lint": "eslint src --ext .ts,.tsx",
         "test": "vitest",
         "test:ci": "vitest run",
@@ -140,8 +144,10 @@
         "react-dom": ">=18.0.0"
     },
     "devDependencies": {
+        "@testing-library/react": "^16.3.2",
         "@types/react": "^18.2.0",
         "@types/react-dom": "^18.2.0",
+        "jsdom": "^28.0.0",
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
         "storybook": "^10.2.4",
