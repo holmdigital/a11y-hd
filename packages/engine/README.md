@@ -15,6 +15,9 @@ It handles the heavy lifting of:
 1.  **Mapping** technical failures to specific legal clauses.
 2.  **Validating** HTML structure to ensure test accuracy.
 3.  **Reporting** in multiple languages (EN, SV, NL, DE, FR, ES) for non-technical stakeholders.
+4.  **CI/CD Pipeline Integration** with automatic enforcement.
+
+For a comprehensive guide on CLI flags, CI/CD integration, and configuration files, see the **[Engine Library Catalog](../../docs/engine-library.md)**.
 
 ## Features
 
