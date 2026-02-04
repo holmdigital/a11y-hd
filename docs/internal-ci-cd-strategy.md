@@ -118,19 +118,19 @@ graph TD
     Wiki[🌐 Wiki Repo]
 
     %% Flow
-    Dev -- "1. Push Code + Changeset" --> Main[Main Branch]
+    Dev -- "Push Code & Changeset" --> Main[Main Branch]
     
     subgraph "Public Repo (SDK)"
-        Main -- "2. Auto-create PR" --> VersionPR[📝 Version Packages PR]
-        VersionPR -- "3. Merge PR" --> ReleaseJob[🚀 Release Job]
-        ReleaseJob -- "4. Publish" --> NPM
+        Main -- "Auto-create PR" --> VersionPR[📝 Version Packages PR]
+        VersionPR -- "Merge PR" --> ReleaseJob[🚀 Release Job]
+        ReleaseJob -- "Publish" --> NPM
     end
 
     subgraph "Private Repo (Wiki)"
-        NPM -- "5. Detect Update" --> Renovate[🤖 Renovate/Dependabot]
-        Renovate -- "6. Open PR" --> WikiPR[📝 Update Deps PR]
-        WikiPR -- "7. Merge" --> BuildWiki[🏗️ Build & Deploy]
-        BuildWiki -- "8. Publish" --> Website[🌍 wiki.holmdigital.se]
+        NPM -- "Detect Update" --> Renovate[🤖 Renovate/Dependabot]
+        Renovate -- "Open PR" --> WikiPR[📝 Update Deps PR]
+        WikiPR -- "Merge" --> BuildWiki[🏗️ Build & Deploy]
+        BuildWiki -- "Publish" --> Website[🌍 wiki.holmdigital.se]
     end
 
     %% Styles
