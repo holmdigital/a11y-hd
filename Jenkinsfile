@@ -1,4 +1,5 @@
 pipeline {
+    // NOTE: Requires 'Docker Pipeline' plugin to be installed in Jenkins
     agent {
         docker {
             image 'node:20-slim'
