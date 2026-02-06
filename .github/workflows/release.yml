@@ -37,11 +37,27 @@ jobs:
       - name: Build Engine (Dependency Level 3)
         run: npm run build -w @holmdigital/engine
 
-      - name: Create Release Pull Request or Publish to npm
+      - name: Create Release Pull Request
         id: changesets
         uses: changesets/action@v1
         with:
-          publish: npm run release
+          # Only use the action for versioning/PR creation
+          version: npx changeset version
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Publish to NPM (OIDC)
+        # Only publish if on master and there are no changeset files left
+        if: github.ref == 'refs/heads/master'
+        run: |
+          if [ -z "$(ls .changeset/*.md 2>/dev/null | grep -v 'README.md')" ]; then
+            echo "No changesets found, attempting to publish..."
+            # Configure npm to use OIDC (tokenless)
+            npm config set //registry.npmjs.org/:_authToken ""
+            npx changeset publish --provenance
+          else
+            echo "Changesets still present, skipping publish step."
+          fi
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           # id-token: write permission handles auth via Trusted Publishing
