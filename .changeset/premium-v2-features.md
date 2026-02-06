@@ -1,7 +1,7 @@
 ---
-"@holmdigital/engine": minor
-"@holmdigital/components": minor
-"@holmdigital/standards": minor
+"@holmdigital/engine": major
+"@holmdigital/components": majo
+"@holmdigital/standards": major
 ---
 
 # 🚀 Release Overview: Premium Ecosystem & Nordic Expansion
