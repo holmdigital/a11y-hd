@@ -18,6 +18,8 @@ function MyPage() {
       lastReviewDate={new Date('2026-01-15')}
       contactEmail="tillganglighet@exempel.se"
       locale="sv"
+      publishDate={new Date('2024-02-06')}
+      badgeUrl="https://img.shields.io/badge/HolmDigital_Engine-100%25-00703C?style=flat-square"
     />
   );
 }
@@ -27,16 +29,37 @@ function MyPage() {
 
 | Prop | Type | Required | Description |
 |------|------|----------|-------------|
-| `country` | `'SE' \| 'NO' \| 'DK' \| 'FI' \| 'DE' \| 'FR' \| 'ES' \| 'IE'` | ✓ | Country code |
+| `country` | `'SE' \| 'NO' \| 'DK' \| 'FI' \| 'NL' \| 'DE' \| 'FR' \| 'ES' \| 'IE' \| 'GB' \| 'US' \| 'CA' \| 'EU'` | ✓ | Country code |
 | `sector` | `'public' \| 'private'` | ✓ | Determines WAD or EAA |
 | `organizationName` | `string` | ✓ | Organization name |
 | `websiteUrl` | `string` | ✓ | Website URL |
 | `complianceLevel` | `'full' \| 'partial' \| 'non-compliant'` | ✓ | Current status |
 | `lastReviewDate` | `Date` | ✓ | Last review date |
 | `contactEmail` | `string` | ✓ | Contact email |
+| `phoneNumber` | `string` | | Contact phone number |
+| `responseTime` | `string` | | Expected response time (e.g., "2 days") |
+| `assessmentDate` | `Date` | | Date when the assessment was performed |
+| `evaluationMethod` | `string` | | Method used (e.g., "Automated Scan") |
+| `generatorTool` | `{ name: string, url: string }` | | Tool used to generate this statement |
 | `nonComplianceItems` | `string[]` | | Known issues |
-| `locale` | `'sv' \| 'en'` | | Language (default: 'en') |
+| `locale` | `'sv' \| 'en' \| 'no' \| 'fi' \| 'da' \| 'de' \| 'fr' \| 'es' \| 'nl'` | | Language (default: 'en') |
+| `logoUrl` | `string` | | URL or Data URI for organization logo |
+| `badgeUrl` | `string` | | URL for a compliance badge (e.g. Shields.io) |
+| `publishDate` | `Date` | | Date when the website was first published |
 | `className` | `string` | | Extra CSS class |
+
+## Config & CLI Mapping
+
+When using the `@holmdigital/engine` CLI or a `.a11yrc` configuration file, the keys are simplified. They map to the props above as follows:
+
+| CLI Flag / Config Key | Component Prop |
+| :--- | :--- |
+| `--org` / `"org"` | `organizationName` |
+| `--email` / `"email"` | `contactEmail` |
+| `--phone` / `"phone"` | `phoneNumber` |
+| `--response-time` / `"responseTime"` | `responseTime` |
+| `--country` / `"country"` | `country` |
+| `--publish-date` / `"publishDate"` | `publishDate` |
 
 ## What Gets Generated
 
@@ -93,22 +116,21 @@ The component automatically includes:
 - ⚠️ EAA deadline: June 28, 2025
 - 💶 Sanctions up to 500,000 EUR
 
-## Styling
+## Styling & Premium V2
 
-The component uses inline styles by default. Override with `className`:
+Since version 1.4.0, the component defaults to the **Premium V2** design, which includes:
+- **Glassmorphism Cards**: Sections are grouped into modern translucent cards.
+- **Embedded Icons**: Automatic Lucide-style SVG icons for scannability.
+- **Micro-animations**: Subtle interactions for a premium feel.
+
+Override styles with `className` or use theme tokens:
 
 ```tsx
 <AccessibilityStatement
   className="my-custom-statement"
+  logoUrl="data:image/png;base64,..."
   // ...other props
 />
-```
-
-```css
-.my-custom-statement {
-  font-family: 'Roboto', sans-serif;
-  border-radius: 16px;
-}
 ```
 
 ## Official Statement Tools
@@ -116,11 +138,11 @@ The component uses inline styles by default. Override with `className`:
 For official statement generators, use the API:
 
 ```typescript
-import { getStatementTools } from '@holmdigital/standards';
-
-const tools = getStatementTools();
-// [
-//   { id: 'digg-generator', name: 'Digg Accessibility Statement Generator', ... },
-//   { id: 'eu-model-statement', name: 'EU Model Accessibility Statement', ... }
-// ]
+import { getStatementToolsByCountry } from '@holmdigital/standards';
+ 
+ const tools = getStatementToolsByCountry('SE');
+ // [
+ //   { id: 'digg-generator', name: 'Digg Accessibility Statement Generator', recommended: true, ... },
+ //   { id: 'eu-model-statement', name: 'EU Model Accessibility Statement', ... }
+ // ]
 ```

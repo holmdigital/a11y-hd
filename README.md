@@ -22,21 +22,36 @@ A professional accessibility ecosystem bridging the gap between technical code v
 - **Prescriptive Design**: Provides concrete component-based solutions, not just error descriptions.
 - **Global Compliance**: Built-in support for multiple languages and national regulations.
 - **CI/CD Integration**: Automatically breaks builds on critical regulatory violations.
+- **Premium Accessibility Statements**: Generates modern, glassmorphism-styled statements compliant with WAD/EAA and national templates (e.g., Digg).
 
 ## 📚 Documentation & Guides
 
-Comprehensive guides for each layer of the ecosystem:
+Comprehensive resources to help you master the ecosystem, from legal compliance to advanced technical integration.
 
-*   **[Component Library Catalog](./docs/reference/components.md)** - 29+ accessible React components with usage examples.
-*   **[Standards Library Catalog](./docs/reference/standards.md)** - Regulatory database, legal mappings (WAD/EAA), and localized rules.
-*   **[Engine Library Catalog](./docs/reference/engine.md)** - CLI reference, configuration guides, and CI/CD integration.
+### 📖 Reference Catalogs
+Detailed API and property references for each package.
+*   **[Engine Reference](./docs/reference/engine.md)** - CLI flags, configuration schema, and programmatic API.
+*   **[Component Library](./docs/reference/components.md)** - Visual catalog of 29+ accessible React components with props.
+*   **[Standards Database](./docs/reference/standards.md)** - Mapping table for WCAG vs EN 301 549 vs National Laws.
+
+### 🛠️ Developer Resources
+Practical guides for building and deploying accessible applications.
+*   **[Developer Cookbooks](./docs/guides/developer-cookbooks.md)** - Step-by-step recipes for common accessibility patterns.
+*   **[CI/CD Integration Guide](./docs/guides/ci-cd-integration.md)** - How to run the engine in GitHub, GitLab, and Azure DevOps.
+*   **[Internal CI/CD Strategy](./docs/architecture/ci-cd-strategy.md)** - Monorepo architecture and automated release pipelines.
+*   **[Accessibility Statement Tutorial](./docs/guides/accessibility-statement.md)** - How to generate and customize V2 legal statements.
+
+### ⚖️ Legal & Regulatory
+Stay ahead of enforcement deadlines and compliance requirements.
+*   **[EU Legal Framework (WAD & EAA)](./docs/guides/eu-legal-framework.md)** - Understanding the impact of current and upcoming regulations.
+*   **[Nordic Regulatory Authorities](./docs/guides/nordic-authorities.md)** - Details on Digg (SE), Traficom (FI), and others.
 
 ## 📦 Packages
 
 This monorepo contains three core NPM packages and a documentation wiki:
 
 ### 1. [@holmdigital/engine](./packages/engine)
-Regulatory test engine with Virtual DOM architecture for Shadow DOM and SPA support. Now with internationalization (i18n) and **automatic accessibility badge generation**.
+Regulatory test engine with Virtual DOM architecture for Shadow DOM and SPA support. Now with internationalization (i18n), **Premium V2 Accessibility Statement** generation, and automatic badge support.
 
 ```bash
 npm install @holmdigital/engine
@@ -48,11 +63,17 @@ npx hd-a11y-scan <url> [options]
 ```
 
 **Options:**
-- `--lang <code>` - Language code (`en`, `sv`, `de`, `fr`, `es`, `nl`)
+- `--lang <code>` - Language code (`en`, `sv`, `no`, `fi`, `da`, `de`, `fr`, `es`, `nl`)
 - `--threshold <level>` - Severity threshold (`critical`, `high`, `medium`, `low`). Default: `high`
 - `--ci` - Run in CI mode (exit code 1 on critical failures)
 - `--json` - Output results as JSON
 - `--pdf <path>` - Generate a PDF report
+- `--statement <path>` - Generate an accessibility statement (Premium V2 HTML)
+- `--org <name>` - Organization name for statement metadata
+- `--email <email>` - Contact email for statement metadata
+- `--phone <number>` - Contact phone for statement metadata
+- `--response-time <val>` - Normal response time for statement metadata
+- `--publish-date <date>` - Website publish date (YYYY-MM-DD) for statement metadata
 - `--viewport <size>` - Set viewport size (e.g., "mobile", "desktop", "1024x768")
 - `--generate-tests` - Generate pseudo-code automation scripts for verification
 - `--invalid-https-cert` - Allow scanning sites with invalid/self-signed certs ⚠️

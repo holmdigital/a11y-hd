@@ -9,6 +9,8 @@
         "pdf_saved": "PDF Report saved to {path}",
         "scan_failed": "Scan failed",
         "critical_failure": "\nCI/CD Failure: Critical regulatory violations found.",
+        "generating_statement": "Generating Accessibility Statement...",
+        "statement_saved": "Accessibility Statement saved to {path}",
         "score": "\nCompliance Score: {score}/100",
         "status": "Compliance Status: {status}",
         "not_compliant": "  (Not compliant with legal requirements)",

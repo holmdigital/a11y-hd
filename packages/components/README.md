@@ -29,7 +29,7 @@ npm install @holmdigital/components
 ## Usage
 
 ```tsx
-import { Button, FormField, Heading, ErrorSummary, Combobox, DatePicker, MultiSelect, DataTable, Pagination, Card, TreeView } from '@holmdigital/components';
+import { Button, FormField, Heading, ErrorSummary, AccessibilityStatement, Combobox, DatePicker, MultiSelect, DataTable, Pagination, Card, TreeView } from '@holmdigital/components';
 
 function App() {
   return (
@@ -103,6 +103,19 @@ function App() {
             ]},
             { id: '2', label: 'Images' }
         ]}
+      />
+
+      <AccessibilityStatement
+        country="SE"
+        sector="public"
+        organizationName="HolmDigital"
+        websiteUrl="https://holmdigital.se"
+        complianceLevel="partial"
+        lastReviewDate={new Date()}
+        publishDate={new Date('2024-02-06')}
+        contactEmail="hej@holmdigital.se"
+        badgeUrl="https://img.shields.io/badge/HolmDigital_Engine-100%25-00703C?style=flat-square"
+        locale="sv"
       />
       
       <Button variant="primary" type="submit">

@@ -23,7 +23,9 @@ For a comprehensive guide on CLI flags, CI/CD integration, and configuration fil
 
 - **Regulatory Mapping**: Maps technical failures to EU laws (EN 301 549, EAA).
 - **HTML Structure Validation**: Built-in `html-validate` checks to prevent false positives/negatives.
-- **Internationalization (i18n)**: Supports English (`en`), Swedish (`sv`), German (`de`), French (`fr`), Spanish (`es`), and Dutch (`nl`).
+- **Internationalization (i18n)**: Supports English (`en`), Swedish (`sv`), Norwegian (`no`), Finnish (`fi`), Danish (`da`), German (`de`), French (`fr`), Spanish (`es`), and Dutch (`nl`).
+- **Premium V2 Accessibility Statement**: Generates modern, glassmorphism-styled statements compliant with Digg & EU templates.
+- **Multi-Company Metadata**: Easily customize statements via CLI flags or `.a11yrc` for scalable client generation.
 - **Configurable Severity Threshold**: Fail CI only on critical/high issues (configurable).
 - **Rich Metadata**: Includes scan duration, page title, language, and version info.
 - **Pseudo-Automation**: Automatically generates Playwright/Puppeteer test scripts for manual verification steps.
@@ -50,6 +52,12 @@ npx hd-a11y-scan <url> [options]
 | `--ci` | Run in CI mode (exit code 1 on failure) |
 | `--json` | Output results as JSON |
 | `--pdf <path>` | Generate a PDF report |
+| `--statement <path>` | Generate a Premium V2 accessibility statement (HTML) |
+| `--org <name>` | Organization name for the statement metadata |
+| `--email <email>` | Contact email for the statement metadata |
+| `--phone <number>` | Contact phone for the statement metadata |
+| `--response-time <val>` | Response time for the statement metadata |
+| `--publish-date <date>` | Publish date for the website (YYYY-MM-DD) |
 | `--viewport <size>` | Set viewport size (`mobile`, `tablet`, `desktop`, or custom `1024x768`) |
 | `--generate-tests` | Generate Pseudo-Automation tests |
 | `--invalid-https-cert` | Allow scanning sites with invalid/self-signed HTTPS certificates ⚠️ |

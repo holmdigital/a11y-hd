@@ -11,6 +11,7 @@ import { RegulatoryScanner, ScannerOptions } from '../core/regulatory-scanner';
 import { PseudoAutomationEngine } from '../automation/pseudo-automation';
 import { generateReportHTML } from '../reporting/html-template';
 import { generatePDF } from '../reporting/pdf-generator';
+import { generateStatement, generateStatementContent, StatementMetadata } from '../reporting/statement-generator';
 import { generateBadgeMarkdown } from '../reporting/badge-generator';
 import { setLanguage, t } from '../i18n';
 import { sendToCloud, CloudConfig } from './cloud-client';
@@ -48,11 +49,19 @@ program
     .option('--json', 'Output as JSON')
     .option('--junit <path>', 'Generate JUnit XML report')
     .option('--pdf <path>', 'Generate PDF report to path')
+    .option('--statement <path>', 'Generate accessibility statement HTML to path')
+    .option('--format <type>', 'Output format for statement (html, md)', 'html')
     .option('--viewport <size>', 'Set viewport (e.g. "mobile", "desktop", "1024x768")')
     .option('--threshold <level>', 'Severity threshold (critical, high, medium, low)')
     .option('--api-key <key>', 'API key for HolmDigital Cloud')
     .option('--cloud-url <url>', 'Cloud API URL')
     .option('--invalid-https-cert', 'Allow scanning on pages with invalid https certificate')
+    .option('--email <email>', 'Contact email for accessibility statement')
+    .option('--phone <number>', 'Contact phone number for accessibility statement')
+    .option('--org <name>', 'Organization name for accessibility statement')
+    .option('--response-time <time>', 'Expected response time for accessibility statement')
+    .option('--country <code>', 'Country code for accessibility statement enforcement body')
+    .option('--publish-date <date>', 'Publish date for the website (YYYY-MM-DD)')
     .action(async (url: string, cliOptions) => {
         // 1. Load Config from file (.a11yrc, package.json, etc.)
         const explorer = cosmiconfig('a11y');
@@ -67,11 +76,20 @@ program
             json: cliOptions.json ?? fileConfig.json ?? false,
             junit: cliOptions.junit || fileConfig.junit,
             pdf: cliOptions.pdf || fileConfig.pdf,
+            statement: cliOptions.statement || fileConfig.statement,
+            format: cliOptions.format || fileConfig.format || 'html',
             viewport: cliOptions.viewport || fileConfig.viewport, // Handled specifically below
             threshold: cliOptions.threshold || fileConfig.threshold || 'high',
             apiKey: cliOptions.apiKey || fileConfig.apiKey,
             cloudUrl: cliOptions.cloudUrl || fileConfig.cloudUrl || 'https://cloud.holmdigital.se',
-            invalidHttpsCert: cliOptions.invalidHttpsCert ?? fileConfig.invalidHttpsCert ?? false
+            invalidHttpsCert: cliOptions.invalidHttpsCert ?? fileConfig.invalidHttpsCert ?? false,
+            // Metadata for accessibility statement
+            email: cliOptions.email || fileConfig.email,
+            phone: cliOptions.phone || fileConfig.phone,
+            org: cliOptions.org || fileConfig.org,
+            responseTime: cliOptions.responseTime || fileConfig.responseTime,
+            country: cliOptions.country || fileConfig.country,
+            publishDate: cliOptions.publishDate || fileConfig.publishDate
         } as ScannerOptions & {
             lang: string;
             ci: boolean;
@@ -79,11 +97,19 @@ program
             json: boolean;
             junit?: string;
             pdf?: string;
+            statement?: string;
+            format: 'html' | 'md' | 'markdown';
             viewport?: any;
             threshold: string;
             apiKey?: string;
             cloudUrl: string;
             invalidHttpsCert: boolean;
+            email?: string;
+            phone?: string;
+            org?: string;
+            responseTime?: string;
+            country?: string;
+            publishDate?: string;
         };
 
         setLanguage(options.lang);
@@ -140,6 +166,29 @@ program
                 const html = generateReportHTML(result);
                 await generatePDF(html, options.pdf);
                 if (spinner) spinner.succeed(t('cli.pdf_saved', { path: options.pdf }));
+            }
+
+            // Statement Generation
+            if (options.statement) {
+                if (spinner) spinner.start(t('cli.generating_statement', { path: options.statement }));
+
+                const metadata: StatementMetadata = {
+                    contactEmail: options.email,
+                    phoneNumber: options.phone,
+                    organizationName: options.org,
+                    responseTime: options.responseTime,
+                    country: options.country,
+                    publishDate: options.publishDate
+                };
+
+                if (options.statement.toLowerCase().endsWith('.pdf')) {
+                    const htmlContent = await generateStatementContent(result, options.lang, 'html', metadata);
+                    await generatePDF(htmlContent, options.statement);
+                } else {
+                    await generateStatement(result, options.statement, options.lang, options.format, metadata);
+                }
+
+                if (spinner) spinner.succeed(t('cli.statement_saved', { path: options.statement }));
             }
 
             if (options.json) {

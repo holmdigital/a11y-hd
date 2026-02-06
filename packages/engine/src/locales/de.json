@@ -9,6 +9,8 @@
         "pdf_saved": "PDF-Bericht gespeichert unter {path}",
         "scan_failed": "Scan fehlgeschlagen",
         "critical_failure": "\nCI/CD Fehler: Kritische regulatorische Verstöße gefunden.",
+        "generating_statement": "Generiere Barrierefreiheitserklärung...",
+        "statement_saved": "Barrierefreiheitserklärung gespeichert unter {path}",
         "score": "\nKonformitätsbewertung: {score}/100",
         "status": "Konformitätsstatus: {status}",
         "not_compliant": "  (Nicht konform mit gesetzlichen Anforderungen - BITV 2.0)",

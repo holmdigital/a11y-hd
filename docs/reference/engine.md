@@ -33,6 +33,12 @@ hd-a11y-scan <url> [options]
 | `--junit <path>` | Generate a JUnit XML report for CI dashboards. | `--junit ./report.xml` |
 | `--pdf <path>` | Generate a visual PDF report. | `--pdf ./report.pdf` |
 | `--generate-tests` | **Experimental**: Generates Puppeteer test scripts to reproduce found errors. | `--generate-tests` |
+| `--statement <path>` | Generate an accessibility statement file. | `--statement a11y.html` |
+| `--org <name>` | Organization name for the statement. | `--org "Acme Corp"` |
+| `--email <email>` | Contact email for the statement. | `--email "a11y@acme.com"` |
+| `--phone <number>` | Contact phone for the statement. | `--phone "555-0123"` |
+| `--response-time <val>` | Response time for the statement. | `--response-time "2 days"` |
+| `--publish-date <date>` | Website publish date (YYYY-MM-DD). | `--publish-date 2024-02-06` |
 | `--api-key <key>` | Upload results to HolmDigital Cloud. | `--api-key abc-123` |
 
 ---
@@ -49,8 +55,35 @@ Instead of long CLI commands, you can store your settings in a `.a11yrc` file in
   "ci": true,
   "junit": "./reports/accessibility.xml",
   "pdf": "./reports/accessibility.pdf",
-  "invalidHttpsCert": true
+  "invalidHttpsCert": true,
+  "org": "HolmDigital AB",
+  "email": "hej@holmdigital.se",
+  "phone": "070-123 45 67",
+  "responseTime": "2 dagar",
+  "publishDate": "2024-02-06"
 }
+```
+
+### Accessibility Statement Metadata
+
+The following keys in `.a11yrc` map to the `AccessibilityStatement` component props. These are used when generating statements via the CLI or programmatic API.
+
+| Config Key (`.a11yrc`) | Prop Name | Description |
+| :--- | :--- | :--- |
+| `org` | `organizationName` | Name of the organization |
+| `email` | `contactEmail` | Support/contact email address |
+| `phone` | `phoneNumber` | Support/contact phone number |
+| `responseTime` | `responseTime` | Expected response time (e.g. "2 days") |
+| `country` | `country` | Country code for enforcement body (SE, NO, etc.) |
+| `publishDate` | `publishDate` | Website publish date (YYYY-MM-DD) |
+
+> [!TIP]
+> Other props like `assessmentDate` and `evaluationMethod` are currently automated by the engine to ensure consistency across scan reports.
+
+### Multi-Company Scale
+You can use separate config files for different clients:
+```bash
+hd-a11y-scan https://client-a.com --config client-a.a11yrc --statement client-a-a11y.html
 ```
 
 ---

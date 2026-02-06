@@ -3,6 +3,9 @@ import sv from '../locales/sv.json';
 import de from '../locales/de.json';
 import fr from '../locales/fr.json';
 import es from '../locales/es.json';
+import fi from '../locales/fi.json';
+import dk from '../locales/dk.json';
+import no from '../locales/no.json';
 
 import nl from '../locales/nl.json';
 
@@ -10,16 +13,21 @@ type LocaleData = typeof en;
 type Paths<T> = T extends object ? { [K in keyof T]: `${Exclude<K, symbol>}${"" | `.${Paths<T[K]>}`}` }[keyof T] : never;
 type LocaleKey = Paths<LocaleData>;
 
-const locales: Record<string, LocaleData> = {
+const locales: Record<string, any> = {
     en,
     sv,
     de,
     fr,
     es,
     nl,
+    fi,
+    dk,
+    no,
     'en-gb': en,
     'en-us': en,
-    'en-ca': en
+    'en-ca': en,
+    'da': dk,
+    'nb': no // Norwegian Bokmål alias
 };
 
 let currentLang = 'en';

@@ -9,6 +9,9 @@ import rulesDe from '../data/rules.de.json';
 import rulesFr from '../data/rules.fr.json';
 import rulesEs from '../data/rules.es.json';
 import rulesNl from '../data/rules.nl.json';
+import rulesNo from '../data/rules.no.json';
+import rulesFi from '../data/rules.fi.json';
+import rulesDa from '../data/rules.da.json';
 import rulesEnGb from '../data/rules.en-gb.json';
 import rulesEnUs from '../data/rules.en-us.json';
 import rulesEnCa from '../data/rules.en-ca.json';
@@ -71,7 +74,7 @@ export type {
 };
 
 function getData(lang: string = 'en'): ConvergenceRule[] {
-    const supportedLangs = ['sv', 'de', 'fr', 'es', 'nl', 'en-gb', 'en-us', 'en-ca', 'en'];
+    const supportedLangs = ['sv', 'de', 'fr', 'es', 'nl', 'no', 'fi', 'da', 'en-gb', 'en-us', 'en-ca', 'en'];
     if (!supportedLangs.includes(lang.toLowerCase())) {
         console.warn(`[standards] Language '${lang}' not supported, falling back to 'en'. Supported: ${supportedLangs.join(', ')}`);
     }
@@ -81,6 +84,11 @@ function getData(lang: string = 'en'): ConvergenceRule[] {
         case 'fr': return rulesFr as ConvergenceRule[];
         case 'es': return rulesEs as ConvergenceRule[];
         case 'nl': return rulesNl as ConvergenceRule[];
+        case 'no': return rulesNo as ConvergenceRule[];
+        case 'nb': return rulesNo as ConvergenceRule[]; // Alias for NO
+        case 'fi': return rulesFi as ConvergenceRule[];
+        case 'da': return rulesDa as ConvergenceRule[];
+        case 'dk': return rulesDa as ConvergenceRule[]; // Alias for DK
         case 'en-gb': return rulesEnGb as ConvergenceRule[];
         case 'en-us': return rulesEnUs as ConvergenceRule[];
         case 'en-ca': return rulesEnCa as ConvergenceRule[];
