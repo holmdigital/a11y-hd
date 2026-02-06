@@ -24,13 +24,18 @@ jobs:
         with:
           node-version: 20
           cache: 'npm'
-          registry-url: 'https://registry.npmjs.org/'
 
       - name: Install Dependencies
         run: npm ci
 
-      - name: Build All Packages
-        run: npm run build
+      - name: Build Standards (Dependency Level 1)
+        run: npm run build -w @holmdigital/standards
+
+      - name: Build Components (Dependency Level 2)
+        run: npm run build -w @holmdigital/components
+
+      - name: Build Engine (Dependency Level 3)
+        run: npm run build -w @holmdigital/engine
 
       - name: Create Release Pull Request or Publish to npm
         id: changesets
@@ -39,4 +44,4 @@ jobs:
           publish: npm run release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          # NPM_TOKEN is no longer required with Trusted Publishing
+          # id-token: write permission handles auth via Trusted Publishing
