@@ -25,6 +25,9 @@ jobs:
           node-version: 20
           cache: 'npm'
 
+      - name: Upgrade NPM
+        run: npm install -g npm@latest
+
       - name: Install Dependencies
         run: npm ci
 
