@@ -53,17 +53,21 @@ jobs:
           if [ -z "$(ls .changeset/*.md 2>/dev/null | grep -v 'README.md')" ]; then
             echo "No changesets found, attempting to publish..."
             
-            # Use direct npm publish for best OIDC/Trusted Publishing compatibility
-            # We publish in dependency order: standards -> components -> engine
+            # Diagnostic: Show current npm config (scrubbed)
+            npm config list
+            
+            # Use direct npm publish from within each package directory
+            # This ensures individual package .npmrc (if any) is respected 
+            # and avoids monorepo workspace auth complexities.
             
             echo "Publishing @holmdigital/standards..."
-            npm publish -w @holmdigital/standards --provenance --access public
+            (cd packages/standards && npm publish --provenance --access public)
             
             echo "Publishing @holmdigital/components..."
-            npm publish -w @holmdigital/components --provenance --access public
+            (cd packages/components && npm publish --provenance --access public)
             
             echo "Publishing @holmdigital/engine..."
-            npm publish -w @holmdigital/engine --provenance --access public
+            (cd packages/engine && npm publish --provenance --access public)
           else
             echo "Changesets still present, skipping publish step."
           fi
