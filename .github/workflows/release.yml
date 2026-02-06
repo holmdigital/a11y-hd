@@ -53,8 +53,16 @@ jobs:
           if [ -z "$(ls .changeset/*.md 2>/dev/null | grep -v 'README.md')" ]; then
             echo "No changesets found, attempting to publish..."
             
+            # FORCE CLEANUP: Remove any .npmrc that might have been generated or cached
+            # and unset any scope-specific registry that triggers legacy auth.
+            rm -f .npmrc
+            rm -f ~/.npmrc
+            npm config delete @holmdigital:registry
+            
             # Diagnostic: Show current npm config (scrubbed)
+            echo "--- NPM CONFIG DIAGNOSTIC ---"
             npm config list
+            echo "----------------------------"
             
             # Use direct npm publish from within each package directory
             # This ensures individual package .npmrc (if any) is respected 
