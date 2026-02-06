@@ -52,9 +52,18 @@ jobs:
         run: |
           if [ -z "$(ls .changeset/*.md 2>/dev/null | grep -v 'README.md')" ]; then
             echo "No changesets found, attempting to publish..."
-            # Configure npm to use OIDC (tokenless)
-            npm config set //registry.npmjs.org/:_authToken ""
-            npx changeset publish --provenance
+            
+            # Use direct npm publish for best OIDC/Trusted Publishing compatibility
+            # We publish in dependency order: standards -> components -> engine
+            
+            echo "Publishing @holmdigital/standards..."
+            npm publish -w @holmdigital/standards --provenance --access public
+            
+            echo "Publishing @holmdigital/components..."
+            npm publish -w @holmdigital/components --provenance --access public
+            
+            echo "Publishing @holmdigital/engine..."
+            npm publish -w @holmdigital/engine --provenance --access public
           else
             echo "Changesets still present, skipping publish step."
           fi
