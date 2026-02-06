@@ -50,6 +50,8 @@ jobs:
         run: |
           echo "ACTIONS_ID_TOKEN_REQUEST_URL: ${ACTIONS_ID_TOKEN_REQUEST_URL:+Present}"
           node -e 'console.log(process.env.ACTIONS_ID_TOKEN_REQUEST_URL ? "✅ OIDC System Available" : "❌ OIDC System NOT Available")'
+          echo "Searching for any .npmrc files..."
+          find . -name ".npmrc" -ls
 
       - name: Publish to NPM (OIDC)
         # Only publish if on master and there are no changeset files left
@@ -58,21 +60,28 @@ jobs:
           if [ -z "$(ls .changeset/*.md 2>/dev/null | grep -v 'README.md')" ]; then
             echo "No changesets found, attempting to publish..."
             
-            # Diagnostic: Show current npm config
+            # DEFINITIVE CLEANUP: Remove ANY .npmrc anywhere in the project
+            find . -name ".npmrc" -delete
+            rm -f ~/.npmrc
+            
+            # Ensure npm doesn't use the scoped registry from any residue config
+            npm config delete @holmdigital:registry
+            npm config delete registry
+            
+            # Diagnostic
+            echo "--- NPM CONFIG FINAL CHECK ---"
             npm config list
+            echo "------------------------------"
             
-            # Use isolated publish from each package directory.
-            # We use --no-workspaces to ensure npm doesn't try to look at the monorepo root settings
-            # and --registry explicitly just in case.
-            
+            # Use isolated publish with forced clean registry
             echo "Publishing @holmdigital/standards..."
-            (cd packages/standards && npm publish --provenance --access public --no-workspaces --registry https://registry.npmjs.org/ --verbose)
+            (cd packages/standards && npm publish --provenance --access public --registry https://registry.npmjs.org/ --verbose)
             
             echo "Publishing @holmdigital/components..."
-            (cd packages/components && npm publish --provenance --access public --no-workspaces --registry https://registry.npmjs.org/ --verbose)
+            (cd packages/components && npm publish --provenance --access public --registry https://registry.npmjs.org/ --verbose)
             
             echo "Publishing @holmdigital/engine..."
-            (cd packages/engine && npm publish --provenance --access public --no-workspaces --registry https://registry.npmjs.org/ --verbose)
+            (cd packages/engine && npm publish --provenance --access public --registry https://registry.npmjs.org/ --verbose)
           else
             echo "Changesets still present, skipping publish step."
           fi
