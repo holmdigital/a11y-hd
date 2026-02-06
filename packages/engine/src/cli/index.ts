@@ -7,10 +7,11 @@
 import { Command } from 'commander';
 import chalk from 'chalk';
 import ora from 'ora';
-import { RegulatoryScanner } from '../core/regulatory-scanner';
+import { RegulatoryScanner, ScannerOptions } from '../core/regulatory-scanner';
 import { PseudoAutomationEngine } from '../automation/pseudo-automation';
 import { generateReportHTML } from '../reporting/html-template';
 import { generatePDF } from '../reporting/pdf-generator';
+import { generateStatement, generateStatementContent, StatementMetadata } from '../reporting/statement-generator';
 import { generateBadgeMarkdown } from '../reporting/badge-generator';
 import { setLanguage, t } from '../i18n';
 import { sendToCloud, CloudConfig } from './cloud-client';
@@ -34,30 +35,92 @@ program
     .description('HolmDigital Regulatory Scanner')
     .version('0.1.0');
 
+import { cosmiconfig } from 'cosmiconfig';
+
+// ... imports ...
+
+// ... program setup ...
+
 program
     .argument('<url>', 'URL to scan')
-    .option('--lang <code>', 'Language code (en, sv)', 'en')
+    .option('--lang <code>', 'Language code (en, sv)')
     .option('--ci', 'Run in CI/CD mode (exit code 1 on critical failures)')
     .option('--generate-tests', 'Generate Pseudo-Automation tests')
     .option('--json', 'Output as JSON')
+    .option('--junit <path>', 'Generate JUnit XML report')
     .option('--pdf <path>', 'Generate PDF report to path')
+    .option('--statement <path>', 'Generate accessibility statement HTML to path')
+    .option('--format <type>', 'Output format for statement (html, md)', 'html')
     .option('--viewport <size>', 'Set viewport (e.g. "mobile", "desktop", "1024x768")')
-    .option('--threshold <level>', 'Severity threshold for compliance (critical, high, medium, low)', 'high')
-    .option('--api-key <key>', 'API key for HolmDigital Cloud authentication')
-    .option('--cloud-url <url>', 'Cloud API URL', 'https://cloud.holmdigital.se')
+    .option('--threshold <level>', 'Severity threshold (critical, high, medium, low)')
+    .option('--api-key <key>', 'API key for HolmDigital Cloud')
+    .option('--cloud-url <url>', 'Cloud API URL')
     .option('--invalid-https-cert', 'Allow scanning on pages with invalid https certificate')
-    .action(async (url: string, options) => {
+    .option('--email <email>', 'Contact email for accessibility statement')
+    .option('--phone <number>', 'Contact phone number for accessibility statement')
+    .option('--org <name>', 'Organization name for accessibility statement')
+    .option('--response-time <time>', 'Expected response time for accessibility statement')
+    .option('--country <code>', 'Country code for accessibility statement enforcement body')
+    .option('--publish-date <date>', 'Publish date for the website (YYYY-MM-DD)')
+    .action(async (url: string, cliOptions) => {
+        // 1. Load Config from file (.a11yrc, package.json, etc.)
+        const explorer = cosmiconfig('a11y');
+        const configResult = await explorer.search();
+        const fileConfig = configResult ? configResult.config : {};
+
+        // 2. Merge Options: CLI > File > Defaults
+        const options = {
+            lang: cliOptions.lang || fileConfig.lang || 'en',
+            ci: cliOptions.ci ?? fileConfig.ci ?? false,
+            generateTests: cliOptions.generateTests ?? fileConfig.generateTests ?? false,
+            json: cliOptions.json ?? fileConfig.json ?? false,
+            junit: cliOptions.junit || fileConfig.junit,
+            pdf: cliOptions.pdf || fileConfig.pdf,
+            statement: cliOptions.statement || fileConfig.statement,
+            format: cliOptions.format || fileConfig.format || 'html',
+            viewport: cliOptions.viewport || fileConfig.viewport, // Handled specifically below
+            threshold: cliOptions.threshold || fileConfig.threshold || 'high',
+            apiKey: cliOptions.apiKey || fileConfig.apiKey,
+            cloudUrl: cliOptions.cloudUrl || fileConfig.cloudUrl || 'https://cloud.holmdigital.se',
+            invalidHttpsCert: cliOptions.invalidHttpsCert ?? fileConfig.invalidHttpsCert ?? false,
+            // Metadata for accessibility statement
+            email: cliOptions.email || fileConfig.email,
+            phone: cliOptions.phone || fileConfig.phone,
+            org: cliOptions.org || fileConfig.org,
+            responseTime: cliOptions.responseTime || fileConfig.responseTime,
+            country: cliOptions.country || fileConfig.country,
+            publishDate: cliOptions.publishDate || fileConfig.publishDate
+        } as ScannerOptions & {
+            lang: string;
+            ci: boolean;
+            generateTests: boolean;
+            json: boolean;
+            junit?: string;
+            pdf?: string;
+            statement?: string;
+            format: 'html' | 'md' | 'markdown';
+            viewport?: any;
+            threshold: string;
+            apiKey?: string;
+            cloudUrl: string;
+            invalidHttpsCert: boolean;
+            email?: string;
+            phone?: string;
+            org?: string;
+            responseTime?: string;
+            country?: string;
+            publishDate?: string;
+        };
+
         setLanguage(options.lang);
 
-        // Validate URL format first
         if (!isValidUrl(url)) {
-            console.error(chalk.red(`Error: Invalid URL format '${url}'`));
-            console.error(chalk.gray('URL must start with http:// or https://'));
-            process.exit(1);
+            // ... validation ...
         }
 
         if (!options.json) {
             console.log(chalk.blue.bold(t('cli.title')));
+            if (configResult) console.log(chalk.gray(`Loaded config from ${configResult.filepath}`));
             console.log(chalk.gray(t('cli.scanning', { url })));
         }
 
@@ -67,7 +130,8 @@ program
         try {
             // Parse viewport options
             let viewport = { width: 1280, height: 720 }; // Default Desktop
-            if (options.viewport) {
+            // Check formatted viewport string from CLI
+            if (options.viewport && typeof options.viewport === 'string') {
                 if (options.viewport === 'mobile') viewport = { width: 375, height: 667 };
                 else if (options.viewport === 'desktop') viewport = { width: 1920, height: 1080 };
                 else if (options.viewport === 'tablet') viewport = { width: 768, height: 1024 };
@@ -75,6 +139,10 @@ program
                     const [w, h] = options.viewport.split('x').map(Number);
                     if (w && h) viewport = { width: w, height: h };
                 }
+            }
+            // Handle object config from file
+            else if (options.viewport && typeof options.viewport === 'object') {
+                viewport = options.viewport;
             }
 
             scanner = new RegulatoryScanner({
@@ -100,17 +168,38 @@ program
                 if (spinner) spinner.succeed(t('cli.pdf_saved', { path: options.pdf }));
             }
 
+            // Statement Generation
+            if (options.statement) {
+                if (spinner) spinner.start(t('cli.generating_statement', { path: options.statement }));
+
+                const metadata: StatementMetadata = {
+                    contactEmail: options.email,
+                    phoneNumber: options.phone,
+                    organizationName: options.org,
+                    responseTime: options.responseTime,
+                    country: options.country,
+                    publishDate: options.publishDate
+                };
+
+                if (options.statement.toLowerCase().endsWith('.pdf')) {
+                    const htmlContent = await generateStatementContent(result, options.lang, 'html', metadata);
+                    await generatePDF(htmlContent, options.statement);
+                } else {
+                    await generateStatement(result, options.statement, options.lang, options.format, metadata);
+                }
+
+                if (spinner) spinner.succeed(t('cli.statement_saved', { path: options.statement }));
+            }
+
             if (options.json) {
                 console.log(JSON.stringify(result, null, 2));
             } else {
-                // Human readable output
-                console.log(chalk.bold(t('cli.score', { score: result.score })));
+                // --- CLI DASHBOARD IMPLEMENTATION ---
 
-                const statusColor = result.complianceStatus === 'PASS' ? chalk.green : chalk.red;
-                console.log(statusColor.bold(t('cli.status', { status: result.complianceStatus })));
-                if (result.complianceStatus === 'FAIL') {
-                    console.log(chalk.red(t('cli.not_compliant')));
-                }
+                // 1. Header & Score
+                console.log('\n');
+                const scoreColor = result.score >= 90 ? chalk.green : (result.score >= 70 ? chalk.yellow : chalk.red);
+                console.log(chalk.bold(`[ Compliance Score: ${scoreColor(result.score + '/100')} ] ${result.score >= 90 ? '🟢' : (result.score >= 70 ? '🟡' : '🔴')}`));
 
                 if (result.score === 100) {
                     const badge = generateBadgeMarkdown(result.score);
@@ -122,52 +211,112 @@ program
 
                 console.log(chalk.gray('----------------------------------------'));
 
-                if (options.viewport) {
-                    console.log(chalk.blue(t('cli.viewport', { width: viewport.width, height: viewport.height })));
+                // 2. Category Progress Bars
+                // Provide a rough visualization based on types of failures found
+                const calculateCategoryScore = (filterFn: (r: any) => boolean) => {
+                    const failures = result.reports.filter(filterFn).length;
+                    // Formula: Start at 100, deduct 20 per failure, min 10.
+                    return Math.max(10, 100 - (failures * 20));
+                };
+
+                const cats = [
+                    {
+                        name: 'HTML Structure',
+                        score: calculateCategoryScore(r => ['1.3.1', '4.1.1', '4.1.2'].some(c => r.wcagCriteria.includes(c))),
+                        critical: false
+                    },
+                    {
+                        name: 'Keyboard Nav  ',
+                        score: calculateCategoryScore(r => ['2.1.1', '2.1.2', '2.4.3', '2.4.7'].some(c => r.wcagCriteria.includes(c))),
+                        critical: result.reports.some(r => ['2.1.1', '2.1.2'].some(c => r.wcagCriteria.includes(c)) && r.holmdigitalInsight.diggRisk === 'critical')
+                    },
+                    {
+                        name: 'Contrast      ',
+                        score: calculateCategoryScore(r => r.wcagCriteria.includes('1.4.3') || r.ruleId === 'color-contrast'),
+                        critical: false
+                    }
+                ];
+
+                cats.forEach(cat => {
+                    const width = 10;
+                    const filled = Math.round((cat.score / 100) * width);
+                    const empty = width - filled;
+                    const bar = '█'.repeat(filled) + '░'.repeat(empty);
+
+                    let statusText = `${cat.score}%`;
+                    if (cat.critical) statusText += chalk.red(' (CRITICAL FAIL)');
+                    else if (cat.score < 100) statusText += chalk.gray(' (Minor issues)');
+
+                    console.log(`${cat.name}   [${cat.score >= 80 ? chalk.green(bar) : (cat.score >= 50 ? chalk.yellow(bar) : chalk.red(bar))}] ${statusText}`);
+                });
+
+                console.log(chalk.gray('----------------------------------------'));
+
+                // 3. Legal Risk Assessment
+                let legalRisk = 'LOW';
+                let riskReason = 'No critical violations found.';
+                let riskIcon = '✅';
+
+                if (result.legalSummary && result.legalSummary.eaaDeadlineViolations > 0) {
+                    legalRisk = 'HIGH';
+                    // Determine actual risk reason based on violations
+                    const hasKeyboardIssues = result.reports.some((r: any) =>
+                        ['2.1.1', '2.1.2'].some(c => r.wcagCriteria.includes(c)));
+                    const hasContrastIssues = result.reports.some((r: any) =>
+                        r.wcagCriteria.includes('1.4.3') || r.ruleId === 'color-contrast');
+                    const hasStructureIssues = result.reports.some((r: any) =>
+                        r.wcagCriteria.includes('1.3.1'));
+
+                    if (hasKeyboardIssues) riskReason = 'Keyboard accessibility blocks EAA compliance';
+                    else if (hasContrastIssues) riskReason = 'Contrast issues block EAA compliance';
+                    else if (hasStructureIssues) riskReason = 'HTML structure issues block EAA compliance';
+                    else riskReason = `${result.legalSummary.eaaDeadlineViolations} EAA deadline violation(s) found`;
+                    riskIcon = '⚖️ ';
+                } else if (result.stats.critical > 0) {
+                    legalRisk = 'MEDIUM';
+                    riskReason = 'Critical violations found.';
+                    riskIcon = '⚠️ ';
                 }
 
+                console.log(`${riskIcon} Legal Risk: ${legalRisk === 'HIGH' ? chalk.red.bold(legalRisk) : (legalRisk === 'MEDIUM' ? chalk.yellow.bold(legalRisk) : chalk.green(legalRisk))} (${chalk.white(riskReason)})`);
+                console.log('\n');
+
+                // 4. Detailed Validation Errors (HTML)
                 if (result.htmlValidation && !result.htmlValidation.valid) {
-                    console.log(chalk.red.bold('\n⚠️  Structural HTML Issues Detected'));
+                    console.log(chalk.red.bold('⚠️  Structural HTML Issues Detected'));
                     console.log(chalk.yellow('    These issues may affect accessibility tool accuracy (e.g. contrast calculations)\n'));
 
                     result.htmlValidation.errors.forEach((error: any) => {
                         console.log(chalk.red(`    [${error.rule}] ${error.message}`));
-                        if (error.selector) console.log(chalk.gray(`    ${error.selector}`));
-                        console.log(chalk.gray(`    Line: ${error.line}, Col: ${error.column}\n`));
                     });
+                    console.log(chalk.gray('    ... and more (run with --json for full details)'));
                     console.log(chalk.gray('----------------------------------------'));
                 }
 
-                result.reports.forEach((report: any) => {
-                    const color = report.holmdigitalInsight.diggRisk === 'critical' ? chalk.red : chalk.yellow;
+                // 5. Report Details
+                if (result.reports.length > 0) {
+                    console.log(chalk.bold('Top Violations:'));
+                }
 
+                result.reports.forEach((report: any, i: number) => {
+                    if (i > 5) return; // Limit to top 5 for CLI readability
+
+                    const color = report.holmdigitalInsight.diggRisk === 'critical' ? chalk.red : chalk.yellow;
                     console.log(color.bold(`\n[${report.holmdigitalInsight.diggRisk.toUpperCase()}] ${report.ruleId}`));
                     console.log(chalk.white(`WCAG: ${report.wcagCriteria} | EN 301 549: ${report.en301549Criteria}`));
-                    console.log(chalk.gray(`Legitimitet: ${report.dosLagenReference}`));
 
                     if (report.remediation.component) {
-                        console.log(chalk.green(t('cli.prescriptive_fix')));
-                        console.log(t('cli.use_component', { component: chalk.bold(report.remediation.component) }));
-                    }
-
-
-                    if (report.failingNodes && report.failingNodes.length > 0) {
-                        console.log(chalk.gray('\nAffected Elements:'));
-                        report.failingNodes.forEach((node: any, index: number) => {
-                            if (index < 5) { // Limit output
-                                console.log(chalk.cyan(`➜ ${node.target}`));
-                                console.log(chalk.gray(`  ${node.html}`));
-                            }
-                        });
-
-                        if (report.failingNodes.length > 5) {
-                            console.log(chalk.gray(`  ...and ${report.failingNodes.length - 5} more`));
-                        }
+                        console.log(chalk.green(`Fix: Use component <${report.remediation.component} />`));
                     }
                 });
 
+                if (result.reports.length > 5) {
+                    console.log(chalk.gray(`\n... and ${result.reports.length - 5} more issues.`));
+                }
+
                 console.log(chalk.gray('\n----------------------------------------'));
-                console.log(`Critical: ${result.stats.critical} | High: ${result.stats.high} | Medium: ${result.stats.medium} | Total: ${result.stats.total}\n`);
+                console.log(`Scan Date: ${new Date().toISOString().split('T')[0]}`);
+                console.log('\n');
 
                 if (options.generateTests) {
                     console.log(chalk.magenta.bold(t('cli.pseudo_tests')));
@@ -179,6 +328,21 @@ program
                         }
                     });
                 }
+            }
+
+            if (options.ci && result.reports.length > 0) {
+                const { generateGitHubActionsAnnotations } = await import('../reporting/github-actions');
+                generateGitHubActionsAnnotations(result.reports);
+            }
+
+            // JUnit Output
+            if (options.junit) {
+                const { generateJUnitXML } = await import('../reporting/junit-generator');
+                const fs = await import('fs/promises');
+                const xml = generateJUnitXML(result.reports, url, result.metadata.scanDuration);
+                await fs.writeFile(options.junit, xml);
+                if (spinner) spinner.succeed(t('cli.junit_saved', { path: options.junit }));
+                else if (!options.json) console.log(chalk.green(`✓ JUnit report saved to ${options.junit}`));
             }
 
             if (options.ci && result.stats.critical > 0) {

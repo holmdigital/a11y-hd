@@ -14,4 +14,17 @@ export * from './Switch/Switch';
 export * from './Toast/Toast';
 export * from './Tooltip/Tooltip';
 export * from './Heading/Heading';
+export * from './AccessibilityStatement/AccessibilityStatement';
+export * from './ErrorSummary/ErrorSummary';
+export * from './Combobox/Combobox';
+export * from './DatePicker/DatePicker';
+export * from './MultiSelect/MultiSelect';
+export * from './DataTable/DataTable';
+export * from './Pagination/Pagination';
+export * from './Card/Card';
+export * from './TreeView/TreeView';
+export * from './LiveRegion/LiveRegion';
+export * from './ProgressBar/ProgressBar';
+export * from './Skeleton/Skeleton';
+export * from './HelpText/HelpText';
 

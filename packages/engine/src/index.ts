@@ -2,3 +2,4 @@ export * from './core/regulatory-scanner';
 export * from './core/virtual-dom';
 export * from './automation/pseudo-automation';
 export * from './i18n';
+export * from './reporting/statement-generator';

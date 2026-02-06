@@ -1,0 +1,3006 @@
+[
+    {
+        "ruleId": "color-contrast",
+        "wcagCriteria": "1.4.3",
+        "wcagLevel": "AA",
+        "wcagTitle": "Contrast (Minimum)",
+        "wcagVersion": "2.0",
+        "en301549Criteria": "9.1.4.3",
+        "en301549Title": "Contrast (minimum)",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level AA required",
+        "remediation": {
+            "description": "Tekst og billeder af tekst skal have et kontrastforhold på mindst 4,5:1 (3:1 for stor tekst).",
+            "technicalGuidance": "Brug værktøjer som WebAIM Contrast Checker til at verificere kontrast. Juster farvevalg eller tilføj baggrundsopacitet for at opnå korrekt kontrast.",
+            "component": "@holmdigital/components/Button",
+            "codeExample": "import { Button } from '@holmdigital/components';\n\n// Bad: Poor contrast\n<button style={{ background: '#777', color: '#999' }}>Click me</button>\n\n// Good: Use accessible component\n<Button variant=\"primary\">Click me</Button>",
+            "wcagTechnique": [
+                "G18",
+                "G145",
+                "G174"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "high",
+            "eaaImpact": "critical",
+            "danishInterpretation": "En af de mest almindelige årsager til bøder fra tilsynsmyndigheder. Særligt vigtigt for overvågning af offentlig sektor.",
+            "commonMistakes": [
+                "Grå tekst på hvid baggrund (#777 på #FFF)",
+                "Lyseblå links uden understregning",
+                "Pladsholdertekst med for lav kontrast"
+            ],
+            "diggPrecedent": "Tilsynsmyndigheder citerer ofte dårlig kontrast i primære navigationselementer.",
+            "priorityRationale": "Kritisk for brugere med nedsat syn. Påvirker læsbarheden for alle brugere under varierende lysforhold."
+        },
+        "testability": {
+            "automated": true,
+            "requiresManualCheck": false,
+            "pseudoAutomation": false,
+            "complexity": "simple"
+        },
+        "tags": [
+            "color",
+            "contrast",
+            "visual",
+            "wcag2a",
+            "wcag21aa",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
+    },
+    {
+        "ruleId": "keyboard-accessible",
+        "wcagCriteria": "2.1.1",
+        "wcagLevel": "A",
+        "wcagTitle": "Keyboard",
+        "wcagVersion": "2.0",
+        "en301549Criteria": "9.2.1.1",
+        "en301549Title": "Keyboard",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level A required",
+        "remediation": {
+            "description": "Al funktionalitet skal være tilgængelig via tastatur.",
+            "technicalGuidance": "Brug semantiske HTML-elementer (button, a, input) i stedet for div/span med click handlers. Sørg for at tabindex bruges korrekt.",
+            "component": "@holmdigital/components/Button",
+            "codeExample": "// Bad: Div with onClick\n<div onClick={handleClick}>Click Me</div>\n\n// Good: Button element\n<button onClick={handleClick}>Click Me</button>\n\n// Best: Use HolmDigital component\nimport { Button } from '@holmdigital/components';\n<Button onClick={handleClick}>Click Me</Button>",
+            "wcagTechnique": [
+                "G202",
+                "H91"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "critical",
+            "eaaImpact": "critical",
+            "danishInterpretation": "Tastaturtilgang er fundamental og ikke-forhandlingsbar. Topprioritet i compliance-audits.",
+            "commonMistakes": [
+                "Brug af div/span til klikbare elementer",
+                "Brugerdefinerede dropdown-menuer uden tastatursupport",
+                "Modaldialogbokse der fanger fokus forkert"
+            ],
+            "diggPrecedent": "Auditører har udstedt bøder for sider hvor kernefunktioner (f.eks. formularer, navigation) ikke er tastatur-tilgængelige.",
+            "priorityRationale": "Kritisk for brugere med motoriske handicaps og skærmlæserbrugere."
+        },
+        "testability": {
+            "automated": false,
+            "requiresManualCheck": true,
+            "pseudoAutomation": true,
+            "complexity": "moderate"
+        },
+        "tags": [
+            "keyboard",
+            "interaction",
+            "wcag2a",
+            "wcag21a",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
+    },
+    {
+        "ruleId": "alt-text",
+        "wcagCriteria": "1.1.1",
+        "wcagLevel": "A",
+        "wcagTitle": "Non-text Content",
+        "wcagVersion": "2.0",
+        "en301549Criteria": "9.1.1.1",
+        "en301549Title": "Non-text content",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level A required",
+        "remediation": {
+            "description": "Alle billeder skal have beskrivende alternativ tekst.",
+            "technicalGuidance": "Tilføj alt-attributter til alle img-elementer. For dekorative billeder, brug alt=\"\". For informative billeder, beskriv indholdet kortfattet.",
+            "codeExample": "// Bad: Msising alt\n<img src=\"logo.png\" />\n\n// Good: Descriptive alt\n<img src=\"logo.png\" alt=\"HolmDigital Logo\" />\n\n// Good: Decorative image\n<img src=\"decoration.png\" alt=\"\" role=\"presentation\" />",
+            "wcagTechnique": [
+                "G94",
+                "G95",
+                "H37"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "high",
+            "eaaImpact": "high",
+            "danishInterpretation": "Særligt vigtigt for logoer og informationsgrafik. Ofte kontrolleret i audits.",
+            "commonMistakes": [
+                "Alt-tekst mangler helt",
+                "Alt-tekst der bare siger 'billede' eller 'ikon'",
+                "Filnavn som alt-tekst (f.eks. 'IMG_1234.jpg')",
+                "Dekorative billeder med unødvendig beskrivelse"
+            ],
+            "diggPrecedent": "Audits citerer ofte manglende alt-tekst, især for vigtig infografik.",
+            "priorityRationale": "Kritisk for skærmlæserbrugere for at få adgang til visuel information."
+        },
+        "testability": {
+            "automated": true,
+            "requiresManualCheck": true,
+            "pseudoAutomation": false,
+            "complexity": "simple"
+        },
+        "tags": [
+            "images",
+            "alt-text",
+            "wcag2a",
+            "wcag21a",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
+    },
+    {
+        "ruleId": "form-labels",
+        "wcagCriteria": "3.3.2",
+        "wcagLevel": "A",
+        "wcagTitle": "Labels or Instructions",
+        "wcagVersion": "2.0",
+        "en301549Criteria": "9.3.3.2",
+        "en301549Title": "Labels or instructions",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level A required",
+        "remediation": {
+            "description": "Formularfelter skal have tydelige labels eller instruktioner.",
+            "technicalGuidance": "Brug label-elementer forbundet til input via for/id. For komplekse formularer, brug fieldset og legend. Brug aria-describedby til ekstra instruktioner.",
+            "component": "@holmdigital/components/FormField",
+            "codeExample": "import { FormField } from '@holmdigital/components';\n\n// Bad: No label\n<input type=\"text\" placeholder=\"Name\" />\n\n// Good: With label\n<label htmlFor=\"name\">Name:</label>\n<input type=\"text\" id=\"name\" />\n\n// Best: Use HolmDigital component\n<FormField\n  label=\"Name\"\n  type=\"text\"\n  required\n  helpText=\"Enter your full name\"\n/>",
+            "wcagTechnique": [
+                "G131",
+                "G162",
+                "H44",
+                "H71"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "high",
+            "eaaImpact": "high",
+            "danishInterpretation": "Formularer er kritiske for e-tjenester. Overholdelse håndhæves strengt i offentlige apps.",
+            "commonMistakes": [
+                "Kun pladsholder uden label",
+                "Label og input ikke forbundet via for/id",
+                "Fejlmeddelelser uden aria-describedby",
+                "Påkrævede felter ikke tydeligt markeret"
+            ],
+            "diggPrecedent": "Audit-beslutninger kritiserer ofte dårlig formulartilgængelighed, især for ansøgnings- og kontaktformularer.",
+            "priorityRationale": "Kritisk for brugere til at bruge e-tjenester og indsende information."
+        },
+        "testability": {
+            "automated": true,
+            "requiresManualCheck": false,
+            "pseudoAutomation": false,
+            "complexity": "simple"
+        },
+        "tags": [
+            "forms",
+            "labels",
+            "wcag2a",
+            "wcag21a",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
+    },
+    {
+        "ruleId": "page-title",
+        "wcagCriteria": "2.4.2",
+        "wcagLevel": "A",
+        "wcagTitle": "Page Titled",
+        "wcagVersion": "2.0",
+        "en301549Criteria": "9.2.4.2",
+        "en301549Title": "Page titled",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level A required",
+        "remediation": {
+            "description": "Hver webside skal have en beskrivende titel.",
+            "technicalGuidance": "Brug title-elementet i head. Titlen skal være unik for hver side og beskrive dens formål. Format: 'Sidenavn - Webstedsnavn'.",
+            "codeExample": "// Bad: Generic title\n<title>Page</title>\n\n// Good: Descriptive title\n<title>Contact Us - HolmDigital</title>\n\n// React/Next.js\nimport Head from 'next/head';\n\n<Head>\n  <title>Contact Us - HolmDigital</title>\n</Head>",
+            "wcagTechnique": [
+                "G88",
+                "H25"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "medium",
+            "eaaImpact": "medium",
+            "danishInterpretation": "Vigtigt for navigation, især i SPA'er hvor titlen skal opdateres dynamisk.",
+            "commonMistakes": [
+                "Samme titel på alle sider",
+                "Titel opdateres ikke i SPA'er",
+                "For lang eller for kort titel",
+                "Titel mangler helt"
+            ],
+            "diggPrecedent": "Audits har bemærket manglende sidetitler, især i Single Page Applications.",
+            "priorityRationale": "Vigtigt for skærmlæsernavigation og SEO."
+        },
+        "testability": {
+            "automated": true,
+            "requiresManualCheck": false,
+            "pseudoAutomation": false,
+            "complexity": "simple"
+        },
+        "tags": [
+            "navigation",
+            "title",
+            "wcag2a",
+            "wcag21a",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
+    },
+    {
+        "ruleId": "info-and-relationships",
+        "wcagCriteria": "1.3.1",
+        "wcagLevel": "A",
+        "wcagTitle": "Info and Relationships",
+        "wcagVersion": "2.0",
+        "en301549Criteria": "9.1.3.1",
+        "en301549Title": "Info and relationships",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level A required",
+        "remediation": {
+            "description": "Information, struktur og relationer formidlet gennem præsentation kan programmatisk bestemmes eller er tilgængelige i tekst.",
+            "technicalGuidance": "Brug semantisk HTML: <header>, <nav>, <main>, <footer>, <h1>-<h6>, <ul>/<ol>, <table>. Brug ikke visuelle stilarter til at skabe 'falske' overskrifter eller lister.",
+            "component": null,
+            "wcagTechnique": [
+                "H42",
+                "H48",
+                "G115"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "high",
+            "eaaImpact": "high",
+            "danishInterpretation": "Semantisk struktur er afgørende for at skærmlæsere kan navigere effektivt. Auditører citerer ofte 'div-suppe' der ligner struktur men mangler semantik.",
+            "commonMistakes": [
+                "Brug af fed tekst i stedet for <h1>-<h6>",
+                "Brug af <br> til lister i stedet for <ul>",
+                "Tabeller til layout"
+            ],
+            "priorityRationale": "Fundamental for al hjælpeteknologi-navigation."
+        },
+        "testability": {
+            "automated": true,
+            "requiresManualCheck": true,
+            "pseudoAutomation": false,
+            "complexity": "moderate"
+        },
+        "tags": [
+            "structure",
+            "semantic",
+            "headings",
+            "wcag2a",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
+    },
+    {
+        "ruleId": "use-of-color",
+        "wcagCriteria": "1.4.1",
+        "wcagLevel": "A",
+        "wcagTitle": "Use of Color",
+        "wcagVersion": "2.0",
+        "en301549Criteria": "9.1.4.1",
+        "en301549Title": "Use of color",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level A required",
+        "remediation": {
+            "description": "Farve bruges ikke som det eneste visuelle middel til at formidle information, angive en handling, opfordre til respons eller skelne et visuelt element.",
+            "technicalGuidance": "Supplér farve med tekst, ikoner eller understregning. F.eks. skal links have understregning eller en anden visuel markør udover farve. Fejlmeddelelser kræver tekst/ikon, ikke kun en rød kant.",
+            "component": "@holmdigital/components/FormField",
+            "wcagTechnique": [
+                "G14",
+                "G182",
+                "G183"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "medium",
+            "eaaImpact": "medium",
+            "danishInterpretation": "Almindeligt problem i grafer og kort hvor kun farvekodning bruges.",
+            "commonMistakes": [
+                "Links der kun adskiller sig ved farve fra brødtekst",
+                "Fejlmeddelelser kun markeret med rød farve",
+                "Grafer hvor kun farve adskiller datapunkter"
+            ],
+            "priorityRationale": "Afgørende for farveblinde brugere."
+        },
+        "testability": {
+            "automated": false,
+            "requiresManualCheck": true,
+            "pseudoAutomation": false,
+            "complexity": "moderate"
+        },
+        "tags": [
+            "visual",
+            "color",
+            "design",
+            "wcag2a",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
+    },
+    {
+        "ruleId": "reflow",
+        "wcagCriteria": "1.4.10",
+        "wcagLevel": "AA",
+        "wcagTitle": "Reflow",
+        "wcagVersion": "2.1",
+        "en301549Criteria": "9.1.4.10",
+        "en301549Title": "Reflow",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level AA required",
+        "remediation": {
+            "description": "Indhold skal kunne præsenteres uden at kræve scrolling i to dimensioner ned til 320px bredde.",
+            "technicalGuidance": "Brug responsivt design (CSS Media Queries, Flexbox, Grid). Undgå faste bredder i pixels. Sørg for at tabeller og billeder skalerer korrekt.",
+            "component": null,
+            "wcagTechnique": [
+                "C32",
+                "C31"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "high",
+            "eaaImpact": "high",
+            "danishInterpretation": "Et moderne krav (WCAG 2.1) kritisk for mobilbrug og forstørret tekst. Nul tolerance for horisontal scrolling på vertikale sider.",
+            "commonMistakes": [
+                "Faste bredder på containere",
+                "Tabeller der ikke er responsive",
+                "Billeder bredere end skærmen"
+            ],
+            "priorityRationale": "Kritisk for brugere med nedsat syn der zoomer meget ind."
+        },
+        "testability": {
+            "automated": false,
+            "requiresManualCheck": true,
+            "pseudoAutomation": true,
+            "complexity": "moderate"
+        },
+        "tags": [
+            "design",
+            "responsive",
+            "mobile",
+            "wcag21aa",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
+    },
+    {
+        "ruleId": "non-text-contrast",
+        "wcagCriteria": "1.4.11",
+        "wcagLevel": "AA",
+        "wcagTitle": "Non-text Contrast",
+        "wcagVersion": "2.1",
+        "en301549Criteria": "9.1.4.11",
+        "en301549Title": "Non-text contrast",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level AA required",
+        "remediation": {
+            "description": "Den visuelle præsentation af brugergrænsefladekomponenter og grafiske objekter skal have et kontrastforhold på mindst 3:1 mod tilstødende farver.",
+            "technicalGuidance": "Gælder for knapper, input-kanter, ikoner og fokusindikatorer. Sørg for at alle interaktive elementer er tydeligt synlige mod baggrunden.",
+            "component": "@holmdigital/components/Button",
+            "wcagTechnique": [
+                "G195",
+                "G207"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "low",
+            "eaaImpact": "low",
+            "danishInterpretation": "Ofte overset krav vedrørende fokusringe og inaktive (men synlige) komponenter. Vigtigt for forståelse af grænsefladen.",
+            "commonMistakes": [
+                "Grå knapper med for lav kontrast"
+            ],
+            "priorityRationale": "Vigtigt for at skelne interaktive elementer."
+        },
+        "testability": {
+            "automated": false,
+            "requiresManualCheck": true,
+            "pseudoAutomation": false,
+            "complexity": "complex"
+        },
+        "tags": [
+            "visual",
+            "contrast",
+            "graphics",
+            "wcag21aa",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
+    },
+    {
+        "ruleId": "text-spacing",
+        "wcagCriteria": "1.4.12",
+        "wcagLevel": "AA",
+        "wcagTitle": "Text Spacing",
+        "wcagVersion": "2.1",
+        "en301549Criteria": "9.1.4.12",
+        "en301549Title": "Text spacing",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level AA required",
+        "remediation": {
+            "description": "Indhold eller funktionalitet må ikke gå tabt når brugeren ændrer tekstafstand (linjehøjde, afsnitsafstand osv.).",
+            "technicalGuidance": "Undgå faste højder på tekstcontainere. Lad containere vokse med indholdet. Test med text spacing bookmarklet.",
+            "component": null,
+            "wcagTechnique": [
+                "C36"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "low",
+            "eaaImpact": "medium",
+            "danishInterpretation": "Vigtigt for ordblindeds tilpasninger.",
+            "commonMistakes": [
+                "Fast linjehøjde i pixels",
+                "Tekstcontainer der ikke vokser"
+            ],
+            "priorityRationale": "Vigtigt for læsbarhed under tilpasninger."
+        },
+        "testability": {
+            "automated": false,
+            "requiresManualCheck": true,
+            "pseudoAutomation": true,
+            "complexity": "moderate"
+        },
+        "tags": [
+            "visual",
+            "typography",
+            "wcag21aa",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
+    },
+    {
+        "ruleId": "content-on-hover",
+        "wcagCriteria": "1.4.13",
+        "wcagLevel": "AA",
+        "wcagTitle": "Content on Hover or Focus",
+        "wcagVersion": "2.1",
+        "en301549Criteria": "9.1.4.13",
+        "en301549Title": "Content on hover or focus",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level AA required",
+        "remediation": {
+            "description": "Indhold vist ved hover/fokus (f.eks. tooltips) skal være Afvisbart, Hoverbart og Vedvarende.",
+            "technicalGuidance": "Sørg for at tooltips ikke forsvinder når du flytter musen fra trigger til selve tooltippen. Tillad ESC at afvise.",
+            "component": null,
+            "wcagTechnique": [
+                "SCR39"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "medium",
+            "eaaImpact": "medium",
+            "danishInterpretation": "Almindeligt problem med brugerdefinerede tooltips og mega-menuer.",
+            "commonMistakes": [
+                "Tooltips der ikke kan nås med mus",
+                "Menuer der lukker for let",
+                "Indhold der ikke kan afvises uden at flytte fokus"
+            ],
+            "priorityRationale": "Vigtigt for brugere med forstørrelse og motoriske vanskeligheder."
+        },
+        "testability": {
+            "automated": false,
+            "requiresManualCheck": true,
+            "pseudoAutomation": true,
+            "complexity": "complex"
+        },
+        "tags": [
+            "interaction",
+            "hover",
+            "tooltips",
+            "wcag21aa",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
+    },
+    {
+        "ruleId": "captions-prerecorded",
+        "wcagCriteria": "1.2.2",
+        "wcagLevel": "A",
+        "wcagTitle": "Captions (Prerecorded)",
+        "wcagVersion": "2.0",
+        "en301549Criteria": "9.1.2.2",
+        "en301549Title": "Captions (prerecorded)",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level A required",
+        "remediation": {
+            "description": "Der skal leveres undertekster til alt forudindspillet lydindhold i synkroniserede medier.",
+            "technicalGuidance": "Brug <track>-elementet med WebVTT-filer til HTML5-video. For sociale medie-embeds, sørg for at undertekster er aktiveret.",
+            "component": null,
+            "wcagTechnique": [
+                "G87",
+                "G93"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "high",
+            "eaaImpact": "high",
+            "danishInterpretation": "En af de mest almindelige mangler i offentlig sektor. Lovkravet er strengt: video med lyd SKAL have undertekster.",
+            "commonMistakes": [
+                "Auto-genererede undertekster der tilfredsstiller ingen",
+                "Undertekster mangler helt",
+                "Undertekster brændt ind i video (ikke tilgængelig for søgning/oversættelse)"
+            ],
+            "priorityRationale": "Kritisk for døve og hørehæmmede brugere."
+        },
+        "testability": {
+            "automated": false,
+            "requiresManualCheck": true,
+            "pseudoAutomation": false,
+            "complexity": "simple"
+        },
+        "tags": [
+            "media",
+            "video",
+            "captions",
+            "wcag2a",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
+    },
+    {
+        "ruleId": "audio-description",
+        "wcagCriteria": "1.2.5",
+        "wcagLevel": "AA",
+        "wcagTitle": "Audio Description (Prerecorded)",
+        "wcagVersion": "2.0",
+        "en301549Criteria": "9.1.2.5",
+        "en301549Title": "Audio description (prerecorded)",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level AA required",
+        "remediation": {
+            "description": "Audiobeskrivelse skal leveres til alt forudindspillet videoindhold.",
+            "technicalGuidance": "Enten som et separat lydspor, en alternativ version af videoen, eller (hvis 'talende hoveder') ved at sikre at al info formidles via lyd.",
+            "component": null,
+            "wcagTechnique": [
+                "G78",
+                "G69"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "medium",
+            "eaaImpact": "medium",
+            "danishInterpretation": "Kan ofte løses med 'integreret beskrivelse' (tale om hvad der ses), hvilket er mere omkostningseffektivt.",
+            "commonMistakes": [
+                "Information kun vist visuelt (grafik, tekstskilte) uden at blive nævnt i lyd"
+            ],
+            "priorityRationale": "Kritisk for blinde videobrugere."
+        },
+        "testability": {
+            "automated": false,
+            "requiresManualCheck": true,
+            "pseudoAutomation": false,
+            "complexity": "moderate"
+        },
+        "tags": [
+            "media",
+            "video",
+            "audio-description",
+            "wcag2aa",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
+    },
+    {
+        "ruleId": "orientation",
+        "wcagCriteria": "1.3.4",
+        "wcagLevel": "AA",
+        "wcagTitle": "Orientation",
+        "wcagVersion": "2.1",
+        "en301549Criteria": "9.1.3.4",
+        "en301549Title": "Orientation",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level AA required",
+        "remediation": {
+            "description": "Indhold må ikke begrænse sin visning og betjening til en enkelt skærmorientering, medmindre en specifik orientering er essentiel.",
+            "technicalGuidance": "Lås ikke skærmen til portræt eller landskab via CSS eller JS manifest. Brug CSS media queries til at håndtere layoutændringer.",
+            "component": null,
+            "wcagTechnique": [
+                "F97"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "low",
+            "eaaImpact": "medium",
+            "danishInterpretation": "Vigtigt for tablets og brugere der har enheden monteret (f.eks. kørestol).",
+            "commonMistakes": [
+                "Apps/sider der roterer interface 90 grader mod brugerens vilje"
+            ],
+            "priorityRationale": "Vigtigt for brugere der ikke kan rotere deres enhed."
+        },
+        "testability": {
+            "automated": false,
+            "requiresManualCheck": true,
+            "pseudoAutomation": true,
+            "complexity": "simple"
+        },
+        "tags": [
+            "mobile",
+            "responsive",
+            "orientation",
+            "wcag21aa",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
+    },
+    {
+        "ruleId": "identify-input-purpose",
+        "wcagCriteria": "1.3.5",
+        "wcagLevel": "AA",
+        "wcagTitle": "Identify Input Purpose",
+        "wcagVersion": "2.1",
+        "en301549Criteria": "9.1.3.5",
+        "en301549Title": "Identify input purpose",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level AA required",
+        "remediation": {
+            "description": "Formålet med hvert inputfelt der indsamler information om brugeren kan programmatisk bestemmes.",
+            "technicalGuidance": "Brug 'autocomplete' attributten på inputfelter til personlige data (navn, email, tlf, adresse osv.).",
+            "component": "@holmdigital/components/FormField",
+            "wcagTechnique": [
+                "H98"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "medium",
+            "eaaImpact": "high",
+            "danishInterpretation": "Gør det meget nemmere at udfylde forvirrende formularer (autoudfyld).",
+            "commonMistakes": [
+                "Manglende autocomplete attribut",
+                "Forkert autocomplete værdi",
+                "Slå autocomplete fra (autocomplete='off') unødvendigt"
+            ],
+            "priorityRationale": "Reducerer kognitiv belastning og motoriske krav."
+        },
+        "testability": {
+            "automated": true,
+            "requiresManualCheck": false,
+            "pseudoAutomation": false,
+            "complexity": "simple"
+        },
+        "tags": [
+            "forms",
+            "autocomplete",
+            "wcag21aa",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
+    },
+    {
+        "ruleId": "no-keyboard-trap",
+        "wcagCriteria": "2.1.2",
+        "wcagLevel": "A",
+        "wcagTitle": "No Keyboard Trap",
+        "wcagVersion": "2.0",
+        "en301549Criteria": "9.2.1.2",
+        "en301549Title": "No keyboard trap",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level A required",
+        "remediation": {
+            "description": "Hvis fokus kan flyttes til en komponent på siden ved hjælp af tastaturinterface, kan fokus også flyttes væk fra den komponent kun ved hjælp af tastaturinterface.",
+            "technicalGuidance": "Vær forsigtig med JS widgets der fanger fokus (f.eks. modale vinduer). Sørg for at der altid er en vej ud (f.eks. ESC eller shift+tab).",
+            "component": null,
+            "wcagTechnique": [
+                "G21"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "critical",
+            "eaaImpact": "critical",
+            "danishInterpretation": "En tastaturfælde er en 'blokering' der gør websiden ubrugelig. Alvorlig fejl.",
+            "commonMistakes": [
+                "Brugerdefinerede widgets der sløjfer fokus uendeligt",
+                "Indlejrede tredjeparts-komponenter (kort, chats) uden udgang"
+            ],
+            "priorityRationale": "Kritisk: Brugeren sidder fast og skal genstarte browseren."
+        },
+        "testability": {
+            "automated": false,
+            "requiresManualCheck": true,
+            "pseudoAutomation": true,
+            "complexity": "moderate"
+        },
+        "tags": [
+            "keyboard",
+            "interaction",
+            "wcag2a",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
+    },
+    {
+        "ruleId": "character-key-shortcuts",
+        "wcagCriteria": "2.1.4",
+        "wcagLevel": "A",
+        "wcagTitle": "Character Key Shortcuts",
+        "wcagVersion": "2.1",
+        "en301549Criteria": "9.2.1.4",
+        "en301549Title": "Character key shortcuts",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level A required",
+        "remediation": {
+            "description": "Hvis en tastaturgenvej kun består af et tegn (bogstav, tal, symbol), skal der være en måde at slå den fra eller omdefinere den, eller den skal kun være aktiv ved fokus.",
+            "technicalGuidance": "Undgå enkelttaste-genveje hvis muligt. Hvis nødvendigt, sørg for at de ikke konflikter med stemmestyring eller utilsigtet indtastning.",
+            "component": null,
+            "wcagTechnique": [
+                "G217"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "medium",
+            "eaaImpact": "medium",
+            "danishInterpretation": "Vigtigt for stemmestyringsbrugere (Dragon osv.) hvor enkelte ord kan udløse kommandoer ved et uheld.",
+            "commonMistakes": [
+                "Gmail-lignende genveje der er tændt som standard uden mulighed for at slå dem fra"
+            ],
+            "priorityRationale": "Vigtigt for at undgå utilsigtet aktivering."
+        },
+        "testability": {
+            "automated": false,
+            "requiresManualCheck": true,
+            "pseudoAutomation": false,
+            "complexity": "moderate"
+        },
+        "tags": [
+            "keyboard",
+            "shortcuts",
+            "wcag21a",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
+    },
+    {
+        "ruleId": "timing-adjustable",
+        "wcagCriteria": "2.2.1",
+        "wcagLevel": "A",
+        "wcagTitle": "Timing Adjustable",
+        "wcagVersion": "2.0",
+        "en301549Criteria": "9.2.2.1",
+        "en301549Title": "Timing adjustable",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level A required",
+        "remediation": {
+            "description": "Hvis en tidsgrænse (session, læsetid) er sat, skal brugeren kunne slå den fra, justere eller forlænge den.",
+            "technicalGuidance": "Giv en advarsel før sessionen udløber med en 'Forlæng session' knap. Tidsgrænsen skal være mindst 20 sekunder.",
+            "component": null,
+            "wcagTechnique": [
+                "SCR16",
+                "G180"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "high",
+            "eaaImpact": "high",
+            "danishInterpretation": "Kritisk for e-tjenester/bank. Brugere der læser langsomt eller bruger hjælpeteknologi har brug for mere tid.",
+            "commonMistakes": [
+                "Logout uden advarsel",
+                "Tidsgrænser der ikke kan forlænges"
+            ],
+            "priorityRationale": "Kritisk for at undgå at miste indtastede data."
+        },
+        "testability": {
+            "automated": false,
+            "requiresManualCheck": true,
+            "pseudoAutomation": true,
+            "complexity": "moderate"
+        },
+        "tags": [
+            "time",
+            "session",
+            "wcag2a",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
+    },
+    {
+        "ruleId": "pause-stop-hide",
+        "wcagCriteria": "2.2.2",
+        "wcagLevel": "A",
+        "wcagTitle": "Pause, Stop, Hide",
+        "wcagVersion": "2.0",
+        "en301549Criteria": "9.2.2.2",
+        "en301549Title": "Pause, stop, hide",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level A required",
+        "remediation": {
+            "description": "For indhold der bevæger sig, blinker eller ruller og starter automatisk og varer mere end 5 sekunder, skal der være en måde at pause, stoppe eller skjule det.",
+            "technicalGuidance": "Gælder for karruseller (sliders), auto-opdaterende nyhedsfeeds, animerede baggrunde. Tilføj en tydelig pause-knap.",
+            "component": null,
+            "wcagTechnique": [
+                "G4",
+                "G186"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "medium",
+            "eaaImpact": "medium",
+            "danishInterpretation": "Vigtigt for brugere med koncentrationsvanskeligheder (ADHD/Autisme) som forstyrres af bevægelse.",
+            "commonMistakes": [
+                "Billedkarruseller uden pause-knap",
+                "Animerede baggrunde der ikke kan slås fra"
+            ],
+            "priorityRationale": "Vigtigt for kognitiv tilgængelighed."
+        },
+        "testability": {
+            "automated": false,
+            "requiresManualCheck": true,
+            "pseudoAutomation": true,
+            "complexity": "moderate"
+        },
+        "tags": [
+            "animation",
+            "carousel",
+            "distraction",
+            "wcag2a",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
+    },
+    {
+        "ruleId": "three-flashes",
+        "wcagCriteria": "2.3.1",
+        "wcagLevel": "A",
+        "wcagTitle": "Three Flashes or Below Threshold",
+        "wcagVersion": "2.0",
+        "en301549Criteria": "9.2.3.1",
+        "en301549Title": "Three flashes or below threshold",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level A required",
+        "remediation": {
+            "description": "Indhold må ikke blinke mere end tre gange per sekund (kan forårsage kramper).",
+            "technicalGuidance": "Undgå hurtig blinken i video og animationer. Brug værktøjer til at måle blinkefrekvens (PEAT).",
+            "component": null,
+            "wcagTechnique": [
+                "G19"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "critical",
+            "eaaImpact": "critical",
+            "danishInterpretation": "Sundhedsrisiko. Nul tolerance.",
+            "commonMistakes": [
+                "Stroboskopiske effekter i video",
+                "Misbrug af blinkende fejlmeddelelser"
+            ],
+            "priorityRationale": "Kritisk sikkerhedsrisiko."
+        },
+        "testability": {
+            "automated": false,
+            "requiresManualCheck": true,
+            "pseudoAutomation": false,
+            "complexity": "complex"
+        },
+        "tags": [
+            "seizure",
+            "safety",
+            "animation",
+            "wcag2a",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
+    },
+    {
+        "ruleId": "bypass-blocks",
+        "wcagCriteria": "2.4.1",
+        "wcagLevel": "A",
+        "wcagTitle": "Bypass Blocks",
+        "wcagVersion": "2.0",
+        "en301549Criteria": "9.2.4.1",
+        "en301549Title": "Bypass blocks",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level A required",
+        "remediation": {
+            "description": "Der skal være en måde at springe blokke af indhold over der gentages på flere sider (f.eks. navigation).",
+            "technicalGuidance": "Implementer et 'Spring til hovedindhold' link øverst på siden der bliver synligt ved fokus. Brug semantiske landmarks (<main>, <nav>).",
+            "component": null,
+            "wcagTechnique": [
+                "G1",
+                "H69"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "medium",
+            "eaaImpact": "medium",
+            "danishInterpretation": "Standard på alle offentlige sider. Enorm hjælp for tastaturbrugere.",
+            "commonMistakes": [
+                "Manglende skip-link",
+                "Skip-link ødelagt (flytter ikke fokus korrekt)",
+                "Manglende landmarks"
+            ],
+            "priorityRationale": "Vigtigt for effektiv navigation."
+        },
+        "testability": {
+            "automated": true,
+            "requiresManualCheck": true,
+            "pseudoAutomation": true,
+            "complexity": "simple"
+        },
+        "tags": [
+            "navigation",
+            "skip-link",
+            "keyboard",
+            "wcag2a",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
+    },
+    {
+        "ruleId": "focus-order",
+        "wcagCriteria": "2.4.3",
+        "wcagLevel": "A",
+        "wcagTitle": "Focus Order",
+        "wcagVersion": "2.0",
+        "en301549Criteria": "9.2.4.3",
+        "en301549Title": "Focus order",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level A required",
+        "remediation": {
+            "description": "Fokusrækkefølge skal være logisk og følge mening/struktur.",
+            "technicalGuidance": "Match DOM-rækkefølge med visuel rækkefølge. Undgå tabindex større end 0. Håndter fokus manuelt i modaler og menuer.",
+            "component": null,
+            "wcagTechnique": [
+                "G59",
+                "C27"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "high",
+            "eaaImpact": "high",
+            "danishInterpretation": "Kritisk for komplekse layouts (Grid/Flexbox) hvor visuel rækkefølge kan afvige fra DOM-rækkefølge.",
+            "commonMistakes": [
+                "Fokus hopper ulogisk",
+                "Menuer i forkert rækkefølge",
+                "Modal lukkes og fokus returnerer til toppen af siden"
+            ],
+            "priorityRationale": "Kritisk for tastaturnavigation og forståelse."
+        },
+        "testability": {
+            "automated": false,
+            "requiresManualCheck": true,
+            "pseudoAutomation": true,
+            "complexity": "moderate"
+        },
+        "tags": [
+            "focus",
+            "keyboard",
+            "navigation",
+            "wcag2a",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
+    },
+    {
+        "ruleId": "link-purpose",
+        "wcagCriteria": "2.4.4",
+        "wcagLevel": "A",
+        "wcagTitle": "Link Purpose (In Context)",
+        "wcagVersion": "2.0",
+        "en301549Criteria": "9.2.4.4",
+        "en301549Title": "Link purpose (in context)",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level A required",
+        "remediation": {
+            "description": "Formålet med hvert link kan forstås fra linkteksten alene eller fra linkteksten sammen med dens kontekst.",
+            "technicalGuidance": "Undgå 'Læs mere' eller 'Klik her'. Skriv beskrivende linktekster. Brug aria-label hvis visuel plads er begrænset men mere info er nødvendigt.",
+            "component": null,
+            "wcagTechnique": [
+                "G91",
+                "H30"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "medium",
+            "eaaImpact": "medium",
+            "danishInterpretation": "Vigtigt for brugere der navigerer via linklister (skærmlæsere).",
+            "commonMistakes": [
+                "Masser af 'Læs mere' links",
+                "Links der ikke fortæller hvor de fører hen"
+            ],
+            "priorityRationale": "Vigtigt for effektiv navigation."
+        },
+        "testability": {
+            "automated": true,
+            "requiresManualCheck": true,
+            "pseudoAutomation": false,
+            "complexity": "simple"
+        },
+        "tags": [
+            "links",
+            "navigation",
+            "copywriting",
+            "wcag2a",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
+    },
+    {
+        "ruleId": "multiple-ways",
+        "wcagCriteria": "2.4.5",
+        "wcagLevel": "AA",
+        "wcagTitle": "Multiple Ways",
+        "wcagVersion": "2.0",
+        "en301549Criteria": "9.2.4.5",
+        "en301549Title": "Multiple ways",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level AA required",
+        "remediation": {
+            "description": "Der skal være mere end én måde at finde en webside indenfor et sæt af websider.",
+            "technicalGuidance": "Mindst to af: Menu, Søgning, Sitemap, Links i indhold.",
+            "component": null,
+            "wcagTechnique": [
+                "G125",
+                "G126"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "low",
+            "eaaImpact": "low",
+            "danishInterpretation": "Ofte opfyldt af menu + søgning. Sitemap er best practice.",
+            "commonMistakes": [
+                "Manglende søgning på sider med mange sider"
+            ],
+            "priorityRationale": "Letter forskellige navigationsstrategier."
+        },
+        "testability": {
+            "automated": false,
+            "requiresManualCheck": true,
+            "pseudoAutomation": false,
+            "complexity": "simple"
+        },
+        "tags": [
+            "navigation",
+            "search",
+            "sitemap",
+            "wcag2aa",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
+    },
+    {
+        "ruleId": "headings-and-labels",
+        "wcagCriteria": "2.4.6",
+        "wcagLevel": "AA",
+        "wcagTitle": "Headings and Labels",
+        "wcagVersion": "2.0",
+        "en301549Criteria": "9.2.4.6",
+        "en301549Title": "Headings and labels",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level AA required",
+        "remediation": {
+            "description": "Overskrifter og labels skal beskrive emne eller formål.",
+            "technicalGuidance": "Skriv klare, beskrivende overskrifter der giver mening til indholdet nedenfor. Formularlabels skal være forståelige.",
+            "component": null,
+            "wcagTechnique": [
+                "G130"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "medium",
+            "eaaImpact": "medium",
+            "danishInterpretation": "Handler om redaktionel kvalitet og forståelighed.",
+            "commonMistakes": [
+                "Kryptiske overskrifter",
+                "Labels der ikke matcher hvad der skal udfyldes"
+            ],
+            "priorityRationale": "Vigtigt for kognitiv tilgængelighed."
+        },
+        "testability": {
+            "automated": false,
+            "requiresManualCheck": true,
+            "pseudoAutomation": false,
+            "complexity": "simple"
+        },
+        "tags": [
+            "content",
+            "headings",
+            "labels",
+            "wcag2aa",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
+    },
+    {
+        "ruleId": "focus-visible",
+        "wcagCriteria": "2.4.7",
+        "wcagLevel": "AA",
+        "wcagTitle": "Focus Visible",
+        "wcagVersion": "2.0",
+        "en301549Criteria": "9.2.4.7",
+        "en301549Title": "Focus visible",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level AA required",
+        "remediation": {
+            "description": "Enhver brugergrænseflade der kan betjenes med tastatur skal have en synlig fokusindikator.",
+            "technicalGuidance": "Fjern aldrig outline med CSS (outline: none) uden at erstatte den med en tydelig visuel indikator. Sørg for at fokusringens kontrast er tilstrækkelig (se 1.4.11).",
+            "component": "@holmdigital/components/Button",
+            "wcagTechnique": [
+                "G149",
+                "G165",
+                "C15"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "high",
+            "eaaImpact": "high",
+            "danishInterpretation": "En af de mest almindelige fejl. Ofte fordi designere ikke kan lide den 'blå ring'.",
+            "commonMistakes": [
+                "outline: none i CSS reset",
+                "Brugerdefinerede knapper uden :focus style"
+            ],
+            "priorityRationale": "Kritisk: Uden synligt fokus ved tastaturbrugeren ikke hvor de er."
+        },
+        "testability": {
+            "automated": true,
+            "requiresManualCheck": true,
+            "pseudoAutomation": true,
+            "complexity": "simple"
+        },
+        "tags": [
+            "focus",
+            "visual",
+            "keyboard",
+            "wcag2aa",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
+    },
+    {
+        "ruleId": "language-of-page",
+        "wcagCriteria": "3.1.1",
+        "wcagLevel": "A",
+        "wcagTitle": "Language of Page",
+        "wcagVersion": "2.0",
+        "en301549Criteria": "9.3.1.1",
+        "en301549Title": "Language of page",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level A required",
+        "remediation": {
+            "description": "Standard menneskeligt sprog for hver webside skal kunne bestemmes programmatisk.",
+            "technicalGuidance": "Sæt 'lang' attributten på <html> elementet. F.eks. <html lang='da'> for dansk.",
+            "component": null,
+            "wcagTechnique": [
+                "H57"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "high",
+            "eaaImpact": "high",
+            "danishInterpretation": "Fundamental for skærmlæsning. Uden dette gætter skærmlæseren sproget, hvilket ofte fører til forkert udtale.",
+            "commonMistakes": [
+                "Lang attribut mangler",
+                "Forkert sprogkode (f.eks. 'en' på en dansk side)"
+            ],
+            "priorityRationale": "Kritisk for skærmlæserbrugere."
+        },
+        "testability": {
+            "automated": true,
+            "requiresManualCheck": false,
+            "pseudoAutomation": false,
+            "complexity": "simple"
+        },
+        "tags": [
+            "content",
+            "language",
+            "wcag2a",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
+    },
+    {
+        "ruleId": "language-of-parts",
+        "wcagCriteria": "3.1.2",
+        "wcagLevel": "AA",
+        "wcagTitle": "Language of Parts",
+        "wcagVersion": "2.0",
+        "en301549Criteria": "9.3.1.2",
+        "en301549Title": "Language of parts",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level AA required",
+        "remediation": {
+            "description": "Det menneskelige sprog for hver passage eller sætning i indholdet skal kunne bestemmes programmatisk.",
+            "technicalGuidance": "Brug lang attributten på elementer der afviger fra sidens hovedsprog. F.eks. <span lang='fr'>Bonjour</span>.",
+            "component": null,
+            "wcagTechnique": [
+                "H58"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "low",
+            "eaaImpact": "low",
+            "danishInterpretation": "Sjældent en kritisk fejl medmindre det væsentligt hindrer forståelsen.",
+            "commonMistakes": [
+                "Udenlandske citater i tekst uden markup"
+            ],
+            "priorityRationale": "Vigtigt for korrekt udtale."
+        },
+        "testability": {
+            "automated": false,
+            "requiresManualCheck": true,
+            "pseudoAutomation": true,
+            "complexity": "moderate"
+        },
+        "tags": [
+            "content",
+            "language",
+            "wcag2aa",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
+    },
+    {
+        "ruleId": "on-focus",
+        "wcagCriteria": "3.2.1",
+        "wcagLevel": "A",
+        "wcagTitle": "On Focus",
+        "wcagVersion": "2.0",
+        "en301549Criteria": "9.3.2.1",
+        "en301549Title": "On focus",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level A required",
+        "remediation": {
+            "description": "Når en komponent modtager fokus, må den ikke initiere en kontekstændring.",
+            "technicalGuidance": "Åben ikke nye vinduer, indsend formularer eller flyt fokus automatisk bare fordi brugeren taber til et felt.",
+            "component": null,
+            "wcagTechnique": [
+                "G107"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "high",
+            "eaaImpact": "high",
+            "danishInterpretation": "Meget forvirrende for brugere. Skaber en følelse af manglende kontrol.",
+            "commonMistakes": [
+                "Dropdowns der navigerer med det samme ved valg (uden 'Gå' knap)",
+                "Formularer der auto-indsender ved sidste felt fokus"
+            ],
+            "priorityRationale": "Vigtigt for forudsigelighed."
+        },
+        "testability": {
+            "automated": false,
+            "requiresManualCheck": true,
+            "pseudoAutomation": true,
+            "complexity": "moderate"
+        },
+        "tags": [
+            "interaction",
+            "focus",
+            "predictability",
+            "wcag2a",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
+    },
+    {
+        "ruleId": "on-input",
+        "wcagCriteria": "3.2.2",
+        "wcagLevel": "A",
+        "wcagTitle": "On Input",
+        "wcagVersion": "2.0",
+        "en301549Criteria": "9.3.2.2",
+        "en301549Title": "On input",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level A required",
+        "remediation": {
+            "description": "Changing the setting of any component does not automatically cause a change of context unless the user has been advised of the behavior before using the component.",
+            "technicalGuidance": "Inform the user that selection in a list reloads the page. Preferably, add a button to confirm the choice.",
+            "component": null,
+            "wcagTechnique": [
+                "G13",
+                "H32"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "medium",
+            "eaaImpact": "medium",
+            "swedishInterpretation": "Common in filtering functions.",
+            "commonMistakes": [
+                "Checkboxes that reload page immediately",
+                "Filtering that moves focus"
+            ],
+            "priorityRationale": "Important for predictability."
+        },
+        "testability": {
+            "automated": false,
+            "requiresManualCheck": true,
+            "pseudoAutomation": true,
+            "complexity": "moderate"
+        },
+        "tags": [
+            "interaction",
+            "input",
+            "predictability",
+            "wcag2a",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
+    },
+    {
+        "ruleId": "consistent-navigation",
+        "wcagCriteria": "3.2.3",
+        "wcagLevel": "AA",
+        "wcagTitle": "Consistent Navigation",
+        "wcagVersion": "2.0",
+        "en301549Criteria": "9.3.2.3",
+        "en301549Title": "Consistent navigation",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level AA required",
+        "remediation": {
+            "description": "Navigational mechanisms that are repeated on multiple Web pages occur in the same relative order each time they are repeated.",
+            "technicalGuidance": "Main menu should look the same and be in the same place on all pages. Search function as well.",
+            "component": null,
+            "wcagTechnique": [
+                "G61"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "medium",
+            "eaaImpact": "medium",
+            "swedishInterpretation": "Predictability is key to cognitive accessibility.",
+            "commonMistakes": [
+                "Menus that change place or order on different pages"
+            ],
+            "priorityRationale": "Facilitates learning."
+        },
+        "testability": {
+            "automated": false,
+            "requiresManualCheck": true,
+            "pseudoAutomation": false,
+            "complexity": "simple"
+        },
+        "tags": [
+            "navigation",
+            "design",
+            "consistency",
+            "wcag2aa",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
+    },
+    {
+        "ruleId": "consistent-identification",
+        "wcagCriteria": "3.2.4",
+        "wcagLevel": "AA",
+        "wcagTitle": "Consistent Identification",
+        "wcagVersion": "2.0",
+        "en301549Criteria": "9.3.2.4",
+        "en301549Title": "Consistent identification",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level AA required",
+        "remediation": {
+            "description": "Components that have the same functionality within a set of Web pages are identified consistently.",
+            "technicalGuidance": "Don't call search 'Search' on one page and 'Find' on another. Use the same icon for the same function.",
+            "component": null,
+            "wcagTechnique": [
+                "G197"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "low",
+            "eaaImpact": "low",
+            "swedishInterpretation": "Important for usability.",
+            "commonMistakes": [
+                "Inconsistent naming",
+                "Different icons for print/download"
+            ],
+            "priorityRationale": "Reduces cognitive load."
+        },
+        "testability": {
+            "automated": false,
+            "requiresManualCheck": true,
+            "pseudoAutomation": false,
+            "complexity": "simple"
+        },
+        "tags": [
+            "content",
+            "icons",
+            "consistency",
+            "wcag2aa",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
+    },
+    {
+        "ruleId": "error-identification",
+        "wcagCriteria": "3.3.1",
+        "wcagLevel": "A",
+        "wcagTitle": "Error Identification",
+        "wcagVersion": "2.0",
+        "en301549Criteria": "9.3.3.1",
+        "en301549Title": "Error identification",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level A required",
+        "remediation": {
+            "description": "If an input error is automatically detected, the item that is in error is identified and the error is described to the user in text.",
+            "technicalGuidance": "Show error message close to the field. Link with aria-describedby or include in label. Do not just color the field red.",
+            "component": "@holmdigital/components/FormField",
+            "wcagTechnique": [
+                "G83",
+                "SCR18"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "high",
+            "eaaImpact": "high",
+            "swedishInterpretation": "Critical for completing tasks. Generic error messages ('Something went wrong') are not accepted if the error is specific.",
+            "commonMistakes": [
+                "'Invalid value' without explanation",
+                "Error message not visible to screen readers"
+            ],
+            "priorityRationale": "Critical for error handling."
+        },
+        "testability": {
+            "automated": false,
+            "requiresManualCheck": true,
+            "pseudoAutomation": true,
+            "complexity": "moderate"
+        },
+        "tags": [
+            "forms",
+            "errors",
+            "wcag2a",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
+    },
+    {
+        "ruleId": "error-suggestion",
+        "wcagCriteria": "3.3.3",
+        "wcagLevel": "AA",
+        "wcagTitle": "Error Suggestion",
+        "wcagVersion": "2.0",
+        "en301549Criteria": "9.3.3.3",
+        "en301549Title": "Error suggestion",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level AA required",
+        "remediation": {
+            "description": "Hvis en inputfejl opdages automatisk og forslag til rettelse kendes, gives forslagene til brugeren.",
+            "technicalGuidance": "Hvis datoformat er forkert, vis krævet format (ÅÅÅÅ-MM-DD). Tilbyd staveforslag til søgning ('Mente du...?').",
+            "component": "@holmdigital/components/FormField",
+            "wcagTechnique": [
+                "G177"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "medium",
+            "eaaImpact": "medium",
+            "danishInterpretation": "Handler om at være hjælpsom. Reducerer supporthenvendelser.",
+            "commonMistakes": [
+                "Kun at sige 'Fejl' uden at fortælle hvordan man retter det"
+            ],
+            "priorityRationale": "Letter rettelse af fejl."
+        },
+        "testability": {
+            "automated": false,
+            "requiresManualCheck": true,
+            "pseudoAutomation": true,
+            "complexity": "moderate"
+        },
+        "tags": [
+            "forms",
+            "errors",
+            "guidance",
+            "wcag2aa",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
+    },
+    {
+        "ruleId": "error-prevention",
+        "wcagCriteria": "3.3.4",
+        "wcagLevel": "AA",
+        "wcagTitle": "Error Prevention (Legal, Financial, Data)",
+        "wcagVersion": "2.0",
+        "en301549Criteria": "9.3.3.4",
+        "en301549Title": "Error prevention (legal, financial, data)",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level AA required",
+        "remediation": {
+            "description": "For websider der medfører juridiske forpligtelser eller finansielle transaktioner, skal brugerne kunne: Omgøre, Tjekke eller Bekræfte.",
+            "technicalGuidance": "Tilbyd en opsummerings-side før endelig indsendelse med mulighed for at redigere.",
+            "component": null,
+            "wcagTechnique": [
+                "G164",
+                "G98"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "high",
+            "eaaImpact": "high",
+            "danishInterpretation": "Absolut krav for e-handel og juridiske beslutninger.",
+            "commonMistakes": [
+                "Direkte køb uden bekræftelse",
+                "Indsendelse af bindende kontrakter uden gennemsyn"
+            ],
+            "priorityRationale": "Kritisk for at undgå alvorlige konsekvenser af fejl."
+        },
+        "testability": {
+            "automated": false,
+            "requiresManualCheck": true,
+            "pseudoAutomation": false,
+            "complexity": "moderate"
+        },
+        "tags": [
+            "forms",
+            "legal",
+            "financial",
+            "wcag2aa",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
+    },
+    {
+        "ruleId": "parsing",
+        "wcagCriteria": "4.1.1",
+        "wcagLevel": "A",
+        "wcagTitle": "Parsing",
+        "wcagVersion": "2.0",
+        "en301549Criteria": "9.4.1.1",
+        "en301549Title": "Parsing",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level A required",
+        "remediation": {
+            "description": "Opdatering: Fra WCAG 2.2 er dette kriterium fjernet/forældet, men i WCAG 2.1/EN 301 549 gælder det: ID'er skal være unikke, elementer korrekt indlejret.",
+            "technicalGuidance": "Valider HTML. Sørg for at id attributter er unikke på siden. Luk alle tags korrekt.",
+            "component": null,
+            "wcagTechnique": [
+                "H88"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "low",
+            "eaaImpact": "low",
+            "danishInterpretation": "Mindre prioriteret nu da moderne browsere håndterer fejl godt, men duplikerede ID'er kan stadig bryde ARIA.",
+            "commonMistakes": [
+                "Duplikerede ID'er",
+                "Brudt HTML-struktur"
+            ],
+            "priorityRationale": "Teknisk hygiejnefaktor."
+        },
+        "testability": {
+            "automated": true,
+            "requiresManualCheck": false,
+            "pseudoAutomation": false,
+            "complexity": "simple"
+        },
+        "tags": [
+            "code",
+            "html",
+            "parsing",
+            "wcag2a",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
+    },
+    {
+        "ruleId": "name-role-value",
+        "wcagCriteria": "4.1.2",
+        "wcagLevel": "A",
+        "wcagTitle": "Name, Role, Value",
+        "wcagVersion": "2.0",
+        "en301549Criteria": "9.4.1.2",
+        "en301549Title": "Name, role, value",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level A required",
+        "remediation": {
+            "description": "For alle komponenter kan navn og rolle bestemmes programmatisk. Værdier kan indstilles programmatisk.",
+            "technicalGuidance": "Brug native HTML-elementer når det er muligt. Hvis brugerdefinerede komponenter bruges, skal ARIA (role, aria-label, aria-valuenow) bruges korrekt.",
+            "component": "@holmdigital/components/ProgressBar",
+            "codeExample": "import { ProgressBar } from '@holmdigital/components';\n\n// Bad: Div without role\n<div style={{ width: '50%' }}>50%</div>\n\n// Good: Accessible Component\n<ProgressBar value={50} label=\"Loading...\" />",
+            "wcagTechnique": [
+                "ARIA4",
+                "ARIA5"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "critical",
+            "eaaImpact": "critical",
+            "danishInterpretation": "Dette er fundamentet for hvordan skærmlæsere arbejder med moderne webapps. Uden dette er appen 'usynlig' for hjælpeteknologi.",
+            "commonMistakes": [
+                "Div-knapper uden rolle",
+                "Brugerdefinerede afkrydsningsfelter uden aria-checked",
+                "Manglende tilgængeligt navn"
+            ],
+            "priorityRationale": "Absolut kritisk for kompatibilitet."
+        },
+        "testability": {
+            "automated": true,
+            "requiresManualCheck": true,
+            "pseudoAutomation": true,
+            "complexity": "complex"
+        },
+        "tags": [
+            "code",
+            "aria",
+            "interaction",
+            "wcag2a",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
+    },
+    {
+        "ruleId": "status-messages",
+        "wcagCriteria": "4.1.3",
+        "wcagLevel": "AA",
+        "wcagTitle": "Status Messages",
+        "wcagVersion": "2.1",
+        "en301549Criteria": "9.4.1.3",
+        "en301549Title": "Status messages",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level AA required",
+        "remediation": {
+            "description": "Statusmeddelelser skal kunne præsenteres for brugeren uden at modtage fokus (via skærmlæser).",
+            "technicalGuidance": "Brug aria-live regioner (polite/assertive) eller role='status'/'alert' for beskeder der vises dynamisk (f.eks. 'Gemt', 'Søgning færdig').",
+            "component": "@holmdigital/components/LiveRegion",
+            "codeExample": "import { LiveRegion } from '@holmdigital/components';\n\n// Assertive for errors\n<LiveRegion politeness=\"assertive\">Error: Failed to save.</LiveRegion>\n\n// Polite for status updates\n<LiveRegion politeness=\"polite\">Saved successfully.</LiveRegion>",
+            "wcagTechnique": [
+                "ARIA19",
+                "ARIA22"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "medium",
+            "eaaImpact": "medium",
+            "danishInterpretation": "Vigtigt i SPA'er hvor sideindlæsning ikke sker. Brugeren skal vide at noget skete.",
+            "commonMistakes": [
+                "Tavse opdateringer af kurv/søgeresultater",
+                "Toast-notifikationer der ikke annonceres"
+            ],
+            "priorityRationale": "Giver feedback til brugere uden syn."
+        },
+        "testability": {
+            "automated": false,
+            "requiresManualCheck": true,
+            "pseudoAutomation": true,
+            "complexity": "moderate"
+        },
+        "tags": [
+            "aria",
+            "updates",
+            "feedback",
+            "wcag21aa",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
+    },
+    {
+        "ruleId": "landmark-one-main",
+        "wcagCriteria": "1.3.1",
+        "wcagLevel": "A",
+        "wcagTitle": "Info and Relationships",
+        "wcagVersion": "2.0",
+        "en301549Criteria": "9.1.3.1",
+        "en301549Title": "Info and relationships",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "9 § (Struktur och relationer)",
+        "remediation": {
+            "description": "Siden skal have præcis ét 'main' landmark.",
+            "technicalGuidance": "Brug <main> elementet én gang per side til at identificere hovedindholdet. Undgå at have flere <main> uden unikke labels, eller helt at mangle det.",
+            "wcagTechnique": [
+                "ARIA11",
+                "H97"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "medium",
+            "eaaImpact": "medium",
+            "danishInterpretation": "Skærmlæserbrugere er afhængige af landmarks for hurtigt at navigere til indholdet. Manglende <main> gør det svært at springe navigation over.",
+            "commonMistakes": [
+                "Brug af <div id='main'> i stedet for <main>",
+                "At have flere <main> elementer"
+            ]
+        },
+        "testability": {
+            "automated": true,
+            "requiresManualCheck": false,
+            "pseudoAutomation": true,
+            "complexity": "simple"
+        },
+        "tags": [
+            "wcag2a",
+            "wcag131",
+            "landmark",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
+    },
+    {
+        "ruleId": "page-has-heading-one",
+        "wcagCriteria": "1.3.1",
+        "wcagLevel": "A",
+        "wcagTitle": "Info and Relationships",
+        "wcagVersion": "2.0",
+        "en301549Criteria": "9.1.3.1",
+        "en301549Title": "Info and relationships",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "9 § (Struktur och relationer)",
+        "remediation": {
+            "description": "Siden skal have en niveau 1 overskrift (<h1>).",
+            "technicalGuidance": "Sørg for at der er præcis én <h1> der beskriver sidens unikke indhold.",
+            "wcagTechnique": [
+                "H42"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "high",
+            "eaaImpact": "high",
+            "danishInterpretation": "En klar <h1> er kritisk for at brugere forstår hvor de er landet. Det er ofte det første en skærmlæserbruger leder efter.",
+            "commonMistakes": [
+                "Starte overskrifter ved <h2>",
+                "Bruge logo som den eneste <h1> uden tekst"
+            ]
+        },
+        "testability": {
+            "automated": true,
+            "requiresManualCheck": false,
+            "pseudoAutomation": true,
+            "complexity": "simple"
+        },
+        "tags": [
+            "wcag2a",
+            "wcag131",
+            "heading",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
+    },
+    {
+        "ruleId": "heading-order",
+        "wcagCriteria": "1.3.1",
+        "wcagLevel": "A",
+        "wcagTitle": "Info and Relationships",
+        "wcagVersion": "2.0",
+        "en301549Criteria": "9.1.3.1",
+        "en301549Title": "Info and relationships",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "9 § (Struktur och relationer)",
+        "remediation": {
+            "description": "Overskrifter skal følge en logisk rækkefølge (h1 -> h2 -> h3).",
+            "technicalGuidance": "Spring ikke overskriftsniveauer over (f.eks. direkte fra h1 til h3).",
+            "wcagTechnique": [
+                "G141"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "medium",
+            "eaaImpact": "medium",
+            "danishInterpretation": "Forkert overskriftsstruktur gør det svært for skærmlæsere at navigere. Spring aldrig niveauer over.",
+            "commonMistakes": [
+                "Bruge h3 til styling i stedet for struktur"
+            ]
+        },
+        "testability": {
+            "automated": true,
+            "requiresManualCheck": false,
+            "pseudoAutomation": true,
+            "complexity": "simple"
+        },
+        "tags": [
+            "wcag2a",
+            "wcag131",
+            "heading",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
+    },
+    {
+        "ruleId": "landmark-banner-is-top-level",
+        "wcagCriteria": "1.3.1",
+        "wcagLevel": "A",
+        "wcagTitle": "Info and Relationships",
+        "wcagVersion": "2.0",
+        "en301549Criteria": "9.1.3.1",
+        "en301549Title": "Info and relationships",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "9 § (Struktur och relationer)",
+        "remediation": {
+            "description": "Banneret (<header>) skal være på øverste niveau.",
+            "technicalGuidance": "Placer ikke <header> inde i et andet landmark hvis det er sidens hovedbanner.",
+            "wcagTechnique": [
+                "ARIA11"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "medium",
+            "eaaImpact": "medium",
+            "danishInterpretation": "Sidens hovedmenu/banner skal være placeret korrekt i strukturen for at blive fundet hurtigt.",
+            "commonMistakes": [
+                "Indlejre header inde i main"
+            ]
+        },
+        "testability": {
+            "automated": true,
+            "requiresManualCheck": false,
+            "pseudoAutomation": true,
+            "complexity": "simple"
+        },
+        "tags": [
+            "wcag2a",
+            "wcag131",
+            "landmark",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
+    },
+    {
+        "ruleId": "landmark-no-duplicate-banner",
+        "wcagCriteria": "1.3.1",
+        "wcagLevel": "A",
+        "wcagTitle": "Info and Relationships",
+        "wcagVersion": "2.0",
+        "en301549Criteria": "9.1.3.1",
+        "en301549Title": "Info and relationships",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "9 § (Struktur och relationer)",
+        "remediation": {
+            "description": "Siden skal kun have ét 'banner' landmark (normalt <header>).",
+            "technicalGuidance": "Sørg for at du kun har én <header> på øverste niveau.",
+            "wcagTechnique": [
+                "ARIA11"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "medium",
+            "eaaImpact": "medium",
+            "danishInterpretation": "Flere bannere forvirrer navigationen. Der bør kun være én top-header.",
+            "commonMistakes": [
+                "Have header både i top og bund"
+            ]
+        },
+        "testability": {
+            "automated": true,
+            "requiresManualCheck": false,
+            "pseudoAutomation": true,
+            "complexity": "simple"
+        },
+        "tags": [
+            "wcag2a",
+            "wcag131",
+            "landmark",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
+    },
+    {
+        "ruleId": "landmark-unique",
+        "wcagCriteria": "1.3.1",
+        "wcagLevel": "A",
+        "wcagTitle": "Info and Relationships",
+        "wcagVersion": "2.0",
+        "en301549Criteria": "9.1.3.1",
+        "en301549Title": "Info and relationships",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "9 § (Struktur och relationer)",
+        "remediation": {
+            "description": "Landmarks skal have unikke roller eller labels.",
+            "technicalGuidance": "Hvis du har flere <nav> elementer, giv dem unikke 'aria-label' (f.eks. 'Hovedmenu', 'Sidefodsmenu').",
+            "wcagTechnique": [
+                "ARIA11"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "medium",
+            "eaaImpact": "medium",
+            "danishInterpretation": "Brugeren skal kunne skelne mellem forskellige menuer/regioner. Giv dem navne.",
+            "commonMistakes": [
+                "Flere nav-elementer uden aria-label"
+            ]
+        },
+        "testability": {
+            "automated": true,
+            "requiresManualCheck": false,
+            "pseudoAutomation": true,
+            "complexity": "simple"
+        },
+        "tags": [
+            "wcag2a",
+            "wcag131",
+            "landmark",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
+    },
+    {
+        "ruleId": "region",
+        "wcagCriteria": "1.3.1",
+        "wcagLevel": "A",
+        "wcagTitle": "Info and Relationships",
+        "wcagVersion": "2.0",
+        "en301549Criteria": "9.1.3.1",
+        "en301549Title": "Info and relationships",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "9 § (Struktur och relationer)",
+        "remediation": {
+            "description": "Alt indhold på siden skal være indeholdt i landmarks (regioner).",
+            "technicalGuidance": "Sørg for at alt indhold er inde i <main>, <header>, <nav>, <footer> eller <aside>.",
+            "component": null,
+            "wcagTechnique": [
+                "ARIA11"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "medium",
+            "eaaImpact": "medium",
+            "danishInterpretation": "For at skærmlæserbrugere kan navigere effektivt, skal siden være opdelt i logiske regioner.",
+            "commonMistakes": [
+                "Indhold direkte i <body> uden container",
+                "Brug af for mange landmarks"
+            ]
+        },
+        "testability": {
+            "automated": true,
+            "requiresManualCheck": false,
+            "pseudoAutomation": true,
+            "complexity": "simple"
+        },
+        "tags": [
+            "wcag2a",
+            "wcag131",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
+    },
+    {
+        "ruleId": "audio-description",
+        "wcagCriteria": "1.2.5",
+        "wcagLevel": "AA",
+        "wcagTitle": "Audio Description (Prerecorded)",
+        "wcagVersion": "2.0",
+        "en301549Criteria": "9.1.2.5",
+        "en301549Title": "Audio description (prerecorded)",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "100 § (Tidsberoende media)",
+        "remediation": {
+            "description": "Forudindspillet videoindhold skal have audiobeskrivelse hvis visuel information er kritisk.",
+            "technicalGuidance": "Tilføj et alternativt lydspor eller version der beskriver hvad der sker visuelt.",
+            "component": null,
+            "wcagTechnique": [
+                "G78"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "medium",
+            "eaaImpact": "low",
+            "danishInterpretation": "Video der formidler information visuelt skal beskrives for dem der ikke kan se skærmen.",
+            "commonMistakes": [
+                "Video mangler audiobeskrivelse trods vigtig visuel info"
+            ]
+        },
+        "testability": {
+            "automated": false,
+            "requiresManualCheck": true,
+            "pseudoAutomation": false,
+            "complexity": "hard"
+        },
+        "tags": [
+            "wcag2aa",
+            "wcag125",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
+    }
+]

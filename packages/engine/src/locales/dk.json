@@ -1,0 +1,38 @@
+{
+    "cli": {
+        "title": "\n🌐 HolmDigital Regulatorisk Scanner\n",
+        "scanning": "Scanner {url}...\n",
+        "initializing": "Initialiserer scanner...",
+        "analyzing": "Analyserer DOM & Shadow DOM...",
+        "complete": "Scanning færdig!",
+        "generating_pdf": "Genererer PDF-rapport...",
+        "pdf_saved": "PDF-rapport gemt i {path}",
+        "scan_failed": "Scanning mislykkedes",
+        "critical_failure": "\nCI/CD Fejl: Kritiske regulatoriske overtrædelser fundet.",
+        "generating_statement": "Genererer tilgængelighedserklæring...",
+        "statement_saved": "Tilgængelighedserklæring gemt i {path}",
+        "score": "\nOverholdelsesscore: {score}/100",
+        "status": "Overholdelsesstatus: {status}",
+        "not_compliant": "  (Opfylder ikke lovkrav - Lov om tilgængelighed)",
+        "viewport": "Viewport: {width}x{height}",
+        "prescriptive_fix": "\n💡 Foreslået løsning:",
+        "use_component": "Brug komponent: {component}",
+        "pseudo_tests": "\n🧬 Genererer Pseudo-automatiseringstests...\n",
+        "test_for": "Test for {ruleId}:",
+        "junit_saved": "JUnit XML-rapport gemt i {path}"
+    },
+    "report": {
+        "title": "Tilgængelighedsrapport - {url}",
+        "generated": "Genereret: {date}",
+        "scan_target": "Scanningsmål: {url}",
+        "overall_score": "Samlet Score",
+        "critical_issues": "Kritiske Fejl",
+        "high_issues": "Alvorlige Fejl",
+        "total_issues": "Totale Fejl",
+        "html_errors": "HTML Fejl",
+        "detailed_violations": "Detaljerede Overtrædelser",
+        "prescriptive_fix": "💡 Foreslået Løsning",
+        "use": "Brug",
+        "footer": "Genereret af @holmdigital/engine v0.1.0 • Standarder: WCAG 2.1 AA, EN 301 549, Lov om tilgængelighed"
+    }
+}

@@ -5,7 +5,17 @@ import {
     getDOSLagenReference,
     getICTManualChecklist,
     getAllConvergenceRules,
-    getDatabaseStats
+    getDatabaseStats,
+    // EU Legal Framework functions
+    getRulesByFramework,
+    getRulesBySector,
+    getLegalFrameworks,
+    getLegalFramework,
+    getNordicAuthorities,
+    getNordicAuthority,
+    getNordicAuthoritiesByCountry,
+    getStatementTools,
+    getEAADeadlineRules
 } from './index';
 
 describe('Standards Package', () => {
@@ -36,5 +46,80 @@ describe('Standards Package', () => {
     it('should load ICT manual checklist', () => {
         const checks = getICTManualChecklist();
         expect(Array.isArray(checks)).toBe(true);
+    });
+});
+
+describe('EU Legal Framework', () => {
+    it('should get rules by WAD framework', () => {
+        const rules = getRulesByFramework('WAD');
+        expect(rules.length).toBeGreaterThan(0);
+        // color-contrast should be included
+        const colorContrast = rules.find(r => r.ruleId === 'color-contrast');
+        expect(colorContrast).toBeDefined();
+    });
+
+    it('should get rules by EAA framework', () => {
+        const rules = getRulesByFramework('EAA');
+        expect(rules.length).toBeGreaterThan(0);
+    });
+
+    it('should get rules by public sector', () => {
+        const rules = getRulesBySector('public');
+        expect(rules.length).toBeGreaterThan(0);
+    });
+
+    it('should get rules by private sector', () => {
+        const rules = getRulesBySector('private');
+        expect(rules.length).toBeGreaterThan(0);
+    });
+
+    it('should get EU legal frameworks', () => {
+        const frameworks = getLegalFrameworks();
+        expect(frameworks).toBeDefined();
+        expect(frameworks.WAD).toBeDefined();
+        expect(frameworks.EAA).toBeDefined();
+    });
+
+    it('should get specific legal framework by ID', () => {
+        const wad = getLegalFramework('WAD');
+        expect(wad).toBeDefined();
+        expect(wad?.id).toBe('2016/2102');
+        expect(wad?.name).toBe('Web Accessibility Directive');
+
+        const eaa = getLegalFramework('EAA');
+        expect(eaa).toBeDefined();
+        expect(eaa?.id).toBe('2019/882');
+    });
+
+    it('should get all Nordic authorities', () => {
+        const authorities = getNordicAuthorities();
+        expect(authorities.length).toBeGreaterThan(0);
+    });
+
+    it('should get Nordic authority by ID', () => {
+        const digg = getNordicAuthority('se-digg');
+        expect(digg).toBeDefined();
+        expect(digg?.name).toContain('Digg');
+        expect(digg?.country).toBe('SE');
+    });
+
+    it('should get Nordic authorities by country', () => {
+        const seAuthorities = getNordicAuthoritiesByCountry('SE');
+        expect(seAuthorities.length).toBeGreaterThan(0);
+        expect(seAuthorities.every(a => a.country === 'SE')).toBe(true);
+    });
+
+    it('should get statement tools', () => {
+        const tools = getStatementTools();
+        expect(tools.length).toBeGreaterThan(0);
+        expect(tools.some(t => t.id === 'digg-generator')).toBe(true);
+    });
+
+    it('should get rules with EAA deadline', () => {
+        const rules = getEAADeadlineRules();
+        expect(rules.length).toBeGreaterThan(0);
+        // color-contrast should have deadline
+        const colorContrast = rules.find(r => r.ruleId === 'color-contrast');
+        expect(colorContrast?.legalContext?.eaaDeadline).toBe('2025-06-28');
     });
 });

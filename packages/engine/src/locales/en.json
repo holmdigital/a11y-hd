@@ -9,6 +9,8 @@
         "pdf_saved": "PDF Report saved to {path}",
         "scan_failed": "Scan failed",
         "critical_failure": "\nCI/CD Failure: Critical regulatory violations found.",
+        "generating_statement": "Generating Accessibility Statement...",
+        "statement_saved": "Accessibility Statement saved to {path}",
         "score": "\nCompliance Score: {score}/100",
         "status": "Compliance Status: {status}",
         "not_compliant": "  (Not compliant with legal requirements)",
@@ -16,7 +18,8 @@
         "prescriptive_fix": "\n💡 Prescriptive Fix:",
         "use_component": "Use component: {component}",
         "pseudo_tests": "\n🧬 Generating Pseudo-Automation Tests...\n",
-        "test_for": "Test for {ruleId}:"
+        "test_for": "Test for {ruleId}:",
+        "junit_saved": "JUnit XML report saved to {path}"
     },
     "report": {
         "title": "Accessibility Report - {url}",

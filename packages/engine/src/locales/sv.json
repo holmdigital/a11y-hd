@@ -9,6 +9,8 @@
         "pdf_saved": "PDF-rapport sparad till {path}",
         "scan_failed": "Skanning misslyckades",
         "critical_failure": "\nCI/CD Fel: Kritiska regulatoriska brister hittades.",
+        "generating_statement": "Genererar tillgänglighetsredogörelse...",
+        "statement_saved": "Tillgänglighetsredogörelse sparad till {path}",
         "score": "\nEfterlevnadspoäng: {score}/100",
         "status": "Efterlevnadsstatus: {status}",
         "not_compliant": "  (Uppfyller ej legala krav)",
@@ -16,7 +18,8 @@
         "prescriptive_fix": "\n💡 Preskriptiv Lösning:",
         "use_component": "Använd komponent: {component}",
         "pseudo_tests": "\n🧬 Genererar Pseudo-automationstester...\n",
-        "test_for": "Test för {ruleId}:"
+        "test_for": "Test för {ruleId}:",
+        "junit_saved": "JUnit XML-rapport sparad till {path}"
     },
     "report": {
         "title": "Tillgänglighetsrapport - {url}",

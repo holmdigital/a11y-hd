@@ -45,6 +45,12 @@ export interface ScanResult {
     score: number;
     complianceStatus: 'PASS' | 'FAIL';
     htmlValidation?: ValidationResult;
+    // EU Legal Framework summary
+    legalSummary?: {
+        wadApplicable: number;   // Rules applicable to WAD
+        eaaApplicable: number;   // Rules applicable to EAA
+        eaaDeadlineViolations: number; // Rules with EAA 2025 deadline
+    };
 }
 
 export class RegulatoryScanner {
@@ -195,7 +201,7 @@ export class RegulatoryScanner {
 
     private async enrichResults(axeResults: any): Promise<RegulatoryReport[]> {
         const reports: RegulatoryReport[] = [];
-        const { searchRulesByTags, generateRegulatoryReport } = await import('@holmdigital/standards');
+        const { searchRulesByTags, generateRegulatoryReport, getConvergenceRule } = await import('@holmdigital/standards');
         const { getCurrentLang } = await import('../i18n');
         const lang = getCurrentLang();
 
@@ -213,6 +219,9 @@ export class RegulatoryScanner {
             }
 
             if (report) {
+                // Get full rule to access legalContext
+                const fullRule = getConvergenceRule(report.ruleId, lang);
+
                 // Lägg till specifik information från axe-violationen
                 // Vi "patchar" rapporten med faktisk feldata från scanningen
                 reports.push({
@@ -221,6 +230,8 @@ export class RegulatoryScanner {
                         ...report.holmdigitalInsight,
                         reasoning: violation.help // Använd Axe's hjälptext som specifik anledning
                     },
+                    // Include legal context from the full rule
+                    legalContext: fullRule?.legalContext,
                     // Attach extra debug info for the CLI
                     failingNodes: violation.nodes.map((node: any) => ({
                         html: node.html,
@@ -319,6 +330,20 @@ export class RegulatoryScanner {
             pageLanguage
         };
 
+        // Calculate EU Legal Framework summary
+        const reportsWithContext = reports.filter((r: any) => r.legalContext);
+        const legalSummary = {
+            wadApplicable: reportsWithContext.filter((r: any) =>
+                r.legalContext?.appliesTo?.includes('WAD')
+            ).length,
+            eaaApplicable: reportsWithContext.filter((r: any) =>
+                r.legalContext?.appliesTo?.includes('EAA')
+            ).length,
+            eaaDeadlineViolations: reportsWithContext.filter((r: any) =>
+                r.legalContext?.eaaDeadline
+            ).length
+        };
+
         return {
             url: this.options.url,
             timestamp: new Date().toISOString(),
@@ -326,7 +351,8 @@ export class RegulatoryScanner {
             reports,
             stats,
             score,
-            complianceStatus
+            complianceStatus,
+            legalSummary
         };
     }
 

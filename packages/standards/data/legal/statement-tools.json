@@ -1,0 +1,43 @@
+{
+    "tools": [
+        {
+            "id": "eu-template-2018-1523",
+            "name": "EU:s officiella mall för tillgänglighetsredogörelse",
+            "provider": "Europeiska kommissionen",
+            "type": "template",
+            "url": "https://eur-lex.europa.eu/eli/dec_impl/2018/1523/oj",
+            "format": [
+                "pdf",
+                "docx"
+            ],
+            "international": true,
+            "legalBasis": "Genomförandebeslut (EU) 2018/1523"
+        },
+        {
+            "id": "digg-generator",
+            "name": "Diggs verktyg för tillgänglighetsredogörelse",
+            "provider": "Digg",
+            "type": "interactive",
+            "url": "https://webbriktlinjer.se/tillganglighetsredogorelse/",
+            "format": [
+                "html"
+            ],
+            "country": "SE",
+            "recommended": true,
+            "comment": "Det mest effektiva sättet att skapa en svensk redogörelse som följer lagen"
+        },
+        {
+            "id": "w3c-wai-generator",
+            "name": "W3C WAI Accessibility Statement Generator",
+            "provider": "W3C Web Accessibility Initiative",
+            "type": "interactive",
+            "url": "https://www.w3.org/WAI/planning/statements/generator/",
+            "format": [
+                "html",
+                "markdown"
+            ],
+            "international": true,
+            "comment": "Internationellt verktyg som kan anpassas efter olika behov"
+        }
+    ]
+}

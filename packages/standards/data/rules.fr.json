@@ -44,8 +44,31 @@
             "contrast",
             "visual",
             "wcag2a",
-            "wcag21aa"
-        ]
+            "wcag21aa",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
     },
     {
         "ruleId": "keyboard-accessible",
@@ -90,8 +113,31 @@
             "keyboard",
             "interaction",
             "wcag2a",
-            "wcag21a"
-        ]
+            "wcag21a",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
     },
     {
         "ruleId": "alt-text",
@@ -137,8 +183,31 @@
             "images",
             "alt-text",
             "wcag2a",
-            "wcag21a"
-        ]
+            "wcag21a",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
     },
     {
         "ruleId": "form-labels",
@@ -185,8 +254,31 @@
             "forms",
             "labels",
             "wcag2a",
-            "wcag21a"
-        ]
+            "wcag21a",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
     },
     {
         "ruleId": "page-title",
@@ -230,8 +322,31 @@
             "navigation",
             "title",
             "wcag2a",
-            "wcag21a"
-        ]
+            "wcag21a",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
     },
     {
         "ruleId": "info-and-relationships",
@@ -275,8 +390,31 @@
             "structure",
             "semantic",
             "headings",
-            "wcag2a"
-        ]
+            "wcag2a",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
     },
     {
         "ruleId": "use-of-color",
@@ -320,8 +458,31 @@
             "visual",
             "color",
             "design",
-            "wcag2a"
-        ]
+            "wcag2a",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
     },
     {
         "ruleId": "reflow",
@@ -364,8 +525,31 @@
             "design",
             "responsive",
             "mobile",
-            "wcag21aa"
-        ]
+            "wcag21aa",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
     },
     {
         "ruleId": "non-text-contrast",
@@ -406,8 +590,31 @@
             "visual",
             "contrast",
             "graphics",
-            "wcag21aa"
-        ]
+            "wcag21aa",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
     },
     {
         "ruleId": "text-spacing",
@@ -447,8 +654,31 @@
         "tags": [
             "visual",
             "typography",
-            "wcag21aa"
-        ]
+            "wcag21aa",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
     },
     {
         "ruleId": "content-on-hover",
@@ -490,8 +720,31 @@
             "interaction",
             "hover",
             "tooltips",
-            "wcag21aa"
-        ]
+            "wcag21aa",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
     },
     {
         "ruleId": "captions-prerecorded",
@@ -534,8 +787,31 @@
             "media",
             "video",
             "captions",
-            "wcag2a"
-        ]
+            "wcag2a",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
     },
     {
         "ruleId": "audio-description",
@@ -575,8 +851,31 @@
             "media",
             "video",
             "audio-description",
-            "wcag2aa"
-        ]
+            "wcag2aa",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
     },
     {
         "ruleId": "orientation",
@@ -616,8 +915,31 @@
             "mobile",
             "responsive",
             "orientation",
-            "wcag21aa"
-        ]
+            "wcag21aa",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
     },
     {
         "ruleId": "identify-input-purpose",
@@ -658,8 +980,31 @@
         "tags": [
             "forms",
             "autocomplete",
-            "wcag21aa"
-        ]
+            "wcag21aa",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
     },
     {
         "ruleId": "no-keyboard-trap",
@@ -699,8 +1044,31 @@
         "tags": [
             "keyboard",
             "interaction",
-            "wcag2a"
-        ]
+            "wcag2a",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
     },
     {
         "ruleId": "character-key-shortcuts",
@@ -739,8 +1107,31 @@
         "tags": [
             "keyboard",
             "shortcuts",
-            "wcag21a"
-        ]
+            "wcag21a",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
     },
     {
         "ruleId": "timing-adjustable",
@@ -781,8 +1172,31 @@
         "tags": [
             "time",
             "session",
-            "wcag2a"
-        ]
+            "wcag2a",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
     },
     {
         "ruleId": "pause-stop-hide",
@@ -824,8 +1238,31 @@
             "animation",
             "carousel",
             "distraction",
-            "wcag2a"
-        ]
+            "wcag2a",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
     },
     {
         "ruleId": "three-flashes",
@@ -866,8 +1303,31 @@
             "seizure",
             "safety",
             "animation",
-            "wcag2a"
-        ]
+            "wcag2a",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
     },
     {
         "ruleId": "bypass-blocks",
@@ -910,8 +1370,31 @@
             "navigation",
             "skip-link",
             "keyboard",
-            "wcag2a"
-        ]
+            "wcag2a",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
     },
     {
         "ruleId": "focus-order",
@@ -954,8 +1437,31 @@
             "focus",
             "keyboard",
             "navigation",
-            "wcag2a"
-        ]
+            "wcag2a",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
     },
     {
         "ruleId": "link-purpose",
@@ -997,8 +1503,31 @@
             "links",
             "navigation",
             "copywriting",
-            "wcag2a"
-        ]
+            "wcag2a",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
     },
     {
         "ruleId": "multiple-ways",
@@ -1039,8 +1568,31 @@
             "navigation",
             "search",
             "sitemap",
-            "wcag2aa"
-        ]
+            "wcag2aa",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
     },
     {
         "ruleId": "headings-and-labels",
@@ -1081,8 +1633,31 @@
             "content",
             "headings",
             "labels",
-            "wcag2aa"
-        ]
+            "wcag2aa",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
     },
     {
         "ruleId": "focus-visible",
@@ -1125,8 +1700,31 @@
             "focus",
             "visual",
             "keyboard",
-            "wcag2aa"
-        ]
+            "wcag2aa",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
     },
     {
         "ruleId": "language-of-page",
@@ -1166,8 +1764,31 @@
         "tags": [
             "content",
             "language",
-            "wcag2a"
-        ]
+            "wcag2a",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
     },
     {
         "ruleId": "language-of-parts",
@@ -1206,8 +1827,31 @@
         "tags": [
             "content",
             "language",
-            "wcag2aa"
-        ]
+            "wcag2aa",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
     },
     {
         "ruleId": "on-focus",
@@ -1248,8 +1892,31 @@
             "interaction",
             "focus",
             "predictability",
-            "wcag2a"
-        ]
+            "wcag2a",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
     },
     {
         "ruleId": "on-input",
@@ -1291,8 +1958,31 @@
             "interaction",
             "input",
             "predictability",
-            "wcag2a"
-        ]
+            "wcag2a",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
     },
     {
         "ruleId": "consistent-navigation",
@@ -1333,8 +2023,31 @@
             "navigation",
             "design",
             "consistency",
-            "wcag2aa"
-        ]
+            "wcag2aa",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
     },
     {
         "ruleId": "consistent-identification",
@@ -1360,8 +2073,8 @@
             "eaaImpact": "low",
             "frenchInterpretation": "Le 'mélange' de la navigation est un gros problème pour l'utilisabilité.",
             "commonMistakes": [
-                "Inconsistent naming",
-                "Different icons for print/download"
+                "Dénomination incohérente",
+                "Icônes différentes pour imprimer/télécharger"
             ],
             "priorityRationale": "Reduces cognitive load."
         },
@@ -1375,8 +2088,31 @@
             "content",
             "icons",
             "consistency",
-            "wcag2aa"
-        ]
+            "wcag2aa",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
     },
     {
         "ruleId": "error-identification",
@@ -1391,7 +2127,7 @@
         "dosLagenReference": "RGAA 4.1, Niveau A requis",
         "remediation": {
             "description": "Si une erreur de saisie est détectée automatiquement, l'élément en erreur est identifié et l'erreur est décrite à l'utilisateur sous forme de texte.",
-            "technicalGuidance": "Affichez un message d'erreur clair à proximité du champ. Utilisez aria-invalid='true' et aria-describedby pour relier l'erreur au champ. Do not just color the field red.",
+            "technicalGuidance": "Affichez un message d'erreur clair à proximité du champ. Utilisez aria-invalid='true' et aria-describedby pour relier l'erreur au champ. Ne vous contentez pas de colorer le champ en rouge.",
             "component": "@holmdigital/components/FormField",
             "wcagTechnique": [
                 "G83",
@@ -1417,8 +2153,31 @@
         "tags": [
             "forms",
             "errors",
-            "wcag2a"
-        ]
+            "wcag2a",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
     },
     {
         "ruleId": "error-suggestion",
@@ -1442,7 +2201,7 @@
         "holmdigitalInsight": {
             "diggRisk": "medium",
             "eaaImpact": "medium",
-            "swedishInterpretation": "About being helpful. Reduces support cases.",
+            "frenchInterpretation": "Il s'agit d'être utile. Réduit les cas de support.",
             "commonMistakes": [
                 "Erreur 'Format invalide' sans exemple de format valide"
             ],
@@ -1458,8 +2217,31 @@
             "forms",
             "errors",
             "guidance",
-            "wcag2aa"
-        ]
+            "wcag2aa",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
     },
     {
         "ruleId": "error-prevention",
@@ -1502,8 +2284,31 @@
             "forms",
             "legal",
             "financial",
-            "wcag2aa"
-        ]
+            "wcag2aa",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
     },
     {
         "ruleId": "parsing",
@@ -1527,7 +2332,7 @@
         "holmdigitalInsight": {
             "diggRisk": "low",
             "eaaImpact": "low",
-            "swedishInterpretation": "Less prioritized now as modern browsers handle errors well, but duplicate IDs can still break ARIA.",
+            "frenchInterpretation": "Moins prioritaire maintenant car les navigateurs modernes gèrent bien les erreurs, mais les ID dupliqués peuvent toujours casser ARIA.",
             "commonMistakes": [
                 "ID dupliqués (copier-coller)",
                 "Balises mal imbriquées (div dans span)"
@@ -1544,8 +2349,31 @@
             "code",
             "html",
             "parsing",
-            "wcag2a"
-        ]
+            "wcag2a",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
     },
     {
         "ruleId": "name-role-value",
@@ -1561,7 +2389,8 @@
         "remediation": {
             "description": "Pour tous les composants d'interface utilisateur, le nom et le rôle peuvent être déterminés par programme ; les états, les propriétés et les valeurs peuvent être définis par programme ; et la notification des changements est disponible.",
             "technicalGuidance": "Utilisez les éléments HTML natifs lorsque cela est possible. Si des composants personnalisés sont utilisés, ARIA (role, aria-label, aria-valuenow) doit être utilisé correctement.",
-            "component": null,
+            "component": "@holmdigital/components/ProgressBar",
+            "codeExample": "import { ProgressBar } from '@holmdigital/components';\n\n// Mauvais : Div sans rôle\n<div style={{ width: '50%' }}>50%</div>\n\n// Bon : Composant accessible\n<ProgressBar value={50} label=\"Chargement...\" />",
             "wcagTechnique": [
                 "ARIA4",
                 "ARIA5"
@@ -1588,8 +2417,31 @@
             "code",
             "aria",
             "interaction",
-            "wcag2a"
-        ]
+            "wcag2a",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
     },
     {
         "ruleId": "status-messages",
@@ -1605,7 +2457,8 @@
         "remediation": {
             "description": "Les messages d'état peuvent être déterminés par programme via le rôle ou les propriétés afin qu'ils puissent être présentés à l'utilisateur par les technologies d'assistance sans recevoir le focus.",
             "technicalGuidance": "Utilisez un rôle aria-live (polite ou assertive) pour les messages qui apparaissent dynamiquement (comme les alertes de succès, les mises à jour du panier).",
-            "component": null,
+            "component": "@holmdigital/components/LiveRegion",
+            "codeExample": "import { LiveRegion } from '@holmdigital/components';\n\n// Assertive pour les erreurs\n<LiveRegion politeness=\"assertive\">Erreur : Échec de l'enregistrement.</LiveRegion>\n\n// Polite pour les mises à jour de statut\n<LiveRegion politeness=\"polite\">Enregistré avec succès.</LiveRegion>",
             "wcagTechnique": [
                 "ARIA19",
                 "ARIA22"
@@ -1616,8 +2469,8 @@
             "eaaImpact": "medium",
             "frenchInterpretation": "Critique pour les SPA. Les utilisateurs aveugles manquent souvent les notifications 'toast' si elles ne sont pas annoncées.",
             "commonMistakes": [
-                "Silent updates of cart/search results",
-                "Toast notifications not being announced"
+                "Mises à jour silencieuses du panier/résultats de recherche",
+                "Notifications toast non annoncées"
             ],
             "priorityRationale": "Provides feedback to users without sight."
         },
@@ -1631,8 +2484,31 @@
             "aria",
             "updates",
             "feedback",
-            "wcag21aa"
-        ]
+            "wcag21aa",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
     },
     {
         "ruleId": "landmark-one-main",
@@ -1671,8 +2547,31 @@
         "tags": [
             "wcag2a",
             "wcag131",
-            "landmark"
-        ]
+            "landmark",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
     },
     {
         "ruleId": "page-has-heading-one",
@@ -1710,8 +2609,31 @@
         "tags": [
             "wcag2a",
             "wcag131",
-            "heading"
-        ]
+            "heading",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
     },
     {
         "ruleId": "heading-order",
@@ -1748,8 +2670,31 @@
         "tags": [
             "wcag2a",
             "wcag131",
-            "heading"
-        ]
+            "heading",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
     },
     {
         "ruleId": "landmark-banner-is-top-level",
@@ -1786,8 +2731,31 @@
         "tags": [
             "wcag2a",
             "wcag131",
-            "landmark"
-        ]
+            "landmark",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
     },
     {
         "ruleId": "landmark-no-duplicate-banner",
@@ -1824,8 +2792,31 @@
         "tags": [
             "wcag2a",
             "wcag131",
-            "landmark"
-        ]
+            "landmark",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
     },
     {
         "ruleId": "landmark-unique",
@@ -1862,8 +2853,31 @@
         "tags": [
             "wcag2a",
             "wcag131",
-            "landmark"
-        ]
+            "landmark",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
     },
     {
         "ruleId": "region",
@@ -1901,8 +2915,31 @@
         },
         "tags": [
             "wcag2a",
-            "wcag131"
-        ]
+            "wcag131",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
     },
     {
         "ruleId": "audio-description",
@@ -1939,7 +2976,30 @@
         },
         "tags": [
             "wcag2aa",
-            "wcag125"
-        ]
+            "wcag125",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
     }
 ]

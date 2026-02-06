@@ -9,6 +9,8 @@
         "pdf_saved": "PDF-rapport opgeslagen op {path}",
         "scan_failed": "Scan mislukt",
         "critical_failure": "\nCI/CD Fout: Kritieke wettelijke overtredingen gevonden.",
+        "generating_statement": "Toegankelijkheidsverklaring genereren...",
+        "statement_saved": "Toegankelijkheidsverklaring opgeslagen op {path}",
         "score": "\nNalevingsscore: {score}/100",
         "status": "Nalevingsstatus: {status}",
         "not_compliant": "  (Niet in overeenstemming met wettelijke vereisten)",
@@ -16,7 +18,8 @@
         "prescriptive_fix": "\n💡 Voorgeschreven oplossing:",
         "use_component": "Gebruik component: {component}",
         "pseudo_tests": "\n🧬 Pseudo-automatiseringstests genereren...\n",
-        "test_for": "Test voor {ruleId}:"
+        "test_for": "Test voor {ruleId}:",
+        "junit_saved": "JUnit XML-rapport opgeslagen op {path}"
     },
     "report": {
         "title": "Toegankelijkheidsrapport - {url}",

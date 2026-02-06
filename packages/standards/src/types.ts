@@ -8,6 +8,11 @@ export type DiggRisk = 'low' | 'medium' | 'high' | 'critical';
 export type EAAImpact = 'none' | 'low' | 'medium' | 'high' | 'critical';
 export type TestComplexity = 'simple' | 'moderate' | 'complex';
 
+// EU Legal Framework types
+export type LegalFramework = 'WAD' | 'EAA';
+export type Sector = 'public' | 'private' | 'both';
+export type Country = 'SE' | 'NO' | 'DK' | 'FI' | 'NL' | 'DE' | 'FR' | 'ES' | 'IE' | 'GB' | 'US' | 'CA' | 'EU';
+
 /**
  * Convergence Schema Rule
  * Mappar WCAG → EN 301 549 → DOS-lagen med regulatorisk metadata
@@ -27,6 +32,8 @@ export interface ConvergenceRule {
     holmdigitalInsight: HolmDigitalInsight;
     testability: Testability;
     tags: string[];
+    // EU Legal Framework context (optional for backward compatibility)
+    legalContext?: LegalContext;
 }
 
 /**
@@ -116,4 +123,117 @@ export interface RegulatoryReport {
     remediation: Remediation;
     holmdigitalInsight: HolmDigitalInsight;
     testability: Testability;
+}
+
+// ============================================
+// EU Legal Framework Types
+// ============================================
+
+/**
+ * Legal context for a rule - links to EU directives
+ */
+export interface LegalContext {
+    appliesTo: LegalFramework[];
+    sectors: Sector[];
+    wadArticle?: string;
+    eaaAnnex?: string;
+    eaaProductScope?: string[];
+    eaaDeadline?: string;
+}
+
+/**
+ * EU Directive information
+ */
+export interface EUDirective {
+    id: string;
+    name: string;
+    fullName: string;
+    scope: Sector;
+    eurLexUrl: string;
+    adoptionDate: string;
+    transpositionDeadline: string;
+    applicationDeadline?: string;
+    wcagVersion: WCAGVersion;
+    wcagLevel: WCAGLevel;
+    technicalStandard: string;
+    productScopes?: string[];
+    serviceScopes?: string[];
+}
+
+/**
+ * Nordic authority information
+ */
+export interface NordicAuthority {
+    id: string;
+    name: string;
+    country: Country;
+    scope: Sector;
+    framework: LegalFramework;
+    website: string;
+    monitoringPortal?: string;
+    statementTool?: string;
+    guidesUrl?: string;
+    nationalLaw: string;
+    reputation?: string;
+    comment?: string;
+}
+
+/**
+ * Accessibility statement tool
+ */
+export interface StatementTool {
+    id: string;
+    name: string;
+    provider: string;
+    type: 'template' | 'interactive';
+    url: string;
+    format: string[];
+    country?: Country;
+    international?: boolean;
+    recommended?: boolean;
+    legalBasis?: string;
+    comment?: string;
+}
+
+/**
+ * Sanction information for accessibility violations
+ */
+export interface Sanction {
+    type: string;
+    description: string;
+    minAmount: number;
+    maxAmount: number;
+    currency: string;
+    example?: string;
+}
+
+/**
+ * Sector-specific authority
+ */
+export interface SectorAuthority {
+    authority: string;
+    responsibility: string;
+}
+
+/**
+ * National law implementation of EU directives
+ */
+export interface NationalLaw {
+    id: string;
+    law: string;
+    fullName: string;
+    euFramework: LegalFramework;
+    scope: Sector;
+    lawUrl?: string;
+    enforcement: {
+        authority: string;
+        authorityName: string;
+        responsibility: string;
+        website: string;
+    };
+    sectorAuthorities?: SectorAuthority[];
+    sanctions: Sanction;
+    inForce: boolean;
+    effectiveDate: string;
+    note?: string;
 }

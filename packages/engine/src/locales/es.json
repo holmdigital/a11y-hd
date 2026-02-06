@@ -9,6 +9,8 @@
         "pdf_saved": "Informe PDF guardado en {path}",
         "scan_failed": "Escaneo fallido",
         "critical_failure": "\nFallo de CI/CD: Se encontraron violaciones regulatorias críticas.",
+        "generating_statement": "Generando Declaración de Accesibilidad...",
+        "statement_saved": "Declaración de Accesibilidad guardada en {path}",
         "score": "\nPuntuación de Cumplimiento: {score}/100",
         "status": "Estado de Cumplimiento: {status}",
         "not_compliant": "  (No cumple con los requisitos legales - UNE 139803)",
@@ -16,7 +18,8 @@
         "prescriptive_fix": "\n💡 Solución Prescriptiva:",
         "use_component": "Use el componente: {component}",
         "pseudo_tests": "\n🧬 Generando pruebas de pseudo-automatización...\n",
-        "test_for": "Prueba para {ruleId}:"
+        "test_for": "Prueba para {ruleId}:",
+        "junit_saved": "Informe JUnit XML guardado en {path}"
     },
     "report": {
         "title": "Informe de Accesibilidad - {url}",

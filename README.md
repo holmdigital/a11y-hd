@@ -7,9 +7,14 @@ A professional accessibility ecosystem bridging the gap between technical code v
 
 - **Regulatory Mapping**: Automatically maps WCAG failures to EN 301 549 and national laws:
     - 🇸🇪 **DOS-lagen** (Sweden)
+    - 🇫🇮 **Laki digitaalisten palvelujen saavutettavuudesta** (Finland)
+    - 🇳🇴 **Forskrift om universell utforming av IKT** (Norway)
+    - 🇩🇰 **Lov om tilgængelighed** (Denmark)
     - 🇳🇱 **Digitoegankelijk** (Netherlands)
     - 🇩🇪 **BITV 2.0** (Germany)
     - 🇫🇷 **RGAA** (France)
+    - 🇪🇸 **UNE 139803** (Spain)
+    - 🇮🇪 **S.I. No. 358/2020** (Ireland)
     - 🇬🇧 **PSBAR** (UK)
     - 🇺🇸 **Section 508 / ADA** (USA)
     - 🇨🇦 **AODA** (Canada)
@@ -17,13 +22,36 @@ A professional accessibility ecosystem bridging the gap between technical code v
 - **Prescriptive Design**: Provides concrete component-based solutions, not just error descriptions.
 - **Global Compliance**: Built-in support for multiple languages and national regulations.
 - **CI/CD Integration**: Automatically breaks builds on critical regulatory violations.
+- **Premium Accessibility Statements**: Generates modern, glassmorphism-styled statements compliant with WAD/EAA and national templates (e.g., Digg).
+
+## 📚 Documentation & Guides
+
+Comprehensive resources to help you master the ecosystem, from legal compliance to advanced technical integration.
+
+### 📖 Reference Catalogs
+Detailed API and property references for each package.
+*   **[Engine Reference](./docs/reference/engine.md)** - CLI flags, configuration schema, and programmatic API.
+*   **[Component Library](./docs/reference/components.md)** - Visual catalog of 29+ accessible React components with props.
+*   **[Standards Database](./docs/reference/standards.md)** - Mapping table for WCAG vs EN 301 549 vs National Laws.
+
+### 🛠️ Developer Resources
+Practical guides for building and deploying accessible applications.
+*   **[Developer Cookbooks](./docs/guides/developer-cookbooks.md)** - Step-by-step recipes for common accessibility patterns.
+*   **[CI/CD Integration Guide](./docs/guides/ci-cd-integration.md)** - How to run the engine in GitHub, GitLab, and Azure DevOps.
+*   **[Internal CI/CD Strategy](./docs/architecture/ci-cd-strategy.md)** - Monorepo architecture and automated release pipelines.
+*   **[Accessibility Statement Tutorial](./docs/guides/accessibility-statement.md)** - How to generate and customize V2 legal statements.
+
+### ⚖️ Legal & Regulatory
+Stay ahead of enforcement deadlines and compliance requirements.
+*   **[EU Legal Framework (WAD & EAA)](./docs/guides/eu-legal-framework.md)** - Understanding the impact of current and upcoming regulations.
+*   **[Nordic Regulatory Authorities](./docs/guides/nordic-authorities.md)** - Details on Digg (SE), Traficom (FI), and others.
 
 ## 📦 Packages
 
 This monorepo contains three core NPM packages and a documentation wiki:
 
 ### 1. [@holmdigital/engine](./packages/engine)
-Regulatory test engine with Virtual DOM architecture for Shadow DOM and SPA support. Now with internationalization (i18n) and **automatic accessibility badge generation**.
+Regulatory test engine with Virtual DOM architecture for Shadow DOM and SPA support. Now with internationalization (i18n), **Premium V2 Accessibility Statement** generation, and automatic badge support.
 
 ```bash
 npm install @holmdigital/engine
@@ -35,11 +63,17 @@ npx hd-a11y-scan <url> [options]
 ```
 
 **Options:**
-- `--lang <code>` - Language code (`en`, `sv`, `de`, `fr`, `es`, `nl`)
+- `--lang <code>` - Language code (`en`, `sv`, `no`, `fi`, `da`, `de`, `fr`, `es`, `nl`)
 - `--threshold <level>` - Severity threshold (`critical`, `high`, `medium`, `low`). Default: `high`
 - `--ci` - Run in CI mode (exit code 1 on critical failures)
 - `--json` - Output results as JSON
 - `--pdf <path>` - Generate a PDF report
+- `--statement <path>` - Generate an accessibility statement (Premium V2 HTML)
+- `--org <name>` - Organization name for statement metadata
+- `--email <email>` - Contact email for statement metadata
+- `--phone <number>` - Contact phone for statement metadata
+- `--response-time <val>` - Normal response time for statement metadata
+- `--publish-date <date>` - Website publish date (YYYY-MM-DD) for statement metadata
 - `--viewport <size>` - Set viewport size (e.g., "mobile", "desktop", "1024x768")
 - `--generate-tests` - Generate pseudo-code automation scripts for verification
 - `--invalid-https-cert` - Allow scanning sites with invalid/self-signed certs ⚠️
@@ -75,21 +109,17 @@ const mapping = getEN301549Mapping('1.4.3', 'sv');
 
 The engine is designed to run in CI/CD pipelines (GitHub Actions, GitLab CI, etc.). It returns exit code `1` if critical violations are found.
 
-### GitHub Actions Example
-
-Create `.github/workflows/accessibility.yml`:
-
+### 1. GitHub Actions
 ```yaml
 name: Accessibility Scan
 on: [push, pull_request]
 
 jobs:
-  a11y-scan:
+  a11y:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       
-      # 1. Start your local server (e.g., Next.js, Vite)
       - name: Start Server
         run: npm run dev &
         env:
@@ -98,10 +128,65 @@ jobs:
       - name: Wait for Server
         run: npx wait-on http://localhost:3000
 
-      # 2. Run Regulatory Scan
-      - name: Run HolmDigital Compliance Scan
-        run: npx hd-a11y-scan http://localhost:3000 --ci --lang en
+      - name: Run Scan
+        run: npx hd-a11y-scan http://localhost:3000 --ci --lang en --junit report.xml --pdf report.pdf
+
+      - name: Upload Artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: a11y-reports
+          path: report.*
 ```
+
+### 2. GitLab CI
+```yaml
+a11y-check:
+  image: node:20
+  script:
+    - npm install
+    - npm run dev &
+    - npx wait-on http://localhost:3000
+    - npx hd-a11y-scan http://localhost:3000 --ci --junit report.xml --pdf report.pdf
+  artifacts:
+    when: always
+    paths:
+      - report.xml
+      - report.pdf
+    reports:
+      junit: report.xml
+```
+
+### 3. Azure DevOps
+```yaml
+trigger:
+- main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+- script: |
+    npm install
+    npm run dev &
+    npx wait-on http://localhost:3000
+    npx hd-a11y-scan http://localhost:3000 --ci --junit report.xml
+  displayName: 'Run Accessibility Scan'
+
+- task: PublishTestResults@2
+  condition: succeededOrFailed()
+  inputs:
+    testResultsFormat: 'JUnit'
+    testResultsFiles: 'report.xml'
+```
+
+### 🛑 Build Breaking Logic
+The engine returns exit code `1` only when it finds violations that meet your `--threshold`.
+
+- `--threshold critical` = Fails only on critical issues (e.g., missing alt text).
+- `--threshold high` (default) = Fails on critical + high issues.
+- `--threshold low` = Fails on everything (zero tolerance).
+
 
 ## 🚀 Quick Start
 
@@ -136,7 +221,7 @@ We welcome contributions! Please see [CONTRIBUTING.md](./CONTRIBUTING.md) for gu
 
 **MIT License** - See [LICENSE](./LICENSE) for details.
 
-Copyright (c) 2025 Holm Digital AB
+Copyright (c) 2026 Holm Digital AB
 
 ## 🔗 Links
 

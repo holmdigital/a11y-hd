@@ -1,0 +1,3006 @@
+[
+    {
+        "ruleId": "color-contrast",
+        "wcagCriteria": "1.4.3",
+        "wcagLevel": "AA",
+        "wcagTitle": "Contrast (Minimum)",
+        "wcagVersion": "2.0",
+        "en301549Criteria": "9.1.4.3",
+        "en301549Title": "Contrast (minimum)",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level AA required",
+        "remediation": {
+            "description": "Tekstin ja tekstikuvien kontrastisuhteen on oltava vähintään 4.5:1 (3:1 suurelle tekstille).",
+            "technicalGuidance": "Käytä työkaluja kuten WebAIM Contrast Checker kontrastin tarkistamiseen. Säädä värivalintoja tai lisää taustan läpinäkyvyyttä oikean kontrastin saavuttamiseksi.",
+            "component": "@holmdigital/components/Button",
+            "codeExample": "import { Button } from '@holmdigital/components';\n\n// Bad: Poor contrast\n<button style={{ background: '#777', color: '#999' }}>Click me</button>\n\n// Good: Use accessible component\n<Button variant=\"primary\">Click me</Button>",
+            "wcagTechnique": [
+                "G18",
+                "G145",
+                "G174"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "high",
+            "eaaImpact": "critical",
+            "finnishInterpretation": "Yksi yleisimpiä syitä sakkoihin viranomaisilta. Erityisen tärkeää julkisen sektorin valvonnassa.",
+            "commonMistakes": [
+                "Harmaa teksti valkoisella taustalla (#777 #FFF:llä)",
+                "Vaaleansininen linkki ilman alleviivausta",
+                "Placeholder-teksti liian alhaisella kontrastilla"
+            ],
+            "diggPrecedent": "Viranomaiset viittaavat usein heikkoon kontrastiin päänavigaatioelementeissä.",
+            "priorityRationale": "Kriittinen heikkonäköisille käyttäjille. Vaikuttaa luettavuuteen kaikille käyttäjille vaihtelevissa valaistusolosuhteissa."
+        },
+        "testability": {
+            "automated": true,
+            "requiresManualCheck": false,
+            "pseudoAutomation": false,
+            "complexity": "simple"
+        },
+        "tags": [
+            "color",
+            "contrast",
+            "visual",
+            "wcag2a",
+            "wcag21aa",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
+    },
+    {
+        "ruleId": "keyboard-accessible",
+        "wcagCriteria": "2.1.1",
+        "wcagLevel": "A",
+        "wcagTitle": "Keyboard",
+        "wcagVersion": "2.0",
+        "en301549Criteria": "9.2.1.1",
+        "en301549Title": "Keyboard",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level A required",
+        "remediation": {
+            "description": "Kaikkien toimintojen on oltava käytettävissä näppäimistöllä.",
+            "technicalGuidance": "Käytä semanttisia HTML-elementtejä (button, a, input) div/span-elementtien sijaan click-käsittelijöillä. Varmista että tabindex on käytetty oikein.",
+            "component": "@holmdigital/components/Button",
+            "codeExample": "// Bad: Div with onClick\n<div onClick={handleClick}>Click Me</div>\n\n// Good: Button element\n<button onClick={handleClick}>Click Me</button>\n\n// Best: Use HolmDigital component\nimport { Button } from '@holmdigital/components';\n<Button onClick={handleClick}>Click Me</Button>",
+            "wcagTechnique": [
+                "G202",
+                "H91"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "critical",
+            "eaaImpact": "critical",
+            "finnishInterpretation": "Näppäimistökäyttö on perustavanlaatuinen ja ehdoton vaatimus. Tärkein prioriteetti vaatimustenmukaisuuden tarkastuksissa.",
+            "commonMistakes": [
+                "Div/span-elementtien käyttö klikattaviin elementteihin",
+                "Mukautetut pudotusvalikot ilman näppäimistötukea",
+                "Modaali-ikkunat jotka vangitsevat fokuksen virheellisesti"
+            ],
+            "diggPrecedent": "Tarkastajat ovat määränneet sakkoja sivustoille joissa ydintoiminnot (esim. lomakkeet, navigointi) eivät ole näppäimistökäytettäviä.",
+            "priorityRationale": "Kriittinen liikuntarajoitteisille käyttäjille ja ruudunlukijan käyttäjille."
+        },
+        "testability": {
+            "automated": false,
+            "requiresManualCheck": true,
+            "pseudoAutomation": true,
+            "complexity": "moderate"
+        },
+        "tags": [
+            "keyboard",
+            "interaction",
+            "wcag2a",
+            "wcag21a",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
+    },
+    {
+        "ruleId": "alt-text",
+        "wcagCriteria": "1.1.1",
+        "wcagLevel": "A",
+        "wcagTitle": "Non-text Content",
+        "wcagVersion": "2.0",
+        "en301549Criteria": "9.1.1.1",
+        "en301549Title": "Non-text content",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level A required",
+        "remediation": {
+            "description": "Kaikilla kuvilla on oltava kuvaava vaihtoehtoinen teksti.",
+            "technicalGuidance": "Lisää alt-attribuutit kaikkiin img-elementteihin. Käytä koristeellisille kuville alt=\"\". Informatiivisille kuville kuvaile sisältö tiiviisti.",
+            "codeExample": "// Bad: Msising alt\n<img src=\"logo.png\" />\n\n// Good: Descriptive alt\n<img src=\"logo.png\" alt=\"HolmDigital Logo\" />\n\n// Good: Decorative image\n<img src=\"decoration.png\" alt=\"\" role=\"presentation\" />",
+            "wcagTechnique": [
+                "G94",
+                "G95",
+                "H37"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "high",
+            "eaaImpact": "high",
+            "finnishInterpretation": "Erityisen tärkeä logoille ja informatiivisille grafiikoille. Tarkastetaan usein auditoinneissa.",
+            "commonMistakes": [
+                "Vaihtoehtoinen teksti puuttuu kokonaan",
+                "Vaihtoehtoinen teksti joka sanoo vain 'kuva' tai 'ikoni'",
+                "Tiedostonimi vaihtoehtoisena tekstinä (esim. 'IMG_1234.jpg')",
+                "Koristekuvat turhalla kuvauksella"
+            ],
+            "diggPrecedent": "Auditoinnit viittaavat usein puuttuvaan vaihtoehtoiseen tekstiin, erityisesti tärkeille infografiikoille.",
+            "priorityRationale": "Kriittinen ruudunlukijan käyttäjille visuaalisen tiedon saamiseksi."
+        },
+        "testability": {
+            "automated": true,
+            "requiresManualCheck": true,
+            "pseudoAutomation": false,
+            "complexity": "simple"
+        },
+        "tags": [
+            "images",
+            "alt-text",
+            "wcag2a",
+            "wcag21a",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
+    },
+    {
+        "ruleId": "form-labels",
+        "wcagCriteria": "3.3.2",
+        "wcagLevel": "A",
+        "wcagTitle": "Labels or Instructions",
+        "wcagVersion": "2.0",
+        "en301549Criteria": "9.3.3.2",
+        "en301549Title": "Labels or instructions",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level A required",
+        "remediation": {
+            "description": "Lomakekenttien on sisällettävä selkeät nimilaput tai ohjeet.",
+            "technicalGuidance": "Käytä label-elementtejä yhdistettynä inputiin for/id:llä. Monimutkaisille lomakkeille käytä fieldset ja legend. Käytä aria-describedby lisäohjeisiin.",
+            "component": "@holmdigital/components/FormField",
+            "codeExample": "import { FormField } from '@holmdigital/components';\n\n// Bad: No label\n<input type=\"text\" placeholder=\"Name\" />\n\n// Good: With label\n<label htmlFor=\"name\">Name:</label>\n<input type=\"text\" id=\"name\" />\n\n// Best: Use HolmDigital component\n<FormField\n  label=\"Name\"\n  type=\"text\"\n  required\n  helpText=\"Enter your full name\"\n/>",
+            "wcagTechnique": [
+                "G131",
+                "G162",
+                "H44",
+                "H71"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "high",
+            "eaaImpact": "high",
+            "finnishInterpretation": "Lomakkeet ovat kriittisiä sähköisille palveluille. Vaatimustenmukaisuutta valvotaan tiukasti julkisen sektorin sovelluksissa.",
+            "commonMistakes": [
+                "Vain placeholder ilman nimilappua",
+                "Nimilappu ja input eivät ole yhdistetty for/id:llä",
+                "Virheilmoitukset ilman aria-describedbyä",
+                "Pakolliset kentät eivät ole selkeästi merkitty"
+            ],
+            "diggPrecedent": "Tarkastuspäätökset kritisoivat usein huonoa lomakesaavutettavuutta, erityisesti hakemus- ja yhteydenottolomakkeissa.",
+            "priorityRationale": "Kriittinen käyttäjille sähköisten palveluiden onnistuneeseen käyttöön ja tietojen lähettämiseen."
+        },
+        "testability": {
+            "automated": true,
+            "requiresManualCheck": false,
+            "pseudoAutomation": false,
+            "complexity": "simple"
+        },
+        "tags": [
+            "forms",
+            "labels",
+            "wcag2a",
+            "wcag21a",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
+    },
+    {
+        "ruleId": "page-title",
+        "wcagCriteria": "2.4.2",
+        "wcagLevel": "A",
+        "wcagTitle": "Page Titled",
+        "wcagVersion": "2.0",
+        "en301549Criteria": "9.2.4.2",
+        "en301549Title": "Page titled",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level A required",
+        "remediation": {
+            "description": "Jokaisella verkkosivulla on oltava kuvaava otsikko.",
+            "technicalGuidance": "Käytä title-elementtiä head-osiossa. Otsikon tulee olla yksilöllinen jokaiselle sivulle ja kuvata sen tarkoitus. Muoto: 'Sivun nimi - Sivuston nimi'.",
+            "codeExample": "// Bad: Generic title\n<title>Page</title>\n\n// Good: Descriptive title\n<title>Contact Us - HolmDigital</title>\n\n// React/Next.js\nimport Head from 'next/head';\n\n<Head>\n  <title>Contact Us - HolmDigital</title>\n</Head>",
+            "wcagTechnique": [
+                "G88",
+                "H25"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "medium",
+            "eaaImpact": "medium",
+            "finnishInterpretation": "Tärkeä navigoinnille, erityisesti SPA-sovelluksissa joissa otsikon täytyy päivittyä dynaamisesti.",
+            "commonMistakes": [
+                "Sama otsikko kaikilla sivuilla",
+                "Otsikko ei päivity SPA-sovelluksissa",
+                "Liian pitkä tai liian lyhyt otsikko",
+                "Otsikko puuttuu kokonaan"
+            ],
+            "diggPrecedent": "Auditoinnit ovat huomauttaneet puuttuvista sivuotsikoista, erityisesti SPA-sovelluksissa.",
+            "priorityRationale": "Tärkeä ruudunlukijanavigaatioon ja SEO:on."
+        },
+        "testability": {
+            "automated": true,
+            "requiresManualCheck": false,
+            "pseudoAutomation": false,
+            "complexity": "simple"
+        },
+        "tags": [
+            "navigation",
+            "title",
+            "wcag2a",
+            "wcag21a",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
+    },
+    {
+        "ruleId": "info-and-relationships",
+        "wcagCriteria": "1.3.1",
+        "wcagLevel": "A",
+        "wcagTitle": "Info and Relationships",
+        "wcagVersion": "2.0",
+        "en301549Criteria": "9.1.3.1",
+        "en301549Title": "Info and relationships",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level A required",
+        "remediation": {
+            "description": "Esityksen kautta välitetty tieto, rakenne ja suhteet voidaan määrittää ohjelmallisesti tai ne ovat saatavilla tekstinä.",
+            "technicalGuidance": "Käytä semanttista HTML:ää: <header>, <nav>, <main>, <footer>, <h1>-<h6>, <ul>/<ol>, <table>. Älä käytä visuaalisia tyylejlä 'väärien' otsikoiden tai listojen luomiseen.",
+            "component": null,
+            "wcagTechnique": [
+                "H42",
+                "H48",
+                "G115"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "high",
+            "eaaImpact": "high",
+            "finnishInterpretation": "Semanttinen rakenne on ratkaisevan tärkeä ruudunlukijoille tehokkaaseen navigointiin. Tarkastajat viittaavat usein 'div-keittoon' joka näyttää rakenteelta mutta puuttuu semantiikkaa.",
+            "commonMistakes": [
+                "Lihavoidun tekstin käyttö <h1>-<h6>:n sijaan",
+                "<br>:n käyttö listoille <ul>:n sijaan",
+                "Taulukot asetteluun"
+            ],
+            "priorityRationale": "Perustavanlaatuinen kaikelle avustavalle teknologianavigaatiolle."
+        },
+        "testability": {
+            "automated": true,
+            "requiresManualCheck": true,
+            "pseudoAutomation": false,
+            "complexity": "moderate"
+        },
+        "tags": [
+            "structure",
+            "semantic",
+            "headings",
+            "wcag2a",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
+    },
+    {
+        "ruleId": "use-of-color",
+        "wcagCriteria": "1.4.1",
+        "wcagLevel": "A",
+        "wcagTitle": "Use of Color",
+        "wcagVersion": "2.0",
+        "en301549Criteria": "9.1.4.1",
+        "en301549Title": "Use of color",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level A required",
+        "remediation": {
+            "description": "Väriä ei käytetä ainoana visuaalisena keinona tiedon välittämiseen, toiminnon osoittamiseen, vastauksen pyytämiseen tai visuaalisen elementin erottamiseen.",
+            "technicalGuidance": "Täydennä väriä tekstillä, ikoneilla tai alleviivauksella. Esim. linkeillä on oltava alleviivaus tai muu visuaalinen merkki värin lisäksi. Virheilmoitukset tarvitsevat tekstin/ikonin, ei pelkästään punaista reunaa.",
+            "component": "@holmdigital/components/FormField",
+            "wcagTechnique": [
+                "G14",
+                "G182",
+                "G183"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "medium",
+            "eaaImpact": "medium",
+            "finnishInterpretation": "Yleinen ongelma kaavioissa ja kartoissa joissa käytetään vain värikoodausta.",
+            "commonMistakes": [
+                "Linkit jotka eroavat leipätekistä vain väriltään",
+                "Virheilmoitukset merkitty vain punaisella värillä",
+                "Kaaviot joissa vain väri erottaa datapisteet"
+            ],
+            "priorityRationale": "Ratkaisevan tärkeä värisokeille käyttäjille."
+        },
+        "testability": {
+            "automated": false,
+            "requiresManualCheck": true,
+            "pseudoAutomation": false,
+            "complexity": "moderate"
+        },
+        "tags": [
+            "visual",
+            "color",
+            "design",
+            "wcag2a",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
+    },
+    {
+        "ruleId": "reflow",
+        "wcagCriteria": "1.4.10",
+        "wcagLevel": "AA",
+        "wcagTitle": "Reflow",
+        "wcagVersion": "2.1",
+        "en301549Criteria": "9.1.4.10",
+        "en301549Title": "Reflow",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level AA required",
+        "remediation": {
+            "description": "Sisältö on esitettävissä ilman kahdensuuntaista vieritystä 320px leveyteen asti.",
+            "technicalGuidance": "Käytä responsiivista suunnittelua (CSS Media Queries, Flexbox, Grid). Vältä kiinteitä leveyksiä pikseleissä. Varmista että taulukot ja kuvat skaalautuvat oikein.",
+            "component": null,
+            "wcagTechnique": [
+                "C32",
+                "C31"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "high",
+            "eaaImpact": "high",
+            "finnishInterpretation": "Moderni vaatimus (WCAG 2.1) kriittinen mobiiliktäytölle ja suurennetulle tekstille. Viranomaiset eivät hyväksy vaakasuuntaista vieritystä pystysuuntaisilla sivuilla.",
+            "commonMistakes": [
+                "Kiinteät leveydet säilöissä",
+                "Taulukot jotka eivät ole responsiivisia",
+                "Kuvat leveämpiä kuin näyttö"
+            ],
+            "priorityRationale": "Kriittinen heikkonäköisille käyttäjille jotka zoomaavat paljon."
+        },
+        "testability": {
+            "automated": false,
+            "requiresManualCheck": true,
+            "pseudoAutomation": true,
+            "complexity": "moderate"
+        },
+        "tags": [
+            "design",
+            "responsive",
+            "mobile",
+            "wcag21aa",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
+    },
+    {
+        "ruleId": "non-text-contrast",
+        "wcagCriteria": "1.4.11",
+        "wcagLevel": "AA",
+        "wcagTitle": "Non-text Contrast",
+        "wcagVersion": "2.1",
+        "en301549Criteria": "9.1.4.11",
+        "en301549Title": "Non-text contrast",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level AA required",
+        "remediation": {
+            "description": "Käyttöliittymäkomponenttien ja graafisten objektien visuaalisen esityksen kontrastisuhteen on oltava vähintään 3:1 vierekkisiin väreihin nähden.",
+            "technicalGuidance": "Koskee painikkeita, input-reunoja, ikoneja ja fokusindikaattoreita. Varmista että kaikki interaktiiviset elementit erottuvat selkeästi taustasta.",
+            "component": "@holmdigital/components/Button",
+            "wcagTechnique": [
+                "G195",
+                "G207"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "low",
+            "eaaImpact": "low",
+            "finnishInterpretation": "Usein unohdettu vaatimus fokusrenkaiden ja ei-aktiivisten (mutta näkyvien) komponenttien osalta. Tärkeä käyttöliittymän ymmärtämiselle.",
+            "commonMistakes": [
+                "Harmaannutetut painikkeet liian alhaisella kontrastilla"
+            ],
+            "priorityRationale": "Tärkeä interaktiivisten elementtien erottamiseen."
+        },
+        "testability": {
+            "automated": false,
+            "requiresManualCheck": true,
+            "pseudoAutomation": false,
+            "complexity": "complex"
+        },
+        "tags": [
+            "visual",
+            "contrast",
+            "graphics",
+            "wcag21aa",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
+    },
+    {
+        "ruleId": "text-spacing",
+        "wcagCriteria": "1.4.12",
+        "wcagLevel": "AA",
+        "wcagTitle": "Text Spacing",
+        "wcagVersion": "2.1",
+        "en301549Criteria": "9.1.4.12",
+        "en301549Title": "Text spacing",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level AA required",
+        "remediation": {
+            "description": "Sisältö tai toiminnallisuus ei saa menettää toimintaansa kun käyttäjä muuttaa tekstivälistystä (rivikorkeus, kappalevälistys jne.).",
+            "technicalGuidance": "Vältä kiinteitä korkeuksia tekstisäilöissä. Anna säilöiden kasvaa sisällön mukana. Testaa tekstivälistyksen kirjanmerkillä.",
+            "component": null,
+            "wcagTechnique": [
+                "C36"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "low",
+            "eaaImpact": "medium",
+            "finnishInterpretation": "Tärkeä lukivaikeusmuutoksia varten.",
+            "commonMistakes": [
+                "Kiinteä rivikorkeus pikseleissä",
+                "Tekstisäiliö joka ei kasva"
+            ],
+            "priorityRationale": "Tärkeä luettavuudelle mukauttamisen aikana."
+        },
+        "testability": {
+            "automated": false,
+            "requiresManualCheck": true,
+            "pseudoAutomation": true,
+            "complexity": "moderate"
+        },
+        "tags": [
+            "visual",
+            "typography",
+            "wcag21aa",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
+    },
+    {
+        "ruleId": "content-on-hover",
+        "wcagCriteria": "1.4.13",
+        "wcagLevel": "AA",
+        "wcagTitle": "Content on Hover or Focus",
+        "wcagVersion": "2.1",
+        "en301549Criteria": "9.1.4.13",
+        "en301549Title": "Content on hover or focus",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level AA required",
+        "remediation": {
+            "description": "Hover/fokuksessa näytetty sisältö (esim. työkaluvihjeet) on oltava Sulettavissa, Vietävissä ja Pysyvä.",
+            "technicalGuidance": "Varmista että työkaluvihjeet eivät katoa kun hiirtä siirretään liipaisimesta itse työkaluvihjeeseen. Salli ESC:llä sulkeminen.",
+            "component": null,
+            "wcagTechnique": [
+                "SCR39"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "medium",
+            "eaaImpact": "medium",
+            "finnishInterpretation": "Yleinen ongelma mukautetuissa työkaluvihjeissä ja mega-valikoissa.",
+            "commonMistakes": [
+                "Työkaluvihjeet joita ei voi tavoittaa hiirellä",
+                "Valikot jotka sulkeutuvat liian helposti",
+                "Sisältö jota ei voi sulkea ilman fokuksen siirtämistä"
+            ],
+            "priorityRationale": "Tärkeä käyttäjille joilla on suurennus ja motorisia vaikeuksia."
+        },
+        "testability": {
+            "automated": false,
+            "requiresManualCheck": true,
+            "pseudoAutomation": true,
+            "complexity": "complex"
+        },
+        "tags": [
+            "interaction",
+            "hover",
+            "tooltips",
+            "wcag21aa",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
+    },
+    {
+        "ruleId": "captions-prerecorded",
+        "wcagCriteria": "1.2.2",
+        "wcagLevel": "A",
+        "wcagTitle": "Captions (Prerecorded)",
+        "wcagVersion": "2.0",
+        "en301549Criteria": "9.1.2.2",
+        "en301549Title": "Captions (prerecorded)",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level A required",
+        "remediation": {
+            "description": "Tekstitykset on tarjottava kaikelle esinauhitetulle äänisällölle synkronoidussa mediassa.",
+            "technicalGuidance": "Käytä <track>-elementtiä WebVTT-tiedostojen kanssa HTML5-videoon. Sosiaalisissa medioissa varmista että tekstitykset on käytössä.",
+            "component": null,
+            "wcagTechnique": [
+                "G87",
+                "G93"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "high",
+            "eaaImpact": "high",
+            "finnishInterpretation": "Yksi yleisimmiät puutteista julkisella sektorilla. Lakisääteinen vaatimus on tiukka: videolla äänellä ON OLTAVA tekstitykset.",
+            "commonMistakes": [
+                "Automaattisesti luodut tekstitykset jotka eivät tyydytä ketään",
+                "Tekstitykset puuttuvat kokonaan",
+                "Tekstitykset poltettuna videoon (ei saavutettava haulle/käännöksille)"
+            ],
+            "priorityRationale": "Kriittinen kuuroille ja huonokuuloisille käyttäjille."
+        },
+        "testability": {
+            "automated": false,
+            "requiresManualCheck": true,
+            "pseudoAutomation": false,
+            "complexity": "simple"
+        },
+        "tags": [
+            "media",
+            "video",
+            "captions",
+            "wcag2a",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
+    },
+    {
+        "ruleId": "audio-description",
+        "wcagCriteria": "1.2.5",
+        "wcagLevel": "AA",
+        "wcagTitle": "Audio Description (Prerecorded)",
+        "wcagVersion": "2.0",
+        "en301549Criteria": "9.1.2.5",
+        "en301549Title": "Audio description (prerecorded)",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level AA required",
+        "remediation": {
+            "description": "Kuvailutulkkaus on tarjottava kaikelle esinauhitetulle videolle.",
+            "technicalGuidance": "Joko erillisenä ääniraitana, vaihtoehtoisena versiona videosta tai (jos 'puhuvat päät') varmistaen että kaikki tieto välitetään äänellä.",
+            "component": null,
+            "wcagTechnique": [
+                "G78",
+                "G69"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "medium",
+            "eaaImpact": "medium",
+            "finnishInterpretation": "Voidaan usein ratkaista 'integroidulla kuvauksella' (puhutaan siitä mitä näkyy), mikä on kustannustehokkaampaa.",
+            "commonMistakes": [
+                "Tieto näytetään vain visuaalisesti (grafiikat, tekstikyltit) mainitsematta äänessä"
+            ],
+            "priorityRationale": "Kriittinen sokeille videonkäyttäjille."
+        },
+        "testability": {
+            "automated": false,
+            "requiresManualCheck": true,
+            "pseudoAutomation": false,
+            "complexity": "moderate"
+        },
+        "tags": [
+            "media",
+            "video",
+            "audio-description",
+            "wcag2aa",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
+    },
+    {
+        "ruleId": "orientation",
+        "wcagCriteria": "1.3.4",
+        "wcagLevel": "AA",
+        "wcagTitle": "Orientation",
+        "wcagVersion": "2.1",
+        "en301549Criteria": "9.1.3.4",
+        "en301549Title": "Orientation",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level AA required",
+        "remediation": {
+            "description": "Sisältöä ei saa rajoittaa yhteen näyttösuuntaan, ellei tietty suunta ole välttämätön.",
+            "technicalGuidance": "Älä lukitse näyttöä pysty- tai vaakasuuntaan CSS:llä tai JS-manifestilla. Käytä CSS media queries -kyselyitä asettelun muutosten käsittelyyn.",
+            "component": null,
+            "wcagTechnique": [
+                "F97"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "low",
+            "eaaImpact": "medium",
+            "finnishInterpretation": "Tärkeä tableteille ja käyttäjille joilla laite on kiinnitetty (esim. pyörätuoli).",
+            "commonMistakes": [
+                "Sovellukset/sivustot jotka kääntävät käyttöliittymän 90 astetta käyttäjän tahtoa vastaan"
+            ],
+            "priorityRationale": "Tärkeä käyttäjille jotka eivät voi kääntää laitettaan."
+        },
+        "testability": {
+            "automated": false,
+            "requiresManualCheck": true,
+            "pseudoAutomation": true,
+            "complexity": "simple"
+        },
+        "tags": [
+            "mobile",
+            "responsive",
+            "orientation",
+            "wcag21aa",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
+    },
+    {
+        "ruleId": "identify-input-purpose",
+        "wcagCriteria": "1.3.5",
+        "wcagLevel": "AA",
+        "wcagTitle": "Identify Input Purpose",
+        "wcagVersion": "2.1",
+        "en301549Criteria": "9.1.3.5",
+        "en301549Title": "Identify input purpose",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level AA required",
+        "remediation": {
+            "description": "Jokaisen käyttäjästä tietoa keräävän syötekentän tarkoitus voidaan määrittää ohjelmallisesti.",
+            "technicalGuidance": "Käytä 'autocomplete'-attribuuttia syötekentissä henkilökohtaisille tiedoille (nimi, sähköposti, puh, osoite jne.).",
+            "component": "@holmdigital/components/FormField",
+            "wcagTechnique": [
+                "H98"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "medium",
+            "eaaImpact": "high",
+            "finnishInterpretation": "Tekee hankalia lomakkeita paljon helpommaksi täyttää (automaattitäyttö).",
+            "commonMistakes": [
+                "Puuttuva autocomplete-attribuutti",
+                "Väärä autocomplete-arvo",
+                "Automaattitäytön pois kytkeminen (autocomplete='off') tarpeettomasti"
+            ],
+            "priorityRationale": "Vähentää kognitiivista kuormitusta ja motorisia vaatimuksia."
+        },
+        "testability": {
+            "automated": true,
+            "requiresManualCheck": false,
+            "pseudoAutomation": false,
+            "complexity": "simple"
+        },
+        "tags": [
+            "forms",
+            "autocomplete",
+            "wcag21aa",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
+    },
+    {
+        "ruleId": "no-keyboard-trap",
+        "wcagCriteria": "2.1.2",
+        "wcagLevel": "A",
+        "wcagTitle": "No Keyboard Trap",
+        "wcagVersion": "2.0",
+        "en301549Criteria": "9.2.1.2",
+        "en301549Title": "No keyboard trap",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level A required",
+        "remediation": {
+            "description": "Jos fokus voidaan siirtää sivun komponenttiin näppäimistöä käyttäen, fokus voidaan myös siirtää pois kyseisestä komponentista pelkästään näppäimistöä käyttäen.",
+            "technicalGuidance": "Ole varovainen JS-widgettien kanssa jotka vangitsevat fokuksen (esim. modaali-ikkunat). Varmista että on aina keino poistua (esim. ESC tai shift+tab).",
+            "component": null,
+            "wcagTechnique": [
+                "G21"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "critical",
+            "eaaImpact": "critical",
+            "finnishInterpretation": "Näppäimistöansa on 'esto' joka tekee sivustosta käyttökelvottoman. Vakava virhe.",
+            "commonMistakes": [
+                "Mukautetut widgetit jotka silmukkoivat fokusta loputtomasti",
+                "Upotetut kolmannen osapuolen komponentit (kartat, chatit) ilman uloskeinoa"
+            ],
+            "priorityRationale": "Kriittinen: Käyttäjä jumiutuu ja joutuu käynnistämään selaimen uudelleen."
+        },
+        "testability": {
+            "automated": false,
+            "requiresManualCheck": true,
+            "pseudoAutomation": true,
+            "complexity": "moderate"
+        },
+        "tags": [
+            "keyboard",
+            "interaction",
+            "wcag2a",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
+    },
+    {
+        "ruleId": "character-key-shortcuts",
+        "wcagCriteria": "2.1.4",
+        "wcagLevel": "A",
+        "wcagTitle": "Character Key Shortcuts",
+        "wcagVersion": "2.1",
+        "en301549Criteria": "9.2.1.4",
+        "en301549Title": "Character key shortcuts",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level A required",
+        "remediation": {
+            "description": "Jos näppäinoikotie koostuu vain yhdestä merkistä (kirjain, numero, symboli), on oltava tapa poistaa se käytöstä tai määrittää uudelleen, tai sen on oltava aktiivinen vain fokuksessa.",
+            "technicalGuidance": "Vältä yhden näppäimen oikoteitä mahdollisuuksien mukaan. Jos tarpeen, varmista että ne eivät ole ristiriidassa ääniohjauksen tai vahingossa kirjoittamisen kanssa.",
+            "component": null,
+            "wcagTechnique": [
+                "G217"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "medium",
+            "eaaImpact": "medium",
+            "finnishInterpretation": "Tärkeä ääniohjauskäyttäjille (Dragon jne.) joilla yksittäiset sanat voivat laukaista komentoja vahingossa.",
+            "commonMistakes": [
+                "Gmail-tyyppiset oikotiet jotka ovat oletuksena päällä ilman vaihtoehtoa poistaa"
+            ],
+            "priorityRationale": "Tärkeä vahingossa aktivoinnin välttämiseksi."
+        },
+        "testability": {
+            "automated": false,
+            "requiresManualCheck": true,
+            "pseudoAutomation": false,
+            "complexity": "moderate"
+        },
+        "tags": [
+            "keyboard",
+            "shortcuts",
+            "wcag21a",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
+    },
+    {
+        "ruleId": "timing-adjustable",
+        "wcagCriteria": "2.2.1",
+        "wcagLevel": "A",
+        "wcagTitle": "Timing Adjustable",
+        "wcagVersion": "2.0",
+        "en301549Criteria": "9.2.2.1",
+        "en301549Title": "Timing adjustable",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level A required",
+        "remediation": {
+            "description": "Jos aikarajoitus (istunto, lukuaika) on asetettu, käyttäjän on voitava poistaa se käytöstä, säätää tai pidentää sitä.",
+            "technicalGuidance": "Tarjoa varoitus ennen istunnon päättymistä 'Jatka istuntoa' -painikkeella. Aikarajan on oltava vähintään 20 sekuntia.",
+            "component": null,
+            "wcagTechnique": [
+                "SCR16",
+                "G180"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "high",
+            "eaaImpact": "high",
+            "finnishInterpretation": "Kriittinen sähköisille palveluille/pankkipalveluille. Käyttäjät jotka lukevat hitaasti tai käyttävät avustavaa teknologiaa tarvitsevat lisäaikaa.",
+            "commonMistakes": [
+                "Uloskirjautuminen ilman varoitusta",
+                "Aikarajat joita ei voi pidentää"
+            ],
+            "priorityRationale": "Kriittinen syötettyjen tietojen menettämisen välttämiseksi."
+        },
+        "testability": {
+            "automated": false,
+            "requiresManualCheck": true,
+            "pseudoAutomation": true,
+            "complexity": "moderate"
+        },
+        "tags": [
+            "time",
+            "session",
+            "wcag2a",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
+    },
+    {
+        "ruleId": "pause-stop-hide",
+        "wcagCriteria": "2.2.2",
+        "wcagLevel": "A",
+        "wcagTitle": "Pause, Stop, Hide",
+        "wcagVersion": "2.0",
+        "en301549Criteria": "9.2.2.2",
+        "en301549Title": "Pause, stop, hide",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level A required",
+        "remediation": {
+            "description": "Liikkuvalla, vilkkuvalla tai vierittyvällä sisällöllä joka alkaa automaattisesti ja kestää yli 5 sekuntia, on oltava tapa pysäyttää, lopettaa tai piilottaa se.",
+            "technicalGuidance": "Koskee karuselleja (liukusäätimet), automaattisesti päivittyviä uutissyötteitä, animoituja taustoja. Lisää selkeä taukopainike.",
+            "component": null,
+            "wcagTechnique": [
+                "G4",
+                "G186"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "medium",
+            "eaaImpact": "medium",
+            "finnishInterpretation": "Tärkeä käyttäjille joilla on keskittymisvaikeuksia (ADHD/Autismi) jotka häiriintyvät liikkeestä.",
+            "commonMistakes": [
+                "Kuvakarusellit ilman taukopainiketta",
+                "Animoidut taustat joita ei voi sulkea"
+            ],
+            "priorityRationale": "Tärkeä kognitiiviselle saavutettavuudelle."
+        },
+        "testability": {
+            "automated": false,
+            "requiresManualCheck": true,
+            "pseudoAutomation": true,
+            "complexity": "moderate"
+        },
+        "tags": [
+            "animation",
+            "carousel",
+            "distraction",
+            "wcag2a",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
+    },
+    {
+        "ruleId": "three-flashes",
+        "wcagCriteria": "2.3.1",
+        "wcagLevel": "A",
+        "wcagTitle": "Three Flashes or Below Threshold",
+        "wcagVersion": "2.0",
+        "en301549Criteria": "9.2.3.1",
+        "en301549Title": "Three flashes or below threshold",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level A required",
+        "remediation": {
+            "description": "Sisältö ei saa vilkkua enemmän kuin kolme kertaa sekunnissa (voi aiheuttaa kohtauksia).",
+            "technicalGuidance": "Vältä nopeaa vilkkumista videoissa ja animaatioissa. Käytä työkaluja vilkkumistaajuuden mittaamiseen (PEAT).",
+            "component": null,
+            "wcagTechnique": [
+                "G19"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "critical",
+            "eaaImpact": "critical",
+            "finnishInterpretation": "Terveysriski. Nollatoleranssi.",
+            "commonMistakes": [
+                "Stroboskooppiefektit videossa",
+                "Vilkkuvien virheilmoitusten väärinkäyttö"
+            ],
+            "priorityRationale": "Kriittinen turvallisuusriski."
+        },
+        "testability": {
+            "automated": false,
+            "requiresManualCheck": true,
+            "pseudoAutomation": false,
+            "complexity": "complex"
+        },
+        "tags": [
+            "seizure",
+            "safety",
+            "animation",
+            "wcag2a",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
+    },
+    {
+        "ruleId": "bypass-blocks",
+        "wcagCriteria": "2.4.1",
+        "wcagLevel": "A",
+        "wcagTitle": "Bypass Blocks",
+        "wcagVersion": "2.0",
+        "en301549Criteria": "9.2.4.1",
+        "en301549Title": "Bypass blocks",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level A required",
+        "remediation": {
+            "description": "On oltava tapa ohittaa sisältölohkot jotka toistuvat useilla sivuilla (esim. navigaatio).",
+            "technicalGuidance": "Toteuta 'Siirry pääsisältöön' -linkki sivun yläosaan joka tulee näkyviin fokuksessa. Käytä semanttisia landmarkkeja (<main>, <nav>).",
+            "component": null,
+            "wcagTechnique": [
+                "G1",
+                "H69"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "medium",
+            "eaaImpact": "medium",
+            "finnishInterpretation": "Standardi kaikilla julkisen sektorin sivustoilla. Eräänlainen valtava apu näppäimistökäyttäjille.",
+            "commonMistakes": [
+                "Puuttuva skip-linkki",
+                "Skip-linkki rikki (ei siirrä fokusta oikein)",
+                "Landmarkit puuttuvat"
+            ],
+            "priorityRationale": "Tärkeä tehokkaalle navigoinnille."
+        },
+        "testability": {
+            "automated": true,
+            "requiresManualCheck": true,
+            "pseudoAutomation": true,
+            "complexity": "simple"
+        },
+        "tags": [
+            "navigation",
+            "skip-link",
+            "keyboard",
+            "wcag2a",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
+    },
+    {
+        "ruleId": "focus-order",
+        "wcagCriteria": "2.4.3",
+        "wcagLevel": "A",
+        "wcagTitle": "Focus Order",
+        "wcagVersion": "2.0",
+        "en301549Criteria": "9.2.4.3",
+        "en301549Title": "Focus order",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level A required",
+        "remediation": {
+            "description": "Fokusjärjestyksen on oltava looginen ja seurattava merkitystä/rakennetta.",
+            "technicalGuidance": "Vastaa DOM-järjestys visuaaliseen järjestykseen. Vältä tabindex suurempi kuin 0. Hallitse fokusta manuaalisesti modaaleissa ja valikoissa.",
+            "component": null,
+            "wcagTechnique": [
+                "G59",
+                "C27"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "high",
+            "eaaImpact": "high",
+            "finnishInterpretation": "Kriittinen monimutkaisille asetteluille (Grid/Flexbox) joissa visuaalinen järjestys voi erota DOM-järjestyksestä.",
+            "commonMistakes": [
+                "Fokus hyppii epäloogisesti",
+                "Valikot väärässä järjestyksessä",
+                "Modaali sulkeutuu ja fokus palaa sivun alkuun"
+            ],
+            "priorityRationale": "Kriittinen näppäimistönavigaatiolle ja ymmärrykselle."
+        },
+        "testability": {
+            "automated": false,
+            "requiresManualCheck": true,
+            "pseudoAutomation": true,
+            "complexity": "moderate"
+        },
+        "tags": [
+            "focus",
+            "keyboard",
+            "navigation",
+            "wcag2a",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
+    },
+    {
+        "ruleId": "link-purpose",
+        "wcagCriteria": "2.4.4",
+        "wcagLevel": "A",
+        "wcagTitle": "Link Purpose (In Context)",
+        "wcagVersion": "2.0",
+        "en301549Criteria": "9.2.4.4",
+        "en301549Title": "Link purpose (in context)",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level A required",
+        "remediation": {
+            "description": "Jokaisen linkin tarkoitus voidaan ymmärtää linkkitekstistä yksistään tai linkkitekstistä yhdessä sen kontekstin kanssa.",
+            "technicalGuidance": "Vältä 'Lue lisää' tai 'Klikkaa tästä'. Kirjoita kuvaavia linkkitekstejä. Käytä aria-labelia jos visuaalinen tila on rajallinen mutta lisätietoa tarvitaan.",
+            "component": null,
+            "wcagTechnique": [
+                "G91",
+                "H30"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "medium",
+            "eaaImpact": "medium",
+            "finnishInterpretation": "Tärkeä käyttäjille jotka navigoivat linkkilistojen kautta (ruudunlukijat).",
+            "commonMistakes": [
+                "Paljon 'Lue lisää' -linkkejä",
+                "Linkit jotka eivät kerro minne ne johtavat"
+            ],
+            "priorityRationale": "Tärkeä tehokkaalle navigoinnille."
+        },
+        "testability": {
+            "automated": true,
+            "requiresManualCheck": true,
+            "pseudoAutomation": false,
+            "complexity": "simple"
+        },
+        "tags": [
+            "links",
+            "navigation",
+            "copywriting",
+            "wcag2a",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
+    },
+    {
+        "ruleId": "multiple-ways",
+        "wcagCriteria": "2.4.5",
+        "wcagLevel": "AA",
+        "wcagTitle": "Multiple Ways",
+        "wcagVersion": "2.0",
+        "en301549Criteria": "9.2.4.5",
+        "en301549Title": "Multiple ways",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level AA required",
+        "remediation": {
+            "description": "On oltava useampi kuin yksi tapa löytää verkkosivu verkkosivukokonaisuudesta.",
+            "technicalGuidance": "Vähintään kaksi seuraavista: Valikko, Haku, Sivustokartta, Linkit sisällössä.",
+            "component": null,
+            "wcagTechnique": [
+                "G125",
+                "G126"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "low",
+            "eaaImpact": "low",
+            "finnishInterpretation": "Usein täytetty valikolla + haulla. Sivustokartta on paras käytäntö.",
+            "commonMistakes": [
+                "Puuttuva haku sivustoilla joilla on monta sivua"
+            ],
+            "priorityRationale": "Helpottaa erilaisia navigointistrategioita."
+        },
+        "testability": {
+            "automated": false,
+            "requiresManualCheck": true,
+            "pseudoAutomation": false,
+            "complexity": "simple"
+        },
+        "tags": [
+            "navigation",
+            "search",
+            "sitemap",
+            "wcag2aa",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
+    },
+    {
+        "ruleId": "headings-and-labels",
+        "wcagCriteria": "2.4.6",
+        "wcagLevel": "AA",
+        "wcagTitle": "Headings and Labels",
+        "wcagVersion": "2.0",
+        "en301549Criteria": "9.2.4.6",
+        "en301549Title": "Headings and labels",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level AA required",
+        "remediation": {
+            "description": "Otsikoiden ja nimilappujen on kuvattava aihetta tai tarkoitusta.",
+            "technicalGuidance": "Kirjoita selkeitä, kuvaavia otsikoita jotka antavat merkityksen alla olevalle sisällölle. Lomakenimilappujen on oltava ymmärrettäviä.",
+            "component": null,
+            "wcagTechnique": [
+                "G130"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "medium",
+            "eaaImpact": "medium",
+            "finnishInterpretation": "Koskee toimituksellista laatua ja ymmärrettävyyttä.",
+            "commonMistakes": [
+                "Salaperutut otsikot",
+                "Nimilaput jotka eivät vastaa sitä mitä pitää täyttää"
+            ],
+            "priorityRationale": "Tärkeä kognitiiviselle saavutettavuudelle."
+        },
+        "testability": {
+            "automated": false,
+            "requiresManualCheck": true,
+            "pseudoAutomation": false,
+            "complexity": "simple"
+        },
+        "tags": [
+            "content",
+            "headings",
+            "labels",
+            "wcag2aa",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
+    },
+    {
+        "ruleId": "focus-visible",
+        "wcagCriteria": "2.4.7",
+        "wcagLevel": "AA",
+        "wcagTitle": "Focus Visible",
+        "wcagVersion": "2.0",
+        "en301549Criteria": "9.2.4.7",
+        "en301549Title": "Focus visible",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level AA required",
+        "remediation": {
+            "description": "Jokaisessa näppäimistöllä käytettävässä käyttöliittymässä on oltava näkyvä fokusindikaattori.",
+            "technicalGuidance": "Älä koskaan poista outlineä CSS:llä (outline: none) korvaamatta sitä selkeällä visuaalisella indikaattorilla. Varmista fokusrenkaan riittävä kontrasti (ks. 1.4.11).",
+            "component": "@holmdigital/components/Button",
+            "wcagTechnique": [
+                "G149",
+                "G165",
+                "C15"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "high",
+            "eaaImpact": "high",
+            "finnishInterpretation": "Yksi yleisimmistä virheistä. Usein koska suunnittelijat eivät pidä 'sinisestä renkaasta'.",
+            "commonMistakes": [
+                "outline: none CSS-resetissä",
+                "Mukautetut painikkeet joilta puuttuu :focus-tyyli"
+            ],
+            "priorityRationale": "Kriittinen: Ilman näkyvää fokusta näppäimistökäyttäjä ei tiedä missä on."
+        },
+        "testability": {
+            "automated": true,
+            "requiresManualCheck": true,
+            "pseudoAutomation": true,
+            "complexity": "simple"
+        },
+        "tags": [
+            "focus",
+            "visual",
+            "keyboard",
+            "wcag2aa",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
+    },
+    {
+        "ruleId": "language-of-page",
+        "wcagCriteria": "3.1.1",
+        "wcagLevel": "A",
+        "wcagTitle": "Language of Page",
+        "wcagVersion": "2.0",
+        "en301549Criteria": "9.3.1.1",
+        "en301549Title": "Language of page",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level A required",
+        "remediation": {
+            "description": "Jokaisen verkkosivun oletuskieli on voitava määrittää ohjelmallisesti.",
+            "technicalGuidance": "Aseta 'lang'-attribuutti <html>-elementtiin. Esim. <html lang='fi'> suomeksi.",
+            "component": null,
+            "wcagTechnique": [
+                "H57"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "high",
+            "eaaImpact": "high",
+            "finnishInterpretation": "Perustavanlaatuinen ruudunlukemiselle. Ilman tätä ruudunlukija arvaa kielen, mikä johtaa usein väärään ääntämiseen.",
+            "commonMistakes": [
+                "Lang-attribuutti puuttuu",
+                "Väärä kielikoodi (esim. 'en' suomenkielisellä sivulla)"
+            ],
+            "priorityRationale": "Kriittinen ruudunlukijan käyttäjille."
+        },
+        "testability": {
+            "automated": true,
+            "requiresManualCheck": false,
+            "pseudoAutomation": false,
+            "complexity": "simple"
+        },
+        "tags": [
+            "content",
+            "language",
+            "wcag2a",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
+    },
+    {
+        "ruleId": "language-of-parts",
+        "wcagCriteria": "3.1.2",
+        "wcagLevel": "AA",
+        "wcagTitle": "Language of Parts",
+        "wcagVersion": "2.0",
+        "en301549Criteria": "9.3.1.2",
+        "en301549Title": "Language of parts",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level AA required",
+        "remediation": {
+            "description": "Jokaisen sisällön kappaleen tai lauseen kieli on voitava määrittää ohjelmallisesti.",
+            "technicalGuidance": "Käytä lang-attribuuttia elementeillä jotka eroavat sivun pääkielestä. Esim. <span lang='en'>Hello</span>.",
+            "component": null,
+            "wcagTechnique": [
+                "H58"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "low",
+            "eaaImpact": "low",
+            "finnishInterpretation": "Harvoin kriittinen virhe ellei se merkittävästi haittaa ymmärrettävyyttä.",
+            "commonMistakes": [
+                "Vieraskieliset lainaukset tekstissä ilman merkintää"
+            ],
+            "priorityRationale": "Tärkeä oikealle ääntämiselle."
+        },
+        "testability": {
+            "automated": false,
+            "requiresManualCheck": true,
+            "pseudoAutomation": true,
+            "complexity": "moderate"
+        },
+        "tags": [
+            "content",
+            "language",
+            "wcag2aa",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
+    },
+    {
+        "ruleId": "on-focus",
+        "wcagCriteria": "3.2.1",
+        "wcagLevel": "A",
+        "wcagTitle": "On Focus",
+        "wcagVersion": "2.0",
+        "en301549Criteria": "9.3.2.1",
+        "en301549Title": "On focus",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level A required",
+        "remediation": {
+            "description": "Kun komponentti saa fokuksen, se ei saa aloittaa kontekstin muutosta.",
+            "technicalGuidance": "Älä avaa uusia ikkunoita, lähetä lomakkeita tai siirrä fokusta automaattisesti vain koska käyttäjä siirtyy tabilla kenttään.",
+            "component": null,
+            "wcagTechnique": [
+                "G107"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "high",
+            "eaaImpact": "high",
+            "finnishInterpretation": "Erittäin hämmentävää käyttäjille. Luo tunteen hallinnan puutteesta.",
+            "commonMistakes": [
+                "Pudotusvalikot jotka navigoivat heti valinnan jälkeen (ilman 'Siirry'-painiketta)",
+                "Lomakkeet jotka lähetäytyvät automaattisesti viimeisen kentän fokuksessa"
+            ],
+            "priorityRationale": "Tärkeä ennustettavuudelle."
+        },
+        "testability": {
+            "automated": false,
+            "requiresManualCheck": true,
+            "pseudoAutomation": true,
+            "complexity": "moderate"
+        },
+        "tags": [
+            "interaction",
+            "focus",
+            "predictability",
+            "wcag2a",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
+    },
+    {
+        "ruleId": "on-input",
+        "wcagCriteria": "3.2.2",
+        "wcagLevel": "A",
+        "wcagTitle": "On Input",
+        "wcagVersion": "2.0",
+        "en301549Criteria": "9.3.2.2",
+        "en301549Title": "On input",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level A required",
+        "remediation": {
+            "description": "Minkään komponentin asetuksen muuttaminen ei saa automaattisesti aiheuttaa kontekstin muutosta ellei käyttäjälle ole kerrottu tästä käyttäytymisestä ennen komponentin käyttöä.",
+            "technicalGuidance": "Kerro käyttäjälle että valinta listassa lataa sivun uudelleen. Lisää mieluiten painike valinnan vahvistamiseksi.",
+            "component": null,
+            "wcagTechnique": [
+                "G13",
+                "H32"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "medium",
+            "eaaImpact": "medium",
+            "finnishInterpretation": "Yleinen suodatustoiminnoissa.",
+            "commonMistakes": [
+                "Valintaruudut jotka lataavat sivun heti uudelleen",
+                "Suodatus joka siirtää fokusta"
+            ],
+            "priorityRationale": "Tärkeä ennustettavuudelle."
+        },
+        "testability": {
+            "automated": false,
+            "requiresManualCheck": true,
+            "pseudoAutomation": true,
+            "complexity": "moderate"
+        },
+        "tags": [
+            "interaction",
+            "input",
+            "predictability",
+            "wcag2a",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
+    },
+    {
+        "ruleId": "consistent-navigation",
+        "wcagCriteria": "3.2.3",
+        "wcagLevel": "AA",
+        "wcagTitle": "Consistent Navigation",
+        "wcagVersion": "2.0",
+        "en301549Criteria": "9.3.2.3",
+        "en301549Title": "Consistent navigation",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level AA required",
+        "remediation": {
+            "description": "Navigaatiomekanismit jotka toistuvat useilla verkkosivuilla esiintyvät samassa suhteellisessa järjestyksessä joka kerta kun ne toistuvat.",
+            "technicalGuidance": "Päävalikon tulee näyttää samalta ja olla samassa paikassa kaikilla sivuilla. Hakutoiminto myös.",
+            "component": null,
+            "wcagTechnique": [
+                "G61"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "medium",
+            "eaaImpact": "medium",
+            "finnishInterpretation": "Ennustettavuus on avain kognitiiviselle saavutettavuudelle.",
+            "commonMistakes": [
+                "Valikot jotka vaihtavat paikkaa tai järjestystä eri sivuilla"
+            ],
+            "priorityRationale": "Helpottaa oppimista."
+        },
+        "testability": {
+            "automated": false,
+            "requiresManualCheck": true,
+            "pseudoAutomation": false,
+            "complexity": "simple"
+        },
+        "tags": [
+            "navigation",
+            "design",
+            "consistency",
+            "wcag2aa",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
+    },
+    {
+        "ruleId": "consistent-identification",
+        "wcagCriteria": "3.2.4",
+        "wcagLevel": "AA",
+        "wcagTitle": "Consistent Identification",
+        "wcagVersion": "2.0",
+        "en301549Criteria": "9.3.2.4",
+        "en301549Title": "Consistent identification",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level AA required",
+        "remediation": {
+            "description": "Komponentit joilla on sama toiminnallisuus verkkosivukokonaisuudessa tunnistetaan johdonmukaisesti.",
+            "technicalGuidance": "Älä kutsu hakua 'Haku' yhdellä sivulla ja 'Etsi' toisella. Käytä samaa kuvaketta samalle toiminnolle.",
+            "component": null,
+            "wcagTechnique": [
+                "G197"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "low",
+            "eaaImpact": "low",
+            "finnishInterpretation": "Tärkeä käytettävyydelle.",
+            "commonMistakes": [
+                "Epäjohdonmukainen nimeäminen",
+                "Eri kuvakkeet tulostukselle/lataukselle"
+            ],
+            "priorityRationale": "Vähentää kognitiivista kuormitusta."
+        },
+        "testability": {
+            "automated": false,
+            "requiresManualCheck": true,
+            "pseudoAutomation": false,
+            "complexity": "simple"
+        },
+        "tags": [
+            "content",
+            "icons",
+            "consistency",
+            "wcag2aa",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
+    },
+    {
+        "ruleId": "error-identification",
+        "wcagCriteria": "3.3.1",
+        "wcagLevel": "A",
+        "wcagTitle": "Error Identification",
+        "wcagVersion": "2.0",
+        "en301549Criteria": "9.3.3.1",
+        "en301549Title": "Error identification",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level A required",
+        "remediation": {
+            "description": "Jos syötössä havaitaan automaattisesti virhe, virheellinen kohta tunnistetaan ja virhe kuvataan käyttäjälle tekstinä.",
+            "technicalGuidance": "Näytä virheviesti kentän lähellä. Linkki aria-describedby:llä tai sisällytä nimilappuun. Älä vain väritä kenttää punaiseksi.",
+            "component": "@holmdigital/components/FormField",
+            "wcagTechnique": [
+                "G83",
+                "SCR18"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "high",
+            "eaaImpact": "high",
+            "finnishInterpretation": "Kriittinen tehtävien suorittamiselle. Yleiset virheviestit ('Jotain meni pieleen') eivät ole hyväksyttäviä jos virhe on spesifinen.",
+            "commonMistakes": [
+                "'Virheellinen arvo' ilman selitystä",
+                "Virheviesti ei näy ruudunlukijoille"
+            ],
+            "priorityRationale": "Kriittinen virheenkäsittelylle."
+        },
+        "testability": {
+            "automated": false,
+            "requiresManualCheck": true,
+            "pseudoAutomation": true,
+            "complexity": "moderate"
+        },
+        "tags": [
+            "forms",
+            "errors",
+            "wcag2a",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
+    },
+    {
+        "ruleId": "error-suggestion",
+        "wcagCriteria": "3.3.3",
+        "wcagLevel": "AA",
+        "wcagTitle": "Error Suggestion",
+        "wcagVersion": "2.0",
+        "en301549Criteria": "9.3.3.3",
+        "en301549Title": "Error suggestion",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level AA required",
+        "remediation": {
+            "description": "Jos syöttövirhe havaitaan automaattisesti ja korjausehdotukset tunnetaan, ehdotukset tarjotaan käyttäjälle.",
+            "technicalGuidance": "Jos päivämäärän muoto on väärä, näytä vaadittu muoto (VVVV-KK-PP). Tarjoa kirjoitusehdotuksia haulle ('Tarkoititko...?').",
+            "component": "@holmdigital/components/FormField",
+            "wcagTechnique": [
+                "G177"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "medium",
+            "eaaImpact": "medium",
+            "finnishInterpretation": "Koskee avuliaisuutta. Vähentää tukitapauksia.",
+            "commonMistakes": [
+                "Vain 'Virhe' sanomatta miten korjata"
+            ],
+            "priorityRationale": "Helpottaa korjaamista."
+        },
+        "testability": {
+            "automated": false,
+            "requiresManualCheck": true,
+            "pseudoAutomation": true,
+            "complexity": "moderate"
+        },
+        "tags": [
+            "forms",
+            "errors",
+            "guidance",
+            "wcag2aa",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
+    },
+    {
+        "ruleId": "error-prevention",
+        "wcagCriteria": "3.3.4",
+        "wcagLevel": "AA",
+        "wcagTitle": "Error Prevention (Legal, Financial, Data)",
+        "wcagVersion": "2.0",
+        "en301549Criteria": "9.3.3.4",
+        "en301549Title": "Error prevention (legal, financial, data)",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level AA required",
+        "remediation": {
+            "description": "Verkkosivuilla jotka aiheuttavat oikeudellisia sitoumuksia tai taloudellisia tapahtumia, käyttäjien on voitava: Peruuttaa, Tarkistaa tai Vahvistaa.",
+            "technicalGuidance": "Tarjoa yhteenvetosivu ennen lopullista lähetystä mahdollisuudella muokata.",
+            "component": null,
+            "wcagTechnique": [
+                "G164",
+                "G98"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "high",
+            "eaaImpact": "high",
+            "finnishInterpretation": "Ehdoton vaatimus verkkokaupalle ja oikeudellisille päätöksille.",
+            "commonMistakes": [
+                "Suora osto ilman vahvistusta",
+                "Sitovien sopimusten lähettäminen ilman tarkistusta"
+            ],
+            "priorityRationale": "Kriittinen virheiden vakavien seurausten välttämiseksi."
+        },
+        "testability": {
+            "automated": false,
+            "requiresManualCheck": true,
+            "pseudoAutomation": false,
+            "complexity": "moderate"
+        },
+        "tags": [
+            "forms",
+            "legal",
+            "financial",
+            "wcag2aa",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
+    },
+    {
+        "ruleId": "parsing",
+        "wcagCriteria": "4.1.1",
+        "wcagLevel": "A",
+        "wcagTitle": "Parsing",
+        "wcagVersion": "2.0",
+        "en301549Criteria": "9.4.1.1",
+        "en301549Title": "Parsing",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level A required",
+        "remediation": {
+            "description": "Päivitys: WCAG 2.2:sta lähtien tämä kriteeri on poistettu/vanhentunut, mutta WCAG 2.1/EN 301 549:ssa se koskee: ID:iden on oltava uniikkeja, elementit oikein sisäkkäin.",
+            "technicalGuidance": "Validoi HTML. Varmista että id-attribuutit ovat uniikkeja sivulla. Sulje kaikki tagit oikein.",
+            "component": null,
+            "wcagTechnique": [
+                "H88"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "low",
+            "eaaImpact": "low",
+            "finnishInterpretation": "Vähemmän priorisoitu nyt kun modernit selaimet käsittelevät virheitä hyvin, mutta duplikaatti-ID:t voivat silti rikkoa ARIA:n.",
+            "commonMistakes": [
+                "Duplikaatti-ID:t",
+                "Rikkininen HTML-rakenne"
+            ],
+            "priorityRationale": "Tekninen hygieniatekijä."
+        },
+        "testability": {
+            "automated": true,
+            "requiresManualCheck": false,
+            "pseudoAutomation": false,
+            "complexity": "simple"
+        },
+        "tags": [
+            "code",
+            "html",
+            "parsing",
+            "wcag2a",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
+    },
+    {
+        "ruleId": "name-role-value",
+        "wcagCriteria": "4.1.2",
+        "wcagLevel": "A",
+        "wcagTitle": "Name, Role, Value",
+        "wcagVersion": "2.0",
+        "en301549Criteria": "9.4.1.2",
+        "en301549Title": "Name, role, value",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level A required",
+        "remediation": {
+            "description": "Kaikille komponenteille nimi ja rooli voidaan määrittää ohjelmallisesti. Arvot voidaan asettaa ohjelmallisesti.",
+            "technicalGuidance": "Käytä natiiveja HTML-elementtejä mahdollisuuksien mukaan. Jos mukautettuja komponentteja käytetään, ARIA (role, aria-label, aria-valuenow) on käytettävä oikein.",
+            "component": "@holmdigital/components/ProgressBar",
+            "codeExample": "import { ProgressBar } from '@holmdigital/components';\n\n// Bad: Div without role\n<div style={{ width: '50%' }}>50%</div>\n\n// Good: Accessible Component\n<ProgressBar value={50} label=\"Loading...\" />",
+            "wcagTechnique": [
+                "ARIA4",
+                "ARIA5"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "critical",
+            "eaaImpact": "critical",
+            "finnishInterpretation": "Tämä on perusta sille miten ruudunlukijat toimivat modernien verkkosovellusten kanssa. Ilman tätä sovellus on 'näkymätön' avustavalle teknologialle.",
+            "commonMistakes": [
+                "Div-painikkeet ilman roolia",
+                "Mukautetut valintaruudut ilman aria-checkediä",
+                "Puuttuva saavutettava nimi"
+            ],
+            "priorityRationale": "Ehdottoman kriittinen yhteensopivuudelle."
+        },
+        "testability": {
+            "automated": true,
+            "requiresManualCheck": true,
+            "pseudoAutomation": true,
+            "complexity": "complex"
+        },
+        "tags": [
+            "code",
+            "aria",
+            "interaction",
+            "wcag2a",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
+    },
+    {
+        "ruleId": "status-messages",
+        "wcagCriteria": "4.1.3",
+        "wcagLevel": "AA",
+        "wcagTitle": "Status Messages",
+        "wcagVersion": "2.1",
+        "en301549Criteria": "9.4.1.3",
+        "en301549Title": "Status messages",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level AA required",
+        "remediation": {
+            "description": "Tilaviestit on voitava esittää käyttäjälle ilman fokuksen siirtämistä (ruudunlukijan kautta).",
+            "technicalGuidance": "Käytä aria-live -alueita (polite/assertive) tai role='status'/'alert' viestille jotka ilmestyvät dynaamisesti (esim. 'Tallennettu', 'Haku valmis').",
+            "component": "@holmdigital/components/LiveRegion",
+            "codeExample": "import { LiveRegion } from '@holmdigital/components';\n\n// Assertive for errors\n<LiveRegion politeness=\"assertive\">Error: Failed to save.</LiveRegion>\n\n// Polite for status updates\n<LiveRegion politeness=\"polite\">Saved successfully.</LiveRegion>",
+            "wcagTechnique": [
+                "ARIA19",
+                "ARIA22"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "medium",
+            "eaaImpact": "medium",
+            "finnishInterpretation": "Tärkeä SPA-sovelluksissa joissa sivun latausta ei tapahdu. Käyttäjän on tiedettävä että jotain tapahtui.",
+            "commonMistakes": [
+                "Hiljaiset päivitykset ostoskoriin/hakutuloksiin",
+                "Toast-ilmoitukset joita ei kuuluteta"
+            ],
+            "priorityRationale": "Antaa palautetta käyttäjille joilla ei ole näköä."
+        },
+        "testability": {
+            "automated": false,
+            "requiresManualCheck": true,
+            "pseudoAutomation": true,
+            "complexity": "moderate"
+        },
+        "tags": [
+            "aria",
+            "updates",
+            "feedback",
+            "wcag21aa",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
+    },
+    {
+        "ruleId": "landmark-one-main",
+        "wcagCriteria": "1.3.1",
+        "wcagLevel": "A",
+        "wcagTitle": "Info and Relationships",
+        "wcagVersion": "2.0",
+        "en301549Criteria": "9.1.3.1",
+        "en301549Title": "Info and relationships",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "9 § (Struktur och relationer)",
+        "remediation": {
+            "description": "Sivulla on oltava tasan yksi 'main'-landmark.",
+            "technicalGuidance": "Käytä <main>-elementtiä kerran per sivu tunnistaaksesi pääsisällön. Vältä useita <main>-elementtejä ilman uniikkeja nimilappuja, tai sen puuttumista kokonaan.",
+            "wcagTechnique": [
+                "ARIA11",
+                "H97"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "medium",
+            "eaaImpact": "medium",
+            "finnishInterpretation": "Ruudunlukijan käyttäjät luottavat landmarkkeihin navigoidakseen nopeasti sisältöön. Puuttuva <main> vaikeuttaa navigaation ohittamista.",
+            "commonMistakes": [
+                "<div id='main'> käyttö <main>:n sijaan",
+                "Useita <main>-elementtejä"
+            ]
+        },
+        "testability": {
+            "automated": true,
+            "requiresManualCheck": false,
+            "pseudoAutomation": true,
+            "complexity": "simple"
+        },
+        "tags": [
+            "wcag2a",
+            "wcag131",
+            "landmark",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
+    },
+    {
+        "ruleId": "page-has-heading-one",
+        "wcagCriteria": "1.3.1",
+        "wcagLevel": "A",
+        "wcagTitle": "Info and Relationships",
+        "wcagVersion": "2.0",
+        "en301549Criteria": "9.1.3.1",
+        "en301549Title": "Info and relationships",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "9 § (Struktur och relationer)",
+        "remediation": {
+            "description": "Sivulla on oltava tason 1 otsikko (<h1>).",
+            "technicalGuidance": "Varmista että on tasan yksi <h1> joka kuvaa sivun uniikkia sisältöä.",
+            "wcagTechnique": [
+                "H42"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "high",
+            "eaaImpact": "high",
+            "finnishInterpretation": "Selkeä <h1> on kriittinen käyttäjille ymmärtääkseen minne he ovat saapuneet. Se on usein ensimmäinen asia jota ruudunlukijan käyttäjä etsii.",
+            "commonMistakes": [
+                "Otsikot alkavat <h2>:sta",
+                "Logo ainoana <h1>:nä ilman tekstiä"
+            ]
+        },
+        "testability": {
+            "automated": true,
+            "requiresManualCheck": false,
+            "pseudoAutomation": true,
+            "complexity": "simple"
+        },
+        "tags": [
+            "wcag2a",
+            "wcag131",
+            "heading",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
+    },
+    {
+        "ruleId": "heading-order",
+        "wcagCriteria": "1.3.1",
+        "wcagLevel": "A",
+        "wcagTitle": "Info and Relationships",
+        "wcagVersion": "2.0",
+        "en301549Criteria": "9.1.3.1",
+        "en301549Title": "Info and relationships",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "9 § (Struktur och relationer)",
+        "remediation": {
+            "description": "Otsikoiden on seurattava loogista järjestystä (h1 -> h2 -> h3).",
+            "technicalGuidance": "Älä ohita otsikkotasoja (esim. suoraan h1:stä h3:een).",
+            "wcagTechnique": [
+                "G141"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "medium",
+            "eaaImpact": "medium",
+            "finnishInterpretation": "Väärä otsikkorakenne vaikeuttaa ruudunlukijoiden navigointia. Älä koskaan ohita tasoja.",
+            "commonMistakes": [
+                "h3:n käyttö tyylittelyyn rakenteen sijaan"
+            ]
+        },
+        "testability": {
+            "automated": true,
+            "requiresManualCheck": false,
+            "pseudoAutomation": true,
+            "complexity": "simple"
+        },
+        "tags": [
+            "wcag2a",
+            "wcag131",
+            "heading",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
+    },
+    {
+        "ruleId": "landmark-banner-is-top-level",
+        "wcagCriteria": "1.3.1",
+        "wcagLevel": "A",
+        "wcagTitle": "Info and Relationships",
+        "wcagVersion": "2.0",
+        "en301549Criteria": "9.1.3.1",
+        "en301549Title": "Info and relationships",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "9 § (Struktur och relationer)",
+        "remediation": {
+            "description": "Bannerin (<header>) on oltava ylimmällä tasolla.",
+            "technicalGuidance": "Älä aseta <header>ia toisen landmarkin sisään jos se on sivun pääbanneri.",
+            "wcagTechnique": [
+                "ARIA11"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "medium",
+            "eaaImpact": "medium",
+            "finnishInterpretation": "Sivun päävalikko/banneri on sijoitettava oikein rakenteessa löytyakseen nopeasti.",
+            "commonMistakes": [
+                "Header sisällä mainin sisällä"
+            ]
+        },
+        "testability": {
+            "automated": true,
+            "requiresManualCheck": false,
+            "pseudoAutomation": true,
+            "complexity": "simple"
+        },
+        "tags": [
+            "wcag2a",
+            "wcag131",
+            "landmark",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
+    },
+    {
+        "ruleId": "landmark-no-duplicate-banner",
+        "wcagCriteria": "1.3.1",
+        "wcagLevel": "A",
+        "wcagTitle": "Info and Relationships",
+        "wcagVersion": "2.0",
+        "en301549Criteria": "9.1.3.1",
+        "en301549Title": "Info and relationships",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "9 § (Struktur och relationer)",
+        "remediation": {
+            "description": "Sivulla saa olla vain yksi 'banner'-landmark (yleensä <header>).",
+            "technicalGuidance": "Varmista että sinulla on vain yksi <header> ylimmällä tasolla.",
+            "wcagTechnique": [
+                "ARIA11"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "medium",
+            "eaaImpact": "medium",
+            "finnishInterpretation": "Useita bannereita sekoittaa navigoinnin. Yläbanneria saa olla vain yksi.",
+            "commonMistakes": [
+                "Header sekä ylä- että alaosassa"
+            ]
+        },
+        "testability": {
+            "automated": true,
+            "requiresManualCheck": false,
+            "pseudoAutomation": true,
+            "complexity": "simple"
+        },
+        "tags": [
+            "wcag2a",
+            "wcag131",
+            "landmark",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
+    },
+    {
+        "ruleId": "landmark-unique",
+        "wcagCriteria": "1.3.1",
+        "wcagLevel": "A",
+        "wcagTitle": "Info and Relationships",
+        "wcagVersion": "2.0",
+        "en301549Criteria": "9.1.3.1",
+        "en301549Title": "Info and relationships",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "9 § (Struktur och relationer)",
+        "remediation": {
+            "description": "Landmarkeilla on oltava uniikit roolit tai nimilaput.",
+            "technicalGuidance": "Jos sinulla on useita <nav>-elementtejä, anna niille uniikit 'aria-label' (esim. 'Päävalikko', 'Alatunnistevalikko').",
+            "wcagTechnique": [
+                "ARIA11"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "medium",
+            "eaaImpact": "medium",
+            "finnishInterpretation": "Käyttäjän on pystyttävä erottamaan eri valikot/alueet. Anna niille nimet.",
+            "commonMistakes": [
+                "Useita nav-elementtejä ilman aria-labelia"
+            ]
+        },
+        "testability": {
+            "automated": true,
+            "requiresManualCheck": false,
+            "pseudoAutomation": true,
+            "complexity": "simple"
+        },
+        "tags": [
+            "wcag2a",
+            "wcag131",
+            "landmark",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
+    },
+    {
+        "ruleId": "region",
+        "wcagCriteria": "1.3.1",
+        "wcagLevel": "A",
+        "wcagTitle": "Info and Relationships",
+        "wcagVersion": "2.0",
+        "en301549Criteria": "9.1.3.1",
+        "en301549Title": "Info and relationships",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "9 § (Struktur och relationer)",
+        "remediation": {
+            "description": "Kaiken sisällön sivulla on oltava landmarkkien (alueiden) sisällä.",
+            "technicalGuidance": "Varmista että kaikki sisältö on <main>-, <header>-, <nav>-, <footer>- tai <aside>-elementin sisällä.",
+            "component": null,
+            "wcagTechnique": [
+                "ARIA11"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "medium",
+            "eaaImpact": "medium",
+            "finnishInterpretation": "Jotta ruudunlukijan käyttäjät voivat navigoida tehokkaasti, sivun on oltava jaettu loogisiin alueisiin.",
+            "commonMistakes": [
+                "Sisältö suoraan <body>:ssä ilman säiliötä",
+                "Liian monta landmarkkia"
+            ]
+        },
+        "testability": {
+            "automated": true,
+            "requiresManualCheck": false,
+            "pseudoAutomation": true,
+            "complexity": "simple"
+        },
+        "tags": [
+            "wcag2a",
+            "wcag131",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
+    },
+    {
+        "ruleId": "audio-description",
+        "wcagCriteria": "1.2.5",
+        "wcagLevel": "AA",
+        "wcagTitle": "Audio Description (Prerecorded)",
+        "wcagVersion": "2.0",
+        "en301549Criteria": "9.1.2.5",
+        "en301549Title": "Audio description (prerecorded)",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "100 § (Tidsberoende media)",
+        "remediation": {
+            "description": "Esinauhitetulle videolle on oltava kuvailutulkkaus jos visuaalinen tieto on kriittistä.",
+            "technicalGuidance": "Tarjoa vaihtoehtoinen ääniraita tai versio joka kuvaa mitä tapahtuu visuaalisesti.",
+            "component": null,
+            "wcagTechnique": [
+                "G78"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "medium",
+            "eaaImpact": "low",
+            "finnishInterpretation": "Video joka välittää tietoa visuaalisesti on kuvattava niille jotka eivät näe ruutua.",
+            "commonMistakes": [
+                "Videolta puuttuu kuvailutulkkaus vaikka tärkeää visuaalista tietoa on"
+            ]
+        },
+        "testability": {
+            "automated": false,
+            "requiresManualCheck": true,
+            "pseudoAutomation": false,
+            "complexity": "hard"
+        },
+        "tags": [
+            "wcag2aa",
+            "wcag125",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
+    }
+]

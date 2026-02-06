@@ -9,6 +9,8 @@
         "pdf_saved": "Rapport PDF enregistré sous {path}",
         "scan_failed": "Échec du scan",
         "critical_failure": "\nÉchec CI/CD : Violations réglementaires critiques détectées.",
+        "generating_statement": "Génération de la déclaration d'accessibilité...",
+        "statement_saved": "Déclaration d'accessibilité enregistrée sous {path}",
         "score": "\nScore de Conformité : {score}/100",
         "status": "Statut de Conformité : {status}",
         "not_compliant": "  (Non conforme aux exigences légales - RGAA)",
@@ -16,7 +18,8 @@
         "prescriptive_fix": "\n💡 Solution Prescriptive :",
         "use_component": "Utilisez le composant : {component}",
         "pseudo_tests": "\n🧬 Génération de tests de pseudo-automatisation...\n",
-        "test_for": "Test pour {ruleId} :"
+        "test_for": "Test pour {ruleId} :",
+        "junit_saved": "Rapport XML JUnit enregistré sous {path}"
     },
     "report": {
         "title": "Rapport d'Accessibilité - {url}",

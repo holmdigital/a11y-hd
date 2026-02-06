@@ -1,6 +1,6 @@
 MIT License
 
-Copyright (c) 2025 Holm Digital AB
+Copyright (c) 2026 Holm Digital AB
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -57,3 +57,23 @@ This project includes code or libraries from third parties.
 4. Vite
    License: MIT
    Source: https://github.com/vitejs/vite
+
+5. commander
+   License: MIT
+   Source: https://github.com/tj/commander.js
+
+6. html-validate
+   License: MIT
+   Source: https://github.com/html-validate/html-validate
+
+7. lucide-react
+   License: ISC
+   Source: https://github.com/lucide-icons/lucide
+
+8. ajv
+   License: MIT
+   Source: https://github.com/ajv-validator/ajv
+
+9. chalk
+   License: MIT
+   Source: https://github.com/chalk/chalk

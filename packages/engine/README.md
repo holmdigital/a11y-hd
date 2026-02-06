@@ -15,12 +15,17 @@ It handles the heavy lifting of:
 1.  **Mapping** technical failures to specific legal clauses.
 2.  **Validating** HTML structure to ensure test accuracy.
 3.  **Reporting** in multiple languages (EN, SV, NL, DE, FR, ES) for non-technical stakeholders.
+4.  **CI/CD Pipeline Integration** with automatic enforcement.
+
+For a comprehensive guide on CLI flags, CI/CD integration, and configuration files, see the **[Engine Library Catalog](../../docs/reference/engine.md)**.
 
 ## Features
 
 - **Regulatory Mapping**: Maps technical failures to EU laws (EN 301 549, EAA).
 - **HTML Structure Validation**: Built-in `html-validate` checks to prevent false positives/negatives.
-- **Internationalization (i18n)**: Supports English (`en`), Swedish (`sv`), German (`de`), French (`fr`), Spanish (`es`), and Dutch (`nl`).
+- **Internationalization (i18n)**: Supports English (`en`), Swedish (`sv`), Norwegian (`no`), Finnish (`fi`), Danish (`da`), German (`de`), French (`fr`), Spanish (`es`), and Dutch (`nl`).
+- **Premium V2 Accessibility Statement**: Generates modern, glassmorphism-styled statements compliant with Digg & EU templates.
+- **Multi-Company Metadata**: Easily customize statements via CLI flags or `.a11yrc` for scalable client generation.
 - **Configurable Severity Threshold**: Fail CI only on critical/high issues (configurable).
 - **Rich Metadata**: Includes scan duration, page title, language, and version info.
 - **Pseudo-Automation**: Automatically generates Playwright/Puppeteer test scripts for manual verification steps.
@@ -42,11 +47,17 @@ npx hd-a11y-scan <url> [options]
 **Options:**
 | Option | Description |
 |--------|-------------|
-| `--lang <code>` | Language code (`en`, `sv`, `de`, `fr`, `es`, `nl`, `en-us`, `en-gb`) |
+| `--lang <code>` | Language code (`en`, `sv`, `de`, `fr`, `es`, `nl`, `no`, `fi`, `da`, `en-gb`, `en-us`, `en-ca`) |
 | `--threshold <level>` | Severity threshold for compliance (`critical`, `high`, `medium`, `low`). Default: `high` |
 | `--ci` | Run in CI mode (exit code 1 on failure) |
 | `--json` | Output results as JSON |
 | `--pdf <path>` | Generate a PDF report |
+| `--statement <path>` | Generate a Premium V2 accessibility statement (HTML) |
+| `--org <name>` | Organization name for the statement metadata |
+| `--email <email>` | Contact email for the statement metadata |
+| `--phone <number>` | Contact phone for the statement metadata |
+| `--response-time <val>` | Response time for the statement metadata |
+| `--publish-date <date>` | Publish date for the website (YYYY-MM-DD) |
 | `--viewport <size>` | Set viewport size (`mobile`, `tablet`, `desktop`, or custom `1024x768`) |
 | `--generate-tests` | Generate Pseudo-Automation tests |
 | `--invalid-https-cert` | Allow scanning sites with invalid/self-signed HTTPS certificates ⚠️ |
@@ -93,10 +104,39 @@ npx hd-a11y-scan https://example.com --json
     "low": 0,
     "total": 2
   },
+  "legalSummary": {
+    "wadApplicable": 2,
+    "eaaApplicable": 2,
+    "eaaDeadlineViolations": 2
+  },
   "score": 90,
   "complianceStatus": "PASS"
 }
 ```
+
+## EU Legal Framework
+
+The engine maps violations to EU legal frameworks:
+
+| Framework | Description | Deadline |
+|-----------|-------------|----------|
+| **WAD** | Web Accessibility Directive 2016/2102 (Public Sector) | Already in force |
+| **EAA** | European Accessibility Act 2019/882 (Private Sector) | **June 28, 2025** |
+
+### legalSummary Fields
+
+| Field | Description |
+|-------|-------------|
+| `wadApplicable` | Violations that affect WAD compliance (public sector) |
+| `eaaApplicable` | Violations that affect EAA compliance (private sector) |
+| `eaaDeadlineViolations` | Issues that must be fixed before EAA 2025 deadline |
+
+### HTML Report Enhancements
+
+The HTML/PDF report now includes:
+- **EU Legal Framework Impact** summary section
+- **WAD/EAA badges** on each violation card
+- **EAA deadline warnings** for issues requiring immediate attention
 
 ## Severity Threshold
 

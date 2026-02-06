@@ -1,0 +1,38 @@
+{
+    "cli": {
+        "title": "\n🌐 HolmDigital Sääntelyskanneri\n",
+        "scanning": "Skannataan {url}...\n",
+        "initializing": "Alustetaan skanneria...",
+        "analyzing": "Analysoidaan DOM & Shadow DOM...",
+        "complete": "Skannaus valmis!",
+        "generating_pdf": "Luodaan PDF-raporttia...",
+        "pdf_saved": "PDF-raportti tallennettu kohteeseen {path}",
+        "scan_failed": "Skannaus epäonnistui",
+        "critical_failure": "\nCI/CD Virhe: Kriittisiä sääntelyrikkomuksia havaittu.",
+        "generating_statement": "Luodaan saavutettavuusselostetta...",
+        "statement_saved": "Saavutettavuusseloste tallennettu kohteeseen {path}",
+        "score": "\nVaatimustenmukaisuus: {score}/100",
+        "status": "Tila: {status}",
+        "not_compliant": "  (Ei täytä lakisääteisiä vaatimuksia - Laki digitaalisten palvelujen tarjoamisesta)",
+        "viewport": "Näkymä: {width}x{height}",
+        "prescriptive_fix": "\n💡 Ehdotettu korjaus:",
+        "use_component": "Käytä komponenttia: {component}",
+        "pseudo_tests": "\n🧬 Luodaan Pseudo-automaatiotestejä...\n",
+        "test_for": "Testi {ruleId}:lle:",
+        "junit_saved": "JUnit XML -raportti tallennettu kohteeseen {path}"
+    },
+    "report": {
+        "title": "Saavutettavuusraportti - {url}",
+        "generated": "Luotu: {date}",
+        "scan_target": "Skannauksen kohde: {url}",
+        "overall_score": "Kokonaispisteet",
+        "critical_issues": "Kriittiset ongelmat",
+        "high_issues": "Vakavat ongelmat",
+        "total_issues": "Ongelmat yhteensä",
+        "html_errors": "HTML-virheet",
+        "detailed_violations": "Yksityiskohtaiset rikkomukset",
+        "prescriptive_fix": "💡 Ehdotettu korjaus",
+        "use": "Käytä",
+        "footer": "Luonut @holmdigital/engine v0.1.0 • Standardit: WCAG 2.1 AA, EN 301 549, Digipalvelulaki"
+    }
+}
