@@ -1,6 +1,6 @@
 ---
 "@holmdigital/engine": major
-"@holmdigital/components": majo
+"@holmdigital/components": major
 "@holmdigital/standards": major
 ---
 
