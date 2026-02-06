@@ -3,8 +3,7 @@
     "version": "2.0.0",
     "private": false,
     "publishConfig": {
-        "access": "public",
-        "registry": "https://registry.npmjs.org/"
+        "access": "public"
     },
     "description": "Machine-readable regulatory database for WCAG, EN 301 549 and the DOS Act",
     "repository": {

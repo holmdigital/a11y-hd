@@ -53,11 +53,10 @@ jobs:
           if [ -z "$(ls .changeset/*.md 2>/dev/null | grep -v 'README.md')" ]; then
             echo "No changesets found, attempting to publish..."
             
-            # FORCE CLEANUP: Remove any .npmrc that might have been generated or cached
-            # and unset any scope-specific registry that triggers legacy auth.
-            rm -f .npmrc
-            rm -f ~/.npmrc
-            npm config delete @holmdigital:registry
+            # FORCE CLEANUP: Ensure NO legacy auth remains
+            rm -f .npmrc ~/.npmrc
+            unset NPM_CONFIG_REGISTRY
+            unset NPM_TOKEN
             
             # Diagnostic: Show current npm config (scrubbed)
             echo "--- NPM CONFIG DIAGNOSTIC ---"
@@ -65,17 +64,16 @@ jobs:
             echo "----------------------------"
             
             # Use direct npm publish from within each package directory
-            # This ensures individual package .npmrc (if any) is respected 
-            # and avoids monorepo workspace auth complexities.
+            # Using --verbose to catch the exact point of ENEEDAUTH
             
             echo "Publishing @holmdigital/standards..."
-            (cd packages/standards && npm publish --provenance --access public)
+            (cd packages/standards && npm publish --provenance --access public --verbose)
             
             echo "Publishing @holmdigital/components..."
-            (cd packages/components && npm publish --provenance --access public)
+            (cd packages/components && npm publish --provenance --access public --verbose)
             
             echo "Publishing @holmdigital/engine..."
-            (cd packages/engine && npm publish --provenance --access public)
+            (cd packages/engine && npm publish --provenance --access public --verbose)
           else
             echo "Changesets still present, skipping publish step."
           fi

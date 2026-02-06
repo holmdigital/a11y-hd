@@ -3,8 +3,7 @@
     "version": "2.0.0",
     "private": false,
     "publishConfig": {
-        "access": "public",
-        "registry": "https://registry.npmjs.org/"
+        "access": "public"
     },
     "description": "Regulatory accessibility test engine with Virtual DOM and Shadow DOM support",
     "repository": {
