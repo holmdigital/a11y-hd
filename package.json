@@ -17,7 +17,7 @@
         "clean": "npm run clean --workspaces --if-present && rimraf node_modules",
         "typecheck": "npm run typecheck --workspaces --if-present",
         "scan:local": "node packages/engine/dist/cli/index.js scan http://localhost:3004",
-        "release": "changeset publish"
+        "release": "changeset publish --provenance"
     },
     "devDependencies": {
         "@changesets/cli": "^2.29.8",
