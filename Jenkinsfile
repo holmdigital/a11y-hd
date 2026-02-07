@@ -28,8 +28,9 @@ pipeline {
 
         stage('Run Tests') {
             steps {
-                // Focus on engine where JUnit is already configured
-                sh 'pnpm --filter @holmdigital/engine test -- --reporter=default --reporter=junit --outputFile=junit.xml'
+                // Using pnpm exec for better binary resolution in monorepos
+                // We also climb into the package directory to be safe
+                sh 'cd packages/engine && pnpm exec vitest run --reporter=default --reporter=junit --outputFile=../../junit.xml'
             }
         }
     }
