@@ -43,10 +43,18 @@ pipeline {
 
         stage('Accessibility Scan') {
             steps {
-                // Using pnpm to run the puppeteer CLI from our package dependencies
+                // node:20-slim is missing libraries needed by Chrome. We install them here.
+                sh '''
+                    apt-get update && apt-get install -y \
+                    libgobject-2.0-0 libnss3 libatk1.0-0 libatk-bridge2.0-0 libcups2 \
+                    libdrm2 libxkbcommon0 libxcomposite1 libxdamage1 libxext6 \
+                    libxfixes3 libxrandr2 libgbm1 libasound2 libpangocairo-1.0-0 libgtk-3-0
+                '''
+                
+                // Install Chrome browser
                 sh 'pnpm --filter @holmdigital/engine exec puppeteer browsers install chrome'
                 
-                // Using the direct path to the freshly built binary
+                // Run the scan
                 sh 'node ./packages/engine/dist/cli/index.js https://wiki.holmdigital.se --junit accessibility-report.xml --ci'
             }
         }
