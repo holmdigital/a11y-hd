@@ -63,38 +63,41 @@ jobs:
 
       - name: Publish to NPM (OIDC)
         # Only publish if on master and there are no changeset files left
-        if: github.ref == 'refs/heads/master'
+        if: github.ref == 'refs/heads/master' && steps.changesets.outputs.hasChangesets != 'true'
         run: |
-          if [ -z "$(ls .changeset/*.md 2>/dev/null | grep -v 'README.md')" ]; then
-            echo "No changesets found, attempting to publish..."
+          echo "No changesets found, attempting to publish..."
+          
+          # DEFINITIVE CLEANUP: Remove ANY .npmrc anywhere in the project
+          find . -name ".npmrc" -delete
+          rm -f ~/.npmrc
+          
+          # Ensure npm doesn't use any residual config
+          npm config delete @holmdigital:registry
+          npm config delete registry
+          
+          # Diagnostic
+          echo "--- NPM CONFIG FINAL CHECK ---"
+          npm config list
+          echo "------------------------------"
+          
+          # Helper function to publish only if version doesn't exist
+          publish_if_needed() {
+            local pkg_dir=$1
+            local pkg_name=$(node -p "require('./$pkg_dir/package.json').name")
+            local pkg_version=$(node -p "require('./$pkg_dir/package.json').version")
             
-            # DEFINITIVE CLEANUP: Remove ANY .npmrc anywhere in the project
-            find . -name ".npmrc" -delete
-            rm -f ~/.npmrc
-            
-            # Ensure npm doesn't use any residual config
-            npm config delete @holmdigital:registry
-            npm config delete registry
-            
-            # Diagnostic
-            echo "--- NPM CONFIG FINAL CHECK ---"
-            npm config list
-            echo "------------------------------"
-            
-            # Use isolated publish with forced clean registry and --no-workspaces
-            # This is critical to prevent npm from searching for root-level auth
-            
-            echo "Publishing @holmdigital/standards..."
-            (cd packages/standards && npm publish --provenance --access public --registry https://registry.npmjs.org/ --no-workspaces --verbose)
-            
-            echo "Publishing @holmdigital/components..."
-            (cd packages/components && npm publish --provenance --access public --registry https://registry.npmjs.org/ --no-workspaces --verbose)
-            
-            echo "Publishing @holmdigital/engine..."
-            (cd packages/engine && npm publish --provenance --access public --registry https://registry.npmjs.org/ --no-workspaces --verbose)
-          else
-            echo "Changesets still present, skipping publish step."
-          fi
+            echo "Checking if $pkg_name@$pkg_version is already published..."
+            if npm view "$pkg_name@$pkg_version" version > /dev/null 2>&1; then
+              echo "⚠️ $pkg_name@$pkg_version already exists on NPM, skipping."
+            else
+              echo "🚀 Publishing $pkg_name@$pkg_version..."
+              (cd "$pkg_dir" && npm publish --provenance --access public --registry https://registry.npmjs.org/ --no-workspaces --verbose)
+            fi
+          }
+
+          publish_if_needed "packages/standards"
+          publish_if_needed "packages/components"
+          publish_if_needed "packages/engine"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           # id-token: write permission handles auth via Trusted Publishing
