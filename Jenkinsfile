@@ -28,20 +28,25 @@ pipeline {
             }
         }
 
-        stage('Run Tests') {
+        stage('Run Unit Tests') {
             steps {
-                // Using the absolute path to the binary in the root node_modules
-                // to avoid issues with pnpm linking in mid-migration monorepos
-                sh './node_modules/.bin/vitest run packages/engine --reporter=default --reporter=junit --outputFile=junit.xml'
+                sh './node_modules/.bin/vitest run packages/engine --reporter=default --reporter=junit --outputFile=junit-unit.xml'
+            }
+        }
+
+        stage('Accessibility Scan') {
+            steps {
+                // Testing the engine against a sample URL (or your own dev/staging URL)
+                // We use the local engine build to scan
+                sh 'pnpm --filter @holmdigital/engine exec engine https://wiki.holmdigital.se --junit accessibility-report.xml --ci'
             }
         }
     }
 
     post {
         always {
-            // Jenkins will look for XML files in the workspace
-            // Adjust the pattern if your reports are in a specific subfolder like 'reports/*.xml'
-            junit '**/junit.xml'
+            // Pick up both unit tests and accessibility scan results
+            junit '*.xml'
         }
     }
 }
