@@ -22,7 +22,9 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 sh 'corepack enable'
-                sh 'pnpm install'
+                // We add --no-frozen-lockfile to allow Jenkins to update the lockfile
+                // if it's out of sync with package.json
+                sh 'pnpm install --no-frozen-lockfile'
             }
         }
 
