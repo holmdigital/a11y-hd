@@ -36,9 +36,9 @@ pipeline {
 
         stage('Accessibility Scan') {
             steps {
-                // Testing the engine against a sample URL (or your own dev/staging URL)
-                // We use the local engine build to scan
-                sh 'pnpm --filter @holmdigital/engine exec engine https://wiki.holmdigital.se --junit accessibility-report.xml --ci'
+                // Using the specific binary path for the engine CLI
+                // This ensures it works even if pnpm linking is finicky
+                sh './packages/engine/bin/engine.js https://wiki.holmdigital.se --junit accessibility-report.xml --ci'
             }
         }
     }
