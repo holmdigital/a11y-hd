@@ -28,9 +28,8 @@ pipeline {
 
         stage('Run Tests') {
             steps {
-                // Assuming your engine/standard tests generate JUnit XML
-                // Adjust this command to match your project's test script
-                sh 'pnpm test'
+                // Focus on engine where JUnit is already configured
+                sh 'pnpm --filter @holmdigital/engine test -- --reporter=default --reporter=junit --outputFile=junit.xml'
             }
         }
     }
