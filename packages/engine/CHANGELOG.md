@@ -1,5 +1,11 @@
 # @holmdigital/engine
 
+## 2.0.1
+
+### Patch Changes
+
+- e574824: harden junit generation and fallback logic
+
 ## 2.0.0
 
 ### Major Changes
