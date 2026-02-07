@@ -29,8 +29,10 @@ export function generateJUnitXML(reports: RegulatoryReport[], url: string, durat
     return testSuites.join('\n');
 }
 
-function escapeXML(unsafe: string): string {
-    return unsafe.replace(/[<>&'"]/g, c => {
+function escapeXML(unsafe: any): string {
+    if (unsafe === undefined || unsafe === null) return '';
+    const str = String(unsafe);
+    return str.replace(/[<>&'"]/g, c => {
         switch (c) {
             case '<': return '&lt;';
             case '>': return '&gt;';

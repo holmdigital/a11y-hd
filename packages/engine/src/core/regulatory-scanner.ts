@@ -257,6 +257,7 @@ export class RegulatoryScanner {
                     holmdigitalInsight: {
                         diggRisk: 'medium',
                         eaaImpact: 'medium',
+                        reasoning: violation.help,
                         swedishInterpretation: violation.help,
                         priorityRationale: 'Detta fel upptäcktes av scannern men saknar specifik mappning i HolmDigital-databasen.'
                     },
