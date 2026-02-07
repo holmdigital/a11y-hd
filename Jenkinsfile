@@ -43,10 +43,10 @@ pipeline {
 
         stage('Accessibility Scan') {
             steps {
-                // node:20-slim is missing libraries needed by Chrome. We install them here.
+                // node:20-slim (Debian Bookworm) needs specific library names
                 sh '''
                     apt-get update && apt-get install -y \
-                    libgobject-2.0-0 libnss3 libatk1.0-0 libatk-bridge2.0-0 libcups2 \
+                    libglib2.0-0 libnss3 libatk1.0-0 libatk-bridge2.0-0 libcups2 \
                     libdrm2 libxkbcommon0 libxcomposite1 libxdamage1 libxext6 \
                     libxfixes3 libxrandr2 libgbm1 libasound2 libpangocairo-1.0-0 libgtk-3-0
                 '''
