@@ -36,9 +36,8 @@ pipeline {
 
         stage('Accessibility Scan') {
             steps {
-                // Using the specific binary path for the engine CLI
-                // This ensures it works even if pnpm linking is finicky
-                sh './packages/engine/bin/engine.js https://wiki.holmdigital.se --junit accessibility-report.xml --ci'
+                // Using node explicitly to run the script to avoid permission issues
+                sh 'node ./packages/engine/bin/engine.js https://wiki.holmdigital.se --junit accessibility-report.xml --ci'
             }
         }
     }
