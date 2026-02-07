@@ -43,8 +43,10 @@ pipeline {
 
         stage('Accessibility Scan') {
             steps {
+                // Puppeteer needs a browser to scan. Slim containers don't have it by default.
+                sh 'npx puppeteer browsers install chrome'
+                
                 // Using the direct path to the freshly built binary
-                // This is the most reliable way in CI
                 sh 'node ./packages/engine/dist/cli/index.js https://wiki.holmdigital.se --junit accessibility-report.xml --ci'
             }
         }
