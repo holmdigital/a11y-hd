@@ -43,8 +43,9 @@ pipeline {
 
         stage('Accessibility Scan') {
             steps {
-                // Using pnpm exec with the correct binary name from package.json
-                sh 'pnpm --filter @holmdigital/engine exec hd-a11y-scan https://wiki.holmdigital.se --junit accessibility-report.xml --ci'
+                // Using the direct path to the freshly built binary
+                // This is the most reliable way in CI
+                sh 'node ./packages/engine/dist/cli/index.js https://wiki.holmdigital.se --junit accessibility-report.xml --ci'
             }
         }
     }
