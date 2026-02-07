@@ -34,10 +34,17 @@ pipeline {
             }
         }
 
+        stage('Build Project') {
+            steps {
+                // Building the engine so the dist/cli/index.js exists
+                sh 'pnpm --filter @holmdigital/engine build'
+            }
+        }
+
         stage('Accessibility Scan') {
             steps {
-                // Using node explicitly to run the script to avoid permission issues
-                sh 'node ./packages/engine/bin/engine.js https://wiki.holmdigital.se --junit accessibility-report.xml --ci'
+                // Using pnpm exec with the correct binary name from package.json
+                sh 'pnpm --filter @holmdigital/engine exec hd-a11y-scan https://wiki.holmdigital.se --junit accessibility-report.xml --ci'
             }
         }
     }
