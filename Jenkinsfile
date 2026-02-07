@@ -36,8 +36,8 @@ pipeline {
 
         stage('Build Project') {
             steps {
-                // Building the engine so the dist/cli/index.js exists
-                sh 'pnpm --filter @holmdigital/engine build'
+                // Building the engine, skipping DTS for CI speed/reliability
+                sh 'pnpm --filter @holmdigital/engine build --no-dts'
             }
         }
 
