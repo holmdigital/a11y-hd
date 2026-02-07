@@ -28,9 +28,9 @@ pipeline {
 
         stage('Run Tests') {
             steps {
-                // Using pnpm exec for better binary resolution in monorepos
-                // We also climb into the package directory to be safe
-                sh 'cd packages/engine && pnpm exec vitest run --reporter=default --reporter=junit --outputFile=../../junit.xml'
+                // Using the absolute path to the binary in the root node_modules
+                // to avoid issues with pnpm linking in mid-migration monorepos
+                sh './node_modules/.bin/vitest run packages/engine --reporter=default --reporter=junit --outputFile=junit.xml'
             }
         }
     }
