@@ -319,6 +319,14 @@ export const AccessibilityStatement: React.FC<AccessibilityStatementProps> = ({
             }
 
 
+            // Render section header
+            const SectionHeader = (
+                <h2 key={`h2-${i}`} style={styles.sectionTitle}>
+                    {IconNode}
+                    {section.title}
+                </h2>
+            );
+
             // Split content into paragraphs for better rendering
             const blocks = trimmed.split('\n\n').map((block, bi) => {
                 const blockTrimmed = block.trim();
@@ -328,7 +336,6 @@ export const AccessibilityStatement: React.FC<AccessibilityStatementProps> = ({
                     const title = blockTrimmed.replace('## ', '');
                     return (
                         <h2 key={`${i}-${bi}`} style={styles.sectionTitle}>
-                            {IconNode}
                             {title}
                         </h2>
                     );
@@ -365,7 +372,12 @@ export const AccessibilityStatement: React.FC<AccessibilityStatementProps> = ({
                 return <p key={`${i}-${bi}`} style={styles.paragraph}>{blockTrimmed}</p>;
             });
 
-            return <section key={i} style={styles.section}>{blocks}</section>;
+            return (
+                <section key={i} style={styles.section}>
+                    {SectionHeader}
+                    {blocks}
+                </section>
+            );
         });
     };
 
@@ -387,144 +399,162 @@ export const AccessibilityStatement: React.FC<AccessibilityStatementProps> = ({
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
-            marginBottom: '4.5rem',
-            paddingBottom: '2rem',
-            borderBottom: '1px solid #f1f5f9'
+            marginBottom: '5rem',
+            paddingBottom: '2.5rem',
+            borderBottom: '1px solid #f8fafc'
         },
         logoContainer: {
             display: 'flex',
             alignItems: 'center',
             textDecoration: 'none',
-            marginRight: '1.5rem'
+            marginRight: '2rem'
         },
         divider: {
-            height: '2.5rem',
+            height: '2rem',
             width: '1px',
             backgroundColor: '#e2e8f0',
-            marginRight: '1.5rem',
+            marginRight: '2rem',
             display: 'block'
         },
         websiteContainer: {
             display: 'flex',
             alignItems: 'center',
-            gap: '0.75rem',
+            gap: '0.625rem',
             textDecoration: 'none',
-            color: '#475569', // Slate 600
-            fontWeight: 600,
-            fontSize: '1rem',
+            color: '#64748b', // Slate 500
+            fontWeight: 500,
+            fontSize: '0.925rem',
             padding: '0.5rem 1rem',
             backgroundColor: '#f8fafc',
-            borderRadius: '0.75rem',
+            borderRadius: '100px',
             border: '1px solid #f1f5f9'
         },
         container: {
-            maxWidth: '900px',
-            margin: '2rem auto',
-            padding: '4.5rem',
+            maxWidth: '1000px',
+            margin: '4rem auto',
+            padding: '6rem',
             backgroundColor: '#ffffff',
-            borderRadius: '24px',
-            boxShadow: '0 25px 50px -12px rgb(0 0 0 / 0.05)',
+            borderRadius: '32px',
+            boxShadow: '0 40px 100px -20px rgba(15, 23, 42, 0.08)',
             border: '1px solid #f1f5f9',
             fontFamily: '"Inter", system-ui, -apple-system, sans-serif',
             color: '#1e293b', // Slate 800
-            lineHeight: 1.75,
-            fontSize: '1.125rem'
+            lineHeight: 1.8,
+            fontSize: '1.125rem',
+            position: 'relative',
+            overflow: 'hidden'
         },
         mainHeading: {
-            fontSize: '3rem',
-            fontWeight: 900,
-            color: '#082f49', // Primary 950
+            fontSize: '3.5rem',
+            fontWeight: 800,
+            color: '#0f172a', // Slate 900
             marginTop: '0',
-            marginBottom: '1rem',
-            letterSpacing: '-0.04em',
-            lineHeight: 1.1
+            marginBottom: '1.5rem',
+            letterSpacing: '-0.05em',
+            lineHeight: 1.05
         },
         metaData: {
             color: '#64748b', // Slate 500
             fontSize: '0.925rem',
-            marginBottom: '4rem',
+            marginBottom: '5rem',
             fontWeight: 500,
             display: 'flex',
-            gap: '1.5rem'
+            gap: '2rem',
+            padding: '1.25rem 2rem',
+            backgroundColor: '#f8fafc',
+            borderRadius: '1rem',
+            border: '1px solid #f1f5f9',
+            width: 'fit-content'
         },
         section: {
-            marginBottom: '4.5rem'
+            marginBottom: '6rem'
         },
         sectionTitle: {
-            fontSize: '1.75rem',
-            fontWeight: 800,
-            color: '#082f49', // Primary 950
-            marginBottom: '1.5rem',
+            fontSize: '1.875rem',
+            fontWeight: 700,
+            color: '#0f172a',
+            marginBottom: '2rem',
             marginTop: 0,
-            letterSpacing: '-0.025em',
+            letterSpacing: '-0.03em',
             display: 'flex',
             alignItems: 'center',
-            gap: '0.75rem'
+            gap: '1rem'
         },
         card: {
             padding: '2.5rem',
-            backgroundColor: '#f0f9ff', // Primary 50
+            backgroundColor: '#ffffff',
             borderRadius: '1.5rem',
-            border: '1px solid #e0f2fe',
-            marginBottom: '2.5rem'
+            border: '1px solid #f1f5f9',
+            boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.02)',
+            marginBottom: '2.5rem',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '1rem'
         },
         paragraph: {
-            marginBottom: '1.5rem',
-            maxWidth: '65ch',
-            whiteSpace: 'pre-line'
+            marginBottom: '1.75rem',
+            maxWidth: '70ch',
+            whiteSpace: 'pre-line',
+            color: '#475569' // Slate 600
         },
         link: {
-            color: '#0284c7', // Primary 600
+            color: '#0ea5e9', // Primary 500
             textDecoration: 'none',
             fontWeight: 600,
-            borderBottom: '2px solid #e0f2fe',
-            transition: 'border-color 0.2s',
+            borderBottom: '1.5px solid rgba(14, 165, 233, 0.2)',
+            transition: 'all 0.2s',
             cursor: 'pointer'
         },
         list: {
             listStyleType: 'none',
             paddingLeft: 0,
-            marginBottom: '1.5rem'
+            marginBottom: '2rem',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '1rem'
         },
         listItem: {
-            marginBottom: '0.75rem',
-            paddingLeft: '1.75rem',
+            padding: '1.25rem 1.75rem 1.25rem 3.5rem',
             position: 'relative',
-            display: 'block'
+            backgroundColor: '#f8fafc',
+            borderRadius: '1rem',
+            border: '1px solid #f1f5f9',
+            fontSize: '1rem',
+            color: '#334155'
         },
         listBullet: {
             position: 'absolute',
-            left: 0,
-            top: '0.6em',
-            width: '0.5rem',
-            height: '0.5rem',
-            borderRadius: '50%',
-            backgroundColor: '#0ea5e9' // Primary 500
+            left: '1.5rem',
+            top: '50%',
+            transform: 'translateY(-50%)',
+            width: '0.75rem',
+            height: '0.75rem',
+            borderRadius: '4px',
+            backgroundColor: '#0ea5e9',
+            opacity: 0.8
         },
         statusBadge: {
             display: 'inline-flex',
             alignItems: 'center',
-            padding: '0.375rem 1rem',
-            borderRadius: '9999px',
+            padding: '0.5rem 1.25rem',
+            borderRadius: '100px',
             fontSize: '0.875rem',
-            fontWeight: 700,
-            backgroundColor: complianceLevel === 'full' ? '#dcfce7' : complianceLevel === 'partial' ? '#fef9c3' : '#fee2e2',
-            color: complianceLevel === 'full' ? '#166534' : complianceLevel === 'partial' ? '#854d0e' : '#991b1b',
-            boxShadow: `0 4px 6px -1px ${complianceLevel === 'full' ? 'rgba(34, 197, 94, 0.1)' : complianceLevel === 'partial' ? 'rgba(234, 179, 8, 0.1)' : 'rgba(239, 68, 68, 0.1)'}`,
-            border: `1px solid ${complianceLevel === 'full' ? '#bbf7d0' : complianceLevel === 'partial' ? '#fef08a' : '#fecaca'}`,
-            marginLeft: '0.5rem'
+            fontWeight: 600,
+            backgroundColor: complianceLevel === 'full' ? '#f0fdf4' : complianceLevel === 'partial' ? '#fffbeb' : '#fef2f2',
+            color: complianceLevel === 'full' ? '#166534' : complianceLevel === 'partial' ? '#92400e' : '#991b1b',
+            border: `1px solid ${complianceLevel === 'full' ? '#dcfce7' : complianceLevel === 'partial' ? '#fef3c7' : '#fee2e2'}`,
+            letterSpacing: '0.01em'
         },
         iconWrapper: {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            width: '2.5rem',
-            height: '2.5rem',
-            borderRadius: '0.75rem',
-            backgroundColor: '#ffffff',
-            boxShadow: '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
+            width: '2.75rem',
+            height: '2.75rem',
+            borderRadius: '12px',
+            backgroundColor: '#f8fafc',
             border: '1px solid #f1f5f9',
-            color: '#0284c7'
+            color: '#0ea5e9'
         }
     };
 
@@ -632,10 +662,23 @@ export const AccessibilityStatement: React.FC<AccessibilityStatementProps> = ({
 
             {/* Template Rendered Content */}
             <div className="statement-content">
-                <h1 id="a11y-statement-title" style={styles.mainHeading}>
-                    {renderTemplate(template.title)}
-                </h1>
-                <p style={styles.paragraph}>
+                <header style={{ marginBottom: '4rem' }}>
+                    <h1 id="a11y-statement-title" style={styles.mainHeading}>
+                        {renderTemplate(template.title)}
+                    </h1>
+
+                    <div style={styles.metaData}>
+                        <span>{lang === 'sv' ? 'Status:' : 'Status:'} <span style={styles.statusBadge}>
+                            {complianceLevel === 'full' ? (lang === 'sv' ? 'Fullt förenlig' : 'Fully compliant') :
+                                complianceLevel === 'partial' ? (lang === 'sv' ? 'Delvis förenlig' : 'Partially compliant') :
+                                    (lang === 'sv' ? 'Ej förenlig' : 'Non-compliant')}
+                        </span></span>
+                        <span style={{ color: '#e2e8f0' }}>|</span>
+                        <span>{lang === 'sv' ? 'Uppdaterad:' : 'Updated:'} {d(lastReviewDate)}</span>
+                    </div>
+                </header>
+
+                <p style={{ ...styles.paragraph, fontSize: '1.25rem', color: '#1e293b', fontWeight: 500, marginBottom: '4rem' }}>
                     {renderTemplate(template.intro)}
                 </p>
                 {renderSections(template.sections)}
