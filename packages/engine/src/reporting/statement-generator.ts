@@ -1,6 +1,7 @@
 import React from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { AccessibilityStatement, AccessibilityStatementProps } from '@holmdigital/components';
+import { Country, ENFORCEMENT_BODIES } from '@holmdigital/standards';
 import { ScanResult } from '../core/regulatory-scanner';
 import fs from 'fs/promises';
 import path from 'path';
@@ -27,6 +28,24 @@ export async function generateStatementContent(
     format: 'html' | 'md' | 'markdown' = 'html',
     metadata?: StatementMetadata
 ): Promise<string> {
+    // 0. Load Template
+    let template: any;
+    try {
+        const templatePath = path.join(__dirname, 'templates', `${lang}.json`);
+        const templateData = await fs.readFile(templatePath, 'utf-8');
+        template = JSON.parse(templateData);
+    } catch (e) {
+        // Fallback to en if lang not found
+        try {
+            const fallbackPath = path.join(__dirname, 'templates', 'en.json');
+            const templateData = await fs.readFile(fallbackPath, 'utf-8');
+            template = JSON.parse(templateData);
+        } catch (err) {
+            console.error('Could not load accessibility statement templates', err);
+            throw new Error('Accessibility statement templates missing');
+        }
+    }
+
     // 1. Determine compliance level
     let complianceLevel: AccessibilityStatementProps['complianceLevel'] = 'full';
 
@@ -137,47 +156,120 @@ export async function generateStatementContent(
         // MARKDOWN GENERATION (DIGG-compatible structure)
         const dateStr = props.lastReviewDate.toISOString().split('T')[0];
         const statusMap: Record<string, string> = {
-            'full': 'Full',
-            'partial': 'Partial',
-            'non-compliant': 'Non-Compliant'
+            'full': lang === 'sv' ? 'Fullt ut förenlig' : (lang === 'no' || lang === 'nb' ? 'Helt i samsvar' : (lang === 'da' ? 'Fuldt ud i overensstemmelse' : 'Fully compliant')),
+            'partial': lang === 'sv' ? 'Delvis förenlig' : (lang === 'no' || lang === 'nb' ? 'Delvis i samsvar' : (lang === 'da' ? 'Delvist i overensstemmelse' : 'Partially compliant')),
+            'non-compliant': lang === 'sv' ? 'Inte förenlig' : (lang === 'no' || lang === 'nb' ? 'Ikke i samsvar' : (lang === 'da' ? 'Ikke i overensstemmelse' : 'Non-compliant'))
+        };
+
+        const substitutions: Record<string, string> = {
+            statusString: statusMap[complianceLevel],
+
+            '{<webbplats>}': props.organizationName,
+            '{<website>}': props.organizationName,
+            '{<nettsted>}': props.organizationName,
+            '{<organisation>}': props.organizationName,
+            '{<organisasjon>}': props.organizationName,
+            '{<e-postadress>}': props.contactEmail || '',
+            '{<e-mailosoite>}': props.contactEmail || '',
+            '{<e-mailadresse>}': props.contactEmail || '',
+            '{<e-mail address>}': props.contactEmail || '',
+            '{<email address>}': props.contactEmail || '',
+            '{<telefonnummer>}': props.phoneNumber || '',
+            '{<puhelinnumero>}': props.phoneNumber || '',
+            '{<telefoonnummer>}': props.phoneNumber || '',
+            '{<telephone number>}': props.phoneNumber || '',
+            '{<svarstid>}': props.responseTime || '',
+            '{<svartid>}': props.responseTime || '',
+            '{<response time>}': props.responseTime || '',
+            '{<bedömningsdatum>}': dateStr,
+            '{<vurderingsdato>}': dateStr,
+            '{<arviointipäivä>}': dateStr,
+            '{<beoordelingsdatum>}': dateStr,
+            '{<bewertungsdatum>}': dateStr,
+            '{<date_evaluation>}': dateStr,
+            '{<fecha_evaluacion>}': dateStr,
+            '{<assessment date>}': dateStr,
+            '{<uppdateringsdatum>}': dateStr,
+            '{<oppdateringsdato>}': dateStr,
+            '{<päivityspäivä>}': dateStr,
+            '{<updatedatum>}': dateStr,
+            '{<aktualisierungsdatum>}': dateStr,
+            '{<date_mise_a_jour>}': dateStr,
+            '{<fecha_actualizacion>}': dateStr,
+            '{<update date>}': dateStr,
+            '{<publiceringsdatum>}': props.publishDate?.toISOString().split('T')[0] || '2024-01-01',
+            '{<publiseringsdato>}': props.publishDate?.toISOString().split('T')[0] || '2024-01-01',
+            '{<julkaisupäivä>}': props.publishDate?.toISOString().split('T')[0] || '2024-01-01',
+            '{<publicatiedatum>}': props.publishDate?.toISOString().split('T')[0] || '2024-01-01',
+            '{<veröffentlichungsdatum>}': props.publishDate?.toISOString().split('T')[0] || '2024-01-01',
+            '{<date_publication>}': props.publishDate?.toISOString().split('T')[0] || '2024-01-01',
+            '{<fecha_publicacion>}': props.publishDate?.toISOString().split('T')[0] || '2024-01-01',
+            '{<publish date>}': props.publishDate?.toISOString().split('T')[0] || '2024-01-01',
+            '{<metod>}': props.evaluationMethod || 'Automated Scan',
+            '{<metodi>}': props.evaluationMethod || 'Automated Scan',
+            '{<methode>}': props.evaluationMethod || 'Automated Scan',
+            '{<método>}': props.evaluationMethod || 'Automated Scan',
+            '{<method>}': props.evaluationMethod || 'Automated Scan',
+            '{<extern aktör>}': props.generatorTool?.name || 'HolmDigital Engine',
+            '{<ekstern aktor>}': props.generatorTool?.name || 'HolmDigital Engine',
+            '{<ulkoinen taho>}': props.generatorTool?.name || 'HolmDigital Engine',
+            '{<externe partij>}': props.generatorTool?.name || 'HolmDigital Engine',
+            '{<externer Dritter>}': props.generatorTool?.name || 'HolmDigital Engine',
+            '{<tiers externe>}': props.generatorTool?.name || 'HolmDigital Engine',
+            '{<tercero externo>}': props.generatorTool?.name || 'HolmDigital Engine',
+            '{<third party>}': props.generatorTool?.name || 'HolmDigital Engine',
+            '{<enforcement_body>}': ENFORCEMENT_BODIES[country as Country] || ENFORCEMENT_BODIES.EU,
+            '{<brister>}': nonComplianceItems.length > 0 ? nonComplianceItems.map(item => `* ${item}`).join('\n') : (lang === 'sv' ? 'Inga kända brister.' : 'No known issues.'),
+            '{<puutteet>}': nonComplianceItems.length > 0 ? nonComplianceItems.map(item => `* ${item}`).join('\n') : (lang === 'fi' ? 'Ei tiedossa olevia puutteita.' : 'No known issues.'),
+            '{<gebreken>}': nonComplianceItems.length > 0 ? nonComplianceItems.map(item => `* ${item}`).join('\n') : (lang === 'nl' ? 'Geen bekende gebreken.' : 'No known issues.'),
+            '{<mängel>}': nonComplianceItems.length > 0 ? nonComplianceItems.map(item => `* ${item}`).join('\n') : (lang === 'de' ? 'Keine bekannten Mängel.' : 'No known issues.'),
+            '{<défauts>}': nonComplianceItems.length > 0 ? nonComplianceItems.map(item => `* ${item}`).join('\n') : (lang === 'fr' ? 'Aucun défaut connu.' : 'No known issues.'),
+            '{<deficiencias>}': nonComplianceItems.length > 0 ? nonComplianceItems.map(item => `* ${item}`).join('\n') : (lang === 'es' ? 'No hay deficiencias conocidas.' : 'No known issues.'),
+            '{<mangler>}': nonComplianceItems.length > 0 ? nonComplianceItems.map(item => `* ${item}`).join('\n') : (lang === 'no' || lang === 'da' ? 'Ingen kendte mangler.' : 'No known issues.'),
+            '{<issues>}': nonComplianceItems.length > 0 ? nonComplianceItems.map(item => `* ${item}`).join('\n') : 'No known issues.'
         };
 
 
+        const processText = (text: string) => {
+            let processed = text;
+            // Handle Conditionals [ ... ]
+            processed = processed.replace(/\[([\s\S]*?)\]/g, (_match, content) => {
+                if (content.includes('{<svarstid>}') || content.includes('{<svartid>}') || content.includes('{<response time>}')) {
+                    return props.responseTime ? content : '';
+                }
+                if (content.includes('{<telefonnummer>}') || content.includes('{<telephone number>}')) {
+                    return props.phoneNumber ? content : '';
+                }
+                if (content.includes('{<brister>}') || content.includes('{<mangler>}') || content.includes('{<issues>}')) {
+                    return complianceLevel !== 'full' ? content : '';
+                }
+                return content;
+            });
 
-        content = `# Accessibility Statement for ${props.organizationName}
+            // Handle Choices { A / B / C }
+            processed = processed.replace(/\{([^{}]*?)\}/g, (_match, content) => {
+                const parts = content.split('/');
+                if (parts.length >= 2) {
+                    let idx = 0;
+                    if (complianceLevel === 'partial') idx = 1;
+                    if (complianceLevel === 'non-compliant') idx = parts.length > 2 ? 2 : 1;
+                    return parts[idx].trim();
+                }
+                // Handle substitutions if not a choice block
+                const key = `{${content}}`;
+                return substitutions[key] !== undefined ? substitutions[key] : _match;
+            });
 
-This accessibility statement applies to [${props.websiteUrl}](${props.websiteUrl}).
+            return processed;
+        };
 
-## Compliance Status
+        const title = processText(template.title);
+        const intro = processText(template.intro);
+        const sections = template.sections.map((s: any) => `## ${s.title}\n\n${processText(s.content)}`).join('\n\n');
 
-**Status:** ${statusMap[complianceLevel] || complianceLevel}
-
-This website is ${complianceLevel} compliant with ${sector === 'public' ? 'EN 301 549 (WAD)' : 'EAA'}.
-
-## Non-accessible Content
-
-The following content is non-accessible for the following reasons:
-
-${nonComplianceItems.length > 0
-                ? nonComplianceItems.map(item => `- ${item}`).join('\n')
-                : '_No known issues._'}
-
-## Preparation of this statement
-
-This statement was prepared on ${dateStr}.
-Method used: **Automated Scan** via @holmdigital/engine.
-
-## Feedback and contact information
-
-If you need information on this website in a different format like accessible PDF, large print, easy-to-read, audio recording or braille:
-
-- email: [${props.contactEmail}](mailto:${props.contactEmail})
-
-## Enforcement procedure
-
-The enforcement body for ${country} is responsible for enforcing these regulations.
-`;
+        content = `# ${title}\n\n${intro}\n\n${sections}\n\n---\nGenerated using [${props.generatorTool?.name || 'HolmDigital Engine'}](${props.generatorTool?.url || 'https://holmdigital.se'})`;
     }
+
 
     // 5. Write to file
     return content;

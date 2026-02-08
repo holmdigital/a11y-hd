@@ -77,6 +77,16 @@ console.log(authority.name);
 // Output: "Myndigheten för digital förvaltning (Digg)"
 console.log(authority.monitoringPortal); 
 // Output: "https://www.digg.se/analys-och-uppfoljning/..."
+
+### 3. Access Centralized Enforcement Bodies
+Get a mapping of all regulatory authorities for support countries.
+
+```typescript
+import { ENFORCEMENT_BODIES } from '@holmdigital/standards';
+
+console.log(ENFORCEMENT_BODIES.SE);
+// Output: "Myndigheten för digital förvaltning (Digg)"
+```
 ```
 
 ### 3. Check for EAA Deadlines

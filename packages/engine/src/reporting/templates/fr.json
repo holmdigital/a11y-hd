@@ -1,0 +1,36 @@
+{
+    "title": "Déclaration d'accessibilité pour {<webbplats>}",
+    "intro": "{<organisation>} s'engage à rendre son site internet accessible conformément à l'article 47 de la loi n° 2005-102 du 11 février 2005. Cette déclaration d'accessibilité s'applique à {<webbplats>}.",
+    "sections": [
+        {
+            "id": "how-accessible",
+            "title": "État de conformité",
+            "content": "{Ce site est totalement conforme avec le référentiel général d'amélioration de l'accessibilité (RGAA)./Ce site est partiellement conforme avec le référentiel général d'amélioration de l'accessibilité (RGAA) en raison des non-conformités énumérées ci-dessous./Ce site n'est pas conforme avec le référentiel général d'amélioration de l'accessibilité (RGAA). Les contenus non accessibles sont énumérés ci-dessous.}"
+        },
+        {
+            "id": "what-to-do",
+            "title": "Contenus non accessibles",
+            "content": "Les contenus listés ci-dessous ne sont pas accessibles pour les raisons suivantes :\n\n[\n### Non-conformité avec le RGAA\n{<défauts>}\n]\n\n[Notre délai de réponse habituel est de {<svarstid>}.]\n\n[Vous pouvez également nous contacter des manières suivantes :\n\n* envoyer un e-mail à {<e-mailadresse>}\n* appeler le {<telefoonnummer>}]"
+        },
+        {
+            "id": "reporting",
+            "title": "Retour d'information et contact",
+            "content": "Nous nous efforçons d'améliorer constamment l'accessibilité de notre site. Si vous constatez un défaut de conformité, vous pouvez nous contacter pour nous en informer."
+        },
+        {
+            "id": "enforcement",
+            "title": "Voies de recours",
+            "content": "Le {<enforcement_body>} est responsable du contrôle de la conformité aux exigences d'accessibilité. Si vous ne recevez pas de réponse satisfaisante à votre signalement, vous pouvez contacter {<enforcement_body>}.\n\nVous pouvez également déposer une plainte auprès de {<enforcement_body>} si vous estimez que notre évaluation de la charge disproportionnée doit être revue, si vous constatez des défauts dans notre déclaration d'accessibilité ou si vous estimez que nous n'avons pas traité correctement votre demande de mise en accessibilité."
+        },
+        {
+            "id": "technical",
+            "title": "Informations techniques sur l'accessibilité du site",
+            "content": "{Ce site est totalement conforme./Ce site est partiellement conforme en raison des défauts décrits ci-dessous./Ce site n'est pas conforme.}"
+        },
+        {
+            "id": "testing",
+            "title": "Établissement de cette déclaration d'accessibilité",
+            "content": "{Nous avons réalisé une auto-évaluation (test interne) du site {<webbplats>}./Un {<tiers externe>} a réalisé un audit indépendant du site {<webbplats>}./Nous avons estimé l'accessibilité sans audit.}\n\nLa dernière évaluation a été réalisée le {<date_evaluation>}.\n\n[Méthode d'évaluation : {<méthode>}]\n\nLe site a été publié le {<date_publication>}.\n\nLa déclaration a été mise à jour pour la dernière fois le {<date_mise_a_jour>}."
+        }
+    ]
+}

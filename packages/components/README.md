@@ -106,16 +106,14 @@ function App() {
       />
 
       <AccessibilityStatement
-        country="SE"
-        sector="public"
+        country="NO"
         organizationName="HolmDigital"
         websiteUrl="https://holmdigital.se"
         complianceLevel="partial"
         lastReviewDate={new Date()}
         publishDate={new Date('2024-02-06')}
         contactEmail="hej@holmdigital.se"
-        badgeUrl="https://img.shields.io/badge/HolmDigital_Engine-100%25-00703C?style=flat-square"
-        locale="sv"
+        locale="no"
       />
       
       <Button variant="primary" type="submit">

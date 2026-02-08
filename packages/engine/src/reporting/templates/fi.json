@@ -1,0 +1,41 @@
+{
+    "title": "Saavutettavuusseloste: {<webbplats>}",
+    "intro": "{<organisation>} on tämän verkkosivuston ylläpitäjä. Haluamme, että mahdollisimman monet voivat käyttää sivustoa. Tässä asiakirjassa kuvataan, miten {<webbplats>} täyttää digitaalisten palvelujen tarjoamisesta annetun lain vaatimukset, mahdolliset tiedossa olevat saavutettavuusongelmat ja miten voit ilmoittaa meille puutteista, jotta voimme korjata ne.",
+    "sections": [
+        {
+            "id": "how-accessible",
+            "title": "Kuinka saavutettava verkkosivusto on?",
+            "content": "{Tämän verkkosivuston saavutettavuudessa ei ole tiedossa olevia puutteita./Olemme tietoisia siitä, että osat verkkosivustosta eivät ole täysin saavutettavia. Lisätietoja on jäljempänä osiossa saavutettavuusvaatimusten vastainen sisältö./Olemme tietoisia siitä, että osat verkkosivustosta eivät ole täysin saavutettavia. Lisätietoja on jäljempänä osiossa saavutettavuusvaatimusten vastainen sisältö.}"
+        },
+        {
+            "id": "what-to-do",
+            "title": "Mitä voit tehdä, jos et pysty käyttämään osia verkkosivustosta?",
+            "content": "Jos tarvitset sisältöä verkkosivustolta {<webbplats>}, joka ei ole sinulle saavutettavissa, mutta joka on jätetty lain soveltamisalan ulkopuolelle jäljempänä kuvatulla tavalla, voit ilmoittaa siitä meille.\n\n[Vastausaika on yleensä {<svarstid>}.]\n\n[Voit myös ottaa meihin yhteyttä seuraavilla tavoilla:\n\n* lähetä sähköpostia osoitteeseen {<e-mailosoite>}\n* soita numeroon {<puhelinnumero>}]"
+        },
+        {
+            "id": "reporting",
+            "title": "Anna palautetta saavutettavuuspuutteista",
+            "content": "Pyrimme jatkuvasti parantamaan verkkosivuston saavutettavuutta. Jos havaitset ongelmia, joita ei ole kuvattu tällä sivulla, tai jos katsot, ettemme täytä lain vaatimuksia, ilmoita siitä meille, jotta saamme tietää ongelmasta."
+        },
+        {
+            "id": "enforcement",
+            "title": "Täytäntöönpanomenettely",
+            "content": "{<enforcement_body>} vastaa digitaalisten palvelujen saavutettavuutta koskevan lain valvonnasta. Voit tehdä ilmoituksen {<enforcement_body>}lle, jos katsot, että digitaalisessa palvelussamme on saavutettavuuspuutteita.\n\nVoit myös tehdä ilmoituksen {<enforcement_body>}lle, jos katsot, että arviomme kohtuuttomasta rasitteesta on tarkistettava, jos katsot saavutettavuusselosteessamme olevan puutteita tai jos katsot, ettemme ole käsitelleet saavutettavuuspyyntöäsi oikein."
+        },
+        {
+            "id": "technical",
+            "title": "Teknistä tietoa verkkosivuston saavutettavuudesta",
+            "content": "{Tämä verkkosivusto on täysin digitaalisten palvelujen tarjoamisesta annetun lain mukainen./Tämä verkkosivusto on osittain digitaalisten palvelujen tarjoamisesta annetun lain mukainen jäljempänä mainittujen puutteiden vuoksi./Tämä verkkosivusto ei ole digitaalisten palvelujen tarjoamisesta annetun lain mukainen. Puutteelliset osat on kuvattu jäljempänä.}"
+        },
+        {
+            "id": "non-accessible",
+            "title": "Saavutettavuusvaatimusten vastainen sisältö",
+            "content": "Jäljempänä mainittu sisältö ei ole täysin saavutettavaa.\n\n[\n### Puutteet lain vaatimusten täyttämisessä\n{<puutteet>}\n]"
+        },
+        {
+            "id": "testing",
+            "title": "Kuinka olemme testanneet verkkosivuston",
+            "content": "{Olemme tehneet itsearvion (sisäinen testaus) verkkosivustolle {<webbplats>}./{<ulkoinen taho>} on tehnyt riippumattoman tarkastuksen verkkosivustolle {<webbplats>}./Olemme arvioineet saavutettavuuden ilman testausta.}\n\nViimeisin arviointi on tehty {<arviointipäivä>}.\n\n[Arviointimenetelmä: {<metodi>}]\n\nVerkkosivusto on julkaistu {<julkaisupäivä>}.\n\nSeloste on päivitetty viimeksi {<päivityspäivä>}."
+        }
+    ]
+}

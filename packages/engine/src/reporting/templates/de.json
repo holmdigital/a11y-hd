@@ -1,0 +1,36 @@
+{
+    "title": "Barrierefreiheitserklärung für {<webbplats>}",
+    "intro": "{<organisation>} ist bemüht, ihre Website im Einklang mit den nationalen Rechtsvorschriften zur Umsetzung der Richtlinie (EU) 2016/2102 des Europäischen Parlaments und des Rates barrierefrei zugänglich zu machen. Diese Erklärung zur Barrierefreiheit gilt für {<webbplats>}.",
+    "sections": [
+        {
+            "id": "how-accessible",
+            "title": "Stand der Vereinbarkeit mit den Anforderungen",
+            "content": "{Diese Website ist vollständig mit den Barrierefreiheitsanforderungen vereinbar./Diese Website ist wegen der folgenden Unvereinbarkeiten teilweise mit den Barrierefreiheitsanforderungen vereinbar./Diese Website ist nicht mit den Barrierefreiheitsanforderungen vereinbar. Die nicht barrierefreien Inhalte sind nachstehend aufgeführt.}"
+        },
+        {
+            "id": "what-to-do",
+            "title": "Nicht barrierefreie Inhalte",
+            "content": "Die nachstehend aufgeführten Inhalte sind aus den folgenden Gründen nicht barrierefrei:\n\n[\n### Unvereinbarkeit mit den Barrierefreiheitsanforderungen\n{<mängel>}\n]\n\n[Unsere normale Antwortzeit beträgt {<svarstid>}.]\n\n[Sie können uns auch wie folgt kontaktieren:\n\n* E-Mail an {<e-mailadresse>}\n* Telefon {<telefonnummer>}]"
+        },
+        {
+            "id": "reporting",
+            "title": "Feedback und Kontaktangaben",
+            "content": "Wir bemühen uns, die Barrierefreiheit unserer Website stetig zu verbessern. Wenn Sie Mängel bei der Einhaltung der Barrierefreiheitsanforderungen feststellen oder Informationen über von der Richtlinie ausgenommene Inhalte benötigen, können Sie uns kontaktieren."
+        },
+        {
+            "id": "enforcement",
+            "title": "Durchsetzungsverfahren",
+            "content": "Die {<enforcement_body>} ist für die Überwachung der Barrierefreiheitsanforderungen zuständig. Wenn Sie auf unsere Benachrichtigungen oder Anfragen keine zufriedenstellende Antwort erhalten haben, können Sie sich an {<enforcement_body>} wenden.\n\nSie können auch eine Beschwerde bei {<enforcement_body>} einreichen, wenn Sie der Meinung sind, dass unsere Einschätzung einer unverhältnismäßigen Belastung überprüft werden sollte, wenn Sie Mängel in unserer Barrierefreiheitserklärung feststellen oder wenn Sie der Meinung sind, dass wir Ihren Antrag auf barrierefreie Bereitstellung von Inhalten nicht korrekt bearbeitet haben."
+        },
+        {
+            "id": "technical",
+            "title": "Technische Informationen zur Barrierefreiheit der Website",
+            "content": "{Diese Website ist vollständig mit den Barrierefreiheitsanforderungen vereinbar./Diese Website ist wegen der folgenden Unvereinbarkeiten teilweise mit den Barrierefreiheitsanforderungen vereinbar./Diese Website ist nicht mit den Barrierefreiheitsanforderungen vereinbar.}"
+        },
+        {
+            "id": "testing",
+            "title": "Erstellung dieser Erklärung zur Barrierefreiheit",
+            "content": "{Wir haben eine Selbstbewertung (interner Test) der Website {<webbplats>} durchgeführt./Ein {<externer Dritter>} hat eine unabhängige Prüfung der Website {<webbplats>} durchgeführt./Wir haben die Barrierefreiheit ohne Prüfung geschätzt.}\n\nDie letzte Bewertung wurde am {<bewertungsdatum>} vorgenommen.\n\n[Bewertungsmethode: {<methode>}]\n\nDie Website wurde am {<veröffentlichungsdatum>} veröffentlicht.\n\nDie Erklärung wurde zuletzt am {<aktualisierungsdatum>} aktualisiert."
+        }
+    ]
+}

@@ -41,7 +41,7 @@ npm install @holmdigital/standards
 - **Risk Assessment**: DIGG-aligned risk levels (`critical`, `high`, `medium`, `low`).
 - **Remediation**: Maps issues to `@holmdigital/components` for fixing.
 - **EU Legal Frameworks**: WAD (public sector) and EAA (private sector) compliance data.
-- **Nordic Authorities**: Regulatory body information for SE, NO, DK, FI.
+- **Nordic Authorities & Enforcement**: Shared database of regulatory bodies (`ENFORCEMENT_BODIES`) for SE, NO, DK, FI, and the broader EU.
 
 ## Usage
 

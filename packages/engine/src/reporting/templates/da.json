@@ -1,0 +1,41 @@
+{
+    "title": "Tilgængelighed for {<webbplats>}",
+    "intro": "{<organisation>} står bag dette websted. Vi ønsker, at så mange som muligt skal kunne bruge det. Dette dokument beskriver, hvordan {<webbplats>} overholder loven om webtilgængelighed, eventuelle kendte tilgængelighedsproblemer, og hvordan du kan rapportere mangler til os, så vi kan udbedre dem.",
+    "sections": [
+        {
+            "id": "how-accessible",
+            "title": "Hvor tilgængeligt er webstedet?",
+            "content": "{Vi har ingen kendte mangler i tilgængeligheden for dette websted./Vi er opmærksomme på, at dele af webstedet ikke er helt tilgængelige. Se afsnittet om indhold, der ikke er tilgængeligt nedenfor for mere information./Vi er opmærksomme på, at dele af webstedet ikke er helt tilgængelige. Se afsnittet om indhold, der ikke er tilgængeligt nedenfor for mer information.}"
+        },
+        {
+            "id": "what-to-do",
+            "title": "Hvad kan du gøre, hvis du ikke kan bruge dele af webstedet?",
+            "content": "Hvis du har brug for indhold fra {<webbplats>}, som ikke er tilgængeligt for dig, men som er undtaget fra lovens område som beskrevet nedenfor, kan du meddele os det.\n\n[Svartiden er normalt {<svartid>}.]\n\n[Du kan også kontakte os på følgende måder:\n\n* send e-mail til {<e-mailadresse>}\n* ring {<telefonnummer>}]"
+        },
+        {
+            "id": "reporting",
+            "title": "Rapporter mangler i webstedets tilgængelighed",
+            "content": "Vi stræber hele tiden efter at forbedre webstedets tilgængelighed. Hvis du opdager problemer, der ikke er beskrevet på denne side, eller hvis du mener, at vi ikke overholder lovens krav, skal du give os besked, så vi ved, at problemet eksisterer."
+        },
+        {
+            "id": "enforcement",
+            "title": "Håndhævelsesprocedure",
+            "content": "{<enforcement_body>} har ansvaret for tilsyn med loven om webtilgængelighed. Du kan klage til {<enforcement_body>}, hvis du mener, at vores digitale service har mangler i tilgængeligheden.\n\nDu kan også klage til {<enforcement_body>}, hvis du mener, at vores vurdering af, hvad der er en uforholdsmæssig stor byrde, skal gennemgås, hvis du mener, at vores tilgængelighedserklæring har mangler, eller hvis du mener, at vi ikke har håndteret din anmodning om tilgængeliggørelse korrekt."
+        },
+        {
+            "id": "technical",
+            "title": "Teknisk information om webstedets tilgængelighed",
+            "content": "{Dette websted er fuldt ud i overensstemmelse med loven om webtilgængelighed./Dette websted er delvist i overensstemmelse med loven om webtilgængelighed på grund af de mangler, der er beskrevet nedenfor./Dette websted er ikke i overensstemmelse med loven om webtilgængelighed. Utilgængelige dele er beskrevet nedenfor.}"
+        },
+        {
+            "id": "non-accessible",
+            "title": "Indhold, der ikke er tilgængeligt",
+            "content": "Det indhold, der er beskrevet nedenfor, er på den ene eller anden måde ikke helt tilgængeligt.\n\n[\n### Manglende overholdelse af lovkravene\n{<mangler>}\n]"
+        },
+        {
+            "id": "testing",
+            "title": "Hvordan vi har testet webstedet",
+            "content": "{Vi har foretaget en selvvurdering (intern test) af {<webbplats>}./{<ekstern aktør>} har foretaget en uafhængig gennemgang af {<webbplats>}./Vi har anslået tilgængeligheden uden test.}\n\nDen seneste vurdering blev foretaget den {<vurderingsdato>}.\n\n[Vurderingsmetode: {<metode>}]\n\nWebstedet blev offentliggjort den {<offentliggørelsesdato>}.\n\nErklæringen blev senest opdateret den {<opdateringsdato>}."
+        }
+    ]
+}

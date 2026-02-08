@@ -339,7 +339,7 @@ program
             if (options.junit) {
                 const { generateJUnitXML } = await import('../reporting/junit-generator');
                 const fs = await import('fs/promises');
-                const xml = generateJUnitXML(result.reports, url, result.metadata.scanDuration);
+                const xml = generateJUnitXML(result);
                 await fs.writeFile(options.junit, xml);
                 if (spinner) spinner.succeed(t('cli.junit_saved', { path: options.junit }));
                 else if (!options.json) console.log(chalk.green(`✓ JUnit report saved to ${options.junit}`));

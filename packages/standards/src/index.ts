@@ -23,6 +23,22 @@ import nordicAuthoritiesData from '../data/legal/nordic-authorities.json';
 import statementToolsData from '../data/legal/statement-tools.json';
 import nationalLawsData from '../data/legal/national-laws.json';
 
+export const ENFORCEMENT_BODIES: Record<Country, string> = {
+    SE: 'Myndigheten för digital förvaltning (Digg)',
+    NO: 'Digitaliseringsdirektoratet (uutilsynet)',
+    DK: 'Digitaliseringsstyrelsen',
+    FI: 'Regionförvaltningsverket i Södra Finland (AVI)',
+    NL: 'Ministerie van Binnenlandse Zaken en Koninkrijksrelaties (BZK)',
+    DE: 'BFIT-Bund (Überwachungsstelle des Bundes für Barrierefreiheit von Informationstechnik)',
+    FR: 'Direction interministérielle du numérique (DINUM)',
+    ES: 'Ministerio para la Transformación Digital y de la Función Pública',
+    IE: 'National Disability Authority (NDA)',
+    GB: 'Equality and Human Rights Commission (EHRC)',
+    US: 'Department of Justice (Civil Rights Division)',
+    CA: 'Accessibility Commissioner (Canadian Human Rights Commission)',
+    EU: 'Europeiska kommissionen (DG CNECT)'
+};
+
 import type {
     ConvergenceRule,
     EN301549Mapping,

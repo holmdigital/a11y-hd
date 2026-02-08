@@ -1,0 +1,41 @@
+{
+    "title": "Tilgjengelighet for {<nettsted>}",
+    "intro": "{<organisasjon>} står bak dette nettstedet. Vi ønsker at flest mulig skal kunne bruke det. Dette dokumentet beskriver hvordan {<nettsted>} oppfyller lov om universell utforming av IKT-løsninger, eventuelle kjente tilgjengelighetsproblemer og hvordan du kan rapportere mangler til oss slik at vi kan utbedre dem.",
+    "sections": [
+        {
+            "id": "how-accessible",
+            "title": "Hvor tilgjengelig er nettstedet?",
+            "content": "{Vi har ingen kjente mangler i tilgjengeligheten for dette nettstedet./Vi er klar over at deler av nettstedet ikke er fullt ut tilgjengelig. Se avsnittet om innhold som ikke er tilgjengelig nedenfor for mer informasjon./Vi er klar over at deler av nettstedet ikke er fullt ut tilgjengelig. Se avsnittet om innhold som ikke er tilgjengelig nedenfor for mer informasjon.}"
+        },
+        {
+            "id": "what-to-do",
+            "title": "Hva kan du gjøre hvis du ikke kan bruke deler av nettstedet?",
+            "content": "Hvis du trenger innhold fra {<nettsted>} som ikke er tilgjengelig for deg, men som er unntatt fra lovens anvendelsesområde som beskrevet nedenfor, kan du melde fra til oss.\n\n[Svartiden er normalt {<svartid>}.]\n\n[Du kan også kontakte oss på følgende måter:\n\n* send e-post til {<e-postadresse>}\n* ring {<telefonnummer>}]"
+        },
+        {
+            "id": "reporting",
+            "title": "Rapporter mangler ved nettstedets tilgjengelighet",
+            "content": "Vi jobber kontinuerlig med å forbedre nettstedets tilgjengelighet. Hvis du oppdager problemer som ikke er beskrevet på denne siden, eller hvis du mener at vi ikke oppfyller lovens krav, meld fra til oss slik at vi får vite om problemet."
+        },
+        {
+            "id": "enforcement",
+            "title": "Tilsyn",
+            "content": "{<enforcement_body>} har ansvaret for tilsyn med lov om universell utforming av IKT-løsninger. Du kan klage til {<enforcement_body>} hvis du mener at vår digitale tjeneste har mangler i tilgjengelighet.\n\nDu kan også klage til {<enforcement_body>} hvis du mener at vår vurdering av hva som er uforholdsmessig byrdefullt bør overproves, hvis du mener at vår tilgjengelighetserklæring har mangler eller hvis du mener at vi ikke har håndtert din forespørsel om tilgjengeliggjøring korrekt."
+        },
+        {
+            "id": "technical",
+            "title": "Teknisk informasjon om nettstedets tilgjengelighet",
+            "content": "{Dette nettstedet er helt i samsvar med lov om universell utforming av IKT-løsninger./Dette nettstedet er delvis i samsvar med lov om universell utforming av IKT-løsninger, på grunn av manglene beskrevet nedenfor./Dette nettstedet er ikke i samsvar med lov om universell utforming av IKT-løsninger. Utilgjengelige deler er beskrevet nedenfor.}"
+        },
+        {
+            "id": "non-accessible",
+            "title": "Innhold som ikke er tilgjengelig",
+            "content": "Innholdet som er beskrevet nedenfor er på en eller annen måte ikke fullt ut tilgjengelig.\n\n[\n### Manglende samsvar med lovkravene\n{<mangler>}\n]"
+        },
+        {
+            "id": "testing",
+            "title": "Hvordan vi har testet nettstedet",
+            "content": "{Vi har gjort en egenevaluering (intern testing) av {<nettsted>}./{<ekstern aktor>} har gjort en uavhengig revisjon av {<nettsted>}./Vi har anslått tilgjengeligheten uten testing.}\n\nSiste vurdering ble gjort den {<vurderingsdato>}.\n\n[Vurderingsmetode: {<metode>}]\n\nNettstedet ble publisert den {<publiseringsdato>}.\n\nErklæringen ble sist oppdatert den {<oppdateringsdato>}."
+        }
+    ]
+}

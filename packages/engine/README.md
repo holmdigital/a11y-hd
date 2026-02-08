@@ -23,11 +23,11 @@ For a comprehensive guide on CLI flags, CI/CD integration, and configuration fil
 
 - **Regulatory Mapping**: Maps technical failures to EU laws (EN 301 549, EAA).
 - **HTML Structure Validation**: Built-in `html-validate` checks to prevent false positives/negatives.
-- **Internationalization (i18n)**: Supports English (`en`), Swedish (`sv`), Norwegian (`no`), Finnish (`fi`), Danish (`da`), German (`de`), French (`fr`), Spanish (`es`), and Dutch (`nl`).
-- **Premium V2 Accessibility Statement**: Generates modern, glassmorphism-styled statements compliant with Digg & EU templates.
+- **Internationalization (i18n)**: Comprehensive support for 9 languages: English (`en`), Swedish (`sv`), Norwegian (`no`), Finnish (`fi`), Danish (`da`), German (`de`), French (`fr`), Spanish (`es`), and Dutch (`nl`).
+- **Template-Driven Accessibility Statements**: Generates modern, glassmorphism-styled statements using externalized JSON templates for each language, allowing for professional legal phrasing and deep customization.
 - **Multi-Company Metadata**: Easily customize statements via CLI flags or `.a11yrc` for scalable client generation.
+- **Enriched JUnit XML**: Professional CI/CD reports including scan duration, page title, engine metadata, and **detailed failing node** snippets (Target + HTML).
 - **Configurable Severity Threshold**: Fail CI only on critical/high issues (configurable).
-- **Rich Metadata**: Includes scan duration, page title, language, and version info.
 - **Pseudo-Automation**: Automatically generates Playwright/Puppeteer test scripts for manual verification steps.
 - **PDF Reporting**: Generates beautiful, compliant PDF reports with severity-sorted violations, HTML error counts, and `@HolmDigital/engine` branding.
 - **TypeScript**: Written in TypeScript with full type definitions included.

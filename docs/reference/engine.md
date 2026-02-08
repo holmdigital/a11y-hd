@@ -25,7 +25,7 @@ hd-a11y-scan <url> [options]
 
 | Option | Description | Example |
 |--------|-------------|---------|
-| `--lang <code>` | Set the language for the report (default: `en`). Supports `sv`, `no`, `fi`, `da` etc. | `--lang sv` |
+| `--lang <code>` | Set the language for the report (default: `en`). Supports `en`, `sv`, `no`, `fi`, `da`, `nl`, `de`, `fr`, `es`. | `--lang sv` |
 | `--ci` | **CI Mode**: Exits with code 1 if critical issues are found. | `--ci` |
 | `--threshold <level>` | Minimum severity to report. Values: `critical`, `high`, `medium`, `low`. | `--threshold critical` |
 | `--viewport <size>` | Set screen size. Presets: `mobile`, `desktop`, `tablet` or custom `WxH`. | `--viewport mobile` |
@@ -120,7 +120,10 @@ a11y-check:
 Full details of every violation, including DOM nodes, remediation suggestions, and WCAG references.
 
 ### 2. JUnit (CI Dashboards)
-Standard XML format supported by GitHub, GitLab, Jenkins, and Azure DevOps to visualize test results.
+Standard XML format supported by GitHub, GitLab, Jenkins, and Azure DevOps. **Recently enhanced** to include:
+- **Metadata Properties**: Engine version, AXE version, and page metadata are injected as `<property>` tags.
+- **Success State Tracking**: Shows all passed rules to provide a balanced health overview.
+- **Detailed failure snippets**: Each failure includes a `<system-out>` block with the specific CSS selector and HTML source of the violation.
 
 ### 3. PDF (Human Readable)
 A beautiful, shareable document for stakeholders. Contains:
@@ -132,8 +135,10 @@ A beautiful, shareable document for stakeholders. Contains:
 
 ## 🧠 Smart Features
 
-### Pseudo-Automation (`--generate-tests`)
-When the engine finds a complex error (e.g. "Focus trap in modal"), it can try to generate a Puppeteer script that reproduces user interaction leading to that state. This helps developers debug "invisible" accessibility issues.
+### Template-Driven Reports
+Accessibility statements are generated using professionalized JSON templates located in `packages/engine/src/reporting/templates/`. These templates support:
+- **Conditional Text**: Blocks like `[contact phone: {<phone>}]` only render if data is provided.
+- **Compliance Choices**: Text blocks that vary based on the scan result (e.g., `{Compliant/Partial/Non-Compliant}`).
 
 ### Cloud Integration
-If you have a HolmDigital Cloud account, use `--api-key` to upload results for historical tracking and trend analysis over time.
+If you have a HolmDigital Cloud account, use `--api-key` to upload results for historical tracking and trend analysis over time. All data is securely hosted at `holmdigital.se`.

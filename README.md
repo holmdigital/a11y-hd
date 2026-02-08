@@ -5,7 +5,7 @@ A professional accessibility ecosystem bridging the gap between technical code v
 
 ## 🎯 Value Proposition
 
-- **Regulatory Mapping**: Automatically maps WCAG failures to EN 301 549 and national laws:
+- **Multi-Language Regulatory Mapping**: Automatically maps WCAG failures to EN 301 549 and national laws across **9 European languages**:
     - 🇸🇪 **DOS-lagen** (Sweden)
     - 🇫🇮 **Laki digitaalisten palvelujen saavutettavuudesta** (Finland)
     - 🇳🇴 **Forskrift om universell utforming av IKT** (Norway)
@@ -14,15 +14,10 @@ A professional accessibility ecosystem bridging the gap between technical code v
     - 🇩🇪 **BITV 2.0** (Germany)
     - 🇫🇷 **RGAA** (France)
     - 🇪🇸 **UNE 139803** (Spain)
-    - 🇮🇪 **S.I. No. 358/2020** (Ireland)
-    - 🇬🇧 **PSBAR** (UK)
-    - 🇺🇸 **Section 508 / ADA** (USA)
-    - 🇨🇦 **AODA** (Canada)
-- **Risk Assessment**: Classifies every violation based on regulatory enforcement practices (e.g., DIGG, Logius).
-- **Prescriptive Design**: Provides concrete component-based solutions, not just error descriptions.
-- **Global Compliance**: Built-in support for multiple languages and national regulations.
-- **CI/CD Integration**: Automatically breaks builds on critical regulatory violations.
-- **Premium Accessibility Statements**: Generates modern, glassmorphism-styled statements compliant with WAD/EAA and national templates (e.g., Digg).
+    - 🇬🇧 **PSBAR** / 🇮🇪 **S.I. No. 358/2020** (UK/Ireland)
+- **Risk Assessment**: Classifies every violation based on regulatory enforcement practices (e.g., DIGG, uutilsynet, Logius).
+- **Professional CI/CD Reporting**: Enhanced JUnit XML reports with full metadata, success counts, and detailed failure snippets for seamless integration with modern DevOps dashboards.
+- **Template-Driven Statements**: Generates modern, glassmorphism-styled accessibility statements using professionalized JSON templates for deep localization.
 
 ## 📚 Documentation & Guides
 

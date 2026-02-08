@@ -12,14 +12,13 @@ function MyPage() {
     <AccessibilityStatement
       country="SE"
       sector="public"
-      organizationName="Exempelkommun"
-      websiteUrl="https://exempel.se"
+      organizationName="HolmDigital"
+      websiteUrl="https://holmdigital.se"
       complianceLevel="partial"
-      lastReviewDate={new Date('2026-01-15')}
-      contactEmail="tillganglighet@exempel.se"
+      lastReviewDate={new Date('2026-02-08')}
+      contactEmail="hej@holmdigital.se"
       locale="sv"
       publishDate={new Date('2024-02-06')}
-      badgeUrl="https://img.shields.io/badge/HolmDigital_Engine-100%25-00703C?style=flat-square"
     />
   );
 }
@@ -116,22 +115,22 @@ The component automatically includes:
 - ⚠️ EAA deadline: June 28, 2025
 - 💶 Sanctions up to 500,000 EUR
 
+## Template-Driven Architecture
+
+Since version 2.0.0, the accessibility statement system uses **externalized JSON templates**. This allows for:
+- **Legal Precision**: Each language uses professional legal phrasing specific to its region.
+- **Easy Customization**: You can override templates by placing custom JSON files in your project.
+- **9 Support Languages**: Full professional templates for EN, SV, NO, DA, FI, NL, DE, FR, and ES.
+
+### How it works
+The `@holmdigital/engine` automatically selects the correct template based on your provided `locale`. It handles substitution of placeholders like `{<website>}`, `{<organisation>}`, and enforcement body names automatically.
+
 ## Styling & Premium V2
 
-Since version 1.4.0, the component defaults to the **Premium V2** design, which includes:
-- **Glassmorphism Cards**: Sections are grouped into modern translucent cards.
-- **Embedded Icons**: Automatic Lucide-style SVG icons for scannability.
-- **Micro-animations**: Subtle interactions for a premium feel.
-
-Override styles with `className` or use theme tokens:
-
-```tsx
-<AccessibilityStatement
-  className="my-custom-statement"
-  logoUrl="data:image/png;base64,..."
-  // ...other props
-/>
-```
+The component uses a **Premium V2** design with:
+- **Glassmorphism Cards**: Modern translucent cards for section grouping.
+- **Dynamic Icons**: Icons are automatically mapped based on Section IDs in all support languages.
+- **Micro-animations**: Smooth transitions for an interactive feel.
 
 ## Official Statement Tools
 
