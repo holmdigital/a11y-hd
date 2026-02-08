@@ -30,20 +30,46 @@ export async function generateStatementContent(
 ): Promise<string> {
     // 0. Load Template
     let template: any;
-    try {
-        const templatePath = path.join(__dirname, 'templates', `${lang}.json`);
-        const templateData = await fs.readFile(templatePath, 'utf-8');
-        template = JSON.parse(templateData);
-    } catch (e) {
-        // Fallback to en if lang not found
+    const possibleTemplatePaths = [
+        path.join(__dirname, 'templates', `${lang}.json`),
+        path.join(__dirname, '../src/reporting/templates', `${lang}.json`),
+        path.join(process.cwd(), 'packages/engine/src/reporting/templates', `${lang}.json`)
+    ];
+
+    let loaded = false;
+    for (const p of possibleTemplatePaths) {
         try {
-            const fallbackPath = path.join(__dirname, 'templates', 'en.json');
-            const templateData = await fs.readFile(fallbackPath, 'utf-8');
-            template = JSON.parse(templateData);
-        } catch (err) {
-            console.error('Could not load accessibility statement templates', err);
-            throw new Error('Accessibility statement templates missing');
+            const data = await fs.readFile(p, 'utf-8');
+            template = JSON.parse(data);
+            loaded = true;
+            break;
+        } catch (e) {
+            continue;
         }
+    }
+
+    if (!loaded) {
+        // Fallback to en
+        const fallbackPaths = [
+            path.join(__dirname, 'templates', 'en.json'),
+            path.join(__dirname, '../src/reporting/templates', 'en.json'),
+            path.join(process.cwd(), 'packages/engine/src/reporting/templates', 'en.json')
+        ];
+
+        for (const p of fallbackPaths) {
+            try {
+                const data = await fs.readFile(p, 'utf-8');
+                template = JSON.parse(data);
+                loaded = true;
+                break;
+            } catch (e) {
+                continue;
+            }
+        }
+    }
+
+    if (!loaded) {
+        throw new Error(`Accessibility statement templates missing. Looked in: ${possibleTemplatePaths.join(', ')}`);
     }
 
     // 1. Determine compliance level
