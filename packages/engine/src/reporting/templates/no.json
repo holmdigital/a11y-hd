@@ -28,9 +28,7 @@
             "content": "{Dette nettstedet er helt i samsvar med lov om universell utforming av IKT-løsninger./Dette nettstedet er delvis i samsvar med lov om universell utforming av IKT-løsninger, på grunn av manglene beskrevet nedenfor./Dette nettstedet er ikke i samsvar med lov om universell utforming av IKT-løsninger. Utilgjengelige deler er beskrevet nedenfor.}"
         },
         {
-            "id": "non-accessible",
-            "title": "Innhold som ikke er tilgjengelig",
-            "content": "Innholdet som er beskrevet nedenfor er på en eller annen måte ikke fullt ut tilgjengelig.\n\n[\n### Manglende samsvar med lovkravene\n{<mangler>}\n]"
+            "content": "Innholdet som er beskrevet nedenfor er på en eller annen måte ikke fullt ut tilgjengelig.\n\n[\n**Manglende samsvar med lovkravene**\n\n{<mangler>}\n]"
         },
         {
             "id": "testing",

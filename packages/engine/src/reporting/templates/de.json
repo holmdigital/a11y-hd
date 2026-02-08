@@ -10,7 +10,7 @@
         {
             "id": "what-to-do",
             "title": "Nicht barrierefreie Inhalte",
-            "content": "Die nachstehend aufgeführten Inhalte sind aus den folgenden Gründen nicht barrierefrei:\n\n[\n### Unvereinbarkeit mit den Barrierefreiheitsanforderungen\n{<mängel>}\n]\n\n[Unsere normale Antwortzeit beträgt {<svarstid>}.]\n\n[Sie können uns auch wie folgt kontaktieren:\n\n* E-Mail an {<e-mailadresse>}\n* Telefon {<telefonnummer>}]"
+            "content": "Die nachstehend aufgeführten Inhalte sind aus den folgenden Gründen nicht barrierefrei:\n\n[\n**Unvereinbarkeit mit den Barrierefreiheitsanforderungen**\n\n{<mängel>}\n]\n\n[Unsere normale Antwortzeit beträgt {<svarstid>}.]\n\n[Sie können uns auch wie folgt kontaktieren:\n\n* E-Mail an {<e-mailadresse>}\n* Telefon {<telefonnummer>}]"
         },
         {
             "id": "reporting",

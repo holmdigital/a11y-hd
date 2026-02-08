@@ -10,7 +10,7 @@
         {
             "id": "what-to-do",
             "title": "Contenido no accesible",
-            "content": "El contenido que se recoge a continuación no es accesible por los siguientes motivos:\n\n[\n### Falta de conformidad con el estándar\n{<deficiencias>}\n]\n\n[Nuestro tiempo de respuesta normal es de {<svarstid>}.]\n\n[También puede contactar con nosotros de las siguientes maneras:\n\n* enviar un correo electrónico a {<e-mailadresse>}\n* llamar al {<telefoonnummer>}]"
+            "content": "El contenido que se recoge a continuación no es accesible por los siguientes motivos:\n\n[\n**Falta de conformidad con el estándar**\n\n{<deficiencias>}\n]\n\n[Nuestro tiempo de respuesta normal es de {<svarstid>}.]\n\n[También puede contactar con nosotros de las siguientes maneras:\n\n* enviar un correo electrónico a {<e-mailadresse>}\n* llamar al {<telefoonnummer>}]"
         },
         {
             "id": "reporting",

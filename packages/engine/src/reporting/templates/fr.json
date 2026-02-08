@@ -10,7 +10,7 @@
         {
             "id": "what-to-do",
             "title": "Contenus non accessibles",
-            "content": "Les contenus listés ci-dessous ne sont pas accessibles pour les raisons suivantes :\n\n[\n### Non-conformité avec le RGAA\n{<défauts>}\n]\n\n[Notre délai de réponse habituel est de {<svarstid>}.]\n\n[Vous pouvez également nous contacter des manières suivantes :\n\n* envoyer un e-mail à {<e-mailadresse>}\n* appeler le {<telefoonnummer>}]"
+            "content": "Les contenus listés ci-dessous ne sont pas accessibles pour les raisons suivantes :\n\n[\n**Non-conformité avec le RGAA**\n\n{<défauts>}\n]\n\n[Notre délai de réponse habituel est de {<svarstid>}.]\n\n[Vous pouvez également nous contacter des manières suivantes :\n\n* envoyer un e-mail à {<e-mailadresse>}\n* appeler le {<telefoonnummer>}]"
         },
         {
             "id": "reporting",

@@ -28,9 +28,7 @@
             "content": "{This website is fully compliant with the accessibility regulations./This website is partially compliant with the accessibility regulations, due to the non-compliances listed below./This website is not compliant with the accessibility regulations. The non-accessible sections are listed below.}"
         },
         {
-            "id": "non-accessible",
-            "title": "Non-accessible content",
-            "content": "The content described below is, in one way or another, not fully accessible.\n\n[\n### Non-compliance with the accessibility regulations\n\n{<issues>}\n]"
+            "content": "The content described below is, in one way or another, not fully accessible.\n\n[\n**Non-compliance with the accessibility regulations**\n\n{<issues>}\n]"
         },
         {
             "id": "testing",

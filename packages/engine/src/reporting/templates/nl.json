@@ -28,9 +28,7 @@
             "content": "{Deze website is volledig in overeenstemming met de wet digitale toegankelijkheid overheid./Deze website is gedeeltelijk in overeenstemming met de wet digitale toegankelijkheid overheid, vanwege de hieronder beschreven gebreken./Deze website is niet in overeenstemming met de wet digitale toegankelijkheid overheid. De niet-toegankelijke delen worden hieronder beschreven.}"
         },
         {
-            "id": "non-accessible",
-            "title": "Inhoud die niet toegankelijk is",
-            "content": "De hieronder beschreven inhoud is op de een of andere manier niet volledig toegankelijk.\n\n[\n### Niet-naleving van de wettelijke eisen\n{<gebreken>}\n]"
+            "content": "De hieronder beschreven inhoud is op de een of andere manier niet volledig toegankelijk.\n\n[\n**Niet-naleving van de wettelijke eisen**\n\n{<gebreken>}\n]"
         },
         {
             "id": "testing",

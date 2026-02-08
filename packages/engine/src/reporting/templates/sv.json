@@ -28,9 +28,7 @@
             "content": "{Den här webbplatsen är helt förenlig med lagen om tillgänglighet till digital offentlig service./Den här webbplatsen är delvis förenlig med lagen om tillgänglighet till digital offentlig service, på grund av de brister som beskrivs nedan./Den här webbplatsen är inte förenlig med lagen om tillgänglighet till digital offentlig service. Otillgängliga delar beskrivs nedan.}"
         },
         {
-            "id": "non-accessible",
-            "title": "Innehåll som inte är tillgängligt",
-            "content": "Det innehåll som beskrivs nedan är på ett eller annat sätt inte helt tillgängligt.\n\n[\n### Bristande förenlighet med lagkraven\n{<brister>}\n]"
+            "content": "Det innehåll som beskrivs nedan är på ett eller annat sätt inte helt tillgängligt.\n\n[\n**Bristande förenlighet med lagkraven**\n\n{<brister>}\n]"
         },
         {
             "id": "testing",

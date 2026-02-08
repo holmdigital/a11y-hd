@@ -28,9 +28,7 @@
             "content": "{Dette websted er fuldt ud i overensstemmelse med loven om webtilgængelighed./Dette websted er delvist i overensstemmelse med loven om webtilgængelighed på grund af de mangler, der er beskrevet nedenfor./Dette websted er ikke i overensstemmelse med loven om webtilgængelighed. Utilgængelige dele er beskrevet nedenfor.}"
         },
         {
-            "id": "non-accessible",
-            "title": "Indhold, der ikke er tilgængeligt",
-            "content": "Det indhold, der er beskrevet nedenfor, er på den ene eller anden måde ikke helt tilgængeligt.\n\n[\n### Manglende overholdelse af lovkravene\n{<mangler>}\n]"
+            "content": "Det indhold, der er beskrevet nedenfor, er på den ene eller anden måde ikke helt tilgængeligt.\n\n[\n**Manglende overholdelse af lovkravene**\n\n{<mangler>}\n]"
         },
         {
             "id": "testing",

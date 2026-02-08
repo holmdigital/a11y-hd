@@ -28,9 +28,7 @@
             "content": "{Tämä verkkosivusto on täysin digitaalisten palvelujen tarjoamisesta annetun lain mukainen./Tämä verkkosivusto on osittain digitaalisten palvelujen tarjoamisesta annetun lain mukainen jäljempänä mainittujen puutteiden vuoksi./Tämä verkkosivusto ei ole digitaalisten palvelujen tarjoamisesta annetun lain mukainen. Puutteelliset osat on kuvattu jäljempänä.}"
         },
         {
-            "id": "non-accessible",
-            "title": "Saavutettavuusvaatimusten vastainen sisältö",
-            "content": "Jäljempänä mainittu sisältö ei ole täysin saavutettavaa.\n\n[\n### Puutteet lain vaatimusten täyttämisessä\n{<puutteet>}\n]"
+            "content": "Jäljempänä mainittu sisältö ei ole täysin saavutettavaa.\n\n[\n**Puutteet lain vaatimusten täyttämisessä**\n\n{<puutteet>}\n]"
         },
         {
             "id": "testing",
