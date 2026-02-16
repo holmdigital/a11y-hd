@@ -9,6 +9,37 @@ import type { RegulatoryReport } from '@holmdigital/standards';
 import { VirtualDOMBuilder } from './virtual-dom';
 import { HtmlValidator, ValidationResult } from './html-validator';
 
+// Read version from package.json at module level
+// Using dynamic import kept as sync via top-level require (tsup handles CJS/ESM compat)
+import { readFileSync } from 'node:fs';
+import { resolve, dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+function getEngineVersion(): string {
+    try {
+        // Works in both CJS (__dirname) and ESM (import.meta.url) bundles
+        const dir = typeof __dirname !== 'undefined'
+            ? __dirname
+            : dirname(fileURLToPath(import.meta.url));
+        const pkgPath = resolve(dir, '..', 'package.json');
+        const pkg = JSON.parse(readFileSync(pkgPath, 'utf-8'));
+        return pkg.version;
+    } catch {
+        return '2.1.1'; // Fallback
+    }
+}
+
+function getStandardsVersion(): string {
+    try {
+        // Try to find @holmdigital/standards package.json via require.resolve
+        const stdPath = require.resolve('@holmdigital/standards/package.json');
+        const pkg = JSON.parse(readFileSync(stdPath, 'utf-8'));
+        return pkg.version;
+    } catch {
+        return 'unknown';
+    }
+}
+
 export interface ScannerOptions {
     url: string;
     headless?: boolean;
@@ -320,12 +351,11 @@ export class RegulatoryScanner {
                 break;
         }
 
-        // Get version info
-        // const axeCore = require('axe-core'); // Replaced by import
+        // Get version info dynamically from package.json
         const metadata: ScanMetadata = {
-            engineVersion: '1.4.7',
+            engineVersion: getEngineVersion(),
             axeCoreVersion: axeCore.version || '4.10.2',
-            standardsVersion: '1.2.2',
+            standardsVersion: getStandardsVersion(),
             scanDuration,
             pageTitle,
             pageLanguage
