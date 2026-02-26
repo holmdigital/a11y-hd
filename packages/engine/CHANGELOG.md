@@ -1,5 +1,13 @@
 # @holmdigital/engine
 
+## 2.1.3
+
+### Patch Changes
+
+- Fix three known bugs: cloud client now sends correct engine version from package.json instead of hardcoded '1.4.4', CLI --version reports actual version instead of '0.1.0', and AccessibilityStatement component now correctly renders Norwegian (no/nb) locale templates instead of falling back to English.
+- Updated dependencies
+  - @holmdigital/components@2.1.1
+
 ## 2.1.2
 
 ### Patch Changes

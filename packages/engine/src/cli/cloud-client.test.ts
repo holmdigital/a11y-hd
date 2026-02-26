@@ -4,6 +4,7 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { transformToCloudPayload, sendToCloud, CloudConfig } from './cloud-client';
 import type { ScanResult } from '../core/regulatory-scanner';
+import { getEngineVersion } from '../core/regulatory-scanner';
 
 // Mock fetch globally
 const mockFetch = vi.fn();
@@ -74,7 +75,7 @@ describe('cloud-client', () => {
             expect(payload.total_violations).toBe(1);
             expect(payload.serious_count).toBe(1);
             expect(payload.critical_count).toBe(0);
-            expect(payload.engine_version).toBe('1.4.4');
+            expect(payload.engine_version).toBe(getEngineVersion());
             expect(payload.violations).toHaveLength(1);
             expect(payload.violations[0].rule_id).toBe('color-contrast');
             expect(payload.violations[0].element_selector).toBe('button.submit');

@@ -202,7 +202,8 @@ export const AccessibilityStatement: React.FC<AccessibilityStatementProps> = ({
     publishDate
 }) => {
     // Localization & Template Logic
-    const lang = (locale === 'sv' ? 'sv' : 'en') as keyof typeof TEMPLATES;
+    const supportedLocales: Record<string, keyof typeof TEMPLATES> = { sv: 'sv', no: 'no', nb: 'no' };
+    const lang = supportedLocales[locale] ?? 'en';
     const template = TEMPLATES[lang] || TEMPLATES.en;
 
     // Helper to format date

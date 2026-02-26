@@ -4,9 +4,7 @@
  */
 
 import type { ScanResult } from '../core/regulatory-scanner';
-
-// Engine version - keep in sync with package.json
-const ENGINE_VERSION = '1.4.4';
+import { getEngineVersion } from '../core/regulatory-scanner';
 
 export interface CloudConfig {
     apiKey: string;
@@ -63,7 +61,7 @@ export function transformToCloudPayload(result: ScanResult): CloudPayload {
         serious_count: result.stats.high,
         moderate_count: result.stats.medium,
         minor_count: result.stats.low,
-        engine_version: ENGINE_VERSION,
+        engine_version: getEngineVersion(),
         violations
     };
 }

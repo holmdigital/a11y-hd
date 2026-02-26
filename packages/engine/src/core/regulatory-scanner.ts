@@ -15,7 +15,7 @@ import { readFileSync } from 'node:fs';
 import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-function getEngineVersion(): string {
+export function getEngineVersion(): string {
     try {
         // Works in both CJS (__dirname) and ESM (import.meta.url) bundles
         const dir = typeof __dirname !== 'undefined'

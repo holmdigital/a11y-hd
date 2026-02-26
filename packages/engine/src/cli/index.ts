@@ -7,7 +7,7 @@
 import { Command } from 'commander';
 import chalk from 'chalk';
 import ora from 'ora';
-import { RegulatoryScanner, ScannerOptions } from '../core/regulatory-scanner';
+import { RegulatoryScanner, ScannerOptions, getEngineVersion } from '../core/regulatory-scanner';
 import { PseudoAutomationEngine } from '../automation/pseudo-automation';
 import { generateReportHTML } from '../reporting/html-template';
 import { generatePDF } from '../reporting/pdf-generator';
@@ -33,7 +33,7 @@ const program = new Command();
 program
     .name('hd-a11y-scan')
     .description('HolmDigital Regulatory Scanner')
-    .version('0.1.0');
+    .version(getEngineVersion());
 
 import { cosmiconfig } from 'cosmiconfig';
 

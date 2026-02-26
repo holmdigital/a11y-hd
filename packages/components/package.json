@@ -1,7 +1,7 @@
 {
     "name": "@holmdigital/components",
     "author": "Holm Digital AB",
-    "version": "2.1.0",
+    "version": "2.1.1",
     "private": false,
     "publishConfig": {
         "access": "public"
