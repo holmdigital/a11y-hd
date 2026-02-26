@@ -5,227 +5,225 @@
 ## Naming Patterns
 
 **Files:**
-- Components: PascalCase directory and file matching component name (e.g., `packages/components/src/Button/Button.tsx`)
-- Engine modules: kebab-case (e.g., `packages/engine/src/reporting/badge-generator.ts`, `packages/engine/src/cli/cloud-client.ts`)
-- Test files: co-located with source, suffix `.test.ts` or `.test.tsx` (e.g., `packages/engine/src/cli/cloud-client.test.ts`)
-- Type definition files: `types.ts` in package `src/` root (e.g., `packages/standards/src/types.ts`)
-- Index/barrel files: `index.ts` at package root (e.g., `packages/components/src/index.ts`)
+- Component files: PascalCase matching the component name (`Button.tsx`, `FormField.tsx`, `LiveRegion.tsx`)
+- Non-component TypeScript files: kebab-case (`badge-generator.ts`, `cloud-client.ts`, `html-validator.ts`, `regulatory-scanner.ts`)
+- Test files: Co-located with source, same name with `.test.ts` or `.test.tsx` suffix (`badge-generator.test.ts`, `LiveRegion.test.tsx`)
+- Type definition files: `types.ts` in the package's `src/` root
+- JSON data files: kebab-case with language suffix (`rules.en.json`, `rules.sv.json`, `ict-manual-checks.json`)
+- Each component lives in its own PascalCase directory: `src/Button/Button.tsx`, `src/Dialog/Dialog.tsx`
 
 **Functions:**
-- Use camelCase for all functions: `generateBadgeUrl`, `transformToCloudPayload`, `getEN301549Mapping`
-- Prefix getters with `get`: `getConvergenceRule`, `getDatabaseStats`, `getCurrentLang`
-- Prefix boolean checks with `is`: `isValidUrl`, `isWCAGCriteriaSupported`
-- Generator functions prefixed with `generate`: `generateRegulatoryReport`, `generateJUnitXML`, `generateStatement`
-- Setter functions prefixed with `set`: `setLanguage`
+- Use camelCase for all functions: `generateBadgeUrl`, `setLanguage`, `transformToCloudPayload`
+- Prefix boolean getters with `is`: `isValidUrl`, `isWCAGCriteriaSupported`
+- Prefix retrieval functions with `get`: `getEN301549Mapping`, `getDOSLagenReference`, `getCurrentLang`
+- Use `generate` prefix for output-producing functions: `generateRegulatoryReport`, `generateJUnitXML`, `generateStatementContent`
 
 **Variables:**
-- Use camelCase for local variables: `scanResult`, `pageTitle`, `complianceLevel`
-- Use UPPER_SNAKE_CASE for module-level constants: `BADGE_COLOR`, `BADGE_BASE_URL`, `ENGINE_VERSION`, `ENFORCEMENT_BODIES`
+- camelCase for all variables: `currentLang`, `nodeIdCounter`, `complianceLevel`
+- UPPER_SNAKE_CASE for module-level constants: `BADGE_COLOR`, `BADGE_BASE_URL`, `ENGINE_VERSION`, `ENFORCEMENT_BODIES`
+- Prefix private class fields with no underscore (TypeScript `private` keyword instead): `private browser`, `private options`
 
-**Types/Interfaces:**
-- Use PascalCase for all types and interfaces: `ScanResult`, `CloudPayload`, `ConvergenceRule`
-- Interface props suffixed with `Props`: `ButtonProps`, `DialogProps`, `FormFieldProps`
-- Type unions for string literals: `type WCAGLevel = 'A' | 'AA' | 'AAA'`
-- Context types suffixed with `ContextType`: `AccordionContextType`, `ToastContextType`
+**Types & Interfaces:**
+- PascalCase for all types and interfaces: `ScanResult`, `CloudPayload`, `ConvergenceRule`
+- Interface names describe the shape, no `I` prefix: `ScannerOptions` not `IScannerOptions`
+- Props interfaces named `{Component}Props`: `ButtonProps`, `DialogProps`, `FormFieldProps`, `LiveRegionProps`
+- Union literal types for constrained strings: `type WCAGLevel = 'A' | 'AA' | 'AAA'`, `type DiggRisk = 'low' | 'medium' | 'high' | 'critical'`
+- Export types separately using `export type { ... }` syntax in `packages/standards/src/index.ts`
 
 **React Components:**
-- Use PascalCase: `Button`, `FormField`, `AccessibilityStatement`
-- Always set `displayName` on `forwardRef` components: `Button.displayName = 'Button'`
-- Sub-components use parent prefix: `AccordionItem`, `AccordionTrigger`, `AccordionContent`
+- Named exports, not default exports: `export const Button = ...`
+- Use `forwardRef` for interactive elements: `Button`, `FormField`, `Dialog`, `Checkbox`
+- Always set `displayName`: `Button.displayName = 'Button'`
+- Use `React.FC<Props>` for simpler components without ref forwarding: `ErrorSummary`, `LiveRegion`
 
 ## Code Style
 
 **Formatting:**
-- Prettier v3.4.2 is listed as a devDependency (no `.prettierrc` config file found -- uses defaults)
-- Default Prettier: 2-space indentation, double quotes, semicolons, trailing commas
-- Actual codebase uses 4-space indentation in most files and single quotes for imports
+- Prettier v3.4.2 (declared in root `package.json` devDependencies)
+- No `.prettierrc` configuration file detected -- uses Prettier defaults
+- Default: 2-space indentation (visible in all source files)
+- Single quotes for strings in TypeScript source
+- Semicolons required (visible in all source files)
+- Trailing commas in multi-line constructs
 
 **Linting:**
-- ESLint v9 with flat config at `eslint.config.mjs`
-- TypeScript-ESLint parser and plugin
-- Key rules:
-  - `@typescript-eslint/no-explicit-any`: `"warn"` (not error -- `any` is tolerated with suppression comments)
-  - `@typescript-eslint/no-unused-vars`: `"warn"` with `argsIgnorePattern: "^_"` (prefix unused args with `_`)
+- ESLint v9.17.0 with flat config (`eslint.config.mjs`)
+- Extends: `@eslint/js` recommended + `@typescript-eslint` recommended rules
+- Custom overrides:
+  - `@typescript-eslint/no-explicit-any`: `"warn"` (not error -- `any` is used in several places)
+  - `@typescript-eslint/no-unused-vars`: `"warn"` with `argsIgnorePattern: "^_"` (prefix unused params with `_`)
 - Ignores: `**/dist/**`, `**/node_modules/**`, `**/coverage/**`
+- Parser: `@typescript-eslint/parser` targeting ECMAScript 2022
+- Globals: both `browser` and `node` environments
 
 **TypeScript:**
-- Strict mode enabled globally in `tsconfig.base.json`
-- Key strict settings: `noUnusedLocals`, `noUnusedParameters`, `noImplicitReturns`, `noFallthroughCasesInSwitch`
+- Strict mode enabled in `tsconfig.base.json`
 - Target: ES2022, Module: ESNext, ModuleResolution: bundler
-- Declaration maps and source maps enabled for debugging
+- `noUnusedLocals: true`, `noUnusedParameters: true`, `noImplicitReturns: true`
+- `noFallthroughCasesInSwitch: true`
+- `declaration: true`, `declarationMap: true`, `sourceMap: true`
+- Tests excluded from compilation: `**/*.test.ts`, `**/*.spec.ts`
 
 ## Import Organization
 
 **Order:**
-1. React imports (`import React, { useState, useEffect } from 'react'`)
-2. External library imports (`import axeCore from 'axe-core'`, `import chalk from 'chalk'`)
-3. Internal monorepo imports (`import { RegulatoryReport } from '@holmdigital/standards'`)
-4. Relative imports (`import { VirtualDOMBuilder } from './virtual-dom'`)
-5. JSON/data imports (`import rulesEn from '../data/rules.en.json'`)
+1. Node.js built-in modules (`node:fs`, `node:path`, `node:url`)
+2. External dependencies (`react`, `puppeteer`, `axe-core`, `commander`, `chalk`)
+3. Internal monorepo packages (`@holmdigital/standards`, `@holmdigital/components`)
+4. Relative imports (`./index`, `../core/regulatory-scanner`, `../i18n`)
 
 **Path Aliases:**
-- Monorepo packages use npm workspace names: `@holmdigital/standards`, `@holmdigital/engine`, `@holmdigital/components`
-- No path aliases (like `@/`) are configured in tsconfig
+- No path aliases configured -- all imports use relative paths or package names
+- Cross-package imports use npm workspace package names: `@holmdigital/standards`, `@holmdigital/components`
 
-**Type Imports:**
-- Use `import type` for type-only imports: `import type { ScanResult } from '../core/regulatory-scanner'`
-- Re-export types with `export type { ... }` in barrel files (see `packages/standards/src/index.ts`)
-
-## Component Patterns
-
-**React Components (packages/components):**
-
-Use `forwardRef` for all functional components that render DOM elements:
-```tsx
-export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
-    ({ children, variant = 'primary', ...props }, ref) => {
-        return <button ref={ref} {...props}>{children}</button>;
-    }
-);
-Button.displayName = 'Button';
-```
-
-Use `interface` extending native HTML element attributes for props:
-```tsx
-export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-    variant?: 'primary' | 'secondary' | 'danger' | 'ghost';
-    size?: 'small' | 'medium' | 'large';
-    isLoading?: boolean;
-}
-```
-
-Compound components use React Context pattern:
-```tsx
-const AccordionContext = createContext<AccordionContextType | undefined>(undefined);
-// Provider wraps children, consumers use useContext
-```
-
-**Styling approaches (mixed):**
-- Some components use inline styles with JS objects (`packages/components/src/Button/Button.tsx`, `packages/components/src/FormField/FormField.tsx`)
-- Some components use Tailwind CSS class strings (`packages/components/src/Dialog/Dialog.tsx`, `packages/components/src/Toast/Toast.tsx`, `packages/components/src/Accordion/Accordion.tsx`)
-- Use inline styles for accessibility-critical styles (contrast, touch target sizes)
-- Use Tailwind for layout and visual styling
-
-**Class Pattern (packages/engine):**
-- Scanner and builder modules use classes: `RegulatoryScanner`, `VirtualDOMBuilder`, `HtmlValidator`, `PseudoAutomationEngine`
-- Classes use private fields and methods: `private browser`, `private log()`
-- Constructor accepts options/config objects with defaults via spread
+**Import Style:**
+- Named imports preferred: `import { describe, it, expect } from 'vitest'`
+- Namespace imports for barrel re-exports: `import * as Components from './index'`
+- Type-only imports used sparingly: `import type { ScanResult } from '../core/regulatory-scanner'`
+- Dynamic imports used for optional/lazy-loaded modules: `await import('@holmdigital/standards')`, `await import('../reporting/junit-generator')`
 
 ## Error Handling
 
 **Patterns:**
+- Return result objects with `success/error` fields for async operations (see `packages/engine/src/cli/cloud-client.ts`):
+  ```typescript
+  interface CloudResponse {
+      success: boolean;
+      message?: string;
+      error?: string;
+  }
+  ```
+- Return `null` for "not found" instead of throwing: `getConvergenceRule()`, `generateBadgeUrl()`, `getNordicAuthority()`
+- Try-catch with user-friendly error messages in CLI (`packages/engine/src/cli/index.ts`):
+  ```typescript
+  if (errorMessage.includes('ERR_NAME_NOT_RESOLVED')) {
+      console.error(chalk.red(`Error: Could not resolve domain for '${url}'`));
+  }
+  ```
+- Retry logic for network operations (3 retries with 2s delay in `packages/engine/src/core/regulatory-scanner.ts`)
+- `finally` blocks for resource cleanup (browser closing in `RegulatoryScanner.scan()`)
+- Graceful fallbacks: unknown languages fall back to English, missing templates try multiple paths
 
-Return result objects for async operations (success/failure without throwing):
-```typescript
-// Pattern from cloud-client.ts
-export interface CloudResponse {
-    success: boolean;
-    message?: string;
-    error?: string;
-}
-
-async function sendToCloud(...): Promise<CloudResponse> {
-    try {
-        // ... operation
-        return { success: true, message: data.message };
-    } catch (error) {
-        return { success: false, error: `Could not connect...` };
-    }
-}
-```
-
-Throw errors for unrecoverable failures:
-```typescript
-if (!this.browser) throw new Error('Browser not initialized');
-```
-
-User-friendly error messages in CLI with pattern matching:
-```typescript
-if (errorMessage.includes('ERR_NAME_NOT_RESOLVED')) {
-    console.error(chalk.red(`Error: Could not resolve domain for '${url}'`));
-}
-```
-
-Return `null` for "not found" lookups (no exceptions):
-```typescript
-export function getConvergenceRule(ruleId: string): ConvergenceRule | null {
-    return getData(lang).find((r) => r.ruleId === ruleId) || null;
-}
-```
-
-Fallback chain pattern for file/resource resolution:
-```typescript
-const possiblePaths = [path1, path2, path3];
-for (const p of possiblePaths) {
-    try { /* load */ break; } catch { continue; }
-}
-```
+**Error Reporting:**
+- `console.warn` for non-fatal issues (unsupported language, missing logo)
+- `console.error` with `chalk.red()` for fatal CLI errors
+- `process.exit(1)` only in CLI for critical compliance failures or unrecoverable errors
 
 ## Logging
 
-**Framework:** `console` for engine internals; `chalk` + `ora` for CLI output
+**Framework:** `console` (no logging framework)
+
+**CLI-Specific:**
+- `ora` spinner for progress indication in CLI
+- `chalk` for colored terminal output
+- Silent mode: `this.log()` wrapper in `RegulatoryScanner` suppresses output when `options.silent` is true (for `--json` mode)
+- Pattern: wrap console calls in conditional: `if (!options.json) { console.log(...) }`
 
 **Patterns:**
-- Use `console.log` for debug/info output, wrapped in a `silent` check:
-  ```typescript
-  private log(message: string) {
-      if (!this.options.silent) { console.log(message); }
-  }
-  ```
-- Use `console.warn` for non-fatal warnings (e.g., unsupported language fallback)
-- Use `console.error` for error output in CLI
-- Use `ora` spinner for long-running operations in CLI
-- Use `chalk` for colored terminal output (blue for headers, red for errors, green for success, gray for info)
+- Use `console.warn()` for non-critical warnings (language fallback, missing files)
+- Use `console.log()` for informational output (scan progress)
+- Use `console.error()` for error conditions
+- No structured logging -- all output is human-readable strings
 
 ## Comments
 
 **When to Comment:**
-- Module-level JSDoc block describing purpose (often in Swedish): `/** Regulatory Scanner - Karnan i @holmdigital/engine... */`
-- WCAG/EN 301 549 compliance annotations on components explaining which criteria are met
-- Inline comments for non-obvious logic (retry loops, scoring algorithms, fallback chains)
-- `// eslint-disable-next-line` with rule name when suppressing linting
+- File-level JSDoc comment explaining the module's purpose (present in most source files)
+- Swedish comments are common throughout the codebase alongside English, reflecting the Swedish origin of the project:
+  ```typescript
+  // Kärnan i @holmdigital/engine som kombinerar teknisk scanning med regulatorisk data
+  // Navigera till URL (med retry logic)
+  ```
+- Inline comments explain "why" not "what" for non-obvious logic
+- `// TODO:` used sparingly for known incomplete implementations
 
 **JSDoc/TSDoc:**
-- Use JSDoc `/** ... */` for exported functions with `@param` and `@returns` annotations (see `packages/engine/src/reporting/badge-generator.ts`)
-- Use `@default` in interface properties for default values
-- Use `@example` for usage demonstrations in component docs (see `LiveRegion`)
-
-**Language:**
-- Comments mix Swedish and English throughout the codebase
-- Swedish predominates in engine core code (regulatory-scanner.ts, virtual-dom.ts)
-- English used in newer modules and public-facing documentation
-- New code should use English for comments
+- JSDoc on all exported functions in `packages/standards/src/index.ts`:
+  ```typescript
+  /**
+   * Get EN 301 549 mapping for a WCAG criteria
+   */
+  export function getEN301549Mapping(wcagCriteria: string, lang: string = 'en'): ...
+  ```
+- JSDoc on component props with `@default` values:
+  ```typescript
+  /**
+   * Visuell variant
+   * @default 'primary'
+   */
+  variant?: 'primary' | 'secondary' | 'danger' | 'ghost';
+  ```
+- Component-level JSDoc documenting which WCAG criteria the component satisfies:
+  ```typescript
+  /**
+   * Regulatoriskt Kompatibel Knapp
+   * Uppfyller:
+   * - WCAG 1.4.3 (Kontrast)
+   * - WCAG 2.1.1 (Tangentbordsåtkomst)
+   * ...
+   */
+  ```
+- `@example` tags in some component docs (`LiveRegion.tsx`)
 
 ## Function Design
 
-**Size:** Most utility functions are 5-30 lines. Larger methods (e.g., `scan()` at ~90 lines, CLI action at ~300 lines) exist but are the exception.
+**Size:**
+- Utility functions are small and focused (5-30 lines): `generateBadgeUrl`, `escapeXML`, `isValidUrl`
+- Class methods are moderate (20-80 lines): `scan()`, `enrichResults()`
+- CLI action handler is the largest function (~340 lines in `packages/engine/src/cli/index.ts`) -- monolithic
 
 **Parameters:**
-- Use options objects for functions with 3+ parameters: `ScannerOptions`, `VirtualDOMConfig`, `StatementMetadata`
-- Use positional parameters for simple functions: `generateBadgeUrl(score: number)`
-- Default parameter values: `lang: string = 'en'`
+- Use options objects for functions with many parameters: `ScannerOptions`, `VirtualDOMConfig`
+- Default parameter values preferred over overloads: `lang: string = 'en'`
+- Spread `...props` pattern for component rest props: `{ children, variant, ...props }`
 
 **Return Values:**
-- Return `null` for "not found" (never `undefined`)
-- Return result objects `{ success, message, error }` for async operations
-- Return `Promise<T>` for async functions (never callbacks)
+- Functions return explicit types: `Promise<ScanResult>`, `string | null`, `ConvergenceRule[]`
+- Nullable returns use `| null` not `| undefined`: `getConvergenceRule(): ConvergenceRule | null`
+- Async functions always return Promises explicitly
 
 ## Module Design
 
 **Exports:**
-- Named exports only (no default exports except ESLint config)
-- Barrel files (`index.ts`) re-export everything from sub-modules
-- Separate `export type { ... }` blocks for type-only re-exports
+- Barrel files (`index.ts`) re-export from all modules:
+  - `packages/components/src/index.ts`: `export * from './Button/Button'` (one per component)
+  - `packages/engine/src/index.ts`: `export * from './core/regulatory-scanner'` (selective)
+- Type exports separated: `export type { ConvergenceRule, ... }` in `packages/standards/src/index.ts`
+- Named exports only -- no default exports anywhere in the codebase
 
 **Barrel Files:**
-- `packages/components/src/index.ts`: `export * from './Button/Button'` pattern for all components
-- `packages/engine/src/index.ts`: Selective re-exports from core modules
-- `packages/standards/src/index.ts`: Functions + type re-exports
+- `packages/components/src/index.ts`: Re-exports all 28+ components
+- `packages/engine/src/index.ts`: Re-exports core scanner, virtual-dom, pseudo-automation, i18n, and statement generator
+- `packages/standards/src/index.ts`: Both function exports and type re-exports from `types.ts`
 
-**Package Exports:**
-- Dual format: CJS (`.js`) + ESM (`.mjs`) via tsup
-- Type declarations (`.d.ts`) generated alongside
-- Subpath exports in package.json for tree-shaking individual components
+## React Component Patterns
+
+**Component Structure (for new components, follow this pattern):**
+1. Imports (React first, then external, then internal)
+2. Props interface with JSDoc on each prop
+3. Component-level JSDoc documenting WCAG criteria compliance
+4. `forwardRef` wrapper (for interactive elements) or `React.FC` (for non-interactive)
+5. Internal logic (state, refs, effects)
+6. Inline styles as JS objects (NOT CSS-in-JS libraries)
+7. JSX return with ARIA attributes
+8. `displayName` assignment after component definition
+
+**Styling Approach:**
+- Mixed strategy: inline `style` objects for `packages/components` core behavior (Button, FormField, ErrorSummary)
+- Tailwind CSS class strings for visual styling in Dialog, Checkbox, Select
+- Some components use both simultaneously (Checkbox)
+- All components ensure minimum 44px touch targets (EN 301 549 9.2.5.5)
+
+**Accessibility Patterns:**
+- Every interactive component has appropriate ARIA attributes
+- `aria-live` regions for dynamic content announcements
+- `aria-invalid`, `aria-describedby`, `aria-required` on form fields
+- `aria-labelledby`, `aria-describedby` for dialogs
+- `aria-haspopup`, `aria-expanded` for dropdown triggers
+- `role="alert"` for error messages
+- `role="listbox"` and `role="option"` for custom selects
+- Visually hidden text using clip-rect technique for screen reader only content
+- Focus management: `tabIndex={-1}` with programmatic `.focus()` for error summaries
 
 ---
 

@@ -4,191 +4,239 @@
 
 ## Tech Debt
 
+**Pervasive `as any` Type Casts Undermining TypeScript Safety:**
+- Issue: The codebase has 40+ instances of `as any` casts and untyped parameters, many in core paths rather than edge-case escape hatches. The `RegulatoryReport` interface in `@holmdigital/standards` does not include `failingNodes` or `legalContext`, yet both are added at runtime and then accessed throughout reporting modules via `(report as any).failingNodes` and `(report as any).legalContext`.
+- Files:
+  - `packages/standards/src/types.ts` (lines 116-126) -- `RegulatoryReport` missing `failingNodes` and `legalContext`
+  - `packages/engine/src/core/regulatory-scanner.ts` (line 233, 267, 272, 365-374) -- `enrichResults` accepts `any`, casts output `as any`
+  - `packages/engine/src/cli/index.ts` (lines 102, 216, 263-267, 289, 301) -- repeated `any` casts for report iteration
+  - `packages/engine/src/reporting/html-template.ts` (lines 262-263, 269) -- `(report as any).legalContext`
+  - `packages/engine/src/reporting/junit-generator.ts` (lines 49-51, 69) -- `(report as any).failingNodes`
+  - `packages/engine/src/reporting/github-actions.ts` (line 22) -- `(node: any)`
+  - `packages/engine/src/reporting/statement-generator.ts` (lines 32, 97, 294)
+  - `packages/engine/src/i18n/index.ts` (lines 16, 47, 55)
+  - `packages/components/src/AccessibilityStatement/AccessibilityStatement.tsx` (lines 109, 299, 388)
+  - `packages/standards/src/types.ts` (line 57) -- `[key: string]: any` on `HolmDigitalInsight`
+- Impact: Bugs slip past the compiler. Any structural change to `RegulatoryReport` will silently break all downstream modules that rely on the untyped `failingNodes`/`legalContext` properties.
+- Fix approach:
+  1. Extend `RegulatoryReport` (or create `EnrichedReport extends RegulatoryReport`) in `packages/standards/src/types.ts` to include `failingNodes?: FailingNode[]` and `legalContext?: LegalContext`.
+  2. Define a `FailingNode` interface with `{ html: string; target: string; failureSummary: string }`.
+  3. Replace every `(report as any)` with the properly typed interface throughout all reporting modules.
+  4. Remove the index signature `[key: string]: any` from `HolmDigitalInsight` and add explicit optional keys for each language interpretation (e.g., `norwegianInterpretation?: string`).
+
+**Hardcoded/Stale Version Strings in Multiple Locations:**
+- Issue: Version numbers are hardcoded in at least three separate places, all out of sync with each other and with the actual `package.json` version (`2.1.2`).
+- Files:
+  - `packages/engine/src/cli/cloud-client.ts` (line 9) -- `ENGINE_VERSION = '1.4.4'` (should be `2.1.2`)
+  - `packages/engine/src/cli/index.ts` (line 36) -- `.version('0.1.0')` (should be `2.1.2`)
+  - `packages/engine/src/core/regulatory-scanner.ts` (line 28) -- fallback `'2.1.1'` (close but still stale)
+- Impact: Cloud API receives wrong engine version. CLI `--version` flag reports `0.1.0` instead of `2.1.2`. Debugging and auditing are misleading.
+- Fix approach: Read version from `package.json` at build time (tsup banner/define) or use `getEngineVersion()` from `regulatory-scanner.ts` everywhere. Remove all hardcoded version strings. Consider a shared `version.ts` module across the engine package.
+
 **Duplicated Template Rendering Logic:**
-- Issue: The template variable substitution and conditional block rendering logic is implemented independently in two places with different approaches. `AccessibilityStatement.tsx` uses `renderTemplate()` with inline `TEMPLATES` object (sv, en, no only), while `statement-generator.ts` uses `processText()` with external JSON templates (9 languages). The replacement variable maps differ in coverage and naming conventions.
-- Files: `packages/components/src/AccessibilityStatement/AccessibilityStatement.tsx` (lines 109-297), `packages/engine/src/reporting/statement-generator.ts` (lines 190-294)
-- Impact: Bugs fixed in one renderer may not be fixed in the other. Language support diverges: the component only supports `sv`, `en`, `no` inline while the engine loads from 9 JSON template files. Adding a new template variable requires updating two separate replacement maps.
-- Fix approach: Extract a shared template rendering utility into `@holmdigital/standards` or a new shared package. The component should load templates from the same JSON files the engine uses rather than hardcoding them inline.
+- Issue: The template rendering engine (conditional blocks, choice blocks, variable substitution) is implemented independently in two separate files with slightly different behavior.
+- Files:
+  - `packages/components/src/AccessibilityStatement/AccessibilityStatement.tsx` (lines 259-297) -- `renderTemplate()` in the React component
+  - `packages/engine/src/reporting/statement-generator.ts` (lines 259-290) -- `processText()` in the generator
+- Impact: Fixes or enhancements to template processing must be applied in two places. The React component applies substitution before choices; the generator applies them after. This can produce different outputs for the same input.
+- Fix approach: Extract the template processing logic into a shared utility in `@holmdigital/standards` or a shared module in `@holmdigital/components`, then consume it from both places.
 
-**Hardcoded ENGINE_VERSION in Cloud Client:**
-- Issue: `packages/engine/src/cli/cloud-client.ts` line 9 hardcodes `const ENGINE_VERSION = '1.4.4'` while the actual package version in `package.json` is `2.1.2`. The `regulatory-scanner.ts` reads version dynamically from `package.json` (correct approach), but the cloud client does not.
-- Files: `packages/engine/src/cli/cloud-client.ts` (line 9)
-- Impact: Cloud analytics receive incorrect engine version data, making it impossible to correlate scan results with the actual engine version deployed. Every release requires manual version bump in this file (which has clearly been forgotten).
-- Fix approach: Use the same `getEngineVersion()` pattern from `packages/engine/src/core/regulatory-scanner.ts` or import from a shared location.
+**Inline Hardcoded Template Strings in Component:**
+- Issue: The `AccessibilityStatement` component contains hardcoded template strings for `sv`, `en`, and `no` languages directly in the source code (lines 110-149), despite external JSON templates existing at `packages/engine/src/reporting/templates/*.json` for 9 languages. The component only supports `sv` and `en` via the internal `TEMPLATES` constant (line 205: `const lang = (locale === 'sv' ? 'sv' : 'en')`), silently falling back to English for all other locales including `no` which has a template defined.
+- Files:
+  - `packages/components/src/AccessibilityStatement/AccessibilityStatement.tsx` (lines 109-149, 205)
+  - `packages/engine/src/reporting/templates/` (9 JSON files: da, de, en, es, fi, fr, nl, no, sv)
+- Impact: Norwegian template in the component source is dead code. Users passing `locale="de"` or `locale="fi"` always get English. The JSON templates and inline templates can diverge.
+- Fix approach: Remove inline `TEMPLATES` from the component. Accept template data as a prop or load JSON templates dynamically. Expand the `lang` type guard to all supported locales.
 
-**Hardcoded Fallback Dates:**
-- Issue: When `publishDate` is not provided, the code falls back to the literal string `'2024-01-01'` in multiple places rather than using a computed default or omitting the field.
-- Files: `packages/components/src/AccessibilityStatement/AccessibilityStatement.tsx` (lines 229-230, 254), `packages/engine/src/reporting/statement-generator.ts` (lines 226-233)
-- Impact: Generated accessibility statements will contain factually incorrect dates for any website not published on 2024-01-01. Since these are legal compliance documents, incorrect dates could have regulatory consequences.
-- Fix approach: Either require `publishDate` as a mandatory prop or omit the publish date section when it is not provided.
-
-**Excessive Inline Styles in AccessibilityStatement Component:**
-- Issue: The `AccessibilityStatement` component defines a massive inline `styles` object (lines 391-559) with ~170 lines of CSS-in-JS using `React.CSSProperties`. The component file is 701 lines total, making it the largest in the codebase.
-- Files: `packages/components/src/AccessibilityStatement/AccessibilityStatement.tsx`
-- Impact: No CSS class names means styles cannot be overridden by consumers, no tree-shaking of unused styles, poor developer experience when debugging in browser DevTools, and the component is difficult to maintain.
-- Fix approach: Extract styles to a CSS module or use the same unstyled pattern as other components. At minimum, expose a `classNames` prop or use `data-*` attributes for external styling hooks.
-
-**Dead Comments and Thinking-Out-Loud Comments in JSX:**
-- Issue: Lines 641-661 of `AccessibilityStatement.tsx` contain multi-line JSX comments that appear to be developer thinking/reasoning notes left in production code ("Wait, the template starts with...", "I will modify renderTemplate to...", "Let's let renderTemplate handle it"). These are not documentation; they are stream-of-consciousness notes.
-- Files: `packages/components/src/AccessibilityStatement/AccessibilityStatement.tsx` (lines 641-661)
-- Impact: Confusing for contributors, increases file size, signals unfinished design decisions.
-- Fix approach: Remove all thinking-out-loud comments. If design decisions need documentation, add a proper `@remarks` JSDoc comment.
-
-**Both pnpm-lock.yaml and package-lock.json Present:**
-- Issue: The repository root contains both `pnpm-lock.yaml` and `package-lock.json`. The CI workflow (`release.yml`) uses `npm ci`, and `package.json` uses npm workspaces. The `pnpm-workspace.yaml` file also exists.
-- Files: `pnpm-lock.yaml`, `package-lock.json`, `pnpm-workspace.yaml`
-- Impact: Ambiguity about which package manager is canonical. Lock files may drift, leading to "works on my machine" issues. Contributors may accidentally use the wrong package manager.
-- Fix approach: Remove `pnpm-lock.yaml` and `pnpm-workspace.yaml` if npm is the canonical package manager (as indicated by CI), or switch CI to pnpm and remove `package-lock.json`. Add an `engines` field with `packageManager` or use corepack.
-
-**Commented-Out Axe Configuration:**
-- Issue: The axe-core `runOnly` configuration is commented out in the scanner with the note "Vi tar bort runOnly tillfälligt for att se ALLA fel". This means the scanner runs ALL axe rules including AAA and best-practices, not just the WCAG 2.1 AA rules that the tool is designed around.
-- Files: `packages/engine/src/core/regulatory-scanner.ts` (lines 183-190)
-- Impact: Scan results may include violations outside the regulatory scope (WCAG AAA, best-practices). This inflates violation counts and confuses the scoring system, which is calibrated for AA compliance. Legal reports could include irrelevant findings.
-- Fix approach: Restore the `runOnly` filter or make it configurable via `ScannerOptions`. If running all rules is desired, separate the results by scope.
+**Monorepo Build Script Fragility (Components package.json):**
+- Issue: The `build` and `dev` scripts in `packages/components/package.json` enumerate every single component entry point as a long inline list in the tsup command. Adding a new component requires editing this 400+ character command string.
+- Files:
+  - `packages/components/package.json` (lines for `build` and `dev` scripts)
+- Impact: Easy to forget adding a new component to the build. Error-prone and hard to read. The `exports` map in `package.json` also needs manual update for each new component.
+- Fix approach: Use a glob pattern with tsup (e.g., `tsup src/*/index.ts`) or create a build script that reads the `src/` directory. Alternatively, generate the `exports` map from the filesystem.
 
 ## Known Bugs
 
-**AccessibilityStatement Language Selection Only Supports sv/en:**
-- Symptoms: The `AccessibilityStatement` component's `locale` prop accepts any string, but the internal `lang` variable on line 205 collapses everything to either `'sv'` or `'en'`: `const lang = (locale === 'sv' ? 'sv' : 'en')`. Norwegian templates exist in `TEMPLATES.no` but are never selected.
+**Cloud Client Sends Wrong Engine Version:**
+- Symptoms: HolmDigital Cloud receives `engine_version: "1.4.4"` instead of the actual version `2.1.2`.
+- Files: `packages/engine/src/cli/cloud-client.ts` (line 9)
+- Trigger: Any scan with `--api-key` flag that uploads to cloud.
+- Workaround: None. The wrong version is always sent.
+
+**CLI `--version` Reports 0.1.0:**
+- Symptoms: Running `hd-a11y-scan --version` outputs `0.1.0` instead of `2.1.2`.
+- Files: `packages/engine/src/cli/index.ts` (line 36)
+- Trigger: Any user running `--version` or `-V`.
+- Workaround: None.
+
+**AccessibilityStatement Ignores Norwegian Locale:**
+- Symptoms: Passing `locale="no"` renders the English template, despite the component having a Norwegian template defined at line 136.
 - Files: `packages/components/src/AccessibilityStatement/AccessibilityStatement.tsx` (line 205)
-- Trigger: Pass `locale="no"` to the component. The Norwegian template at line 136 is never used because the ternary always falls through to `'en'`.
-- Workaround: None. The Norwegian template data (lines 136-148) is dead code in the component.
-
-**Sector Prop is Unused:**
-- Symptoms: The `sector` prop (`'public' | 'private'`) is destructured then immediately discarded via `sector: _sector` with an eslint-disable comment. The component generates identical output regardless of sector.
-- Files: `packages/components/src/AccessibilityStatement/AccessibilityStatement.tsx` (lines 185-186)
-- Trigger: Pass `sector="private"` -- output is identical to `sector="public"`.
-- Workaround: None. The prop is part of the public API but does nothing.
-
-**Country Detection by TLD is Unreliable:**
-- Symptoms: In `statement-generator.ts`, country is guessed from the URL's TLD (`result.url.endsWith('.no')`, `.dk`, `.fi`, `.de`). This fails for sites using `.com`, `.eu`, `.org`, or subdomains. Also notably missing: `.se` (the primary target market) and `.fr`, `.es`, `.nl`, `.ie`.
-- Files: `packages/engine/src/reporting/statement-generator.ts` (lines 97-103)
-- Trigger: Scan a Swedish `.se` site without passing `--country SE`. The country defaults to `'SE'` only because it is the hardcoded fallback, not because `.se` is detected.
-- Workaround: Always pass `--country` flag explicitly.
+- Trigger: `<AccessibilityStatement locale="no" ... />`
+- Workaround: None. The lang guard is `(locale === 'sv' ? 'sv' : 'en')`, meaning only `sv` gets Swedish; everything else falls through to English.
 
 ## Security Considerations
 
-**API Key Passed via CLI Argument:**
-- Risk: The `--api-key` CLI option means the API key appears in shell history, process lists (`ps aux`), and CI logs unless explicitly masked.
-- Files: `packages/engine/src/cli/index.ts` (line 56), `packages/engine/src/cli/cloud-client.ts`
-- Current mitigation: None. The key is passed directly to the HTTP header.
-- Recommendations: Support reading the API key from an environment variable (e.g., `HD_API_KEY`) as the primary method. Add documentation warning against passing secrets via CLI arguments. In CI, use `${{ secrets.HD_API_KEY }}` as env var instead.
+**`--no-sandbox` Puppeteer Flag:**
+- Risk: Both the scanner and PDF generator launch Chromium with `--no-sandbox` and `--disable-setuid-sandbox`. While commonly used in CI/Docker, this disables Chrome's process sandbox, which could allow malicious page content to escape the browser process.
+- Files:
+  - `packages/engine/src/core/regulatory-scanner.ts` (lines 211-213)
+  - `packages/engine/src/reporting/pdf-generator.ts` (lines 9-10)
+- Current mitigation: None. The flags are always applied regardless of environment.
+- Recommendations: Only apply `--no-sandbox` when running inside a container (detect via environment variable). Document the security implications. Consider running the browser in a separate network namespace.
 
-**Puppeteer --no-sandbox Flag:**
-- Risk: Both `regulatory-scanner.ts` and `pdf-generator.ts` launch Chromium with `--no-sandbox`. This disables the browser's security sandbox, which could be exploited if scanning malicious URLs.
-- Files: `packages/engine/src/core/regulatory-scanner.ts` (line 212), `packages/engine/src/reporting/pdf-generator.ts` (line 10)
+**API Key Passed as CLI Argument:**
+- Risk: API keys passed via `--api-key` appear in process listings, shell history, and CI/CD logs.
+- Files: `packages/engine/src/cli/index.ts` (line 56)
+- Current mitigation: The key can alternatively be placed in an `.a11yrc` config file (via cosmiconfig).
+- Recommendations: Support `HD_API_KEY` environment variable as the primary method. Warn users if the key appears in CLI arguments. Redact it from any debug output.
+
+**User-Agent Spoofing:**
+- Risk: The scanner sets a fake Chrome User-Agent to avoid bot detection (line 224). While useful for accurate scans, this could be seen as deceptive by site operators.
+- Files: `packages/engine/src/core/regulatory-scanner.ts` (line 224)
 - Current mitigation: None.
-- Recommendations: Only use `--no-sandbox` when running as root in Docker (where it is required). Make it configurable or detect the runtime environment. Document the security implications for users running the scanner against untrusted URLs.
+- Recommendations: Add an option to use an honest User-Agent that identifies as HolmDigital Engine. Document the default behavior.
 
-**No Input Sanitization for HTML Template Output:**
-- Risk: The `html-template.ts` report generator interpolates scan result data directly into HTML strings without escaping. If a scanned page contains malicious content in its title, element HTML, or violation descriptions, this could result in XSS in the generated HTML report.
-- Files: `packages/engine/src/reporting/html-template.ts` (lines 198-283)
-- Current mitigation: Reports are generated as local files, not served dynamically. However, if reports are uploaded to a web dashboard or shared, the XSS vector exists.
-- Recommendations: HTML-escape all interpolated values using a utility function. The `report.ruleId`, `report.wcagCriteria`, `report.holmdigitalInsight.swedishInterpretation`, and `report.remediation.description` fields should all be escaped before insertion into the template.
+**`--invalid-https-cert` Suppresses Certificate Validation:**
+- Risk: When enabled, Chrome ignores all certificate errors (`--ignore-certificate-errors`, `--allow-insecure-localhost`). A user scanning a staging site might not realize this also affects any sub-resources loaded from external origins.
+- Files: `packages/engine/src/core/regulatory-scanner.ts` (line 215)
+- Current mitigation: The flag is opt-in.
+- Recommendations: Add a warning when the flag is active. Consider restricting it to `localhost` only.
+
+**Hardcoded Default Contact Details in Statements:**
+- Risk: The statement generator falls back to hardcoded placeholder contact details (`hej@holmdigital.se`, `070-123 45 67`) if none are provided. Users may unknowingly publish compliance documents with HolmDigital's placeholder email and a fake phone number.
+- Files: `packages/engine/src/reporting/statement-generator.ts` (lines 153-155)
+- Current mitigation: CLI accepts `--email` and `--phone` flags.
+- Recommendations: Make contact email a required field when generating statements. At minimum, emit a warning if defaults are used.
 
 ## Performance Bottlenecks
 
-**All 12 Rule JSON Files Imported at Module Load:**
-- Problem: `packages/standards/src/index.ts` statically imports all 12 language-specific rule JSON files (each ~110KB) at the top of the module. Every consumer of `@holmdigital/standards` loads ~1.3MB of JSON data into memory at import time, regardless of which language they need.
-- Files: `packages/standards/src/index.ts` (lines 6-16)
-- Cause: Static imports of large JSON files. The `getData()` function at line 92 switches on language, but all files are already loaded.
-- Improvement path: Use dynamic `import()` in `getData()` to lazily load only the requested language file. This reduces initial memory footprint by ~90% for single-language use cases. Alternatively, provide a `configure({ lang: 'sv' })` API that preloads only the needed language.
+**PDF Generation Spawns a Second Browser Instance:**
+- Problem: `generatePDF()` launches a new Puppeteer browser instance even though the scanner already has one running. For a scan that also generates a PDF, two full Chrome processes run sequentially.
+- Files: `packages/engine/src/reporting/pdf-generator.ts` (lines 8-10)
+- Cause: The PDF generator is a standalone module with no access to the scanner's browser instance.
+- Improvement path: Refactor to accept a `Page` or `Browser` parameter, allowing reuse of the scanner's existing browser. Alternatively, use a lightweight HTML-to-PDF library for simple report pages.
 
-**PDF Generation Launches a Separate Browser Instance:**
-- Problem: `pdf-generator.ts` launches a new Puppeteer browser just for PDF generation, even when a browser is already running in `RegulatoryScanner`. Each Puppeteer instance consumes ~100-200MB of memory.
-- Files: `packages/engine/src/reporting/pdf-generator.ts` (line 8), `packages/engine/src/core/regulatory-scanner.ts` (line 209)
-- Cause: The PDF generator has no way to reuse the scanner's browser instance.
-- Improvement path: Accept an optional `browser` parameter in `generatePDF()` to reuse an existing instance. The CLI could pass the scanner's browser before closing it.
+**Virtual DOM Built But Never Used:**
+- Problem: `VirtualDOMBuilder.build()` is called during every scan (line 168-169 in `regulatory-scanner.ts`), serializing the entire DOM tree including computed styles. The result is never stored or referenced after the call.
+- Files:
+  - `packages/engine/src/core/regulatory-scanner.ts` (lines 168-169) -- builds vDOM
+  - `packages/engine/src/core/virtual-dom.ts` -- entire module
+- Cause: Built for "future advanced rules" as stated in a comment (line 167), but no rules consume it.
+- Improvement path: Remove the `vDomBuilder.build()` call until it is actually needed. This saves one full DOM traversal per scan.
 
-**Linear Search for Rule Lookups:**
-- Problem: Functions like `getConvergenceRule()`, `generateRegulatoryReport()`, and `searchRulesByTags()` all use `Array.find()` or `Array.filter()` on the full rules array (~60+ rules per language). During a scan, these are called for every violation.
-- Files: `packages/standards/src/index.ts` (lines 199-260)
-- Cause: No indexing or Map-based lookup.
-- Improvement path: Build a `Map<ruleId, ConvergenceRule>` index on first access for O(1) lookups. For tag-based searches, build an inverted index.
+**JUnit Generates Individual Test Cases for Each Pass:**
+- Problem: The JUnit generator creates one `<testcase>` XML element per passed rule (line 33-34). With hundreds of axe passes, this creates very large XML files that CI systems must parse.
+- Files: `packages/engine/src/reporting/junit-generator.ts` (lines 32-35)
+- Cause: Design choice to show passes individually rather than as a count.
+- Improvement path: Group passes into a single `<testcase>` or omit them entirely. CI systems care about failures, not individual pass entries.
 
 ## Fragile Areas
 
-**AccessibilityStatement Icon Matching by Content String:**
-- Files: `packages/components/src/AccessibilityStatement/AccessibilityStatement.tsx` (lines 307-318)
-- Why fragile: Icons are selected by checking if the rendered content includes translated strings in 10 languages (e.g., `trimmed.includes('Hur tillgänglig')`, `trimmed.includes('How accessible')`, `trimmed.includes('Hvor tilgjengelig')`, etc.). Any change to template wording in any language could break icon rendering. The section `id` check exists but is checked alongside string matching.
-- Safe modification: Always match on `section.id` first. Only fall back to string matching if `id` is missing. Currently both checks exist in the same `if` chain with `||`.
-- Test coverage: No tests exist for this component's rendering logic.
+**Statement Generator Template Loading:**
+- Files: `packages/engine/src/reporting/statement-generator.ts` (lines 33-68)
+- Why fragile: Template loading tries 6 different file paths across 3 directory structures (`__dirname`, `../src/`, `process.cwd()`), relying on runtime path resolution that changes between development, built (`dist/`), and monorepo-root execution contexts. All failures are silently caught and retried.
+- Safe modification: Add tests that verify template loading in both dev and dist modes. Use a `require.resolve` or bundler-time import instead of filesystem probing.
+- Test coverage: No tests exist for the statement generator module.
 
-**Template Path Resolution in statement-generator.ts:**
-- Files: `packages/engine/src/reporting/statement-generator.ts` (lines 33-69)
-- Why fragile: Template JSON files are located via three hardcoded path guesses using `__dirname`, `../src/reporting/templates`, and `process.cwd()`. This means the code behaves differently depending on whether it runs from source, from `dist/`, from the monorepo root, or from a consumer's `node_modules`. The CHANGELOG notes this was already a source of `ENOENT` errors in CI/CD.
-- Safe modification: Use `require.resolve()` or bundle templates as JS modules instead of reading them from disk.
-- Test coverage: No tests for template loading paths.
+**Logo Loading Path Resolution:**
+- Files: `packages/engine/src/reporting/statement-generator.ts` (lines 108-136)
+- Why fragile: Logo loading probes 2 filesystem paths relative to `process.cwd()`. If the working directory changes (e.g., running from a CI pipeline or Docker container), the logo silently fails to load. The error handling catches all exceptions including actual bugs.
+- Safe modification: Bundle the logo at build time or accept a logo path as a CLI argument.
+- Test coverage: No tests.
 
-**Global Mutable State in i18n Module:**
-- Files: `packages/engine/src/i18n/index.ts` (line 33)
-- Why fragile: `let currentLang = 'en'` is module-level mutable state. `setLanguage()` mutates it globally. If two concurrent scan operations use different languages, they will interfere with each other. This is not a problem in CLI mode (single scan) but would break in any server/library usage.
-- Safe modification: Pass language as a parameter to `t()` instead of relying on global state, or use a context/scope pattern.
-- Test coverage: Basic tests exist in `packages/engine/src/i18n/index.test.ts`, but no concurrency tests.
+**CLI Module Monolith:**
+- Files: `packages/engine/src/cli/index.ts` (405 lines)
+- Why fragile: The entire CLI is a single action handler with viewport parsing, dashboard rendering, PDF generation, statement generation, cloud upload, JUnit export, and GitHub Actions annotations all inline. Any change to one output format risks breaking others.
+- Safe modification: Extract each output format into its own handler function. The current inline structure makes it hard to test individual behaviors.
+- Test coverage: No tests for the CLI action handler itself.
+
+**i18n Global Mutable State:**
+- Files: `packages/engine/src/i18n/index.ts` (line 33) -- `let currentLang = 'en'`
+- Why fragile: Language is stored as a module-level mutable global. In any concurrent or library usage (e.g., running two scans with different languages), language state would leak between callers.
+- Safe modification: Pass language as a parameter through the call chain rather than relying on global state. Alternatively, use a context/scope pattern.
+- Test coverage: `packages/engine/src/i18n/index.test.ts` exists but does not test concurrent usage.
 
 ## Scaling Limits
 
-**Puppeteer Memory per Scan:**
-- Current capacity: Each scan launches one Chromium instance (~150-300MB). PDF generation launches a second instance.
-- Limit: On a 1GB container, running more than 2-3 concurrent scans would cause OOM. Even a single scan + PDF generation can consume 500MB+.
-- Scaling path: Implement browser pooling, reuse browser instances across scans, and support remote browser connections via `puppeteer.connect()` to a shared Chrome instance.
+**Single-Page Scanning Only:**
+- Current capacity: The scanner processes exactly one URL per invocation.
+- Limit: Scanning an entire website requires external orchestration (shell loops, CI matrix).
+- Scaling path: Add a multi-URL or sitemap crawling mode to `RegulatoryScanner`. The Puppeteer browser instance is already created once and could be reused for multiple pages.
 
-**Rule Database Size Growing per Language:**
-- Current capacity: 12 language files, each ~110KB JSON. Total ~1.3MB loaded into memory.
-- Limit: Adding more languages or expanding rule sets will linearly increase memory. At 30 languages, this would be ~3.3MB of JSON always in memory.
-- Scaling path: Lazy-load language files. Only load the language(s) requested.
+**In-Memory Report Accumulation:**
+- Current capacity: All axe violations and enriched reports are held in memory.
+- Limit: Extremely large pages with thousands of violations could cause memory pressure.
+- Scaling path: Stream results to disk or a callback as they are processed rather than accumulating in an array.
 
 ## Dependencies at Risk
 
-**Puppeteer Version Pinning:**
-- Risk: `puppeteer` is pinned to `23.10.4` in `packages/engine/package.json`. Puppeteer bundles its own Chromium and has breaking changes frequently. The pinned version may have known security vulnerabilities in the bundled Chromium.
-- Impact: Security advisories in bundled Chromium affect scan security. Upgrading may break API compatibility.
-- Migration plan: Evaluate `puppeteer-core` with a system-installed Chrome for production deployments. Keep Puppeteer for development. Add a CI step to check for Chromium security updates.
+**Puppeteer 23.10.4 (Heavy/Bundled Browser):**
+- Risk: Puppeteer bundles a full Chromium download (~280MB), making install times long and Docker images large. Version 23.x requires Node 18+.
+- Impact: Slows CI/CD. Makes the package very heavy as an npm dependency.
+- Migration plan: Consider `puppeteer-core` with a user-supplied browser, or investigate lighter alternatives for axe injection (e.g., Playwright, or direct axe-core Node API for server-rendered pages).
 
-**html-validate Pinned to 10.4.0:**
-- Risk: `html-validate` is pinned to exact version `10.4.0`. This package is actively developed and may have bugfixes or rule updates.
-- Impact: New HTML validation rules or bugfixes are not picked up automatically.
-- Migration plan: Switch to `^10.4.0` or use a range. Test on upgrade.
+**React 18 Peer Dependency (Components):**
+- Risk: Components require React 18+. As React 19 adoption grows, peer dependency ranges should be tested. The engine also has a direct React 18 dependency (not a peer) for server-side rendering of statements.
+- Impact: Users on React 19 may encounter peer dependency warnings or runtime issues.
+- Migration plan: Test with React 19. Widen peer dependency range. Consider removing React from the engine's direct dependencies by using a framework-agnostic template approach for statement generation.
+
+**axe-core 4.10.2 Pinned:**
+- Risk: The axe-core version is pinned exactly (`4.10.2`). New axe-core releases include updated WCAG rules and bug fixes. Being pinned means missing improvements.
+- Impact: The scanner may not catch violations that newer axe-core versions detect.
+- Migration plan: Use a caret range (`^4.10.2`) and add integration tests that verify scan results remain consistent across minor axe-core updates.
 
 ## Missing Critical Features
 
-**No Test Runner for Components:**
-- Problem: Out of 27 exported components in `@holmdigital/components`, only `LiveRegion` has a unit test (`LiveRegion.test.tsx`). The package-level test (`index.test.ts`) only checks that exports exist, not that components render correctly or meet accessibility requirements.
-- Blocks: Cannot verify that accessibility-focused components are actually accessible. Any refactoring of components has zero safety net.
+**No Component-Level Tests:**
+- Problem: Out of 24 React components, only `LiveRegion` has a dedicated test file (`packages/components/src/LiveRegion/LiveRegion.test.tsx`). The only other component test is `packages/components/src/index.test.ts` which merely checks that exports exist.
+- Blocks: Cannot verify that accessible components actually produce correct ARIA attributes, keyboard interactions, or screen reader announcements. For an accessibility component library, this is a critical gap.
 
-**No E2E or Integration Tests for the Scanner:**
-- Problem: The scanner (`RegulatoryScanner`) has no integration tests. The CLI has no tests. There are unit tests for `cloud-client`, `badge-generator`, `junit-generator`, and `i18n`, but the core scanning pipeline (Puppeteer + axe-core + enrichment) is untested.
-- Blocks: Cannot verify scan accuracy. Puppeteer API changes or axe-core updates could silently break scanning.
+**No Integration Tests for the Scanner:**
+- Problem: A vitest integration config is referenced in `package.json` (`test:integration`) but no integration test files exist in the codebase. The core scanning flow (launch browser, inject axe, enrich results) has zero test coverage.
+- Blocks: Cannot catch regressions in the scanning pipeline without manually running against a live site.
 
-**No Validation of Rule JSON Data Against Schema:**
-- Problem: A schema exists at `packages/standards/schema/convergence-schema.json` and validation scripts exist (`scripts/validate-schema.js`, `scripts/validate-data.js`), but these are not run as part of `npm test` or CI. Rule JSON files could diverge from the schema without detection.
-- Blocks: Data quality assurance for the regulatory database.
+**No `--output` / File Output for JSON Mode:**
+- Problem: The `--json` flag only outputs to stdout. For CI pipelines that need both human-readable output and a JSON artifact, there is no way to write JSON to a file without shell redirection.
+- Blocks: Clean CI integration where both console and file outputs are needed.
 
 ## Test Coverage Gaps
 
-**Components Package (Critical Gap):**
-- What's not tested: 26 of 27 components have zero tests. No render tests, no accessibility tests, no interaction tests.
-- Files: All files in `packages/components/src/` except `LiveRegion/LiveRegion.test.tsx`
-- Risk: An accessibility component library with no accessibility tests. Any change could introduce WCAG violations in the very components designed to prevent them.
+**Engine Core (0% coverage):**
+- What's not tested: `RegulatoryScanner.scan()`, `RegulatoryScanner.enrichResults()`, `VirtualDOMBuilder.build()`, `HtmlValidator.validate()`, score calculation, compliance status determination.
+- Files:
+  - `packages/engine/src/core/regulatory-scanner.ts` (399 lines, 0 tests)
+  - `packages/engine/src/core/virtual-dom.ts` (157 lines, 0 tests)
+  - `packages/engine/src/core/html-validator.ts` (50 lines, 0 tests)
+- Risk: The most critical path in the entire application (scan + enrich + score) has no automated verification. Score calculation bugs, enrichment mapping errors, and browser lifecycle issues would go undetected.
 - Priority: High
 
-**Scanner Core Pipeline:**
-- What's not tested: `RegulatoryScanner.scan()`, `enrichResults()`, `VirtualDOMBuilder.build()`, `HtmlValidator.validate()` (integration), `generatePDF()`, `generateReportHTML()`, `generateStatement()` / `generateStatementContent()`
-- Files: `packages/engine/src/core/regulatory-scanner.ts`, `packages/engine/src/core/virtual-dom.ts`, `packages/engine/src/core/html-validator.ts`, `packages/engine/src/reporting/pdf-generator.ts`, `packages/engine/src/reporting/html-template.ts`, `packages/engine/src/reporting/statement-generator.ts`
-- Risk: The entire value proposition of the product (accurate regulatory scanning) has no automated verification.
+**Statement Generator (0% coverage):**
+- What's not tested: Template loading, variable substitution, conditional blocks, choice blocks, country detection, markdown generation, HTML generation, file writing.
+- Files: `packages/engine/src/reporting/statement-generator.ts` (321 lines, 0 tests)
+- Risk: Accessibility statements have legal implications. A bug in template processing could produce legally non-compliant documents.
 - Priority: High
 
-**CLI Command Handling:**
-- What's not tested: Argument parsing, option merging (CLI > file > defaults), viewport parsing, error handling for invalid URLs, cosmiconfig integration
-- Files: `packages/engine/src/cli/index.ts`
-- Risk: CLI is the primary user interface. Regression in option handling would break user workflows silently.
+**CLI Action Handler (0% coverage):**
+- What's not tested: Option merging, viewport parsing, dashboard output, error formatting, cloud integration flow, JUnit generation triggering.
+- Files: `packages/engine/src/cli/index.ts` (405 lines, 0 tests)
+- Risk: User-facing bugs in CLI output, option handling, or exit codes.
 - Priority: Medium
 
-**Standards Data Integrity:**
-- What's not tested: Whether all 12 rule JSON files conform to the schema, whether all rule IDs are unique, whether all referenced WCAG criteria exist, whether tag arrays are consistent across languages
-- Files: `packages/standards/data/rules.*.json`, `packages/standards/schema/convergence-schema.json`
-- Risk: Inconsistent or invalid rule data leads to incorrect regulatory reports. Given there are 3000+ lines per language file across 12 languages, manual review is impractical.
-- Priority: Medium
+**Components (1 of 24 tested):**
+- What's not tested: Button, FormField, Dialog, Modal, SkipLink, NavigationMenu, Checkbox, RadioGroup, Breadcrumbs, Accordion, Tabs, Select, Switch, Toast, Tooltip, Heading, AccessibilityStatement, ErrorSummary, Combobox, DatePicker, MultiSelect, DataTable, Pagination, Card, TreeView, ProgressBar, Skeleton, HelpText.
+- Files: All files in `packages/components/src/*/` except `LiveRegion/`
+- Risk: For a library whose entire purpose is delivering accessible components, having no tests to verify ARIA attributes, keyboard navigation, or focus management is a fundamental gap.
+- Priority: High
+
+**Pseudo-Automation Engine (0% coverage):**
+- What's not tested: Playwright test script generation, manual checklist generation.
+- Files: `packages/engine/src/automation/pseudo-automation.ts` (77 lines, 0 tests)
+- Risk: Low -- output is informational only.
+- Priority: Low
+
+**Overall Ratio:** 7 test files covering ~49 source files. Estimated line coverage: <15%.
 
 ---
 
