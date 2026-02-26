@@ -10,7 +10,7 @@ It is designed to be **CI/CD native**, meaning it fits perfectly into your build
 Run a one-off scan on any URL:
 
 ```bash
-npx @holmdigital/engine scan https://example.com
+npx hd-a11y-scan https://example.com
 ```
 
 ## 🛠️ CLI Reference
@@ -40,6 +40,9 @@ hd-a11y-scan <url> [options]
 | `--response-time <val>` | Response time for the statement. | `--response-time "2 days"` |
 | `--publish-date <date>` | Website publish date (YYYY-MM-DD). | `--publish-date 2024-02-06` |
 | `--api-key <key>` | Upload results to HolmDigital Cloud. | `--api-key abc-123` |
+| `--cloud-url <url>` | Cloud API URL (default: `https://cloud.holmdigital.se`). | `--cloud-url https://custom.api` |
+| `--country <code>` | Country code for enforcement body in statement. | `--country SE` |
+| `--format <type>` | Output format for statement (`html`, `md`). Default: `html`. | `--format md` |
 
 ---
 
@@ -60,7 +63,8 @@ Instead of long CLI commands, you can store your settings in a `.a11yrc` file in
   "email": "hej@holmdigital.se",
   "phone": "070-123 45 67",
   "responseTime": "2 dagar",
-  "publishDate": "2024-02-06"
+  "publishDate": "2024-02-06",
+  "cloudUrl": "https://cloud.holmdigital.se"
 }
 ```
 
@@ -76,14 +80,16 @@ The following keys in `.a11yrc` map to the `AccessibilityStatement` component pr
 | `responseTime` | `responseTime` | Expected response time (e.g. "2 days") |
 | `country` | `country` | Country code for enforcement body (SE, NO, etc.) |
 | `publishDate` | `publishDate` | Website publish date (YYYY-MM-DD) |
+| `invalidHttpsCert` | — | Allow scanning pages with invalid HTTPS certificates |
+| `cloudUrl` | — | Custom Cloud API endpoint URL |
 
 > [!TIP]
 > Other props like `assessmentDate` and `evaluationMethod` are currently automated by the engine to ensure consistency across scan reports.
 
 ### Multi-Company Scale
-You can use separate config files for different clients:
+Place a `.a11yrc` file in each client's project directory. The engine auto-discovers it via [cosmiconfig](https://github.com/cosmiconfig/cosmiconfig):
 ```bash
-hd-a11y-scan https://client-a.com --config client-a.a11yrc --statement client-a-a11y.html
+cd client-a/ && hd-a11y-scan https://client-a.com --statement client-a-a11y.html
 ```
 
 ---
@@ -95,7 +101,7 @@ hd-a11y-scan https://client-a.com --config client-a.a11yrc --statement client-a-
 ```yaml
 - name: Run Accessibility Scan
   run: |
-    npx @holmdigital/engine scan http://localhost:3000 \
+    npx hd-a11y-scan http://localhost:3000 \
       --ci \
       --threshold critical \
       --lang sv
@@ -106,7 +112,7 @@ hd-a11y-scan https://client-a.com --config client-a.a11yrc --statement client-a-
 ```yaml
 a11y-check:
   script:
-    - npx @holmdigital/engine scan https://staging.example.com --ci --junit report.xml
+    - npx hd-a11y-scan https://staging.example.com --ci --junit report.xml
   artifacts:
     reports:
       junit: report.xml

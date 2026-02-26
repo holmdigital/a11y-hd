@@ -30,10 +30,9 @@ jobs:
       # Run HolmDigital Engine
       - name: Run Accessibility Scan
         run: |
-          npx @holmdigital/engine scan \
-            --url http://localhost:3000 \
-            --threshold 90 \
-            --fail-on-critical
+          npx hd-a11y-scan http://localhost:3000 \
+            --threshold high \
+            --ci
 ```
 
 ## Recipe 2: Custom Audit Log with `DataTable`

@@ -117,5 +117,5 @@ console.log(result.legalSummary);
 
 ## Next Steps
 
-- [Nordic Authorities Guide](./nordic-authorities-guide.md)
+- [Nordic Authorities Guide](./nordic-authorities.md)
 - [Accessibility Statement Tutorial](./accessibility-statement.md)

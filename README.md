@@ -64,12 +64,15 @@ npx hd-a11y-scan <url> [options]
 - `--json` - Output results as JSON
 - `--pdf <path>` - Generate a PDF report
 - `--statement <path>` - Generate an accessibility statement (Premium V2 HTML)
+- `--format <type>` - Output format for statement (`html`, `md`). Default: `html`
+- `--junit <path>` - Generate JUnit XML report for CI dashboards
+- `--country <code>` - Country code for enforcement body (e.g., `SE`, `NO`, `DE`)
 - `--org <name>` - Organization name for statement metadata
 - `--email <email>` - Contact email for statement metadata
 - `--phone <number>` - Contact phone for statement metadata
 - `--response-time <val>` - Normal response time for statement metadata
 - `--publish-date <date>` - Website publish date (YYYY-MM-DD) for statement metadata
-- `--viewport <size>` - Set viewport size (e.g., "mobile", "desktop", "1024x768")
+- `--viewport <size>` - Set viewport size (e.g., "mobile", "tablet", "desktop", "1024x768")
 - `--generate-tests` - Generate pseudo-code automation scripts for verification
 - `--invalid-https-cert` - Allow scanning sites with invalid/self-signed certs ⚠️
 - `--api-key <key>` - Upload results to HolmDigital Cloud Dashboard
