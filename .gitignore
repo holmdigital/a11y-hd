@@ -64,7 +64,7 @@ GEMINI.md
 .system_generated/
 
 # Private docs (articles, drafts)
-docs/
+# docs/
 
 # Deploy workflows (security)
 .github/workflows/deploy-wiki.yml
