@@ -1,14 +1,15 @@
 import { describe, it, expect } from 'vitest';
 import { generateJUnitXML } from './junit-generator';
-import { ScanResult } from '../core/regulatory-scanner';
+import { ScanResult, getEngineVersion } from '../core/regulatory-scanner';
+import axeCore from 'axe-core';
 
 describe('junit-generator', () => {
     const mockResult: ScanResult = {
         url: 'https://example.com',
         timestamp: '2026-02-08T01:51:29Z',
         metadata: {
-            engineVersion: '1.4.7',
-            axeCoreVersion: '4.10.2',
+            engineVersion: getEngineVersion(),
+            axeCoreVersion: axeCore.version,
             standardsVersion: '1.2.2',
             scanDuration: 1500,
             pageTitle: 'Example',
@@ -31,7 +32,7 @@ describe('junit-generator', () => {
         const xml = generateJUnitXML(mockResult);
         expect(xml).toContain('<?xml version="1.0" encoding="UTF-8"?>');
         expect(xml).toContain('<testsuites name="HolmDigital Accessibility Scan" time="1.5" tests="42" failures="0">');
-        expect(xml).toContain('<property name="engineVersion" value="1.4.7"/>');
+        expect(xml).toContain(`<property name="engineVersion" value="${getEngineVersion()}"/>`);
         expect(xml).toContain('<property name="pageTitle" value="Example"/>');
         expect(xml).toContain('classname="Accessibility.Success"');
     });

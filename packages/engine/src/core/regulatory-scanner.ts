@@ -354,7 +354,7 @@ export class RegulatoryScanner {
         // Get version info dynamically from package.json
         const metadata: ScanMetadata = {
             engineVersion: getEngineVersion(),
-            axeCoreVersion: axeCore.version || '4.10.2',
+            axeCoreVersion: axeCore.version || '4.11.1',
             standardsVersion: getStandardsVersion(),
             scanDuration,
             pageTitle,

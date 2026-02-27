@@ -1,5 +1,11 @@
 # @holmdigital/engine
 
+## 2.1.4
+
+### Patch Changes
+
+- Upgrade axe-core from 4.10.2 to 4.11.1 for improved color contrast detection (oklch/oklab), Shadow DOM support, and RGAA standard tags. Updated fallback version and dynamic test assertions.
+
 ## 2.1.3
 
 ### Patch Changes

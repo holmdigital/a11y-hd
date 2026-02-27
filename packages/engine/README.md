@@ -90,7 +90,7 @@ npx hd-a11y-scan https://example.com --json
   "timestamp": "2026-01-13T17:05:11.749Z",
   "metadata": {
     "engineVersion": "2.1.3",
-    "axeCoreVersion": "4.10.2",
+    "axeCoreVersion": "4.11.1",
     "standardsVersion": "1.2.3",
     "scanDuration": 2891,
     "pageTitle": "Example Domain",
