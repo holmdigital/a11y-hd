@@ -25,9 +25,14 @@ export interface FormFieldProps extends React.InputHTMLAttributes<HTMLInputEleme
     required?: boolean;
 }
 
+/** Strip colons from React useId() output to produce valid HTML IDs */
+function sanitizeId(id: string): string {
+    return id.replaceAll(':', '');
+}
+
 /**
  * Regulatoriskt Kompatibelt Formulärfält
- * 
+ *
  * Uppfyller:
  * - WCAG 3.3.2 (Labels or Instructions)
  * - WCAG 1.3.1 (Info and Relationships)
@@ -46,7 +51,7 @@ export const FormField = forwardRef<HTMLInputElement, FormFieldProps>(
         ...props
     }, ref) => {
         // Generera unika IDs för a11y-kopplingar om ej angivna
-        const generatedId = useId();
+        const generatedId = sanitizeId(useId());
         const inputId = id || `input-${generatedId}`;
         const helpTextId = `help-${generatedId}`;
         const errorId = `error-${generatedId}`;
@@ -68,19 +73,20 @@ export const FormField = forwardRef<HTMLInputElement, FormFieldProps>(
         const labelStyle = {
             marginBottom: '0.5rem',
             fontWeight: '600',
-            color: '#333',
+            color: '#1e293b',
         };
 
         const inputStyle = {
             padding: '0.5rem',
             borderRadius: '4px',
-            border: error ? '2px solid #dc3545' : '1px solid #ced4da',
+            border: error ? '2px solid #b91c1c' : '1px solid #94a3b8',
             fontSize: '1rem',
+            color: '#0f172a',
             minHeight: '44px', // Touch target
         };
 
         const errorStyle = {
-            color: '#dc3545',
+            color: '#b91c1c',
             fontSize: '0.875rem',
             marginTop: '0.25rem',
             display: 'flex',
@@ -88,7 +94,7 @@ export const FormField = forwardRef<HTMLInputElement, FormFieldProps>(
         };
 
         const helpStyle = {
-            color: '#6c757d',
+            color: '#475569',
             fontSize: '0.875rem',
             marginTop: '0.25rem',
         };
@@ -97,16 +103,15 @@ export const FormField = forwardRef<HTMLInputElement, FormFieldProps>(
             <div style={containerStyle} className={className}>
                 <label htmlFor={inputId} style={labelStyle}>
                     {label}
-                    {required && <span aria-hidden="true" style={{ color: '#dc3545', marginLeft: '4px' }}>*</span>}
+                    {required && <span aria-hidden="true" style={{ color: '#b91c1c', marginLeft: '4px' }}>*</span>}
                     {required && <span className="sr-only"> (obligatoriskt)</span>}
                 </label>
 
                 <input
                     ref={ref}
                     id={inputId}
-                    aria-invalid={!!error}
+                    aria-invalid={error ? 'true' : undefined}
                     aria-describedby={describedBy || undefined}
-                    aria-required={required}
                     required={required}
                     style={inputStyle}
                     {...props}

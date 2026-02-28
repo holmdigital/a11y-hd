@@ -5,7 +5,12 @@ import { Country, ENFORCEMENT_BODIES } from '@holmdigital/standards';
 import { ScanResult } from '../core/regulatory-scanner';
 import fs from 'fs/promises';
 import path from 'path';
+import { fileURLToPath } from 'node:url';
 import { generateBadgeUrl } from './badge-generator';
+
+const __dirname_esm = typeof __dirname === 'undefined'
+    ? path.dirname(fileURLToPath(import.meta.url))
+    : __dirname;
 
 /**
  * Metadata for organizational information in the accessibility statement
@@ -31,8 +36,8 @@ export async function generateStatementContent(
     // 0. Load Template
     let template: any;
     const possibleTemplatePaths = [
-        path.join(__dirname, 'templates', `${lang}.json`),
-        path.join(__dirname, '../src/reporting/templates', `${lang}.json`),
+        path.join(__dirname_esm, 'templates', `${lang}.json`),
+        path.join(__dirname_esm, '../src/reporting/templates', `${lang}.json`),
         path.join(process.cwd(), 'packages/engine/src/reporting/templates', `${lang}.json`)
     ];
 
@@ -51,8 +56,8 @@ export async function generateStatementContent(
     if (!loaded) {
         // Fallback to en
         const fallbackPaths = [
-            path.join(__dirname, 'templates', 'en.json'),
-            path.join(__dirname, '../src/reporting/templates', 'en.json'),
+            path.join(__dirname_esm, 'templates', 'en.json'),
+            path.join(__dirname_esm, '../src/reporting/templates', 'en.json'),
             path.join(process.cwd(), 'packages/engine/src/reporting/templates', 'en.json')
         ];
 
