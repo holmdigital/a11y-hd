@@ -5,7 +5,7 @@
 
 import axeCore from 'axe-core';
 import puppeteer, { Browser, Page } from 'puppeteer';
-import type { RegulatoryReport } from '@holmdigital/standards';
+import type { RegulatoryReport, EnrichedReport } from '@holmdigital/standards';
 import { VirtualDOMBuilder } from './virtual-dom';
 import { HtmlValidator, ValidationResult } from './html-validator';
 
@@ -64,7 +64,7 @@ export interface ScanResult {
     url: string;
     timestamp: string;
     metadata: ScanMetadata;
-    reports: RegulatoryReport[];
+    reports: EnrichedReport[];
     stats: {
         passed: number;
         critical: number;

@@ -1,10 +1,10 @@
-import { RegulatoryReport } from '@holmdigital/standards';
+import type { EnrichedReport } from '@holmdigital/standards';
 
 /**
  * Generates GitHub Actions workflow commands for annotations
  * Reference: https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions#setting-a-warning-message
  */
-export function generateGitHubActionsAnnotations(reports: RegulatoryReport[]) {
+export function generateGitHubActionsAnnotations(reports: EnrichedReport[]) {
     reports.forEach(report => {
         // Map engine severity to GitHub annotation levels
         // GitHub levels: debug, notice, warning, error
