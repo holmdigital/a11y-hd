@@ -77,3 +77,4 @@ GEMINI.md
 extract_strings.py
 translate_nl.py
 *.py
+.planning/
