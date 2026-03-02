@@ -53,8 +53,21 @@ export interface Remediation {
 export interface HolmDigitalInsight {
     diggRisk: DiggRisk;
     eaaImpact: EAAImpact;
+    // Locale-specific interpretation fields (from all 12 locale JSON files)
     swedishInterpretation?: string;
-    [key: string]: any; // Allow for other languages interpretations
+    norwegianInterpretation?: string;
+    danishInterpretation?: string;
+    finnishInterpretation?: string;
+    dutchInterpretation?: string;
+    germanInterpretation?: string;
+    frenchInterpretation?: string;
+    spanishInterpretation?: string;
+    ukInterpretation?: string;
+    usInterpretation?: string;
+    canadianInterpretation?: string;
+    // Runtime-injected by enrichResults() — not in JSON data files
+    reasoning?: string;
+    // Static analysis fields (from JSON data)
     commonMistakes?: string[];
     diggPrecedent?: string;
     priorityRationale?: string;
@@ -123,6 +136,26 @@ export interface RegulatoryReport {
     remediation: Remediation;
     holmdigitalInsight: HolmDigitalInsight;
     testability: Testability;
+}
+
+/**
+ * Axe-core node result shape — minimal fields needed for reporting
+ * Mirrors axe-core's NodeResult essentials without importing axe-core into standards
+ */
+export interface FailingNode {
+    html: string;
+    target: string | string[];
+    failureSummary: string;
+}
+
+/**
+ * Enriched scan report — extends RegulatoryReport with node-level detail
+ * and legal context populated at scan time (not from the static rule DB).
+ * Both fields are optional: the fallback path in enrichResults() omits them.
+ */
+export interface EnrichedReport extends RegulatoryReport {
+    failingNodes?: FailingNode[];
+    legalContext?: LegalContext;
 }
 
 // ============================================
