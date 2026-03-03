@@ -104,9 +104,21 @@ export interface AccessibilityStatementProps {
 }
 
 
+interface TemplateSection {
+    id?: string;
+    title: string;
+    content: string;
+}
+
+interface StatementTemplate {
+    title: string;
+    intro: string;
+    sections: TemplateSection[];
+}
+
 // Template logic is now handled in a more flexible way to support externalized templates
 // In a real application, these might be loaded from JSON files during build or runtime
-const TEMPLATES: Record<string, any> = {
+const TEMPLATES: Record<string, StatementTemplate> = {
     sv: {
         title: "Tillgänglighet för {<webbplats>}",
         intro: "{<organisation>} står bakom den här webbplatsen. Vi vill att så många som möjligt ska kunna använda den. Det här dokumentet beskriver hur {<webbplats>} uppfyller lagen om tillgänglighet till digital offentlig service, eventuella kända tillgänglighetsproblem och hur du kan rapportera brister till oss så att vi kan åtgärda dem.",
@@ -297,7 +309,7 @@ export const AccessibilityStatement: React.FC<AccessibilityStatementProps> = ({
         return text;
     };
 
-    const renderSections = (sections: any[]) => {
+    const renderSections = (sections: TemplateSection[]) => {
         return sections.map((section, i) => {
             const content = renderTemplate(section.content);
             const trimmed = content.trim();
@@ -386,7 +398,7 @@ export const AccessibilityStatement: React.FC<AccessibilityStatementProps> = ({
     const statementTools = getStatementToolsByCountry(country);
 
     // Use custom generator tool if provided, otherwise fallback to national recommendation
-    const usedTool = generatorTool || statementTools.find((t: any) => t.recommended) || statementTools[0];
+    const usedTool = generatorTool || statementTools.find(t => t.recommended) || statementTools[0];
 
     // Placeholder styles
     const styles: Record<string, React.CSSProperties> = {

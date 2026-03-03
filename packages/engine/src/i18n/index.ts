@@ -13,7 +13,7 @@ type LocaleData = typeof en;
 type Paths<T> = T extends object ? { [K in keyof T]: `${Exclude<K, symbol>}${"" | `.${Paths<T[K]>}`}` }[keyof T] : never;
 type LocaleKey = Paths<LocaleData>;
 
-const locales: Record<string, any> = {
+const locales: Record<string, LocaleData> = {
     en,
     sv,
     de,
@@ -43,19 +43,17 @@ export function setLanguage(lang: string) {
 
 export function t(key: LocaleKey, params?: Record<string, string | number>): string {
     const keys = key.split('.');
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    let value: any = locales[currentLang];
+    let value: unknown = locales[currentLang];
 
     for (const k of keys) {
         if (value && typeof value === 'object' && k in value) {
-            value = value[k as keyof typeof value];
+            value = (value as Record<string, unknown>)[k];
         } else {
             // Fallback to English if key missing in current lang
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            let fallbackValue: any = locales['en'];
+            let fallbackValue: unknown = locales['en'];
             for (const fk of keys) {
                 if (fallbackValue && typeof fallbackValue === 'object' && fk in fallbackValue) {
-                    fallbackValue = fallbackValue[fk as keyof typeof fallbackValue];
+                    fallbackValue = (fallbackValue as Record<string, unknown>)[fk];
                 } else {
                     return key; // Key not found
                 }
