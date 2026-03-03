@@ -29,13 +29,17 @@ npm install @holmdigital/standards
 
 ## Features
 
-- **Multi-Language Support**:
+- **Multi-Language Support** (12 locale databases):
   - `en` (Generic / UK PSBAR)
   - `sv` (Sweden / DOS-lagen)
+  - `no` (Norway / IKT-forskrift)
+  - `fi` (Finland / 306/2019)
+  - `da` (Denmark / Tilgængelighed)
   - `de` (Germany / BITV 2.0)
   - `fr` (France / RGAA)
   - `es` (Spain / UNE 139803)
   - `nl` (Netherlands / Digitoegankelijk)
+  - `en-gb` (UK / PSBAR)
   - `en-us` (USA / Section 508 & ADA)
   - `en-ca` (Canada / AODA)
 - **Risk Assessment**: DIGG-aligned risk levels (`critical`, `high`, `medium`, `low`).
@@ -156,6 +160,18 @@ const sectors = getSectorAuthorities('SE');
 | `getAllConvergenceRules(lang?)` | Get all convergence rules |
 | `getConvergenceRule(ruleId, lang?)` | Get specific rule by ID |
 | `searchRulesByTags(tags, lang?)` | Search rules by tags |
+
+### Type Exports
+| Type | Description |
+|------|-------------|
+| `EnrichedReport` | Extended `RegulatoryReport` with `failingNodes` and `legalContext` |
+| `FailingNode` | Target selector, HTML snippet, and failure summary for a single failing element |
+| `LegalContext` | WAD/EAA applicability, sectors, articles, and EAA deadline |
+| `RegulatoryReport` | Core scan result with WCAG criteria, EN 301 549, remediation, and insight |
+| `HolmDigitalInsight` | DIGG risk, EAA impact, Swedish interpretation, and common mistakes |
+| `ConvergenceRule` | Full convergence rule with remediation, testability, and legal context |
+| `DiggRisk` | `'low' \| 'medium' \| 'high' \| 'critical'` |
+| `EAAImpact` | `'none' \| 'low' \| 'medium' \| 'high' \| 'critical'` |
 
 ### EU Legal Framework Functions
 | Function | Description |

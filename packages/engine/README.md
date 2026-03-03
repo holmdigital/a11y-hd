@@ -14,7 +14,7 @@ Most accessibility tools give you technical errors (e.g., "Color contrast must b
 It handles the heavy lifting of:
 1.  **Mapping** technical failures to specific legal clauses.
 2.  **Validating** HTML structure to ensure test accuracy.
-3.  **Reporting** in multiple languages (EN, SV, NL, DE, FR, ES) for non-technical stakeholders.
+3.  **Reporting** in multiple languages (EN, SV, NO, FI, DA, NL, DE, FR, ES) for non-technical stakeholders.
 4.  **CI/CD Pipeline Integration** with automatic enforcement.
 
 For a comprehensive guide on CLI flags, CI/CD integration, and configuration files, see the **[Engine Library Catalog](../../docs/reference/engine.md)**.
@@ -30,6 +30,8 @@ For a comprehensive guide on CLI flags, CI/CD integration, and configuration fil
 - **Configurable Severity Threshold**: Fail CI only on critical/high issues (configurable).
 - **Pseudo-Automation**: Automatically generates Playwright/Puppeteer test scripts for manual verification steps.
 - **PDF Reporting**: Generates beautiful, compliant PDF reports with severity-sorted violations, HTML error counts, and `@HolmDigital/engine` branding.
+- **Type-Safe Results**: Scan results return fully typed `EnrichedReport[]` with `failingNodes` and `legalContext` — zero `as any` casts in the pipeline.
+- **Build-Time Version Injection**: Engine version derived from `package.json` at build time via tsup `define` — CLI, cloud client, and reports always report the correct version.
 - **TypeScript**: Written in TypeScript with full type definitions included.
 
 ## Installation
@@ -89,7 +91,7 @@ npx hd-a11y-scan https://example.com --json
   "url": "https://example.com",
   "timestamp": "2026-01-13T17:05:11.749Z",
   "metadata": {
-    "engineVersion": "2.1.3",
+    "engineVersion": "2.1.5",
     "axeCoreVersion": "4.11.1",
     "standardsVersion": "1.2.3",
     "scanDuration": 2891,

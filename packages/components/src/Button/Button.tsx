@@ -107,12 +107,11 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
 
         return (
             <button
+                {...props}
                 ref={ref}
                 style={style as React.CSSProperties}
                 disabled={disabled || isLoading}
                 aria-busy={isLoading}
-                // Garantera att vi inte har negativ tabindex av misstag (WCAG 2.1.1)
-                tabIndex={props.tabIndex}
                 className={className}
             >
                 {isLoading ? (

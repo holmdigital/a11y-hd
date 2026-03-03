@@ -81,14 +81,14 @@ npx hd-a11y-scan <url> [options]
 > **⚠️ Security:** `--invalid-https-cert` should only be used in trusted environments. *(Contributed by [@FerdiStro](https://github.com/FerdiStro))*
 
 ### 2. [@holmdigital/components](./packages/components)
-Accessible React components with built-in regulatory compliance.
+Accessible React components with built-in regulatory compliance. Includes a 9-locale `AccessibilityStatement` component for generating legal statements in EN, SV, NO, FI, DA, NL, DE, FR, and ES.
 
 ```bash
 npm install @holmdigital/components
 ```
 
 ### 3. [@holmdigital/standards](./packages/standards)
-Machine-readable regulatory database with convergence schema.
+Machine-readable regulatory database with convergence schema, 12 locale databases, and fully typed exports (`EnrichedReport`, `FailingNode`, `LegalContext`).
 
 ```bash
 npm install @holmdigital/standards
@@ -208,7 +208,7 @@ npm run build
 ├── packages/
 │   ├── engine/          # Test engine (Puppeteer/Axe) with i18n & Cloud Support
 │   ├── components/      # React components (Heading, Button, etc.)
-│   └── standards/       # Regulatory database (EN/SV/DE/FR/ES)
+│   └── standards/       # Regulatory database (12 locales incl. Nordic)
 └── package.json         # Monorepo root
 
 ## 🤝 Contributing

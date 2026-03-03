@@ -129,6 +129,7 @@ function App() {
 - **High Contrast**: Default styles meet WCAG AA requirements.
 - **Keyboard Navigation**: Full focus management and visible focus indicators.
 - **Screen Reader Support**: Correct ARIA attributes and labels built-in.
+- **9-Locale Accessibility Statements**: The `AccessibilityStatement` component supports `en`, `sv`, `no`, `fi`, `da`, `nl`, `de`, `fr`, and `es` with complete legal phrasing per locale.
 
 ## License
 
