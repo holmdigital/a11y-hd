@@ -11,6 +11,21 @@ import { HtmlValidator, ValidationResult } from './html-validator';
 
 import { readFileSync } from 'node:fs';
 
+/**
+ * Minimal interface for serialized axe-core output from page.evaluate().
+ * NOT the full axe-core AxeResults type (missing EnvironmentData, etc.).
+ */
+interface AxeScanOutput {
+    violations: Array<{
+        id: string;
+        help: string;
+        description: string;
+        tags: string[];
+        nodes: Array<{ html: string; target: string[]; failureSummary: string }>;
+    }>;
+    passes: Array<{ id: string }>;
+}
+
 export function getEngineVersion(): string {
     return __ENGINE_VERSION__;
 }
@@ -216,8 +231,8 @@ export class RegulatoryScanner {
         await page.evaluate(axeSource);
     }
 
-    private async enrichResults(axeResults: any): Promise<RegulatoryReport[]> {
-        const reports: RegulatoryReport[] = [];
+    private async enrichResults(axeResults: AxeScanOutput): Promise<EnrichedReport[]> {
+        const reports: EnrichedReport[] = [];
         const { searchRulesByTags, generateRegulatoryReport, getConvergenceRule } = await import('@holmdigital/standards');
         const { getCurrentLang } = await import('../i18n');
         const lang = getCurrentLang();
@@ -250,12 +265,12 @@ export class RegulatoryScanner {
                     // Include legal context from the full rule
                     legalContext: fullRule?.legalContext,
                     // Attach extra debug info for the CLI
-                    failingNodes: violation.nodes.map((node: any) => ({
+                    failingNodes: violation.nodes.map((node) => ({
                         html: node.html,
                         target: node.target.join(' '),
                         failureSummary: node.failureSummary
                     }))
-                } as any);
+                });
             } else {
                 // Fallback: Om vi inte hittar en regeln i vår databas, skapa en generisk rapport
                 // så att vi inte tappar bort felet.
@@ -292,7 +307,7 @@ export class RegulatoryScanner {
     }
 
     private generateResultPackage(
-        reports: RegulatoryReport[],
+        reports: EnrichedReport[],
         passedCount: number,
         scanDuration: number,
         pageTitle?: string,
@@ -348,15 +363,15 @@ export class RegulatoryScanner {
         };
 
         // Calculate EU Legal Framework summary
-        const reportsWithContext = reports.filter((r: any) => r.legalContext);
+        const reportsWithContext = reports.filter(r => r.legalContext);
         const legalSummary = {
-            wadApplicable: reportsWithContext.filter((r: any) =>
+            wadApplicable: reportsWithContext.filter(r =>
                 r.legalContext?.appliesTo?.includes('WAD')
             ).length,
-            eaaApplicable: reportsWithContext.filter((r: any) =>
+            eaaApplicable: reportsWithContext.filter(r =>
                 r.legalContext?.appliesTo?.includes('EAA')
             ).length,
-            eaaDeadlineViolations: reportsWithContext.filter((r: any) =>
+            eaaDeadlineViolations: reportsWithContext.filter(r =>
                 r.legalContext?.eaaDeadline
             ).length
         };
