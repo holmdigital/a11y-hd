@@ -9,24 +9,10 @@ import type { RegulatoryReport, EnrichedReport } from '@holmdigital/standards';
 import { VirtualDOMBuilder } from './virtual-dom';
 import { HtmlValidator, ValidationResult } from './html-validator';
 
-// Read version from package.json at module level
-// Using dynamic import kept as sync via top-level require (tsup handles CJS/ESM compat)
 import { readFileSync } from 'node:fs';
-import { resolve, dirname } from 'node:path';
-import { fileURLToPath } from 'node:url';
 
 export function getEngineVersion(): string {
-    try {
-        // Works in both CJS (__dirname) and ESM (import.meta.url) bundles
-        const dir = typeof __dirname !== 'undefined'
-            ? __dirname
-            : dirname(fileURLToPath(import.meta.url));
-        const pkgPath = resolve(dir, '..', 'package.json');
-        const pkg = JSON.parse(readFileSync(pkgPath, 'utf-8'));
-        return pkg.version;
-    } catch {
-        return '2.1.1'; // Fallback
-    }
+    return __ENGINE_VERSION__;
 }
 
 function getStandardsVersion(): string {
