@@ -259,14 +259,14 @@ export function generateReportHTML(result: ScanResult): string {
                     <div class="violation-title">${report.ruleId}</div>
                     <div>
                         <span class="badge ${riskClass}">${report.holmdigitalInsight.diggRisk}</span>
-                        ${(report as any).legalContext?.appliesTo?.includes('WAD') ? '<span class="badge badge-wad">WAD</span>' : ''}
-                        ${(report as any).legalContext?.appliesTo?.includes('EAA') ? '<span class="badge badge-eaa">EAA</span>' : ''}
+                        ${report.legalContext?.appliesTo?.includes('WAD') ? '<span class="badge badge-wad">WAD</span>' : ''}
+                        ${report.legalContext?.appliesTo?.includes('EAA') ? '<span class="badge badge-eaa">EAA</span>' : ''}
                     </div>
                 </div>
                 <div class="violation-meta">
                     WCAG ${report.wcagCriteria} • EN 301 549 ${report.en301549Criteria}
                     ${report.dosLagenReference ? `• ${report.dosLagenReference}` : ''}
-                    ${(report as any).legalContext?.eaaDeadline ? `<br/><strong>⚠️ EAA Deadline:</strong> ${(report as any).legalContext.eaaDeadline}` : ''}
+                    ${report.legalContext?.eaaDeadline ? `<br/><strong>⚠️ EAA Deadline:</strong> ${report.legalContext.eaaDeadline}` : ''}
                 </div>
                 <div style="font-size: 0.95rem; color: #334155; line-height: 1.5;">
                     ${report.holmdigitalInsight.swedishInterpretation}

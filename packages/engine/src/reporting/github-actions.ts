@@ -19,7 +19,7 @@ export function generateGitHubActionsAnnotations(reports: EnrichedReport[]) {
 
         // Output for each failing node if available
         if (report.failingNodes && report.failingNodes.length > 0) {
-            report.failingNodes.forEach((node: any) => {
+            report.failingNodes.forEach((node) => {
                 // Format: ::level file={name},line={line},col={col}::{message}
                 // Since we don't always have file/line from a URL scan, we output as general log if missing
                 // but we can try to fallback to a generic message

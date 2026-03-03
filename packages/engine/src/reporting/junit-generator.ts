@@ -46,9 +46,9 @@ export function generateJUnitXML(result: ScanResult): string {
         xmlLines.push(`      <failure message="${message}" type="${severity}">${escapeXML(criteria)}\n${escapeXML(help)}</failure>`);
 
         // Add detailed node information in system-out if available
-        if ((report as any).failingNodes && (report as any).failingNodes.length > 0) {
+        if (report.failingNodes && report.failingNodes.length > 0) {
             let nodeInfo = 'Failing Nodes:\n';
-            (report as any).failingNodes.forEach((node: any, idx: number) => {
+            report.failingNodes.forEach((node, idx) => {
                 nodeInfo += `\n[Node ${idx + 1}]\n`;
                 nodeInfo += `Target: ${node.target}\n`;
                 nodeInfo += `HTML: ${node.html}\n`;
@@ -66,7 +66,7 @@ export function generateJUnitXML(result: ScanResult): string {
     return xmlLines.join('\n');
 }
 
-function escapeXML(unsafe: any): string {
+function escapeXML(unsafe: string | number | undefined | null): string {
     if (unsafe === undefined || unsafe === null) return '';
     const str = String(unsafe);
     return str.replace(/[<>&'"]/g, c => {
