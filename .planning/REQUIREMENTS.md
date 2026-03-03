@@ -34,11 +34,11 @@ Requirements for this milestone. Each maps to roadmap phases.
 
 ### Testing
 
-- [ ] **TEST-01**: Tests for `EnrichedReport` type usage through the enrichment pipeline (mocked axe output)
-- [ ] **TEST-02**: Tests for version resolution — build-time constant is correct, no hardcoded strings remain
+- [x] **TEST-01**: Tests for `EnrichedReport` type usage through the enrichment pipeline (mocked axe output)
+- [x] **TEST-02**: Tests for version resolution — build-time constant is correct, no hardcoded strings remain
 - [ ] **TEST-03**: Tests for all 9 locale routings in `AccessibilityStatement` component
 - [ ] **TEST-04**: Placeholder leakage test — no `{...}` template variables survive in rendered output for any locale
-- [ ] **TEST-05**: All existing tests continue to pass
+- [x] **TEST-05**: All existing tests continue to pass
 
 ## v2 Requirements
 
@@ -87,11 +87,11 @@ Which phases cover which requirements. Updated during roadmap creation.
 | I18N-01 | Phase 4 | Complete |
 | I18N-02 | Phase 4 | Complete |
 | I18N-03 | Phase 4 | Complete |
-| TEST-01 | Phase 5 | Pending |
-| TEST-02 | Phase 5 | Pending |
+| TEST-01 | Phase 5 | Complete |
+| TEST-02 | Phase 5 | Complete |
 | TEST-03 | Phase 5 | Pending |
 | TEST-04 | Phase 5 | Pending |
-| TEST-05 | Phase 5 | Pending |
+| TEST-05 | Phase 5 | Complete |
 
 **Coverage:**
 - v1 requirements: 21 total
