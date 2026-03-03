@@ -33,6 +33,6 @@
         "detailed_violations": "Yksityiskohtaiset rikkomukset",
         "prescriptive_fix": "💡 Ehdotettu korjaus",
         "use": "Käytä",
-        "footer": "Luonut @holmdigital/engine v0.1.0 • Standardit: WCAG 2.1 AA, EN 301 549, Digipalvelulaki"
+        "footer": "Luonut @holmdigital/engine v{version} • Standardit: WCAG 2.1 AA, EN 301 549, Digipalvelulaki"
     }
 }

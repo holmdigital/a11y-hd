@@ -33,6 +33,6 @@
         "detailed_violations": "Detaljerade brister",
         "prescriptive_fix": "💡 Preskriptiv Lösning",
         "use": "Använd",
-        "footer": "Genererad av @holmdigital/engine v0.1.0 • Standarder: WCAG 2.1 AA, EN 301 549, DOS-lagen"
+        "footer": "Genererad av @holmdigital/engine v{version} • Standarder: WCAG 2.1 AA, EN 301 549, DOS-lagen"
     }
 }

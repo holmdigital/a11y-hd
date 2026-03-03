@@ -33,6 +33,6 @@
         "detailed_violations": "Gedetailleerde overtredingen",
         "prescriptive_fix": "💡 Voorgeschreven oplossing",
         "use": "Gebruik",
-        "footer": "Gegenereerd door @holmdigital/engine v0.1.0 • Standaarden: WCAG 2.1 AA, EN 301 549, Besluit digitale toegankelijkheid overheid"
+        "footer": "Gegenereerd door @holmdigital/engine v{version} • Standaarden: WCAG 2.1 AA, EN 301 549, Besluit digitale toegankelijkheid overheid"
     }
 }

@@ -33,6 +33,6 @@
         "detailed_violations": "Detaillierte Verstöße",
         "prescriptive_fix": "💡 Vorschriftsmäßige Lösung",
         "use": "Verwenden",
-        "footer": "Generiert von @holmdigital/engine v0.1.0 • Standards: WCAG 2.1 AA, EN 301 549, BITV 2.0"
+        "footer": "Generiert von @holmdigital/engine v{version} • Standards: WCAG 2.1 AA, EN 301 549, BITV 2.0"
     }
 }

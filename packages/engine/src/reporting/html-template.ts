@@ -1,5 +1,5 @@
 
-import { ScanResult } from '../core/regulatory-scanner';
+import { ScanResult, getEngineVersion } from '../core/regulatory-scanner';
 import { generateBadgeUrl } from './badge-generator';
 import { t, getCurrentLang } from '../i18n';
 
@@ -283,7 +283,7 @@ export function generateReportHTML(result: ScanResult): string {
     }).join('')}
 
         <footer>
-            ${t('report.footer')}
+            ${t('report.footer', { version: getEngineVersion() })}
         </footer>
     </body>
     </html>

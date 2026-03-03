@@ -33,6 +33,6 @@
         "detailed_violations": "Detaljerte Brudd",
         "prescriptive_fix": "💡 Foreslått Løsning",
         "use": "Bruk",
-        "footer": "Generert av @holmdigital/engine v0.1.0 • Standarder: WCAG 2.1 AA, EN 301 549, Uu-tilsynet"
+        "footer": "Generert av @holmdigital/engine v{version} • Standarder: WCAG 2.1 AA, EN 301 549, Uu-tilsynet"
     }
 }

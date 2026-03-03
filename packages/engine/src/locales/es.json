@@ -33,6 +33,6 @@
         "detailed_violations": "Violaciones Detalladas",
         "prescriptive_fix": "💡 Solución Prescriptiva",
         "use": "Usar",
-        "footer": "Generado por @holmdigital/engine v0.1.0 • Estándares: WCAG 2.1 AA, EN 301 549, UNE 139803"
+        "footer": "Generado por @holmdigital/engine v{version} • Estándares: WCAG 2.1 AA, EN 301 549, UNE 139803"
     }
 }
