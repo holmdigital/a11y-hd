@@ -157,6 +157,81 @@ const TEMPLATES: Record<string, StatementTemplate> = {
             { id: "non-accessible", title: "Innhold som ikke er tilgjengelig", content: "Innholdet som er beskrevet nedenfor er på en eller annen måte ikke fullt ut tilgjengelig.\n\n[\n### Manglende samsvar med lovkravene\n{<mangler>}\n]" },
             { id: "testing", title: "Hvordan vi har testet nettstedet", content: "{Vi har gjort en egenevaluering (intern testing) av {<nettsted>}./{<ekstern aktor>} har gjort en uavhengig revisjon av {<nettsted>}./Vi har anslått tilgjengeligheten uten testing.}\n\nSiste vurdering ble gjort den {<vurderingsdato>}.\n\n[Vurderingsmetode: {<metode>}]\n\nNettstedet ble publisert den {<publiseringsdato>}.\n\nErklæringen ble sist oppdatert den {<oppdateringsdato>}." }
         ]
+    },
+    da: {
+        title: "Tilgængelighed for {<webbplats>}",
+        intro: "{<organisation>} står bag dette websted. Vi ønsker, at så mange som muligt skal kunne bruge det. Dette dokument beskriver, hvordan {<webbplats>} overholder loven om webtilgængelighed, eventuelle kendte tilgængelighedsproblemer, og hvordan du kan rapportere mangler til os, så vi kan udbedre dem.",
+        sections: [
+            { id: "how-accessible", title: "Hvor tilgængeligt er webstedet?", content: "{Vi har ingen kendte mangler i tilgængeligheden for dette websted./Vi er opmærksomme på, at dele af webstedet ikke er helt tilgængelige. Se afsnittet om indhold, der ikke er tilgængeligt nedenfor for mere information./Vi er opmærksomme på, at dele af webstedet ikke er helt tilgængelige. Se afsnittet om indhold, der ikke er tilgængeligt nedenfor for mer information.}" },
+            { id: "what-to-do", title: "Hvad kan du gøre, hvis du ikke kan bruge dele af webstedet?", content: "Hvis du har brug for indhold fra {<webbplats>}, som ikke er tilgængeligt for dig, men som er undtaget fra lovens område som beskrevet nedenfor, kan du meddele os det.\n\n[Svartiden er normalt {<svartid>}.]\n\n[Du kan også kontakte os på følgende måder:\n\n* send e-mail til {<e-mailadresse>}\n* ring {<telefonnummer>}]" },
+            { id: "reporting", title: "Rapporter mangler i webstedets tilgængelighed", content: "Vi stræber hele tiden efter at forbedre webstedets tilgængelighed. Hvis du opdager problemer, der ikke er beskrevet på denne side, eller hvis du mener, at vi ikke overholder lovens krav, skal du give os besked, så vi ved, at problemet eksisterer." },
+            { id: "enforcement", title: "Håndhævelsesprocedure", content: "{<enforcement_body>} har ansvaret for tilsyn med loven om webtilgængelighed. Du kan klage til {<enforcement_body>}, hvis du mener, at vores digitale service har mangler i tilgængeligheden.\n\nDu kan også klage til {<enforcement_body>}, hvis du mener, at vores vurdering af, hvad der er en uforholdsmæssig stor byrde, skal gennemgås, hvis du mener, at vores tilgængelighedserklæring har mangler, eller hvis du mener, at vi ikke har håndteret din anmodning om tilgængeliggørelse korrekt." },
+            { id: "technical", title: "Teknisk information om webstedets tilgængelighed", content: "{Dette websted er fuldt ud i overensstemmelse med loven om webtilgængelighed./Dette websted er delvist i overensstemmelse med loven om webtilgængelighed på grund af de mangler, der er beskrevet nedenfor./Dette websted er ikke i overensstemmelse med loven om webtilgængelighed. Utilgængelige dele er beskrevet nedenfor.}" },
+            { id: "non-accessible", title: "Indhold der ikke er tilgængeligt", content: "Det indhold, der er beskrevet nedenfor, er på den ene eller anden måde ikke helt tilgængeligt.\n\n[\n**Manglende overholdelse af lovkravene**\n\n{<mangler>}\n]" },
+            { id: "testing", title: "Hvordan vi har testet webstedet", content: "{Vi har foretaget en selvvurdering (intern test) af {<webbplats>}./{<ekstern aktør>} har foretaget en uafhængig gennemgang af {<webbplats>}./Vi har anslået tilgængeligheden uden test.}\n\nDen seneste vurdering blev foretaget den {<vurderingsdato>}.\n\n[Vurderingsmetode: {<metode>}]\n\nWebstedet blev offentliggjort den {<offentliggørelsesdato>}.\n\nErklæringen blev senest opdateret den {<opdateringsdato>}." }
+        ]
+    },
+    de: {
+        title: "Barrierefreiheitserklärung für {<webbplats>}",
+        intro: "{<organisation>} ist bemüht, ihre Website im Einklang mit den nationalen Rechtsvorschriften zur Umsetzung der Richtlinie (EU) 2016/2102 des Europäischen Parlaments und des Rates barrierefrei zugänglich zu machen. Diese Erklärung zur Barrierefreiheit gilt für {<webbplats>}.",
+        sections: [
+            { id: "how-accessible", title: "Stand der Vereinbarkeit mit den Anforderungen", content: "{Diese Website ist vollständig mit den Barrierefreiheitsanforderungen vereinbar./Diese Website ist wegen der folgenden Unvereinbarkeiten teilweise mit den Barrierefreiheitsanforderungen vereinbar./Diese Website ist nicht mit den Barrierefreiheitsanforderungen vereinbar. Die nicht barrierefreien Inhalte sind nachstehend aufgeführt.}" },
+            { id: "what-to-do", title: "Nicht barrierefreie Inhalte", content: "Die nachstehend aufgeführten Inhalte sind aus den folgenden Gründen nicht barrierefrei:\n\n[\n**Unvereinbarkeit mit den Barrierefreiheitsanforderungen**\n\n{<mängel>}\n]\n\n[Unsere normale Antwortzeit beträgt {<svarstid>}.]\n\n[Sie können uns auch wie folgt kontaktieren:\n\n* E-Mail an {<e-mailadresse>}\n* Telefon {<telefonnummer>}]" },
+            { id: "reporting", title: "Feedback und Kontaktangaben", content: "Wir bemühen uns, die Barrierefreiheit unserer Website stetig zu verbessern. Wenn Sie Mängel bei der Einhaltung der Barrierefreiheitsanforderungen feststellen oder Informationen über von der Richtlinie ausgenommene Inhalte benötigen, können Sie uns kontaktieren." },
+            { id: "enforcement", title: "Durchsetzungsverfahren", content: "Die {<enforcement_body>} ist für die Überwachung der Barrierefreiheitsanforderungen zuständig. Wenn Sie auf unsere Benachrichtigungen oder Anfragen keine zufriedenstellende Antwort erhalten haben, können Sie sich an {<enforcement_body>} wenden.\n\nSie können auch eine Beschwerde bei {<enforcement_body>} einreichen, wenn Sie der Meinung sind, dass unsere Einschätzung einer unverhältnismäßigen Belastung überprüft werden sollte, wenn Sie Mängel in unserer Barrierefreiheitserklärung feststellen oder wenn Sie der Meinung sind, dass wir Ihren Antrag auf barrierefreie Bereitstellung von Inhalten nicht korrekt bearbeitet haben." },
+            { id: "technical", title: "Technische Informationen zur Barrierefreiheit der Website", content: "{Diese Website ist vollständig mit den Barrierefreiheitsanforderungen vereinbar./Diese Website ist wegen der folgenden Unvereinbarkeiten teilweise mit den Barrierefreiheitsanforderungen vereinbar./Diese Website ist nicht mit den Barrierefreiheitsanforderungen vereinbar.}" },
+            { id: "testing", title: "Erstellung dieser Erklärung zur Barrierefreiheit", content: "{Wir haben eine Selbstbewertung (interner Test) der Website {<webbplats>} durchgeführt./Ein {<externer Dritter>} hat eine unabhängige Prüfung der Website {<webbplats>} durchgeführt./Wir haben die Barrierefreiheit ohne Prüfung geschätzt.}\n\nDie letzte Bewertung wurde am {<bewertungsdatum>} vorgenommen.\n\n[Bewertungsmethode: {<methode>}]\n\nDie Website wurde am {<veröffentlichungsdatum>} veröffentlicht.\n\nDie Erklärung wurde zuletzt am {<aktualisierungsdatum>} aktualisiert." }
+        ]
+    },
+    fr: {
+        title: "Déclaration d'accessibilité pour {<webbplats>}",
+        intro: "{<organisation>} s'engage à rendre son site internet accessible conformément à l'article 47 de la loi n° 2005-102 du 11 février 2005. Cette déclaration d'accessibilité s'applique à {<webbplats>}.",
+        sections: [
+            { id: "how-accessible", title: "État de conformité", content: "{Ce site est totalement conforme avec le référentiel général d'amélioration de l'accessibilité (RGAA)./Ce site est partiellement conforme avec le référentiel général d'amélioration de l'accessibilité (RGAA) en raison des non-conformités énumérées ci-dessous./Ce site n'est pas conforme avec le référentiel général d'amélioration de l'accessibilité (RGAA). Les contenus non accessibles sont énumérés ci-dessous.}" },
+            { id: "what-to-do", title: "Contenus non accessibles", content: "Les contenus listés ci-dessous ne sont pas accessibles pour les raisons suivantes :\n\n[\n**Non-conformité avec le RGAA**\n\n{<défauts>}\n]\n\n[Notre délai de réponse habituel est de {<svarstid>}.]\n\n[Vous pouvez également nous contacter des manières suivantes :\n\n* envoyer un e-mail à {<e-mailadresse>}\n* appeler le {<telefoonnummer>}]" },
+            { id: "reporting", title: "Retour d'information et contact", content: "Nous nous efforçons d'améliorer constamment l'accessibilité de notre site. Si vous constatez un défaut de conformité, vous pouvez nous contacter pour nous en informer." },
+            { id: "enforcement", title: "Voies de recours", content: "Le {<enforcement_body>} est responsable du contrôle de la conformité aux exigences d'accessibilité. Si vous ne recevez pas de réponse satisfaisante à votre signalement, vous pouvez contacter {<enforcement_body>}.\n\nVous pouvez également déposer une plainte auprès de {<enforcement_body>} si vous estimez que notre évaluation de la charge disproportionnée doit être revue, si vous constatez des défauts dans notre déclaration d'accessibilité ou si vous estimez que nous n'avons pas traité correctement votre demande de mise en accessibilité." },
+            { id: "technical", title: "Informations techniques sur l'accessibilité du site", content: "{Ce site est totalement conforme./Ce site est partiellement conforme en raison des défauts décrits ci-dessous./Ce site n'est pas conforme.}" },
+            { id: "testing", title: "Établissement de cette déclaration d'accessibilité", content: "{Nous avons réalisé une auto-évaluation (test interne) du site {<webbplats>}./Un {<tiers externe>} a réalisé un audit indépendant du site {<webbplats>}./Nous avons estimé l'accessibilité sans audit.}\n\nLa dernière évaluation a été réalisée le {<date_evaluation>}.\n\n[Méthode d'évaluation : {<méthode>}]\n\nLe site a été publié le {<date_publication>}.\n\nLa déclaration a été mise à jour pour la dernière fois le {<date_mise_a_jour>}." }
+        ]
+    },
+    es: {
+        title: "Declaración de accesibilidad para {<webbplats>}",
+        intro: "{<organisation>} se ha comprometido a hacer accesible su sitio web de conformidad con la legislación nacional que transpone la Directiva (UE) 2016/2102 del Parlamento Europeo y del Consejo. Esta declaración de accesibilidad se aplica a {<webbplats>}.",
+        sections: [
+            { id: "how-accessible", title: "Situación de cumplimiento", content: "{Este sitio web es plenamente conforme con el estándar de accesibilidad./Este sitio web es parcialmente conforme con el estándar de accesibilidad debido a las faltas de conformidad que se indican a continuación./Este sitio web no es conforme con el estándar de accesibilidad. Los contenidos no accesibles se indican a continuación.}" },
+            { id: "what-to-do", title: "Contenido no accesible", content: "El contenido que se recoge a continuación no es accesible por los siguientes motivos:\n\n[\n**Falta de conformidad con el estándar**\n\n{<deficiencias>}\n]\n\n[Nuestro tiempo de respuesta normal es de {<svarstid>}.]\n\n[También puede contactar con nosotros de las siguientes maneras:\n\n* enviar un correo electrónico a {<e-mailadresse>}\n* llamar al {<telefoonnummer>}]" },
+            { id: "reporting", title: "Mecanismo de comunicación y datos de contacto", content: "Nos esforzamos por mejorar constantemente la accesibilidad de nuestro sitio web. Si encuentra algún problema de accesibilidad, puede ponerse en contacto con nosotros para informarnos." },
+            { id: "enforcement", title: "Procedimiento de aplicación", content: "El {<enforcement_body>} es responsable de supervisar los requisitos de accesibilidad. Si no ha recibido una respuesta satisfactoria a su notificación, puede ponerse en contacto con {<enforcement_body>}.\n\nTambién puede presentar una reclamación ante {<enforcement_body>} si considera que nuestra evaluación de lo que constituye una carga desproporcionada debe ser revisada, si encuentra deficiencias en nuestra declaración de accesibilidad o si considera que no hemos gestionado correctamente su solicitud de accesibilidad." },
+            { id: "technical", title: "Información técnica sobre la accesibilidad del sitio web", content: "{Este sitio web es plenamente conforme./Este sitio web es parcialmente conforme debido a las deficiencias descritas a continuación./Este sitio web no es conforme.}" },
+            { id: "testing", title: "Preparación de la presente declaración de accesibilidad", content: "{Hemos realizado una autoevaluación (prueba interna) del sitio web {<webbplats>}./Un {<tercero externo>} ha realizado una auditoría independiente del sitio web {<webbplats>}./Hemos estimado la accesibilidad sin realizar pruebas.}\n\nLa última evaluación se realizó el {<fecha_evaluacion>}.\n\n[Método de evaluación: {<metodo>}]\n\nEl sitio web se publicó el {<fecha_publicacion>}.\n\nLa declaración se actualizó por última vez el {<fecha_actualizacion>}." }
+        ]
+    },
+    fi: {
+        title: "Saavutettavuusseloste: {<webbplats>}",
+        intro: "{<organisation>} on tämän verkkosivuston ylläpitäjä. Haluamme, että mahdollisimman monet voivat käyttää sivustoa. Tässä asiakirjassa kuvataan, miten {<webbplats>} täyttää digitaalisten palvelujen tarjoamisesta annetun lain vaatimukset, mahdolliset tiedossa olevat saavutettavuusongelmat ja miten voit ilmoittaa meille puutteista, jotta voimme korjata ne.",
+        sections: [
+            { id: "how-accessible", title: "Kuinka saavutettava verkkosivusto on?", content: "{Tämän verkkosivuston saavutettavuudessa ei ole tiedossa olevia puutteita./Olemme tietoisia siitä, että osat verkkosivustosta eivät ole täysin saavutettavia. Lisätietoja on jäljempänä osiossa saavutettavuusvaatimusten vastainen sisältö./Olemme tietoisia siitä, että osat verkkosivustosta eivät ole täysin saavutettavia. Lisätietoja on jäljempänä osiossa saavutettavuusvaatimusten vastainen sisältö.}" },
+            { id: "what-to-do", title: "Mitä voit tehdä, jos et pysty käyttämään osia verkkosivustosta?", content: "Jos tarvitset sisältöä verkkosivustolta {<webbplats>}, joka ei ole sinulle saavutettavissa, mutta joka on jätetty lain soveltamisalan ulkopuolelle jäljempänä kuvatulla tavalla, voit ilmoittaa siitä meille.\n\n[Vastausaika on yleensä {<svarstid>}.]\n\n[Voit myös ottaa meihin yhteyttä seuraavilla tavoilla:\n\n* lähetä sähköpostia osoitteeseen {<e-mailosoite>}\n* soita numeroon {<puhelinnumero>}]" },
+            { id: "reporting", title: "Anna palautetta saavutettavuuspuutteista", content: "Pyrimme jatkuvasti parantamaan verkkosivuston saavutettavuutta. Jos havaitset ongelmia, joita ei ole kuvattu tällä sivulla, tai jos katsot, ettemme täytä lain vaatimuksia, ilmoita siitä meille, jotta saamme tietää ongelmasta." },
+            { id: "enforcement", title: "Täytäntöönpanomenettely", content: "{<enforcement_body>} vastaa digitaalisten palvelujen saavutettavuutta koskevan lain valvonnasta. Voit tehdä ilmoituksen {<enforcement_body>}lle, jos katsot, että digitaalisessa palvelussamme on saavutettavuuspuutteita.\n\nVoit myös tehdä ilmoituksen {<enforcement_body>}lle, jos katsot, että arviomme kohtuuttomasta rasitteesta on tarkistettava, jos katsot saavutettavuusselosteessamme olevan puutteita tai jos katsot, ettemme ole käsitelleet saavutettavuuspyyntöäsi oikein." },
+            { id: "technical", title: "Teknistä tietoa verkkosivuston saavutettavuudesta", content: "{Tämä verkkosivusto on täysin digitaalisten palvelujen tarjoamisesta annetun lain mukainen./Tämä verkkosivusto on osittain digitaalisten palvelujen tarjoamisesta annetun lain mukainen jäljempänä mainittujen puutteiden vuoksi./Tämä verkkosivusto ei ole digitaalisten palvelujen tarjoamisesta annetun lain mukainen. Puutteelliset osat on kuvattu jäljempänä.}" },
+            { id: "non-accessible", title: "Sisältö joka ei ole saavutettavaa", content: "Jäljempänä mainittu sisältö ei ole täysin saavutettavaa.\n\n[\n**Puutteet lain vaatimusten täyttämisessä**\n\n{<puutteet>}\n]" },
+            { id: "testing", title: "Kuinka olemme testanneet verkkosivuston", content: "{Olemme tehneet itsearvion (sisäinen testaus) verkkosivustolle {<webbplats>}./{<ulkoinen taho>} on tehnyt riippumattoman tarkastuksen verkkosivustolle {<webbplats>}./Olemme arvioineet saavutettavuuden ilman testausta.}\n\nViimeisin arviointi on tehty {<arviointipäivä>}.\n\n[Arviointimenetelmä: {<metodi>}]\n\nVerkkosivusto on julkaistu {<julkaisupäivä>}.\n\nSeloste on päivitetty viimeksi {<päivityspäivä>}." }
+        ]
+    },
+    nl: {
+        title: "Toegankelijkheidsverklaring voor {<webbplats>}",
+        intro: "{<organisation>} is verantwoordelijk voor deze website. Wij willen dat iedereen onze website kan gebruiken. In dit document wordt beschreven hoe {<webbplats>} voldoet aan de wet digitale toegankelijkheid overheid, welke toegankelijkheidsproblemen bekend zijn en hoe u eventuele gebreken aan ons kunt melden, zodat we deze kunnen verhelpen.",
+        sections: [
+            { id: "how-accessible", title: "Hoe toegankelijk is de website?", content: "{Er zijn geen toegankelijkheidsproblemen bekend bij deze website./Wij zijn ervan op de hoogte dat delen van de website niet volledig toegankelijk zijn. Zie de sectie over inhoud die niet toegankelijk is hieronder voor meer informatie./Wij zijn ervan op de hoogte dat delen van de website niet volledig toegankelijk zijn. Zie de sectie over inhoud die niet toegankelijk is hieronder voor meer informatie.}" },
+            { id: "what-to-do", title: "Wat kunt u doen als u delen van de website niet kunt gebruiken?", content: "Als u inhoud van {<webbplats>} nodig heeft die voor u niet toegankelijk is, maar die buiten het toepassingsgebied van de wet valt zoals hieronder beschreven, kunt u dit aan ons melden.\n\n[De reactietijd is normaal gesproken {<svarstid>}.]\n\n[U kunt ook op de volgende manieren contact met ons opnemen:\n\n* stuur een e-mail naar {<e-mailadres>}\n* bel naar {<telefoonnummer>}]" },
+            { id: "reporting", title: "Meld toegankelijkheidsproblemen", content: "Wij streven er voortdurend naar de toegankelijkheid van onze website te verbeteren. Als u problemen tegenkomt die niet op deze pagina worden vermeld, of als u van mening bent dat wij niet aan de wettelijke eisen voldoen, laat het ons dan weten, zodat we op de hoogte zijn van het probleem." },
+            { id: "enforcement", title: "Handhavingsprocedure", content: "{<enforcement_body>} is verantwoordelijk voor het toezicht op de naleving van de wet digitale toegankelijkheid overheid. U kunt een klacht indienen bij {<enforcement_body>} als u van mening bent dat onze digitale dienstverlening gebreken vertoont op het gebied van toegankelijkheid.\n\nU kunt ook een klacht indienen bij {<enforcement_body>} als u vindt dat ons oordeel over wat een onevenredige last is, moet worden herzien, als u vindt dat onze toegankelijkheidsverklaring gebreken vertoont of als u vindt dat wij uw verzoek om toegankelijkmaking niet correct hebben behandeld." },
+            { id: "technical", title: "Technische informatie over de toegankelijkheid van de website", content: "{Deze website is volledig in overeenstemming met de wet digitale toegankelijkheid overheid./Deze website is gedeeltelijk in overeenstemming met de wet digitale toegankelijkheid overheid, vanwege de hieronder beschreven gebreken./Deze website is niet in overeenstemming met de wet digitale toegankelijkheid overheid. De niet-toegankelijke delen worden hieronder beschreven.}" },
+            { id: "non-accessible", title: "Inhoud die niet toegankelijk is", content: "De hieronder beschreven inhoud is op de een of andere manier niet volledig toegankelijk.\n\n[\n**Niet-naleving van de wettelijke eisen**\n\n{<gebreken>}\n]" },
+            { id: "testing", title: "Hoe wij de website hebben getest", content: "{Wij hebben een zelfevaluatie (interne test) uitgevoerd van {<webbplats>}./{<externe partij>} heeft een onafhankelijke controle uitgevoerd van {<webbplats>}./Wij hebben de toegankelijkheid ingeschat zonder te testen.}\n\nDe laatste beoordeling is uitgevoerd op {<beoordelingsdatum>}.\n\n[Beoordelingsmethode: {<methode>}]\n\nDe website is gepubliceerd op {<publicatiedatum>}.\n\nDe verklaring is voor het laatst bijgewerkt op {<updatedatum>}." }
+        ]
     }
 };
 
@@ -289,7 +364,54 @@ export const AccessibilityStatement: React.FC<AccessibilityStatementProps> = ({
     replacements['{<metode>}'] = evaluationMethod || 'Automated Scan';
     replacements['{<publiseringsdato>}'] = publishDate ? d(publishDate) : '2024-01-01';
 
+    // DA-specific mappings
+    replacements['{<e-mailadresse>}'] = contactEmail;
+    replacements['{<ekstern aktør>}'] = generatorTool?.name || 'HolmDigital Engine';
+    replacements['{<offentliggørelsesdato>}'] = publishDate ? d(publishDate) : '2024-01-01';
+    replacements['{<opdateringsdato>}'] = d(lastReviewDate);
 
+    // DE-specific mappings
+    replacements['{<bewertungsdatum>}'] = assessmentDate ? d(assessmentDate) : d(lastReviewDate);
+    replacements['{<veröffentlichungsdatum>}'] = publishDate ? d(publishDate) : '2024-01-01';
+    replacements['{<aktualisierungsdatum>}'] = d(lastReviewDate);
+    replacements['{<methode>}'] = evaluationMethod || 'Automated Scan';
+    replacements['{<externer Dritter>}'] = generatorTool?.name || 'HolmDigital Engine';
+    replacements['{<mängel>}'] = issuesContent;
+
+    // FR-specific mappings
+    replacements['{<date_evaluation>}'] = assessmentDate ? d(assessmentDate) : d(lastReviewDate);
+    replacements['{<date_publication>}'] = publishDate ? d(publishDate) : '2024-01-01';
+    replacements['{<date_mise_a_jour>}'] = d(lastReviewDate);
+    replacements['{<méthode>}'] = evaluationMethod || 'Automated Scan';
+    replacements['{<tiers externe>}'] = generatorTool?.name || 'HolmDigital Engine';
+    replacements['{<défauts>}'] = issuesContent;
+    replacements['{<telefoonnummer>}'] = phoneNumber || '';
+
+    // ES-specific mappings
+    replacements['{<fecha_evaluacion>}'] = assessmentDate ? d(assessmentDate) : d(lastReviewDate);
+    replacements['{<fecha_publicacion>}'] = publishDate ? d(publishDate) : '2024-01-01';
+    replacements['{<fecha_actualizacion>}'] = d(lastReviewDate);
+    replacements['{<metodo>}'] = evaluationMethod || 'Automated Scan';
+    replacements['{<tercero externo>}'] = generatorTool?.name || 'HolmDigital Engine';
+    replacements['{<deficiencias>}'] = issuesContent;
+
+    // FI-specific mappings
+    replacements['{<arviointipäivä>}'] = assessmentDate ? d(assessmentDate) : d(lastReviewDate);
+    replacements['{<julkaisupäivä>}'] = publishDate ? d(publishDate) : '2024-01-01';
+    replacements['{<päivityspäivä>}'] = d(lastReviewDate);
+    replacements['{<metodi>}'] = evaluationMethod || 'Automated Scan';
+    replacements['{<ulkoinen taho>}'] = generatorTool?.name || 'HolmDigital Engine';
+    replacements['{<puutteet>}'] = issuesContent;
+    replacements['{<e-mailosoite>}'] = contactEmail;
+    replacements['{<puhelinnumero>}'] = phoneNumber || '';
+
+    // NL-specific mappings
+    replacements['{<beoordelingsdatum>}'] = assessmentDate ? d(assessmentDate) : d(lastReviewDate);
+    replacements['{<publicatiedatum>}'] = publishDate ? d(publishDate) : '2024-01-01';
+    replacements['{<updatedatum>}'] = d(lastReviewDate);
+    replacements['{<externe partij>}'] = generatorTool?.name || 'HolmDigital Engine';
+    replacements['{<gebreken>}'] = issuesContent;
+    replacements['{<e-mailadres>}'] = contactEmail;
 
     const renderTemplate = (tmpl: string) => {
         let text = tmpl;
