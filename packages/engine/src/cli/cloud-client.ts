@@ -38,14 +38,14 @@ export interface CloudPayload {
  * Transform ScanResult to CloudPayload format
  */
 export function transformToCloudPayload(result: ScanResult): CloudPayload {
-    const violations: CloudViolation[] = result.reports.map((report: any) => {
+    const violations: CloudViolation[] = result.reports.map((report) => {
         const firstNode = report.failingNodes?.[0];
 
         return {
             rule_id: report.ruleId,
             impact: report.holmdigitalInsight?.diggRisk || 'medium',
             wcag_criteria: report.wcagCriteria ? [report.wcagCriteria] : [],
-            element_selector: firstNode?.target || '',
+            element_selector: Array.isArray(firstNode?.target) ? firstNode.target.join(' ') : (firstNode?.target || ''),
             element_html: firstNode?.html || '',
             failure_summary: report.holmdigitalInsight?.reasoning || report.remediation?.description || '',
             fix_suggestion: report.remediation?.description || ''

@@ -14,6 +14,7 @@ import { generatePDF } from '../reporting/pdf-generator';
 import { generateStatement, generateStatementContent, StatementMetadata } from '../reporting/statement-generator';
 import { generateBadgeMarkdown } from '../reporting/badge-generator';
 import { setLanguage, t } from '../i18n';
+import type { EnrichedReport } from '@holmdigital/standards';
 import { sendToCloud, CloudConfig } from './cloud-client';
 
 /**
@@ -99,7 +100,7 @@ program
             pdf?: string;
             statement?: string;
             format: 'html' | 'md' | 'markdown';
-            viewport?: any;
+            viewport?: string | { width: number; height: number };
             threshold: string;
             apiKey?: string;
             cloudUrl: string;
@@ -213,7 +214,7 @@ program
 
                 // 2. Category Progress Bars
                 // Provide a rough visualization based on types of failures found
-                const calculateCategoryScore = (filterFn: (r: any) => boolean) => {
+                const calculateCategoryScore = (filterFn: (r: EnrichedReport) => boolean) => {
                     const failures = result.reports.filter(filterFn).length;
                     // Formula: Start at 100, deduct 20 per failure, min 10.
                     return Math.max(10, 100 - (failures * 20));
@@ -260,11 +261,11 @@ program
                 if (result.legalSummary && result.legalSummary.eaaDeadlineViolations > 0) {
                     legalRisk = 'HIGH';
                     // Determine actual risk reason based on violations
-                    const hasKeyboardIssues = result.reports.some((r: any) =>
+                    const hasKeyboardIssues = result.reports.some(r =>
                         ['2.1.1', '2.1.2'].some(c => r.wcagCriteria.includes(c)));
-                    const hasContrastIssues = result.reports.some((r: any) =>
+                    const hasContrastIssues = result.reports.some(r =>
                         r.wcagCriteria.includes('1.4.3') || r.ruleId === 'color-contrast');
-                    const hasStructureIssues = result.reports.some((r: any) =>
+                    const hasStructureIssues = result.reports.some(r =>
                         r.wcagCriteria.includes('1.3.1'));
 
                     if (hasKeyboardIssues) riskReason = 'Keyboard accessibility blocks EAA compliance';
@@ -286,7 +287,7 @@ program
                     console.log(chalk.red.bold('⚠️  Structural HTML Issues Detected'));
                     console.log(chalk.yellow('    These issues may affect accessibility tool accuracy (e.g. contrast calculations)\n'));
 
-                    result.htmlValidation.errors.forEach((error: any) => {
+                    result.htmlValidation.errors.forEach((error) => {
                         console.log(chalk.red(`    [${error.rule}] ${error.message}`));
                     });
                     console.log(chalk.gray('    ... and more (run with --json for full details)'));
@@ -298,7 +299,7 @@ program
                     console.log(chalk.bold('Top Violations:'));
                 }
 
-                result.reports.forEach((report: any, i: number) => {
+                result.reports.forEach((report, i) => {
                     if (i > 5) return; // Limit to top 5 for CLI readability
 
                     const color = report.holmdigitalInsight.diggRisk === 'critical' ? chalk.red : chalk.yellow;

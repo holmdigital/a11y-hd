@@ -27,6 +27,12 @@ export interface StatementMetadata {
 /**
  * Generates an HTML or Markdown Accessibility Statement from scan results
  */
+interface StatementTemplate {
+    title: string;
+    intro: string;
+    sections: Array<{ id?: string; title: string; content: string }>;
+}
+
 export async function generateStatementContent(
     result: ScanResult,
     lang: string = 'en',
@@ -34,7 +40,7 @@ export async function generateStatementContent(
     metadata?: StatementMetadata
 ): Promise<string> {
     // 0. Load Template
-    let template: any;
+    let template: StatementTemplate | undefined;
     const possibleTemplatePaths = [
         path.join(__dirname_esm, 'templates', `${lang}.json`),
         path.join(__dirname_esm, '../src/reporting/templates', `${lang}.json`),
@@ -45,7 +51,7 @@ export async function generateStatementContent(
     for (const p of possibleTemplatePaths) {
         try {
             const data = await fs.readFile(p, 'utf-8');
-            template = JSON.parse(data);
+            template = JSON.parse(data) as StatementTemplate;
             loaded = true;
             break;
         } catch (e) {
@@ -64,7 +70,7 @@ export async function generateStatementContent(
         for (const p of fallbackPaths) {
             try {
                 const data = await fs.readFile(p, 'utf-8');
-                template = JSON.parse(data);
+                template = JSON.parse(data) as StatementTemplate;
                 loaded = true;
                 break;
             } catch (e) {
@@ -73,7 +79,7 @@ export async function generateStatementContent(
         }
     }
 
-    if (!loaded) {
+    if (!loaded || !template) {
         throw new Error(`Accessibility statement templates missing. Looked in: ${possibleTemplatePaths.join(', ')}`);
     }
 
@@ -99,7 +105,7 @@ export async function generateStatementContent(
     const nonComplianceItems = Array.from(issuesMap.values());
 
     // 3. Determine Country/Sector
-    let country: any = metadata?.country || 'SE';
+    let country: Country = (metadata?.country || 'SE') as Country;
     if (!metadata?.country) {
         if (result.url.endsWith('.no')) country = 'NO';
         if (result.url.endsWith('.dk')) country = 'DK';
@@ -249,7 +255,7 @@ export async function generateStatementContent(
             '{<tiers externe>}': props.generatorTool?.name || 'HolmDigital Engine',
             '{<tercero externo>}': props.generatorTool?.name || 'HolmDigital Engine',
             '{<third party>}': props.generatorTool?.name || 'HolmDigital Engine',
-            '{<enforcement_body>}': ENFORCEMENT_BODIES[country as Country] || ENFORCEMENT_BODIES.EU,
+            '{<enforcement_body>}': ENFORCEMENT_BODIES[country] || ENFORCEMENT_BODIES.EU,
             '{<brister>}': nonComplianceItems.length > 0 ? nonComplianceItems.map(item => `* ${item}`).join('\n') : (lang === 'sv' ? 'Inga kända brister.' : 'No known issues.'),
             '{<puutteet>}': nonComplianceItems.length > 0 ? nonComplianceItems.map(item => `* ${item}`).join('\n') : (lang === 'fi' ? 'Ei tiedossa olevia puutteita.' : 'No known issues.'),
             '{<gebreken>}': nonComplianceItems.length > 0 ? nonComplianceItems.map(item => `* ${item}`).join('\n') : (lang === 'nl' ? 'Geen bekende gebreken.' : 'No known issues.'),
@@ -296,7 +302,7 @@ export async function generateStatementContent(
 
         const title = processText(template.title);
         const intro = processText(template.intro);
-        const sections = template.sections.map((s: any) => `## ${s.title}\n\n${processText(s.content)}`).join('\n\n');
+        const sections = template.sections.map(s => `## ${s.title}\n\n${processText(s.content)}`).join('\n\n');
 
         content = `# ${title}\n\n${intro}\n\n${sections}\n\n---\nGenerated using [${props.generatorTool?.name || 'HolmDigital Engine'}](${props.generatorTool?.url || 'https://holmdigital.se'})`;
     }
