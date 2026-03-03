@@ -36,8 +36,8 @@ Requirements for this milestone. Each maps to roadmap phases.
 
 - [x] **TEST-01**: Tests for `EnrichedReport` type usage through the enrichment pipeline (mocked axe output)
 - [x] **TEST-02**: Tests for version resolution — build-time constant is correct, no hardcoded strings remain
-- [ ] **TEST-03**: Tests for all 9 locale routings in `AccessibilityStatement` component
-- [ ] **TEST-04**: Placeholder leakage test — no `{...}` template variables survive in rendered output for any locale
+- [x] **TEST-03**: Tests for all 9 locale routings in `AccessibilityStatement` component
+- [x] **TEST-04**: Placeholder leakage test — no `{...}` template variables survive in rendered output for any locale
 - [x] **TEST-05**: All existing tests continue to pass
 
 ## v2 Requirements
@@ -71,9 +71,9 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| TS-01 | Phase 1 | Pending |
-| TS-02 | Phase 1 | Pending |
-| TS-03 | Phase 1 | Pending |
+| TS-01 | Phase 1 | Complete |
+| TS-02 | Phase 1 | Complete |
+| TS-03 | Phase 1 | Complete |
 | TS-04 | Phase 1 | Complete |
 | TS-05 | Phase 3 | Complete |
 | TS-06 | Phase 3 | Complete |
@@ -89,8 +89,8 @@ Which phases cover which requirements. Updated during roadmap creation.
 | I18N-03 | Phase 4 | Complete |
 | TEST-01 | Phase 5 | Complete |
 | TEST-02 | Phase 5 | Complete |
-| TEST-03 | Phase 5 | Pending |
-| TEST-04 | Phase 5 | Pending |
+| TEST-03 | Phase 5 | Complete |
+| TEST-04 | Phase 5 | Complete |
 | TEST-05 | Phase 5 | Complete |
 
 **Coverage:**
@@ -100,4 +100,4 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 ---
 *Requirements defined: 2026-03-02*
-*Last updated: 2026-03-02 — traceability completed after roadmap creation*
+*Last updated: 2026-03-03 — all v1 requirements complete*

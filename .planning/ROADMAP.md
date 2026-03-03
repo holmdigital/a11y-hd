@@ -15,8 +15,8 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 1: Standards Types** - Define `FailingNode`, `EnrichedReport`, and tighten `HolmDigitalInsight` in `@holmdigital/standards` (completed 2026-03-02)
 - [x] **Phase 2: Version Fix** - Inject engine version at build time via tsup `define`; eliminate all hardcoded version strings (completed 2026-03-03)
 - [x] **Phase 3: Engine Casts** - Remove all `as any` casts from the engine, reporting, CLI, and i18n paths using the new types (completed 2026-03-03)
-- [ ] **Phase 4: Locale Routing** - Fix `AccessibilityStatement` to correctly route all 9 supported locales
-- [ ] **Phase 5: Test Coverage** - Add tests for enrichment pipeline, version resolution, and all 9 locale routings
+- [x] **Phase 4: Locale Routing** - Fix `AccessibilityStatement` to correctly route all 9 supported locales (completed 2026-03-03)
+- [x] **Phase 5: Test Coverage** - Add tests for enrichment pipeline, version resolution, and all 9 locale routings (completed 2026-03-03)
 
 ## Phase Details
 
@@ -34,7 +34,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 Plans:
 - [x] 01-01-PLAN.md — Define FailingNode, EnrichedReport, tighten HolmDigitalInsight in standards types.ts + re-export from index.ts
-- [ ] 01-02-PLAN.md — Update ScanResult.reports to EnrichedReport[] in engine regulatory-scanner.ts + full monorepo build verification
+- [x] 01-02-PLAN.md — Update ScanResult.reports to EnrichedReport[] in engine regulatory-scanner.ts + full monorepo build verification
 
 ### Phase 2: Version Fix
 **Goal**: Every version string the engine emits (CLI output, cloud API payload, scan metadata) derives from a single build-time constant — no hardcoded values remain in source files
@@ -48,8 +48,8 @@ Plans:
 **Plans**: 2 plans
 
 Plans:
-- [ ] 02-01-PLAN.md — Create tsup.config.ts with build-time define, simplify getEngineVersion(), add globals.d.ts + vitest define
-- [ ] 02-02-PLAN.md — Replace hardcoded v0.1.0 in 9 locale footers with {version} placeholder, full build+test verification
+- [x] 02-01-PLAN.md — Create tsup.config.ts with build-time define, simplify getEngineVersion(), add globals.d.ts + vitest define
+- [x] 02-02-PLAN.md — Replace hardcoded v0.1.0 in 9 locale footers with {version} placeholder, full build+test verification
 
 ### Phase 3: Engine Casts
 **Goal**: The engine, reporting modules, CLI, and i18n paths contain zero `as any` casts in core data-flow paths — every cast is replaced by the proper type from Phase 1
@@ -64,8 +64,8 @@ Plans:
 **Plans**: 2 plans
 
 Plans:
-- [ ] 03-01-PLAN.md — Type enrichResults() and generateResultPackage() in regulatory-scanner.ts, remove casts from html-template, junit-generator, github-actions
-- [ ] 03-02-PLAN.md — Remove casts from cli/index.ts, cloud-client.ts, statement-generator.ts, i18n/index.ts, clean up AccessibilityStatement.tsx
+- [x] 03-01-PLAN.md — Type enrichResults() and generateResultPackage() in regulatory-scanner.ts, remove casts from html-template, junit-generator, github-actions
+- [x] 03-02-PLAN.md — Remove casts from cli/index.ts, cloud-client.ts, statement-generator.ts, i18n/index.ts, clean up AccessibilityStatement.tsx
 
 ### Phase 4: Locale Routing
 **Goal**: `AccessibilityStatement` correctly routes all 9 supported locales to their intended templates — Norwegian renders Norwegian, other locales fall back to English explicitly with documented intent
@@ -78,7 +78,7 @@ Plans:
 **Plans**: 1 plan
 
 Plans:
-- [ ] 04-01-PLAN.md — Add 6 missing locale templates, expand supportedLocales/replacements/conditional handler, fix Norwegian placeholder bugs, add explicit fallback
+- [x] 04-01-PLAN.md — Add 6 missing locale templates, expand supportedLocales/replacements/conditional handler, fix Norwegian placeholder bugs, add explicit fallback
 
 ### Phase 5: Test Coverage
 **Goal**: Every code area touched in this milestone has test coverage that will catch regressions — the enrichment pipeline, version resolution, and all 9 locale routings are verifiable by the test suite
@@ -93,8 +93,8 @@ Plans:
 **Plans**: 2 plans
 
 Plans:
-- [ ] 05-01-PLAN.md — Engine tests: enrichment pipeline (enrichResults matched + fallback paths) and version resolution (getEngineVersion vs package.json)
-- [ ] 05-02-PLAN.md — Component tests: locale routing (9 locales with title markers) and placeholder leakage (no {<...>} survives in any locale)
+- [x] 05-01-PLAN.md — Engine tests: enrichment pipeline (enrichResults matched + fallback paths) and version resolution (getEngineVersion vs package.json)
+- [x] 05-02-PLAN.md — Component tests: locale routing (9 locales with title markers) and placeholder leakage (no {<...>} survives in any locale)
 
 ## Progress
 
@@ -104,7 +104,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Standards Types | 2/2 | Complete    | 2026-03-02 |
-| 2. Version Fix | 0/2 | Complete    | 2026-03-03 |
-| 3. Engine Casts | 0/2 | Complete    | 2026-03-03 |
-| 4. Locale Routing | 0/1 | Not started | - |
-| 5. Test Coverage | 0/2 | Not started | - |
+| 2. Version Fix | 2/2 | Complete    | 2026-03-03 |
+| 3. Engine Casts | 2/2 | Complete    | 2026-03-03 |
+| 4. Locale Routing | 1/1 | Complete    | 2026-03-03 |
+| 5. Test Coverage | 2/2 | Complete    | 2026-03-03 |

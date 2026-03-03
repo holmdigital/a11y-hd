@@ -2,13 +2,13 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: executing
-last_updated: "2026-03-03T19:07:17Z"
+status: complete
+last_updated: "2026-03-03T19:07:24Z"
 progress:
   total_phases: 5
-  completed_phases: 4
+  completed_phases: 5
   total_plans: 9
-  completed_plans: 8
+  completed_plans: 9
 ---
 
 # Project State
@@ -18,23 +18,23 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-02)
 
 **Core value:** The type system and tests must catch bugs before users do — no `as any` escape hatches in core paths, no silent wrong behavior.
-**Current focus:** Phase 5 test coverage in progress
+**Current focus:** All phases complete -- v1.0 milestone done
 
 ## Current Position
 
-Phase: 5 of 5 (Test Coverage)
-Plan: 1 of 2 in current phase -- COMPLETE
-Status: Executing Phase 05
-Last activity: 2026-03-03 — Phase 5 Plan 01 complete; 4 unit tests for enrichResults() matched/fallback paths and getEngineVersion(); all 32 engine tests pass
+Phase: 5 of 5 (Test Coverage) -- COMPLETE
+Plan: 2 of 2 in current phase -- COMPLETE
+Status: All plans complete
+Last activity: 2026-03-03 — Phase 5 Plan 02 complete; 18 parametrized tests for AccessibilityStatement locale routing and placeholder leakage; all 74 tests pass across 9 test files
 
-Progress: [█████████░] 90%
+Progress: [##########] 100%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 8
+- Total plans completed: 9
 - Average duration: 3 min
-- Total execution time: 0.45 hours
+- Total execution time: 0.48 hours
 
 **By Phase:**
 
@@ -44,10 +44,10 @@ Progress: [█████████░] 90%
 | 02-version-fix | 2 | 4 min | 2 min |
 | 03-engine-casts | 2 | 8 min | 4 min |
 | 04-locale-routing | 1 | 6 min | 6 min |
-| 05-test-coverage | 1 | 1 min | 1 min |
+| 05-test-coverage | 2 | 3 min | 1.5 min |
 
 **Recent Trend:**
-- Last 5 plans: 03-01 (3 min), 03-02 (5 min), 04-01 (6 min), 05-01 (1 min)
+- Last 5 plans: 03-02 (5 min), 04-01 (6 min), 05-01 (1 min), 05-02 (2 min)
 - Trend: stable
 
 *Updated after each plan completion*
@@ -84,10 +84,12 @@ Recent decisions affecting current work:
 - 05-01: Bracket notation (scanner as any)['enrichResults'] for private method test access -- avoids production code changes per TEST-01 constraint
 - 05-01: Real @holmdigital/standards data used in tests (no mocking) -- closer to integration-level, catches data-shape regressions
 - 05-01: No beforeEach/afterEach needed in enrichment tests -- stateless with inline fixtures
+- 05-02: Used container.innerHTML with toContain/toMatch for assertions (jest-dom not installed in components package)
+- 05-02: All optional props provided in defaultProps to exercise every placeholder substitution path
 
 ### Pending Todos
 
-None yet.
+None.
 
 ### Blockers/Concerns
 
@@ -97,5 +99,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-03-03
-Stopped at: Completed 05-01-PLAN.md — enrichment pipeline and version resolution tests; 4 new tests, 32 total engine tests passing
+Stopped at: Completed 05-02-PLAN.md — All plans complete; 18 parametrized AccessibilityStatement locale routing + placeholder leakage tests; all 74 tests pass across 9 test files; v1.0 milestone done
 Resume file: None
