@@ -15,9 +15,9 @@ Requirements for this milestone. Each maps to roadmap phases.
 - [x] **TS-04**: Update `ScanResult.reports` type from `RegulatoryReport[]` to `EnrichedReport[]`
 - [x] **TS-05**: Remove all `as any` casts from `enrichResults()` in `regulatory-scanner.ts`
 - [x] **TS-06**: Remove all `(report as any)` casts from reporting modules (`html-template.ts`, `junit-generator.ts`, `github-actions.ts`, `statement-generator.ts`)
-- [ ] **TS-07**: Remove all `as any` casts from CLI action handler (`cli/index.ts`)
-- [ ] **TS-08**: Remove all `as any` casts from `AccessibilityStatement.tsx` component
-- [ ] **TS-09**: Remove all `as any` casts from `i18n/index.ts`
+- [x] **TS-07**: Remove all `as any` casts from CLI action handler (`cli/index.ts`)
+- [x] **TS-08**: Remove all `as any` casts from `AccessibilityStatement.tsx` component
+- [x] **TS-09**: Remove all `as any` casts from `i18n/index.ts`
 
 ### Version Management
 
@@ -77,9 +77,9 @@ Which phases cover which requirements. Updated during roadmap creation.
 | TS-04 | Phase 1 | Complete |
 | TS-05 | Phase 3 | Complete |
 | TS-06 | Phase 3 | Complete |
-| TS-07 | Phase 3 | Pending |
-| TS-08 | Phase 3 | Pending |
-| TS-09 | Phase 3 | Pending |
+| TS-07 | Phase 3 | Complete |
+| TS-08 | Phase 3 | Complete |
+| TS-09 | Phase 3 | Complete |
 | VER-01 | Phase 2 | Complete |
 | VER-02 | Phase 2 | Complete |
 | VER-03 | Phase 2 | Complete |
