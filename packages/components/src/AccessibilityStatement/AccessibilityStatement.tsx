@@ -513,7 +513,7 @@ export const AccessibilityStatement: React.FC<AccessibilityStatementProps> = ({
                     return (
                         <ul key={`${i}-${bi}`} style={styles.list}>
                             {lines.map((line, li) => {
-                                const cleanLine = line.trim().replace(/^[*-•]\s*/, '');
+                                const cleanLine = line.trim().replace(/^[*\-\u2022]\s*/, '');
                                 if (!cleanLine) return null;
                                 return (
                                     <li key={li} style={styles.listItem}>
