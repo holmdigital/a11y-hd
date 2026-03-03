@@ -90,7 +90,11 @@ Plans:
   3. Tests for all 9 locale routings in `AccessibilityStatement` pass — each locale is asserted to produce the expected language marker in the output
   4. A placeholder-leakage test asserts that no `{<...>}` strings survive in rendered output for any locale
   5. All 7 pre-existing test files pass without modification
-**Plans**: TBD
+**Plans**: 2 plans
+
+Plans:
+- [ ] 05-01-PLAN.md — Engine tests: enrichment pipeline (enrichResults matched + fallback paths) and version resolution (getEngineVersion vs package.json)
+- [ ] 05-02-PLAN.md — Component tests: locale routing (9 locales with title markers) and placeholder leakage (no {<...>} survives in any locale)
 
 ## Progress
 
@@ -103,4 +107,4 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 | 2. Version Fix | 0/2 | Complete    | 2026-03-03 |
 | 3. Engine Casts | 0/2 | Complete    | 2026-03-03 |
 | 4. Locale Routing | 0/1 | Not started | - |
-| 5. Test Coverage | 0/? | Not started | - |
+| 5. Test Coverage | 0/2 | Not started | - |
