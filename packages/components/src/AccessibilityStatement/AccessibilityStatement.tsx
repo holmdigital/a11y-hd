@@ -214,9 +214,16 @@ export const AccessibilityStatement: React.FC<AccessibilityStatementProps> = ({
     publishDate
 }) => {
     // Localization & Template Logic
-    const supportedLocales: Record<string, keyof typeof TEMPLATES> = { sv: 'sv', no: 'no', nb: 'no' };
-    const lang = supportedLocales[locale] ?? 'en';
-    const template = TEMPLATES[lang] || TEMPLATES.en;
+    const supportedLocales: Record<string, string> = {
+        sv: 'sv', en: 'en', no: 'no', nb: 'no', dk: 'da',
+        da: 'da', de: 'de', fr: 'fr', es: 'es', fi: 'fi', nl: 'nl'
+    };
+    const lang = supportedLocales[locale];
+    if (!lang) {
+        console.warn(`AccessibilityStatement: unsupported locale "${locale}", falling back to English`);
+    }
+    const effectiveLang = lang ?? 'en';
+    const template = TEMPLATES[effectiveLang] || TEMPLATES.en;
 
     // Helper to format date
     const d = (date: Date) => formatDiggDate(date, locale);
@@ -253,7 +260,17 @@ export const AccessibilityStatement: React.FC<AccessibilityStatementProps> = ({
     if (nonComplianceItems.length > 0) {
         issuesContent = nonComplianceItems.map(item => `* ${item}`).join('\n');
     } else {
-        issuesContent = lang === 'sv' ? 'Inga kända brister.' : (lang === 'no' ? 'Ingen kjente mangler.' : 'No known issues.');
+        const noIssuesText: Record<string, string> = {
+            sv: 'Inga kända brister.',
+            no: 'Ingen kjente mangler.',
+            da: 'Ingen kendte problemer.',
+            de: 'Keine bekannten Mängel.',
+            fr: 'Aucun problème connu.',
+            es: 'No se conocen problemas.',
+            fi: 'Ei tunnettuja puutteita.',
+            nl: 'Geen bekende problemen.',
+        };
+        issuesContent = noIssuesText[effectiveLang] || 'No known issues.';
     }
     replacements['{<brister>}'] = issuesContent;
     replacements['{<issues>}'] = issuesContent;
@@ -266,6 +283,11 @@ export const AccessibilityStatement: React.FC<AccessibilityStatementProps> = ({
     replacements['{<vurderingsdato>}'] = assessmentDate ? d(assessmentDate) : d(lastReviewDate);
     replacements['{<publiseringsdatum>}'] = publishDate ? d(publishDate) : '2024-01-01';
     replacements['{<ekstern aktor>}'] = generatorTool?.name || 'HolmDigital Engine';
+    // NO placeholder bug fixes (4 missing mappings)
+    replacements['{<e-postadresse>}'] = contactEmail;
+    replacements['{<oppdateringsdato>}'] = d(lastReviewDate);
+    replacements['{<metode>}'] = evaluationMethod || 'Automated Scan';
+    replacements['{<publiseringsdato>}'] = publishDate ? d(publishDate) : '2024-01-01';
 
 
 
@@ -274,15 +296,21 @@ export const AccessibilityStatement: React.FC<AccessibilityStatementProps> = ({
 
         // 1. Handle Conditional Blocks [ ... ] using Regex
         text = text.replace(/\[([\s\S]*?)\]/g, (_match, content) => {
-            // If the block contains a variable that is EMPTY/UNDEFINED, remove the block.
-            if (content.includes('{<svarstid>}') || content.includes('{<response time>}')) {
+            // Response time blocks
+            if (content.includes('{<svarstid>}') || content.includes('{<response time>}')
+                || content.includes('{<svartid>}')) {
                 return responseTime ? content : '';
             }
-            if (content.includes('{<telefonnummer>}') || content.includes('{<telephone number>}')) {
+            // Phone/email contact blocks -- all locale variants of phone placeholder
+            if (content.includes('{<telefonnummer>}') || content.includes('{<telephone number>}')
+                || content.includes('{<puhelinnumero>}') || content.includes('{<telefoonnummer>}')) {
                 return phoneNumber ? content : '';
             }
-            if (content.includes('{<brister>}') || content.includes('{<issues>}')) {
-                // Logic: If complianceLevel is 'full', hide this block.
+            // Issues/defects blocks -- all locale variants
+            if (content.includes('{<brister>}') || content.includes('{<issues>}')
+                || content.includes('{<mangler>}') || content.includes('{<mängel>}')
+                || content.includes('{<défauts>}') || content.includes('{<deficiencias>}')
+                || content.includes('{<puutteet>}') || content.includes('{<gebreken>}')) {
                 return complianceLevel !== 'full' ? content : '';
             }
             // Add a newline before and after content to ensure separation from headings
@@ -658,7 +686,7 @@ export const AccessibilityStatement: React.FC<AccessibilityStatementProps> = ({
              */}
             {/* 
             <h1 id="a11y-statement-title" style={styles.mainHeading}>
-                {lang === 'sv' ? 'Tillgänglighetsredogörelse' : 'Accessibility Statement'}
+                {effectiveLang === 'sv' ? 'Tillgänglighetsredogörelse' : 'Accessibility Statement'}
             </h1>
             Wait, the template starts with "Tillgänglighet för {<webbplats>}" which IS the title.
             We should render the first line as H1?
@@ -681,13 +709,13 @@ export const AccessibilityStatement: React.FC<AccessibilityStatementProps> = ({
                     </h1>
 
                     <div style={styles.metaData}>
-                        <span>{lang === 'sv' ? 'Status:' : 'Status:'} <span style={styles.statusBadge}>
-                            {complianceLevel === 'full' ? (lang === 'sv' ? 'Fullt förenlig' : 'Fully compliant') :
-                                complianceLevel === 'partial' ? (lang === 'sv' ? 'Delvis förenlig' : 'Partially compliant') :
-                                    (lang === 'sv' ? 'Ej förenlig' : 'Non-compliant')}
+                        <span>{effectiveLang === 'sv' ? 'Status:' : 'Status:'} <span style={styles.statusBadge}>
+                            {complianceLevel === 'full' ? (effectiveLang === 'sv' ? 'Fullt förenlig' : 'Fully compliant') :
+                                complianceLevel === 'partial' ? (effectiveLang === 'sv' ? 'Delvis förenlig' : 'Partially compliant') :
+                                    (effectiveLang === 'sv' ? 'Ej förenlig' : 'Non-compliant')}
                         </span></span>
                         <span style={{ color: '#e2e8f0' }}>|</span>
-                        <span>{lang === 'sv' ? 'Uppdaterad:' : 'Updated:'} {d(lastReviewDate)}</span>
+                        <span>{effectiveLang === 'sv' ? 'Uppdaterad:' : 'Updated:'} {d(lastReviewDate)}</span>
                     </div>
                 </header>
 
@@ -701,7 +729,7 @@ export const AccessibilityStatement: React.FC<AccessibilityStatementProps> = ({
             {/* Footer with Tool attribution */}
             <footer style={{ marginTop: '3rem', borderTop: '1px solid #e2e8f0', paddingTop: '1.5rem', fontSize: '0.875rem', color: '#64748b' }}>
                 <p>
-                    {lang === 'sv' ? 'Genererad med hjälp av' : 'Generated using'}{' '}
+                    {effectiveLang === 'sv' ? 'Genererad med hjälp av' : 'Generated using'}{' '}
                     <a href={usedTool?.url || 'https://holmdigital.se'} style={styles.link} target="_blank" rel="noopener noreferrer">
                         {usedTool?.name || 'HolmDigital Engine'}
                     </a>

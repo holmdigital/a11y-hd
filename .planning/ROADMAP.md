@@ -12,9 +12,9 @@ This milestone stabilizes the three-package accessibility monorepo by addressing
 
 Decimal phases appear between their surrounding integers in numeric order.
 
-- [x] **Phase 1: Standards Types** - Define `FailingNode`, `EnrichedReport`, and tighten `HolmDigitalInsight` in `@holmdigital/standards` (completed 2026-03-02)
-- [x] **Phase 2: Version Fix** - Inject engine version at build time via tsup `define`; eliminate all hardcoded version strings (completed 2026-03-03)
-- [ ] **Phase 3: Engine Casts** - Remove all `as any` casts from the engine, reporting, CLI, and i18n paths using the new types
+- [x] **Phase 1: Standards Types** - Define `FailingNode`, `EnrichedReport`, and tighten `HolmDigitalInsight` in `@holmdigital/standards` (completed 2026-03-02)
+- [x] **Phase 2: Version Fix** - Inject engine version at build time via tsup `define`; eliminate all hardcoded version strings (completed 2026-03-03)
+- [x] **Phase 3: Engine Casts** - Remove all `as any` casts from the engine, reporting, CLI, and i18n paths using the new types (completed 2026-03-03)
 - [ ] **Phase 4: Locale Routing** - Fix `AccessibilityStatement` to correctly route all 9 supported locales
 - [ ] **Phase 5: Test Coverage** - Add tests for enrichment pipeline, version resolution, and all 9 locale routings
 
@@ -75,7 +75,10 @@ Plans:
   1. Rendering `<AccessibilityStatement locale="no" />` produces Norwegian-language output (not English)
   2. Rendering with any of the 9 supported locales (sv, en, no, da, de, fi, fr, nl, es) produces output in the correct language or an explicit English fallback — never a silent mismatch
   3. No rendered output for any supported locale contains unresolved `{<...>}` placeholder variables
-**Plans**: TBD
+**Plans**: 1 plan
+
+Plans:
+- [ ] 04-01-PLAN.md — Add 6 missing locale templates, expand supportedLocales/replacements/conditional handler, fix Norwegian placeholder bugs, add explicit fallback
 
 ### Phase 5: Test Coverage
 **Goal**: Every code area touched in this milestone has test coverage that will catch regressions — the enrichment pipeline, version resolution, and all 9 locale routings are verifiable by the test suite
@@ -98,6 +101,6 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 |-------|----------------|--------|-----------|
 | 1. Standards Types | 2/2 | Complete    | 2026-03-02 |
 | 2. Version Fix | 0/2 | Complete    | 2026-03-03 |
-| 3. Engine Casts | 0/2 | Not started | - |
-| 4. Locale Routing | 0/? | Not started | - |
+| 3. Engine Casts | 0/2 | Complete    | 2026-03-03 |
+| 4. Locale Routing | 0/1 | Not started | - |
 | 5. Test Coverage | 0/? | Not started | - |
