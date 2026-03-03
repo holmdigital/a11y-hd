@@ -28,9 +28,9 @@ Requirements for this milestone. Each maps to roadmap phases.
 
 ### Locale Handling
 
-- [ ] **I18N-01**: `AccessibilityStatement` routes all 9 supported locales correctly (sv, en, no, da, de, fi, fr, nl, es)
-- [ ] **I18N-02**: Norwegian locale (`no`) renders the Norwegian template (not English)
-- [ ] **I18N-03**: Unsupported locales fall back to English explicitly (not silently)
+- [x] **I18N-01**: `AccessibilityStatement` routes all 9 supported locales correctly (sv, en, no, da, de, fi, fr, nl, es)
+- [x] **I18N-02**: Norwegian locale (`no`) renders the Norwegian template (not English)
+- [x] **I18N-03**: Unsupported locales fall back to English explicitly (not silently)
 
 ### Testing
 
@@ -84,9 +84,9 @@ Which phases cover which requirements. Updated during roadmap creation.
 | VER-02 | Phase 2 | Complete |
 | VER-03 | Phase 2 | Complete |
 | VER-04 | Phase 2 | Complete |
-| I18N-01 | Phase 4 | Pending |
-| I18N-02 | Phase 4 | Pending |
-| I18N-03 | Phase 4 | Pending |
+| I18N-01 | Phase 4 | Complete |
+| I18N-02 | Phase 4 | Complete |
+| I18N-03 | Phase 4 | Complete |
 | TEST-01 | Phase 5 | Pending |
 | TEST-02 | Phase 5 | Pending |
 | TEST-03 | Phase 5 | Pending |
