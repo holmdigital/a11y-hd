@@ -170,3 +170,18 @@ describe('TLD country detection for en-* locales', () => {
         expect(output).not.toContain('Department of Justice');
     });
 });
+
+describe('Engine HTML output pipeline smoke test', () => {
+    it('should produce HTML output with markup and locale-specific content for en', async () => {
+        const output = await generateStatementContent(mockResult, 'en', 'html', metadata);
+
+        // Verify HTML markup was produced (not Markdown)
+        expect(output).toContain('<');
+
+        // Verify English title marker from component renderer
+        expect(output).toContain('Accessibility of');
+
+        // Verify no leftover placeholders
+        expect(output).not.toMatch(PLACEHOLDER_REGEX);
+    });
+});

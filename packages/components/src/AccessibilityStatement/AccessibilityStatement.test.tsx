@@ -201,6 +201,33 @@ describe('AccessibilityStatement en-gb/en-us/en-ca jurisdiction content', () => 
     });
 });
 
+// Chrome badge text expected for complianceLevel="non-compliant" per canonical locale
+const CHROME_NON_COMPLIANT_MARKERS: Record<string, string> = {
+    sv: 'Inte förenlig',
+    en: 'Non-compliant',
+    no: 'Ikke i samsvar',
+    fi: 'Ei saavutettava',
+    da: 'Ikke i overensstemmelse',
+    de: 'Nicht konform',
+    fr: 'Non conforme',
+    es: 'No conforme',
+    nl: 'Niet conform',
+    'en-gb': 'Non-compliant',
+    'en-us': 'Non-compliant',
+    'en-ca': 'Non-compliant',
+};
+
+describe('AccessibilityStatement chrome badge non-compliant localization', () => {
+    Object.entries(CHROME_NON_COMPLIANT_MARKERS).forEach(([locale, expectedBadge]) => {
+        it(`renders ${locale} locale with correct badge text for non-compliant`, () => {
+            const { container } = render(
+                <AccessibilityStatement {...defaultProps} locale={locale} complianceLevel="non-compliant" />
+            );
+            expect(container.innerHTML).toContain(expectedBadge);
+        });
+    });
+});
+
 describe('AccessibilityStatement nb alias chrome', () => {
     it('renders nb locale with Norwegian chrome text', () => {
         const { container } = render(
