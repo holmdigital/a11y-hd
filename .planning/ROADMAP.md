@@ -1,110 +1,109 @@
-# Roadmap: a11y-hd Stability Pass
+# Roadmap: a11y-hd
 
-## Overview
+## Milestones
 
-This milestone stabilizes the three-package accessibility monorepo by addressing three structural defects: a missing public type that forces 40+ `as any` casts throughout the engine and reporting pipeline, hardcoded version strings that diverge from the actual package version, and a locale routing bug that silently returns English for 7 of the 9 advertised locales. The work proceeds in strict dependency order (standards -> components -> engine) with tests added after each code area is fixed.
+- ✅ **v0.1 Stability Pass** — Phases 1-5 (shipped 2026-03-03)
+- 🚧 **v0.2 Full Localization** — Phases 6-10 (in progress)
 
 ## Phases
 
-**Phase Numbering:**
-- Integer phases (1, 2, 3): Planned milestone work
-- Decimal phases (2.1, 2.2): Urgent insertions (marked with INSERTED)
+<details>
+<summary>✅ v0.1 Stability Pass (Phases 1-5) — SHIPPED 2026-03-03</summary>
 
-Decimal phases appear between their surrounding integers in numeric order.
+- [x] Phase 1: Standards Types (2/2 plans) — completed 2026-03-02
+- [x] Phase 2: Version Fix (2/2 plans) — completed 2026-03-03
+- [x] Phase 3: Engine Casts (2/2 plans) — completed 2026-03-03
+- [x] Phase 4: Locale Routing (1/1 plan) — completed 2026-03-03
+- [x] Phase 5: Test Coverage (2/2 plans) — completed 2026-03-03
 
-- [x] **Phase 1: Standards Types** - Define `FailingNode`, `EnrichedReport`, and tighten `HolmDigitalInsight` in `@holmdigital/standards` (completed 2026-03-02)
-- [x] **Phase 2: Version Fix** - Inject engine version at build time via tsup `define`; eliminate all hardcoded version strings (completed 2026-03-03)
-- [x] **Phase 3: Engine Casts** - Remove all `as any` casts from the engine, reporting, CLI, and i18n paths using the new types (completed 2026-03-03)
-- [x] **Phase 4: Locale Routing** - Fix `AccessibilityStatement` to correctly route all 9 supported locales (completed 2026-03-03)
-- [x] **Phase 5: Test Coverage** - Add tests for enrichment pipeline, version resolution, and all 9 locale routings (completed 2026-03-03)
+See: `.planning/milestones/v0.1-ROADMAP.md` for full details
+
+</details>
+
+### 🚧 v0.2 Full Localization (In Progress)
+
+**Milestone Goal:** Expand all deferred i18n (evaluationMethod, statusMap, UI chrome) to all 9 EU locales, add en-gb/en-us/en-ca statement support, and fix ESM warning.
+
+- [x] **Phase 6: ESM Fix and Foundation** - Fix import.meta warning and establish placeholder exhaustiveness testing
+- [ ] **Phase 7: Engine Generator Locale Expansion** - Expand evaluationMethod, statusMap, and date formatting to all 9 EU locales
+- [ ] **Phase 8: Component UI Chrome Localization** - Expand status badges, footer, and labels from sv/en to all 12 locales
+- [ ] **Phase 9: en-gb/en-us/en-ca Statement Templates** - Add jurisdiction-specific statement templates with country detection
+- [ ] **Phase 10: Verification and Test Coverage** - Automated tests across all 12 locales and manual output review
 
 ## Phase Details
 
-### Phase 1: Standards Types
-**Goal**: The `@holmdigital/standards` package exports all types needed to describe the enriched scan result — consumers can import `FailingNode` and `EnrichedReport` without any runtime casts
-**Depends on**: Nothing (first phase)
-**Requirements**: TS-01, TS-02, TS-03, TS-04
+### Phase 6: ESM Fix and Foundation
+**Goal**: Clean build output and regression baseline before any locale content changes
+**Depends on**: Phase 5 (v0.1 complete)
+**Requirements**: FOUND-01, FOUND-02
 **Success Criteria** (what must be TRUE):
-  1. `FailingNode` is a named export from `@holmdigital/standards` with `html`, `target`, and `failureSummary` fields matching axe-core's `NodeResult` shape
-  2. `EnrichedReport extends RegulatoryReport` is a named export with `failingNodes?: FailingNode[]` and `legalContext?: LegalContext` — the base `RegulatoryReport` type is unchanged (no breaking change)
-  3. `HolmDigitalInsight` no longer has `[key: string]: any`; all used keys are explicit optional fields
-  4. `ScanResult.reports` is typed as `EnrichedReport[]` (widened from `RegulatoryReport[]`)
-  5. TypeScript build of `@holmdigital/standards` passes with zero errors
-**Plans**: 2 plans
-
+  1. Engine package builds with zero warnings in both CJS and ESM output
+  2. A test verifies that every template (all 9 EU locales) has all placeholder variables substituted with no leftover `{<...>}` markers
+  3. Template path resolution uses a single canonical path that throws a clear error when a template file is missing
+**Plans:** 1 plan
 Plans:
-- [x] 01-01-PLAN.md — Define FailingNode, EnrichedReport, tighten HolmDigitalInsight in standards types.ts + re-export from index.ts
-- [x] 01-02-PLAN.md — Update ScanResult.reports to EnrichedReport[] in engine regulatory-scanner.ts + full monorepo build verification
+- [x] 06-01-PLAN.md — Fix ESM warning, simplify template path, fix placeholder mismatches, add exhaustiveness test
 
-### Phase 2: Version Fix
-**Goal**: Every version string the engine emits (CLI output, cloud API payload, scan metadata) derives from a single build-time constant — no hardcoded values remain in source files
-**Depends on**: Nothing (independent of type changes)
-**Requirements**: VER-01, VER-02, VER-03, VER-04
+### Phase 7: Engine Generator Locale Expansion
+**Goal**: Markdown statement output uses correct locale-specific text for all 9 EU locales
+**Depends on**: Phase 6
+**Requirements**: ENGI-01, ENGI-02, ENGI-03
 **Success Criteria** (what must be TRUE):
-  1. Running `node packages/engine/dist/cli/index.js --version` prints the version from `packages/engine/package.json` (currently `2.1.2`)
-  2. The cloud client payload's `engineVersion` field matches the same version — not `1.4.4`
-  3. `tsup.config.ts` in `packages/engine` has a `define` block that injects `__ENGINE_VERSION__` from `package.json` at build time
-  4. No source file contains a hardcoded version string (`1.4.4`, `0.1.0`, `2.1.1`) in a version-reporting context
-**Plans**: 2 plans
+  1. `evaluationMethod` returns text in the correct language for each of the 9 EU locales (sv, en, no, fi, da, de, fr, es, nl)
+  2. `statusMap` returns locale-appropriate compliance status labels (compliant/partially/non-compliant) for all 9 EU locales
+  3. HTML report dates are formatted using locale-aware `Intl.DateTimeFormat` instead of the binary sv/en check
+  4. Markdown output for a German locale scan contains German evaluation method text and German compliance labels, not English fallbacks
+**Plans**: TBD
 
-Plans:
-- [x] 02-01-PLAN.md — Create tsup.config.ts with build-time define, simplify getEngineVersion(), add globals.d.ts + vitest define
-- [x] 02-02-PLAN.md — Replace hardcoded v0.1.0 in 9 locale footers with {version} placeholder, full build+test verification
-
-### Phase 3: Engine Casts
-**Goal**: The engine, reporting modules, CLI, and i18n paths contain zero `as any` casts in core data-flow paths — every cast is replaced by the proper type from Phase 1
-**Depends on**: Phase 1
-**Requirements**: TS-05, TS-06, TS-07, TS-08, TS-09
+### Phase 8: Component UI Chrome Localization
+**Goal**: HTML statement output shows correct locale-specific chrome (badges, footer, labels) for all supported locales
+**Depends on**: Phase 6
+**Requirements**: CHRM-01, CHRM-02, CHRM-03
 **Success Criteria** (what must be TRUE):
-  1. `enrichResults()` in `regulatory-scanner.ts` returns `EnrichedReport[]` with no `as any` — the axe-core `NodeResult` type is imported and used for the node shape
-  2. All `(report as any).*` accesses in `html-template.ts`, `junit-generator.ts`, `github-actions.ts`, and `statement-generator.ts` are removed
-  3. `cli/index.ts` contains no `as any` casts in its action handler
-  4. `AccessibilityStatement.tsx` contains no `as any` casts
-  5. TypeScript build of the full monorepo passes with zero errors after the cast removals
-**Plans**: 2 plans
+  1. Status badge text displays the correct translation for each of the 12 locales (9 EU + en-gb/en-us/en-ca)
+  2. "Generated using" footer text displays the correct translation for each of the 12 locales
+  3. "Updated:" label displays the correct translation for each of the 12 locales
+  4. A Finnish locale statement renders Finnish chrome text, not English or Swedish fallback
+**Plans**: TBD
 
-Plans:
-- [x] 03-01-PLAN.md — Type enrichResults() and generateResultPackage() in regulatory-scanner.ts, remove casts from html-template, junit-generator, github-actions
-- [x] 03-02-PLAN.md — Remove casts from cli/index.ts, cloud-client.ts, statement-generator.ts, i18n/index.ts, clean up AccessibilityStatement.tsx
-
-### Phase 4: Locale Routing
-**Goal**: `AccessibilityStatement` correctly routes all 9 supported locales to their intended templates — Norwegian renders Norwegian, other locales fall back to English explicitly with documented intent
-**Depends on**: Phase 1
-**Requirements**: I18N-01, I18N-02, I18N-03
+### Phase 9: en-gb/en-us/en-ca Statement Templates
+**Goal**: Legally correct accessibility statements for UK, US, and Canadian websites with jurisdiction-specific references
+**Depends on**: Phase 7, Phase 8
+**Requirements**: TMPL-01, TMPL-02, TMPL-03, TMPL-04
 **Success Criteria** (what must be TRUE):
-  1. Rendering `<AccessibilityStatement locale="no" />` produces Norwegian-language output (not English)
-  2. Rendering with any of the 9 supported locales (sv, en, no, da, de, fi, fr, nl, es) produces output in the correct language or an explicit English fallback — never a silent mismatch
-  3. No rendered output for any supported locale contains unresolved `{<...>}` placeholder variables
-**Plans**: 1 plan
+  1. en-gb statement references UK PSBAR 2018 and EHRC as enforcement body (both HTML and Markdown output)
+  2. en-us statement references Section 508/ADA and DOJ Civil Rights Division (both HTML and Markdown output)
+  3. en-ca statement references AODA/ACA and Accessibility Commissioner (both HTML and Markdown output)
+  4. Country detection correctly identifies .uk/.gov.uk, .us/.gov, and .ca/.gc.ca TLDs and assigns the right enforcement body
+  5. Both template pipelines (component HTML and engine Markdown) produce consistent enforcement body and legislation references for each en-* locale
+**Plans**: TBD
 
-Plans:
-- [x] 04-01-PLAN.md — Add 6 missing locale templates, expand supportedLocales/replacements/conditional handler, fix Norwegian placeholder bugs, add explicit fallback
-
-### Phase 5: Test Coverage
-**Goal**: Every code area touched in this milestone has test coverage that will catch regressions — the enrichment pipeline, version resolution, and all 9 locale routings are verifiable by the test suite
-**Depends on**: Phase 1, Phase 2, Phase 3, Phase 4
-**Requirements**: TEST-01, TEST-02, TEST-03, TEST-04, TEST-05
+### Phase 10: Verification and Test Coverage
+**Goal**: Comprehensive automated and manual verification that all 12 locales produce correct output
+**Depends on**: Phase 9
+**Requirements**: VRFY-01, VRFY-02
 **Success Criteria** (what must be TRUE):
-  1. A test asserts that `enrichResults()` called with mocked axe output produces a correctly typed `EnrichedReport[]` — field access on `failingNodes` and `legalContext` is typed, not cast
-  2. A test asserts that the build-time `__ENGINE_VERSION__` constant equals the value in `packages/engine/package.json` — no hardcoded string appears in the assertion
-  3. Tests for all 9 locale routings in `AccessibilityStatement` pass — each locale is asserted to produce the expected language marker in the output
-  4. A placeholder-leakage test asserts that no `{<...>}` strings survive in rendered output for any locale
-  5. All 7 pre-existing test files pass without modification
-**Plans**: 2 plans
-
-Plans:
-- [x] 05-01-PLAN.md — Engine tests: enrichment pipeline (enrichResults matched + fallback paths) and version resolution (getEngineVersion vs package.json)
-- [x] 05-02-PLAN.md — Component tests: locale routing (9 locales with title markers) and placeholder leakage (no {<...>} survives in any locale)
+  1. Automated tests cover evaluationMethod, statusMap, and UI chrome for all 12 locales
+  2. Automated tests verify en-gb/en-us/en-ca routing, template rendering, and enforcement body references
+  3. Manual review of generated statements for at least sv, en, en-gb, de, and fi confirms correct output
+  4. Full test suite (74+ existing tests plus new locale tests) passes with zero failures
+**Plans**: TBD
 
 ## Progress
 
 **Execution Order:**
-Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
+Phases execute in numeric order: 6 -> 7 -> 8 -> 9 -> 10
+(Phases 7 and 8 can execute in parallel; both depend only on Phase 6)
 
-| Phase | Plans Complete | Status | Completed |
-|-------|----------------|--------|-----------|
-| 1. Standards Types | 2/2 | Complete    | 2026-03-02 |
-| 2. Version Fix | 2/2 | Complete    | 2026-03-03 |
-| 3. Engine Casts | 2/2 | Complete    | 2026-03-03 |
-| 4. Locale Routing | 1/1 | Complete    | 2026-03-03 |
-| 5. Test Coverage | 2/2 | Complete    | 2026-03-03 |
+| Phase | Milestone | Plans Complete | Status | Completed |
+|-------|-----------|----------------|--------|-----------|
+| 1. Standards Types | v0.1 | 2/2 | Complete | 2026-03-02 |
+| 2. Version Fix | v0.1 | 2/2 | Complete | 2026-03-03 |
+| 3. Engine Casts | v0.1 | 2/2 | Complete | 2026-03-03 |
+| 4. Locale Routing | v0.1 | 1/1 | Complete | 2026-03-03 |
+| 5. Test Coverage | v0.1 | 2/2 | Complete | 2026-03-03 |
+| 6. ESM Fix and Foundation | v0.2 | 1/1 | Complete | 2026-03-04 |
+| 7. Engine Generator Locale Expansion | v0.2 | 0/? | Not started | - |
+| 8. Component UI Chrome Localization | v0.2 | 0/? | Not started | - |
+| 9. en-gb/en-us/en-ca Statement Templates | v0.2 | 0/? | Not started | - |
+| 10. Verification and Test Coverage | v0.2 | 0/? | Not started | - |

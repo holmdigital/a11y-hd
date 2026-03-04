@@ -1,69 +1,56 @@
-# Requirements: a11y-hd Stability Pass
+# Requirements: a11y-hd
 
-**Defined:** 2026-03-02
+**Defined:** 2026-03-04
 **Core Value:** The type system and tests must catch bugs before users do — no `as any` escape hatches in core paths, no silent wrong behavior.
 
-## v1 Requirements
+## v0.2 Requirements
 
-Requirements for this milestone. Each maps to roadmap phases.
+Requirements for the Full Localization milestone. Each maps to roadmap phases.
 
-### Type Safety
+### Foundation
 
-- [x] **TS-01**: Define `FailingNode` interface in `@holmdigital/standards` with shape matching axe-core's `NodeResult` (`html`, `target`, `failureSummary`)
-- [x] **TS-02**: Define `EnrichedReport extends RegulatoryReport` in `@holmdigital/standards` with `failingNodes?: FailingNode[]` and `legalContext?: LegalContext`
-- [x] **TS-03**: Remove `[key: string]: any` index signature from `HolmDigitalInsight`, add explicit optional keys (`reasoning`, language-specific interpretations)
-- [x] **TS-04**: Update `ScanResult.reports` type from `RegulatoryReport[]` to `EnrichedReport[]`
-- [x] **TS-05**: Remove all `as any` casts from `enrichResults()` in `regulatory-scanner.ts`
-- [x] **TS-06**: Remove all `(report as any)` casts from reporting modules (`html-template.ts`, `junit-generator.ts`, `github-actions.ts`, `statement-generator.ts`)
-- [x] **TS-07**: Remove all `as any` casts from CLI action handler (`cli/index.ts`)
-- [x] **TS-08**: Remove all `as any` casts from `AccessibilityStatement.tsx` component
-- [x] **TS-09**: Remove all `as any` casts from `i18n/index.ts`
+- [x] **FOUND-01**: ESM `import.meta` warning eliminated from statement-generator build output
+- [x] **FOUND-02**: Placeholder exhaustiveness test ensures all template variables are substituted for every locale
 
-### Version Management
+### Engine Generator i18n
 
-- [x] **VER-01**: Inject engine version at build time via tsup `define` (single source of truth from `package.json`)
-- [x] **VER-02**: CLI `--version` reports the actual package version (not hardcoded `0.1.0`)
-- [x] **VER-03**: Cloud client sends the actual engine version (not hardcoded `1.4.4`)
-- [x] **VER-04**: Remove stale fallback version string `2.1.1` from `regulatory-scanner.ts`
+- [ ] **ENGI-01**: `evaluationMethod` returns locale-appropriate text for all 9 EU locales (sv, en, no, fi, da, de, fr, es, nl)
+- [ ] **ENGI-02**: `statusMap` returns locale-appropriate compliance status for all 9 EU locales
+- [ ] **ENGI-03**: HTML report date formatting uses locale-aware `Intl.DateTimeFormat` instead of sv/en binary
 
-### Locale Handling
+### Component UI Chrome
 
-- [x] **I18N-01**: `AccessibilityStatement` routes all 9 supported locales correctly (sv, en, no, da, de, fi, fr, nl, es)
-- [x] **I18N-02**: Norwegian locale (`no`) renders the Norwegian template (not English)
-- [x] **I18N-03**: Unsupported locales fall back to English explicitly (not silently)
+- [ ] **CHRM-01**: Status badge text localized for all 9 EU locales + en-gb/en-us/en-ca
+- [ ] **CHRM-02**: Footer "Generated using" text localized for all 9 EU locales + en-gb/en-us/en-ca
+- [ ] **CHRM-03**: "Updated:" label localized for all 9 EU locales + en-gb/en-us/en-ca
 
-### Testing
+### Statement Templates
 
-- [x] **TEST-01**: Tests for `EnrichedReport` type usage through the enrichment pipeline (mocked axe output)
-- [x] **TEST-02**: Tests for version resolution — build-time constant is correct, no hardcoded strings remain
-- [x] **TEST-03**: Tests for all 9 locale routings in `AccessibilityStatement` component
-- [x] **TEST-04**: Placeholder leakage test — no `{...}` template variables survive in rendered output for any locale
-- [x] **TEST-05**: All existing tests continue to pass
+- [ ] **TMPL-01**: en-gb statement template with UK PSBAR 2018 legal references (engine JSON + component inline)
+- [ ] **TMPL-02**: en-us statement template with Section 508/ADA legal references (engine JSON + component inline)
+- [ ] **TMPL-03**: en-ca statement template with AODA/ACA legal references (engine JSON + component inline)
+- [ ] **TMPL-04**: Country detection extended for en-gb/en-us/en-ca (TLD + explicit locale)
 
-## v2 Requirements
+### Verification
 
-Deferred to future milestone. Tracked but not in current roadmap.
+- [ ] **VRFY-01**: Automated tests for evaluationMethod, statusMap, and UI chrome across all 12 locales
+- [ ] **VRFY-02**: Manual output review of generated statements for representative locales
 
-### Template Deduplication
+## Future Requirements
 
-- **TMPL-01**: Extract shared template processing logic from component and engine into shared utility
-- **TMPL-02**: Reconcile template processing order (component: substitution before choices; engine: choices before substitution)
+### Localization Depth
 
-### Performance
-
-- **PERF-01**: Remove unused `VirtualDOMBuilder.build()` call from scan pipeline
-- **PERF-02**: Reuse scanner browser instance for PDF generation instead of spawning second Chromium
+- **LDEP-01**: Native speaker / regulatory expert validation of de/fr/es/fi/nl translations
+- **LDEP-02**: Template rendering dedup between engine and component (accepted tech debt)
 
 ## Out of Scope
 
 | Feature | Reason |
 |---------|--------|
-| Template rendering dedup | Related but separate concern — higher risk, separate milestone |
-| Performance fixes (vDOM, PDF browser) | Not a stability issue — no type/correctness impact |
-| New feature work | This is purely foundational cleanup |
-| Test coverage for untouched code | Only test what we change — avoid scope creep |
-| Component library broad test coverage | Separate milestone after stability pass |
-| Removing inline TEMPLATES from component | Too intertwined with template dedup — defer |
+| Template rendering dedup (engine vs component) | Accepted architecture decision — different dependency directions |
+| Performance fixes (vDOM removal, browser reuse) | Not a localization concern |
+| New React components | Separate milestone focus |
+| Cloud dashboard improvements | Separate milestone focus |
 
 ## Traceability
 
@@ -71,33 +58,26 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| TS-01 | Phase 1 | Complete |
-| TS-02 | Phase 1 | Complete |
-| TS-03 | Phase 1 | Complete |
-| TS-04 | Phase 1 | Complete |
-| TS-05 | Phase 3 | Complete |
-| TS-06 | Phase 3 | Complete |
-| TS-07 | Phase 3 | Complete |
-| TS-08 | Phase 3 | Complete |
-| TS-09 | Phase 3 | Complete |
-| VER-01 | Phase 2 | Complete |
-| VER-02 | Phase 2 | Complete |
-| VER-03 | Phase 2 | Complete |
-| VER-04 | Phase 2 | Complete |
-| I18N-01 | Phase 4 | Complete |
-| I18N-02 | Phase 4 | Complete |
-| I18N-03 | Phase 4 | Complete |
-| TEST-01 | Phase 5 | Complete |
-| TEST-02 | Phase 5 | Complete |
-| TEST-03 | Phase 5 | Complete |
-| TEST-04 | Phase 5 | Complete |
-| TEST-05 | Phase 5 | Complete |
+| FOUND-01 | Phase 6 | Complete |
+| FOUND-02 | Phase 6 | Complete |
+| ENGI-01 | Phase 7 | Pending |
+| ENGI-02 | Phase 7 | Pending |
+| ENGI-03 | Phase 7 | Pending |
+| CHRM-01 | Phase 8 | Pending |
+| CHRM-02 | Phase 8 | Pending |
+| CHRM-03 | Phase 8 | Pending |
+| TMPL-01 | Phase 9 | Pending |
+| TMPL-02 | Phase 9 | Pending |
+| TMPL-03 | Phase 9 | Pending |
+| TMPL-04 | Phase 9 | Pending |
+| VRFY-01 | Phase 10 | Pending |
+| VRFY-02 | Phase 10 | Pending |
 
 **Coverage:**
-- v1 requirements: 21 total
-- Mapped to phases: 21
+- v0.2 requirements: 14 total
+- Mapped to phases: 14
 - Unmapped: 0
 
 ---
-*Requirements defined: 2026-03-02*
-*Last updated: 2026-03-03 — all v1 requirements complete*
+*Requirements defined: 2026-03-04*
+*Last updated: 2026-03-04 after roadmap creation*
