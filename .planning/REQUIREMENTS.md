@@ -34,7 +34,7 @@ Requirements for the Full Localization milestone. Each maps to roadmap phases.
 ### Verification
 
 - [x] **VRFY-01**: Automated tests for evaluationMethod, statusMap, and UI chrome across all 12 locales
-- [ ] **VRFY-02**: Manual output review of generated statements for representative locales
+- [x] **VRFY-02**: Manual output review of generated statements for representative locales
 
 ## Future Requirements
 
@@ -71,7 +71,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | TMPL-03 | Phase 9 | Complete |
 | TMPL-04 | Phase 9 | Complete |
 | VRFY-01 | Phase 10 | Complete |
-| VRFY-02 | Phase 10 | Pending |
+| VRFY-02 | Phase 10 | Complete |
 
 **Coverage:**
 - v0.2 requirements: 14 total

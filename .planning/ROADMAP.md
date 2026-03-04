@@ -28,7 +28,7 @@ See: `.planning/milestones/v0.1-ROADMAP.md` for full details
 - [x] **Phase 7: Engine Generator Locale Expansion** - Expand evaluationMethod, statusMap, and date formatting to all 9 EU locales
 - [ ] **Phase 8: Component UI Chrome Localization** - Expand status badges, footer, and labels from sv/en to all 12 locales
 - [ ] **Phase 9: en-gb/en-us/en-ca Statement Templates** - Add jurisdiction-specific statement templates with country detection
-- [ ] **Phase 10: Verification and Test Coverage** - Automated tests across all 12 locales and manual output review
+- [x] **Phase 10: Verification and Test Coverage** - Automated tests across all 12 locales and manual output review (completed 2026-03-04)
 
 ## Phase Details
 
@@ -95,7 +95,7 @@ Plans:
   2. Automated tests verify en-gb/en-us/en-ca routing, template rendering, and enforcement body references
   3. Manual review of generated statements for at least sv, en, en-gb, de, and fi confirms correct output
   4. Full test suite (74+ existing tests plus new locale tests) passes with zero failures
-**Plans:** 1/2 plans executed
+**Plans:** 2/2 plans complete
 Plans:
 - [ ] 10-01-PLAN.md — Close automated test gaps (non-compliant badge, HTML pipeline smoke test), validate full locale suite
 - [ ] 10-02-PLAN.md — Manual output review for sv, en, en-gb, de, fi + jurisdiction check for en-us/en-ca, produce VERIFICATION.md
@@ -117,4 +117,4 @@ Phases execute in numeric order: 6 -> 7 -> 8 -> 9 -> 10
 | 7. Engine Generator Locale Expansion | v0.2 | 2/2 | Complete | 2026-03-04 |
 | 8. Component UI Chrome Localization | v0.2 | 0/1 | Not started | - |
 | 9. en-gb/en-us/en-ca Statement Templates | v0.2 | 0/2 | Not started | - |
-| 10. Verification and Test Coverage | 1/2 | In Progress|  | - |
+| 10. Verification and Test Coverage | 2/2 | Complete   | 2026-03-04 | - |
