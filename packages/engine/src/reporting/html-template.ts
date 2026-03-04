@@ -3,6 +3,27 @@ import { ScanResult, getEngineVersion } from '../core/regulatory-scanner';
 import { generateBadgeUrl } from './badge-generator';
 import { t, getCurrentLang } from '../i18n';
 
+/**
+ * Maps lang codes to their correct Intl.DateTimeFormat locale codes.
+ * Covers all 9 EU locales plus common aliases (nb, dk, en-gb, en-us, en-ca).
+ */
+const LOCALE_TO_INTL: Record<string, string> = {
+    sv: 'sv-SE',
+    en: 'en-US',
+    no: 'nb-NO',
+    nb: 'nb-NO',
+    fi: 'fi-FI',
+    da: 'da-DK',
+    dk: 'da-DK',
+    de: 'de-DE',
+    fr: 'fr-FR',
+    es: 'es-ES',
+    nl: 'nl-NL',
+    'en-gb': 'en-GB',
+    'en-us': 'en-US',
+    'en-ca': 'en-CA',
+};
+
 export function generateReportHTML(result: ScanResult): string {
     const criticalCount = result.stats.critical;
     const highCount = result.stats.high;
@@ -10,7 +31,8 @@ export function generateReportHTML(result: ScanResult): string {
     const scoreColor = result.score > 90 ? '#16a34a' : result.score > 70 ? '#eab308' : '#dc2626';
 
     const formatDate = (dateString: string) => {
-        return new Date(dateString).toLocaleDateString(getCurrentLang() === 'sv' ? 'sv-SE' : 'en-US', {
+        const intlLocale = LOCALE_TO_INTL[getCurrentLang()] || 'en-US';
+        return new Date(dateString).toLocaleDateString(intlLocale, {
             year: 'numeric',
             month: 'long',
             day: 'numeric',
