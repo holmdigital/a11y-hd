@@ -5,12 +5,7 @@ import { Country, ENFORCEMENT_BODIES } from '@holmdigital/standards';
 import { ScanResult } from '../core/regulatory-scanner';
 import fs from 'fs/promises';
 import path from 'path';
-import { fileURLToPath } from 'node:url';
 import { generateBadgeUrl } from './badge-generator';
-
-const __dirname_esm = typeof __dirname === 'undefined'
-    ? path.dirname(fileURLToPath(import.meta.url))
-    : __dirname;
 
 /**
  * Metadata for organizational information in the accessibility statement
@@ -40,47 +35,16 @@ export async function generateStatementContent(
     metadata?: StatementMetadata
 ): Promise<string> {
     // 0. Load Template
-    let template: StatementTemplate | undefined;
-    const possibleTemplatePaths = [
-        path.join(__dirname_esm, 'templates', `${lang}.json`),
-        path.join(__dirname_esm, '../src/reporting/templates', `${lang}.json`),
-        path.join(process.cwd(), 'packages/engine/src/reporting/templates', `${lang}.json`)
-    ];
-
-    let loaded = false;
-    for (const p of possibleTemplatePaths) {
-        try {
-            const data = await fs.readFile(p, 'utf-8');
-            template = JSON.parse(data) as StatementTemplate;
-            loaded = true;
-            break;
-        } catch (e) {
-            continue;
-        }
-    }
-
-    if (!loaded) {
-        // Fallback to en
-        const fallbackPaths = [
-            path.join(__dirname_esm, 'templates', 'en.json'),
-            path.join(__dirname_esm, '../src/reporting/templates', 'en.json'),
-            path.join(process.cwd(), 'packages/engine/src/reporting/templates', 'en.json')
-        ];
-
-        for (const p of fallbackPaths) {
-            try {
-                const data = await fs.readFile(p, 'utf-8');
-                template = JSON.parse(data) as StatementTemplate;
-                loaded = true;
-                break;
-            } catch (e) {
-                continue;
-            }
-        }
-    }
-
-    if (!loaded || !template) {
-        throw new Error(`Accessibility statement templates missing. Looked in: ${possibleTemplatePaths.join(', ')}`);
+    const templatePath = path.join(__dirname, 'templates', `${lang}.json`);
+    let template: StatementTemplate;
+    try {
+        const data = await fs.readFile(templatePath, 'utf-8');
+        template = JSON.parse(data) as StatementTemplate;
+    } catch {
+        throw new Error(
+            `Accessibility statement template not found for locale "${lang}". ` +
+            `Expected file at: ${templatePath}`
+        );
     }
 
     // 1. Determine compliance level
@@ -209,6 +173,8 @@ export async function generateStatementContent(
             '{<e-postadress>}': props.contactEmail || '',
             '{<e-mailosoite>}': props.contactEmail || '',
             '{<e-mailadresse>}': props.contactEmail || '',
+            '{<e-mailadres>}': props.contactEmail || '',
+            '{<e-postadresse>}': props.contactEmail || '',
             '{<e-mail address>}': props.contactEmail || '',
             '{<email address>}': props.contactEmail || '',
             '{<telefonnummer>}': props.phoneNumber || '',
@@ -228,6 +194,7 @@ export async function generateStatementContent(
             '{<assessment date>}': dateStr,
             '{<uppdateringsdatum>}': dateStr,
             '{<oppdateringsdato>}': dateStr,
+            '{<opdateringsdato>}': dateStr,
             '{<päivityspäivä>}': dateStr,
             '{<updatedatum>}': dateStr,
             '{<aktualisierungsdatum>}': dateStr,
@@ -241,13 +208,18 @@ export async function generateStatementContent(
             '{<veröffentlichungsdatum>}': props.publishDate?.toISOString().split('T')[0] || '2024-01-01',
             '{<date_publication>}': props.publishDate?.toISOString().split('T')[0] || '2024-01-01',
             '{<fecha_publicacion>}': props.publishDate?.toISOString().split('T')[0] || '2024-01-01',
+            '{<offentliggørelsesdato>}': props.publishDate?.toISOString().split('T')[0] || '2024-01-01',
             '{<publish date>}': props.publishDate?.toISOString().split('T')[0] || '2024-01-01',
             '{<metod>}': props.evaluationMethod || 'Automated Scan',
             '{<metodi>}': props.evaluationMethod || 'Automated Scan',
             '{<methode>}': props.evaluationMethod || 'Automated Scan',
+            '{<metode>}': props.evaluationMethod || 'Automated Scan',
+            '{<metodo>}': props.evaluationMethod || 'Automated Scan',
+            '{<méthode>}': props.evaluationMethod || 'Automated Scan',
             '{<método>}': props.evaluationMethod || 'Automated Scan',
             '{<method>}': props.evaluationMethod || 'Automated Scan',
             '{<extern aktör>}': props.generatorTool?.name || 'HolmDigital Engine',
+            '{<ekstern aktør>}': props.generatorTool?.name || 'HolmDigital Engine',
             '{<ekstern aktor>}': props.generatorTool?.name || 'HolmDigital Engine',
             '{<ulkoinen taho>}': props.generatorTool?.name || 'HolmDigital Engine',
             '{<externe partij>}': props.generatorTool?.name || 'HolmDigital Engine',

@@ -8,6 +8,7 @@ export default defineConfig({
   format: ['cjs', 'esm'],
   dts: true,
   clean: true,
+  shims: true,
   define: {
     __ENGINE_VERSION__: JSON.stringify(pkg.version),
   },
