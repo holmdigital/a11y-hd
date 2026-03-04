@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 import { render } from '@testing-library/react';
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import { AccessibilityStatement } from './AccessibilityStatement';
 
 const defaultProps = {
@@ -57,5 +57,104 @@ describe('AccessibilityStatement placeholder leakage', () => {
             const html = container.innerHTML;
             expect(html).not.toMatch(PLACEHOLDER_PATTERN);
         });
+    });
+});
+
+// Chrome badge text expected for complianceLevel="full" per canonical locale
+const CHROME_BADGE_MARKERS: Record<string, string> = {
+    sv: 'Fullt ut förenlig',
+    en: 'Fully compliant',
+    no: 'Helt i samsvar',
+    fi: 'Täysin saavutettava',
+    da: 'Fuldt ud i overensstemmelse',
+    de: 'Vollständig konform',
+    fr: 'Totalement conforme',
+    es: 'Plenamente conforme',
+    nl: 'Volledig conform',
+};
+
+const CHROME_UPDATED_MARKERS: Record<string, string> = {
+    sv: 'Uppdaterad:',
+    en: 'Updated:',
+    no: 'Oppdatert:',
+    fi: 'Päivitetty:',
+    da: 'Opdateret:',
+    de: 'Aktualisiert:',
+    fr: 'Mis à jour :',
+    es: 'Actualizado:',
+    nl: 'Bijgewerkt:',
+};
+
+const CHROME_FOOTER_MARKERS: Record<string, string> = {
+    sv: 'Genererad med hjälp av',
+    en: 'Generated using',
+    no: 'Generert med',
+    fi: 'Luotu käyttäen',
+    da: 'Genereret ved hjælp af',
+    de: 'Erstellt mit',
+    fr: "Généré à l'aide de",
+    es: 'Generado con',
+    nl: 'Gegenereerd met',
+};
+
+describe('AccessibilityStatement chrome badge localization', () => {
+    Object.entries(CHROME_BADGE_MARKERS).forEach(([locale, expectedBadge]) => {
+        it(`renders ${locale} locale with correct badge text for full compliance`, () => {
+            const { container } = render(
+                <AccessibilityStatement {...defaultProps} locale={locale} complianceLevel="full" />
+            );
+            expect(container.innerHTML).toContain(expectedBadge);
+        });
+    });
+});
+
+describe('AccessibilityStatement chrome label localization', () => {
+    Object.entries(CHROME_UPDATED_MARKERS).forEach(([locale, expectedLabel]) => {
+        it(`renders ${locale} locale with correct "Updated:" label`, () => {
+            const { container } = render(
+                <AccessibilityStatement {...defaultProps} locale={locale} />
+            );
+            expect(container.innerHTML).toContain(expectedLabel);
+        });
+    });
+
+    Object.entries(CHROME_FOOTER_MARKERS).forEach(([locale, expectedFooter]) => {
+        it(`renders ${locale} locale with correct "Generated using" footer`, () => {
+            const { container } = render(
+                <AccessibilityStatement {...defaultProps} locale={locale} />
+            );
+            expect(container.innerHTML).toContain(expectedFooter);
+        });
+    });
+});
+
+describe('AccessibilityStatement en-gb/en-us/en-ca chrome', () => {
+    const englishVariants = ['en-gb', 'en-us', 'en-ca'];
+
+    englishVariants.forEach((locale) => {
+        it(`renders ${locale} with English badge text without console warning`, () => {
+            const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+            const { container } = render(
+                <AccessibilityStatement {...defaultProps} locale={locale} complianceLevel="full" />
+            );
+            const html = container.innerHTML;
+            expect(html).toContain('Fully compliant');
+            expect(html).toContain('Updated:');
+            expect(html).toContain('Generated using');
+            expect(warnSpy).not.toHaveBeenCalled();
+            warnSpy.mockRestore();
+        });
+    });
+});
+
+describe('AccessibilityStatement nb alias chrome', () => {
+    it('renders nb locale with Norwegian chrome text', () => {
+        const { container } = render(
+            <AccessibilityStatement {...defaultProps} locale="nb" complianceLevel="full" />
+        );
+        const html = container.innerHTML;
+        expect(html).toContain('Helt i samsvar');
+        expect(html).toContain('Oppdatert:');
+        expect(html).toContain('Generert med');
     });
 });
