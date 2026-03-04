@@ -20,6 +20,49 @@ export interface StatementMetadata {
 }
 
 /**
+ * Locale lookup maps for multilingual statement generation.
+ * Each map covers all 9 EU locales: sv, en, no, fi, da, de, fr, es, nl.
+ */
+const EVALUATION_METHOD: Record<string, string> = {
+    sv: 'Automatiserad granskning via @holmdigital/engine',
+    en: 'Automated scan via @holmdigital/engine',
+    no: 'Automatisert gjennomgang via @holmdigital/engine',
+    nb: 'Automatisert gjennomgang via @holmdigital/engine',
+    fi: 'Automaattinen tarkistus @holmdigital/engine-työkalulla',
+    da: 'Automatiseret gennemgang via @holmdigital/engine',
+    de: 'Automatisierte Prüfung mit @holmdigital/engine',
+    fr: 'Analyse automatisée via @holmdigital/engine',
+    es: 'Análisis automatizado mediante @holmdigital/engine',
+    nl: 'Geautomatiseerde controle via @holmdigital/engine',
+};
+
+const STATUS_LABELS: Record<string, Record<string, string>> = {
+    sv: { full: 'Fullt ut förenlig', partial: 'Delvis förenlig', 'non-compliant': 'Inte förenlig' },
+    en: { full: 'Fully compliant', partial: 'Partially compliant', 'non-compliant': 'Non-compliant' },
+    no: { full: 'Helt i samsvar', partial: 'Delvis i samsvar', 'non-compliant': 'Ikke i samsvar' },
+    nb: { full: 'Helt i samsvar', partial: 'Delvis i samsvar', 'non-compliant': 'Ikke i samsvar' },
+    fi: { full: 'Täysin saavutettava', partial: 'Osittain saavutettava', 'non-compliant': 'Ei saavutettava' },
+    da: { full: 'Fuldt ud i overensstemmelse', partial: 'Delvist i overensstemmelse', 'non-compliant': 'Ikke i overensstemmelse' },
+    de: { full: 'Vollständig konform', partial: 'Teilweise konform', 'non-compliant': 'Nicht konform' },
+    fr: { full: 'Totalement conforme', partial: 'Partiellement conforme', 'non-compliant': 'Non conforme' },
+    es: { full: 'Plenamente conforme', partial: 'Parcialmente conforme', 'non-compliant': 'No conforme' },
+    nl: { full: 'Volledig conform', partial: 'Gedeeltelijk conform', 'non-compliant': 'Niet conform' },
+};
+
+const RESPONSE_TIME_DEFAULT: Record<string, string> = {
+    sv: '2 dagar',
+    en: '2 days',
+    no: '2 dager',
+    nb: '2 dager',
+    fi: '2 päivää',
+    da: '2 dage',
+    de: '2 Tage',
+    fr: '2 jours',
+    es: '2 días',
+    nl: '2 dagen',
+};
+
+/**
  * Generates an HTML or Markdown Accessibility Statement from scan results
  */
 interface StatementTemplate {
@@ -119,7 +162,7 @@ export async function generateStatementContent(
         complianceLevel,
         lastReviewDate: new Date(),
         assessmentDate: new Date(),
-        evaluationMethod: lang === 'sv' ? 'Automatiserad granskning via @holmdigital/engine' : 'Automated Scan via @holmdigital/engine',
+        evaluationMethod: EVALUATION_METHOD[lang] || EVALUATION_METHOD['en'],
         generatorTool: {
             name: 'HolmDigital Regulatory Engine',
             url: 'https://holmdigital.se'
@@ -127,7 +170,7 @@ export async function generateStatementContent(
         logoUrl,
         contactEmail: metadata?.contactEmail || 'hej@holmdigital.se',
         phoneNumber: metadata?.phoneNumber || '070-123 45 67',
-        responseTime: metadata?.responseTime || (lang === 'sv' ? '2 dagar' : '2 days'),
+        responseTime: metadata?.responseTime || RESPONSE_TIME_DEFAULT[lang] || RESPONSE_TIME_DEFAULT['en'],
         nonComplianceItems,
         locale: lang,
         badgeUrl: generateBadgeUrl(result.score) || undefined,
@@ -156,10 +199,11 @@ export async function generateStatementContent(
     } else {
         // MARKDOWN GENERATION (DIGG-compatible structure)
         const dateStr = props.lastReviewDate.toISOString().split('T')[0];
+        const labels = STATUS_LABELS[lang] || STATUS_LABELS['en'];
         const statusMap: Record<string, string> = {
-            'full': lang === 'sv' ? 'Fullt ut förenlig' : (lang === 'no' || lang === 'nb' ? 'Helt i samsvar' : (lang === 'da' ? 'Fuldt ud i overensstemmelse' : 'Fully compliant')),
-            'partial': lang === 'sv' ? 'Delvis förenlig' : (lang === 'no' || lang === 'nb' ? 'Delvis i samsvar' : (lang === 'da' ? 'Delvist i overensstemmelse' : 'Partially compliant')),
-            'non-compliant': lang === 'sv' ? 'Inte förenlig' : (lang === 'no' || lang === 'nb' ? 'Ikke i samsvar' : (lang === 'da' ? 'Ikke i overensstemmelse' : 'Non-compliant'))
+            'full': labels['full'],
+            'partial': labels['partial'],
+            'non-compliant': labels['non-compliant'],
         };
 
         const substitutions: Record<string, string> = {

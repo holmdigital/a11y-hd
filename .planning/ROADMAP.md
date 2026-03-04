@@ -53,7 +53,10 @@ Plans:
   2. `statusMap` returns locale-appropriate compliance status labels (compliant/partially/non-compliant) for all 9 EU locales
   3. HTML report dates are formatted using locale-aware `Intl.DateTimeFormat` instead of the binary sv/en check
   4. Markdown output for a German locale scan contains German evaluation method text and German compliance labels, not English fallbacks
-**Plans**: TBD
+**Plans:** 2 plans
+Plans:
+- [ ] 07-01-PLAN.md — Expand evaluationMethod, statusMap, responseTime, and date formatting to 9-locale lookup maps
+- [ ] 07-02-PLAN.md — Add locale-specific content verification tests for all 9 EU locales
 
 ### Phase 8: Component UI Chrome Localization
 **Goal**: HTML statement output shows correct locale-specific chrome (badges, footer, labels) for all supported locales
@@ -103,7 +106,7 @@ Phases execute in numeric order: 6 -> 7 -> 8 -> 9 -> 10
 | 4. Locale Routing | v0.1 | 1/1 | Complete | 2026-03-03 |
 | 5. Test Coverage | v0.1 | 2/2 | Complete | 2026-03-03 |
 | 6. ESM Fix and Foundation | v0.2 | 1/1 | Complete | 2026-03-04 |
-| 7. Engine Generator Locale Expansion | v0.2 | 0/? | Not started | - |
+| 7. Engine Generator Locale Expansion | v0.2 | 0/2 | Not started | - |
 | 8. Component UI Chrome Localization | v0.2 | 0/? | Not started | - |
 | 9. en-gb/en-us/en-ca Statement Templates | v0.2 | 0/? | Not started | - |
 | 10. Verification and Test Coverage | v0.2 | 0/? | Not started | - |
