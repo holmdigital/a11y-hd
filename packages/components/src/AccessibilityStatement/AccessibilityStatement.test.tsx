@@ -30,6 +30,9 @@ const LOCALE_TITLE_MARKERS: Record<string, string> = {
     es: 'Declaración de accesibilidad para',
     fi: 'Saavutettavuusseloste:',
     nl: 'Toegankelijkheidsverklaring voor',
+    'en-gb': 'Accessibility of',
+    'en-us': 'Accessibility of',
+    'en-ca': 'Accessibility of',
 };
 
 const PLACEHOLDER_PATTERN = /\{<[^>]+>\}/;
@@ -47,7 +50,7 @@ describe('AccessibilityStatement locale routing', () => {
 });
 
 describe('AccessibilityStatement placeholder leakage', () => {
-    const locales = ['sv', 'en', 'no', 'da', 'de', 'fr', 'es', 'fi', 'nl'];
+    const locales = ['sv', 'en', 'no', 'da', 'de', 'fr', 'es', 'fi', 'nl', 'en-gb', 'en-us', 'en-ca'];
 
     locales.forEach((locale) => {
         it(`no {<...>} placeholders survive in ${locale} locale output`, () => {
@@ -71,6 +74,9 @@ const CHROME_BADGE_MARKERS: Record<string, string> = {
     fr: 'Totalement conforme',
     es: 'Plenamente conforme',
     nl: 'Volledig conform',
+    'en-gb': 'Fully compliant',
+    'en-us': 'Fully compliant',
+    'en-ca': 'Fully compliant',
 };
 
 const CHROME_UPDATED_MARKERS: Record<string, string> = {
@@ -83,6 +89,9 @@ const CHROME_UPDATED_MARKERS: Record<string, string> = {
     fr: 'Mis à jour :',
     es: 'Actualizado:',
     nl: 'Bijgewerkt:',
+    'en-gb': 'Updated:',
+    'en-us': 'Updated:',
+    'en-ca': 'Updated:',
 };
 
 const CHROME_FOOTER_MARKERS: Record<string, string> = {
@@ -95,6 +104,9 @@ const CHROME_FOOTER_MARKERS: Record<string, string> = {
     fr: "Généré à l'aide de",
     es: 'Generado con',
     nl: 'Gegenereerd met',
+    'en-gb': 'Generated using',
+    'en-us': 'Generated using',
+    'en-ca': 'Generated using',
 };
 
 describe('AccessibilityStatement chrome badge localization', () => {
@@ -144,6 +156,48 @@ describe('AccessibilityStatement en-gb/en-us/en-ca chrome', () => {
             expect(warnSpy).not.toHaveBeenCalled();
             warnSpy.mockRestore();
         });
+    });
+});
+
+describe('AccessibilityStatement en-gb/en-us/en-ca jurisdiction content', () => {
+    it('renders en-gb with UK PSBAR 2018 legislation references', () => {
+        const { container } = render(
+            <AccessibilityStatement {...defaultProps} locale="en-gb" country="GB" />
+        );
+        const html = container.innerHTML;
+        expect(html).toContain('Public Sector Bodies');
+        // Enforcement and technical sections reference UK legislation, not generic EU text
+        expect(html).toContain('Public Sector Bodies (Websites and Mobile Applications) (No. 2) Accessibility Regulations 2018');
+    });
+
+    it('renders en-us with Section 508/ADA legislation references', () => {
+        const { container } = render(
+            <AccessibilityStatement {...defaultProps} locale="en-us" country="US" />
+        );
+        const html = container.innerHTML;
+        expect(html).toContain('Section 508');
+        expect(html).toContain('Americans with Disabilities Act');
+    });
+
+    it('renders en-ca with ACA/AODA legislation references', () => {
+        const { container } = render(
+            <AccessibilityStatement {...defaultProps} locale="en-ca" country="CA" />
+        );
+        const html = container.innerHTML;
+        expect(html).toContain('Accessible Canada Act');
+        expect(html).toContain('Accessibility for Ontarians with Disabilities Act');
+    });
+
+    it('renders generic en with EU accessibility regulations (unchanged)', () => {
+        const { container } = render(
+            <AccessibilityStatement {...defaultProps} locale="en" />
+        );
+        const html = container.innerHTML;
+        // Generic en uses "the accessibility regulations" in enforcement and technical sections
+        expect(html).toContain('complies with the accessibility regulations');
+        expect(html).not.toContain('Public Sector Bodies');
+        expect(html).not.toContain('Section 508');
+        expect(html).not.toContain('Accessible Canada Act');
     });
 });
 
