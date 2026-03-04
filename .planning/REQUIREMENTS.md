@@ -14,9 +14,9 @@ Requirements for the Full Localization milestone. Each maps to roadmap phases.
 
 ### Engine Generator i18n
 
-- [ ] **ENGI-01**: `evaluationMethod` returns locale-appropriate text for all 9 EU locales (sv, en, no, fi, da, de, fr, es, nl)
-- [ ] **ENGI-02**: `statusMap` returns locale-appropriate compliance status for all 9 EU locales
-- [ ] **ENGI-03**: HTML report date formatting uses locale-aware `Intl.DateTimeFormat` instead of sv/en binary
+- [x] **ENGI-01**: `evaluationMethod` returns locale-appropriate text for all 9 EU locales (sv, en, no, fi, da, de, fr, es, nl)
+- [x] **ENGI-02**: `statusMap` returns locale-appropriate compliance status for all 9 EU locales
+- [x] **ENGI-03**: HTML report date formatting uses locale-aware `Intl.DateTimeFormat` instead of sv/en binary
 
 ### Component UI Chrome
 
@@ -60,9 +60,9 @@ Which phases cover which requirements. Updated during roadmap creation.
 |-------------|-------|--------|
 | FOUND-01 | Phase 6 | Complete |
 | FOUND-02 | Phase 6 | Complete |
-| ENGI-01 | Phase 7 | Pending |
-| ENGI-02 | Phase 7 | Pending |
-| ENGI-03 | Phase 7 | Pending |
+| ENGI-01 | Phase 7 | Complete |
+| ENGI-02 | Phase 7 | Complete |
+| ENGI-03 | Phase 7 | Complete |
 | CHRM-01 | Phase 8 | Pending |
 | CHRM-02 | Phase 8 | Pending |
 | CHRM-03 | Phase 8 | Pending |
