@@ -25,7 +25,7 @@ See: `.planning/milestones/v0.1-ROADMAP.md` for full details
 **Milestone Goal:** Expand all deferred i18n (evaluationMethod, statusMap, UI chrome) to all 9 EU locales, add en-gb/en-us/en-ca statement support, and fix ESM warning.
 
 - [x] **Phase 6: ESM Fix and Foundation** - Fix import.meta warning and establish placeholder exhaustiveness testing
-- [ ] **Phase 7: Engine Generator Locale Expansion** - Expand evaluationMethod, statusMap, and date formatting to all 9 EU locales
+- [x] **Phase 7: Engine Generator Locale Expansion** - Expand evaluationMethod, statusMap, and date formatting to all 9 EU locales
 - [ ] **Phase 8: Component UI Chrome Localization** - Expand status badges, footer, and labels from sv/en to all 12 locales
 - [ ] **Phase 9: en-gb/en-us/en-ca Statement Templates** - Add jurisdiction-specific statement templates with country detection
 - [ ] **Phase 10: Verification and Test Coverage** - Automated tests across all 12 locales and manual output review
@@ -55,8 +55,8 @@ Plans:
   4. Markdown output for a German locale scan contains German evaluation method text and German compliance labels, not English fallbacks
 **Plans:** 2 plans
 Plans:
-- [ ] 07-01-PLAN.md — Expand evaluationMethod, statusMap, responseTime, and date formatting to 9-locale lookup maps
-- [ ] 07-02-PLAN.md — Add locale-specific content verification tests for all 9 EU locales
+- [x] 07-01-PLAN.md — Expand evaluationMethod, statusMap, responseTime, and date formatting to 9-locale lookup maps
+- [x] 07-02-PLAN.md — Add locale-specific content verification tests for all 9 EU locales
 
 ### Phase 8: Component UI Chrome Localization
 **Goal**: HTML statement output shows correct locale-specific chrome (badges, footer, labels) for all supported locales
@@ -106,7 +106,7 @@ Phases execute in numeric order: 6 -> 7 -> 8 -> 9 -> 10
 | 4. Locale Routing | v0.1 | 1/1 | Complete | 2026-03-03 |
 | 5. Test Coverage | v0.1 | 2/2 | Complete | 2026-03-03 |
 | 6. ESM Fix and Foundation | v0.2 | 1/1 | Complete | 2026-03-04 |
-| 7. Engine Generator Locale Expansion | v0.2 | 0/2 | Not started | - |
+| 7. Engine Generator Locale Expansion | v0.2 | 2/2 | Complete | 2026-03-04 |
 | 8. Component UI Chrome Localization | v0.2 | 0/? | Not started | - |
 | 9. en-gb/en-us/en-ca Statement Templates | v0.2 | 0/? | Not started | - |
 | 10. Verification and Test Coverage | v0.2 | 0/? | Not started | - |

@@ -8,7 +8,7 @@ progress:
   total_phases: 5
   completed_phases: 1
   total_plans: 2
-  completed_plans: 2
+  completed_plans: 3
 ---
 
 # Project State
@@ -22,19 +22,20 @@ See: .planning/PROJECT.md (updated 2026-03-04)
 
 ## Current Position
 
-Phase: 7 in progress (plan 1 of 2 complete)
-Plan: 1 of 2 complete
-Status: Phase 7 plan 01 complete, plan 02 remaining
-Last activity: 2026-03-04 — Completed 07-01 (locale lookup maps for statement generator + HTML reports)
+Phase: 7 complete (plan 2 of 2 complete)
+Plan: 2 of 2 complete
+Status: Phase 7 complete, ready for Phase 8
+Last activity: 2026-03-04 — Completed 07-02 (locale-specific content verification tests)
 
-Progress: [███░░░░░░░] 30%
+Progress: [████░░░░░░] 40%
 
 ## Performance Metrics
 
 **v0.1 completed:** 5 phases, 9 plans, 20 commits
-**v0.2:** 2 plans completed
+**v0.2:** 3 plans completed
 - 06-01: ESM fix + placeholder test, 4 min, 2 tasks, 3 files
 - 07-01: Locale lookup maps for generator + HTML reports, 2 min, 2 tasks, 2 files
+- 07-02: Locale-specific content verification tests, 3 min, 2 tasks, 1 file
 
 ## Accumulated Context
 
@@ -49,6 +50,8 @@ Full decision log for v0.1 archived in .planning/milestones/v0.1-ROADMAP.md.
 - **07-01:** Module-level const maps for locale lookups instead of inline ternaries
 - **07-01:** nb alias included in all statement-generator maps for Norwegian Bokmal compatibility
 - **07-01:** LOCALE_TO_INTL covers 14 variants including dk, nb, en-gb, en-us, en-ca aliases
+- **07-02:** Status phrase assertions use template prose text (not STATUS_LABELS map values) since templates embed compliance wording in choice blocks
+- **07-02:** Case-insensitive matching for status phrases since template prose uses lowercase within sentences
 
 ### Pending Todos
 
@@ -61,5 +64,5 @@ None.
 ## Session Continuity
 
 Last session: 2026-03-04
-Stopped at: Completed 07-01-PLAN.md
-Resume file: .planning/phases/07-engine-generator-locale-expansion/07-01-SUMMARY.md
+Stopped at: Completed 07-02-PLAN.md (Phase 7 complete)
+Resume file: .planning/phases/07-engine-generator-locale-expansion/07-02-SUMMARY.md
