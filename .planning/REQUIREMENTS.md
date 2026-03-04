@@ -20,9 +20,9 @@ Requirements for the Full Localization milestone. Each maps to roadmap phases.
 
 ### Component UI Chrome
 
-- [ ] **CHRM-01**: Status badge text localized for all 9 EU locales + en-gb/en-us/en-ca
-- [ ] **CHRM-02**: Footer "Generated using" text localized for all 9 EU locales + en-gb/en-us/en-ca
-- [ ] **CHRM-03**: "Updated:" label localized for all 9 EU locales + en-gb/en-us/en-ca
+- [x] **CHRM-01**: Status badge text localized for all 9 EU locales + en-gb/en-us/en-ca
+- [x] **CHRM-02**: Footer "Generated using" text localized for all 9 EU locales + en-gb/en-us/en-ca
+- [x] **CHRM-03**: "Updated:" label localized for all 9 EU locales + en-gb/en-us/en-ca
 
 ### Statement Templates
 
@@ -63,9 +63,9 @@ Which phases cover which requirements. Updated during roadmap creation.
 | ENGI-01 | Phase 7 | Complete |
 | ENGI-02 | Phase 7 | Complete |
 | ENGI-03 | Phase 7 | Complete |
-| CHRM-01 | Phase 8 | Pending |
-| CHRM-02 | Phase 8 | Pending |
-| CHRM-03 | Phase 8 | Pending |
+| CHRM-01 | Phase 8 | Complete |
+| CHRM-02 | Phase 8 | Complete |
+| CHRM-03 | Phase 8 | Complete |
 | TMPL-01 | Phase 9 | Pending |
 | TMPL-02 | Phase 9 | Pending |
 | TMPL-03 | Phase 9 | Pending |
