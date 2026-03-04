@@ -3,12 +3,12 @@ gsd_state_version: 1.0
 milestone: v0.2
 milestone_name: Full Localization
 status: active
-last_updated: "2026-03-04"
+last_updated: "2026-03-04T19:46:27Z"
 progress:
   total_phases: 5
-  completed_phases: 3
+  completed_phases: 4
   total_plans: 6
-  completed_plans: 5
+  completed_plans: 6
 ---
 
 # Project State
@@ -18,26 +18,27 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-04)
 
 **Core value:** The type system and tests must catch bugs before users do — no `as any` escape hatches in core paths, no silent wrong behavior.
-**Current focus:** Phase 9 — en-gb/en-us/en-ca Templates
+**Current focus:** Phase 9 complete — en-gb/en-us/en-ca Templates
 
 ## Current Position
 
-Phase: 9 in progress (plan 1 of 2 complete)
-Plan: 1 of 2 complete
-Status: Phase 9 plan 1 complete, ready for plan 2
-Last activity: 2026-03-04 — Completed 09-01 (en-gb/en-us/en-ca engine templates)
+Phase: 9 complete (plan 2 of 2 complete)
+Plan: 2 of 2 complete
+Status: Phase 9 complete, ready for Phase 10
+Last activity: 2026-03-04 — Completed 09-02 (en-gb/en-us/en-ca component templates)
 
-Progress: [███████░░░] 70%
+Progress: [████████░░] 80%
 
 ## Performance Metrics
 
 **v0.1 completed:** 5 phases, 9 plans, 20 commits
-**v0.2:** 5 plans completed
+**v0.2:** 6 plans completed
 - 06-01: ESM fix + placeholder test, 4 min, 2 tasks, 3 files
 - 07-01: Locale lookup maps for generator + HTML reports, 2 min, 2 tasks, 2 files
 - 07-02: Locale-specific content verification tests, 3 min, 2 tasks, 1 file
 - 08-01: Component chrome locale maps + tests for 9 EU locales, 3 min, 2 tasks, 3 files
 - 09-01: en-gb/en-us/en-ca engine templates + TLD detection + tests, 3 min, 2 tasks, 5 files
+- 09-02: en-gb/en-us/en-ca component templates + chrome maps + tests, 3 min, 2 tasks, 3 files
 
 ## Accumulated Context
 
@@ -61,6 +62,9 @@ Full decision log for v0.1 archived in .planning/milestones/v0.1-ROADMAP.md.
 - **09-01:** .gov TLD left unmapped (ambiguous); only .uk/.us/.ca added to TLD detection
 - **09-01:** Explicit en-gb/en-us/en-ca locale map entries rather than relying on en fallback
 - **09-01:** English fallback guard updated to lang.startsWith('en') for en-* locale test compatibility
+- **09-02:** en-* templates share section structure and placeholder keys with generic en; only intro/enforcement/technical swap legislation names
+- **09-02:** Chrome map entries added for en-gb/en-us/en-ca (identical to en values) to prevent lookup breakage after supportedLocales change
+- **09-02:** Test assertions verify jurisdiction-specific text presence rather than generic text absence (what-to-do/reporting retain generic wording)
 
 ### Pending Todos
 
@@ -73,5 +77,5 @@ None.
 ## Session Continuity
 
 Last session: 2026-03-04
-Stopped at: Completed 09-01-PLAN.md (Phase 9, plan 1 of 2)
-Resume file: .planning/phases/09-en-gb-en-us-en-ca-statement-templates/09-01-SUMMARY.md
+Stopped at: Completed 09-02-PLAN.md (Phase 9 complete)
+Resume file: .planning/phases/09-en-gb-en-us-en-ca-statement-templates/09-02-SUMMARY.md
