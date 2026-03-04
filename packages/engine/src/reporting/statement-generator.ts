@@ -34,6 +34,9 @@ const EVALUATION_METHOD: Record<string, string> = {
     fr: 'Analyse automatisée via @holmdigital/engine',
     es: 'Análisis automatizado mediante @holmdigital/engine',
     nl: 'Geautomatiseerde controle via @holmdigital/engine',
+    'en-gb': 'Automated scan via @holmdigital/engine',
+    'en-us': 'Automated scan via @holmdigital/engine',
+    'en-ca': 'Automated scan via @holmdigital/engine',
 };
 
 const STATUS_LABELS: Record<string, Record<string, string>> = {
@@ -47,6 +50,9 @@ const STATUS_LABELS: Record<string, Record<string, string>> = {
     fr: { full: 'Totalement conforme', partial: 'Partiellement conforme', 'non-compliant': 'Non conforme' },
     es: { full: 'Plenamente conforme', partial: 'Parcialmente conforme', 'non-compliant': 'No conforme' },
     nl: { full: 'Volledig conform', partial: 'Gedeeltelijk conform', 'non-compliant': 'Niet conform' },
+    'en-gb': { full: 'Fully compliant', partial: 'Partially compliant', 'non-compliant': 'Non-compliant' },
+    'en-us': { full: 'Fully compliant', partial: 'Partially compliant', 'non-compliant': 'Non-compliant' },
+    'en-ca': { full: 'Fully compliant', partial: 'Partially compliant', 'non-compliant': 'Non-compliant' },
 };
 
 const RESPONSE_TIME_DEFAULT: Record<string, string> = {
@@ -60,6 +66,9 @@ const RESPONSE_TIME_DEFAULT: Record<string, string> = {
     fr: '2 jours',
     es: '2 días',
     nl: '2 dagen',
+    'en-gb': '2 days',
+    'en-us': '2 days',
+    'en-ca': '2 days',
 };
 
 /**
@@ -118,6 +127,9 @@ export async function generateStatementContent(
         if (result.url.endsWith('.dk')) country = 'DK';
         if (result.url.endsWith('.fi')) country = 'FI';
         if (result.url.endsWith('.de')) country = 'DE';
+        if (result.url.endsWith('.uk')) country = 'GB';
+        if (result.url.endsWith('.us')) country = 'US';
+        if (result.url.endsWith('.ca')) country = 'CA';
     }
 
     const sector: 'public' | 'private' = 'public';

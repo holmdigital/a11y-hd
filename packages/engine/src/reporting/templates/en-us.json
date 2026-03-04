@@ -1,0 +1,39 @@
+{
+    "title": "Accessibility of {<website>}",
+    "intro": "This website is run by {<organisation>}. We want as many people as possible to be able to use it, and this document describes how {<website>} complies with Section 508 of the Rehabilitation Act, any known accessibility issues, and how you can report problems so that we can fix them.",
+    "sections": [
+        {
+            "id": "how-accessible",
+            "title": "How accessible is the website?",
+            "content": "{There are no known accessibility issues with this website./We know some parts of this website aren't fully accessible. See the section on non-accessible content below for more information./We know some parts of this website aren't fully accessible. See the section on non-accessible content below for more information.}"
+        },
+        {
+            "id": "what-to-do",
+            "title": "What to do if you can't access parts of this website?",
+            "content": "If you need content from this website that is not accessible for you, but is not within the scope of the accessibility regulations as described below, please contact us.\n\n[Our normal response time is {<response time>}.]\n\n[You can also contact us in the following ways:\n\n* email {<email address>}\n* call {<telephone number>}]"
+        },
+        {
+            "id": "reporting",
+            "title": "Reporting accessibility problems with this website",
+            "content": "We're always looking to improve the accessibility of this website. If you find any problems that aren't listed on this page or if we're not meeting the requirements of the accessibility regulations, contact us and let us know about the problem."
+        },
+        {
+            "id": "enforcement",
+            "title": "Enforcement procedure",
+            "content": "The {<enforcement_body>} is responsible for enforcing Section 508 of the Rehabilitation Act and the Americans with Disabilities Act (ADA). If you experience accessibility issues on our website, you can submit a complaint to {<enforcement_body>}.\n\nYou can also file a complaint with {<enforcement_body>} if you believe our website does not comply with Section 508 or the ADA, or if your request for accessible content has not been handled appropriately."
+        },
+        {
+            "id": "technical",
+            "title": "Technical information about this website's accessibility",
+            "content": "{This website is fully compliant with Section 508 of the Rehabilitation Act./This website is partially compliant with Section 508 of the Rehabilitation Act, due to the non-compliances listed below./This website is not compliant with Section 508 of the Rehabilitation Act. The non-accessible sections are listed below.}"
+        },
+        {
+            "content": "The content described below is, in one way or another, not fully accessible.\n\n[\n**Non-compliance with the accessibility regulations**\n\n{<issues>}\n]"
+        },
+        {
+            "id": "testing",
+            "title": "How we tested this website",
+            "content": "{We have performed a self-assessment (internal testing) of {<website>}./{<third party>} has tested {<website>}./We have estimated the accessibility without testing.}\n\nThe last assessment was made on {<assessment date>}.\n\n[Assessment method: {<method>}]\n\nThe website was published on {<publish date>}.\n\nThe statement was last updated on {<update date>}."
+        }
+    ]
+}

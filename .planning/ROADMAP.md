@@ -81,7 +81,10 @@ Plans:
   3. en-ca statement references AODA/ACA and Accessibility Commissioner (both HTML and Markdown output)
   4. Country detection correctly identifies .uk/.gov.uk, .us/.gov, and .ca/.gc.ca TLDs and assigns the right enforcement body
   5. Both template pipelines (component HTML and engine Markdown) produce consistent enforcement body and legislation references for each en-* locale
-**Plans**: TBD
+**Plans:** 2 plans
+Plans:
+- [ ] 09-01-PLAN.md — Create en-gb/en-us/en-ca engine JSON templates, extend TLD detection, update engine locale maps and tests
+- [ ] 09-02-PLAN.md — Add en-gb/en-us/en-ca component TEMPLATES entries, update supportedLocales, chrome maps, and component tests
 
 ### Phase 10: Verification and Test Coverage
 **Goal**: Comprehensive automated and manual verification that all 12 locales produce correct output
@@ -110,5 +113,5 @@ Phases execute in numeric order: 6 -> 7 -> 8 -> 9 -> 10
 | 6. ESM Fix and Foundation | v0.2 | 1/1 | Complete | 2026-03-04 |
 | 7. Engine Generator Locale Expansion | v0.2 | 2/2 | Complete | 2026-03-04 |
 | 8. Component UI Chrome Localization | v0.2 | 0/1 | Not started | - |
-| 9. en-gb/en-us/en-ca Statement Templates | v0.2 | 0/? | Not started | - |
+| 9. en-gb/en-us/en-ca Statement Templates | v0.2 | 0/2 | Not started | - |
 | 10. Verification and Test Coverage | v0.2 | 0/? | Not started | - |
