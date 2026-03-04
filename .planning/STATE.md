@@ -2,6 +2,19 @@
 gsd_state_version: 1.0
 milestone: v0.2
 milestone_name: Full Localization
+status: unknown
+last_updated: "2026-03-04T19:17:42.850Z"
+progress:
+  total_phases: 3
+  completed_phases: 3
+  total_plans: 4
+  completed_plans: 4
+---
+
+---
+gsd_state_version: 1.0
+milestone: v0.2
+milestone_name: Full Localization
 status: active
 last_updated: "2026-03-04"
 progress:
