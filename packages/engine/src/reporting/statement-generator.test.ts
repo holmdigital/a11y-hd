@@ -96,3 +96,47 @@ describe('Template placeholder exhaustiveness', () => {
         );
     });
 });
+
+/**
+ * Locale-specific output verification.
+ * Validates ENGI-01/02/03: each EU locale produces locale-specific evaluationMethod
+ * text and compliance status phrases in Markdown output — not English fallbacks.
+ *
+ * The status phrases come from the template choice blocks (not the STATUS_LABELS map),
+ * so we verify distinctive locale-specific compliance wording from the actual templates.
+ */
+describe('Locale-specific output verification', () => {
+    // [lang, expectedEvalMethodSubstring, expectedStatusPhrase]
+    // mockResult has score=85, complianceLevel='partial', so the partial choice text appears.
+    // Status phrases are extracted from each template's technical-section choice block.
+    const localeExpectations: [string, string, string][] = [
+        ['sv', 'Automatiserad granskning', 'delvis förenlig'],
+        ['en', 'Automated scan', 'partially compliant'],
+        ['no', 'Automatisert gjennomgang', 'delvis i samsvar'],
+        ['fi', 'Automaattinen tarkistus', 'osittain'],
+        ['da', 'Automatiseret gennemgang', 'delvist i overensstemmelse'],
+        ['de', 'Automatisierte Prüfung', 'teilweise mit den Barrierefreiheitsanforderungen vereinbar'],
+        ['fr', 'Analyse automatisée', 'partiellement conforme'],
+        ['es', 'Análisis automatizado', 'parcialmente conforme'],
+        ['nl', 'Geautomatiseerde controle', 'gedeeltelijk in overeenstemming'],
+    ];
+
+    it.each(localeExpectations)(
+        'should produce locale-specific evaluationMethod and status label for %s',
+        async (lang, expectedEvalMethod, expectedStatusPhrase) => {
+            const output = await generateStatementContent(mockResult, lang, 'md', metadata);
+
+            // Verify locale-specific evaluationMethod text appears
+            expect(output).toContain(expectedEvalMethod);
+
+            // Verify locale-specific compliance status phrase appears in the output
+            expect(output.toLowerCase()).toContain(expectedStatusPhrase.toLowerCase());
+
+            // Verify English fallback text is NOT present (except for English locale)
+            if (lang !== 'en') {
+                expect(output).not.toContain('Automated scan');
+                expect(output.toLowerCase()).not.toContain('partially compliant');
+            }
+        }
+    );
+});
