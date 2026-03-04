@@ -26,10 +26,10 @@ Requirements for the Full Localization milestone. Each maps to roadmap phases.
 
 ### Statement Templates
 
-- [ ] **TMPL-01**: en-gb statement template with UK PSBAR 2018 legal references (engine JSON + component inline)
-- [ ] **TMPL-02**: en-us statement template with Section 508/ADA legal references (engine JSON + component inline)
-- [ ] **TMPL-03**: en-ca statement template with AODA/ACA legal references (engine JSON + component inline)
-- [ ] **TMPL-04**: Country detection extended for en-gb/en-us/en-ca (TLD + explicit locale)
+- [x] **TMPL-01**: en-gb statement template with UK PSBAR 2018 legal references (engine JSON + component inline)
+- [x] **TMPL-02**: en-us statement template with Section 508/ADA legal references (engine JSON + component inline)
+- [x] **TMPL-03**: en-ca statement template with AODA/ACA legal references (engine JSON + component inline)
+- [x] **TMPL-04**: Country detection extended for en-gb/en-us/en-ca (TLD + explicit locale)
 
 ### Verification
 
@@ -66,10 +66,10 @@ Which phases cover which requirements. Updated during roadmap creation.
 | CHRM-01 | Phase 8 | Complete |
 | CHRM-02 | Phase 8 | Complete |
 | CHRM-03 | Phase 8 | Complete |
-| TMPL-01 | Phase 9 | Pending |
-| TMPL-02 | Phase 9 | Pending |
-| TMPL-03 | Phase 9 | Pending |
-| TMPL-04 | Phase 9 | Pending |
+| TMPL-01 | Phase 9 | Complete |
+| TMPL-02 | Phase 9 | Complete |
+| TMPL-03 | Phase 9 | Complete |
+| TMPL-04 | Phase 9 | Complete |
 | VRFY-01 | Phase 10 | Pending |
 | VRFY-02 | Phase 10 | Pending |
 

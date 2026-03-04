@@ -2,26 +2,13 @@
 gsd_state_version: 1.0
 milestone: v0.2
 milestone_name: Full Localization
-status: unknown
-last_updated: "2026-03-04T19:17:42.850Z"
-progress:
-  total_phases: 3
-  completed_phases: 3
-  total_plans: 4
-  completed_plans: 4
----
-
----
-gsd_state_version: 1.0
-milestone: v0.2
-milestone_name: Full Localization
 status: active
 last_updated: "2026-03-04"
 progress:
   total_phases: 5
   completed_phases: 3
-  total_plans: 4
-  completed_plans: 4
+  total_plans: 6
+  completed_plans: 5
 ---
 
 # Project State
@@ -35,21 +22,22 @@ See: .planning/PROJECT.md (updated 2026-03-04)
 
 ## Current Position
 
-Phase: 8 complete (plan 1 of 1 complete)
-Plan: 1 of 1 complete
-Status: Phase 8 complete, ready for Phase 9
-Last activity: 2026-03-04 — Completed 08-01 (component UI chrome localization)
+Phase: 9 in progress (plan 1 of 2 complete)
+Plan: 1 of 2 complete
+Status: Phase 9 plan 1 complete, ready for plan 2
+Last activity: 2026-03-04 — Completed 09-01 (en-gb/en-us/en-ca engine templates)
 
-Progress: [██████░░░░] 60%
+Progress: [███████░░░] 70%
 
 ## Performance Metrics
 
 **v0.1 completed:** 5 phases, 9 plans, 20 commits
-**v0.2:** 4 plans completed
+**v0.2:** 5 plans completed
 - 06-01: ESM fix + placeholder test, 4 min, 2 tasks, 3 files
 - 07-01: Locale lookup maps for generator + HTML reports, 2 min, 2 tasks, 2 files
 - 07-02: Locale-specific content verification tests, 3 min, 2 tasks, 1 file
 - 08-01: Component chrome locale maps + tests for 9 EU locales, 3 min, 2 tasks, 3 files
+- 09-01: en-gb/en-us/en-ca engine templates + TLD detection + tests, 3 min, 2 tasks, 5 files
 
 ## Accumulated Context
 
@@ -69,6 +57,10 @@ Full decision log for v0.1 archived in .planning/milestones/v0.1-ROADMAP.md.
 - **08-01:** Swedish badge text aligned to engine STATUS_LABELS wording for cross-package consistency
 - **08-01:** Locale maps in separate locale-chrome.ts file following engine pattern
 - **08-01:** en-gb/en-us/en-ca resolve through supportedLocales to 'en', no duplicate map entries
+- **09-01:** en-gb/en-us/en-ca templates share identical non-legal sections with en.json; only intro/enforcement/technical differ
+- **09-01:** .gov TLD left unmapped (ambiguous); only .uk/.us/.ca added to TLD detection
+- **09-01:** Explicit en-gb/en-us/en-ca locale map entries rather than relying on en fallback
+- **09-01:** English fallback guard updated to lang.startsWith('en') for en-* locale test compatibility
 
 ### Pending Todos
 
@@ -81,5 +73,5 @@ None.
 ## Session Continuity
 
 Last session: 2026-03-04
-Stopped at: Completed 08-01-PLAN.md (Phase 8 complete)
-Resume file: .planning/phases/08-component-ui-chrome-localization/08-01-SUMMARY.md
+Stopped at: Completed 09-01-PLAN.md (Phase 9, plan 1 of 2)
+Resume file: .planning/phases/09-en-gb-en-us-en-ca-statement-templates/09-01-SUMMARY.md
