@@ -4,6 +4,7 @@ import {
     ENFORCEMENT_BODIES,
     type Country
 } from '@holmdigital/standards';
+import { BADGE_LABELS, UPDATED_LABEL, FOOTER_TEXT } from './locale-chrome';
 
 /**
  * Props för AccessibilityStatement-komponenten
@@ -247,7 +248,10 @@ const formatDiggDate = (date: Date, locale: string) => {
         nl: 'nl-NL',
         de: 'de-DE',
         fr: 'fr-FR',
-        es: 'es-ES'
+        es: 'es-ES',
+        'en-gb': 'en-GB',
+        'en-us': 'en-US',
+        'en-ca': 'en-CA'
     };
     return date.toLocaleDateString(localeMap[locale] || 'en-US', {
         year: 'numeric',
@@ -291,7 +295,8 @@ export const AccessibilityStatement: React.FC<AccessibilityStatementProps> = ({
     // Localization & Template Logic
     const supportedLocales: Record<string, string> = {
         sv: 'sv', en: 'en', no: 'no', nb: 'no', dk: 'da',
-        da: 'da', de: 'de', fr: 'fr', es: 'es', fi: 'fi', nl: 'nl'
+        da: 'da', de: 'de', fr: 'fr', es: 'es', fi: 'fi', nl: 'nl',
+        'en-gb': 'en', 'en-us': 'en', 'en-ca': 'en'
     };
     const lang = supportedLocales[locale];
     if (!lang) {
@@ -831,13 +836,11 @@ export const AccessibilityStatement: React.FC<AccessibilityStatementProps> = ({
                     </h1>
 
                     <div style={styles.metaData}>
-                        <span>{effectiveLang === 'sv' ? 'Status:' : 'Status:'} <span style={styles.statusBadge}>
-                            {complianceLevel === 'full' ? (effectiveLang === 'sv' ? 'Fullt förenlig' : 'Fully compliant') :
-                                complianceLevel === 'partial' ? (effectiveLang === 'sv' ? 'Delvis förenlig' : 'Partially compliant') :
-                                    (effectiveLang === 'sv' ? 'Ej förenlig' : 'Non-compliant')}
+                        <span>Status: <span style={styles.statusBadge}>
+                            {(BADGE_LABELS[effectiveLang] || BADGE_LABELS['en'])[complianceLevel]}
                         </span></span>
                         <span style={{ color: '#e2e8f0' }}>|</span>
-                        <span>{effectiveLang === 'sv' ? 'Uppdaterad:' : 'Updated:'} {d(lastReviewDate)}</span>
+                        <span>{UPDATED_LABEL[effectiveLang] || UPDATED_LABEL['en']} {d(lastReviewDate)}</span>
                     </div>
                 </header>
 
@@ -851,7 +854,7 @@ export const AccessibilityStatement: React.FC<AccessibilityStatementProps> = ({
             {/* Footer with Tool attribution */}
             <footer style={{ marginTop: '3rem', borderTop: '1px solid #e2e8f0', paddingTop: '1.5rem', fontSize: '0.875rem', color: '#64748b' }}>
                 <p>
-                    {effectiveLang === 'sv' ? 'Genererad med hjälp av' : 'Generated using'}{' '}
+                    {FOOTER_TEXT[effectiveLang] || FOOTER_TEXT['en']}{' '}
                     <a href={usedTool?.url || 'https://holmdigital.se'} style={styles.link} target="_blank" rel="noopener noreferrer">
                         {usedTool?.name || 'HolmDigital Engine'}
                     </a>

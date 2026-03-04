@@ -67,7 +67,9 @@ Plans:
   2. "Generated using" footer text displays the correct translation for each of the 12 locales
   3. "Updated:" label displays the correct translation for each of the 12 locales
   4. A Finnish locale statement renders Finnish chrome text, not English or Swedish fallback
-**Plans**: TBD
+**Plans:** 1 plan
+Plans:
+- [ ] 08-01-PLAN.md — Create locale-chrome.ts lookup maps, replace sv/en ternaries, add chrome localization tests
 
 ### Phase 9: en-gb/en-us/en-ca Statement Templates
 **Goal**: Legally correct accessibility statements for UK, US, and Canadian websites with jurisdiction-specific references
@@ -107,6 +109,6 @@ Phases execute in numeric order: 6 -> 7 -> 8 -> 9 -> 10
 | 5. Test Coverage | v0.1 | 2/2 | Complete | 2026-03-03 |
 | 6. ESM Fix and Foundation | v0.2 | 1/1 | Complete | 2026-03-04 |
 | 7. Engine Generator Locale Expansion | v0.2 | 2/2 | Complete | 2026-03-04 |
-| 8. Component UI Chrome Localization | v0.2 | 0/? | Not started | - |
+| 8. Component UI Chrome Localization | v0.2 | 0/1 | Not started | - |
 | 9. en-gb/en-us/en-ca Statement Templates | v0.2 | 0/? | Not started | - |
 | 10. Verification and Test Coverage | v0.2 | 0/? | Not started | - |
