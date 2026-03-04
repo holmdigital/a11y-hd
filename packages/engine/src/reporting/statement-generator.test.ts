@@ -88,11 +88,11 @@ describe('Template placeholder exhaustiveness', () => {
         ).rejects.toThrow(/template not found for locale "xx"/i);
     });
 
-    it('should discover all 9 expected template files', () => {
-        expect(templateFiles.length).toBeGreaterThanOrEqual(9);
+    it('should discover all 12 expected template files', () => {
+        expect(templateFiles.length).toBeGreaterThanOrEqual(12);
         const langs = templateFiles.map(f => f.replace('.json', '')).sort();
         expect(langs).toEqual(
-            expect.arrayContaining(['da', 'de', 'en', 'es', 'fi', 'fr', 'nl', 'no', 'sv'])
+            expect.arrayContaining(['da', 'de', 'en', 'en-ca', 'en-gb', 'en-us', 'es', 'fi', 'fr', 'nl', 'no', 'sv'])
         );
     });
 });
@@ -119,6 +119,9 @@ describe('Locale-specific output verification', () => {
         ['fr', 'Analyse automatisée', 'partiellement conforme'],
         ['es', 'Análisis automatizado', 'parcialmente conforme'],
         ['nl', 'Geautomatiseerde controle', 'gedeeltelijk in overeenstemming'],
+        ['en-gb', 'Automated scan', 'partially compliant with the Public Sector Bodies'],
+        ['en-us', 'Automated scan', 'partially compliant with Section 508'],
+        ['en-ca', 'Automated scan', 'partially compliant with the Accessible Canada Act'],
     ];
 
     it.each(localeExpectations)(
@@ -133,10 +136,37 @@ describe('Locale-specific output verification', () => {
             expect(output.toLowerCase()).toContain(expectedStatusPhrase.toLowerCase());
 
             // Verify English fallback text is NOT present (except for English locale)
-            if (lang !== 'en') {
+            if (!lang.startsWith('en')) {
                 expect(output).not.toContain('Automated scan');
                 expect(output.toLowerCase()).not.toContain('partially compliant');
             }
         }
     );
+});
+
+describe('TLD country detection for en-* locales', () => {
+    it('should detect .uk TLD as GB country', async () => {
+        const ukResult = { ...mockResult, url: 'https://example.gov.uk' };
+        const output = await generateStatementContent(ukResult, 'en-gb', 'md', { ...metadata, country: undefined });
+        expect(output).toContain('Equality and Human Rights Commission');
+    });
+
+    it('should detect .us TLD as US country', async () => {
+        const usResult = { ...mockResult, url: 'https://example.us' };
+        const output = await generateStatementContent(usResult, 'en-us', 'md', { ...metadata, country: undefined });
+        expect(output).toContain('Department of Justice');
+    });
+
+    it('should detect .ca TLD as CA country', async () => {
+        const caResult = { ...mockResult, url: 'https://example.gc.ca' };
+        const output = await generateStatementContent(caResult, 'en-ca', 'md', { ...metadata, country: undefined });
+        expect(output).toContain('Accessibility Commissioner');
+    });
+
+    it('should not detect .gov TLD as any specific country', async () => {
+        const govResult = { ...mockResult, url: 'https://example.gov' };
+        const output = await generateStatementContent(govResult, 'en-us', 'md', { ...metadata, country: undefined });
+        // .gov is unmapped, defaults to SE, so enforcement body is Swedish (DIGG)
+        expect(output).not.toContain('Department of Justice');
+    });
 });
