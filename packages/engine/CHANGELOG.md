@@ -1,5 +1,11 @@
 # @holmdigital/engine
 
+## 2.1.7
+
+### Patch Changes
+
+- dd9a7b8: Fix unresolved choice blocks in Markdown statement output when templates contain nested placeholders
+
 ## 2.1.6
 
 ### Patch Changes
