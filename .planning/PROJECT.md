@@ -1,10 +1,8 @@
-# a11y-hd Stability Pass
+# a11y-hd
 
 ## What This Is
 
 HolmDigital's accessibility scanning engine, regulatory standards database, and prescriptive React component library — a monorepo of three npm packages (`@holmdigital/standards`, `@holmdigital/components`, `@holmdigital/engine`) that maps WCAG criteria to EN 301 549 and Swedish DOS-lagen, scans pages via Puppeteer + axe-core, and generates compliance reports in multiple formats.
-
-This milestone focuses on stabilizing the foundation: eliminating unsafe type casts, fixing version reporting bugs, resolving broken locale handling, and adding test coverage for every area touched.
 
 ## Core Value
 
@@ -22,53 +20,74 @@ The type system and tests must catch bugs before users do — no `as any` escape
 - ✓ CLI tool (`hd-a11y-scan`) with cosmiconfig support — existing
 - ✓ HolmDigital Cloud API integration — existing
 - ✓ i18n with 9+ locales for UI strings and statement templates — existing
+- ✓ `FailingNode` and `EnrichedReport` types in `@holmdigital/standards` — v0.1
+- ✓ `HolmDigitalInsight` tightened (no index signature) — v0.1
+- ✓ `ScanResult.reports` typed as `EnrichedReport[]` — v0.1
+- ✓ Zero `as any` casts in production code — v0.1
+- ✓ Build-time version injection via tsup `define` — v0.1
+- ✓ CLI, cloud client, and reports derive version from `package.json` — v0.1
+- ✓ `AccessibilityStatement` routes all 9 EU locales correctly — v0.1
+- ✓ 74 tests across 9 files covering enrichment, version, locales, placeholders — v0.1
+- ✓ `evaluationMethod` localized for all 9 EU locales — v0.2
+- ✓ `statusMap` expanded to all 9 EU locales — v0.2
+- ✓ UI chrome (badges, footer, labels) localized for 12 locales (9 EU + en-gb/en-us/en-ca) — v0.2
+- ✓ Statement generation extended to en-gb, en-us, en-ca with jurisdiction-specific legislation — v0.2
+- ✓ ESM `import.meta` warning fixed via tsup shims — v0.2
+- ✓ TLD-based country detection for .uk/.us/.ca — v0.2
+- ✓ 127 automated locale tests with zero failures — v0.2
 
 ### Active
 
-- [ ] Extend `RegulatoryReport` type with `failingNodes` and `legalContext` properties
-- [ ] Define `FailingNode` and `LegalContext` interfaces in `@holmdigital/standards`
-- [ ] Remove all `as any` casts from core paths (engine, reporting, CLI, components)
-- [ ] Remove `[key: string]: any` from `HolmDigitalInsight`, add explicit optional keys
-- [ ] Fix version string to use a single source of truth (no hardcoded versions)
-- [ ] Fix CLI `--version` to report actual package version
-- [ ] Fix cloud client to send correct engine version
-- [ ] Fix `AccessibilityStatement` locale handling to support all 9 languages (not just sv/en)
-- [ ] Add tests for type-safety changes (enrichment, reporting, CLI paths)
-- [ ] Add tests for version resolution
-- [ ] Add tests for locale/template handling in AccessibilityStatement component
+(None — next milestone requirements TBD via `/gsd:new-milestone`)
 
 ### Out of Scope
 
-- Template rendering dedup (engine vs component) — related but separate concern, tackle after stability pass
+- Template rendering dedup (engine vs component) — accepted architecture decision (wrong dependency direction)
 - Performance fixes (vDOM removal, browser reuse for PDF) — not a stability issue
-- New feature work — this is purely foundational cleanup
-- Test coverage for untouched code — only test what we change
+- Native speaker validation of non-English translations — requires external review
+- Engine JSON template section[5] missing `title` (produces `## undefined` in Markdown) — cosmetic, future fix
 
 ## Context
 
 - Monorepo: `packages/standards` -> `packages/components` -> `packages/engine` (strict dependency order)
-- Build: tsup (CJS + ESM + DTS), TypeScript 5.7.2 strict mode
+- Build: tsup 8.5.1 (CJS + ESM + DTS), TypeScript 5.7.2 strict mode
 - Test framework: Vitest 4.0.16, @testing-library/react 16.3.2
-- Current test coverage: ~15% (7 test files / ~49 source files)
-- ESLint already warns on `@typescript-eslint/no-explicit-any` but warnings are not blocking
-- The `as any` problem is concentrated in `enrichResults()` flow: standards defines `RegulatoryReport` without `failingNodes`/`legalContext`, engine adds them at runtime, all downstream reporting accesses via casts
-- Version strings hardcoded in 3 places: cloud-client.ts (1.4.4), cli/index.ts (0.1.0), regulatory-scanner.ts (2.1.1) — actual version is 2.1.2
-- AccessibilityStatement component hardcodes templates for sv/en/no but only routes sv to Swedish, everything else to English
+- Current test coverage: 127 locale-related tests + 16 standards tests across 3 test files
+- Zero `as any` in production source files (3 occurrences in test files only, documented)
+- `EnrichedReport extends RegulatoryReport` with typed `failingNodes` and `legalContext`
+- Build-time `__ENGINE_VERSION__` injected via tsup `define` from `package.json`
+- `AccessibilityStatement` has 12 inline templates (9 EU + en-gb/en-us/en-ca) with complete placeholder substitution
+- Engine has 12 JSON templates with locale-specific prose and placeholder exhaustiveness testing
+- Locale lookup maps (module-level `Record<string, string>`) for evaluationMethod, statusMap, badges, labels, footer
+- TLD-based country detection (.uk→GB, .us→US, .ca→CA) with ENFORCEMENT_BODIES map integration
+- ~8,900 LOC TypeScript across all packages (net +637 from v0.2)
 
 ## Constraints
 
-- **Backwards compatibility**: Public API surface (`@holmdigital/standards` types, `@holmdigital/engine` exports, `@holmdigital/components` props) must not break existing consumers
-- **Build order**: standards -> components -> engine (changes to types in standards cascade)
-- **Existing tests**: All 7 existing test files must continue passing
-- **No runtime behavior change**: Scan results, report output, and compliance scores must remain identical — we're fixing types and bugs, not changing logic
+- **Backwards compatibility**: Public API surface must not break existing consumers
+- **Build order**: standards -> components -> engine (changes to types cascade)
+- **Test suite**: All 127+ locale tests must continue passing
+- **Pre-publish**: Run `npm run build` in packages/components before npm publish (dist stale after v0.2 source changes)
 
 ## Key Decisions
 
 | Decision | Rationale | Outcome |
 |----------|-----------|---------|
-| Version source of truth approach | Research best option (build-time inject vs runtime read) | — Pending |
-| Template/locale fix approach | Research cleanest way to support all 9 locales in component | — Pending |
-| Extend vs new type for EnrichedReport | Extending `RegulatoryReport` is simpler; new type is safer | — Pending |
+| Build-time version injection via tsup `define` | Runtime `readFileSync` fails in dist context; build-time is reliable | ✓ Good |
+| `EnrichedReport extends RegulatoryReport` | Additive subtype — base type frozen, no semver break | ✓ Good |
+| Inline templates in component (not cross-package import) | Wrong dependency direction (engine → components); keeps component self-contained | ✓ Good |
+| `AxeScanOutput` as local interface (not importing `AxeResults`) | Serialized page.evaluate output is a subset of axe-core's full type | ✓ Good |
+| `unknown` with narrowing for i18n JSON traversal | Legitimate for JSON key traversal after typeof+in checks | ✓ Good |
+| Bracket notation for private method testing | Avoids production code changes; documented pattern for TypeScript | ✓ Good |
+| tsup `shims: true` for ESM `__dirname` support | Eliminates `import.meta.url` conditional; single `__dirname` path | ✓ Good |
+| Module-level locale lookup maps (not inline ternaries) | Extensible, testable, consistent pattern across engine and component | ✓ Good |
+| Separate `locale-chrome.ts` for component chrome maps | Mirrors engine pattern; prevents AccessibilityStatement.tsx bloat | ✓ Good |
+| `.gov` TLD left unmapped | Ambiguous (could be any country); requires explicit `country` metadata | ✓ Good |
+| en-gb/en-us/en-ca route to own templates (not generic en) | Jurisdiction-specific legislation requires distinct prose, not fallback | ✓ Good |
+
+## Current State
+
+Shipped v0.2 Full Localization (2026-03-05). All i18n expanded from binary sv/en to 12 locales. Next milestone TBD.
 
 ---
-*Last updated: 2026-03-02 after initialization*
+*Last updated: 2026-03-05 after v0.2 milestone*
