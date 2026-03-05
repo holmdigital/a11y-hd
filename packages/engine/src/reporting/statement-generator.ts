@@ -311,6 +311,11 @@ export async function generateStatementContent(
                 return content;
             });
 
+            // Substitute {<placeholder>} patterns first (before choice resolution)
+            processed = processed.replace(/\{<[^>]+>\}/g, (match) => {
+                return substitutions[match] !== undefined ? substitutions[match] : match;
+            });
+
             // Handle Choices { A / B / C }
             processed = processed.replace(/\{([^{}]*?)\}/g, (_match, content) => {
                 const parts = content.split('/');
@@ -320,9 +325,7 @@ export async function generateStatementContent(
                     if (complianceLevel === 'non-compliant') idx = parts.length > 2 ? 2 : 1;
                     return parts[idx].trim();
                 }
-                // Handle substitutions if not a choice block
-                const key = `{${content}}`;
-                return substitutions[key] !== undefined ? substitutions[key] : _match;
+                return _match;
             });
 
             return processed;
