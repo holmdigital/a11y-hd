@@ -20,6 +20,8 @@ import {
     ENFORCEMENT_BODIES,
     ENFORCEMENT_BODIES_DETAILED,
     getEnforcementBody,
+    // National laws
+    getNationalLawByFramework,
 } from './index';
 import type { Country } from './types';
 
@@ -202,5 +204,39 @@ describe('Enforcement Bodies', () => {
             expect(getEnforcementBody('PL')).toBe('Ministry of Digitization (Ministerstwo Cyfryzacji)');
             expect(getEnforcementBody('PL', 'private')).toBe('Office of Competition and Consumer Protection (UOKiK)');
         });
+    });
+});
+
+describe('National Laws — IT, PT, PL', () => {
+    it('should return WAD laws for IT, PT, PL', () => {
+        expect(getNationalLawByFramework('WAD', 'IT')).not.toBeNull();
+        expect(getNationalLawByFramework('WAD', 'PT')).not.toBeNull();
+        expect(getNationalLawByFramework('WAD', 'PL')).not.toBeNull();
+    });
+
+    it('should return EAA laws for IT, PT, PL', () => {
+        expect(getNationalLawByFramework('EAA', 'IT')).not.toBeNull();
+        expect(getNationalLawByFramework('EAA', 'PT')).not.toBeNull();
+        expect(getNationalLawByFramework('EAA', 'PL')).not.toBeNull();
+    });
+
+    it('should have correct law identifiers', () => {
+        expect(getNationalLawByFramework('WAD', 'IT')?.law).toBe('Legge 4/2004');
+        expect(getNationalLawByFramework('EAA', 'IT')?.law).toBe('D.Lgs. 82/2024');
+        expect(getNationalLawByFramework('WAD', 'PT')?.law).toBe('DL 83/2018');
+        expect(getNationalLawByFramework('EAA', 'PT')?.law).toBe('DL 101-D/2023');
+        expect(getNationalLawByFramework('WAD', 'PL')?.law).toBe('Ustawa o dostępności cyfrowej');
+        expect(getNationalLawByFramework('EAA', 'PL')?.law).toBe('Ustawa o dostępności produktów i usług');
+    });
+
+    it('should have inForce: true for all EAA entries', () => {
+        expect(getNationalLawByFramework('EAA', 'IT')?.inForce).toBe(true);
+        expect(getNationalLawByFramework('EAA', 'PT')?.inForce).toBe(true);
+        expect(getNationalLawByFramework('EAA', 'PL')?.inForce).toBe(true);
+    });
+
+    it('should have distinct WAD and EAA bodies for PT and PL', () => {
+        expect(getEnforcementBody('PT', 'private')).not.toBe(getEnforcementBody('PT', 'public'));
+        expect(getEnforcementBody('PL', 'private')).not.toBe(getEnforcementBody('PL', 'public'));
     });
 });
