@@ -2,7 +2,7 @@
 
 ## What This Is
 
-HolmDigital's accessibility scanning engine, regulatory standards database, and prescriptive React component library — a monorepo of three npm packages (`@holmdigital/standards`, `@holmdigital/components`, `@holmdigital/engine`) that maps WCAG criteria to EN 301 549 and Swedish DOS-lagen, scans pages via Puppeteer + axe-core, and generates compliance reports in multiple formats.
+HolmDigital's accessibility scanning engine, regulatory standards database, and prescriptive React component library — a monorepo of three npm packages (`@holmdigital/standards`, `@holmdigital/components`, `@holmdigital/engine`) that maps WCAG criteria to EN 301 549 and national accessibility laws, scans pages via Puppeteer + axe-core, and generates country-specific compliance reports and statements in multiple formats and locales.
 
 ## Core Value
 
@@ -35,14 +35,15 @@ The type system and tests must catch bugs before users do — no `as any` escape
 - ✓ ESM `import.meta` warning fixed via tsup shims — v0.2
 - ✓ TLD-based country detection for .uk/.us/.ca — v0.2
 - ✓ 127 automated locale tests with zero failures — v0.2
+- ✓ ENFORCEMENT_BODIES expanded with all 9 EU country-specific enforcement bodies (WAD + EAA dual) — v0.3
+- ✓ Engine JSON templates reference correct national enforcement body and law name per country — v0.3
+- ✓ Component inline TEMPLATES reference correct national enforcement body and law name per country — v0.3
+- ✓ TLD detection extended to cover all 9 EU countries (.de, .fr, .nl, .fi, .dk, .no, .es, .se, .it) — v0.3
+- ✓ 225 automated tests with zero failures — v0.3
 
 ### Active
 
-- [ ] ENFORCEMENT_BODIES expanded with all 9 EU country-specific enforcement bodies
-- [ ] Engine JSON templates reference correct national enforcement body per country
-- [ ] Component inline TEMPLATES reference correct national enforcement body per country
-- [ ] Template prose references country-specific law names (BFSG, RGAA, DOS-lagen, etc.) instead of generic EU text
-- [ ] TLD detection extended to cover all 9 EU countries (.de, .fr, .nl, .fi, .dk, .no, .es, .se, .it)
+(No active requirements — next milestone not yet planned)
 
 ### Out of Scope
 
@@ -50,28 +51,33 @@ The type system and tests must catch bugs before users do — no `as any` escape
 - Performance fixes (vDOM removal, browser reuse for PDF) — not a stability issue
 - Native speaker validation of non-English translations — requires external review
 - Engine JSON template section[5] missing `title` (produces `## undefined` in Markdown) — cosmetic, future fix
+- Italian (it) locale template — deferred to LOC-01 milestone
+- `--sector` CLI flag for EAA mode — data ready in standards; CLI integration deferred
 
 ## Context
 
 - Monorepo: `packages/standards` -> `packages/components` -> `packages/engine` (strict dependency order)
 - Build: tsup 8.5.1 (CJS + ESM + DTS), TypeScript 5.7.2 strict mode
 - Test framework: Vitest 4.0.16, @testing-library/react 16.3.2
-- Current test coverage: 127 locale-related tests + 16 standards tests across 3 test files
+- Current test coverage: 225 tests across 3 test files (standards: 26, engine: 95, components: 104)
 - Zero `as any` in production source files (3 occurrences in test files only, documented)
 - `EnrichedReport extends RegulatoryReport` with typed `failingNodes` and `legalContext`
 - Build-time `__ENGINE_VERSION__` injected via tsup `define` from `package.json`
 - `AccessibilityStatement` has 12 inline templates (9 EU + en-gb/en-us/en-ca) with complete placeholder substitution
 - Engine has 12 JSON templates with locale-specific prose and placeholder exhaustiveness testing
-- Locale lookup maps (module-level `Record<string, string>`) for evaluationMethod, statusMap, badges, labels, footer
-- TLD-based country detection (.uk→GB, .us→US, .ca→CA) with ENFORCEMENT_BODIES map integration
-- ~8,900 LOC TypeScript across all packages (net +637 from v0.2)
+- TLD detection covers 12 TLDs (.se, .no, .dk, .fi, .de, .fr, .nl, .es, .it, .uk, .us, .ca); unmapped fallback is EU
+- `getEnforcementBody(country, sector?)` — sector-aware enforcement body selection (WAD default, EAA for private)
+- `getNationalLawByFramework('WAD', country)` — returns NationalLaw with `.law` and `.fullName` fields
+- Auto-syncing test pattern: assertions call standards functions directly, auto-update when law data changes
+- ~9,142 LOC TypeScript across all packages (net +242 from v0.3)
+- **Pre-publish**: Run `npm run build` in packages/components before npm publish (dist stale after v0.3 source changes)
 
 ## Constraints
 
 - **Backwards compatibility**: Public API surface must not break existing consumers
 - **Build order**: standards -> components -> engine (changes to types cascade)
-- **Test suite**: All 127+ locale tests must continue passing
-- **Pre-publish**: Run `npm run build` in packages/components before npm publish (dist stale after v0.2 source changes)
+- **Test suite**: All 225 tests must continue passing
+- **Pre-publish**: Run `npm run build` in packages/components before npm publish
 
 ## Key Decisions
 
@@ -88,16 +94,11 @@ The type system and tests must catch bugs before users do — no `as any` escape
 | Separate `locale-chrome.ts` for component chrome maps | Mirrors engine pattern; prevents AccessibilityStatement.tsx bloat | ✓ Good |
 | `.gov` TLD left unmapped | Ambiguous (could be any country); requires explicit `country` metadata | ✓ Good |
 | en-gb/en-us/en-ca route to own templates (not generic en) | Jurisdiction-specific legislation requires distinct prose, not fallback | ✓ Good |
-
-## Current Milestone: v0.3 National Compliance
-
-**Goal:** Country-specific enforcement bodies and national law references in all EU locale templates
-
-**Target features:**
-- Expand ENFORCEMENT_BODIES map (standards) with DE, FR, NL, FI, DK, NO, ES, IT enforcement bodies
-- Update engine JSON templates with country-specific enforcement body and law name per locale
-- Update component inline TEMPLATES with matching enforcement body and law name per locale
-- Extend TLD detection for .de, .fr, .nl, .fi, .dk, .no, .es, .it
+| Keep `ENFORCEMENT_BODIES` as `Record<Country, string>` for backwards compatibility | Existing callers unaffected; new `ENFORCEMENT_BODIES_DETAILED` for dual WAD/EAA | ✓ Good |
+| Default country fallback changed from SE to EU | Unmapped TLDs are international context, not Swedish | ✓ Good |
+| `getEnforcementBody(country, sector)` replaces direct map lookup | Sector-aware; EAA data ready for when private-sector clients arrive | ✓ Good |
+| Auto-syncing test pattern for enforcement body/law expectations | Tests call standards functions directly — never need manual updates when law data changes | ✓ Good |
+| IT (Italian) country added to Country type but template deferred | IT falls back to English; Italian locale work is its own milestone scope | ✓ Good |
 
 ---
-*Last updated: 2026-03-05 after v0.3 milestone start*
+*Last updated: 2026-03-06 after v0.3 milestone completion*

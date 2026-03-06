@@ -93,6 +93,49 @@
 
 ---
 
+## Milestone: v0.3 — National Compliance
+
+**Shipped:** 2026-03-06
+**Phases:** 3 | **Plans:** 4 | **Sessions:** 1 (same day)
+
+### What Was Built
+- `ENFORCEMENT_BODIES_DETAILED` — 14-country dual WAD/EAA enforcement body map with sector-aware `getEnforcementBody(country, sector?)` helper
+- TLD detection rewrite: fragile `endsWith()` chain replaced with URL hostname parse + `TLD_MAP` covering all 12 TLDs; EU as unmapped fallback (replacing SE)
+- All 8 EU engine JSON templates updated with `{<national_law>}` placeholder — zero hardcoded law names
+- All 8 EU component inline TEMPLATES updated with `{<national_law>}` and sector-aware enforcement body — sector prop that was `_sector` (unused) now flows through to `getEnforcementBody(country, sector)`
+- 58 new auto-syncing tests: 10 standards + 32 engine (TLD + per-locale) + 16 component per-locale
+
+### What Worked
+- Auto-syncing test pattern established — test expectations call `getEnforcementBody()` and `getNationalLawByFramework()` directly from standards instead of hardcoding strings. When law data changes, tests auto-update.
+- Phase dependency discipline — Phases 12 and 13 both depended on Phase 11; sequential execution (not parallel) avoided merge conflicts in shared test patterns.
+- `{<national_law>}` placeholder pattern adopted identically in both engine (JSON templates) and component (inline TypeScript objects) — consistency enables future template consolidation.
+- Sector future-proofing cost zero extra effort — passing `sector` prop through to `getEnforcementBody` instead of hardcoding `'public'` required one line change, enables EAA private-sector clients automatically.
+- Milestone shipped in one day (3 phases, 4 plans) — tight scope + clear prior research = fast execution.
+
+### What Was Inefficient
+- `gsd-tools milestone complete` couldn't auto-extract SUMMARY.md accomplishments (files in gitignored `.planning/` directory) — manual enrichment of MILESTONES.md required.
+- SUMMARY.md `requirements_completed` frontmatter still empty in v0.3 phases — same issue as v0.2.
+- ROADMAP.md plan entries for Phase 12 were listed as `[ ]` even though plans were complete (v0.2 carryover issue).
+
+### Patterns Established
+- **Auto-syncing tests**: Test assertions import and call standards functions directly — `expect(html).toContain(getEnforcementBody('DE', 'public'))`. Zero hardcoded strings. Standards-first.
+- **Sector pass-through**: Component `sector` prop flows to every enforcement body lookup — future EAA private-sector clients work without code changes.
+- **Dual map pattern**: `ENFORCEMENT_BODIES` (simple string, backwards compat) + `ENFORCEMENT_BODIES_DETAILED` ({ wad, eaa }) — clean extension without API break.
+- **EU fallback for unmapped TLDs**: International context, not Swedish, is the right default.
+
+### Key Lessons
+1. When adding new placeholder types (`{<national_law>}`), apply the pattern to both engine templates AND component templates in the same milestone — consistency beats partial coverage.
+2. Auto-syncing tests (call the source function in assertions) are worth the one-time setup cost — they prevent test rot when data changes.
+3. Sector awareness in APIs should be designed in from the start — even if only one sector is used today, the parameter cost is trivial and future-proofing is free.
+4. Tight scope milestones (3 phases, focused goal) execute fast and verify cleanly — avoid scope sprawl.
+
+### Cost Observations
+- Model mix: ~70% sonnet (execution), ~20% sonnet (verification/audit), ~10% haiku (exploration)
+- Sessions: 1 (entire milestone in one session)
+- Notable: All 3 phases executed sequentially in one session. Average plan time: 11min (3min + 8min + 12min + 10min / 4 plans). Fastest milestone yet.
+
+---
+
 ## Cross-Milestone Trends
 
 ### Process Evolution
@@ -101,6 +144,7 @@
 |-----------|----------|--------|------------|
 | v0.1 | ~3 | 5 | Initial GSD workflow — established patterns |
 | v0.2 | ~3 | 5 | Research catching cross-phase pitfalls, parallel wave execution |
+| v0.3 | 1 | 3 | Tight scope, auto-syncing tests, same-day ship |
 
 ### Cumulative Quality
 
@@ -108,6 +152,7 @@
 |-----------|-------|----------|-------------------|
 | v0.1 | 74 | ~18% (9/49 files) | 0 |
 | v0.2 | 127 | ~24% (3 test files, 12 source files changed) | 0 |
+| v0.3 | 225 (+58) | ~30% (3 test files, 24 source/template files) | 0 |
 
 ### Top Lessons (Verified Across Milestones)
 
@@ -115,3 +160,5 @@
 2. Strict dependency ordering prevents cascading type errors in monorepos
 3. Module-level const maps are the right pattern for i18n lookups — established v0.1, scaled v0.2
 4. Integration checker catches dist-level issues that per-phase verifiers miss — run before publishing
+5. Auto-syncing test assertions (call the source, not copy the string) prevent test rot — established v0.3, apply to all data-backed tests
+6. Tight 3-phase milestones with a clear single goal execute in one session — scope discipline pays off

@@ -130,10 +130,10 @@ describe('EU Legal Framework', () => {
 });
 
 describe('Enforcement Bodies', () => {
-    const ALL_COUNTRIES: Country[] = ['SE', 'NO', 'DK', 'FI', 'NL', 'DE', 'FR', 'ES', 'IE', 'IT', 'GB', 'US', 'CA', 'EU'];
+    const ALL_COUNTRIES: Country[] = ['SE', 'NO', 'DK', 'FI', 'NL', 'DE', 'FR', 'ES', 'IE', 'IT', 'PT', 'PL', 'GB', 'US', 'CA', 'EU'];
 
-    it('should have entries for all 14 countries', () => {
-        expect(Object.keys(ENFORCEMENT_BODIES)).toHaveLength(14);
+    it('should have entries for all 16 countries', () => {
+        expect(Object.keys(ENFORCEMENT_BODIES)).toHaveLength(16);
         for (const country of ALL_COUNTRIES) {
             expect(ENFORCEMENT_BODIES[country]).toBeDefined();
             expect(ENFORCEMENT_BODIES[country].length).toBeGreaterThan(0);
@@ -155,8 +155,8 @@ describe('Enforcement Bodies', () => {
     });
 
     describe('ENFORCEMENT_BODIES_DETAILED', () => {
-        it('should have WAD and EAA entries for all 14 countries', () => {
-            expect(Object.keys(ENFORCEMENT_BODIES_DETAILED)).toHaveLength(14);
+        it('should have WAD and EAA entries for all 16 countries', () => {
+            expect(Object.keys(ENFORCEMENT_BODIES_DETAILED)).toHaveLength(16);
             for (const country of ALL_COUNTRIES) {
                 const entry = ENFORCEMENT_BODIES_DETAILED[country];
                 expect(entry.wad).toBeDefined();
@@ -191,6 +191,16 @@ describe('Enforcement Bodies', () => {
         it('should work for Italy', () => {
             expect(getEnforcementBody('IT')).toBe('Agency for Digital Italy (AgID)');
             expect(getEnforcementBody('IT', 'private')).toBe('Communications Regulatory Authority (AGCOM)');
+        });
+
+        it('should work for Portugal', () => {
+            expect(getEnforcementBody('PT')).toBe('Administrative Modernization Agency (AMA)');
+            expect(getEnforcementBody('PT', 'private')).toBe('Directorate-General for Consumer Affairs (DGAC)');
+        });
+
+        it('should work for Poland', () => {
+            expect(getEnforcementBody('PL')).toBe('Ministry of Digitization (Ministerstwo Cyfryzacji)');
+            expect(getEnforcementBody('PL', 'private')).toBe('Office of Competition and Consumer Protection (UOKiK)');
         });
     });
 });

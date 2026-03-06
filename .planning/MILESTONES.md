@@ -1,5 +1,29 @@
 # Milestones
 
+## v0.3 National Compliance (Shipped: 2026-03-06)
+
+**Phases:** 3 | **Plans:** 4 | **Commits:** 13 | **Changes:** +1,426 / -151 lines across 24 files
+**New tests:** 58 | **Total tests:** 225 | **Timeline:** 2026-03-06 (same day)
+
+**Key accomplishments:**
+- Expanded `@holmdigital/standards` with 14-country dual WAD/EAA enforcement body map, `ENFORCEMENT_BODIES_DETAILED`, and `getEnforcementBody(country, sector?)` helper
+- Rewrote TLD detection in engine from fragile `endsWith()` chain to URL hostname parse + `TLD_MAP`, extending coverage to all 9 EU TLDs (.de, .fr, .nl, .fi, .dk, .no, .es, .se, .it)
+- Updated all 8 EU engine JSON templates to use `{<national_law>}` placeholder — zero hardcoded law names remain
+- Updated all 8 EU component inline TEMPLATES with sector-aware enforcement body (`getEnforcementBody(country, sector)`) and `{<national_law>}` placeholder
+- Established auto-syncing test pattern: test assertions call standards functions directly instead of hardcoding strings — tests auto-update when law data changes
+
+**Phases:**
+- Phase 11: Enforcement Body Data — 14-country dual WAD/EAA storage with getEnforcementBody() helper (2026-03-06)
+- Phase 12: Engine National Compliance — TLD_MAP, standards helpers, {<national_law>} in all 8 EU templates, 32 new tests (2026-03-06)
+- Phase 13: Component National Compliance — sector pass-through, {<national_law>} in 8 EU TEMPLATES, 16 new per-locale tests (2026-03-06)
+
+**Tech debt (deferred):**
+- Italian (it) locale template in component — LOC-01 future milestone (falls back to English)
+- `--sector` CLI flag for engine (EAA mode) — future phase
+- Component dist rebuild needed before npm publish
+
+---
+
 ## v0.2 Full Localization (Shipped: 2026-03-05)
 
 **Phases completed:** 5 phases, 8 plans, 0 tasks

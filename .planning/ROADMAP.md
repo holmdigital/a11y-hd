@@ -4,7 +4,8 @@
 
 - ✅ **v0.1 Stability Pass** — Phases 1-5 (shipped 2026-03-03)
 - ✅ **v0.2 Full Localization** — Phases 6-10 (shipped 2026-03-05)
-- 🚧 **v0.3 National Compliance** — Phases 11-13 (in progress)
+- ✅ **v0.3 National Compliance** — Phases 11-13 (shipped 2026-03-06)
+- 🚧 **v0.4 Locale Expansion + EAA Sector** — Phases 14-17 (in progress)
 
 ## Phases
 
@@ -34,65 +35,78 @@ See: `.planning/milestones/v0.2-ROADMAP.md` for full details
 
 </details>
 
-### 🚧 v0.3 National Compliance (In Progress)
+<details>
+<summary>✅ v0.3 National Compliance (Phases 11-13) — SHIPPED 2026-03-06</summary>
 
-**Milestone Goal:** Country-specific enforcement bodies and national law references in all EU locale templates
+- [x] Phase 11: Enforcement Body Data (1/1 plan) — completed 2026-03-06
+- [x] Phase 12: Engine National Compliance (2/2 plans) — completed 2026-03-06
+- [x] Phase 13: Component National Compliance (1/1 plan) — completed 2026-03-06
 
-- [x] **Phase 11: Enforcement Body Data** - Expand ENFORCEMENT_BODIES map with all EU country entries, WAD/EAA dual storage, and getEnforcementBody() helper
-- [x] **Phase 12: Engine National Compliance** - Update engine JSON templates with country-specific enforcement bodies, law names, and TLD detection (completed 2026-03-06)
-- [x] **Phase 13: Component National Compliance** - Update component inline TEMPLATES with country-specific enforcement bodies, law names, and verification tests (completed 2026-03-06)
+See: `.planning/milestones/v0.3-ROADMAP.md` for full details
+
+</details>
+
+### 🚧 v0.4 Locale Expansion + EAA Sector (In Progress)
+
+**Milestone Goal:** Add Italian, Portuguese, and Polish locale support (engine templates, component templates, chrome strings, tests) and wire the `--sector private` CLI flag to generate EAA-compliant accessibility statements.
+
+- [ ] **Phase 14: Locale Standards Data** — PT and PL Country type entries + WAD/EAA enforcement bodies; IT/PT/PL national laws
+- [ ] **Phase 15: New Locale Engine Templates** — it/pt/pl JSON templates + TLD .pt/.pl + engine locale tests
+- [ ] **Phase 16: New Locale Component Templates** — it/pt/pl inline TEMPLATES + chrome strings + component locale tests
+- [ ] **Phase 17: EAA Sector Support** — `--sector` CLI flag wired to enforcement body + law selection + EAA tests
 
 ## Phase Details
 
-### Phase 11: Enforcement Body Data
-**Goal**: Every EU country in the system has its correct national enforcement body available as upstream data
-**Depends on**: Phase 10 (v0.2 complete)
-**Requirements**: STD-01, STD-02
+### Phase 14: Locale Standards Data
+**Goal**: The standards package contains complete, authoritative data for Italian, Portuguese, and Polish — Country type entries, WAD and EAA enforcement bodies, and national law records — so engine and component packages can reference them without hardcoding.
+**Depends on**: Phase 13 (v0.3 complete)
+**Requirements**: STD-03, STD-04
 **Success Criteria** (what must be TRUE):
-  1. ENFORCEMENT_BODIES map contains entries for all 9 EU countries: SE, NO, FI, DK, DE, FR, ES, NL, IT
-  2. Each entry uses Full Official Name (Abbreviation) format in English (e.g., "Federal Network Agency (Bundesnetzagentur)")
-  3. Non-EU entries (GB, US, CA) remain unchanged. SE and EU entries updated to English per CONTEXT.md Decision 5
-  4. TypeScript compiles with no errors after map expansion
+  1. `Country` type in `packages/standards/src/types.ts` includes `PT` and `PL` as valid values
+  2. `ENFORCEMENT_BODIES` and `ENFORCEMENT_BODIES_DETAILED` in `packages/standards/src/index.ts` have entries for PT and PL with both WAD and EAA enforcement body names
+  3. `getEnforcementBody('PT', 'private')` and `getEnforcementBody('PL', 'private')` return the correct EAA body names
+  4. `national-laws.json` contains WAD and EAA entries for IT, PT, and PL with correct `.law` and `.fullName` fields
+  5. `getNationalLawByFramework('EAA', 'IT')`, `getNationalLawByFramework('EAA', 'PT')`, `getNationalLawByFramework('EAA', 'PL')` each return a non-null result
 **Plans**: 1 plan
-
 Plans:
-- [x] 11-01-PLAN.md — Expand enforcement bodies with IT, WAD/EAA dual storage, and getEnforcementBody() helper
+- [ ] 14-01-PLAN.md — Expand Country type, add PT/PL enforcement bodies, add IT/PT/PL national laws, add tests
 
-### Phase 12: Engine National Compliance
-**Goal**: Every engine-generated statement references the correct national enforcement body and law for its locale
-**Depends on**: Phase 11
-**Requirements**: ENG-01, ENG-02, ENG-03, ENG-04
+### Phase 15: New Locale Engine Templates
+**Goal**: The engine generates correct, localized accessibility statements for Italian, Portuguese, and Polish locales — with the right enforcement body and national law referenced — and TLD detection routes `.pt` and `.pl` domains to the correct country.
+**Depends on**: Phase 14
+**Requirements**: ENG-05, ENG-06, ENG-08 (locale tests)
 **Success Criteria** (what must be TRUE):
-  1. Each locale's JSON template enforcement section names the correct national enforcement body (not generic Digg or EU fallback)
-  2. Each locale's JSON template references the correct national accessibility law (BFSG for de, RGAA for fr, DOS-lagen for sv, etc.)
-  3. TLD detection maps .de, .fr, .nl, .fi, .dk, .no, .es, .it to their correct country codes
-  4. Automated tests verify every locale produces the correct enforcement body name in generated output
-  5. Automated tests verify every locale produces the correct national law name in generated output
+  1. Engine JSON templates exist for `it`, `pt`, and `pl` locales in `packages/engine/src/reporting/templates/`
+  2. Each template uses `{<enforcement_body>}` and `{<national_law>}` placeholders (no hardcoded law names)
+  3. `TLD_MAP` in `statement-generator.ts` maps `.pt` to `PT` and `.pl` to `PL`
+  4. A report generated for a `.pt` domain produces a Portuguese statement referencing the correct PT enforcement body and law
+  5. Automated tests confirm correct enforcement body and national law output for it, pt, and pl locales
 **Plans**: TBD
 
-Plans:
-- [ ] 12-01: TBD
-- [ ] 12-02: TBD
-
-### Phase 13: Component National Compliance
-**Goal**: Every component-rendered accessibility statement references the correct national enforcement body and law for its locale
-**Depends on**: Phase 11
-**Requirements**: CMP-01, CMP-02, CMP-03
+### Phase 16: New Locale Component Templates
+**Goal**: The `AccessibilityStatement` React component renders correct, localized statements for Italian, Portuguese, and Polish — with the correct enforcement body, national law, and UI chrome (badge labels, footer text) displayed in each locale.
+**Depends on**: Phase 14
+**Requirements**: CMP-04, CMP-05, CMP-06
 **Success Criteria** (what must be TRUE):
-  1. Each locale's inline TEMPLATE enforcement section names the correct national enforcement body (matching Phase 12 values)
-  2. Each locale's inline TEMPLATE references the correct national accessibility law name (matching Phase 12 values)
-  3. Automated tests verify each locale's rendered HTML contains the correct enforcement body name
-  4. Automated tests verify each locale's rendered HTML contains the correct national law name
-**Plans**: 1 plan
+  1. `AccessibilityStatement.tsx` TEMPLATES object includes `it`, `pt`, and `pl` inline templates using `{<enforcement_body>}` and `{<national_law>}` placeholders
+  2. `locale-chrome.ts` contains badge labels, updated label, and footer text for `it`, `pt`, and `pl`
+  3. Rendering `<AccessibilityStatement locale="it" />` produces HTML containing the Italian enforcement body name and IT national law name
+  4. Rendering `<AccessibilityStatement locale="pt" />` and `<AccessibilityStatement locale="pl" />` each produce HTML with their respective enforcement body and law name
+  5. Automated component tests verify rendered HTML for all three new locales with zero placeholder leakage (`{<` strings must not appear in output)
+**Plans**: TBD
 
-Plans:
-- [ ] 13-01-PLAN.md — Update AccessibilityStatement.tsx: sector-aware enforcement body, national_law substitution, 8 EU TEMPLATE audits, and 16 new per-locale tests
+### Phase 17: EAA Sector Support
+**Goal**: Passing `--sector private` to the CLI produces an accessibility statement that references the EAA enforcement body and law instead of the WAD equivalents — fully data-driven, using the existing `getEnforcementBody(country, sector)` and `getNationalLawByFramework('EAA', country)` helpers.
+**Depends on**: Phase 15 (engine templates in place)
+**Requirements**: ENG-07, ENG-08 (EAA tests)
+**Success Criteria** (what must be TRUE):
+  1. The CLI (`hd-a11y-scan`) accepts a `--sector` flag with values `public` and `private`
+  2. When `--sector private` is passed, the generated statement calls `getEnforcementBody(country, 'private')` and resolves the EAA enforcement body name
+  3. When `--sector private` is passed, the generated statement calls `getNationalLawByFramework('EAA', country)` and resolves the EAA law name
+  4. Automated tests confirm that EAA sector output differs from WAD output (different enforcement body and law names) for at least two countries
+**Plans**: TBD
 
 ## Progress
-
-**Execution Order:**
-Phases execute in numeric order: 11 -> 12 -> 13
-(Phases 12 and 13 both depend on Phase 11 but are ordered sequentially to avoid merge conflicts in shared test patterns)
 
 | Phase | Milestone | Plans Complete | Status | Completed |
 |-------|-----------|----------------|--------|-----------|
@@ -106,6 +120,10 @@ Phases execute in numeric order: 11 -> 12 -> 13
 | 8. Component UI Chrome Localization | v0.2 | 1/1 | Complete | 2026-03-04 |
 | 9. en-gb/en-us/en-ca Statement Templates | v0.2 | 2/2 | Complete | 2026-03-04 |
 | 10. Verification and Test Coverage | v0.2 | 2/2 | Complete | 2026-03-05 |
-| 11. Enforcement Body Data | v0.3 | Complete    | 2026-03-06 | 2026-03-06 |
-| 12. Engine National Compliance | 2/2 | Complete    | 2026-03-06 | - |
-| 13. Component National Compliance | 1/1 | Complete   | 2026-03-06 | - |
+| 11. Enforcement Body Data | v0.3 | 1/1 | Complete | 2026-03-06 |
+| 12. Engine National Compliance | v0.3 | 2/2 | Complete | 2026-03-06 |
+| 13. Component National Compliance | v0.3 | 1/1 | Complete | 2026-03-06 |
+| 14. Locale Standards Data | v0.4 | 0/1 | Not started | - |
+| 15. New Locale Engine Templates | v0.4 | 0/? | Not started | - |
+| 16. New Locale Component Templates | v0.4 | 0/? | Not started | - |
+| 17. EAA Sector Support | v0.4 | 0/? | Not started | - |

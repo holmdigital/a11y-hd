@@ -21,9 +21,9 @@ Requirements for v0.3 National Compliance. Each maps to roadmap phases.
 
 ### Component Templates
 
-- [ ] **CMP-01**: Each locale's inline TEMPLATE enforcement section references the correct national enforcement body
-- [ ] **CMP-02**: Each locale's inline TEMPLATE references the correct national accessibility law name
-- [ ] **CMP-03**: Automated tests verify each locale's enforcement body and law name in rendered HTML
+- [x] **CMP-01**: Each locale's inline TEMPLATE enforcement section references the correct national enforcement body
+- [x] **CMP-02**: Each locale's inline TEMPLATE references the correct national accessibility law name
+- [x] **CMP-03**: Automated tests verify each locale's enforcement body and law name in rendered HTML
 
 ## Future Requirements
 
@@ -63,9 +63,9 @@ Which phases cover which requirements. Updated during roadmap creation.
 | ENG-02 | Phase 12 | Complete |
 | ENG-03 | Phase 12 | Complete |
 | ENG-04 | Phase 12 | Complete |
-| CMP-01 | Phase 13 | Pending |
-| CMP-02 | Phase 13 | Pending |
-| CMP-03 | Phase 13 | Pending |
+| CMP-01 | Phase 13 | Complete |
+| CMP-02 | Phase 13 | Complete |
+| CMP-03 | Phase 13 | Complete |
 
 **Coverage:**
 - v0.3 requirements: 9 total
