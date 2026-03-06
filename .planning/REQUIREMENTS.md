@@ -15,9 +15,9 @@ Requirements for v0.3 National Compliance. Each maps to roadmap phases.
 ### Engine Templates
 
 - [x] **ENG-01**: Each locale's JSON template enforcement section references the correct national enforcement body (not generic Digg)
-- [ ] **ENG-02**: Each locale's JSON template references the correct national accessibility law name (BFSG, RGAA, DOS-lagen, etc.)
+- [x] **ENG-02**: Each locale's JSON template references the correct national accessibility law name (BFSG, RGAA, DOS-lagen, etc.)
 - [x] **ENG-03**: TLD detection extended for .de, .fr, .nl, .fi, .dk, .no, .es, .it country mapping
-- [ ] **ENG-04**: Automated tests verify each locale produces the correct enforcement body and law name
+- [x] **ENG-04**: Automated tests verify each locale produces the correct enforcement body and law name
 
 ### Component Templates
 
@@ -60,9 +60,9 @@ Which phases cover which requirements. Updated during roadmap creation.
 | STD-01 | Phase 11 | Complete (2026-03-06) |
 | STD-02 | Phase 11 | Complete (2026-03-06) |
 | ENG-01 | Phase 12 | Complete |
-| ENG-02 | Phase 12 | Pending |
+| ENG-02 | Phase 12 | Complete |
 | ENG-03 | Phase 12 | Complete |
-| ENG-04 | Phase 12 | Pending |
+| ENG-04 | Phase 12 | Complete |
 | CMP-01 | Phase 13 | Pending |
 | CMP-02 | Phase 13 | Pending |
 | CMP-03 | Phase 13 | Pending |

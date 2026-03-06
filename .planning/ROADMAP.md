@@ -39,7 +39,7 @@ See: `.planning/milestones/v0.2-ROADMAP.md` for full details
 **Milestone Goal:** Country-specific enforcement bodies and national law references in all EU locale templates
 
 - [x] **Phase 11: Enforcement Body Data** - Expand ENFORCEMENT_BODIES map with all EU country entries, WAD/EAA dual storage, and getEnforcementBody() helper
-- [x] **Phase 12: Engine National Compliance** - Update engine JSON templates with country-specific enforcement bodies, law names, and TLD detection (completed 2026-03-06)
+- [x] **Phase 12: Engine National Compliance** - Update engine JSON templates with country-specific enforcement bodies, law names, and TLD detection (completed 2026-03-06)
 - [ ] **Phase 13: Component National Compliance** - Update component inline TEMPLATES with country-specific enforcement bodies, law names, and verification tests
 
 ## Phase Details
@@ -83,11 +83,10 @@ Plans:
   2. Each locale's inline TEMPLATE references the correct national accessibility law name (matching Phase 12 values)
   3. Automated tests verify each locale's rendered HTML contains the correct enforcement body name
   4. Automated tests verify each locale's rendered HTML contains the correct national law name
-**Plans**: TBD
+**Plans**: 1 plan
 
 Plans:
-- [ ] 13-01: TBD
-- [ ] 13-02: TBD
+- [ ] 13-01-PLAN.md — Update AccessibilityStatement.tsx: sector-aware enforcement body, national_law substitution, 8 EU TEMPLATE audits, and 16 new per-locale tests
 
 ## Progress
 
@@ -108,5 +107,5 @@ Phases execute in numeric order: 11 -> 12 -> 13
 | 9. en-gb/en-us/en-ca Statement Templates | v0.2 | 2/2 | Complete | 2026-03-04 |
 | 10. Verification and Test Coverage | v0.2 | 2/2 | Complete | 2026-03-05 |
 | 11. Enforcement Body Data | v0.3 | Complete    | 2026-03-06 | 2026-03-06 |
-| 12. Engine National Compliance | 2/2 | Complete   | 2026-03-06 | - |
-| 13. Component National Compliance | v0.3 | 0/? | Not started | - |
+| 12. Engine National Compliance | 2/2 | Complete    | 2026-03-06 | - |
+| 13. Component National Compliance | v0.3 | 0/1 | Not started | - |
