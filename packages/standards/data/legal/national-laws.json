@@ -430,6 +430,144 @@
                 "inForce": true,
                 "effectiveDate": "2005-06-13"
             }
+        ],
+        "IT": [
+            {
+                "id": "it-wad",
+                "law": "Legge 4/2004",
+                "fullName": "Legge 9 gennaio 2004, n. 4 — Disposizioni per favorire e semplificare l'accesso degli utenti e, in particolare, delle persone con disabilità agli strumenti informatici",
+                "euFramework": "WAD",
+                "scope": "public",
+                "enforcement": {
+                    "authority": "it-agid",
+                    "authorityName": "Agency for Digital Italy (AgID)",
+                    "responsibility": "Monitors public sector web and mobile accessibility compliance.",
+                    "website": "https://www.agid.gov.it"
+                },
+                "sanctions": {
+                    "type": "Administrative",
+                    "description": "Administrative sanctions for non-compliance.",
+                    "minAmount": 0,
+                    "maxAmount": 0,
+                    "currency": "EUR"
+                },
+                "inForce": true,
+                "effectiveDate": "2004-01-09"
+            },
+            {
+                "id": "it-eaa",
+                "law": "D.Lgs. 82/2024",
+                "fullName": "Decreto Legislativo 27 maggio 2024, n. 82 — Attuazione della Direttiva (UE) 2019/882",
+                "euFramework": "EAA",
+                "scope": "private",
+                "enforcement": {
+                    "authority": "it-agcom",
+                    "authorityName": "Communications Regulatory Authority (AGCOM)",
+                    "responsibility": "Market surveillance authority for EAA compliance in Italy.",
+                    "website": "https://www.agcom.it"
+                },
+                "sanctions": {
+                    "type": "Administrative",
+                    "description": "Administrative sanctions for non-compliance.",
+                    "minAmount": 0,
+                    "maxAmount": 0,
+                    "currency": "EUR"
+                },
+                "inForce": true,
+                "effectiveDate": "2025-06-28"
+            }
+        ],
+        "PT": [
+            {
+                "id": "pt-wad",
+                "law": "DL 83/2018",
+                "fullName": "Decreto-Lei n.º 83/2018 de 19 de outubro — Acessibilidade dos sítios web e das aplicações móveis de organismos públicos",
+                "euFramework": "WAD",
+                "scope": "public",
+                "enforcement": {
+                    "authority": "pt-ama",
+                    "authorityName": "Administrative Modernization Agency (AMA)",
+                    "responsibility": "Monitors public sector web and mobile accessibility compliance.",
+                    "website": "https://www.ama.gov.pt"
+                },
+                "sanctions": {
+                    "type": "Administrative",
+                    "description": "Administrative sanctions for non-compliance.",
+                    "minAmount": 0,
+                    "maxAmount": 0,
+                    "currency": "EUR"
+                },
+                "inForce": true,
+                "effectiveDate": "2018-10-19"
+            },
+            {
+                "id": "pt-eaa",
+                "law": "DL 101-D/2023",
+                "fullName": "Decreto-Lei n.º 101-D/2023 de 14 de novembro — Transposição da Diretiva (UE) 2019/882 (EAA)",
+                "euFramework": "EAA",
+                "scope": "private",
+                "enforcement": {
+                    "authority": "pt-dgac",
+                    "authorityName": "Directorate-General for Consumer Affairs (DGAC)",
+                    "responsibility": "Market surveillance authority for EAA compliance in Portugal.",
+                    "website": "https://www.consumidor.gov.pt"
+                },
+                "sanctions": {
+                    "type": "Administrative",
+                    "description": "Administrative sanctions for non-compliance.",
+                    "minAmount": 0,
+                    "maxAmount": 0,
+                    "currency": "EUR"
+                },
+                "inForce": true,
+                "effectiveDate": "2025-06-28"
+            }
+        ],
+        "PL": [
+            {
+                "id": "pl-wad",
+                "law": "Ustawa o dostępności cyfrowej",
+                "fullName": "Ustawa z dnia 4 kwietnia 2019 r. o dostępności cyfrowej stron internetowych i aplikacji mobilnych podmiotów publicznych",
+                "euFramework": "WAD",
+                "scope": "public",
+                "enforcement": {
+                    "authority": "pl-mc",
+                    "authorityName": "Ministry of Digitization (Ministerstwo Cyfryzacji)",
+                    "responsibility": "Monitors public sector digital accessibility compliance.",
+                    "website": "https://www.gov.pl/web/cyfryzacja"
+                },
+                "sanctions": {
+                    "type": "Administrative",
+                    "description": "Administrative sanctions for non-compliance.",
+                    "minAmount": 0,
+                    "maxAmount": 0,
+                    "currency": "PLN"
+                },
+                "inForce": true,
+                "effectiveDate": "2019-04-04"
+            },
+            {
+                "id": "pl-eaa",
+                "law": "Ustawa o dostępności produktów i usług",
+                "fullName": "Ustawa z dnia 26 kwietnia 2024 r. o zapewnianiu spełniania wymagań dostępności niektórych produktów i usług przez podmioty gospodarcze",
+                "euFramework": "EAA",
+                "scope": "private",
+                "enforcement": {
+                    "authority": "pl-uokik",
+                    "authorityName": "Office of Competition and Consumer Protection (UOKiK)",
+                    "responsibility": "Market surveillance authority for EAA compliance in Poland.",
+                    "website": "https://www.uokik.gov.pl"
+                },
+                "sanctions": {
+                    "type": "Administrative",
+                    "description": "Administrative sanctions for non-compliance.",
+                    "minAmount": 0,
+                    "maxAmount": 0,
+                    "currency": "PLN"
+                },
+                "inForce": true,
+                "effectiveDate": "2025-06-28"
+            }
         ]
     }
 }
