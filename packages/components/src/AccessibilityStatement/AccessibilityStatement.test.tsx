@@ -2,6 +2,7 @@
 import { render } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
 import { AccessibilityStatement } from './AccessibilityStatement';
+import { getEnforcementBody, getNationalLawByFramework } from '@holmdigital/standards';
 
 const defaultProps = {
     country: 'SE' as const,
@@ -237,5 +238,51 @@ describe('AccessibilityStatement nb alias chrome', () => {
         expect(html).toContain('Helt i samsvar');
         expect(html).toContain('Oppdatert:');
         expect(html).toContain('Generert med');
+    });
+});
+
+const EU_LOCALE_COUNTRY_MAP: Array<{ locale: string; country: string }> = [
+    { locale: 'sv', country: 'SE' },
+    { locale: 'no', country: 'NO' },
+    { locale: 'da', country: 'DK' },
+    { locale: 'nl', country: 'NL' },
+    { locale: 'de', country: 'DE' },
+    { locale: 'fr', country: 'FR' },
+    { locale: 'es', country: 'ES' },
+    { locale: 'fi', country: 'FI' },
+];
+
+describe('AccessibilityStatement national compliance - enforcement body', () => {
+    EU_LOCALE_COUNTRY_MAP.forEach(({ locale, country }) => {
+        it(`${locale} locale renders correct enforcement body for country=${country}`, () => {
+            const { container } = render(
+                <AccessibilityStatement
+                    {...defaultProps}
+                    locale={locale}
+                    country={country as any}
+                    sector="public"
+                />
+            );
+            const expectedBody = getEnforcementBody(country as any, 'public');
+            expect(container.innerHTML).toContain(expectedBody);
+        });
+    });
+});
+
+describe('AccessibilityStatement national compliance - national law', () => {
+    EU_LOCALE_COUNTRY_MAP.forEach(({ locale, country }) => {
+        it(`${locale} locale renders correct national law for country=${country}`, () => {
+            const { container } = render(
+                <AccessibilityStatement
+                    {...defaultProps}
+                    locale={locale}
+                    country={country as any}
+                    sector="public"
+                />
+            );
+            const law = getNationalLawByFramework('WAD', country as any);
+            expect(law).not.toBeNull();
+            expect(container.innerHTML).toContain(law!.fullName);
+        });
     });
 });
