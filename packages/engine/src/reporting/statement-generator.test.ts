@@ -163,11 +163,93 @@ describe('TLD country detection for en-* locales', () => {
         expect(output).toContain('Accessibility Commissioner');
     });
 
-    it('should not detect .gov TLD as any specific country', async () => {
+    it('should not detect .gov TLD as any specific country — falls back to EU', async () => {
         const govResult = { ...mockResult, url: 'https://example.gov' };
         const output = await generateStatementContent(govResult, 'en-us', 'md', { ...metadata, country: undefined });
-        // .gov is unmapped, defaults to SE, so enforcement body is Swedish (DIGG)
+        // .gov is unmapped, defaults to EU (not SE or US)
         expect(output).not.toContain('Department of Justice');
+        expect(output).toContain('DG CNECT');
+    });
+});
+
+describe('TLD detection — extended country coverage', () => {
+    it('should detect .de TLD as DE country', async () => {
+        const deResult = { ...mockResult, url: 'https://example.de' };
+        const output = await generateStatementContent(deResult, 'de', 'md', { ...metadata, country: undefined });
+        expect(output).toContain('BFIT-Bund');
+    });
+
+    it('should detect .fr TLD as FR country', async () => {
+        const frResult = { ...mockResult, url: 'https://example.fr' };
+        const output = await generateStatementContent(frResult, 'fr', 'md', { ...metadata, country: undefined });
+        expect(output).toContain('DINUM');
+    });
+
+    it('should detect .nl TLD as NL country', async () => {
+        const nlResult = { ...mockResult, url: 'https://example.nl' };
+        const output = await generateStatementContent(nlResult, 'nl', 'md', { ...metadata, country: undefined });
+        expect(output).toContain('Logius');
+    });
+
+    it('should detect .es TLD as ES country', async () => {
+        const esResult = { ...mockResult, url: 'https://example.es' };
+        const output = await generateStatementContent(esResult, 'es', 'md', { ...metadata, country: undefined });
+        expect(output).toContain('MPTFP');
+    });
+
+    it('should detect .it TLD as IT country', async () => {
+        const itResult = { ...mockResult, url: 'https://example.it' };
+        const output = await generateStatementContent(itResult, 'en', 'md', { ...metadata, country: undefined });
+        expect(output).toContain('AgID');
+    });
+
+    it('should fall back to EU for .eu TLD (not SE)', async () => {
+        const euResult = { ...mockResult, url: 'https://example.eu' };
+        const output = await generateStatementContent(euResult, 'en', 'md', { ...metadata, country: undefined });
+        // Must NOT contain DIGG (Swedish) — EU fallback should show DG CNECT
+        expect(output).not.toContain('Digg');
+        expect(output).toContain('DG CNECT');
+    });
+
+    it('should fall back to EU for .com TLD (not SE)', async () => {
+        const comResult = { ...mockResult, url: 'https://example.com' };
+        const output = await generateStatementContent(comResult, 'en', 'md', { ...metadata, country: undefined });
+        // Must NOT contain DIGG (Swedish)
+        expect(output).not.toContain('Digg');
+        expect(output).toContain('DG CNECT');
+    });
+
+    it('metadata.country overrides TLD detection', async () => {
+        const deResult = { ...mockResult, url: 'https://example.de' };
+        const output = await generateStatementContent(deResult, 'sv', 'md', { ...metadata, country: 'SE' });
+        // metadata.country='SE' wins over .de TLD
+        expect(output).toContain('Digg');
+    });
+});
+
+describe('National law substitution', () => {
+    it('should resolve {<national_law>} for DE to Barrierefreiheitsstärkungsgesetz (BFSG)', async () => {
+        const deResult = { ...mockResult, url: 'https://example.de' };
+        const output = await generateStatementContent(deResult, 'de', 'md', { ...metadata, country: 'DE' });
+        expect(output).toContain('Barrierefreiheitsstärkungsgesetz (BFSG)');
+    });
+
+    it('should resolve {<national_law>} for SE to DOS-lagen format string', async () => {
+        const output = await generateStatementContent(mockResult, 'sv', 'md', { ...metadata, country: 'SE' });
+        // SE has DOS-lagen as WAD law — should contain the full name + law code
+        expect(output).toContain('DOS-lagen');
+    });
+
+    it('should resolve {<national_law>} for GB (no WAD law) to empty string', async () => {
+        const gbResult = { ...mockResult, url: 'https://example.gov.uk' };
+        const output = await generateStatementContent(gbResult, 'en-gb', 'md', { ...metadata, country: 'GB' });
+        // GB has no WAD law — {<national_law>} should produce empty string (no leftover placeholder)
+        expect(output).not.toMatch(/\{<national_law>\}/);
+    });
+
+    it('should not leave {<national_law>} as unsubstituted placeholder in any output', async () => {
+        const output = await generateStatementContent(mockResult, 'en', 'md', { ...metadata, country: 'EU' });
+        expect(output).not.toMatch(/\{<national_law>\}/);
     });
 });
 
