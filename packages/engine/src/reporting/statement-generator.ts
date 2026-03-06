@@ -1,7 +1,7 @@
 import React from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { AccessibilityStatement, AccessibilityStatementProps } from '@holmdigital/components';
-import { Country, ENFORCEMENT_BODIES } from '@holmdigital/standards';
+import { Country, getEnforcementBody, getNationalLawByFramework } from '@holmdigital/standards';
 import { ScanResult } from '../core/regulatory-scanner';
 import fs from 'fs/promises';
 import path from 'path';
@@ -121,15 +121,23 @@ export async function generateStatementContent(
     const nonComplianceItems = Array.from(issuesMap.values());
 
     // 3. Determine Country/Sector
-    let country: Country = (metadata?.country || 'SE') as Country;
-    if (!metadata?.country) {
-        if (result.url.endsWith('.no')) country = 'NO';
-        if (result.url.endsWith('.dk')) country = 'DK';
-        if (result.url.endsWith('.fi')) country = 'FI';
-        if (result.url.endsWith('.de')) country = 'DE';
-        if (result.url.endsWith('.uk')) country = 'GB';
-        if (result.url.endsWith('.us')) country = 'US';
-        if (result.url.endsWith('.ca')) country = 'CA';
+    let country: Country = 'EU'; // default fallback
+    if (metadata?.country) {
+        country = metadata.country as Country;
+    } else {
+        const TLD_MAP: Record<string, Country> = {
+            'se': 'SE', 'no': 'NO', 'dk': 'DK', 'fi': 'FI',
+            'de': 'DE', 'fr': 'FR', 'nl': 'NL', 'es': 'ES', 'it': 'IT',
+            'uk': 'GB', 'us': 'US', 'ca': 'CA',
+        };
+        // Proper TLD parse: split URL hostname by '.', take last segment
+        try {
+            const hostname = new URL(result.url).hostname;
+            const tld = hostname.split('.').pop()?.toLowerCase() || '';
+            country = TLD_MAP[tld] ?? 'EU';
+        } catch {
+            country = 'EU';
+        }
     }
 
     const sector: 'public' | 'private' = 'public';
@@ -283,7 +291,11 @@ export async function generateStatementContent(
             '{<tiers externe>}': props.generatorTool?.name || 'HolmDigital Engine',
             '{<tercero externo>}': props.generatorTool?.name || 'HolmDigital Engine',
             '{<third party>}': props.generatorTool?.name || 'HolmDigital Engine',
-            '{<enforcement_body>}': ENFORCEMENT_BODIES[country] || ENFORCEMENT_BODIES.EU,
+            '{<enforcement_body>}': getEnforcementBody(country, 'public'),
+            '{<national_law>}': (() => {
+                const law = getNationalLawByFramework('WAD', country);
+                return law ? `${law.fullName} (${law.law})` : '';
+            })(),
             '{<brister>}': nonComplianceItems.length > 0 ? nonComplianceItems.map(item => `* ${item}`).join('\n') : (lang === 'sv' ? 'Inga kända brister.' : 'No known issues.'),
             '{<puutteet>}': nonComplianceItems.length > 0 ? nonComplianceItems.map(item => `* ${item}`).join('\n') : (lang === 'fi' ? 'Ei tiedossa olevia puutteita.' : 'No known issues.'),
             '{<gebreken>}': nonComplianceItems.length > 0 ? nonComplianceItems.map(item => `* ${item}`).join('\n') : (lang === 'nl' ? 'Geen bekende gebreken.' : 'No known issues.'),
