@@ -40,6 +40,33 @@ export const ENFORCEMENT_BODIES: Record<Country, string> = {
     EU: 'European Commission (DG CNECT)'
 };
 
+export const ENFORCEMENT_BODIES_DETAILED: Record<Country, { wad: string; eaa: string }> = {
+    SE: { wad: 'Agency for Digital Government (Digg)', eaa: 'Swedish Post and Telecom Authority (PTS)' },
+    NO: { wad: 'Norwegian Digitalisation Agency (Digdir)', eaa: 'Norwegian Communications Authority (Nkom)' },
+    DK: { wad: 'Agency for Digital Government (Digitaliseringsstyrelsen)', eaa: 'Danish Safety Technology Authority (Sikkerhedsstyrelsen)' },
+    FI: { wad: 'Regional State Administrative Agency for Southern Finland (AVI)', eaa: 'Finnish Transport and Communications Agency (Traficom)' },
+    NL: { wad: 'Logius', eaa: 'Authority for Consumers and Markets (ACM)' },
+    DE: { wad: 'Federal Monitoring Body for Accessibility of Information Technology (BFIT-Bund)', eaa: 'Federal Network Agency (Bundesnetzagentur)' },
+    FR: { wad: 'Interministerial Directorate for Digital Affairs (DINUM)', eaa: 'Regulatory Authority for Audiovisual and Digital Communication (Arcom)' },
+    ES: { wad: 'Ministry for Digital Transformation and the Civil Service (MPTFP)', eaa: 'Ministry of Consumer Affairs (Ministerio de Consumo)' },
+    IE: { wad: 'National Disability Authority (NDA)', eaa: 'Competition and Consumer Protection Commission (CCPC)' },
+    IT: { wad: 'Agency for Digital Italy (AgID)', eaa: 'Communications Regulatory Authority (AGCOM)' },
+    GB: { wad: 'Equality and Human Rights Commission (EHRC)', eaa: 'Equality and Human Rights Commission (EHRC)' },
+    US: { wad: 'Department of Justice (Civil Rights Division)', eaa: 'Department of Justice (Civil Rights Division)' },
+    CA: { wad: 'Accessibility Commissioner (Canadian Human Rights Commission)', eaa: 'Accessibility Commissioner (Canadian Human Rights Commission)' },
+    EU: { wad: 'European Commission (DG CNECT)', eaa: 'European Commission (DG JUST)' }
+};
+
+/**
+ * Get the enforcement body name for a country.
+ * Defaults to WAD (public sector) enforcement body.
+ * Pass sector='private' for EAA enforcement body.
+ */
+export function getEnforcementBody(country: Country, sector?: 'public' | 'private'): string {
+    const detailed = ENFORCEMENT_BODIES_DETAILED[country];
+    return sector === 'private' ? detailed.eaa : detailed.wad;
+}
+
 import type {
     ConvergenceRule,
     EN301549Mapping,
