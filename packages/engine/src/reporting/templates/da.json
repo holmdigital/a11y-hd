@@ -1,6 +1,6 @@
 {
     "title": "Tilgængelighed for {<webbplats>}",
-    "intro": "{<organisation>} står bag dette websted. Vi ønsker, at så mange som muligt skal kunne bruge det. Dette dokument beskriver, hvordan {<webbplats>} overholder loven om webtilgængelighed, eventuelle kendte tilgængelighedsproblemer, og hvordan du kan rapportere mangler til os, så vi kan udbedre dem.",
+    "intro": "{<organisation>} står bag dette websted. Vi ønsker, at så mange som muligt skal kunne bruge det. Dette dokument beskriver, hvordan {<webbplats>} overholder {<national_law>}, eventuelle kendte tilgængelighedsproblemer, og hvordan du kan rapportere mangler til os, så vi kan udbedre dem.",
     "sections": [
         {
             "id": "how-accessible",
@@ -20,12 +20,12 @@
         {
             "id": "enforcement",
             "title": "Håndhævelsesprocedure",
-            "content": "{<enforcement_body>} har ansvaret for tilsyn med loven om webtilgængelighed. Du kan klage til {<enforcement_body>}, hvis du mener, at vores digitale service har mangler i tilgængeligheden.\n\nDu kan også klage til {<enforcement_body>}, hvis du mener, at vores vurdering af, hvad der er en uforholdsmæssig stor byrde, skal gennemgås, hvis du mener, at vores tilgængelighedserklæring har mangler, eller hvis du mener, at vi ikke har håndteret din anmodning om tilgængeliggørelse korrekt."
+            "content": "{<enforcement_body>} har ansvaret for tilsyn med {<national_law>}. Du kan klage til {<enforcement_body>}, hvis du mener, at vores digitale service har mangler i tilgængeligheden.\n\nDu kan også klage til {<enforcement_body>}, hvis du mener, at vores vurdering af, hvad der er en uforholdsmæssig stor byrde, skal gennemgås, hvis du mener, at vores tilgængelighedserklæring har mangler, eller hvis du mener, at vi ikke har håndteret din anmodning om tilgængeliggørelse korrekt."
         },
         {
             "id": "technical",
             "title": "Teknisk information om webstedets tilgængelighed",
-            "content": "{Dette websted er fuldt ud i overensstemmelse med loven om webtilgængelighed./Dette websted er delvist i overensstemmelse med loven om webtilgængelighed på grund af de mangler, der er beskrevet nedenfor./Dette websted er ikke i overensstemmelse med loven om webtilgængelighed. Utilgængelige dele er beskrevet nedenfor.}"
+            "content": "{Dette websted er fuldt ud i overensstemmelse med {<national_law>}./Dette websted er delvist i overensstemmelse med {<national_law>} på grund af de mangler, der er beskrevet nedenfor./Dette websted er ikke i overensstemmelse med {<national_law>}. Utilgængelige dele er beskrevet nedenfor.}"
         },
         {
             "content": "Det indhold, der er beskrevet nedenfor, er på den ene eller anden måde ikke helt tilgængeligt.\n\n[\n**Manglende overholdelse af lovkravene**\n\n{<mangler>}\n]"

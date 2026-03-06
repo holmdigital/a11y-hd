@@ -1,11 +1,11 @@
 {
     "title": "Declaración de accesibilidad para {<webbplats>}",
-    "intro": "{<organisation>} se ha comprometido a hacer accesible su sitio web de conformidad con la legislación nacional que transpone la Directiva (UE) 2016/2102 del Parlamento Europeo y del Consejo. Esta declaración de accesibilidad se aplica a {<webbplats>}.",
+    "intro": "{<organisation>} se ha comprometido a hacer accesible su sitio web de conformidad con {<national_law>}. Esta declaración de accesibilidad se aplica a {<webbplats>}.",
     "sections": [
         {
             "id": "how-accessible",
             "title": "Situación de cumplimiento",
-            "content": "{Este sitio web es plenamente conforme con el estándar de accesibilidad./Este sitio web es parcialmente conforme con el estándar de accesibilidad debido a las faltas de conformidad que se indican a continuación./Este sitio web no es conforme con el estándar de accesibilidad. Los contenidos no accesibles se indican a continuación.}"
+            "content": "{Este sitio web es plenamente conforme con {<national_law>}./Este sitio web es parcialmente conforme con {<national_law>} debido a las faltas de conformidad que se indican a continuación./Este sitio web no es conforme con {<national_law>}. Los contenidos no accesibles se indican a continuación.}"
         },
         {
             "id": "what-to-do",
@@ -20,7 +20,7 @@
         {
             "id": "enforcement",
             "title": "Procedimiento de aplicación",
-            "content": "El {<enforcement_body>} es responsable de supervisar los requisitos de accesibilidad. Si no ha recibido una respuesta satisfactoria a su notificación, puede ponerse en contacto con {<enforcement_body>}.\n\nTambién puede presentar una reclamación ante {<enforcement_body>} si considera que nuestra evaluación de lo que constituye una carga desproporcionada debe ser revisada, si encuentra deficiencias en nuestra declaración de accesibilidad o si considera que no hemos gestionado correctamente su solicitud de accesibilidad."
+            "content": "El {<enforcement_body>} es responsable de supervisar el cumplimiento de {<national_law>}. Si no ha recibido una respuesta satisfactoria a su notificación, puede ponerse en contacto con {<enforcement_body>}.\n\nTambién puede presentar una reclamación ante {<enforcement_body>} si considera que nuestra evaluación de lo que constituye una carga desproporcionada debe ser revisada, si encuentra deficiencias en nuestra declaración de accesibilidad o si considera que no hemos gestionado correctamente su solicitud de accesibilidad."
         },
         {
             "id": "technical",

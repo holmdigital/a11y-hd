@@ -1,6 +1,6 @@
 {
     "title": "Tilgjengelighet for {<nettsted>}",
-    "intro": "{<organisasjon>} står bak dette nettstedet. Vi ønsker at flest mulig skal kunne bruke det. Dette dokumentet beskriver hvordan {<nettsted>} oppfyller lov om universell utforming av IKT-løsninger, eventuelle kjente tilgjengelighetsproblemer og hvordan du kan rapportere mangler til oss slik at vi kan utbedre dem.",
+    "intro": "{<organisasjon>} står bak dette nettstedet. Vi ønsker at flest mulig skal kunne bruke det. Dette dokumentet beskriver hvordan {<nettsted>} oppfyller {<national_law>}, eventuelle kjente tilgjengelighetsproblemer og hvordan du kan rapportere mangler til oss slik at vi kan utbedre dem.",
     "sections": [
         {
             "id": "how-accessible",
@@ -20,12 +20,12 @@
         {
             "id": "enforcement",
             "title": "Tilsyn",
-            "content": "{<enforcement_body>} har ansvaret for tilsyn med lov om universell utforming av IKT-løsninger. Du kan klage til {<enforcement_body>} hvis du mener at vår digitale tjeneste har mangler i tilgjengelighet.\n\nDu kan også klage til {<enforcement_body>} hvis du mener at vår vurdering av hva som er uforholdsmessig byrdefullt bør overproves, hvis du mener at vår tilgjengelighetserklæring har mangler eller hvis du mener at vi ikke har håndtert din forespørsel om tilgjengeliggjøring korrekt."
+            "content": "{<enforcement_body>} har ansvaret for tilsyn med {<national_law>}. Du kan klage til {<enforcement_body>} hvis du mener at vår digitale tjeneste har mangler i tilgjengelighet.\n\nDu kan også klage til {<enforcement_body>} hvis du mener at vår vurdering av hva som er uforholdsmessig byrdefullt bør overproves, hvis du mener at vår tilgjengelighetserklæring har mangler eller hvis du mener at vi ikke har håndtert din forespørsel om tilgjengeliggjøring korrekt."
         },
         {
             "id": "technical",
             "title": "Teknisk informasjon om nettstedets tilgjengelighet",
-            "content": "{Dette nettstedet er helt i samsvar med lov om universell utforming av IKT-løsninger./Dette nettstedet er delvis i samsvar med lov om universell utforming av IKT-løsninger, på grunn av manglene beskrevet nedenfor./Dette nettstedet er ikke i samsvar med lov om universell utforming av IKT-løsninger. Utilgjengelige deler er beskrevet nedenfor.}"
+            "content": "{Dette nettstedet er helt i samsvar med {<national_law>}./Dette nettstedet er delvis i samsvar med {<national_law>}, på grunn av manglene beskrevet nedenfor./Dette nettstedet er ikke i samsvar med {<national_law>}. Utilgjengelige deler er beskrevet nedenfor.}"
         },
         {
             "content": "Innholdet som er beskrevet nedenfor er på en eller annen måte ikke fullt ut tilgjengelig.\n\n[\n**Manglende samsvar med lovkravene**\n\n{<mangler>}\n]"

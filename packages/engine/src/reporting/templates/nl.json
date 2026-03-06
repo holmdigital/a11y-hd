@@ -1,6 +1,6 @@
 {
     "title": "Toegankelijkheidsverklaring voor {<webbplats>}",
-    "intro": "{<organisation>} is verantwoordelijk voor deze website. Wij willen dat iedereen onze website kan gebruiken. In dit document wordt beschreven hoe {<webbplats>} voldoet aan de wet digitale toegankelijkheid overheid, welke toegankelijkheidsproblemen bekend zijn en hoe u eventuele gebreken aan ons kunt melden, zodat we deze kunnen verhelpen.",
+    "intro": "{<organisation>} is verantwoordelijk voor deze website. Wij willen dat iedereen onze website kan gebruiken. In dit document wordt beschreven hoe {<webbplats>} voldoet aan {<national_law>}, welke toegankelijkheidsproblemen bekend zijn en hoe u eventuele gebreken aan ons kunt melden, zodat we deze kunnen verhelpen.",
     "sections": [
         {
             "id": "how-accessible",
@@ -20,12 +20,12 @@
         {
             "id": "enforcement",
             "title": "Handhavingsprocedure",
-            "content": "{<enforcement_body>} is verantwoordelijk voor het toezicht op de naleving van de wet digitale toegankelijkheid overheid. U kunt een klacht indienen bij {<enforcement_body>} als u van mening bent dat onze digitale dienstverlening gebreken vertoont op het gebied van toegankelijkheid.\n\nU kunt ook een klacht indienen bij {<enforcement_body>} als u vindt dat ons oordeel over wat een onevenredige last is, moet worden herzien, als u vindt dat onze toegankelijkheidsverklaring gebreken vertoont of als u vindt dat wij uw verzoek om toegankelijkmaking niet correct hebben behandeld."
+            "content": "{<enforcement_body>} is verantwoordelijk voor het toezicht op de naleving van {<national_law>}. U kunt een klacht indienen bij {<enforcement_body>} als u van mening bent dat onze digitale dienstverlening gebreken vertoont op het gebied van toegankelijkheid.\n\nU kunt ook een klacht indienen bij {<enforcement_body>} als u vindt dat ons oordeel over wat een onevenredige last is, moet worden herzien, als u vindt dat onze toegankelijkheidsverklaring gebreken vertoont of als u vindt dat wij uw verzoek om toegankelijkmaking niet correct hebben behandeld."
         },
         {
             "id": "technical",
             "title": "Technische informatie over de toegankelijkheid van de website",
-            "content": "{Deze website is volledig in overeenstemming met de wet digitale toegankelijkheid overheid./Deze website is gedeeltelijk in overeenstemming met de wet digitale toegankelijkheid overheid, vanwege de hieronder beschreven gebreken./Deze website is niet in overeenstemming met de wet digitale toegankelijkheid overheid. De niet-toegankelijke delen worden hieronder beschreven.}"
+            "content": "{Deze website is volledig in overeenstemming met {<national_law>}./Deze website is gedeeltelijk in overeenstemming met {<national_law>}, vanwege de hieronder beschreven gebreken./Deze website is niet in overeenstemming met {<national_law>}. De niet-toegankelijke delen worden hieronder beschreven.}"
         },
         {
             "content": "De hieronder beschreven inhoud is op de een of andere manier niet volledig toegankelijk.\n\n[\n**Niet-naleving van de wettelijke eisen**\n\n{<gebreken>}\n]"

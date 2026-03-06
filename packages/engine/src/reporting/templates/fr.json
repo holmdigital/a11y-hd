@@ -1,16 +1,16 @@
 {
     "title": "Déclaration d'accessibilité pour {<webbplats>}",
-    "intro": "{<organisation>} s'engage à rendre son site internet accessible conformément à l'article 47 de la loi n° 2005-102 du 11 février 2005. Cette déclaration d'accessibilité s'applique à {<webbplats>}.",
+    "intro": "{<organisation>} s'engage à rendre son site internet accessible conformément à {<national_law>}. Cette déclaration d'accessibilité s'applique à {<webbplats>}.",
     "sections": [
         {
             "id": "how-accessible",
             "title": "État de conformité",
-            "content": "{Ce site est totalement conforme avec le référentiel général d'amélioration de l'accessibilité (RGAA)./Ce site est partiellement conforme avec le référentiel général d'amélioration de l'accessibilité (RGAA) en raison des non-conformités énumérées ci-dessous./Ce site n'est pas conforme avec le référentiel général d'amélioration de l'accessibilité (RGAA). Les contenus non accessibles sont énumérés ci-dessous.}"
+            "content": "{Ce site est totalement conforme avec {<national_law>}./Ce site est partiellement conforme avec {<national_law>} en raison des non-conformités énumérées ci-dessous./Ce site n'est pas conforme avec {<national_law>}. Les contenus non accessibles sont énumérés ci-dessous.}"
         },
         {
             "id": "what-to-do",
             "title": "Contenus non accessibles",
-            "content": "Les contenus listés ci-dessous ne sont pas accessibles pour les raisons suivantes :\n\n[\n**Non-conformité avec le RGAA**\n\n{<défauts>}\n]\n\n[Notre délai de réponse habituel est de {<svarstid>}.]\n\n[Vous pouvez également nous contacter des manières suivantes :\n\n* envoyer un e-mail à {<e-mailadresse>}\n* appeler le {<telefoonnummer>}]"
+            "content": "Les contenus listés ci-dessous ne sont pas accessibles pour les raisons suivantes :\n\n[\n**Non-conformité avec {<national_law>}**\n\n{<défauts>}\n]\n\n[Notre délai de réponse habituel est de {<svarstid>}.]\n\n[Vous pouvez également nous contacter des manières suivantes :\n\n* envoyer un e-mail à {<e-mailadresse>}\n* appeler le {<telefoonnummer>}]"
         },
         {
             "id": "reporting",

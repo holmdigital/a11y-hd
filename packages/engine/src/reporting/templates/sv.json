@@ -1,6 +1,6 @@
 {
     "title": "Tillgänglighet för {<webbplats>}",
-    "intro": "{<organisation>} står bakom den här webbplatsen. Vi vill att så många som möjligt ska kunna använda den. Det här dokumentet beskriver hur {<webbplats>} uppfyller lagen om tillgänglighet till digital offentlig service, eventuella kända tillgänglighetsproblem och hur du kan rapportera brister till oss så att vi kan åtgärda dem.",
+    "intro": "{<organisation>} står bakom den här webbplatsen. Vi vill att så många som möjligt ska kunna använda den. Det här dokumentet beskriver hur {<webbplats>} uppfyller {<national_law>}, eventuella kända tillgänglighetsproblem och hur du kan rapportera brister till oss så att vi kan åtgärda dem.",
     "sections": [
         {
             "id": "how-accessible",
@@ -20,12 +20,12 @@
         {
             "id": "enforcement",
             "title": "Tillsyn",
-            "content": "{<enforcement_body>} har ansvaret för tillsyn över lagen om tillgänglighet till digital offentlig service. Du kan anmäla till {<enforcement_body>} om du tycker att vår digitala service har brister i tillgänglighet.\n\nDu kan också anmäla till {<enforcement_body>} om du tycker att vår bedömning av vad som är oskäligt betungande ska granskas, om du tycker att vår tillgänglighetsredogörelse har brister eller om du tycker att vi inte har hanterat din begäran om tillgängliggörande korrekt."
+            "content": "{<enforcement_body>} har ansvaret för tillsyn över {<national_law>}. Du kan anmäla till {<enforcement_body>} om du tycker att vår digitala service har brister i tillgänglighet.\n\nDu kan också anmäla till {<enforcement_body>} om du tycker att vår bedömning av vad som är oskäligt betungande ska granskas, om du tycker att vår tillgänglighetsredogörelse har brister eller om du tycker att vi inte har hanterat din begäran om tillgängliggörande korrekt."
         },
         {
             "id": "technical",
             "title": "Teknisk information om webbplatsens tillgänglighet",
-            "content": "{Den här webbplatsen är helt förenlig med lagen om tillgänglighet till digital offentlig service./Den här webbplatsen är delvis förenlig med lagen om tillgänglighet till digital offentlig service, på grund av de brister som beskrivs nedan./Den här webbplatsen är inte förenlig med lagen om tillgänglighet till digital offentlig service. Otillgängliga delar beskrivs nedan.}"
+            "content": "{Den här webbplatsen är helt förenlig med {<national_law>}./Den här webbplatsen är delvis förenlig med {<national_law>}, på grund av de brister som beskrivs nedan./Den här webbplatsen är inte förenlig med {<national_law>}. Otillgängliga delar beskrivs nedan.}"
         },
         {
             "content": "Det innehåll som beskrivs nedan är på ett eller annat sätt inte helt tillgängligt.\n\n[\n**Bristande förenlighet med lagkraven**\n\n{<brister>}\n]"
