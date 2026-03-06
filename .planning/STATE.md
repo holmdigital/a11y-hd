@@ -2,13 +2,13 @@
 gsd_state_version: 1.0
 milestone: v0.3
 milestone_name: National Compliance
-status: planning
-last_updated: "2026-03-05"
+status: in_progress
+last_updated: "2026-03-06"
 progress:
-  total_phases: 0
+  total_phases: 3
   completed_phases: 0
-  total_plans: 0
-  completed_plans: 0
+  total_plans: 1
+  completed_plans: 1
 ---
 
 # Project State
@@ -17,29 +17,47 @@ progress:
 
 See: .planning/PROJECT.md (updated 2026-03-05)
 
-**Core value:** The type system and tests must catch bugs before users do — no `as any` escape hatches in core paths, no silent wrong behavior.
-**Current focus:** v0.3 National Compliance — defining requirements
+**Core value:** The type system and tests must catch bugs before users do -- no `as any` escape hatches in core paths, no silent wrong behavior.
+**Current focus:** v0.3 National Compliance -- Phase 11 (Enforcement Body Data) -- Plan 01 complete
 
 ## Current Position
 
-Phase: Not started (defining requirements)
-Plan: —
-Status: Defining requirements
-Last activity: 2026-03-05 — Milestone v0.3 started
+Phase: 11 of 13 (Enforcement Body Data) -- first of 3 v0.3 phases
+Plan: 01 complete -- ready for Phase 12
+Status: Phase 11-01 complete
+Last activity: 2026-03-06 -- Phase 11-01 executed
+
+Progress: [█░░░░░░░░░] 10%
 
 ## Performance Metrics
 
-**v0.1 completed:** 5 phases, 9 plans, 20 commits
-**v0.2 completed:** 5 phases, 8 plans, 25 commits
+**Prior milestones:**
+- v0.1: 5 phases, 9 plans, 20 commits
+- v0.2: 5 phases, 8 plans, 25 commits
+
+**v0.3:**
+
+| Phase | Plans | Total | Avg/Plan |
+|-------|-------|-------|----------|
+| 11-01 | 1 | 3min | 3min |
 
 ## Accumulated Context
 
 ### Decisions
 
 Decisions logged in PROJECT.md Key Decisions table.
-Full decision logs archived in:
+Prior milestone decisions archived in:
 - .planning/milestones/v0.1-ROADMAP.md
 - .planning/milestones/v0.2-ROADMAP.md
+
+**Phase 11-01 decisions:**
+- Keep ENFORCEMENT_BODIES as Record<Country, string> for backwards compatibility (WAD body by default)
+- Add ENFORCEMENT_BODIES_DETAILED as parallel export with { wad, eaa } dual-body entries without breaking existing API
+- getEnforcementBody() defaults to WAD (public sector); callers pass sector='private' explicitly for EAA
+- All names in English using 'Full Official Name (Abbreviation)' format; localization happens at output layer
+- Non-EU countries (GB, US, CA) use same body for both wad and eaa fields to maintain complete Record<Country> shape
+- EU meta-entry: WAD=DG CNECT, EAA=DG JUST (different DGs for different frameworks)
+- IT Country type addition causes downstream Record<Country> compile errors in engine/components -- deferred to Phase 12/13 per plan
 
 ### Pending Todos
 
@@ -48,11 +66,11 @@ None.
 ### Blockers/Concerns
 
 - Component dist rebuild needed before npm publish
-- Template prose needs legal/domain review for jurisdiction-specific legislation
-- National law names and enforcement body names need verification against official sources
+- Phase 12 and 13 templates must use identical enforcement body names and law names (consistency check needed)
+- IT added to Country type -- Phase 12/13 must handle IT in any Record<Country, ...> maps in engine/components packages
 
 ## Session Continuity
 
-Last session: 2026-03-05
-Stopped at: v0.3 requirements definition
-Resume: Continue new-milestone workflow
+Last session: 2026-03-06
+Stopped at: Phase 11-01 complete
+Resume: Plan Phase 12 via `/gsd:plan-phase 12`

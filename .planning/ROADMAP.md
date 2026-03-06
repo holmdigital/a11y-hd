@@ -38,7 +38,7 @@ See: `.planning/milestones/v0.2-ROADMAP.md` for full details
 
 **Milestone Goal:** Country-specific enforcement bodies and national law references in all EU locale templates
 
-- [ ] **Phase 11: Enforcement Body Data** - Expand ENFORCEMENT_BODIES map with all EU country entries using official local-language names
+- [x] **Phase 11: Enforcement Body Data** - Expand ENFORCEMENT_BODIES map with all EU country entries, WAD/EAA dual storage, and getEnforcementBody() helper
 - [ ] **Phase 12: Engine National Compliance** - Update engine JSON templates with country-specific enforcement bodies, law names, and TLD detection
 - [ ] **Phase 13: Component National Compliance** - Update component inline TEMPLATES with country-specific enforcement bodies, law names, and verification tests
 
@@ -50,13 +50,13 @@ See: `.planning/milestones/v0.2-ROADMAP.md` for full details
 **Requirements**: STD-01, STD-02
 **Success Criteria** (what must be TRUE):
   1. ENFORCEMENT_BODIES map contains entries for all 9 EU countries: SE, NO, FI, DK, DE, FR, ES, NL, IT
-  2. Each entry uses the enforcement body's official name in the local language (e.g., "Bundesnetzagentur" not "Federal Network Agency")
-  3. Existing entries (SE, EU, GB, US, CA) remain unchanged -- no backwards compatibility break
+  2. Each entry uses Full Official Name (Abbreviation) format in English (e.g., "Federal Network Agency (Bundesnetzagentur)")
+  3. Non-EU entries (GB, US, CA) remain unchanged. SE and EU entries updated to English per CONTEXT.md Decision 5
   4. TypeScript compiles with no errors after map expansion
 **Plans**: 1 plan
 
 Plans:
-- [ ] 11-01-PLAN.md — Expand enforcement bodies with IT, WAD/EAA dual storage, and getEnforcementBody() helper
+- [x] 11-01-PLAN.md — Expand enforcement bodies with IT, WAD/EAA dual storage, and getEnforcementBody() helper
 
 ### Phase 12: Engine National Compliance
 **Goal**: Every engine-generated statement references the correct national enforcement body and law for its locale
@@ -107,6 +107,6 @@ Phases execute in numeric order: 11 -> 12 -> 13
 | 8. Component UI Chrome Localization | v0.2 | 1/1 | Complete | 2026-03-04 |
 | 9. en-gb/en-us/en-ca Statement Templates | v0.2 | 2/2 | Complete | 2026-03-04 |
 | 10. Verification and Test Coverage | v0.2 | 2/2 | Complete | 2026-03-05 |
-| 11. Enforcement Body Data | v0.3 | 0/? | Not started | - |
+| 11. Enforcement Body Data | v0.3 | 1/1 | Complete | 2026-03-06 |
 | 12. Engine National Compliance | v0.3 | 0/? | Not started | - |
 | 13. Component National Compliance | v0.3 | 0/? | Not started | - |
