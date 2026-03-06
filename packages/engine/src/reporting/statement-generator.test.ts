@@ -4,6 +4,8 @@ import path from 'path';
 import { generateStatementContent } from './statement-generator';
 import type { ScanResult } from '../core/regulatory-scanner';
 import type { StatementMetadata } from './statement-generator';
+import { getEnforcementBody, getNationalLawByFramework } from '@holmdigital/standards';
+import type { Country } from '@holmdigital/standards';
 
 const TEMPLATES_DIR = path.join(__dirname, 'templates');
 const templateFiles = fs.readdirSync(TEMPLATES_DIR).filter(f => f.endsWith('.json'));
@@ -225,6 +227,74 @@ describe('TLD detection — extended country coverage', () => {
         // metadata.country='SE' wins over .de TLD
         expect(output).toContain('Digg');
     });
+});
+
+describe('EU locale enforcement body and national law verification', () => {
+    const euLocales: [string, string][] = [
+        ['sv', 'SE'],
+        ['no', 'NO'],
+        ['da', 'DK'],
+        ['nl', 'NL'],
+        ['de', 'DE'],
+        ['fr', 'FR'],
+        ['es', 'ES'],
+        ['fi', 'FI'],
+    ];
+
+    it.each(euLocales)(
+        'should produce correct enforcement body for %s locale (country %s)',
+        async (lang, countryCode) => {
+            const output = await generateStatementContent(
+                mockResult,
+                lang,
+                'md',
+                { ...metadata, country: countryCode }
+            );
+            const expectedBody = getEnforcementBody(countryCode as Country, 'public');
+            expect(output).toContain(expectedBody);
+        }
+    );
+
+    it.each(euLocales)(
+        'should produce correct national law name for %s locale (country %s)',
+        async (lang, countryCode) => {
+            const output = await generateStatementContent(
+                mockResult,
+                lang,
+                'md',
+                { ...metadata, country: countryCode }
+            );
+            const law = getNationalLawByFramework('WAD', countryCode as Country);
+            if (law) {
+                expect(output).toContain(law.fullName);
+            }
+            // If law is null, no assertion needed — substitution resolves to '' which is correct
+        }
+    );
+});
+
+describe('TLD detection for EU locales', () => {
+    const euTldTests: [string, string, string][] = [
+        ['de', 'https://example.de', 'DE'],
+        ['fr', 'https://example.fr', 'FR'],
+        ['nl', 'https://example.nl', 'NL'],
+        ['es', 'https://example.es', 'ES'],
+    ];
+
+    it.each(euTldTests)(
+        'should detect .%s TLD and produce correct enforcement body',
+        async (tld, url, countryCode) => {
+            const tldResult = { ...mockResult, url };
+            const output = await generateStatementContent(
+                tldResult,
+                tld,
+                'md',
+                { ...metadata, country: undefined }
+            );
+            const expectedBody = getEnforcementBody(countryCode as Country, 'public');
+            expect(output).toContain(expectedBody);
+        }
+    );
 });
 
 describe('National law substitution', () => {
