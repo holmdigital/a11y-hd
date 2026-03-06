@@ -1,14 +1,14 @@
 ---
 gsd_state_version: 1.0
-milestone: v0.2
-milestone_name: Full Localization
-status: shipped
+milestone: v0.3
+milestone_name: National Compliance
+status: planning
 last_updated: "2026-03-05"
 progress:
-  total_phases: 5
-  completed_phases: 5
-  total_plans: 8
-  completed_plans: 8
+  total_phases: 0
+  completed_phases: 0
+  total_plans: 0
+  completed_plans: 0
 ---
 
 # Project State
@@ -18,20 +18,19 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-05)
 
 **Core value:** The type system and tests must catch bugs before users do — no `as any` escape hatches in core paths, no silent wrong behavior.
-**Current focus:** v0.2 shipped — planning next milestone
+**Current focus:** v0.3 National Compliance — defining requirements
 
 ## Current Position
 
-Milestone: v0.2 Full Localization — SHIPPED 2026-03-05
-All 5 phases (10 total), 8 plans complete. 14/14 requirements satisfied.
-
-Progress: [██████████] 100%
+Phase: Not started (defining requirements)
+Plan: —
+Status: Defining requirements
+Last activity: 2026-03-05 — Milestone v0.3 started
 
 ## Performance Metrics
 
 **v0.1 completed:** 5 phases, 9 plans, 20 commits
 **v0.2 completed:** 5 phases, 8 plans, 25 commits
-- Full decision log archived in .planning/milestones/v0.2-ROADMAP.md
 
 ## Accumulated Context
 
@@ -48,11 +47,12 @@ None.
 
 ### Blockers/Concerns
 
-- Component dist rebuild needed before npm publish (stale from before Phases 8-9)
+- Component dist rebuild needed before npm publish
 - Template prose needs legal/domain review for jurisdiction-specific legislation
+- National law names and enforcement body names need verification against official sources
 
 ## Session Continuity
 
 Last session: 2026-03-05
-Stopped at: v0.2 milestone archived
-Resume: /gsd:new-milestone
+Stopped at: v0.3 requirements definition
+Resume: Continue new-milestone workflow

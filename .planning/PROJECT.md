@@ -38,7 +38,11 @@ The type system and tests must catch bugs before users do — no `as any` escape
 
 ### Active
 
-(None — next milestone requirements TBD via `/gsd:new-milestone`)
+- [ ] ENFORCEMENT_BODIES expanded with all 9 EU country-specific enforcement bodies
+- [ ] Engine JSON templates reference correct national enforcement body per country
+- [ ] Component inline TEMPLATES reference correct national enforcement body per country
+- [ ] Template prose references country-specific law names (BFSG, RGAA, DOS-lagen, etc.) instead of generic EU text
+- [ ] TLD detection extended to cover all 9 EU countries (.de, .fr, .nl, .fi, .dk, .no, .es, .se, .it)
 
 ### Out of Scope
 
@@ -85,9 +89,15 @@ The type system and tests must catch bugs before users do — no `as any` escape
 | `.gov` TLD left unmapped | Ambiguous (could be any country); requires explicit `country` metadata | ✓ Good |
 | en-gb/en-us/en-ca route to own templates (not generic en) | Jurisdiction-specific legislation requires distinct prose, not fallback | ✓ Good |
 
-## Current State
+## Current Milestone: v0.3 National Compliance
 
-Shipped v0.2 Full Localization (2026-03-05). All i18n expanded from binary sv/en to 12 locales. Next milestone TBD.
+**Goal:** Country-specific enforcement bodies and national law references in all EU locale templates
+
+**Target features:**
+- Expand ENFORCEMENT_BODIES map (standards) with DE, FR, NL, FI, DK, NO, ES, IT enforcement bodies
+- Update engine JSON templates with country-specific enforcement body and law name per locale
+- Update component inline TEMPLATES with matching enforcement body and law name per locale
+- Extend TLD detection for .de, .fr, .nl, .fi, .dk, .no, .es, .it
 
 ---
-*Last updated: 2026-03-05 after v0.2 milestone*
+*Last updated: 2026-03-05 after v0.3 milestone start*

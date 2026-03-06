@@ -15,8 +15,13 @@ import {
     getNordicAuthority,
     getNordicAuthoritiesByCountry,
     getStatementTools,
-    getEAADeadlineRules
+    getEAADeadlineRules,
+    // Enforcement body data
+    ENFORCEMENT_BODIES,
+    ENFORCEMENT_BODIES_DETAILED,
+    getEnforcementBody,
 } from './index';
+import type { Country } from './types';
 
 describe('Standards Package', () => {
     it('should export convergence rules', () => {
@@ -121,5 +126,71 @@ describe('EU Legal Framework', () => {
         // color-contrast should have deadline
         const colorContrast = rules.find(r => r.ruleId === 'color-contrast');
         expect(colorContrast?.legalContext?.eaaDeadline).toBe('2025-06-28');
+    });
+});
+
+describe('Enforcement Bodies', () => {
+    const ALL_COUNTRIES: Country[] = ['SE', 'NO', 'DK', 'FI', 'NL', 'DE', 'FR', 'ES', 'IE', 'IT', 'GB', 'US', 'CA', 'EU'];
+
+    it('should have entries for all 14 countries', () => {
+        expect(Object.keys(ENFORCEMENT_BODIES)).toHaveLength(14);
+        for (const country of ALL_COUNTRIES) {
+            expect(ENFORCEMENT_BODIES[country]).toBeDefined();
+            expect(ENFORCEMENT_BODIES[country].length).toBeGreaterThan(0);
+        }
+    });
+
+    it('should use English names for EU entry', () => {
+        expect(ENFORCEMENT_BODIES.EU).toBe('European Commission (DG CNECT)');
+    });
+
+    it('should include Italy', () => {
+        expect(ENFORCEMENT_BODIES.IT).toBe('Agency for Digital Italy (AgID)');
+    });
+
+    it('should not change non-EU entries', () => {
+        expect(ENFORCEMENT_BODIES.GB).toBe('Equality and Human Rights Commission (EHRC)');
+        expect(ENFORCEMENT_BODIES.US).toBe('Department of Justice (Civil Rights Division)');
+        expect(ENFORCEMENT_BODIES.CA).toBe('Accessibility Commissioner (Canadian Human Rights Commission)');
+    });
+
+    describe('ENFORCEMENT_BODIES_DETAILED', () => {
+        it('should have WAD and EAA entries for all 14 countries', () => {
+            expect(Object.keys(ENFORCEMENT_BODIES_DETAILED)).toHaveLength(14);
+            for (const country of ALL_COUNTRIES) {
+                const entry = ENFORCEMENT_BODIES_DETAILED[country];
+                expect(entry.wad).toBeDefined();
+                expect(entry.eaa).toBeDefined();
+                expect(entry.wad.length).toBeGreaterThan(0);
+                expect(entry.eaa.length).toBeGreaterThan(0);
+            }
+        });
+
+        it('should have WAD values matching ENFORCEMENT_BODIES', () => {
+            for (const country of ALL_COUNTRIES) {
+                expect(ENFORCEMENT_BODIES_DETAILED[country].wad).toBe(ENFORCEMENT_BODIES[country]);
+            }
+        });
+    });
+
+    describe('getEnforcementBody()', () => {
+        it('should return WAD body by default', () => {
+            expect(getEnforcementBody('SE')).toBe(ENFORCEMENT_BODIES.SE);
+            expect(getEnforcementBody('DE')).toBe(ENFORCEMENT_BODIES.DE);
+        });
+
+        it('should return WAD body for public sector', () => {
+            expect(getEnforcementBody('SE', 'public')).toBe(ENFORCEMENT_BODIES.SE);
+        });
+
+        it('should return EAA body for private sector', () => {
+            expect(getEnforcementBody('SE', 'private')).toBe(ENFORCEMENT_BODIES_DETAILED.SE.eaa);
+            expect(getEnforcementBody('IT', 'private')).toBe('Communications Regulatory Authority (AGCOM)');
+        });
+
+        it('should work for Italy', () => {
+            expect(getEnforcementBody('IT')).toBe('Agency for Digital Italy (AgID)');
+            expect(getEnforcementBody('IT', 'private')).toBe('Communications Regulatory Authority (AGCOM)');
+        });
     });
 });
