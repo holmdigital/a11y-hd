@@ -3,12 +3,12 @@ gsd_state_version: 1.0
 milestone: v0.3
 milestone_name: National Compliance
 status: unknown
-last_updated: "2026-03-06T05:08:07.101Z"
+last_updated: "2026-03-06T14:24:00.828Z"
 progress:
-  total_phases: 7
-  completed_phases: 7
-  total_plans: 11
-  completed_plans: 11
+  total_phases: 8
+  completed_phases: 8
+  total_plans: 12
+  completed_plans: 12
 ---
 
 ---
@@ -44,16 +44,16 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-05)
 
 **Core value:** The type system and tests must catch bugs before users do -- no `as any` escape hatches in core paths, no silent wrong behavior.
-**Current focus:** v0.3 National Compliance -- Phase 12 (Engine National Compliance) -- Plan 02 complete
+**Current focus:** v0.3 National Compliance -- Phase 13 (Component National Compliance) -- Plan 01 complete
 
 ## Current Position
 
-Phase: 12 of 13 (Engine National Compliance) -- second of 3 v0.3 phases
-Plan: 02 complete -- ready for Phase 13 Plan 01
-Status: Phase 12-02 complete
-Last activity: 2026-03-06 -- Phase 12-02 executed
+Phase: 13 of 13 (Component National Compliance) -- third and final v0.3 phase
+Plan: 01 complete -- Phase 13 complete
+Status: Phase 13-01 complete
+Last activity: 2026-03-06 -- Phase 13-01 executed
 
-Progress: [████░░░░░░] 40%
+Progress: [██████████] 100%
 
 ## Performance Metrics
 
@@ -68,6 +68,7 @@ Progress: [████░░░░░░] 40%
 | 11-01 | 1 | 3min | 3min |
 | 12-01 | 1 | 8min | 8min |
 | 12-02 | 2 | 12min | 6min |
+| 13-01 | 1 | 10min | 10min |
 
 ## Accumulated Context
 
@@ -91,6 +92,8 @@ Prior milestone decisions archived in:
 - [Phase 12]: {<national_law>} substitution registered in engine even though no template currently uses it — placeholder-ready for Phase 12 template authoring
 - [Phase 12-02]: All 8 EU locale templates updated to use {<national_law>} — no hardcoded law names remain in any EU template
 - [Phase 12-02]: Test assertions reference standards functions directly (getEnforcementBody, getNationalLawByFramework) — auto-syncing tests that never need manual updates when law names change
+- [Phase 13-01]: Sector prop previously unused (_sector) now flows through to getEnforcementBody(country, sector) for WAD vs EAA enforcement body selection
+- [Phase 13-01]: All 8 EU TEMPLATE objects use {<national_law>} placeholder — no hardcoded law names remain in component templates, matching Phase 12 engine pattern
 
 ### Pending Todos
 
@@ -105,5 +108,5 @@ None.
 ## Session Continuity
 
 Last session: 2026-03-06
-Stopped at: Phase 12-02 complete
-Resume: Execute Phase 13 Plan 01
+Stopped at: Phase 13-01 complete (v0.3 milestone complete)
+Resume: v0.3 milestone audit or v0.4 planning
