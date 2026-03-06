@@ -31,16 +31,16 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-05)
 
 **Core value:** The type system and tests must catch bugs before users do -- no `as any` escape hatches in core paths, no silent wrong behavior.
-**Current focus:** v0.3 National Compliance -- Phase 12 (Engine National Compliance) -- Plan 01 complete
+**Current focus:** v0.3 National Compliance -- Phase 12 (Engine National Compliance) -- Plan 02 complete
 
 ## Current Position
 
 Phase: 12 of 13 (Engine National Compliance) -- second of 3 v0.3 phases
-Plan: 01 complete -- ready for Phase 12 Plan 02
-Status: Phase 12-01 complete
-Last activity: 2026-03-06 -- Phase 12-01 executed
+Plan: 02 complete -- ready for Phase 13 Plan 01
+Status: Phase 12-02 complete
+Last activity: 2026-03-06 -- Phase 12-02 executed
 
-Progress: [██░░░░░░░░] 20%
+Progress: [████░░░░░░] 40%
 
 ## Performance Metrics
 
@@ -54,6 +54,7 @@ Progress: [██░░░░░░░░] 20%
 |-------|-------|-------|----------|
 | 11-01 | 1 | 3min | 3min |
 | 12-01 | 1 | 8min | 8min |
+| 12-02 | 2 | 12min | 6min |
 
 ## Accumulated Context
 
@@ -75,6 +76,8 @@ Prior milestone decisions archived in:
 - [Phase 12]: Default country fallback changed from SE to EU — unmapped TLDs are international context, not Swedish
 - [Phase 12]: getEnforcementBody(country, 'public') replaces ENFORCEMENT_BODIES[country] — data flows from canonical standards function
 - [Phase 12]: {<national_law>} substitution registered in engine even though no template currently uses it — placeholder-ready for Phase 12 template authoring
+- [Phase 12-02]: All 8 EU locale templates updated to use {<national_law>} — no hardcoded law names remain in any EU template
+- [Phase 12-02]: Test assertions reference standards functions directly (getEnforcementBody, getNationalLawByFramework) — auto-syncing tests that never need manual updates when law names change
 
 ### Pending Todos
 
@@ -89,5 +92,5 @@ None.
 ## Session Continuity
 
 Last session: 2026-03-06
-Stopped at: Phase 12-01 complete
-Resume: Execute Phase 12 Plan 02
+Stopped at: Phase 12-02 complete
+Resume: Execute Phase 13 Plan 01

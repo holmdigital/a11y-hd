@@ -39,7 +39,7 @@ See: `.planning/milestones/v0.2-ROADMAP.md` for full details
 **Milestone Goal:** Country-specific enforcement bodies and national law references in all EU locale templates
 
 - [x] **Phase 11: Enforcement Body Data** - Expand ENFORCEMENT_BODIES map with all EU country entries, WAD/EAA dual storage, and getEnforcementBody() helper
-- [ ] **Phase 12: Engine National Compliance** - Update engine JSON templates with country-specific enforcement bodies, law names, and TLD detection
+- [x] **Phase 12: Engine National Compliance** - Update engine JSON templates with country-specific enforcement bodies, law names, and TLD detection (completed 2026-03-06)
 - [ ] **Phase 13: Component National Compliance** - Update component inline TEMPLATES with country-specific enforcement bodies, law names, and verification tests
 
 ## Phase Details
@@ -108,5 +108,5 @@ Phases execute in numeric order: 11 -> 12 -> 13
 | 9. en-gb/en-us/en-ca Statement Templates | v0.2 | 2/2 | Complete | 2026-03-04 |
 | 10. Verification and Test Coverage | v0.2 | 2/2 | Complete | 2026-03-05 |
 | 11. Enforcement Body Data | v0.3 | Complete    | 2026-03-06 | 2026-03-06 |
-| 12. Engine National Compliance | 1/2 | In Progress|  | - |
+| 12. Engine National Compliance | 2/2 | Complete   | 2026-03-06 | - |
 | 13. Component National Compliance | v0.3 | 0/? | Not started | - |
