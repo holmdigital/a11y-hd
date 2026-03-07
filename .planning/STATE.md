@@ -3,12 +3,12 @@ gsd_state_version: 1.0
 milestone: v0.4
 milestone_name: Locale Expansion + EAA Sector
 status: in-progress
-last_updated: "2026-03-07T07:32:28Z"
+last_updated: "2026-03-07T09:17:00Z"
 progress:
-  total_phases: 7
-  completed_phases: 7
-  total_plans: 10
-  completed_plans: 10
+  total_phases: 4
+  completed_phases: 4
+  total_plans: 4
+  completed_plans: 4
 ---
 
 # Project State
@@ -18,16 +18,16 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-06)
 
 **Core value:** The type system and tests must catch bugs before users do -- no `as any` escape hatches in core paths, no silent wrong behavior.
-**Current focus:** v0.4 Locale Expansion + EAA Sector — Phase 16 complete (1/1 plans done)
+**Current focus:** v0.4 Locale Expansion + EAA Sector — Phase 17 complete (1/1 plans done)
 
 ## Current Position
 
-Phase: 16 of 17 (New Locale Component Templates)
+Phase: 17 of 17 (EAA Sector Support)
 Plan: 1 of 1 in current phase
-Status: Complete — plan 16-01 done
-Last activity: 2026-03-07 — 16-01 executed (it/pt/pl component templates, chrome strings, 18 new tests)
+Status: Complete — plan 17-01 done
+Last activity: 2026-03-07 — 17-01 executed (--sector CLI flag, EAA enforcement body + law wiring, 7 new tests)
 
-Progress: [█████░░░░░] 50% (v0.4, 2/4 phases)
+Progress: [██████████] 100% (v0.4, 4/4 phases)
 
 ## Performance Metrics
 
@@ -40,6 +40,7 @@ Progress: [█████░░░░░] 50% (v0.4, 2/4 phases)
 |-------|------|----------|-------|-------|
 | 15-01 | new-locale-engine-templates | ~5min | 3 | 4 |
 | 16-01 | new-locale-component-templates | 3min | 3 | 3 |
+| 17-01 | eaa-sector-support | 3min | 2 | 4 |
 
 ## Accumulated Context
 
@@ -66,6 +67,10 @@ Prior milestone decisions archived in:
 - Placed new locale entries after nl before en-gb for geographic consistency
 - Created separate NEW_LOCALE_COUNTRY_MAP test array to avoid mutating existing test data
 
+**17-01 decisions:**
+- TDD tests and implementation committed together since the plan's two tasks naturally overlap
+- 7 EAA sector tests cover DE and SE enforcement bodies, law name divergence, and default WAD behavior
+
 ### Pending Todos
 
 None.
@@ -77,5 +82,5 @@ None.
 ## Session Continuity
 
 Last session: 2026-03-07
-Stopped at: Completed 16-01-PLAN.md — Phase 16 plan 1 done
-Resume: `/gsd:execute-phase 17` (next phase)
+Stopped at: Completed 17-01-PLAN.md — Phase 17 plan 1 done, v0.4 milestone complete
+Resume: `/gsd:new-milestone` for v0.5
