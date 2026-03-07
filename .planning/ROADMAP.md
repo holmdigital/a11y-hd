@@ -81,7 +81,9 @@ Plans:
   3. `TLD_MAP` in `statement-generator.ts` maps `.pt` to `PT` and `.pl` to `PL`
   4. A report generated for a `.pt` domain produces a Portuguese statement referencing the correct PT enforcement body and law
   5. Automated tests confirm correct enforcement body and national law output for it, pt, and pl locales
-**Plans**: TBD
+**Plans**: 1 plan
+Plans:
+- [ ] 15-01-PLAN.md — Create it/pt/pl JSON templates, update TLD_MAP + locale maps + substitutions, add auto-syncing tests
 
 ### Phase 16: New Locale Component Templates
 **Goal**: The `AccessibilityStatement` React component renders correct, localized statements for Italian, Portuguese, and Polish — with the correct enforcement body, national law, and UI chrome (badge labels, footer text) displayed in each locale.
@@ -123,7 +125,7 @@ Plans:
 | 11. Enforcement Body Data | v0.3 | 1/1 | Complete | 2026-03-06 |
 | 12. Engine National Compliance | v0.3 | 2/2 | Complete | 2026-03-06 |
 | 13. Component National Compliance | v0.3 | 1/1 | Complete | 2026-03-06 |
-| 14. Locale Standards Data | 1/1 | Complete   | 2026-03-06 | - |
-| 15. New Locale Engine Templates | v0.4 | 0/? | Not started | - |
+| 14. Locale Standards Data | v0.4 | 1/1 | Complete | 2026-03-06 |
+| 15. New Locale Engine Templates | v0.4 | 0/1 | Not started | - |
 | 16. New Locale Component Templates | v0.4 | 0/? | Not started | - |
 | 17. EAA Sector Support | v0.4 | 0/? | Not started | - |
