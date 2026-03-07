@@ -14,10 +14,10 @@ Requirements for v0.4 Locale Expansion + EAA Sector. Each maps to roadmap phases
 
 ### Engine Templates
 
-- [ ] **ENG-05**: Italian (it), Portuguese (pt), Polish (pl) engine JSON templates with `{<enforcement_body>}` and `{<national_law>}` placeholders
-- [ ] **ENG-06**: TLD detection extended for .pt and .pl in TLD_MAP (it already mapped from v0.3)
+- [x] **ENG-05**: Italian (it), Portuguese (pt), Polish (pl) engine JSON templates with `{<enforcement_body>}` and `{<national_law>}` placeholders
+- [x] **ENG-06**: TLD detection extended for .pt and .pl in TLD_MAP (it already mapped from v0.3)
 - [ ] **ENG-07**: `--sector` CLI flag (public | private) passed through to `getEnforcementBody(country, sector)` and `getNationalLawByFramework(sector, country)` in statement generation
-- [ ] **ENG-08**: Automated tests verify new locale enforcement bodies + laws and EAA sector output
+- [x] **ENG-08**: Automated tests verify new locale enforcement bodies + laws and EAA sector output
 
 ### Component Templates
 
@@ -63,10 +63,10 @@ Which phases cover which requirements. Updated during roadmap creation.
 |-------------|-------|--------|
 | STD-03 | Phase 14 | Complete |
 | STD-04 | Phase 14 | Complete |
-| ENG-05 | Phase 15 | Pending |
-| ENG-06 | Phase 15 | Pending |
+| ENG-05 | Phase 15 | Complete |
+| ENG-06 | Phase 15 | Complete |
 | ENG-07 | Phase 17 | Pending |
-| ENG-08 | Phase 15 + 17 | Pending |
+| ENG-08 | Phase 15 + 17 | Complete |
 | CMP-04 | Phase 16 | Pending |
 | CMP-05 | Phase 16 | Pending |
 | CMP-06 | Phase 16 | Pending |

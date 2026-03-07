@@ -2,6 +2,19 @@
 gsd_state_version: 1.0
 milestone: v0.4
 milestone_name: Locale Expansion + EAA Sector
+status: unknown
+last_updated: "2026-03-06T22:13:33.442Z"
+progress:
+  total_phases: 6
+  completed_phases: 6
+  total_plans: 9
+  completed_plans: 9
+---
+
+---
+gsd_state_version: 1.0
+milestone: v0.4
+milestone_name: Locale Expansion + EAA Sector
 status: planning
 last_updated: "2026-03-06T22:10:00.000Z"
 progress:
@@ -18,16 +31,16 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-06)
 
 **Core value:** The type system and tests must catch bugs before users do -- no `as any` escape hatches in core paths, no silent wrong behavior.
-**Current focus:** v0.4 Locale Expansion + EAA Sector — Phase 14 in progress (1/1 plans done)
+**Current focus:** v0.4 Locale Expansion + EAA Sector — Phase 15 in progress (1/1 plans done)
 
 ## Current Position
 
-Phase: 14 of 17 (Locale Standards Data)
+Phase: 15 of 17 (New Locale Engine Templates)
 Plan: 1 of 1 in current phase
-Status: In progress — plan 14-01 complete
-Last activity: 2026-03-06 — 14-01 executed (Country type PT+PL, enforcement bodies, national laws IT/PT/PL)
+Status: In progress — plan 15-01 complete
+Last activity: 2026-03-07 — 15-01 executed (it/pt/pl JSON templates, TLD_MAP PT+PL, locale maps, 11 new tests)
 
-Progress: [░░░░░░░░░░] 0% (v0.4, 0/4 phases)
+Progress: [██░░░░░░░░] 25% (v0.4, 1/4 phases)
 
 ## Performance Metrics
 
@@ -51,6 +64,11 @@ Prior milestone decisions archived in:
 - All new national law sanctions set to minAmount=0 maxAmount=0 (confirmed amounts not publicly available)
 - EAA laws for IT/PT/PL have inForce=true with effectiveDate 2025-06-28 (EU EAA application deadline)
 
+**15-01 decisions:**
+- Standards dist rebuilt (Rule 3) to expose PT/PL in Country type before engine tsc check
+- Shared placeholder names used throughout all three templates (no locale-specific alternatives needed)
+- Locale-specific issues placeholders: {<carenze>} (IT), {<deficiências>} (PT), {<braki>} (PL)
+
 ### Pending Todos
 
 None.
@@ -61,6 +79,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-03-06
-Stopped at: Completed 14-01-PLAN.md — Phase 14 plan 1 done
-Resume: `/gsd:execute-phase 14` (next plan or plan-phase if more plans needed)
+Last session: 2026-03-07
+Stopped at: Completed 15-01-PLAN.md — Phase 15 plan 1 done
+Resume: `/gsd:execute-phase 16` (next phase — component templates for it/pt/pl)

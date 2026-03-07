@@ -51,7 +51,7 @@ See: `.planning/milestones/v0.3-ROADMAP.md` for full details
 **Milestone Goal:** Add Italian, Portuguese, and Polish locale support (engine templates, component templates, chrome strings, tests) and wire the `--sector private` CLI flag to generate EAA-compliant accessibility statements.
 
 - [x] **Phase 14: Locale Standards Data** — PT and PL Country type entries + WAD/EAA enforcement bodies; IT/PT/PL national laws (completed 2026-03-06)
-- [ ] **Phase 15: New Locale Engine Templates** — it/pt/pl JSON templates + TLD .pt/.pl + engine locale tests
+- [x] **Phase 15: New Locale Engine Templates** — it/pt/pl JSON templates + TLD .pt/.pl + engine locale tests (completed 2026-03-07)
 - [ ] **Phase 16: New Locale Component Templates** — it/pt/pl inline TEMPLATES + chrome strings + component locale tests
 - [ ] **Phase 17: EAA Sector Support** — `--sector` CLI flag wired to enforcement body + law selection + EAA tests
 
@@ -126,6 +126,6 @@ Plans:
 | 12. Engine National Compliance | v0.3 | 2/2 | Complete | 2026-03-06 |
 | 13. Component National Compliance | v0.3 | 1/1 | Complete | 2026-03-06 |
 | 14. Locale Standards Data | v0.4 | 1/1 | Complete | 2026-03-06 |
-| 15. New Locale Engine Templates | v0.4 | 0/1 | Not started | - |
+| 15. New Locale Engine Templates | 1/1 | Complete   | 2026-03-07 | - |
 | 16. New Locale Component Templates | v0.4 | 0/? | Not started | - |
 | 17. EAA Sector Support | v0.4 | 0/? | Not started | - |
