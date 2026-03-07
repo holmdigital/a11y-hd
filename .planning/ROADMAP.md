@@ -95,7 +95,9 @@ Plans:
   3. Rendering `<AccessibilityStatement locale="it" />` produces HTML containing the Italian enforcement body name and IT national law name
   4. Rendering `<AccessibilityStatement locale="pt" />` and `<AccessibilityStatement locale="pl" />` each produce HTML with their respective enforcement body and law name
   5. Automated component tests verify rendered HTML for all three new locales with zero placeholder leakage (`{<` strings must not appear in output)
-**Plans**: TBD
+**Plans**: 1 plan
+Plans:
+- [ ] 16-01-PLAN.md — Add it/pt/pl TEMPLATES + chrome strings + locale-specific replacements + auto-syncing tests
 
 ### Phase 17: EAA Sector Support
 **Goal**: Passing `--sector private` to the CLI produces an accessibility statement that references the EAA enforcement body and law instead of the WAD equivalents — fully data-driven, using the existing `getEnforcementBody(country, sector)` and `getNationalLawByFramework('EAA', country)` helpers.
@@ -126,6 +128,6 @@ Plans:
 | 12. Engine National Compliance | v0.3 | 2/2 | Complete | 2026-03-06 |
 | 13. Component National Compliance | v0.3 | 1/1 | Complete | 2026-03-06 |
 | 14. Locale Standards Data | v0.4 | 1/1 | Complete | 2026-03-06 |
-| 15. New Locale Engine Templates | 1/1 | Complete   | 2026-03-07 | - |
-| 16. New Locale Component Templates | v0.4 | 0/? | Not started | - |
+| 15. New Locale Engine Templates | v0.4 | 1/1 | Complete | 2026-03-07 |
+| 16. New Locale Component Templates | v0.4 | 0/1 | Not started | - |
 | 17. EAA Sector Support | v0.4 | 0/? | Not started | - |
