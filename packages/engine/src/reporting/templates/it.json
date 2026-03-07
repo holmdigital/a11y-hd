@@ -1,0 +1,36 @@
+{
+    "title": "Dichiarazione di accessibilità per {<organisation>}",
+    "intro": "{<organisation>} si è impegnata a rendere accessibile il proprio sito web in conformità con {<national_law>}. La presente dichiarazione di accessibilità si applica a {<organisation>}.",
+    "sections": [
+        {
+            "id": "how-accessible",
+            "title": "Stato di conformità",
+            "content": "{Questo sito web è pienamente conforme a {<national_law>}./Questo sito web è parzialmente conforme a {<national_law>} a causa delle carenze di conformità indicate di seguito./Questo sito web non è conforme a {<national_law>}. I contenuti non accessibili sono indicati di seguito.}"
+        },
+        {
+            "id": "what-to-do",
+            "title": "Contenuto non accessibile",
+            "content": "Il contenuto elencato di seguito non è accessibile per i seguenti motivi:\n\n[\n**Mancanza di conformità agli standard**\n\n{<carenze>}\n]\n\n[Il nostro tempo di risposta abituale è di {<response time>}.]\n\n[È inoltre possibile contattarci nei seguenti modi:\n\n* inviando un'e-mail a {<e-mail address>}\n* chiamando il numero {<telephone number>}]"
+        },
+        {
+            "id": "reporting",
+            "title": "Meccanismo di segnalazione e recapiti",
+            "content": "Ci impegniamo a migliorare costantemente l'accessibilità del nostro sito web. Se riscontrate un problema di accessibilità, potete contattarci per segnalarcelo."
+        },
+        {
+            "id": "enforcement",
+            "title": "Procedura di applicazione",
+            "content": "{<enforcement_body>} è responsabile del controllo del rispetto di {<national_law>}. Se non avete ricevuto una risposta soddisfacente alla vostra segnalazione, potete contattare {<enforcement_body>}.\n\nPotete inoltre presentare un reclamo a {<enforcement_body>} se ritenete che la nostra valutazione di ciò che costituisce un onere sproporzionato debba essere riesaminata, se riscontrate carenze nella nostra dichiarazione di accessibilità o se ritenete che la vostra richiesta di accessibilità non sia stata gestita correttamente."
+        },
+        {
+            "id": "technical",
+            "title": "Informazioni tecniche sull'accessibilità del sito web",
+            "content": "{Questo sito web è pienamente conforme./Questo sito web è parzialmente conforme a causa delle carenze descritte di seguito./Questo sito web non è conforme.}"
+        },
+        {
+            "id": "testing",
+            "title": "Preparazione della presente dichiarazione di accessibilità",
+            "content": "{Abbiamo effettuato una valutazione autonoma (test interno) del sito web {<organisation>}./Un {<third party>} ha effettuato una verifica indipendente del sito web {<organisation>}./Abbiamo stimato l'accessibilità senza effettuare test.}\n\nL'ultima valutazione è stata effettuata il {<assessment date>}.\n\n[Metodo di valutazione: {<method>}]\n\nIl sito web è stato pubblicato il {<publish date>}.\n\nLa dichiarazione è stata aggiornata l'ultima volta il {<update date>}."
+        }
+    ]
+}

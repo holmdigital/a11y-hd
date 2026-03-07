@@ -1,0 +1,36 @@
+{
+    "title": "Deklaracja dostępności dla {<organisation>}",
+    "intro": "{<organisation>} zobowiązała się do zapewnienia dostępności swojej strony internetowej zgodnie z {<national_law>}. Niniejsza deklaracja dostępności dotyczy {<organisation>}.",
+    "sections": [
+        {
+            "id": "how-accessible",
+            "title": "Status zgodności",
+            "content": "{Ta strona internetowa jest w pełni zgodna z {<national_law>}./Ta strona internetowa jest częściowo zgodna z {<national_law>} z powodu niezgodności wskazanych poniżej./Ta strona internetowa nie jest zgodna z {<national_law>}. Niedostępne treści są wskazane poniżej.}"
+        },
+        {
+            "id": "what-to-do",
+            "title": "Niedostępne treści",
+            "content": "Poniższe treści nie są dostępne z następujących powodów:\n\n[\n**Niezgodność ze standardami dostępności**\n\n{<braki>}\n]\n\n[Nasz typowy czas odpowiedzi wynosi {<response time>}.]\n\n[Można się z nami również skontaktować w następujący sposób:\n\n* wysyłając wiadomość e-mail na adres {<e-mail address>}\n* dzwoniąc pod numer {<telephone number>}]"
+        },
+        {
+            "id": "reporting",
+            "title": "Mechanizm zgłaszania i dane kontaktowe",
+            "content": "Nieustannie staramy się poprawiać dostępność naszej strony internetowej. Jeśli napotkają Państwo problem z dostępnością, prosimy o kontakt."
+        },
+        {
+            "id": "enforcement",
+            "title": "Procedura egzekwowania",
+            "content": "{<enforcement_body>} jest odpowiedzialny za monitorowanie zgodności z {<national_law>}. Jeśli nie otrzymali Państwo satysfakcjonującej odpowiedzi na swoje zgłoszenie, mogą się Państwo skontaktować z {<enforcement_body>}.\n\nMogą Państwo również złożyć skargę do {<enforcement_body>}, jeśli uważają Państwo, że nasza ocena tego, co stanowi nieproporcjonalne obciążenie, powinna zostać poddana przeglądowi, jeśli znajdą Państwo niedociągnięcia w naszej deklaracji dostępności lub jeśli uważają Państwo, że Państwa wniosek dotyczący dostępności nie został prawidłowo rozpatrzony."
+        },
+        {
+            "id": "technical",
+            "title": "Informacje techniczne o dostępności strony internetowej",
+            "content": "{Ta strona internetowa jest w pełni zgodna./Ta strona internetowa jest częściowo zgodna z powodu niedociągnięć opisanych poniżej./Ta strona internetowa nie jest zgodna.}"
+        },
+        {
+            "id": "testing",
+            "title": "Przygotowanie niniejszej deklaracji dostępności",
+            "content": "{Przeprowadziliśmy samoocenę (wewnętrzne badanie) strony internetowej {<organisation>}./Podmiot zewnętrzny {<third party>} przeprowadził niezależny audyt strony internetowej {<organisation>}./Oszacowaliśmy dostępność bez przeprowadzania testów.}\n\nOstatnia ocena została przeprowadzona dnia {<assessment date>}.\n\n[Metoda oceny: {<method>}]\n\nStrona internetowa została opublikowana dnia {<publish date>}.\n\nDeklaracja została ostatnio zaktualizowana dnia {<update date>}."
+        }
+    ]
+}

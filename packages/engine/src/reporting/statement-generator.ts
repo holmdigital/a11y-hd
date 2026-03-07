@@ -34,6 +34,9 @@ const EVALUATION_METHOD: Record<string, string> = {
     fr: 'Analyse automatisée via @holmdigital/engine',
     es: 'Análisis automatizado mediante @holmdigital/engine',
     nl: 'Geautomatiseerde controle via @holmdigital/engine',
+    it: 'Scansione automatizzata tramite @holmdigital/engine',
+    pt: 'Verificação automatizada via @holmdigital/engine',
+    pl: 'Automatyczne skanowanie za pomocą @holmdigital/engine',
     'en-gb': 'Automated scan via @holmdigital/engine',
     'en-us': 'Automated scan via @holmdigital/engine',
     'en-ca': 'Automated scan via @holmdigital/engine',
@@ -50,6 +53,9 @@ const STATUS_LABELS: Record<string, Record<string, string>> = {
     fr: { full: 'Totalement conforme', partial: 'Partiellement conforme', 'non-compliant': 'Non conforme' },
     es: { full: 'Plenamente conforme', partial: 'Parcialmente conforme', 'non-compliant': 'No conforme' },
     nl: { full: 'Volledig conform', partial: 'Gedeeltelijk conform', 'non-compliant': 'Niet conform' },
+    it: { full: 'Pienamente conforme', partial: 'Parzialmente conforme', 'non-compliant': 'Non conforme' },
+    pt: { full: 'Totalmente conforme', partial: 'Parcialmente conforme', 'non-compliant': 'Não conforme' },
+    pl: { full: 'W pełni zgodny', partial: 'Częściowo zgodny', 'non-compliant': 'Niezgodny' },
     'en-gb': { full: 'Fully compliant', partial: 'Partially compliant', 'non-compliant': 'Non-compliant' },
     'en-us': { full: 'Fully compliant', partial: 'Partially compliant', 'non-compliant': 'Non-compliant' },
     'en-ca': { full: 'Fully compliant', partial: 'Partially compliant', 'non-compliant': 'Non-compliant' },
@@ -66,6 +72,9 @@ const RESPONSE_TIME_DEFAULT: Record<string, string> = {
     fr: '2 jours',
     es: '2 días',
     nl: '2 dagen',
+    it: '2 giorni',
+    pt: '2 dias',
+    pl: '2 dni',
     'en-gb': '2 days',
     'en-us': '2 days',
     'en-ca': '2 days',
@@ -128,6 +137,7 @@ export async function generateStatementContent(
         const TLD_MAP: Record<string, Country> = {
             'se': 'SE', 'no': 'NO', 'dk': 'DK', 'fi': 'FI',
             'de': 'DE', 'fr': 'FR', 'nl': 'NL', 'es': 'ES', 'it': 'IT',
+            'pt': 'PT', 'pl': 'PL',
             'uk': 'GB', 'us': 'US', 'ca': 'CA',
         };
         // Proper TLD parse: split URL hostname by '.', take last segment
@@ -303,6 +313,9 @@ export async function generateStatementContent(
             '{<défauts>}': nonComplianceItems.length > 0 ? nonComplianceItems.map(item => `* ${item}`).join('\n') : (lang === 'fr' ? 'Aucun défaut connu.' : 'No known issues.'),
             '{<deficiencias>}': nonComplianceItems.length > 0 ? nonComplianceItems.map(item => `* ${item}`).join('\n') : (lang === 'es' ? 'No hay deficiencias conocidas.' : 'No known issues.'),
             '{<mangler>}': nonComplianceItems.length > 0 ? nonComplianceItems.map(item => `* ${item}`).join('\n') : (lang === 'no' || lang === 'da' ? 'Ingen kendte mangler.' : 'No known issues.'),
+            '{<carenze>}':    nonComplianceItems.length > 0 ? nonComplianceItems.map(item => `* ${item}`).join('\n') : 'Nessuna carenza nota.',
+            '{<deficiências>}': nonComplianceItems.length > 0 ? nonComplianceItems.map(item => `* ${item}`).join('\n') : 'Nenhuma deficiência conhecida.',
+            '{<braki>}':      nonComplianceItems.length > 0 ? nonComplianceItems.map(item => `* ${item}`).join('\n') : 'Brak znanych problemów.',
             '{<issues>}': nonComplianceItems.length > 0 ? nonComplianceItems.map(item => `* ${item}`).join('\n') : 'No known issues.'
         };
 
@@ -317,7 +330,8 @@ export async function generateStatementContent(
                 if (content.includes('{<telefonnummer>}') || content.includes('{<telephone number>}')) {
                     return props.phoneNumber ? content : '';
                 }
-                if (content.includes('{<brister>}') || content.includes('{<mangler>}') || content.includes('{<issues>}')) {
+                if (content.includes('{<brister>}') || content.includes('{<mangler>}') || content.includes('{<issues>}') ||
+                    content.includes('{<carenze>}') || content.includes('{<deficiências>}') || content.includes('{<braki>}')) {
                     return complianceLevel !== 'full' ? content : '';
                 }
                 return content;

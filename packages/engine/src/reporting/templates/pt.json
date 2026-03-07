@@ -1,0 +1,36 @@
+{
+    "title": "Declaração de acessibilidade para {<organisation>}",
+    "intro": "{<organisation>} comprometeu-se a tornar o seu sítio web acessível, em conformidade com {<national_law>}. A presente declaração de acessibilidade aplica-se a {<organisation>}.",
+    "sections": [
+        {
+            "id": "how-accessible",
+            "title": "Estado de conformidade",
+            "content": "{Este sítio web está totalmente em conformidade com {<national_law>}./Este sítio web está parcialmente em conformidade com {<national_law>} devido às deficiências de conformidade indicadas abaixo./Este sítio web não está em conformidade com {<national_law>}. Os conteúdos não acessíveis estão indicados abaixo.}"
+        },
+        {
+            "id": "what-to-do",
+            "title": "Conteúdo não acessível",
+            "content": "O conteúdo a seguir indicado não é acessível pelos seguintes motivos:\n\n[\n**Incumprimento dos requisitos de acessibilidade**\n\n{<deficiências>}\n]\n\n[O nosso tempo de resposta habitual é de {<response time>}.]\n\n[Pode igualmente contactar-nos das seguintes formas:\n\n* enviando um e-mail para {<e-mail address>}\n* ligando para o número {<telephone number>}]"
+        },
+        {
+            "id": "reporting",
+            "title": "Mecanismo de comunicação e dados de contacto",
+            "content": "Esforçamo-nos por melhorar continuamente a acessibilidade do nosso sítio web. Se encontrar algum problema de acessibilidade, pode contactar-nos para nos informar."
+        },
+        {
+            "id": "enforcement",
+            "title": "Procedimento de execução",
+            "content": "A {<enforcement_body>} é responsável pela monitorização do cumprimento de {<national_law>}. Se não recebeu uma resposta satisfatória à sua notificação, pode contactar a {<enforcement_body>}.\n\nPode igualmente apresentar uma reclamação junto da {<enforcement_body>} se considerar que a nossa avaliação do que constitui um encargo desproporcionado deve ser revista, se encontrar deficiências na nossa declaração de acessibilidade ou se considerar que a sua solicitação de acessibilidade não foi corretamente tratada."
+        },
+        {
+            "id": "technical",
+            "title": "Informações técnicas sobre a acessibilidade do sítio web",
+            "content": "{Este sítio web está totalmente em conformidade./Este sítio web está parcialmente em conformidade devido às deficiências descritas abaixo./Este sítio web não está em conformidade.}"
+        },
+        {
+            "id": "testing",
+            "title": "Elaboração da presente declaração de acessibilidade",
+            "content": "{Realizámos uma autoavaliação (teste interno) do sítio web {<organisation>}./Uma {<third party>} realizou uma auditoria independente do sítio web {<organisation>}./Estimámos a acessibilidade sem realizar testes.}\n\nA última avaliação foi realizada em {<assessment date>}.\n\n[Método de avaliação: {<method>}]\n\nO sítio web foi publicado em {<publish date>}.\n\nA declaração foi atualizada pela última vez em {<update date>}."
+        }
+    ]
+}
