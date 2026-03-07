@@ -21,9 +21,9 @@ Requirements for v0.4 Locale Expansion + EAA Sector. Each maps to roadmap phases
 
 ### Component Templates
 
-- [ ] **CMP-04**: Italian (it), Portuguese (pt), Polish (pl) inline TEMPLATES in AccessibilityStatement.tsx using `{<enforcement_body>}` and `{<national_law>}` placeholders
-- [ ] **CMP-05**: Chrome strings (badge labels, updated label, footer text) for it, pt, pl locales in locale-chrome.ts
-- [ ] **CMP-06**: Automated tests verify rendered HTML for new locales (enforcement body + law name per locale)
+- [x] **CMP-04**: Italian (it), Portuguese (pt), Polish (pl) inline TEMPLATES in AccessibilityStatement.tsx using `{<enforcement_body>}` and `{<national_law>}` placeholders
+- [x] **CMP-05**: Chrome strings (badge labels, updated label, footer text) for it, pt, pl locales in locale-chrome.ts
+- [x] **CMP-06**: Automated tests verify rendered HTML for new locales (enforcement body + law name per locale)
 
 ## Future Requirements
 
@@ -67,9 +67,9 @@ Which phases cover which requirements. Updated during roadmap creation.
 | ENG-06 | Phase 15 | Complete |
 | ENG-07 | Phase 17 | Pending |
 | ENG-08 | Phase 15 + 17 | Complete |
-| CMP-04 | Phase 16 | Pending |
-| CMP-05 | Phase 16 | Pending |
-| CMP-06 | Phase 16 | Pending |
+| CMP-04 | Phase 16 | Complete |
+| CMP-05 | Phase 16 | Complete |
+| CMP-06 | Phase 16 | Complete |
 
 **Coverage:**
 - v0.4 requirements: 9 total

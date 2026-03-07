@@ -52,7 +52,7 @@ See: `.planning/milestones/v0.3-ROADMAP.md` for full details
 
 - [x] **Phase 14: Locale Standards Data** — PT and PL Country type entries + WAD/EAA enforcement bodies; IT/PT/PL national laws (completed 2026-03-06)
 - [x] **Phase 15: New Locale Engine Templates** — it/pt/pl JSON templates + TLD .pt/.pl + engine locale tests (completed 2026-03-07)
-- [ ] **Phase 16: New Locale Component Templates** — it/pt/pl inline TEMPLATES + chrome strings + component locale tests
+- [x] **Phase 16: New Locale Component Templates** — it/pt/pl inline TEMPLATES + chrome strings + component locale tests (completed 2026-03-07)
 - [ ] **Phase 17: EAA Sector Support** — `--sector` CLI flag wired to enforcement body + law selection + EAA tests
 
 ## Phase Details
@@ -129,5 +129,5 @@ Plans:
 | 13. Component National Compliance | v0.3 | 1/1 | Complete | 2026-03-06 |
 | 14. Locale Standards Data | v0.4 | 1/1 | Complete | 2026-03-06 |
 | 15. New Locale Engine Templates | v0.4 | 1/1 | Complete | 2026-03-07 |
-| 16. New Locale Component Templates | v0.4 | 0/1 | Not started | - |
+| 16. New Locale Component Templates | 1/1 | Complete   | 2026-03-07 | - |
 | 17. EAA Sector Support | v0.4 | 0/? | Not started | - |
