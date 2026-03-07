@@ -273,6 +273,42 @@ const TEMPLATES: Record<string, StatementTemplate> = {
             { id: "non-accessible", title: "Non-accessible content", content: "The content described below is, in one way or another, not fully accessible.\n\n[\n### Non-compliance with the accessibility regulations\n\n{<issues>}\n]" },
             { id: "testing", title: "How we tested this website", content: "{We have performed a self-assessment (internal testing) of {<website>}./{<third party>} has tested {<website>}./We have estimated the accessibility without testing.}\n\nThe last assessment was made on {<assessment date>}.\n\n[Assessment method: {<method>}]\n\nThe website was published on {<publish date>}.\n\nThe statement was last updated on {<update date>}." }
         ]
+    },
+    it: {
+        title: "Dichiarazione di accessibilità per {<webbplats>}",
+        intro: "{<organisation>} si impegna a rendere accessibile il proprio sito web ai sensi della {<national_law>}. La presente dichiarazione di accessibilità si applica a {<webbplats>}.",
+        sections: [
+            { id: "how-accessible", title: "Stato di conformità", content: "{Questo sito web è pienamente conforme alla {<national_law>}./Questo sito web è parzialmente conforme alla {<national_law>} a causa delle non conformità elencate di seguito./Questo sito web non è conforme alla {<national_law>}. I contenuti non accessibili sono elencati di seguito.}" },
+            { id: "what-to-do", title: "Contenuti non accessibili", content: "I contenuti elencati di seguito non sono accessibili per i seguenti motivi:\n\n[\n**Non conformità alla {<national_law>}**\n\n{<carenze>}\n]\n\n[Il nostro tempo di risposta abituale è di {<svarstid>}.]\n\n[È anche possibile contattarci nei seguenti modi:\n\n* inviare un'e-mail a {<e-mailadresse>}\n* chiamare il {<telefoonnummer>}]" },
+            { id: "reporting", title: "Meccanismo di feedback e dati di contatto", content: "Ci impegniamo a migliorare costantemente l'accessibilità del nostro sito web. Se riscontri problemi di accessibilità, puoi contattarci per segnalarceli." },
+            { id: "enforcement", title: "Procedura di applicazione", content: "{<enforcement_body>} è responsabile del controllo dei requisiti di accessibilità. Se non hai ricevuto una risposta soddisfacente alla tua segnalazione, puoi contattare {<enforcement_body>}.\n\nPuoi anche presentare un reclamo a {<enforcement_body>} se ritieni che la nostra valutazione di ciò che costituisce un onere sproporzionato debba essere rivista, se riscontri carenze nella nostra dichiarazione di accessibilità o se ritieni che non abbiamo gestito correttamente la tua richiesta di accessibilità." },
+            { id: "technical", title: "Informazioni tecniche sull'accessibilità del sito web", content: "{Questo sito web è pienamente conforme alla {<national_law>}./Questo sito web è parzialmente conforme alla {<national_law>} a causa delle non conformità descritte di seguito./Questo sito web non è conforme alla {<national_law>}.}" },
+            { id: "testing", title: "Preparazione della presente dichiarazione di accessibilità", content: "{Abbiamo effettuato una valutazione interna (test interno) del sito web {<webbplats>}./{<terza parte>} ha effettuato un audit indipendente del sito web {<webbplats>}./Abbiamo stimato l'accessibilità senza effettuare test.}\n\nL'ultima valutazione è stata effettuata il {<data_valutazione>}.\n\n[Metodo di valutazione: {<metodo_it>}]\n\nIl sito web è stato pubblicato il {<data_pubblicazione>}.\n\nLa dichiarazione è stata aggiornata per l'ultima volta il {<data_aggiornamento>}." }
+        ]
+    },
+    pt: {
+        title: "Declaração de acessibilidade para {<webbplats>}",
+        intro: "{<organisation>} compromete-se a tornar o seu sítio web acessível em conformidade com a {<national_law>}. A presente declaração de acessibilidade aplica-se a {<webbplats>}.",
+        sections: [
+            { id: "how-accessible", title: "Estado de conformidade", content: "{Este sítio web está plenamente em conformidade com a {<national_law>}./Este sítio web está parcialmente em conformidade com a {<national_law>} devido às não conformidades enumeradas abaixo./Este sítio web não está em conformidade com a {<national_law>}. Os conteúdos não acessíveis estão enumerados abaixo.}" },
+            { id: "what-to-do", title: "Conteúdo não acessível", content: "O conteúdo abaixo descrito não é acessível pelos seguintes motivos:\n\n[\n**Não conformidade com a {<national_law>}**\n\n{<deficiências>}\n]\n\n[O nosso tempo de resposta habitual é de {<svarstid>}.]\n\n[Também pode contactar-nos das seguintes formas:\n\n* enviar um e-mail para {<e-mailadresse>}\n* ligar para {<telefoonnummer>}]" },
+            { id: "reporting", title: "Mecanismo de feedback e contacto", content: "Esforçamo-nos por melhorar continuamente a acessibilidade do nosso sítio web. Se encontrar problemas de acessibilidade, pode contactar-nos para nos informar." },
+            { id: "enforcement", title: "Procedimento de execução", content: "{<enforcement_body>} é responsável pela supervisão dos requisitos de acessibilidade. Se não tiver recebido uma resposta satisfatória à sua notificação, pode contactar {<enforcement_body>}.\n\nTambém pode apresentar uma reclamação a {<enforcement_body>} se considerar que a nossa avaliação do que constitui um encargo desproporcionado deve ser revista, se encontrar deficiências na nossa declaração de acessibilidade ou se considerar que não tratámos corretamente o seu pedido de acessibilidade." },
+            { id: "technical", title: "Informações técnicas sobre a acessibilidade do sítio web", content: "{Este sítio web está plenamente em conformidade com a {<national_law>}./Este sítio web está parcialmente em conformidade com a {<national_law>} devido às deficiências descritas abaixo./Este sítio web não está em conformidade com a {<national_law>}.}" },
+            { id: "testing", title: "Elaboração da presente declaração de acessibilidade", content: "{Realizámos uma autoavaliação (teste interno) do sítio web {<webbplats>}./{<terceiro externo>} realizou uma auditoria independente do sítio web {<webbplats>}./Estimámos a acessibilidade sem realizar testes.}\n\nA última avaliação foi realizada em {<data_avaliacao>}.\n\n[Método de avaliação: {<metodo_pt>}]\n\nO sítio web foi publicado em {<data_publicacao>}.\n\nA declaração foi atualizada pela última vez em {<data_atualizacao>}." }
+        ]
+    },
+    pl: {
+        title: "Deklaracja dostępności dla {<webbplats>}",
+        intro: "{<organisation>} zobowiązuje się zapewnić dostępność swojej strony internetowej zgodnie z {<national_law>}. Niniejsza deklaracja dostępności dotyczy strony {<webbplats>}.",
+        sections: [
+            { id: "how-accessible", title: "Status pod względem zgodności", content: "{Ta strona internetowa jest w pełni zgodna z {<national_law>}./Ta strona internetowa jest częściowo zgodna z {<national_law>} z powodu niezgodności wymienionych poniżej./Ta strona internetowa nie jest zgodna z {<national_law>}. Niedostępne treści wymieniono poniżej.}" },
+            { id: "what-to-do", title: "Treści niedostępne", content: "Treści wymienione poniżej są niedostępne z następujących powodów:\n\n[\n**Niezgodność z {<national_law>}**\n\n{<braki>}\n]\n\n[Nasz typowy czas odpowiedzi wynosi {<svarstid>}.]\n\n[Można się z nami skontaktować również w następujący sposób:\n\n* wysyłając e-mail na adres {<e-mailadresse>}\n* dzwoniąc pod numer {<telefoonnummer>}]" },
+            { id: "reporting", title: "Procedura zgłaszania problemów z dostępnością i dane kontaktowe", content: "Nieustannie dążymy do poprawy dostępności naszej strony internetowej. Jeśli napotkasz problemy z dostępnością, możesz się z nami skontaktować, aby nas o tym poinformować." },
+            { id: "enforcement", title: "Procedura egzekwowania przepisów", content: "{<enforcement_body>} jest odpowiedzialny za nadzór nad wymogami dostępności. Jeśli nie otrzymałeś satysfakcjonującej odpowiedzi na swoje zgłoszenie, możesz skontaktować się z {<enforcement_body>}.\n\nMożesz również złożyć skargę do {<enforcement_body>}, jeśli uważasz, że nasza ocena tego, co stanowi nieproporcjonalne obciążenie, powinna zostać zrewidowana, jeśli znajdziesz braki w naszej deklaracji dostępności lub jeśli uważasz, że nie obsłużyliśmy prawidłowo Twojego wniosku o dostępność." },
+            { id: "technical", title: "Informacje techniczne na temat dostępności strony internetowej", content: "{Ta strona internetowa jest w pełni zgodna z {<national_law>}./Ta strona internetowa jest częściowo zgodna z {<national_law>} z powodu niezgodności opisanych poniżej./Ta strona internetowa nie jest zgodna z {<national_law>}.}" },
+            { id: "testing", title: "Sporządzenie niniejszej deklaracji dostępności", content: "{Przeprowadziliśmy samoocenę (wewnętrzne testy) strony internetowej {<webbplats>}./{<podmiot zewnętrzny>} przeprowadził niezależny audyt strony internetowej {<webbplats>}./Oszacowaliśmy dostępność bez przeprowadzania testów.}\n\nOstatnia ocena została przeprowadzona dnia {<data_oceny>}.\n\n[Metoda oceny: {<metoda_pl>}]\n\nStrona internetowa została opublikowana dnia {<data_publikacji>}.\n\nDeklaracja została ostatnio zaktualizowana dnia {<data_aktualizacji>}." }
+        ]
     }
 };
 
@@ -289,6 +325,9 @@ const formatDiggDate = (date: Date, locale: string) => {
         de: 'de-DE',
         fr: 'fr-FR',
         es: 'es-ES',
+        it: 'it-IT',
+        pt: 'pt-PT',
+        pl: 'pl-PL',
         'en-gb': 'en-GB',
         'en-us': 'en-US',
         'en-ca': 'en-CA'
@@ -335,6 +374,7 @@ export const AccessibilityStatement: React.FC<AccessibilityStatementProps> = ({
     const supportedLocales: Record<string, string> = {
         sv: 'sv', en: 'en', no: 'no', nb: 'no', dk: 'da',
         da: 'da', de: 'de', fr: 'fr', es: 'es', fi: 'fi', nl: 'nl',
+        it: 'it', pt: 'pt', pl: 'pl',
         'en-gb': 'en-gb', 'en-us': 'en-us', 'en-ca': 'en-ca'
     };
     const lang = supportedLocales[locale];
@@ -392,6 +432,9 @@ export const AccessibilityStatement: React.FC<AccessibilityStatementProps> = ({
             es: 'No se conocen problemas.',
             fi: 'Ei tunnettuja puutteita.',
             nl: 'Geen bekende problemen.',
+            it: 'Nessun problema noto.',
+            pt: 'Nenhum problema conhecido.',
+            pl: 'Brak znanych problemów.',
         };
         issuesContent = noIssuesText[effectiveLang] || 'No known issues.';
     }
@@ -461,6 +504,30 @@ export const AccessibilityStatement: React.FC<AccessibilityStatementProps> = ({
     replacements['{<gebreken>}'] = issuesContent;
     replacements['{<e-mailadres>}'] = contactEmail;
 
+    // IT-specific mappings
+    replacements['{<data_valutazione>}'] = assessmentDate ? d(assessmentDate) : d(lastReviewDate);
+    replacements['{<data_pubblicazione>}'] = publishDate ? d(publishDate) : '2024-01-01';
+    replacements['{<data_aggiornamento>}'] = d(lastReviewDate);
+    replacements['{<metodo_it>}'] = evaluationMethod || 'Automated Scan';
+    replacements['{<terza parte>}'] = generatorTool?.name || 'HolmDigital Engine';
+    replacements['{<carenze>}'] = issuesContent;
+
+    // PT-specific mappings
+    replacements['{<data_avaliacao>}'] = assessmentDate ? d(assessmentDate) : d(lastReviewDate);
+    replacements['{<data_publicacao>}'] = publishDate ? d(publishDate) : '2024-01-01';
+    replacements['{<data_atualizacao>}'] = d(lastReviewDate);
+    replacements['{<metodo_pt>}'] = evaluationMethod || 'Automated Scan';
+    replacements['{<terceiro externo>}'] = generatorTool?.name || 'HolmDigital Engine';
+    replacements['{<deficiências>}'] = issuesContent;
+
+    // PL-specific mappings
+    replacements['{<data_oceny>}'] = assessmentDate ? d(assessmentDate) : d(lastReviewDate);
+    replacements['{<data_publikacji>}'] = publishDate ? d(publishDate) : '2024-01-01';
+    replacements['{<data_aktualizacji>}'] = d(lastReviewDate);
+    replacements['{<metoda_pl>}'] = evaluationMethod || 'Automated Scan';
+    replacements['{<podmiot zewnętrzny>}'] = generatorTool?.name || 'HolmDigital Engine';
+    replacements['{<braki>}'] = issuesContent;
+
     const renderTemplate = (tmpl: string) => {
         let text = tmpl;
 
@@ -480,7 +547,8 @@ export const AccessibilityStatement: React.FC<AccessibilityStatementProps> = ({
             if (content.includes('{<brister>}') || content.includes('{<issues>}')
                 || content.includes('{<mangler>}') || content.includes('{<mängel>}')
                 || content.includes('{<défauts>}') || content.includes('{<deficiencias>}')
-                || content.includes('{<puutteet>}') || content.includes('{<gebreken>}')) {
+                || content.includes('{<puutteet>}') || content.includes('{<gebreken>}')
+                || content.includes('{<carenze>}') || content.includes('{<deficiências>}') || content.includes('{<braki>}')) {
                 return complianceLevel !== 'full' ? content : '';
             }
             // Add a newline before and after content to ensure separation from headings
