@@ -90,11 +90,11 @@ describe('Template placeholder exhaustiveness', () => {
         ).rejects.toThrow(/template not found for locale "xx"/i);
     });
 
-    it('should discover all 12 expected template files', () => {
-        expect(templateFiles.length).toBeGreaterThanOrEqual(12);
+    it('should discover all 15 expected template files', () => {
+        expect(templateFiles.length).toBeGreaterThanOrEqual(15);
         const langs = templateFiles.map(f => f.replace('.json', '')).sort();
         expect(langs).toEqual(
-            expect.arrayContaining(['da', 'de', 'en', 'en-ca', 'en-gb', 'en-us', 'es', 'fi', 'fr', 'nl', 'no', 'sv'])
+            expect.arrayContaining(['da', 'de', 'en', 'en-ca', 'en-gb', 'en-us', 'es', 'fi', 'fr', 'it', 'nl', 'no', 'pl', 'pt', 'sv'])
         );
     });
 });
@@ -339,4 +339,56 @@ describe('Engine HTML output pipeline smoke test', () => {
         // Verify no leftover placeholders
         expect(output).not.toMatch(PLACEHOLDER_REGEX);
     });
+});
+
+describe('TLD detection — pt and pl', () => {
+    it('should detect .pt TLD as PT country', async () => {
+        const ptResult = { ...mockResult, url: 'https://example.pt' };
+        const output = await generateStatementContent(ptResult, 'pt', 'md', { ...metadata, country: undefined });
+        expect(output).toContain(getEnforcementBody('PT', 'public'));
+    });
+
+    it('should detect .pl TLD as PL country', async () => {
+        const plResult = { ...mockResult, url: 'https://example.pl' };
+        const output = await generateStatementContent(plResult, 'pl', 'md', { ...metadata, country: undefined });
+        expect(output).toContain(getEnforcementBody('PL', 'public'));
+    });
+});
+
+describe('New locale enforcement body and national law verification (it/pt/pl)', () => {
+    const newLocales: [string, string][] = [
+        ['it', 'IT'],
+        ['pt', 'PT'],
+        ['pl', 'PL'],
+    ];
+
+    it.each(newLocales)(
+        'should produce correct enforcement body for %s locale (country %s)',
+        async (lang, countryCode) => {
+            const output = await generateStatementContent(
+                mockResult,
+                lang,
+                'md',
+                { ...metadata, country: countryCode }
+            );
+            const expectedBody = getEnforcementBody(countryCode as Country, 'public');
+            expect(output).toContain(expectedBody);
+        }
+    );
+
+    it.each(newLocales)(
+        'should produce correct national law name for %s locale (country %s)',
+        async (lang, countryCode) => {
+            const output = await generateStatementContent(
+                mockResult,
+                lang,
+                'md',
+                { ...metadata, country: countryCode }
+            );
+            const law = getNationalLawByFramework('WAD', countryCode as Country);
+            if (law) {
+                expect(output).toContain(law.law);
+            }
+        }
+    );
 });
