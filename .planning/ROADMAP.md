@@ -108,7 +108,9 @@ Plans:
   2. When `--sector private` is passed, the generated statement calls `getEnforcementBody(country, 'private')` and resolves the EAA enforcement body name
   3. When `--sector private` is passed, the generated statement calls `getNationalLawByFramework('EAA', country)` and resolves the EAA law name
   4. Automated tests confirm that EAA sector output differs from WAD output (different enforcement body and law names) for at least two countries
-**Plans**: TBD
+**Plans**: 1 plan
+Plans:
+- [ ] 17-01-PLAN.md — Wire --sector CLI flag through engine and component, add EAA sector tests
 
 ## Progress
 
@@ -129,5 +131,5 @@ Plans:
 | 13. Component National Compliance | v0.3 | 1/1 | Complete | 2026-03-06 |
 | 14. Locale Standards Data | v0.4 | 1/1 | Complete | 2026-03-06 |
 | 15. New Locale Engine Templates | v0.4 | 1/1 | Complete | 2026-03-07 |
-| 16. New Locale Component Templates | 1/1 | Complete   | 2026-03-07 | - |
+| 16. New Locale Component Templates | 1/1 | Complete    | 2026-03-07 | - |
 | 17. EAA Sector Support | v0.4 | 0/? | Not started | - |
