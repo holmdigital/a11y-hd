@@ -286,3 +286,112 @@ describe('AccessibilityStatement national compliance - national law', () => {
         });
     });
 });
+
+// --- New locale tests for it/pt/pl ---
+
+const NEW_LOCALE_COUNTRY_MAP: Array<{ locale: string; country: string }> = [
+    { locale: 'it', country: 'IT' },
+    { locale: 'pt', country: 'PT' },
+    { locale: 'pl', country: 'PL' },
+];
+
+describe('AccessibilityStatement placeholder leakage - new locales (it/pt/pl)', () => {
+    NEW_LOCALE_COUNTRY_MAP.forEach(({ locale, country }) => {
+        it(`no {<...>} placeholders survive in ${locale} locale output`, () => {
+            const { container } = render(
+                <AccessibilityStatement
+                    {...defaultProps}
+                    locale={locale}
+                    country={country as any}
+                    sector="public"
+                />
+            );
+            expect(container.innerHTML).not.toMatch(PLACEHOLDER_PATTERN);
+        });
+    });
+});
+
+describe('AccessibilityStatement national compliance - enforcement body (it/pt/pl)', () => {
+    NEW_LOCALE_COUNTRY_MAP.forEach(({ locale, country }) => {
+        it(`${locale} locale renders correct enforcement body for country=${country}`, () => {
+            const { container } = render(
+                <AccessibilityStatement
+                    {...defaultProps}
+                    locale={locale}
+                    country={country as any}
+                    sector="public"
+                />
+            );
+            const expectedBody = getEnforcementBody(country as any, 'public');
+            expect(container.innerHTML).toContain(expectedBody);
+        });
+    });
+});
+
+describe('AccessibilityStatement national compliance - national law (it/pt/pl)', () => {
+    NEW_LOCALE_COUNTRY_MAP.forEach(({ locale, country }) => {
+        it(`${locale} locale renders correct national law for country=${country}`, () => {
+            const { container } = render(
+                <AccessibilityStatement
+                    {...defaultProps}
+                    locale={locale}
+                    country={country as any}
+                    sector="public"
+                />
+            );
+            const law = getNationalLawByFramework('WAD', country as any);
+            expect(law).not.toBeNull();
+            expect(container.innerHTML).toContain(law!.fullName);
+        });
+    });
+});
+
+const NEW_LOCALE_CHROME_FULL: Record<string, string> = {
+    it: 'Pienamente conforme',
+    pt: 'Plenamente conforme',
+    pl: 'W pełni zgodna',
+};
+
+const NEW_LOCALE_UPDATED_LABEL: Record<string, string> = {
+    it: 'Aggiornato:',
+    pt: 'Atualizado:',
+    pl: 'Zaktualizowano:',
+};
+
+const NEW_LOCALE_FOOTER_TEXT: Record<string, string> = {
+    it: 'Generato con',
+    pt: 'Gerado com',
+    pl: 'Wygenerowano za pomocą',
+};
+
+describe('AccessibilityStatement chrome localization - new locales (it/pt/pl)', () => {
+    Object.entries(NEW_LOCALE_CHROME_FULL).forEach(([locale, expectedBadge]) => {
+        it(`renders ${locale} locale with correct badge text for full compliance`, () => {
+            const country = locale === 'it' ? 'IT' : locale === 'pt' ? 'PT' : 'PL';
+            const { container } = render(
+                <AccessibilityStatement {...defaultProps} locale={locale} country={country as any} complianceLevel="full" />
+            );
+            expect(container.innerHTML).toContain(expectedBadge);
+        });
+    });
+
+    Object.entries(NEW_LOCALE_UPDATED_LABEL).forEach(([locale, expectedLabel]) => {
+        it(`renders ${locale} locale with correct "Updated:" label`, () => {
+            const country = locale === 'it' ? 'IT' : locale === 'pt' ? 'PT' : 'PL';
+            const { container } = render(
+                <AccessibilityStatement {...defaultProps} locale={locale} country={country as any} />
+            );
+            expect(container.innerHTML).toContain(expectedLabel);
+        });
+    });
+
+    Object.entries(NEW_LOCALE_FOOTER_TEXT).forEach(([locale, expectedFooter]) => {
+        it(`renders ${locale} locale with correct footer text`, () => {
+            const country = locale === 'it' ? 'IT' : locale === 'pt' ? 'PT' : 'PL';
+            const { container } = render(
+                <AccessibilityStatement {...defaultProps} locale={locale} country={country as any} />
+            );
+            expect(container.innerHTML).toContain(expectedFooter);
+        });
+    });
+});
