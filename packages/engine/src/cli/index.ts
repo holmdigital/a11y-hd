@@ -62,6 +62,7 @@ program
     .option('--org <name>', 'Organization name for accessibility statement')
     .option('--response-time <time>', 'Expected response time for accessibility statement')
     .option('--country <code>', 'Country code for accessibility statement enforcement body')
+    .option('--sector <type>', 'Sector type: public (WAD) or private (EAA)', 'public')
     .option('--publish-date <date>', 'Publish date for the website (YYYY-MM-DD)')
     .action(async (url: string, cliOptions) => {
         // 1. Load Config from file (.a11yrc, package.json, etc.)
@@ -90,6 +91,7 @@ program
             org: cliOptions.org || fileConfig.org,
             responseTime: cliOptions.responseTime || fileConfig.responseTime,
             country: cliOptions.country || fileConfig.country,
+            sector: cliOptions.sector || fileConfig.sector || 'public',
             publishDate: cliOptions.publishDate || fileConfig.publishDate
         } as ScannerOptions & {
             lang: string;
@@ -110,6 +112,7 @@ program
             org?: string;
             responseTime?: string;
             country?: string;
+            sector?: 'public' | 'private';
             publishDate?: string;
         };
 
@@ -179,6 +182,7 @@ program
                     organizationName: options.org,
                     responseTime: options.responseTime,
                     country: options.country,
+                    sector: options.sector as 'public' | 'private',
                     publishDate: options.publishDate
                 };
 

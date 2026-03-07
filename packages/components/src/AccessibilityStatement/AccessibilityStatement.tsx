@@ -413,7 +413,7 @@ export const AccessibilityStatement: React.FC<AccessibilityStatementProps> = ({
         '{<third party>}': generatorTool?.name || 'HolmDigital Engine',
         '{<enforcement_body>}': enforcementBody,
         '{<national_law>}': (() => {
-            const law = getNationalLawByFramework('WAD', country);
+            const law = getNationalLawByFramework(sector === 'private' ? 'EAA' : 'WAD', country);
             return law ? `${law.fullName} (${law.law})` : '';
         })(),
     };

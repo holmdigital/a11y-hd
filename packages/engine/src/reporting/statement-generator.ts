@@ -16,6 +16,7 @@ export interface StatementMetadata {
     phoneNumber?: string;
     responseTime?: string;
     country?: string;
+    sector?: 'public' | 'private';
     publishDate?: string | Date;
 }
 
@@ -150,7 +151,7 @@ export async function generateStatementContent(
         }
     }
 
-    const sector: 'public' | 'private' = 'public';
+    const sector: 'public' | 'private' = metadata?.sector || 'public';
 
     // 4. Load Logo (Base64)
     let logoUrl: string | undefined;
@@ -301,9 +302,9 @@ export async function generateStatementContent(
             '{<tiers externe>}': props.generatorTool?.name || 'HolmDigital Engine',
             '{<tercero externo>}': props.generatorTool?.name || 'HolmDigital Engine',
             '{<third party>}': props.generatorTool?.name || 'HolmDigital Engine',
-            '{<enforcement_body>}': getEnforcementBody(country, 'public'),
+            '{<enforcement_body>}': getEnforcementBody(country, sector),
             '{<national_law>}': (() => {
-                const law = getNationalLawByFramework('WAD', country);
+                const law = getNationalLawByFramework(sector === 'private' ? 'EAA' : 'WAD', country);
                 return law ? `${law.fullName} (${law.law})` : '';
             })(),
             '{<brister>}': nonComplianceItems.length > 0 ? nonComplianceItems.map(item => `* ${item}`).join('\n') : (lang === 'sv' ? 'Inga kända brister.' : 'No known issues.'),

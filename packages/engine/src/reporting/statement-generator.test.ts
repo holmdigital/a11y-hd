@@ -392,3 +392,71 @@ describe('New locale enforcement body and national law verification (it/pt/pl)',
         }
     );
 });
+
+describe('EAA sector support', () => {
+    it('should use EAA enforcement body when sector is private for DE', async () => {
+        const output = await generateStatementContent(
+            mockResult, 'de', 'md',
+            { ...metadata, country: 'DE', sector: 'private' }
+        );
+        const eaaBody = getEnforcementBody('DE', 'private');
+        expect(output).toContain(eaaBody);
+    });
+
+    it('should use EAA enforcement body when sector is private for SE', async () => {
+        const output = await generateStatementContent(
+            mockResult, 'sv', 'md',
+            { ...metadata, country: 'SE', sector: 'private' }
+        );
+        const eaaBody = getEnforcementBody('SE', 'private');
+        expect(output).toContain(eaaBody);
+    });
+
+    it('should use EAA national law when sector is private for DE', async () => {
+        const output = await generateStatementContent(
+            mockResult, 'de', 'md',
+            { ...metadata, country: 'DE', sector: 'private' }
+        );
+        const eaaLaw = getNationalLawByFramework('EAA', 'DE');
+        expect(eaaLaw).not.toBeNull();
+        expect(output).toContain(eaaLaw!.fullName);
+    });
+
+    it('should use WAD national law when sector is public for DE', async () => {
+        const output = await generateStatementContent(
+            mockResult, 'de', 'md',
+            { ...metadata, country: 'DE', sector: 'public' }
+        );
+        const wadLaw = getNationalLawByFramework('WAD', 'DE');
+        expect(wadLaw).not.toBeNull();
+        expect(output).toContain(wadLaw!.fullName);
+    });
+
+    it('should default to WAD when no sector is specified', async () => {
+        const output = await generateStatementContent(
+            mockResult, 'de', 'md',
+            { ...metadata, country: 'DE' }
+        );
+        const wadBody = getEnforcementBody('DE', 'public');
+        expect(output).toContain(wadBody);
+        const wadLaw = getNationalLawByFramework('WAD', 'DE');
+        if (wadLaw) {
+            expect(output).toContain(wadLaw.fullName);
+        }
+    });
+
+    it('should produce different enforcement bodies for WAD vs EAA for DE', async () => {
+        const wadBody = getEnforcementBody('DE', 'public');
+        const eaaBody = getEnforcementBody('DE', 'private');
+        // Sanity check: they should actually differ
+        expect(wadBody).not.toBe(eaaBody);
+    });
+
+    it('should produce different law names for WAD vs EAA for DE', async () => {
+        const wadLaw = getNationalLawByFramework('WAD', 'DE');
+        const eaaLaw = getNationalLawByFramework('EAA', 'DE');
+        expect(wadLaw).not.toBeNull();
+        expect(eaaLaw).not.toBeNull();
+        expect(wadLaw!.fullName).not.toBe(eaaLaw!.fullName);
+    });
+});
