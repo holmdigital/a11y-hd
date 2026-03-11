@@ -1,5 +1,17 @@
 # @holmdigital/engine
 
+## 2.2.0
+
+### Minor Changes
+
+- Add IT, PT, PL locale support and EAA sector-aware enforcement bodies and national laws
+
+### Patch Changes
+
+- Updated dependencies
+  - @holmdigital/standards@2.2.0
+  - @holmdigital/components@2.2.0
+
 ## 2.1.7
 
 ### Patch Changes

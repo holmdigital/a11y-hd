@@ -1,6 +1,6 @@
-# Nordic Accessibility Authorities Guide
+# Accessibility Enforcement Authorities Guide
 
-Quick reference for accessibility enforcement authorities in the Nordic region.
+Quick reference for accessibility enforcement authorities across supported countries.
 
 ## Sweden 🇸🇪
 
@@ -55,25 +55,81 @@ Quick reference for accessibility enforcement authorities in the Nordic region.
 ### Valvira
 **Responsibility:** Health and social services  
 
+## Germany DE
+
+### BFIT-Bund - Public Sector (WAD)
+**Full name:** Uberwachungsstelle des Bundes fur Barrierefreiheit von Informationstechnik
+**Responsibility:** Federal monitoring of public sector accessibility
+**Website:** https://www.bfit-bund.de
+
+### Marktuberwachungsbehorden - Private Sector (EAA)
+**Responsibility:** Market surveillance for BFSG compliance
+
+## France FR
+
+### DINUM - Public Sector (WAD)
+**Full name:** Direction interministerielle du numerique
+**Responsibility:** Enforces RGAA for public sector
+**Website:** https://accessibilite.numerique.gouv.fr
+
+## Netherlands NL
+
+### Logius - Public Sector (WAD)
+**Responsibility:** Public sector digital accessibility
+**Website:** https://www.digitoegankelijk.nl
+
+## Spain ES
+
+### OAW - Public Sector (WAD)
+**Full name:** Observatorio de Accesibilidad Web
+**Responsibility:** Public sector web accessibility monitoring
+
+## Italy IT
+
+### AgID - Public and Private Sector
+**Full name:** Agenzia per l'Italia Digitale
+**Responsibility:** Both WAD and EAA enforcement
+**Website:** https://www.agid.gov.it
+
+## Portugal PT
+
+### AMA - Public Sector (WAD)
+**Full name:** Agencia para a Modernizacao Administrativa
+**Responsibility:** Public sector digital accessibility
+**Website:** https://www.acessibilidade.gov.pt
+
+## Poland PL
+
+### Ministerstwo Cyfryzacji - Public Sector
+**Full name:** Ministry of Digital Affairs
+**Responsibility:** Public sector digital accessibility
+**Website:** https://www.gov.pl/web/cyfryzacja
+
+## Ireland IE
+
+### NDA - Public Sector (WAD)
+**Full name:** National Disability Authority
+**Responsibility:** Public sector accessibility monitoring
+**Website:** https://nda.ie
+
 ---
 
 ## Using the API
 
 ```typescript
-import { 
-  getNordicAuthorities,
-  getNordicAuthority,
-  getNordicAuthoritiesByCountry 
-} from '@holmdigital/standards';
+import { getEnforcementBody } from '@holmdigital/standards';
 
-// Get all Nordic authorities
-const all = getNordicAuthorities();
+// Get enforcement body by country and sector
+const body = getEnforcementBody('SE', 'public');
+// -> "Myndigheten for digital forvaltning (Digg)"
 
-// Get specific authority
+const eaaBody = getEnforcementBody('SE', 'private');
+// -> "Swedish Post and Telecom Authority (PTS)"
+
+const itBody = getEnforcementBody('IT', 'public');
+// -> "AgID - Agenzia per l'Italia Digitale"
+
+// Legacy Nordic-specific API (still supported)
+import { getNordicAuthority } from '@holmdigital/standards';
 const digg = getNordicAuthority('se-digg');
-// → { id: 'se-digg', name: 'Myndigheten för digital förvaltning...', website: '...', ... }
-
-// Get authorities by country
-const swedish = getNordicAuthoritiesByCountry('SE');
-// → [{ id: 'se-digg', ... }, { id: 'se-pts', ... }]
 ```

@@ -1,5 +1,5 @@
 # 📚 Component Library Catalog
-> **Last Updated:** 2026-02-04
+> **Last Updated:** 2026-03-07
 
 This document serves as a complete directory of all components available in `@holmdigital/components`. All components are built with accessibility (WCAG 2.1 AA & EN 301 549) as a first-class citizen.
 
@@ -522,7 +522,7 @@ import { DataTable } from '@holmdigital/components';
 
 | Component | Description | Status |
 |-----------|-------------|--------|
-| **[AccessibilityStatement](../../packages/components/src/AccessibilityStatement)** | Template-driven legal compliance statement (WAD/EAA) with support for 9 languages, localized icons, and dynamic date formatting. | ✅ Available |
+| **[AccessibilityStatement](../../packages/components/src/AccessibilityStatement)** | Template-driven legal compliance statement (WAD/EAA) with support for 15 languages (EN, EN-GB, EN-US, EN-CA, SV, NO, FI, DA, NL, DE, FR, ES, IT, PT, PL), sector-driven enforcement body resolution, and dynamic date formatting. | ✅ Available |
 
 ---
 

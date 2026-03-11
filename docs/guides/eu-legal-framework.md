@@ -53,6 +53,10 @@ graph LR
 | 🇳🇴 NO | [IKT-forskrift](https://lovdata.no/dokument/SF/forskrift/2013-06-21-732) | - | Daily fines |
 | 🇫🇮 FI | [306/2019](https://www.finlex.fi/sv/laki/ajantasa/2019/20190306) | - | Vite |
 | 🇩🇰 DK | [Tilgængelighed](https://www.retsinformation.dk/eli/lta/2018/693) | - | Fines |
+| 🇳🇱 NL | [Tijdelijk besluit digitale toegankelijkheid](https://wetten.overheid.nl/BWBR0040936/2018-07-01) | [Wet implementatie EU-richtlijn toegankelijkheid](https://www.eerstekamer.nl/wetsvoorstel/36461_implementatie) | 4.5M EUR |
+| 🇮🇹 IT | [D.Lgs. 106/2018](https://www.gazzettaufficiale.it/eli/id/2018/09/11/18G00133/sg) | [D.Lgs. 82/2022](https://www.normattiva.it/uri-res/N2Ls?urn:nir:stato:decreto.legislativo:2022-06-27;82) | 5% turnover |
+| 🇵🇹 PT | [Decreto-Lei n.o 83/2018](https://dre.pt/dre/detalhe/decreto-lei/83-2018-116734769) | - | Fines |
+| 🇵🇱 PL | [Ustawa o dostepnosci cyfrowej](https://isap.sejm.gov.pl/isap.nsf/DocDetails.xsp?id=WDU20190000848) | [Ustawa o zapewnianiu dostepnosci](https://isap.sejm.gov.pl/isap.nsf/DocDetails.xsp?id=WDU20190001696) | 10k PLN |
 
 ## Using the API
 
@@ -76,6 +80,16 @@ const sanctions = getSanctions('lptt', 'SE');
 // Get the maximum sanction in a country
 const max = getMaxSanction('SE');
 // → { law: 'LPTT', amount: 10000000, currency: 'SEK' }
+```
+
+### Enforcement Body Lookup
+
+```typescript
+// Sector-aware enforcement body lookup
+import { getEnforcementBody } from '@holmdigital/standards';
+
+const body = getEnforcementBody('IT', 'public');
+// Output: "AgID - Agenzia per l'Italia Digitale"
 ```
 
 ### Filter Rules by Framework

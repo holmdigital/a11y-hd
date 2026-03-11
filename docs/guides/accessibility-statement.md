@@ -28,7 +28,7 @@ function MyPage() {
 
 | Prop | Type | Required | Description |
 |------|------|----------|-------------|
-| `country` | `'SE' \| 'NO' \| 'DK' \| 'FI' \| 'NL' \| 'DE' \| 'FR' \| 'ES' \| 'IE' \| 'GB' \| 'US' \| 'CA' \| 'EU'` | ✓ | Country code |
+| `country` | `'SE' \| 'NO' \| 'DK' \| 'FI' \| 'NL' \| 'DE' \| 'FR' \| 'ES' \| 'IE' \| 'GB' \| 'US' \| 'CA' \| 'IT' \| 'PT' \| 'PL' \| 'EU'` | ✓ | Country code |
 | `sector` | `'public' \| 'private'` | ✓ | Determines WAD or EAA |
 | `organizationName` | `string` | ✓ | Organization name |
 | `websiteUrl` | `string` | ✓ | Website URL |
@@ -41,7 +41,7 @@ function MyPage() {
 | `evaluationMethod` | `string` | | Method used (e.g., "Automated Scan") |
 | `generatorTool` | `{ name: string, url: string }` | | Tool used to generate this statement |
 | `nonComplianceItems` | `string[]` | | Known issues |
-| `locale` | `'sv' \| 'en' \| 'no' \| 'fi' \| 'da' \| 'de' \| 'fr' \| 'es' \| 'nl'` | | Language (default: 'en') |
+| `locale` | `'sv' \| 'en' \| 'en-gb' \| 'en-us' \| 'en-ca' \| 'no' \| 'fi' \| 'da' \| 'de' \| 'fr' \| 'es' \| 'nl' \| 'it' \| 'pt' \| 'pl'` | | Language (default: 'en') |
 | `logoUrl` | `string` | | URL or Data URI for organization logo |
 | `badgeUrl` | `string` | | URL for a compliance badge (e.g. Shields.io) |
 | `publishDate` | `Date` | | Date when the website was first published |
@@ -58,6 +58,7 @@ When using the `@holmdigital/engine` CLI or a `.a11yrc` configuration file, the 
 | `--phone` / `"phone"` | `phoneNumber` |
 | `--response-time` / `"responseTime"` | `responseTime` |
 | `--country` / `"country"` | `country` |
+| `--sector` / `"sector"` | `sector` |
 | `--publish-date` / `"publishDate"` | `publishDate` |
 
 ## What Gets Generated
@@ -120,7 +121,7 @@ The component automatically includes:
 Since version 2.0.0, the accessibility statement system uses **externalized JSON templates**. This allows for:
 - **Legal Precision**: Each language uses professional legal phrasing specific to its region.
 - **Easy Customization**: You can override templates by placing custom JSON files in your project.
-- **9 Support Languages**: Full professional templates for EN, SV, NO, DA, FI, NL, DE, FR, and ES.
+- **15 Support Languages**: Full professional templates for EN, EN-GB, EN-US, EN-CA, SV, NO, DA, FI, NL, DE, FR, ES, IT, PT, and PL.
 
 ### How it works
 The `@holmdigital/engine` automatically selects the correct template based on your provided `locale`. It handles substitution of placeholders like `{<website>}`, `{<organisation>}`, and enforcement body names automatically.

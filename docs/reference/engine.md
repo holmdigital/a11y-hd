@@ -1,5 +1,5 @@
 # 🚂 Engine Library Catalog
-> **Last Updated:** 2026-02-04
+> **Last Updated:** 2026-03-07
 
 The `@holmdigital/engine` is the automated testing core. It runs a headless browser (Puppeteer) to scan your web applications for accessibility violations against WCAG 2.1 and EN 301 549.
 
@@ -25,7 +25,7 @@ hd-a11y-scan <url> [options]
 
 | Option | Description | Example |
 |--------|-------------|---------|
-| `--lang <code>` | Set the language for the report (default: `en`). Supports `en`, `sv`, `no`, `fi`, `da`, `nl`, `de`, `fr`, `es`. | `--lang sv` |
+| `--lang <code>` | Set the language for the report (default: `en`). Supports `en`, `en-gb`, `en-us`, `en-ca`, `sv`, `no`, `fi`, `da`, `nl`, `de`, `fr`, `es`, `it`, `pt`, `pl`. | `--lang sv` |
 | `--ci` | **CI Mode**: Exits with code 1 if critical issues are found. | `--ci` |
 | `--threshold <level>` | Minimum severity to report. Values: `critical`, `high`, `medium`, `low`. | `--threshold critical` |
 | `--viewport <size>` | Set screen size. Presets: `mobile`, `desktop`, `tablet` or custom `WxH`. | `--viewport mobile` |
@@ -43,6 +43,7 @@ hd-a11y-scan <url> [options]
 | `--cloud-url <url>` | Cloud API URL (default: `https://cloud.holmdigital.se`). | `--cloud-url https://custom.api` |
 | `--country <code>` | Country code for enforcement body in statement. | `--country SE` |
 | `--format <type>` | Output format for statement (`html`, `md`). Default: `html`. | `--format md` |
+| `--sector <type>` | Sector type for enforcement body and law selection (`public` or `private`). Default: `public`. | `--sector private` |
 
 ---
 
@@ -53,6 +54,7 @@ Instead of long CLI commands, you can store your settings in a `.a11yrc` file in
 ```json
 {
   "lang": "sv",
+  "sector": "public",
   "threshold": "high",
   "viewport": "desktop",
   "ci": true,
@@ -79,6 +81,7 @@ The following keys in `.a11yrc` map to the `AccessibilityStatement` component pr
 | `phone` | `phoneNumber` | Support/contact phone number |
 | `responseTime` | `responseTime` | Expected response time (e.g. "2 days") |
 | `country` | `country` | Country code for enforcement body (SE, NO, etc.) |
+| `sector` | `sector` | Sector type (`public` or `private`) for law framework selection |
 | `publishDate` | `publishDate` | Website publish date (YYYY-MM-DD) |
 | `invalidHttpsCert` | — | Allow scanning pages with invalid HTTPS certificates |
 | `cloudUrl` | — | Custom Cloud API endpoint URL |
@@ -142,7 +145,7 @@ A beautiful, shareable document for stakeholders. Contains:
 ## 🧠 Smart Features
 
 ### Template-Driven Reports
-Accessibility statements are generated using professionalized JSON templates located in `packages/engine/src/reporting/templates/`. These templates support:
+Accessibility statements are generated using professionalized JSON templates located in `packages/engine/src/reporting/templates/`. The engine ships with **15 locale templates** covering EN, EN-GB, EN-US, EN-CA, SV, NO, FI, DA, NL, DE, FR, ES, IT, PT, and PL. These templates support:
 - **Conditional Text**: Blocks like `[contact phone: {<phone>}]` only render if data is provided.
 - **Compliance Choices**: Text blocks that vary based on the scan result (e.g., `{Compliant/Partial/Non-Compliant}`).
 

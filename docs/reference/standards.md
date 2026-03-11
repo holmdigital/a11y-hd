@@ -1,5 +1,5 @@
 # 🏛️ Standards Library Catalog
-> **Last Updated:** 2026-02-04
+> **Last Updated:** 2026-03-07
 
 The `@holmdigital/standards` package is the **regulatory brain** of the ecosystem. It provides machine-readable legal data, localized WCAG rules, and mappings to EU directives.
 
@@ -21,6 +21,9 @@ The package includes localized translations for rules and remediations:
 - **Norwegian** (`no`) - Universell utforming context.
 - **Danish** (`da`) - Tilgængelighed compliance.
 - **Dutch** (`nl`) - Digitoegankelijk alignment.
+- **Italian** (`it`) - Decreto Legislativo 106/2018 alignment.
+- **Portuguese** (`pt`) - Decreto-Lei n.o 83/2018 alignment.
+- **Polish** (`pl`) - Ustawa o dostepnosci cyfrowej alignment.
 
 ### 2. ⚖️ Legal Frameworks (The "Law Layer")
 We map technical rules to actual legislation.
@@ -35,7 +38,7 @@ We map technical rules to actual legislation.
 | **Web Accessibility Directive (WAD)** | Applies to **Public Sector** bodies in the EU. |
 | **European Accessibility Act (EAA)** | Applies to **Private Sector** services (e-commerce, banking) from June 2025. |
 | **EN 301 549** | The technical standard that underpins both laws. |
-| **National Laws** | Specific overrides for Sweden (`DOS-lagen`), Norway (`Diskrimineringsloven`), etc. |
+| **National Laws** | Specific overrides for Sweden (`DOS-lagen`), Norway (`Diskrimineringsloven`), Germany (`BFSG`), Italy (`D.Lgs. 106/2018`), etc. |
 
 ### 3. 🛡️ Verification Data
 | Data Set | Purpose |
@@ -70,23 +73,36 @@ console.log(law.name);
 Who do you report to? Who issues the fines?
 
 ```typescript
-import { getNordicAuthority } from '@holmdigital/standards';
+import { getEnforcementBody } from '@holmdigital/standards';
 
-const authority = getNordicAuthority('digg');
-console.log(authority.name); 
-// Output: "Myndigheten för digital förvaltning (Digg)"
-console.log(authority.monitoringPortal); 
-// Output: "https://www.digg.se/analys-och-uppfoljning/..."
+// Public sector in Sweden → WAD enforcement
+const publicBody = getEnforcementBody('SE', 'public');
+console.log(publicBody);
+// Output: "Myndigheten for digital forvaltning (Digg)"
+
+// Private sector in Sweden → EAA enforcement
+const privateBody = getEnforcementBody('SE', 'private');
+console.log(privateBody);
+// Output: "Swedish Post and Telecom Authority (PTS)"
+
+// Works for all supported countries
+const deBody = getEnforcementBody('DE', 'public');
+// Output: "Uberwachungsstelle des Bundes fur Barrierefreiheit von Informationstechnik (BFIT-Bund)"
+```
 
 ### 3. Access Centralized Enforcement Bodies
-Get a mapping of all regulatory authorities for support countries.
+Get a mapping of all regulatory authorities for supported countries.
 
 ```typescript
-import { ENFORCEMENT_BODIES } from '@holmdigital/standards';
+import { ENFORCEMENT_BODIES, ENFORCEMENT_BODIES_DETAILED } from '@holmdigital/standards';
 
+// Simple map (backward compatible)
 console.log(ENFORCEMENT_BODIES.SE);
-// Output: "Myndigheten för digital förvaltning (Digg)"
-```
+// Output: "Myndigheten for digital forvaltning (Digg)"
+
+// Detailed map with sector-specific bodies
+console.log(ENFORCEMENT_BODIES_DETAILED.IT);
+// Output: { wad: "AgID – Agenzia per l'Italia Digitale", eaa: "AgID – Agenzia per l'Italia Digitale" }
 ```
 
 ### 3. Check for EAA Deadlines
@@ -115,4 +131,4 @@ const tools = getStatementToolsByCountry('PT');
 
 1.  **Single Source of Truth:** Never hardcode "WCAG algorithm" logic in your UI components.
 2.  **Future Proof:** When laws change (like WCAG 2.2), you update this package, and your whole app updates.
-3.  **Global Ready:** Launch in Finland? Just switch locale to `fi` and your error messages are legally compliant in Finnish.
+3.  **Global Ready:** Launch in Italy? Just switch locale to `it` and your error messages are legally compliant in Italian. Supports 15 locales across 14 countries.

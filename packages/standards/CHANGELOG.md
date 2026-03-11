@@ -1,5 +1,11 @@
 # @holmdigital/standards
 
+## 2.2.0
+
+### Minor Changes
+
+- Add IT, PT, PL locale support and EAA sector-aware enforcement bodies and national laws
+
 ## 2.1.1
 
 ### Patch Changes

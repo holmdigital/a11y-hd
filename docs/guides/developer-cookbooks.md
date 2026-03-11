@@ -277,3 +277,22 @@ Create `.husky/pre-commit`:
 npx lint-staged
 ```
 
+## Recipe 10: EAA Private Sector Statement
+**Goal:** Generate an accessibility statement for a private sector company under the European Accessibility Act.
+
+```bash
+npx hd-a11y-scan https://shop.example.com \
+  --statement eaa-statement.html \
+  --sector private \
+  --country DE \
+  --lang de \
+  --org "Online Shop GmbH" \
+  --email "barrierefreiheit@shop.de" \
+  --phone "+49 30 1234567" \
+  --response-time "5 Werktage"
+```
+
+This generates a statement that automatically:
+- References the **BFSG** (Barrierefreiheitsstaerkungsgesetz) as the applicable law
+- Lists the correct EAA enforcement authority for Germany
+- Uses German-language professional legal templates
