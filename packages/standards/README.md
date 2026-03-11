@@ -13,7 +13,7 @@ This package serves as the **Single Source of Truth** for accessibility complian
 
 1.  **WCAG 2.1 Criteria** (Technical Base)
 2.  **EN 301 549** (EU Standard Mapping)
-3.  **National Laws** (Specific legal references for SE, NL, DE, etc.)
+3.  **National Laws** (Specific legal references for SE, NL, DE, IT, PT, PL, etc.)
 4.  **EU Legal Frameworks** (WAD 2016/2102 & EAA 2019/882)
 5.  **Nordic Authority Data** (Digg, PTS, UU-tilsynet, etc.)
 
@@ -39,12 +39,16 @@ npm install @holmdigital/standards
   - `fr` (France / RGAA)
   - `es` (Spain / UNE 139803)
   - `nl` (Netherlands / Digitoegankelijk)
+  - `it` (Italy / Legge Stanca)
+  - `pt` (Portugal / DL 83/2018)
+  - `pl` (Poland / Ustawa o dostępności cyfrowej)
   - `en-gb` (UK / PSBAR)
   - `en-us` (USA / Section 508 & ADA)
   - `en-ca` (Canada / AODA)
 - **Risk Assessment**: DIGG-aligned risk levels (`critical`, `high`, `medium`, `low`).
 - **Remediation**: Maps issues to `@holmdigital/components` for fixing.
 - **EU Legal Frameworks**: WAD (public sector) and EAA (private sector) compliance data.
+- **Sector-Aware Enforcement**: `getEnforcementBody(country, 'public'|'private')` returns the correct authority based on WAD or EAA sector.
 - **Nordic Authorities & Enforcement**: Shared database of regulatory bodies (`ENFORCEMENT_BODIES`) for SE, NO, DK, FI, and the broader EU.
 
 ## Usage
@@ -146,6 +150,9 @@ const sectors = getSectorAuthorities('SE');
 | 🇳🇴 NO | IKT-forskrift | - | Daily fines |
 | 🇫🇮 FI | 306/2019 | EAA | Vite |
 | 🇩🇰 DK | Tilgængelighed | - | Fines |
+| 🇮🇹 IT | Legge 4/2004 | D.lgs. 82/2022 | Up to 5% of turnover |
+| 🇵🇹 PT | DL 83/2018 | DL 82/2022 | 44k EUR |
+| 🇵🇱 PL | Ustawa o dostępności cyfrowej | Ustawa o dostępności | 100k PLN |
 | 🇬🇧 GB | PSBAR | - | Unlawful Act Notice |
 | 🇺🇸 US | Section 508 | - | Civil Rights Complaint |
 | 🇨🇦 CA | AODA | - | $100k per day |

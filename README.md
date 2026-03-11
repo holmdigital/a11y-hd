@@ -5,7 +5,7 @@ A professional accessibility ecosystem bridging the gap between technical code v
 
 ## 🎯 Value Proposition
 
-- **Multi-Language Regulatory Mapping**: Automatically maps WCAG failures to EN 301 549 and national laws across **9 European languages**:
+- **Multi-Language Regulatory Mapping**: Automatically maps WCAG failures to EN 301 549 and national laws across **12 languages** and **15 countries**:
     - 🇸🇪 **DOS-lagen** (Sweden)
     - 🇫🇮 **Laki digitaalisten palvelujen saavutettavuudesta** (Finland)
     - 🇳🇴 **Forskrift om universell utforming av IKT** (Norway)
@@ -14,7 +14,11 @@ A professional accessibility ecosystem bridging the gap between technical code v
     - 🇩🇪 **BITV 2.0** (Germany)
     - 🇫🇷 **RGAA** (France)
     - 🇪🇸 **UNE 139803** (Spain)
+    - 🇮🇹 **Legge Stanca** (Italy)
+    - 🇵🇹 **DL 83/2018** (Portugal)
+    - 🇵🇱 **Ustawa o dostępności cyfrowej** (Poland)
     - 🇬🇧 **PSBAR** / 🇮🇪 **S.I. No. 358/2020** (UK/Ireland)
+- **Sector-Aware Compliance**: Distinguishes between public sector (WAD) and private sector (EAA), routing to the correct enforcement body and national law via `--sector public|private`.
 - **Risk Assessment**: Classifies every violation based on regulatory enforcement practices (e.g., DIGG, uutilsynet, Logius).
 - **Professional CI/CD Reporting**: Enhanced JUnit XML reports with full metadata, success counts, and detailed failure snippets for seamless integration with modern DevOps dashboards.
 - **Template-Driven Statements**: Generates modern, glassmorphism-styled accessibility statements using professionalized JSON templates for deep localization.
@@ -58,7 +62,7 @@ npx hd-a11y-scan <url> [options]
 ```
 
 **Options:**
-- `--lang <code>` - Language code (`en`, `sv`, `no`, `fi`, `da`, `de`, `fr`, `es`, `nl`)
+- `--lang <code>` - Language code (`en`, `sv`, `no`, `fi`, `da`, `de`, `fr`, `es`, `nl`, `it`, `pt`, `pl`)
 - `--threshold <level>` - Severity threshold (`critical`, `high`, `medium`, `low`). Default: `high`
 - `--ci` - Run in CI mode (exit code 1 on critical failures)
 - `--json` - Output results as JSON
@@ -66,7 +70,8 @@ npx hd-a11y-scan <url> [options]
 - `--statement <path>` - Generate an accessibility statement (Premium V2 HTML)
 - `--format <type>` - Output format for statement (`html`, `md`). Default: `html`
 - `--junit <path>` - Generate JUnit XML report for CI dashboards
-- `--country <code>` - Country code for enforcement body (e.g., `SE`, `NO`, `DE`)
+- `--country <code>` - Country code for enforcement body (e.g., `SE`, `NO`, `DE`, `IT`, `PT`, `PL`)
+- `--sector <type>` - Sector type: `public` (WAD) or `private` (EAA). Default: `public`
 - `--org <name>` - Organization name for statement metadata
 - `--email <email>` - Contact email for statement metadata
 - `--phone <number>` - Contact phone for statement metadata
@@ -81,7 +86,7 @@ npx hd-a11y-scan <url> [options]
 > **⚠️ Security:** `--invalid-https-cert` should only be used in trusted environments. *(Contributed by [@FerdiStro](https://github.com/FerdiStro))*
 
 ### 2. [@holmdigital/components](./packages/components)
-Accessible React components with built-in regulatory compliance. Includes a 9-locale `AccessibilityStatement` component for generating legal statements in EN, SV, NO, FI, DA, NL, DE, FR, and ES.
+Accessible React components with built-in regulatory compliance. Includes a 12-locale `AccessibilityStatement` component for generating legal statements in EN, SV, NO, FI, DA, NL, DE, FR, ES, IT, PT, and PL.
 
 ```bash
 npm install @holmdigital/components
