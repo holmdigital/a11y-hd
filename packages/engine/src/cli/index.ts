@@ -64,6 +64,7 @@ program
     .option('--country <code>', 'Country code for accessibility statement enforcement body')
     .option('--sector <type>', 'Sector type: public (WAD) or private (EAA)', 'public')
     .option('--publish-date <date>', 'Publish date for the website (YYYY-MM-DD)')
+    .option('--light', 'Light scan: fast score-only mode (skips HTML validation and detailed legal mapping)')
     .action(async (url: string, cliOptions) => {
         // 1. Load Config from file (.a11yrc, package.json, etc.)
         const explorer = cosmiconfig('a11y');
@@ -92,7 +93,8 @@ program
             responseTime: cliOptions.responseTime || fileConfig.responseTime,
             country: cliOptions.country || fileConfig.country,
             sector: cliOptions.sector || fileConfig.sector || 'public',
-            publishDate: cliOptions.publishDate || fileConfig.publishDate
+            publishDate: cliOptions.publishDate || fileConfig.publishDate,
+            light: cliOptions.light ?? fileConfig.light ?? false
         } as ScannerOptions & {
             lang: string;
             ci: boolean;
@@ -114,6 +116,7 @@ program
             country?: string;
             sector?: 'public' | 'private';
             publishDate?: string;
+            light: boolean;
         };
 
         setLanguage(options.lang);
@@ -153,9 +156,10 @@ program
                 url,
                 failOnCritical: options.ci,
                 viewport,
-                silent: options.json, // Suppress debug output for JSON mode
+                silent: options.json || options.light,
                 severityThreshold: options.threshold as 'critical' | 'high' | 'medium' | 'low',
-                invalidHttpsCert: options.invalidHttpsCert
+                invalidHttpsCert: options.invalidHttpsCert,
+                light: options.light
             });
 
             if (spinner) spinner.text = t('cli.analyzing');
@@ -196,8 +200,43 @@ program
                 if (spinner) spinner.succeed(t('cli.statement_saved', { path: options.statement }));
             }
 
-            if (options.json) {
+            if (options.json && options.light) {
+                // Stripped-down JSON for API consumption
+                const lightResult = {
+                    url: result.url,
+                    score: result.score,
+                    complianceStatus: result.complianceStatus,
+                    stats: result.stats,
+                    scanDuration: result.metadata.scanDuration,
+                    topIssues: result.reports.slice(0, 5).map(r => ({
+                        id: r.ruleId,
+                        impact: r.holmdigitalInsight.diggRisk,
+                        description: r.remediation.description
+                    }))
+                };
+                console.log(JSON.stringify(lightResult, null, 2));
+            } else if (options.json) {
                 console.log(JSON.stringify(result, null, 2));
+            } else if (options.light) {
+                // Compact CLI output for light scan
+                const scoreColor = result.score >= 90 ? chalk.green : (result.score >= 70 ? chalk.yellow : chalk.red);
+                const statusColor = result.complianceStatus === 'PASS' ? chalk.green : chalk.red;
+
+                console.log('');
+                console.log(chalk.bold(`Score: ${scoreColor(`${result.score}/100`)}  Status: ${statusColor(result.complianceStatus)}`));
+                console.log(chalk.gray(`Critical: ${result.stats.critical} | High: ${result.stats.high} | Medium: ${result.stats.medium} | Low: ${result.stats.low}`));
+
+                if (result.reports.length > 0) {
+                    console.log('');
+                    console.log(chalk.bold('Top Issues:'));
+                    result.reports.slice(0, 5).forEach(r => {
+                        const color = r.holmdigitalInsight.diggRisk === 'critical' ? chalk.red
+                            : r.holmdigitalInsight.diggRisk === 'high' ? chalk.yellow : chalk.gray;
+                        console.log(color(`  [${r.holmdigitalInsight.diggRisk.toUpperCase()}] ${r.ruleId} — ${r.remediation.description}`));
+                    });
+                }
+
+                console.log(chalk.gray(`\nScan: ${result.metadata.scanDuration}ms | ${result.metadata.engineVersion}`));
             } else {
                 // --- CLI DASHBOARD IMPLEMENTATION ---
 

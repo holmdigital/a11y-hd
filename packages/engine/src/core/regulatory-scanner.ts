@@ -50,6 +50,7 @@ export interface ScannerOptions {
     silent?: boolean; // Suppress debug output (for --json mode)
     severityThreshold?: 'critical' | 'high' | 'medium' | 'low'; // CI fail threshold
     invalidHttpsCert?: boolean;
+    light?: boolean; // Skip HTML validation + Virtual DOM for faster scan
 }
 
 export interface ScanMetadata {
@@ -158,16 +159,19 @@ export class RegulatoryScanner {
             pageTitle = await page.title();
             pageLanguage = await page.evaluate(() => document.documentElement.lang || undefined);
 
-            // Capture HTML for validation
-            const pageContent = await page.content();
-            const htmlValidation = await this.htmlValidator.validate(pageContent);
-            if (!htmlValidation.valid) {
-                this.log(`HTML Validation: Found ${htmlValidation.errors.length} structural issues.`);
-            }
+            // Capture HTML for validation (skip in light mode)
+            let htmlValidation: ValidationResult | undefined;
+            if (!this.options.light) {
+                const pageContent = await page.content();
+                htmlValidation = await this.htmlValidator.validate(pageContent);
+                if (!htmlValidation.valid) {
+                    this.log(`HTML Validation: Found ${htmlValidation.errors.length} structural issues.`);
+                }
 
-            // Bygg Virtual DOM för analys (används för avancerade regler senare)
-            const vDomBuilder = new VirtualDOMBuilder(page);
-            await vDomBuilder.build({ includeComputedStyle: ['color', 'background-color'] });
+                // Bygg Virtual DOM för analys (används för avancerade regler senare)
+                const vDomBuilder = new VirtualDOMBuilder(page);
+                await vDomBuilder.build({ includeComputedStyle: ['color', 'background-color'] });
+            }
 
             // Kör axe-core
             await this.injectAxe(page);
@@ -194,11 +198,15 @@ export class RegulatoryScanner {
             passedCount = axeResults.passes?.length || 0;
 
             // Transformera resultat med regulatorisk kontext
-            const regulatoryReports = await this.enrichResults(axeResults);
+            const regulatoryReports = this.options.light
+                ? this.enrichResultsLight(axeResults)
+                : await this.enrichResults(axeResults);
 
             const scanDuration = Date.now() - startTime;
             const result = this.generateResultPackage(regulatoryReports, passedCount, scanDuration, pageTitle, pageLanguage);
-            result.htmlValidation = htmlValidation; // Attach validation result
+            if (htmlValidation) {
+                result.htmlValidation = htmlValidation;
+            }
             return result;
 
         } finally {
@@ -229,6 +237,56 @@ export class RegulatoryScanner {
     private async injectAxe(page: Page) {
         const axeSource = axeCore.source;
         await page.evaluate(axeSource);
+    }
+
+    /**
+     * Light enrichment — maps axe severity directly without standards lookup.
+     * Much faster: no async imports, no rule database queries.
+     */
+    private enrichResultsLight(axeResults: AxeScanOutput): EnrichedReport[] {
+        const impactToRisk: Record<string, 'critical' | 'high' | 'medium' | 'low'> = {
+            critical: 'critical',
+            serious: 'high',
+            moderate: 'medium',
+            minor: 'low'
+        };
+
+        return axeResults.violations.map(violation => {
+            const impact = (violation as unknown as { impact?: string }).impact || 'moderate';
+            const risk = impactToRisk[impact] || 'medium';
+
+            return {
+                ruleId: violation.id,
+                wcagCriteria: violation.tags.find(t => t.startsWith('wcag')) || 'Unknown',
+                en301549Criteria: '',
+                dosLagenReference: '',
+                diggRisk: risk,
+                eaaImpact: risk,
+                remediation: {
+                    description: violation.help,
+                    technicalGuidance: violation.description,
+                    component: undefined
+                },
+                holmdigitalInsight: {
+                    diggRisk: risk,
+                    eaaImpact: risk,
+                    reasoning: violation.help,
+                    swedishInterpretation: '',
+                    priorityRationale: ''
+                },
+                testability: {
+                    automated: true,
+                    requiresManualCheck: false,
+                    pseudoAutomation: false,
+                    complexity: 'simple' as const
+                },
+                failingNodes: violation.nodes.slice(0, 3).map(node => ({
+                    html: node.html,
+                    target: node.target.join(' '),
+                    failureSummary: node.failureSummary
+                }))
+            };
+        });
     }
 
     private async enrichResults(axeResults: AxeScanOutput): Promise<EnrichedReport[]> {
