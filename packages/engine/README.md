@@ -67,6 +67,7 @@ npx hd-a11y-scan <url> [options]
 | `--invalid-https-cert` | Allow scanning sites with invalid/self-signed HTTPS certificates ⚠️ |
 | `--api-key <key>` | API Key for HolmDigital Cloud |
 | `--cloud-url <url>` | Custom Cloud API Endpoint (default: cloud.holmdigital.se) |
+| `--light` | Fast score-only mode — skips HTML validation and detailed legal mapping |
 
 ### 🏆 Accessibility Badge
 If your site achieves a **100% score**, the CLI will generate a [Shields.io](https://shields.io/) badge that you can add to your project's README:
@@ -84,6 +85,12 @@ npx hd-a11y-scan https://example.com --ci --threshold critical
 
 # Full JSON output with metadata
 npx hd-a11y-scan https://example.com --json
+
+# Quick score check (ideal for APIs and dashboards)
+npx hd-a11y-scan https://example.com --light
+
+# Light scan with JSON output (perfect for scan-server integration)
+npx hd-a11y-scan https://example.com --light --json
 ```
 
 ## JSON Output
