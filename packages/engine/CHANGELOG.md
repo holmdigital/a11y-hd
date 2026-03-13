@@ -1,5 +1,11 @@
 # @holmdigital/engine
 
+## 2.3.0
+
+### Minor Changes
+
+- Add --light CLI flag for fast score-only scanning. Skips HTML validation and Virtual DOM build, uses direct axe severity mapping. Returns compact output ideal for API consumption via --json --light.
+
 ## 2.2.0
 
 ### Minor Changes
