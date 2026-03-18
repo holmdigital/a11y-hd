@@ -25,7 +25,7 @@
         {
             "id": "technical",
             "title": "Información técnica sobre la accesibilidad del sitio web",
-            "content": "{Este sitio web es plenamente conforme./Este sitio web es parcialmente conforme debido a las deficiencias descritas a continuación./Este sitio web no es conforme.}"
+            "content": "{Este sitio web es plenamente conforme con {<national_law>}./Este sitio web es parcialmente conforme con {<national_law>} debido a las deficiencias descritas a continuación./Este sitio web no es conforme con {<national_law>}.}"
         },
         {
             "id": "testing",

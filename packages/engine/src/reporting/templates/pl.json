@@ -25,7 +25,7 @@
         {
             "id": "technical",
             "title": "Informacje techniczne o dostępności strony internetowej",
-            "content": "{Ta strona internetowa jest w pełni zgodna./Ta strona internetowa jest częściowo zgodna z powodu niedociągnięć opisanych poniżej./Ta strona internetowa nie jest zgodna.}"
+            "content": "{Ta strona internetowa jest w pełni zgodna z {<national_law>}./Ta strona internetowa jest częściowo zgodna z {<national_law>} z powodu niedociągnięć opisanych poniżej./Ta strona internetowa nie jest zgodna z {<national_law>}.}"
         },
         {
             "id": "testing",

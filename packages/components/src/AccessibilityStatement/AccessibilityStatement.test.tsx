@@ -189,13 +189,14 @@ describe('AccessibilityStatement en-gb/en-us/en-ca jurisdiction content', () => 
         expect(html).toContain('Accessibility for Ontarians with Disabilities Act');
     });
 
-    it('renders generic en with EU accessibility regulations (unchanged)', () => {
+    it('renders generic en with national law name (not generic "accessibility regulations")', () => {
         const { container } = render(
             <AccessibilityStatement {...defaultProps} locale="en" />
         );
         const html = container.innerHTML;
-        // Generic en uses "the accessibility regulations" in enforcement and technical sections
-        expect(html).toContain('complies with the accessibility regulations');
+        // Generic en now uses {<national_law>} which resolves to the actual law name for the country
+        expect(html).toContain('complies with');
+        expect(html).not.toContain('complies with the accessibility regulations');
         expect(html).not.toContain('Public Sector Bodies');
         expect(html).not.toContain('Section 508');
         expect(html).not.toContain('Accessible Canada Act');

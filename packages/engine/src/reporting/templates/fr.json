@@ -20,12 +20,12 @@
         {
             "id": "enforcement",
             "title": "Voies de recours",
-            "content": "Le {<enforcement_body>} est responsable du contrôle de la conformité aux exigences d'accessibilité. Si vous ne recevez pas de réponse satisfaisante à votre signalement, vous pouvez contacter {<enforcement_body>}.\n\nVous pouvez également déposer une plainte auprès de {<enforcement_body>} si vous estimez que notre évaluation de la charge disproportionnée doit être revue, si vous constatez des défauts dans notre déclaration d'accessibilité ou si vous estimez que nous n'avons pas traité correctement votre demande de mise en accessibilité."
+            "content": "Le {<enforcement_body>} est responsable du contrôle de la conformité aux exigences de {<national_law>}. Si vous ne recevez pas de réponse satisfaisante à votre signalement, vous pouvez contacter {<enforcement_body>}.\n\nVous pouvez également déposer une plainte auprès de {<enforcement_body>} si vous estimez que notre évaluation de la charge disproportionnée doit être revue, si vous constatez des défauts dans notre déclaration d'accessibilité ou si vous estimez que nous n'avons pas traité correctement votre demande de mise en accessibilité."
         },
         {
             "id": "technical",
             "title": "Informations techniques sur l'accessibilité du site",
-            "content": "{Ce site est totalement conforme./Ce site est partiellement conforme en raison des défauts décrits ci-dessous./Ce site n'est pas conforme.}"
+            "content": "{Ce site est totalement conforme avec {<national_law>}./Ce site est partiellement conforme avec {<national_law>} en raison des défauts décrits ci-dessous./Ce site n'est pas conforme avec {<national_law>}.}"
         },
         {
             "id": "testing",
