@@ -1,498 +1,369 @@
-# Technology Stack — Stability Pass Research
+# Technology Stack — Australia Jurisdiction (v0.5)
 
-**Project:** @holmdigital/a11y-hd (three-package accessibility scanning monorepo)
-**Researched:** 2026-03-02
-**Scope:** Three specific problems — `as any` elimination, monorepo version source of truth, multi-locale template handling in React
-**Confidence:** HIGH — all recommendations grounded in direct codebase inspection; no training-data guesses
+**Domain:** Accessibility compliance tooling — adding Australian jurisdiction support
+**Researched:** 2026-03-27
+**Confidence:** HIGH — grounded in direct codebase inspection plus verified AU legal sources
 
 ---
 
-## 1. Eliminating `as any` Casts — Pattern and Technique
+## What This Research Covers
 
-### The Root Cause
+This file answers a single question: what data, type, and code changes are required to add Australia as a first-class jurisdiction? It does not re-research the existing stack (TypeScript 5.7, tsup, Vitest 4, axe-core — all established). It focuses only on the AU-specific additions.
 
-The `as any` problem in this codebase has one structural root: `RegulatoryReport` (defined in `packages/standards/src/types.ts`) is missing two properties that `enrichResults()` attaches at runtime — `failingNodes` and `legalContext`. Because the type doesn't describe what the runtime object actually is, every downstream consumer must cast to escape the compiler.
+---
 
-The full blast radius, from direct inspection:
+## Australian Legal Framework — Verified Facts
 
-| File | Cast(s) | Root Cause |
-|------|---------|-----------|
-| `regulatory-scanner.ts:272` | `} as any` on pushed report | `RegulatoryReport` lacks `failingNodes`/`legalContext` |
-| `regulatory-scanner.ts:365-374` | `(r: any)` on legalSummary filters | Same — runtime props not in type |
-| `html-template.ts:262-263,269` | `(report as any).legalContext` | Same |
-| `junit-generator.ts:49-51,69` | `(report as any).failingNodes`, `escapeXML(unsafe: any)` | Same + utility accepts any |
-| `cloud-client.ts:41` | `result.reports.map((report: any) => {...})` | Accessing `failingNodes` on base type |
-| `cli/index.ts:93,102,216,263-267,289,301` | Multiple casts on `options` and `result.reports` | Local options object and report iteration |
-| `statement-generator.ts:37,97,102` | `let template: any`, `let country: any`, `s: any` | Template and country variable lack types |
-| `i18n/index.ts:16,47,55` | `Record<string, any>`, `let value: any` | Dynamic key traversal |
-| `AccessibilityStatement.tsx:109,299,388` | `Record<string, any>` TEMPLATES, `section: any`, `IconNode = null` | TEMPLATES not typed, sections untyped |
-| `standards/src/types.ts:57` | `[key: string]: any` on `HolmDigitalInsight` | Catch-all index signature |
+### Primary Law: Disability Discrimination Act 1992 (DDA)
 
-### Recommended Approach: Extend RegulatoryReport into EnrichedReport
+- **Scope:** Both public and private sector. The DDA applies to all organisations providing goods and services to the public, not only government.
+- **Standard:** WCAG 2.2 Level AA is now the AHRC-recommended benchmark (announced April 2025, updated from WCAG 2.0). This is guidance underpinning the DDA, not a separate legal instrument.
+- **Enforcement body:** Australian Human Rights Commission (AHRC)
+- **Complaint pathway:** Written complaint to AHRC → conciliation → if unresolved, Federal Court of Australia or Federal Circuit Court
+- **Penalties:** No fixed statutory fine schedule. Monetary damages are determined by the Federal Court. In practice, organisations face reputational damage, legal costs, and court-ordered remediation. No hard cap analogous to EU EAA.
+- **Law URL:** https://www.legislation.gov.au/Details/C2016C00763
 
-**Confidence: HIGH** — This is the standard TypeScript pattern for runtime property addition and is directly implied by the codebase structure. Interface extension is backwards-compatible: existing consumers holding `RegulatoryReport` references are unaffected because `EnrichedReport extends RegulatoryReport`.
+**Confidence: HIGH** — DDA scope, AHRC role, and WCAG 2.2 AA guidance confirmed by AHRC official site and multiple verified sources (Deque 2026 analysis, OZeWAI, AccessibilityChecker.org).
 
-**Step 1 — Define the missing interfaces in `packages/standards/src/types.ts`:**
+### Secondary Framework: DTA Digital Experience Policy
 
-```typescript
-// Add to packages/standards/src/types.ts
+- **Scope:** Australian Federal Government agencies only (does not apply to state/territory services)
+- **Effective:** Digital Access Standard in force from 1 January 2025
+- **Standard:** WCAG 2.2 Level AA (mandatory for new services from 1 Jan 2025; existing services uplift by July 2025)
+- **Enforcement body:** Digital Transformation Agency (DTA) — monitors and reports compliance, does not issue fines
+- **Law URL:** https://www.digital.gov.au/policy/digital-experience/digital-access-standard
 
-/**
- * A single failing DOM node from an axe-core violation
- */
-export interface FailingNode {
-    html: string;
-    target: string;
-    failureSummary: string;
-}
+**Confidence: HIGH** — DTA Digital Experience Policy in force from Jan 2025; scope and WCAG version confirmed by digital.gov.au and DTA official communications.
 
-/**
- * RegulatoryReport enriched with runtime scan data.
- * This is the type that flows through all reporting modules.
- * RegulatoryReport remains the public API for consumers of @holmdigital/standards.
- */
-export interface EnrichedReport extends RegulatoryReport {
-    failingNodes?: FailingNode[];
-    legalContext?: LegalContext;
-}
+### Framework Mapping Decision
+
+The existing system uses `euFramework: 'WAD' | 'EAA'` as the framework discriminator. Neither WAD nor EAA applies to Australia. AU requires a new framework value.
+
+**Recommendation:** Use `'DDA'` as the `euFramework` value for AU entries. The field is already named generically in the `NationalLaw` interface (`euFramework: LegalFramework`). The `LegalFramework` type must be extended to include `'DDA'`.
+
+This means `LegalFramework = 'WAD' | 'EAA' | 'DDA'` — a non-breaking additive union extension. Existing consumers that only check `=== 'WAD'` or `=== 'EAA'` remain unaffected. Consumers calling `getNationalLawByFramework('WAD', 'AU')` will correctly return `null` (AU has no WAD law), which is the right behaviour.
+
+---
+
+## Required Data Structure: AU Entry in national-laws.json
+
+The AU entry must fit the `NationalLaw` interface exactly. No interface changes are needed beyond the `LegalFramework` union extension.
+
+### Recommended AU JSON
+
+```json
+"AU": [
+    {
+        "id": "au-dda",
+        "law": "Disability Discrimination Act 1992",
+        "fullName": "Disability Discrimination Act 1992 (Cth)",
+        "euFramework": "DDA",
+        "scope": "both",
+        "lawUrl": "https://www.legislation.gov.au/Details/C2016C00763",
+        "enforcement": {
+            "authority": "au-ahrc",
+            "authorityName": "Australian Human Rights Commission (AHRC)",
+            "responsibility": "Investigates complaints of disability discrimination in digital services. Unresolved complaints may be referred to the Federal Court.",
+            "website": "https://humanrights.gov.au"
+        },
+        "sanctions": {
+            "type": "Complaint / Federal Court Damages",
+            "description": "No statutory fine cap. Complaints are lodged with the AHRC. If conciliation fails, parties may proceed to the Federal Court for monetary damages and remediation orders.",
+            "minAmount": 0,
+            "maxAmount": 0,
+            "currency": "AUD"
+        },
+        "inForce": true,
+        "effectiveDate": "1993-03-01",
+        "note": "WCAG 2.2 Level AA is the AHRC-recommended benchmark since April 2025. Applies to both public and private sector."
+    },
+    {
+        "id": "au-dta",
+        "law": "Digital Experience Policy — Digital Access Standard",
+        "fullName": "Australian Government Digital Experience Policy — Digital Access Standard",
+        "euFramework": "DDA",
+        "scope": "public",
+        "lawUrl": "https://www.digital.gov.au/policy/digital-experience/digital-access-standard",
+        "enforcement": {
+            "authority": "au-dta",
+            "authorityName": "Digital Transformation Agency (DTA)",
+            "responsibility": "Monitors compliance of Australian Federal Government digital services. Applies to agencies in scope of the Digital Experience Policy.",
+            "website": "https://www.dta.gov.au"
+        },
+        "sanctions": {
+            "type": "Agency Compliance Reporting",
+            "description": "No financial sanctions. Non-compliant federal agencies are reported through DTA performance monitoring.",
+            "minAmount": 0,
+            "maxAmount": 0,
+            "currency": "AUD"
+        },
+        "inForce": true,
+        "effectiveDate": "2025-01-01",
+        "note": "Applies to Australian Federal Government agencies only, not state/territory or private sector."
+    }
+]
 ```
 
-**Step 2 — Change the HolmDigitalInsight index signature to explicit optional keys:**
+**Rationale for two AU entries:** AU has two distinct enforcement structures — the AHRC (complaints-based, whole-of-economy, including private sector) and the DTA (government-sector monitoring, proactive compliance). This mirrors the WAD/EAA dual-law pattern used for EU countries, where public and private sector have different instruments. The `sector: 'both'` on DDA and `sector: 'public'` on DTA correctly captures the distinction.
+
+---
+
+## Required Type Changes
+
+### 1. Extend LegalFramework in packages/standards/src/types.ts
 
 ```typescript
-// BEFORE (unsafe):
-export interface HolmDigitalInsight {
-    diggRisk: DiggRisk;
-    eaaImpact: EAAImpact;
-    swedishInterpretation?: string;
-    [key: string]: any;   // <-- eliminates all type safety for this interface
-    commonMistakes?: string[];
-    diggPrecedent?: string;
-    priorityRationale?: string;
-}
-
-// AFTER (explicit — add all observed language keys from the JSON locale files):
-export interface HolmDigitalInsight {
-    diggRisk: DiggRisk;
-    eaaImpact: EAAImpact;
-    reasoning?: string;         // axe-core violation.help, added at enrichment time
-    swedishInterpretation?: string;
-    norwegianInterpretation?: string;
-    danishInterpretation?: string;
-    finnishInterpretation?: string;
-    germanInterpretation?: string;
-    dutchInterpretation?: string;
-    frenchInterpretation?: string;
-    spanishInterpretation?: string;
-    commonMistakes?: string[];
-    diggPrecedent?: string;
-    priorityRationale?: string;
-}
-```
-
-Note: `reasoning` is actually needed because `enrichResults()` sets `holmdigitalInsight.reasoning = violation.help` — this property is also used in `junit-generator.ts:41`. It's currently absent from the interface, which is why the cast exists.
-
-**Step 3 — Change the `enrichResults()` return type and push expression:**
-
-```typescript
-// packages/engine/src/core/regulatory-scanner.ts
-
 // BEFORE:
-private async enrichResults(axeResults: any): Promise<RegulatoryReport[]> {
-    const reports: RegulatoryReport[] = [];
-    ...
-    reports.push({
-        ...report,
-        legalContext: fullRule?.legalContext,
-        failingNodes: violation.nodes.map((node: any) => ({...}))
-    } as any);   // <-- the cast that is the problem
+export type LegalFramework = 'WAD' | 'EAA';
 
 // AFTER:
-import type { EnrichedReport, FailingNode } from '@holmdigital/standards';
+export type LegalFramework = 'WAD' | 'EAA' | 'DDA';
+```
 
-private async enrichResults(axeResults: {
-    violations: Array<{
-        id: string;
-        help: string;
-        description: string;
-        tags: string[];
-        nodes: Array<{ html: string; target: string[]; failureSummary: string }>;
-    }>;
-}): Promise<EnrichedReport[]> {
-    const reports: EnrichedReport[] = [];
-    ...
-    reports.push({
-        ...report,
-        holmdigitalInsight: {
-            ...report.holmdigitalInsight,
-            reasoning: violation.help
+This is the only type change required. All downstream code that switches on `LegalFramework` values should be checked for exhaustiveness — any `switch` without a `default` will surface a compile error on the new `'DDA'` value, which is the desired behaviour.
+
+### 2. Add 'AU' to the Country union in packages/standards/src/types.ts
+
+```typescript
+// BEFORE:
+export type Country = 'SE' | 'NO' | 'DK' | 'FI' | 'NL' | 'DE' | 'FR' | 'ES' | 'IE' | 'IT' | 'PT' | 'PL' | 'GB' | 'US' | 'CA' | 'EU';
+
+// AFTER:
+export type Country = 'SE' | 'NO' | 'DK' | 'FI' | 'NL' | 'DE' | 'FR' | 'ES' | 'IE' | 'IT' | 'PT' | 'PL' | 'GB' | 'US' | 'CA' | 'AU' | 'EU';
+```
+
+Adding `'AU'` to the `Country` union causes TypeScript to flag every `Record<Country, ...>` that is missing an `'AU'` key — which is exactly the right compile-time guide for what needs updating.
+
+### 3. Add AU to ENFORCEMENT_BODIES and ENFORCEMENT_BODIES_DETAILED in packages/standards/src/index.ts
+
+```typescript
+// ENFORCEMENT_BODIES (backwards-compatible flat map):
+AU: 'Australian Human Rights Commission (AHRC)',
+
+// ENFORCEMENT_BODIES_DETAILED (sector-aware map):
+AU: {
+    wad: 'Australian Human Rights Commission (AHRC)',
+    eaa: 'Digital Transformation Agency (DTA)'
+}
+```
+
+**Rationale for wad/eaa keys on AU:** The existing `ENFORCEMENT_BODIES_DETAILED` interface uses `{ wad: string; eaa: string }`. For AU, `wad` maps to the general-purpose enforcement body (AHRC, which covers both sectors) and `eaa` maps to the government-specific body (DTA). This is an imperfect mapping but it works within the existing `getEnforcementBody(country, sector)` call signature. When `sector === 'private'`, callers get AHRC-via-DTA. When `sector === 'public'`, they get AHRC. The asymmetry is acceptable given DTA does not handle private sector complaints.
+
+**Alternative considered:** Adding a new `dda` key to `ENFORCEMENT_BODIES_DETAILED`. Rejected because it breaks the existing `{ wad: string; eaa: string }` interface for all countries and requires consumers to update. The `wad`/`eaa` reuse is the correct backwards-compatible choice.
+
+---
+
+## Required Code Changes
+
+### 4. TLD Detection — .au and .com.au
+
+The existing TLD parser takes the last hostname segment. This works for simple ccTLDs (`.se`, `.de`, `.uk`) but fails for Australia's common `.com.au` two-part second-level domain structure.
+
+```typescript
+// CURRENT logic (statement-generator.ts ~line 147):
+const tld = hostname.split('.').pop()?.toLowerCase() || '';
+country = TLD_MAP[tld] ?? 'EU';
+
+// This correctly handles:
+//   example.com.au → 'au' → AU  (works)
+//   example.au     → 'au' → AU  (works)
+//   example.gov.au → 'au' → AU  (works)
+```
+
+The last-segment approach actually works correctly for all AU domain forms because `au` is always the final segment. No special-casing is required. Simply add `'au': 'AU'` to the TLD_MAP.
+
+```typescript
+const TLD_MAP: Record<string, Country> = {
+    'se': 'SE', 'no': 'NO', 'dk': 'DK', 'fi': 'FI',
+    'de': 'DE', 'fr': 'FR', 'nl': 'NL', 'es': 'ES', 'it': 'IT',
+    'pt': 'PT', 'pl': 'PL',
+    'uk': 'GB', 'us': 'US', 'ca': 'CA',
+    'au': 'AU',  // NEW
+};
+```
+
+**Confidence: HIGH** — Verified by AU domain structure research. `.com.au`, `.net.au`, `.gov.au`, `.org.au`, `.edu.au`, and the direct `.au` namespace all end in `au`. The split-and-pop approach handles all cases.
+
+### 5. Engine JSON Template — packages/engine/src/reporting/templates/en-au.json
+
+The pattern (confirmed from en-ca.json, en-gb.json, en-us.json) is a 7-section JSON file with jurisdiction-specific law references hardcoded into the `intro`, `enforcement`, and `technical` sections.
+
+```json
+{
+    "title": "Accessibility of {<website>}",
+    "intro": "This website is run by {<organisation>}. We want as many people as possible to be able to use it, and this document describes how {<website>} meets our obligations under the Disability Discrimination Act 1992 (DDA), any known accessibility issues, and how you can report problems so that we can fix them.",
+    "sections": [
+        {
+            "id": "how-accessible",
+            "title": "How accessible is the website?",
+            "content": "{There are no known accessibility issues with this website./We know some parts of this website aren't fully accessible. See the section on non-accessible content below for more information./We know some parts of this website aren't fully accessible. See the section on non-accessible content below for more information.}"
         },
-        legalContext: fullRule?.legalContext,
-        failingNodes: violation.nodes.map((node): FailingNode => ({
-            html: node.html,
-            target: node.target.join(' '),
-            failureSummary: node.failureSummary
-        }))
-    });   // No cast needed — EnrichedReport satisfies the shape
-```
-
-Typing `axeResults` properly also eliminates the `(axeResults: any)` parameter cast. The axe-core `AxeResults` type is available from `axe-core` itself: `import type { AxeResults } from 'axe-core'`.
-
-**Step 4 — Update ScanResult to use EnrichedReport:**
-
-```typescript
-// packages/engine/src/core/regulatory-scanner.ts
-import type { EnrichedReport } from '@holmdigital/standards';
-
-export interface ScanResult {
-    ...
-    reports: EnrichedReport[];   // was: RegulatoryReport[]
-    ...
-}
-```
-
-This is the change that cascades and eliminates all the `(report as any)` casts downstream. Once `ScanResult.reports` is typed as `EnrichedReport[]`, the `html-template.ts`, `junit-generator.ts`, `cloud-client.ts`, and `cli/index.ts` casts all become unnecessary.
-
-**Step 5 — Remaining casts to fix case-by-case:**
-
-| Cast | Fix |
-|------|-----|
-| `cli/index.ts:93` — `as ScannerOptions & {...}` | Extract a `CliOptions` interface; drop the cast |
-| `cli/index.ts:216,263-267` — `(r: any)` on report iteration | Resolved by ScanResult.reports being EnrichedReport[] |
-| `statement-generator.ts:37` — `let template: any` | Define `StatementTemplate` interface matching the JSON shape |
-| `statement-generator.ts:102` — `let country: any` | Use `Country` type directly with a type guard |
-| `statement-generator.ts:97` — `s: any` in section map | Resolved by StatementTemplate interface |
-| `i18n/index.ts:47,55` — `let value: any` | `unknown` with a type guard (`typeof value === 'string'`) is more honest; or keep the `// eslint-disable` comment since this is legitimate dynamic traversal |
-| `AccessibilityStatement.tsx:109` — `Record<string, any>` TEMPLATES | Type the inline TEMPLATES object (moot after locale fix, see Section 3) |
-| `AccessibilityStatement.tsx:299` — `section: any` | Type the section mapping once template type is defined |
-| `junit-generator.ts:69` — `escapeXML(unsafe: any)` | Change to `escapeXML(unsafe: unknown): string` |
-
-### What NOT to Do
-
-- **Do NOT use `// @ts-ignore` or `// @ts-expect-error` as a shortcut.** These hide problems without fixing them.
-- **Do NOT change `noImplicitAny` or remove `strict: true` from `tsconfig.base.json`.** The ESLint rule `@typescript-eslint/no-explicit-any: "warn"` is already correct. Change it to `"error"` only after the casts are removed — not before.
-- **Do NOT try to eliminate the `i18n/index.ts` dynamic traversal casts** in this pass. Dynamic key traversal (`let value: any = locales[currentLang]`) with a final `typeof value !== 'string'` guard is legitimate. The `// eslint-disable-next-line` comment there is correct. Don't touch it.
-- **Do NOT remove `[key: string]: any` from `HolmDigitalInsight` without first auditing all JSON locale files** to find every language key that is actually present. Adding a key that doesn't exist in the JSON will cause a runtime `undefined` and TypeScript won't catch it.
-
-### Backwards Compatibility
-
-The public API surface of `@holmdigital/standards` is `RegulatoryReport`. Adding `EnrichedReport extends RegulatoryReport` is additive — existing consumers break only if they typed a variable as `RegulatoryReport` and then tried to access `failingNodes` (they can't today either, so no regression).
-
-Widening `ScanResult.reports` from `RegulatoryReport[]` to `EnrichedReport[]` is backwards-compatible because `EnrichedReport` is a strict superset of `RegulatoryReport`. Consumers that only read `RegulatoryReport` properties will continue to work with no changes.
-
----
-
-## 2. Version Source of Truth — Monorepo Pattern
-
-### Current Situation
-
-Direct inspection reveals the codebase is in a transitional state:
-
-- `getEngineVersion()` in `regulatory-scanner.ts` already reads `package.json` via `readFileSync` at runtime (lines 18-30). This is the correct pattern and is already used in `ScanMetadata` (engineVersion) and in `cloud-client.ts` (which imports and calls `getEngineVersion()`).
-- The CLI's `program.version(...)` call at line 36 also already uses `getEngineVersion()`.
-- The stale hardcoded strings mentioned in CONCERNS.md (`'1.4.4'` in cloud-client, `'0.1.0'` in CLI) have already been refactored away in the current source. The CONCERNS.md was written against an older snapshot.
-- The only remaining hardcoded version is the fallback in `getEngineVersion()`: `return '2.1.1'`. The actual current version is `2.1.5`.
-
-**Confidence: HIGH** — verified by direct file inspection of the three locations named in CONCERNS.md.
-
-### Recommended Approach: Build-Time Injection via tsup `define`
-
-The current runtime `readFileSync` approach works but has a fragility: it reads `package.json` from a path relative to `__dirname` after bundling. If the dist directory structure changes or `package.json` is not included in the npm publish (it's not — `files: ["dist", "README.md"]`), the fallback silently kicks in.
-
-The cleanest fix for this monorepo is **tsup `define`** — inject the version string at build time so the bundle carries it as a literal, requiring no filesystem access at runtime.
-
-**Implementation — add a `tsup.config.ts` to `packages/engine`:**
-
-```typescript
-// packages/engine/tsup.config.ts
-import { defineConfig } from 'tsup';
-import { readFileSync } from 'node:fs';
-
-const pkg = JSON.parse(readFileSync('./package.json', 'utf-8'));
-
-export default defineConfig({
-    entry: ['src/index.ts', 'src/cli/index.ts'],
-    format: ['cjs', 'esm'],
-    dts: true,
-    clean: true,
-    define: {
-        __ENGINE_VERSION__: JSON.stringify(pkg.version)
-    }
-});
-```
-
-**Then simplify `getEngineVersion()`:**
-
-```typescript
-// packages/engine/src/core/regulatory-scanner.ts
-
-// tsup replaces __ENGINE_VERSION__ with the literal version string at build time.
-// During vitest (not bundled), declare the global to avoid a ReferenceError.
-declare const __ENGINE_VERSION__: string;
-
-export function getEngineVersion(): string {
-    // __ENGINE_VERSION__ is defined by tsup at build time.
-    // In test environments (vitest/ts-node), fall back to reading package.json.
-    if (typeof __ENGINE_VERSION__ !== 'undefined') {
-        return __ENGINE_VERSION__;
-    }
-    // Fallback for test/dev contexts where tsup hasn't bundled the code
-    try {
-        const { readFileSync } = await import('node:fs');  // keep sync for simplicity
-        // ... existing readFileSync logic ...
-    } catch {
-        return '0.0.0-dev';
-    }
-}
-```
-
-For test contexts (Vitest runs TypeScript directly without tsup bundling), add to `vitest.config.ts`:
-
-```typescript
-// packages/engine/vitest.config.ts
-import { defineConfig } from 'vitest/config';
-import { readFileSync } from 'node:fs';
-
-const pkg = JSON.parse(readFileSync('./package.json', 'utf-8'));
-
-export default defineConfig({
-    define: {
-        __ENGINE_VERSION__: JSON.stringify(pkg.version)
-    },
-    test: { ... }
-});
-```
-
-**Confidence: HIGH** — tsup `define` is a first-class documented feature (equivalent to webpack `DefinePlugin`). Vitest `define` works the same way. Both eliminate the runtime filesystem dependency entirely.
-
-### Fallback: Keep Runtime Read, Fix the Path
-
-If adding `tsup.config.ts` is out of scope for this pass, the simpler fix is:
-
-1. Update the fallback string in `getEngineVersion()` from `'2.1.1'` to `'0.0.0-fallback'` — this makes stale fallbacks immediately visible.
-2. Ensure `package.json` is NOT excluded from the published package (currently it's excluded by `files: ["dist", "README.md"]`). The runtime `readFileSync` approach depends on `package.json` being present next to the built files — which it won't be after `npm publish`.
-
-The build-time inject approach is better precisely because it removes this dependency.
-
-### What NOT to Do
-
-- **Do NOT read version from a shared `version.ts` module** that re-exports the version string. This still requires the file to be maintained manually alongside `package.json`.
-- **Do NOT use `require('../package.json')` in TypeScript source.** This approach fails in ESM bundles and requires `resolveJsonModule: true` in tsconfig, which can cause issues with type declarations for JSON imports.
-- **Do NOT add `package.json` to the `files` array** just to make runtime reads work. npm packages should be lean; bundling `package.json` into the published package just to read the version at runtime is unnecessary overhead.
-
----
-
-## 3. Multi-Locale Template Handling — AccessibilityStatement Component
-
-### Current Situation (from direct inspection)
-
-The `AccessibilityStatement` component has two parallel locale problems:
-
-**Problem A — Template selection covers only sv/no/en:**
-```typescript
-// Line 205-206:
-const supportedLocales: Record<string, keyof typeof TEMPLATES> = { sv: 'sv', no: 'no', nb: 'no' };
-const lang = supportedLocales[locale] ?? 'en';
-```
-This silently falls back to English for `da`, `de`, `fi`, `fr`, `nl`, `es`. Yet all 9 JSON templates exist in `packages/engine/src/reporting/templates/*.json`.
-
-**Problem B — TEMPLATES are hardcoded inline** (lines 110-149) in the component source, duplicating the JSON files in `packages/engine/src/reporting/templates/`. They diverge in structure and are maintained separately.
-
-**Problem C — The component's renderTemplate() and the engine's processText() implement the same template engine twice** with subtly different order-of-operations (component: conditionals → substitution → choices; engine: conditionals → choices, then substitution as a special case of choices). This means HTML output from the React component and Markdown output from the generator can produce different text for identical inputs.
-
-### Recommended Approach: Prop-Driven Templates with No Bundled Defaults
-
-**Confidence: HIGH** — This is the standard React component library pattern for externalized content. The component should render templates, not own them. The engine already loads templates from JSON files.
-
-**Step 1 — Add a `template` prop to AccessibilityStatementProps:**
-
-```typescript
-// packages/standards/src/types.ts — add shared template type
-
-export interface StatementSection {
-    id: string;
-    title: string;
-    content: string;
-}
-
-export interface StatementTemplate {
-    title: string;
-    intro: string;
-    sections: StatementSection[];
-}
-```
-
-```typescript
-// packages/components/src/AccessibilityStatement/AccessibilityStatement.tsx
-
-export interface AccessibilityStatementProps {
-    // ... existing props ...
-
-    /**
-     * Template data for the statement content.
-     * When provided, overrides built-in templates.
-     * Load from @holmdigital/engine templates or provide your own.
-     */
-    template?: StatementTemplate;
-}
-```
-
-**Step 2 — Remove inline TEMPLATES constant; fall back to a minimal English default:**
-
-```typescript
-// The hardcoded TEMPLATES object (lines 109-149) is removed entirely.
-// The component selects from:
-//   1. props.template  (caller provides loaded JSON)
-//   2. BUILTIN_EN_TEMPLATE  (static minimum — avoids blank render if no template passed)
-
-const BUILTIN_EN_TEMPLATE: StatementTemplate = {
-    title: "Accessibility of {<website>}",
-    intro: "...",   // keep a single English fallback
-    sections: [ /* minimal English sections */ ]
-};
-
-// In the component body:
-const template = props.template ?? BUILTIN_EN_TEMPLATE;
-```
-
-**Step 3 — The statement-generator.ts passes the loaded JSON template as the prop:**
-
-The engine already loads locale-specific JSON templates via filesystem. After this change, `generateStatementContent()` passes the loaded template as a prop:
-
-```typescript
-// packages/engine/src/reporting/statement-generator.ts
-
-// After loading template from JSON:
-const props: AccessibilityStatementProps = {
-    ...
-    template: template as StatementTemplate,   // the parsed JSON
-    locale: lang,
-    ...
-};
-```
-
-This closes the gap: the component uses exactly the same JSON content that the Markdown path does. No more divergence.
-
-**Step 4 — Expand locale routing in the component:**
-
-Once TEMPLATES is removed, locale is used only for date formatting and the enforcement body lookup. The `lang` selection simplifies to a direct pass-through — the caller determines which template to supply:
-
-```typescript
-// Locale is used for date formatting only:
-const d = (date: Date) => formatDiggDate(date, locale);
-
-// Enforcement body comes from the country prop (already correct):
-const enforcementBody = ENFORCEMENT_BODIES[country] || ENFORCEMENT_BODIES.EU;
-```
-
-**Step 5 — Fix the renderTemplate/processText divergence:**
-
-Extract a shared `processTemplate()` function into `packages/standards/src/utils/template.ts` (or `packages/components/src/utils/processTemplate.ts` since the engine already depends on components). Both the component and the engine's Markdown path call the same function.
-
-The processing order must be: **conditionals → substitution → choices**. The component currently does this correctly (conditionals first at line 264, substitution second at line 281, choices third at line 286). The engine's `processText()` applies choices before substitution for non-bracket content (line 281-294 in statement-generator.ts), which is the divergence.
-
-```typescript
-// packages/components/src/utils/processTemplate.ts (or standards/src/utils/)
-
-export interface TemplateContext {
-    replacements: Record<string, string>;
-    complianceLevel: 'full' | 'partial' | 'non-compliant';
-    responseTime?: string;
-    phoneNumber?: string;
-}
-
-export function processTemplate(text: string, ctx: TemplateContext): string {
-    let result = text;
-
-    // 1. Conditionals [ ... ] — remove blocks whose data is absent
-    result = result.replace(/\[([\s\S]*?)\]/g, (_match, content) => {
-        if ((content.includes('{<svarstid>}') || content.includes('{<svartid>}') || content.includes('{<response time>}'))
-            && !ctx.responseTime) return '';
-        if ((content.includes('{<telefonnummer>}') || content.includes('{<telephone number>}') || content.includes('{<puhelinnumero>}'))
-            && !ctx.phoneNumber) return '';
-        if ((content.includes('{<brister>}') || content.includes('{<issues>}') || content.includes('{<mangler>}'))
-            && ctx.complianceLevel === 'full') return '';
-        return content;
-    });
-
-    // 2. Variable substitution {<key>} — apply named replacements
-    for (const [key, value] of Object.entries(ctx.replacements)) {
-        result = result.replaceAll(key, value);
-    }
-
-    // 3. Choices { A / B / C } — pick the right branch
-    result = result.replace(/\{([^{}]*?)\}/g, (_match, content) => {
-        const parts = content.split('/');
-        if (parts.length >= 2) {
-            const idx = ctx.complianceLevel === 'partial' ? 1
-                : ctx.complianceLevel === 'non-compliant' ? Math.min(2, parts.length - 1)
-                : 0;
-            return parts[idx].trim();
+        {
+            "id": "what-to-do",
+            "title": "What to do if you can't access parts of this website?",
+            "content": "If you need content from this website that is not accessible for you, please contact us.\n\n[Our normal response time is {<response time>}.]\n\n[You can also contact us in the following ways:\n\n* email {<email address>}\n* call {<telephone number>}]"
+        },
+        {
+            "id": "reporting",
+            "title": "Reporting accessibility problems with this website",
+            "content": "We're always looking to improve the accessibility of this website. If you find any problems that aren't listed on this page, contact us and let us know about the problem."
+        },
+        {
+            "id": "enforcement",
+            "title": "Lodging a complaint",
+            "content": "The {<enforcement_body>} handles complaints about digital accessibility under the Disability Discrimination Act 1992. If you experience accessibility issues on our website, you can lodge a complaint with the {<enforcement_body>}.\n\nIf conciliation is unsuccessful, the matter can be referred to the Federal Court of Australia."
+        },
+        {
+            "id": "technical",
+            "title": "Technical information about this website's accessibility",
+            "content": "{This website is fully compliant with the Web Content Accessibility Guidelines (WCAG) 2.2 Level AA, in line with the Disability Discrimination Act 1992./This website is partially compliant with WCAG 2.2 Level AA, due to the non-compliances listed below./This website is not compliant with WCAG 2.2 Level AA. The non-accessible sections are listed below.}"
+        },
+        {
+            "content": "The content described below is, in one way or another, not fully accessible.\n\n[\n**Non-compliance with WCAG 2.2 Level AA**\n\n{<issues>}\n]"
+        },
+        {
+            "id": "testing",
+            "title": "How we tested this website",
+            "content": "{We have performed a self-assessment (internal testing) of {<website>}./{<third party>} has tested {<website>}./We have estimated the accessibility without testing.}\n\nThe last assessment was made on {<assessment date>}.\n\n[Assessment method: {<method>}]\n\nThe website was published on {<publish date>}.\n\nThe statement was last updated on {<update date>}."
         }
-        return _match;
-    });
-
-    return result;
+    ]
 }
 ```
 
-### Locale Expansion — All 9 Locales
+**Key AU-specific prose decisions:**
+- "Lodging a complaint" instead of "Enforcement procedure" — AU uses complaint-based process not a formal enforcement regime
+- References WCAG 2.2 Level AA by name (not by law reference, since the DDA does not specify a WCAG version — AHRC guidance does)
+- Omits "disproportionate burden" clause — this concept exists in EU WAD/EAA but is not a recognised defence mechanism under the DDA
+- References Federal Court as the escalation path (not an ombudsman or regulator)
 
-Once the component accepts a `template` prop, locale support expands automatically to all 9 languages because the engine (and any consumer) can load the matching JSON and pass it in. The component itself needs no locale-specific changes.
+### 6. Component Inline Template — 'en-au' entry in AccessibilityStatement.tsx TEMPLATES
 
-The only locale-specific behavior remaining in the component is date formatting (`formatDiggDate`), which already has entries for all 9 locales (lines 154-168). It is already correct.
+Following the pattern of `'en-gb'`, `'en-us'`, `'en-ca'`, add an `'en-au'` key to the inline `TEMPLATES` object. The prose mirrors the engine JSON template above.
 
-### What NOT to Do
+### 7. Engine EVALUATION_METHOD, STATUS_LABELS, RESPONSE_TIME_DEFAULT — Add 'en-au' key
 
-- **Do NOT bundle all 9 JSON templates into the React component package.** The component package is a library with React peer dependency. Bundling large JSON blobs increases the component package size and causes consumers to ship unused translations. Template data should be loaded by the consumer (or by the engine on their behalf).
-- **Do NOT use dynamic `import()` inside the component to load templates.** React components in a library should not assume the filesystem or network is available. Prop-driven is the right pattern.
-- **Do NOT try to merge the two template processing implementations during this pass** if it requires non-trivial refactoring to both engine and component. The minimum fix is: (1) expand the `supportedLocales` guard to all 9 locales in the component, and (2) confirm the JSON templates for the remaining 6 locales work. The full dedup is explicitly called "out of scope" in PROJECT.md and should stay that way.
+```typescript
+// statement-generator.ts additions:
+EVALUATION_METHOD['en-au'] = 'Automated scan via @holmdigital/engine';
+STATUS_LABELS['en-au'] = { full: 'Fully compliant', partial: 'Partially compliant', 'non-compliant': 'Non-compliant' };
+RESPONSE_TIME_DEFAULT['en-au'] = '2 days';
+```
+
+### 8. Component locale-chrome.ts — Add 'en-au' to all three maps
+
+```typescript
+// locale-chrome.ts — add 'en-au' to BADGE_LABELS, UPDATED_LABEL, FOOTER_TEXT
+'en-au': { full: 'Fully compliant', partial: 'Partially compliant', 'non-compliant': 'Non-compliant' },
+'en-au': 'Updated:',
+'en-au': 'Generated using',
+```
+
+### 9. Component AccessibilityStatement.tsx — formatDiggDate locale map
+
+```typescript
+// Add 'en-au' to the localeMap in formatDiggDate:
+'en-au': 'en-AU',
+```
+
+### 10. Component AccessibilityStatement.tsx — supportedLocales routing
+
+The component routes locale strings to template keys via a `supportedLocales` map. Add `'en-au': 'en-au'` to this map.
+
+### 11. Standards getData() in packages/standards/src/index.ts — Add 'en-au' alias
+
+```typescript
+case 'en-au': return rulesEnAu as ConvergenceRule[];
+```
+
+This requires creating `packages/standards/data/rules.en-au.json`. In practice, AU uses the same rules as EN with `australianInterpretation` fields added to `HolmDigitalInsight`. For v0.5, the simplest correct approach is to reuse the English rules file and add an en-au alias pointing to `rulesEn`. A separate `rules.en-au.json` with AU-specific interpretation text can be a follow-on task.
 
 ---
 
-## Supporting Libraries (No Changes Needed)
+## Integration Points Summary
 
-| Library | Current | Status | Notes |
-|---------|---------|--------|-------|
-| TypeScript | 5.7.2 | Current | Strict mode already enabled. No changes. |
-| tsup | 8.3.5 | Current | `define` feature available. Add `tsup.config.ts`. |
-| Vitest | 4.0.16 | Current | `define` in `vitest.config.ts` needed for `__ENGINE_VERSION__`. |
-| @typescript-eslint | 8.18.1 | Current | Change `no-explicit-any` from `"warn"` to `"error"` after casts removed. |
-| axe-core | 4.11.1 | Current | Provides `AxeResults` type for the `enrichResults` parameter. Use it. |
+| Integration Point | File | Change Type | Complexity |
+|-------------------|------|-------------|------------|
+| LegalFramework type | packages/standards/src/types.ts | Union extension `\| 'DDA'` | Trivial |
+| Country type | packages/standards/src/types.ts | Union extension `\| 'AU'` | Trivial |
+| ENFORCEMENT_BODIES | packages/standards/src/index.ts | Add AU key | Trivial |
+| ENFORCEMENT_BODIES_DETAILED | packages/standards/src/index.ts | Add AU key | Trivial |
+| national-laws.json | packages/standards/data/legal/national-laws.json | Add AU array | Low |
+| TLD_MAP | packages/engine/src/reporting/statement-generator.ts | Add `'au': 'AU'` | Trivial |
+| Engine template | packages/engine/src/reporting/templates/en-au.json | New file | Low |
+| Engine locale maps | packages/engine/src/reporting/statement-generator.ts | Add en-au keys | Trivial |
+| Component TEMPLATES | packages/components/src/AccessibilityStatement/AccessibilityStatement.tsx | Add en-au entry | Low |
+| Component chrome | packages/components/src/AccessibilityStatement/locale-chrome.ts | Add en-au keys | Trivial |
+| Component date format | packages/components/src/AccessibilityStatement/AccessibilityStatement.tsx | Add en-au to localeMap | Trivial |
+| Component supportedLocales | packages/components/src/AccessibilityStatement/AccessibilityStatement.tsx | Add en-au routing | Trivial |
+| Standards getData() | packages/standards/src/index.ts | Add en-au case | Trivial |
+
+---
+
+## What NOT to Add
+
+| Avoid | Why |
+|-------|-----|
+| State/territory AU laws (e.g. Disability Inclusion Act NSW) | DTA explicitly scopes Digital Experience Policy to federal agencies only. State/territory compliance is out of scope for v0.5 and would require per-state entries. |
+| Separate `auFramework` discriminator on NationalLaw | Reusing `'DDA'` as a LegalFramework value is sufficient and avoids interface changes. Adding `auFramework` would break the existing typed `Record<LegalFramework, ...>` patterns. |
+| `rules.en-au.json` with custom rule interpretations | AU uses the same WCAG criteria as every other jurisdiction. EN rule data is correct. AU-specific interpretation text is a LOC milestone, not a jurisdiction milestone. |
+| Hard-coded WCAG version in the AU type entry | WCAG version is enforced by axe-core scan configuration, not per-jurisdiction rule data. The DDA does not codify a WCAG version; the AHRC guidance specifying WCAG 2.2 AA is policy, not law. |
+| DDA fine amounts | The DDA has no statutory cap on damages. `minAmount: 0, maxAmount: 0` with a descriptive `description` field is the correct representation — the same pattern used for GB PSBAR and US Section 508. |
+
+---
+
+## Sector-Aware Enforcement Wiring for AU
+
+The `getEnforcementBody(country, sector)` function uses `ENFORCEMENT_BODIES_DETAILED[country].wad` for public sector and `.eaa` for private sector.
+
+For AU:
+- `sector: 'public'` → AHRC (the DDA complaint body applies to all sectors; the DTA Digital Access Standard is additionally relevant for government)
+- `sector: 'private'` → AHRC (the DDA applies directly to private sector; DTA is not relevant)
+
+Both keys correctly point to AHRC. The DTA appears in the `national-laws.json` enforcement data for the `au-dta` law entry (for consumers who inspect individual laws), but the sector-aware enforcement helper should return AHRC for both sectors because that is who handles complaints regardless of sector.
+
+```typescript
+AU: { wad: 'Australian Human Rights Commission (AHRC)', eaa: 'Australian Human Rights Commission (AHRC)' }
+```
+
+This is cleaner and more accurate than routing private sector to DTA (DTA does not handle private sector complaints).
+
+---
 
 ## Alternatives Considered
 
 | Decision | Recommended | Alternative | Why Not |
 |----------|-------------|-------------|---------|
-| EnrichedReport vs separate union type | `EnrichedReport extends RegulatoryReport` | Discriminated union `BaseReport \| EnrichedReport` | Union requires every consumer to narrow before use — too disruptive to downstream. Extension is additive. |
-| Build-time version inject | `tsup define` + `vitest define` | Runtime `readFileSync` | `package.json` not in `files` array; runtime read silently falls back. Build-time is reliable. |
-| Template prop vs dynamic import | `template` prop | Dynamic `import('./templates/en.json')` in component | Dynamic imports in library components break SSR, test environments, and bundler assumptions. Prop-driven is the React idiom. |
-| Shared processTemplate util | Extracted to shared location | Keep two separate implementations | Same bug fixed once. The divergence is a real bug (order of operations differs). |
+| `LegalFramework = 'DDA'` | Use 'DDA' as framework discriminator | Use 'WAD' as a catch-all for non-EU national laws | WAD literally means Web Accessibility Directive (EU). Conflating AU with EU WAD produces misleading statements referencing EU directives. |
+| Two AU law entries (DDA + DTA) | Two entries with different scope | Single DDA entry | Single entry loses the public/private sector distinction. The DTA Digital Access Standard is a materially distinct obligation for government sites. |
+| AHRC for both sectors | AHRC as universal AU enforcement body | DTA for public sector | DTA monitors compliance but does not accept public complaints. AHRC is the correct contact point for any accessibility complaint regardless of sector. |
+| Last-segment TLD parse for .au | Reuse existing split('.').pop() | Special-case .com.au parsing | Not needed. All AU domains end in 'au'. The existing parser handles all forms correctly. |
+
+---
+
+## Sources
+
+- [Australian Human Rights Commission — DDA complaints](https://humanrights.gov.au/complaints/complaints/complaints-under-disability-discrimination-act) — AHRC role, complaint process confirmed (HIGH confidence)
+- [DTA — Digital Experience Policy](https://www.dta.gov.au/articles/digital-experience-policy-and-standards-now-live-digitalgovau) — DTA scope, 1 Jan 2025 effective date confirmed (HIGH confidence)
+- [Deque — Three major accessibility updates in Australia, 2026](https://www.deque.com/blog/accessibility-updates-in-australia-in-2026/) — WCAG 2.2 AA guidance, AHRC April 2025 announcement (MEDIUM confidence — trade publication)
+- [OZeWAI — Three major accessibility updates in Australia](https://ozewai.org/blog/standards/three-major-accessibility-updates-in-australia/) — corroborates Deque analysis (MEDIUM confidence)
+- [Disability Discrimination Act 1992 — Federal Register of Legislation](https://www.legislation.gov.au/Details/C2016C00763) — primary legislation (HIGH confidence)
+- [.au Wikipedia](https://en.wikipedia.org/wiki/.au) — AU domain structure confirmed; all forms end in 'au' (HIGH confidence)
 
 ---
 
 ## Confidence Assessment
 
-| Area | Confidence | Basis |
-|------|------------|-------|
-| `as any` root cause and fix | HIGH | Direct inspection of all named files and cast sites |
-| `EnrichedReport` extends pattern | HIGH | Standard TypeScript pattern; no library dependency |
-| tsup `define` for version inject | HIGH | Documented tsup feature; verified tsup 8.x supports it |
-| Vitest `define` for test context | HIGH | Documented Vitest config option, same API as tsup |
-| Template prop pattern | HIGH | Standard React library idiom |
-| `processTemplate` unification | HIGH | Both implementations inspected; ordering confirmed |
-| All 9 locales via prop injection | HIGH | All 9 JSON files confirmed present; date locale map confirmed complete |
+| Area | Confidence | Reason |
+|------|------------|--------|
+| AU legal framework (DDA scope, AHRC role) | HIGH | Confirmed by official AHRC site and primary legislation |
+| DTA Digital Experience Policy scope and date | HIGH | Confirmed by official DTA and digital.gov.au sources |
+| WCAG 2.2 AA as AHRC recommendation | HIGH | Multiple sources; AHRC April 2025 announcement confirmed |
+| No statutory fine cap under DDA | HIGH | Complaint-based system; Federal Court determines damages; confirmed by AHRC complaints docs |
+| TLD detection correctness for .au | HIGH | AU domain structure research confirms all forms end in 'au' |
+| en-au template prose | MEDIUM | Template is new content; phrasing should be reviewed by an AU-familiar legal practitioner before first public use |
+| `'DDA'` as LegalFramework discriminator | HIGH | No existing code requires WAD/EAA for AU; additive union extension is standard TypeScript |
 
 ---
 
-## Gaps
-
-None for this scope. All three problems have unambiguous fixes rooted in existing code.
-
-The "Template rendering dedup" (extracting `processTemplate` as a shared util) is listed as out of scope in PROJECT.md. The minimum fix for the stability pass is:
-
-1. Expand `supportedLocales` in the component from `{sv, no, nb}` to all 9 locale codes.
-2. Accept a `template` prop to allow callers to pass the loaded JSON.
-3. The engine's `generateStatementContent()` passes the loaded JSON template as the prop.
-
-The full dedup (extracting `processTemplate` into a shared module) is the correct long-term fix but is a separate PR.
+*Stack research for: Australia jurisdiction (v0.5 milestone)*
+*Researched: 2026-03-27*

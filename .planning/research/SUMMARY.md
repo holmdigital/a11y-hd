@@ -1,185 +1,174 @@
 # Project Research Summary
 
-**Project:** @holmdigital/a11y-hd (three-package accessibility scanning monorepo)
-**Domain:** TypeScript monorepo stability pass — type safety, version management, locale/template handling
-**Researched:** 2026-03-02
-**Confidence:** HIGH — all findings grounded in direct codebase inspection across all four research domains
+**Project:** @holmdigital accessibility monorepo — Australian (AU) jurisdiction support (v0.5)
+**Domain:** Multi-jurisdiction accessibility compliance tooling — configuration-data extension
+**Researched:** 2026-03-27
+**Confidence:** HIGH
 
 ## Executive Summary
 
-This is a stability pass on a published npm monorepo (`@holmdigital/standards`, `@holmdigital/components`, `@holmdigital/engine`) that provides accessibility scanning, reporting, and statement generation for Nordic and European markets. The codebase is functionally working but has three structural defects that undermine consumer trust: 40+ `as any` casts hiding a missing type (`EnrichedReport`) in the public API, hardcoded version strings that diverge from `package.json`, and a locale routing bug that silently returns English for 7 of 9 supported locales. None of these are feature gaps — they are type contract failures and silent misbehaviors in a library whose consumers depend on its correctness for legally significant accessibility statements.
+Adding Australia as a first-class jurisdiction to the HolmDigital accessibility monorepo is a well-scoped, data-driven extension with no new runtime architecture required. The existing monorepo already supports 16 country codes across EU, UK, US, and Canada using a strict three-package dependency chain (standards → components → engine). AU fits this pattern cleanly: add law data to `@holmdigital/standards`, wire locale chrome in `@holmdigital/components`, and add TLD detection plus a statement template to `@holmdigital/engine`. The total scope is approximately 13 file changes across the three packages, with one new file (`en-au.json`).
 
-The recommended approach is a layered fix that respects the existing build dependency order: standards first (define the missing types), components second (fix locale routing), engine last (remove all casts that become unnecessary once the types exist). The root cause of nearly all `as any` usage is a single missing interface — `EnrichedReport extends RegulatoryReport` — that `enrichResults()` should have been returning all along. Defining it and widening `ScanResult.reports` to `EnrichedReport[]` cascades cleanly through the reporting pipeline, eliminating every downstream cast as a consequence rather than requiring individual surgical fixes.
+The Australian legal framework has one meaningful structural difference from all existing jurisdictions: the Disability Discrimination Act 1992 (DDA) applies to both public and private sectors under a single enforcement body (the AHRC), rather than the WAD/EAA split used for EU countries. There is no mandatory accessibility statement requirement under the DDA or the DTA Digital Experience Policy — statements are voluntary best practice. This changes how the `en-au` template must be worded and how enforcement body data must be modelled. Getting this wrong produces legally misleading output for Australian clients.
 
-The key risk is maintaining backwards compatibility with published consumers. `RegulatoryReport` is the public API surface of `@holmdigital/standards`. Any required field additions are a semver-breaking change. The safe path is exclusively additive: `EnrichedReport extends RegulatoryReport` with optional fields, keeping the base type frozen. The version fix is already 90% done at the code level — `getEngineVersion()` exists and is already called by both the CLI and the cloud client; only the stale fallback string needs updating and the `tsup define` injection needs adding to make it reliable across CJS/ESM dist contexts.
+The highest-risk decision in this milestone is how to represent the AU legal framework within the existing `LegalFramework = 'WAD' | 'EAA'` type. STACK.md recommends extending the type to include `'DDA'`; ARCHITECTURE.md recommends reusing `'WAD'` for backwards compatibility. The STACK recommendation is correct: reusing `'WAD'` for AU data would cause statement templates to falsely reference the EU Web Accessibility Directive for Australian clients. The type must be extended to `'DDA'` before any AU data is written. This must be a team-confirmed decision before Phase 1 begins.
 
 ## Key Findings
 
 ### Recommended Stack
 
-No technology changes are needed or recommended. The stability pass operates entirely within the current toolchain: TypeScript 5.7.2 (strict mode already on), tsup 8.3.5, Vitest 4.0.16, axe-core 4.11.1. Two existing toolchain features should be activated that are not currently used: `define` in tsup.config.ts (to bake version strings into the bundle at build time) and `define` in vitest.config.ts (to provide the same constant in test contexts).
+No new technologies are required for this milestone. The existing stack (TypeScript 5.7, tsup, Vitest 4, axe-core, npm workspaces) handles AU jurisdiction support entirely through data and configuration changes. The only additions are one new JSON template file (`en-au.json`), new keys in existing TypeScript maps, and new entries in `national-laws.json`.
 
-**Core technologies:**
-- TypeScript 5.7.2: Interface extension (`EnrichedReport extends RegulatoryReport`) — standard language feature, no library dependency
-- tsup 8.3.5: `define` option for build-time version injection — eliminates runtime filesystem dependency for version reads
-- Vitest 4.0.16: `define` in config for test-context version constant — mirrors tsup behavior so tests run against real version values
-- axe-core 4.11.1: Provides `AxeResults` / `NodeResult` types — import these instead of `(node: any)` to close the remaining cast in `enrichResults()`
-- @typescript-eslint 8.18.1: Upgrade `no-explicit-any` from `"warn"` to `"error"` — do this only after casts are removed, not before
+**Core technologies (existing, unchanged):**
+- TypeScript 5.7 — type union extension (`LegalFramework`, `Country`) enforces completeness at compile time; adding `'AU'` to `Country` causes compile-time errors on every `Record<Country, ...>` missing the key
+- tsup — no build script changes needed; package dependency order already enforces build sequence
+- Vitest 4 — existing test infrastructure covers AU additions with approximately 12 new test cases
+- npm workspaces — monorepo build order (standards → components → engine) is the correct implementation sequence
+
+**AU-specific data additions:**
+- `LegalFramework`: extend union to `'WAD' | 'EAA' | 'DDA'` — non-breaking additive change
+- `Country`: add `'AU'` to union — triggers compile-time completeness checking across all `Record<Country, ...>` maps
+- `national-laws.json`: two AU law entries (`au-dda` scope both, `au-dta` scope public)
+- `TLD_MAP`: add `'au': 'AU'` — the existing `hostname.split('.').pop()` approach correctly handles `.au`, `.com.au`, `.gov.au` without special-casing
 
 ### Expected Features
 
-The scope is explicitly a **stability pass**, not a feature pass. Features are classified by whether they are broken in the current codebase.
+All v0.5 features are P1 (AU jurisdiction is unusable without any of them). There are no optional v0.5 features.
 
-**Must have (table stakes — currently broken):**
-- Exported named types for all public data shapes (`FailingNode`, `EnrichedReport`) — consumers cannot type-check against the library without these
-- No `as any` in core data flow paths (`enrichResults()` → reporting pipeline) — every cast is a latent runtime bug
-- Correct version reporting from CLI `--version`, cloud API payload, and scan metadata — currently 3 different stale values
-- All 9 advertised locales produce locale-appropriate output — currently 7 of 9 silently return English
-- Explicit locale routing with documented fallback (not silent accidental fallback)
-- Tests covering every code area touched by this milestone
+**Must have (table stakes — v0.5):**
+- DDA + DTA in `national-laws.json` — legal basis for all AU output
+- AHRC in `ENFORCEMENT_BODIES` and `ENFORCEMENT_BODIES_DETAILED` — correct enforcement reference for both sectors
+- `.au` / `.com.au` TLD detection — auto-detects country without requiring `--country` flag
+- `en-au` engine JSON statement template — legally accurate AU-specific prose referencing DDA and AHRC
+- `en-au` component inline template + locale routing — component renders AU data, not EU fallback
+- `en-au` locale-chrome entries (BADGE_LABELS, UPDATED_LABEL, FOOTER_TEXT) — correct badge text
+- AU sector wiring: both public and private sector route to AHRC — DDA has no WAD/EAA split
+- Tests for all AU additions (approximately 12 new cases)
 
-**Should have (differentiators — deferred to after this milestone):**
-- Branded `LocaleCode` type union — prevents invalid locale strings at call sites
-- `template` prop on `AccessibilityStatement` — decouples component from template management
-- Shared `processTemplate()` utility replacing duplicate `renderTemplate()` / `processText()` implementations
-- Changesets integration for automated version management
+**Should have (differentiators — v0.5.x after v0.5 is stable):**
+- DTA Digital Experience Policy annotation for `.gov.au` domains — government-specific compliance note
+- AS EN 301 549 procurement reference — value for NSW/VIC/QLD government procurement clients
+- AHRC complaint pathway URL in statement contact section — actionable guidance for AU users
 
-**Defer (v2+):**
-- Generic `EnrichedReport<T extends RegulatoryReport>` — over-engineering for current needs
-- Integration tests requiring live browser/Puppeteer
-- Converting module-level `currentLang` global to React Context
-- Build script globbing fixes (separate "build hygiene" task)
-- `--no-sandbox` Puppeteer security hardening
+**Defer (v1.0+):**
+- State/territory-level policy annotations (Victoria WCAG 2.1 AA mandate, NSW AS EN 301 549) — no state-specific TLDs; requires explicit metadata beyond TLD detection
+- Mobile app compliance notes (AHRC 2025 scope expansion) — requires architectural work outside web scanning
+- WCAG 2.2 vs 2.1 delta highlighting for AU clients migrating from older guidance
 
 ### Architecture Approach
 
-The monorepo has a clear and correct dependency hierarchy: `@holmdigital/standards` (types, rules) → `@holmdigital/components` (React UI) → `@holmdigital/engine` (scan orchestration, CLI, cloud client). The three defects all share one structural root: layer boundaries are not enforced by the type system. Engine attaches runtime properties to standards-owned types using `as any` casts instead of a proper subtype; the component carries template data that belongs in the engine layer; version strings live in source files instead of being derived from `package.json`. The fix principle is identical for all three: move ownership to the correct layer and express it through the type system.
+The implementation follows the established jurisdiction extension pattern used for GB, US, and CA. All changes flow through the package dependency chain in order. The only architectural decision unique to AU is the `LegalFramework` type extension and the deliberate choice to route both AU sectors to AHRC rather than splitting by WAD/EAA semantics.
 
-**Major components:**
-1. `@holmdigital/standards/src/types.ts` — defines all shared interfaces; the fix starts and ends here by adding `FailingNode` and `EnrichedReport`
-2. `@holmdigital/engine/src/core/regulatory-scanner.ts` — `enrichResults()` must return `EnrichedReport[]`; `getEngineVersion()` is the single version source and is already correct in structure
-3. `@holmdigital/components/src/AccessibilityStatement/AccessibilityStatement.tsx` — locale routing must be replaced from a 3-locale ternary to a 9-locale explicit map
-4. `@holmdigital/engine/src/reporting/` (html-template, junit-generator, cloud-client) — all casts removed as a downstream consequence of the `ScanResult.reports` type change
-5. `packages/engine/tsup.config.ts` (new file) — adds `define: { __ENGINE_VERSION__: ... }` to make version reliable in dist
+**Major components and their AU changes:**
+1. `@holmdigital/standards` — add `'AU'` to `Country` union, `'DDA'` to `LegalFramework`, two AU law entries in `national-laws.json`, AHRC in both enforcement body maps
+2. `@holmdigital/components` — add `TEMPLATES['en-au']` inline template, `supportedLocales` routing entry, three locale-chrome map entries
+3. `@holmdigital/engine` — add `TLD_MAP['au']`, four locale map entries, i18n alias, and create `en-au.json` statement template
+
+**Key pattern — parallel template stores:** The engine owns JSON templates; the component owns inline templates. Both must be authored separately for `en-au`. This is intentional design to avoid circular dependency and is the main duplication cost of this milestone.
+
+**Key pattern — atomic Country type update:** Adding `'AU'` to the `Country` union must be committed simultaneously with all `Record<Country, ...>` updates in the same package, or the TypeScript build breaks mid-commit.
+
+**Key pattern — auto-syncing tests:** Tests must call `getEnforcementBody('AU')` and `getNationalLawByFramework(...)` for expected values rather than hardcoding strings. This keeps assertions resilient to future name corrections.
 
 ### Critical Pitfalls
 
-1. **Breaking the published RegulatoryReport interface** — Adding `failingNodes` and `legalContext` as required fields on the base type is a semver-breaking change. Prevention: use `EnrichedReport extends RegulatoryReport` (new subtype, keeps base frozen) or add fields as optional to the base type. Never add required fields without a major version bump.
+1. **`LegalFramework` type reused incorrectly for AU** — Storing AU laws with `euFramework: 'WAD'` causes statement templates to reference the EU Web Accessibility Directive for Australian clients. Extend `LegalFramework` to include `'DDA'` before writing any AU data. This is the single most consequential decision in the milestone and must be resolved before Phase 1 implementation begins.
 
-2. **Removing `as any` without verifying the axe-core node shape** — `node: any` in `enrichResults()` hides that `axe-core`'s `NodeResult.target` is `string[]`, not `string`. After removing the cast, the `FailingNode.target` mapping `.join(' ')` must be verified against the live axe-core type definitions. Prevention: import `NodeResult` from `axe-core`; write a unit test with `target: ['#foo', '.bar']` that asserts `.join(' ')` is applied.
+2. **DTA modelled as EAA equivalent for AU public sector** — Setting `ENFORCEMENT_BODIES_DETAILED.AU.eaa = 'DTA'` causes private-sector AU statements to wrongly name the DTA as enforcement body. DTA only governs federal government agencies and does not accept complaints. Both `wad` and `eaa` fields must point to AHRC.
 
-3. **Runtime `readFileSync` version resolution fails in dist context** — `package.json` is not inside the `dist/` directory (the `files` array only includes `dist` and `README.md`), so `resolve(dir, '..', 'package.json')` fails silently after `npm publish`, falling back to the stale `'2.1.1'` string. Prevention: use tsup `define` to inject the version at build time, eliminating the filesystem dependency.
+3. **Statement template copied from EU/UK/CA without AU review** — Existing templates contain WAD-specific structures: "disproportionate burden" exemption, "monitoring body" references, mandatory statement framing. AU has none of these. The `en-au` template must be authored deliberately with complaint-based enforcement language, not adapted from `en-ca.json` or `en-gb.json`.
 
-4. **Template processing order divergence produces different HTML vs Markdown output** — The React component and the Markdown generator implement the same template engine with opposite ordering (substitution before choices vs. choices before substitution). This is a legally significant document. Prevention: write a cross-path equality test before touching any template logic; any fix must preserve output parity across both paths.
+4. **`diggRisk` label visible in AU CLI output** — The `holmdigitalInsight.diggRisk` field renders "DIGG Risk" in output. DIGG is the Swedish Agency for Digital Government; this label is meaningless and professionally damaging for AU clients. The `en-au` i18n strings must override the display label to "Risk level".
 
-5. **Global i18n state contaminates test isolation** — `currentLang` is a module-level `let`; Vitest shares process state across test files by default. Prevention: `afterEach(() => setLanguage('en'))` reset in every locale test file from day one.
+5. **Country type and Record maps updated non-atomically** — Adding `'AU'` to the `Country` union without simultaneously updating `ENFORCEMENT_BODIES` and `ENFORCEMENT_BODIES_DETAILED` breaks the TypeScript build. All three must land in a single commit in `packages/standards`.
 
 ## Implications for Roadmap
 
-The research establishes an unambiguous three-phase execution order driven by the monorepo build dependency chain. Standards must build before components, components before engine. This is not a preference — it is a hard constraint because TypeScript project references enforce it.
+Based on research, the implementation must follow the strict package dependency chain. There are three natural phases corresponding to the three packages, with a fourth phase for verification.
 
-### Phase 1: Standards Layer — Define Missing Types
+### Phase 1: Standards Foundation
+**Rationale:** The `Country` and `LegalFramework` type unions in `@holmdigital/standards` gate everything downstream. TypeScript will reject AU references in components and engine until `'AU'` and `'DDA'` are present. This is the single blocking dependency for all subsequent work.
+**Delivers:** Type-safe AU country code, `'DDA'` in the `LegalFramework` union, DDA + DTA law entries in `national-laws.json`, AHRC enforcement body in both lookup maps, compile-time verification that no `Record<Country>` map was missed.
+**Addresses:** AU-LAWS-1, AU-ENFORCEMENT-1, AU-SECTOR-1 (all P1 features)
+**Avoids:** Pitfall 2 (`LegalFramework` type wrong for AU), Pitfall 3 (DTA incorrectly as EAA body), Pitfall 6 (`Country` type update non-atomic), Pitfall 8 (sector model wrong for AU)
 
-**Rationale:** All 40+ `as any` casts cascade from a single missing type. Until `FailingNode` and `EnrichedReport` are defined and exported from `@holmdigital/standards`, no downstream cast removal is possible. This phase has zero behavior change — it is purely additive type definitions.
+### Phase 2: Component Locale Wiring
+**Rationale:** Component changes require `Country` type to include `'AU'` (Phase 1). Components can then be updated independently of engine changes. Component changes are primarily additive map entries — lower complexity than the engine template.
+**Delivers:** `AccessibilityStatement` renders correctly for `country='AU'` with DDA/AHRC references and correct locale chrome (badges, labels, footer). No EU/generic fallback for AU sites.
+**Addresses:** AU-COMPONENT-1, AU-CHROME-1 (P1 features)
+**Avoids:** Pitfall 4 (WAD mandatory template structure) — component template must use complaint-based framing rather than enforcement-procedure framing
 
-**Delivers:** `FailingNode` interface, `EnrichedReport extends RegulatoryReport`, removal of `[key: string]: any` from `HolmDigitalInsight` (with all explicit keys added including `reasoning?`), updated public exports from `src/index.ts`.
+### Phase 3: Engine TLD Detection and Statement Template
+**Rationale:** Engine depends on both standards and components. TLD detection, locale maps, and the `en-au.json` statement template are all engine-layer concerns. The `en-au.json` template is the most user-visible deliverable and requires the most careful authoring.
+**Delivers:** Automatic AU detection for `.au`/`.com.au` URLs, correct `en-au` locale maps (EVALUATION_METHOD, STATUS_LABELS, RESPONSE_TIME_DEFAULT, RESPONSE_TIME_DEFAULT), and a legally accurate AU accessibility statement template referencing DDA 1992, AHRC, and WCAG 2.2 AA.
+**Addresses:** AU-TLD-1, AU-TEMPLATE-1 (P1 features)
+**Avoids:** Pitfall 1 (TLD drops .com.au — add comment documenting pop() assumption), Pitfall 4 (WAD-style template prose), Pitfall 5 (diggRisk label in AU i18n output), Pitfall 7 (getNationalLawByFramework null for AU)
 
-**Addresses:** TS-1, TS-2, TS-5 from FEATURES.md dependency graph
-
-**Avoids:** Pitfall 1 (breaking published interface — use extension pattern, not modification), Pitfall 6 (missing `reasoning` field — enumerate all `holmdigitalInsight.*` accesses before removing the index signature)
-
-**Research flag:** None needed — interface extension is a standard TypeScript pattern with no ambiguity.
-
-### Phase 2: Version Fix — Build-Time Injection
-
-**Rationale:** Version fix is independent of the type fix and components fix. It should be done in parallel with Phase 1 logically (same standards PR), or as a standalone change immediately after. The version fix has a hidden complexity (runtime path resolution fails in dist) that requires the tsup `define` approach rather than just calling `getEngineVersion()` in more places.
-
-**Delivers:** `tsup.config.ts` in `packages/engine` with `define: { __ENGINE_VERSION__: ... }`, Vitest config updated with matching `define`, fallback in `getEngineVersion()` changed from `'2.1.1'` to `'unknown'`, version verified with `node dist/cli/index.js --version` after build.
-
-**Addresses:** VER-1, VER-2, VER-3, VER-4, VER-5 from FEATURES.md dependency graph
-
-**Avoids:** Pitfall 5 (runtime filesystem path fails in dist), Pitfall 8 (CJS/ESM dual build breaks `import.meta.url` in CJS context)
-
-**Research flag:** None — tsup `define` is a documented first-class feature; Vitest `define` is identical.
-
-### Phase 3: Engine Layer — Remove All as any Casts
-
-**Rationale:** Engine changes require Phase 1 types to be in place. The single most impactful change is widening `ScanResult.reports` from `RegulatoryReport[]` to `EnrichedReport[]` — this causes the TypeScript compiler to flag every illegal `(report as any)` access as an error, making the cast removal self-guided. Fix what the compiler flags.
-
-**Delivers:** `enrichResults()` returns `EnrichedReport[]`, `ScanResult.reports` typed as `EnrichedReport[]`, all `(report as any).*` casts removed in `html-template.ts`, `junit-generator.ts`, `cloud-client.ts`, `github-actions.ts`, `escapeXML` parameter tightened from `any` to `string | null | undefined`, i18n dynamic traversal casts documented with `// eslint-disable` rather than forced to typed (legitimate use case).
-
-**Addresses:** TS-3, TS-4, TS-6 from FEATURES.md dependency graph
-
-**Avoids:** Pitfall 2 (axe-core node shape — import `NodeResult` type; verify `.join(' ')` behavior), Pitfall 10 (partial cast removal — both casts in `junit-generator.ts` must be removed in the same commit)
-
-**Research flag:** Minimal — patterns are well-established. Only the axe-core `NodeResult.target` array shape needs verification against current axe-core 4.11.1 types before finalizing the `FailingNode` definition.
-
-### Phase 4: Components Layer — Fix Locale Routing
-
-**Rationale:** The locale fix is self-contained in `AccessibilityStatement.tsx` but must come after standards (to confirm type compatibility of any new prop surface). The minimum fix is a two-line change to the `supportedLocales` map. The maximum fix adds a `template` prop for full locale support. Research recommends the explicit locale map as the minimum, with the `template` prop flagged as a separate milestone.
-
-**Delivers:** `LOCALE_TO_TEMPLATE` map covering all 9 locales, Norwegian correctly routed to Norwegian template (bug fix), other 6 non-sv/en locales explicitly mapped to `'en'` (deliberate, documented fallback), `formatDiggDate` locale map expanded to include all 9 locales, icon detection switched from language-specific string matching to `section.id`-based selection, placeholder-leakage tests for all 9 locales.
-
-**Addresses:** I18N-1, I18N-2, I18N-3, I18N-4 from FEATURES.md dependency graph
-
-**Avoids:** Pitfall 3 (template processing divergence — write cross-path equality test before touching any template logic), Pitfall 4 (unresolved placeholder variables for non-Nordic locales — test with `/{<[^>]+>}/` regex on all output), Pitfall 7 (global i18n state — `afterEach` reset in all locale test files), Pitfall 11 (icon detection breaks for new locales — use `section.id`)
-
-**Research flag:** Moderate attention needed. The substitution key casing for non-Nordic templates (e.g., `{<Bewertungsdatum>}` vs. `{<bewertungsdatum>}`) must be verified against the JSON template files before writing tests. This is a one-time audit, not deep research.
+### Phase 4: Test Coverage and Verification
+**Rationale:** Tests must run after all three packages are updated to verify end-to-end correctness. The "looks done but isn't" checklist from PITFALLS.md defines the minimum verification surface.
+**Delivers:** Approximately 12 new test cases covering TLD detection (`.au` and `.com.au`), enforcement body routing (both sectors), law data retrieval, statement generation, and component rendering for `country='AU'`. Regression verification that existing 225 tests still pass.
+**Addresses:** AU-TESTS-1 (P1 feature)
+**Avoids:** Silent regressions from the `Country` type union expansion
 
 ### Phase Ordering Rationale
 
-- The standards → components → engine build order is enforced by TypeScript project references and cannot be changed.
-- Phase 2 (version) is independent but logically grouped with Phase 1 because both touch `@holmdigital/standards` and `@holmdigital/engine` infrastructure with no behavior overlap.
-- Phase 4 (locale) comes last not because of technical dependency but because it is the highest-risk change for regression: the Norwegian bug fix is an intentional behavioral change, the locale expansion touches a legally significant document path, and the test infrastructure needs to be solid before expanding locale coverage.
-- Every phase must pass its full test suite before proceeding to the next — this is not optional; it is the only way to isolate regressions in a monorepo with cascading type changes.
+- Standards must come first because `Country` and `LegalFramework` type unions are imported by both downstream packages. Any AU reference in components or engine without the type update causes a build failure at compile time.
+- Components come before engine because engine imports `AccessibilityStatement` for server-side rendering. Unstable component types cascade to engine test failures.
+- The `en-au.json` engine template is the highest-risk deliverable and benefits from having the component template (`TEMPLATES['en-au']`) written first as a prose consistency reference.
+- Tests are written alongside each phase as unit tests, with a final end-to-end integration pass in Phase 4.
 
 ### Research Flags
 
-Phases likely needing attention during planning:
-- **Phase 4 (locale):** Verify substitution key casing in non-Nordic JSON templates before writing tests. Run the existing 9 JSON templates through the generator and grep for unresolved `{<` placeholders to establish a baseline.
-- **Phase 3 (engine casts):** Confirm axe-core 4.11.1 `NodeResult.target` type (`string[]`) before finalizing `FailingNode.target` type (`string` after `.join(' ')` transform). One import check against `node_modules/axe-core/axe.d.ts` is sufficient.
+Phases with well-documented patterns — no additional research needed:
+- **Phase 1:** `Country`/`LegalFramework` type extension and `national-laws.json` additions follow established patterns from GB, US, CA. Direct codebase read confirms the exact lines to change.
+- **Phase 2:** Component locale wiring is mechanical map-entry work. The `en-gb`/`en-us`/`en-ca` templates are direct models.
+- **Phase 4:** Test patterns are already established; the auto-syncing pattern (call standards functions rather than hardcoding strings) is documented and verified in ARCHITECTURE.md.
 
-Phases with standard patterns (no additional research needed):
-- **Phase 1 (standards types):** Interface extension is a foundational TypeScript pattern. The specific fields needed are enumerated in STACK.md and ARCHITECTURE.md. No ambiguity.
-- **Phase 2 (version):** tsup `define` is documented with examples. The vitest `define` config mirrors it exactly. The implementation is fully specified in STACK.md.
+Phases requiring careful authoring (not additional research, but deliberate divergence from existing templates):
+- **Phase 3 (en-au.json prose):** The legal prose for the AU statement template does not have a direct existing model. The DDA complaint-based enforcement structure, absence of mandatory statement requirements, and absence of "disproportionate burden" exemption all require deliberate divergence from `en-ca.json`/`en-gb.json`. The draft prose in STACK.md is a verified starting point but should be reviewed by an AU-familiar legal practitioner before first production use.
+- **Phase 3 (diggRisk label):** The exact i18n key for the risk-level column label was not verified during research. The Phase 3 implementer must locate the key in `packages/engine/src/locales/en.json` before adding the `en-au` override.
 
 ## Confidence Assessment
 
 | Area | Confidence | Notes |
 |------|------------|-------|
-| Stack | HIGH | All toolchain features (tsup define, Vitest define, axe-core types) verified against current versions in the codebase; no speculative recommendations |
-| Features | HIGH | Derived from direct codebase audit cross-referenced with .planning/codebase/CONCERNS.md; every "broken" claim is backed by file + line number |
-| Architecture | HIGH | Build dependency order confirmed by inspection of tsconfig project references and package.json scripts; `EnrichedReport extends RegulatoryReport` pattern is standard TypeScript |
-| Pitfalls | HIGH | All pitfalls are grounded in static analysis; no speculative claims; two pitfalls (tsup CJS/ESM dual build, runtime readFileSync path) explain why a superficially "easy" version fix has hidden complexity |
+| Stack | HIGH | No new technologies; all changes are type/data additions within the established TypeScript monorepo. Confirmed by direct codebase read of all affected files. |
+| Features | HIGH | AU legal framework verified against AHRC official site, DTA official site, primary DDA legislation, W3C WAI Australia policy index, and Standards Australia. Feature scope is well-bounded. |
+| Architecture | HIGH | All integration points identified by direct source read. Build order is determined by existing package dependency declarations and TypeScript project references. |
+| Pitfalls | HIGH | Critical pitfalls are grounded in direct codebase analysis. Legal pitfalls (DDA scope, AHRC vs DTA distinction, no mandatory statement requirement) confirmed by multiple official sources. |
 
 **Overall confidence:** HIGH
 
 ### Gaps to Address
 
-- **Substitution key casing for non-Nordic templates:** The generator maps substitution keys in lowercase (e.g., `'{<bewertungsdatum>}'`) but template JSON files may use mixed case. Verify against actual JSON content before writing placeholder-leakage tests. Resolution: one-time grep, not blocking Phase 4 planning.
-- **Template processing divergence (HTML vs Markdown):** PITFALLS.md documents that `renderTemplate()` (component) and `processText()` (generator) have different evaluation order. A cross-path equality test is needed before any template logic is touched. Current extent of divergence is documented but not quantified. Resolution: write the test first in Phase 4; the test output will reveal the exact divergence.
-- **Full template dedup:** Extracting a shared `processTemplate()` utility is the correct long-term fix for both the divergence and the template ownership problem. This is explicitly out of scope per PROJECT.md. Track as a follow-on milestone.
+- **`LegalFramework` type decision requires team alignment before implementation starts:** STACK.md recommends extending to `'DDA'`; ARCHITECTURE.md recommends reusing `'WAD'` as an existing convention. These are irreconcilable. The recommended choice is `'DDA'` (legally correct and non-breaking); the `'WAD'` option produces misleading output and is rejected. The team must confirm this before Phase 1 begins to avoid re-work.
+- **`en-au` template prose legal review:** The AHRC-specific language in the `en-au.json` enforcement section and the characterisation of accessibility statements as voluntary (not mandatory) under AU law should be confirmed by an AU legal practitioner before external release. AHRC's complaint URL and process are verified from official sources, but statement framing nuances carry reputational risk.
+- **`australianInterpretation` field drift in rule files:** PITFALLS.md flags that `rules.en-au.json` will diverge from `rules.en.json` over time without an explicit maintenance procedure. A rule count parity test must be added in Phase 4, and the diff-and-apply procedure should be documented when `rules.en.json` is updated.
+- **`diggRisk` display label i18n key path not verified:** The exact key name in `packages/engine/src/locales/en.json` for the risk-level column label was not confirmed during research. The Phase 3 implementer must locate it before authoring the `en-au` locale override.
 
 ## Sources
 
-### Primary (HIGH confidence — direct codebase inspection)
-- `packages/standards/src/types.ts` — interface definitions, index signatures, export surface
-- `packages/engine/src/core/regulatory-scanner.ts` — `enrichResults()` cast sites, `getEngineVersion()` pattern, `ScanResult` interface
-- `packages/engine/src/reporting/` (html-template, junit-generator, cloud-client, statement-generator) — downstream cast sites, template processing, version usage
-- `packages/components/src/AccessibilityStatement/AccessibilityStatement.tsx` — locale routing bug, TEMPLATES constant, renderTemplate ordering
-- `packages/engine/src/i18n/index.ts` — module-level global state, dynamic key traversal
-- `packages/engine/package.json` — `files` array, version, tsup config
-- `.planning/codebase/CONCERNS.md` — comprehensive codebase audit (2026-02-26)
-- `.planning/PROJECT.md` — milestone scope, constraints, out-of-scope decisions
+### Primary (HIGH confidence)
+- Direct codebase read: `packages/standards/src/types.ts`, `packages/standards/src/index.ts`, `packages/standards/data/legal/national-laws.json`
+- Direct codebase read: `packages/engine/src/reporting/statement-generator.ts`, `packages/engine/src/i18n/index.ts`, `packages/engine/src/reporting/templates/en-ca.json`
+- Direct codebase read: `packages/components/src/AccessibilityStatement/AccessibilityStatement.tsx`, `locale-chrome.ts`
+- [Australian Human Rights Commission — DDA complaints](https://humanrights.gov.au/complaints/complaints/complaints-under-disability-discrimination-act)
+- [DTA — Digital Experience Policy](https://www.dta.gov.au/articles/digital-experience-policy-and-standards-now-live-digitalgovau)
+- [digital.gov.au — Digital Access Standard](https://www.digital.gov.au/policy/digital-experience/digital-access-standard)
+- [Disability Discrimination Act 1992 — Federal Register of Legislation](https://www.legislation.gov.au/Details/C2016C00763)
+- [Standards Australia — AS EN 301 549:2024](https://store.standards.org.au/product/AS-EN-301-549-2024)
+- [W3C WAI — Australia Policy](https://www.w3.org/WAI/policies/australia/)
 
-### Secondary (HIGH confidence — established patterns)
-- TypeScript Handbook: interface extension, structural compatibility, discriminated unions
-- tsup documentation: `define` option for build-time constant injection
-- Vitest documentation: `define` config option
+### Secondary (MEDIUM confidence)
+- [Deque — Three major accessibility updates in Australia, 2026](https://www.deque.com/blog/accessibility-updates-in-australia-in-2026/) — WCAG 2.2 AA guidance, AHRC April 2025 announcement
+- [Deque — The 2025 AHRC accessibility guidelines](https://www.deque.com/blog/the-2025-ahrc-accessibility-guidelines-whats-new-and-why-it-matters/) — extended scope (SaaS, AI, IoT, mobile)
+- [OZeWAI — Three major accessibility updates in Australia](https://ozewai.org/blog/standards/three-major-accessibility-updates-in-australia/) — corroborates Deque analysis
+- [Intopia — EN 301 549: What it means for Australia](https://intopia.digital/articles/en-301-549-australia/) — AS EN 301 549:2024 procurement context
 
-### Tertiary (not needed — no speculative claims)
-None. All recommendations derive from direct inspection or well-established language/toolchain patterns.
+### Tertiary (LOW confidence)
+- [iconagency.com.au — Australian Government website accessibility in 2025](https://iconagency.com.au/news/2025-10-21-australian-government-website-accessibility-2025-dss-wcag-22-and-multilingual) — DTA policy coverage, needs verification against official sources
+- [.au Wikipedia](https://en.wikipedia.org/wiki/.au) — AU domain structure; used to verify TLD parser behaviour (all AU domains end in 'au')
 
 ---
-*Research completed: 2026-03-02*
+*Research completed: 2026-03-27*
 *Ready for roadmap: yes*
