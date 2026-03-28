@@ -41,6 +41,7 @@ const EVALUATION_METHOD: Record<string, string> = {
     'en-gb': 'Automated scan via @holmdigital/engine',
     'en-us': 'Automated scan via @holmdigital/engine',
     'en-ca': 'Automated scan via @holmdigital/engine',
+    'en-au': 'Automated scan via @holmdigital/engine',
 };
 
 const STATUS_LABELS: Record<string, Record<string, string>> = {
@@ -60,6 +61,7 @@ const STATUS_LABELS: Record<string, Record<string, string>> = {
     'en-gb': { full: 'Fully compliant', partial: 'Partially compliant', 'non-compliant': 'Non-compliant' },
     'en-us': { full: 'Fully compliant', partial: 'Partially compliant', 'non-compliant': 'Non-compliant' },
     'en-ca': { full: 'Fully compliant', partial: 'Partially compliant', 'non-compliant': 'Non-compliant' },
+    'en-au': { full: 'Fully compliant', partial: 'Partially compliant', 'non-compliant': 'Non-compliant' },
 };
 
 const RESPONSE_TIME_DEFAULT: Record<string, string> = {
@@ -79,6 +81,7 @@ const RESPONSE_TIME_DEFAULT: Record<string, string> = {
     'en-gb': '2 days',
     'en-us': '2 days',
     'en-ca': '2 days',
+    'en-au': '2 days',
 };
 
 /**
@@ -139,7 +142,7 @@ export async function generateStatementContent(
             'se': 'SE', 'no': 'NO', 'dk': 'DK', 'fi': 'FI',
             'de': 'DE', 'fr': 'FR', 'nl': 'NL', 'es': 'ES', 'it': 'IT',
             'pt': 'PT', 'pl': 'PL',
-            'uk': 'GB', 'us': 'US', 'ca': 'CA',
+            'uk': 'GB', 'us': 'US', 'ca': 'CA', 'au': 'AU',
         };
         // Proper TLD parse: split URL hostname by '.', take last segment
         try {
@@ -304,9 +307,14 @@ export async function generateStatementContent(
             '{<third party>}': props.generatorTool?.name || 'HolmDigital Engine',
             '{<enforcement_body>}': getEnforcementBody(country, sector),
             '{<national_law>}': (() => {
+                if (country === 'AU') {
+                    const ddaLaw = getNationalLawByFramework('DDA', 'AU');
+                    return ddaLaw ? `${ddaLaw.fullName}` : 'Disability Discrimination Act 1992 (Cth)';
+                }
                 const law = getNationalLawByFramework(sector === 'private' ? 'EAA' : 'WAD', country);
                 return law ? `${law.fullName} (${law.law})` : '';
             })(),
+            '{<ahrc_url>}': 'https://www.humanrights.gov.au/complaints',
             '{<brister>}': nonComplianceItems.length > 0 ? nonComplianceItems.map(item => `* ${item}`).join('\n') : (lang === 'sv' ? 'Inga kända brister.' : 'No known issues.'),
             '{<puutteet>}': nonComplianceItems.length > 0 ? nonComplianceItems.map(item => `* ${item}`).join('\n') : (lang === 'fi' ? 'Ei tiedossa olevia puutteita.' : 'No known issues.'),
             '{<gebreken>}': nonComplianceItems.length > 0 ? nonComplianceItems.map(item => `* ${item}`).join('\n') : (lang === 'nl' ? 'Geen bekende gebreken.' : 'No known issues.'),
