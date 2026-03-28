@@ -1,7 +1,7 @@
 /**
  * Locale-specific chrome text for the AccessibilityStatement component.
  *
- * Covers 12 locales: 9 canonical EU locales plus en-gb, en-us, en-ca.
+ * Covers 13 locales: 9 canonical EU locales plus en-gb, en-us, en-ca, en-au.
  * Alias codes (nb, dk) are resolved in supportedLocales before lookup,
  * so they are NOT duplicated here. The en-gb/en-us/en-ca locales have
  * their own entries (identical to en) because supportedLocales maps them
@@ -28,6 +28,7 @@ export const BADGE_LABELS: Record<string, Record<string, string>> = {
     'en-gb': { full: 'Fully compliant', partial: 'Partially compliant', 'non-compliant': 'Non-compliant' },
     'en-us': { full: 'Fully compliant', partial: 'Partially compliant', 'non-compliant': 'Non-compliant' },
     'en-ca': { full: 'Fully compliant', partial: 'Partially compliant', 'non-compliant': 'Non-compliant' },
+    'en-au': { full: 'Fully compliant', partial: 'Partially compliant', 'non-compliant': 'Non-compliant' },
 };
 
 /** "Updated:" label per locale. */
@@ -47,6 +48,7 @@ export const UPDATED_LABEL: Record<string, string> = {
     'en-gb': 'Updated:',
     'en-us': 'Updated:',
     'en-ca': 'Updated:',
+    'en-au': 'Updated:',
 };
 
 /** "Generated using" footer text per locale. */
@@ -66,4 +68,5 @@ export const FOOTER_TEXT: Record<string, string> = {
     'en-gb': 'Generated using',
     'en-us': 'Generated using',
     'en-ca': 'Generated using',
+    'en-au': 'Generated using',
 };
