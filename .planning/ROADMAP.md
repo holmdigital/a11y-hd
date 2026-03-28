@@ -63,7 +63,7 @@ See: `.planning/milestones/v0.4-ROADMAP.md` for full details
 
 **Milestone Goal:** Add Australia as a fully supported jurisdiction across all three packages — standards (DDA + DTA), components (en-au UI chrome and inline template), engine (en-au statement template + .au TLD detection), and sector-aware enforcement routing for AU. All output for Australian clients must reference DDA 1992 and AHRC, not EU law.
 
-- [ ] **Phase 18: AU Standards Foundation** - `LegalFramework` extended to `'DDA'`, `Country` extended to `'AU'`, DDA + DTA law data, AHRC enforcement bodies
+- [x] **Phase 18: AU Standards Foundation** - `LegalFramework` extended to `'DDA'`, `Country` extended to `'AU'`, DDA + DTA law data, AHRC enforcement bodies (completed 2026-03-28)
 - [ ] **Phase 19: AU Component Locale** - `TEMPLATES['en-au']` inline template and locale-chrome entries for en-au
 - [ ] **Phase 20: AU Engine Integration** - `en-au.json` statement template, `.au`/`.com.au` TLD detection, engine locale maps
 - [ ] **Phase 21: AU Test Coverage** - Auto-syncing enforcement/law tests, en-au template placeholder exhaustiveness, component rendering and locale routing tests
@@ -143,7 +143,7 @@ Plans:
 | 15. New Locale Engine Templates | v0.4 | 1/1 | Complete | 2026-03-07 |
 | 16. New Locale Component Templates | v0.4 | 1/1 | Complete | 2026-03-07 |
 | 17. EAA Sector Support | v0.4 | 1/1 | Complete | 2026-03-07 |
-| 18. AU Standards Foundation | v0.5 | 0/1 | Planning | - |
+| 18. AU Standards Foundation | 1/1 | Complete   | 2026-03-28 | - |
 | 19. AU Component Locale | v0.5 | 0/TBD | Not started | - |
 | 20. AU Engine Integration | v0.5 | 0/TBD | Not started | - |
 | 21. AU Test Coverage | v0.5 | 0/TBD | Not started | - |
