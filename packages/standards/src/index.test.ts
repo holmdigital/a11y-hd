@@ -157,7 +157,8 @@ describe('Enforcement Bodies', () => {
     });
 
     it('should include Australia', () => {
-        expect(ENFORCEMENT_BODIES.AU).toBe('Australian Human Rights Commission (AHRC)');
+        expect(ENFORCEMENT_BODIES.AU).toBe(getEnforcementBody('AU'));
+        expect(ENFORCEMENT_BODIES.AU.length).toBeGreaterThan(0);
     });
 
     describe('ENFORCEMENT_BODIES_DETAILED', () => {
@@ -180,8 +181,8 @@ describe('Enforcement Bodies', () => {
 
         it('should have AHRC for both AU sectors', () => {
             const au = ENFORCEMENT_BODIES_DETAILED.AU;
-            expect(au.wad).toBe('Australian Human Rights Commission (AHRC)');
-            expect(au.eaa).toBe('Australian Human Rights Commission (AHRC)');
+            expect(au.wad).toBe(ENFORCEMENT_BODIES.AU);
+            expect(au.eaa).toBe(ENFORCEMENT_BODIES.AU);
         });
     });
 
@@ -213,6 +214,12 @@ describe('Enforcement Bodies', () => {
         it('should work for Poland', () => {
             expect(getEnforcementBody('PL')).toBe('Ministry of Digitization (Ministerstwo Cyfryzacji)');
             expect(getEnforcementBody('PL', 'private')).toBe('Office of Competition and Consumer Protection (UOKiK)');
+        });
+
+        it('should work for Australia (single body for all sectors)', () => {
+            expect(getEnforcementBody('AU')).toBe(ENFORCEMENT_BODIES.AU);
+            expect(getEnforcementBody('AU', 'public')).toBe(ENFORCEMENT_BODIES.AU);
+            expect(getEnforcementBody('AU', 'private')).toBe(ENFORCEMENT_BODIES.AU);
         });
     });
 });

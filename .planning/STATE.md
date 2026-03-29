@@ -2,15 +2,15 @@
 gsd_state_version: 1.0
 milestone: v0.5
 milestone_name: Australia Jurisdiction
-status: planning
-stopped_at: Completed 18-01-PLAN.md
-last_updated: "2026-03-28T18:28:35.223Z"
-last_activity: 2026-03-27 — v0.5 roadmap created (phases 18-21)
+status: executing
+stopped_at: Completed 20-01-PLAN.md
+last_updated: "2026-03-28T21:23:39.884Z"
+last_activity: 2026-03-28 — Phase 20 Plan 01 executed
 progress:
   total_phases: 4
-  completed_phases: 1
-  total_plans: 1
-  completed_plans: 1
+  completed_phases: 3
+  total_plans: 3
+  completed_plans: 3
   percent: 0
 ---
 
@@ -25,10 +25,10 @@ See: .planning/PROJECT.md (updated 2026-03-27)
 
 ## Current Position
 
-Phase: 18 of 21 (AU Standards Foundation)
-Plan: —
-Status: Ready to plan
-Last activity: 2026-03-27 — v0.5 roadmap created (phases 18-21)
+Phase: 20 of 21 (AU Engine Integration)
+Plan: 1 of 1
+Status: In progress
+Last activity: 2026-03-28 — Phase 20 Plan 01 executed
 
 Progress: [░░░░░░░░░░░░░░░░░░░░] 0% (v0.5: 0/4 phases)
 
@@ -46,6 +46,8 @@ Progress: [░░░░░░░░░░░░░░░░░░░░] 0% (v0.
 | 16-01 | new-locale-component-templates | 3min | 3 | 3 |
 | 17-01 | eaa-sector-support | 3min | 2 | 4 |
 | Phase 18 P01 | 3min | 2 tasks | 4 files |
+| Phase 19-01 Pen-au-component-locale | 12min | 2 tasks | 3 files |
+| Phase 20-01 Pau-engine-integration | 2min | 2 tasks | 3 files |
 
 ## Accumulated Context
 
@@ -58,6 +60,9 @@ Progress: [░░░░░░░░░░░░░░░░░░░░] 0% (v0.
 - [Phase 18]: DDA as new LegalFramework value (not WAD/EAA) to avoid EU directive references in AU output
 - [Phase 18]: AHRC is enforcement body for both public and private AU sectors — set to both wad/eaa keys in ENFORCEMENT_BODIES_DETAILED
 - [Phase 18]: au-dda placed first in AU national-laws.json array so getNationalLawByFramework Array.find returns it as primary entry
+- [Phase 19]: en-au template uses voluntary framing — AU has no mandatory statement requirement; DDA fallback via ?? operator for national_law when WAD/EAA return null for country=AU
+- [Phase 20]: Use ddaLaw.fullName alone for AU national_law to avoid (Cth) duplication — fullName already contains it
+- [Phase 20]: ahrc_url hardcoded as static substitution string in statement-generator — URL is stable and known
 
 ### Pending Todos
 
@@ -71,6 +76,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-03-28T18:28:35.219Z
-Stopped at: Completed 18-01-PLAN.md
+Last session: 2026-03-28T21:23:39.880Z
+Stopped at: Completed 20-01-PLAN.md
 Resume: `/gsd:plan-phase 18`

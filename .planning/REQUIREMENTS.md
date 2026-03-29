@@ -16,14 +16,14 @@ Requirements for v0.5 Australia Jurisdiction. Each maps to roadmap phases.
 
 ### Engine
 
-- [ ] **ENG-01**: `en-au.json` statement template with DDA-specific prose, voluntary framing, and AHRC complaint pathway
-- [ ] **ENG-02**: `TLD_MAP` includes `'au': 'AU'` — detects .au, .com.au, .gov.au domains
-- [ ] **ENG-03**: Engine locale maps (evaluationMethod, statusMap, locale routing) include `en-au` entries
+- [x] **ENG-01**: `en-au.json` statement template with DDA-specific prose, voluntary framing, and AHRC complaint pathway
+- [x] **ENG-02**: `TLD_MAP` includes `'au': 'AU'` — detects .au, .com.au, .gov.au domains
+- [x] **ENG-03**: Engine locale maps (evaluationMethod, statusMap, locale routing) include `en-au` entries
 
 ### Components
 
-- [ ] **CMP-01**: `TEMPLATES['en-au']` inline template in AccessibilityStatement with AU-specific legislation references
-- [ ] **CMP-02**: locale-chrome.ts includes en-au entries for BADGE_LABELS, UPDATED_LABEL, FOOTER_TEXT
+- [x] **CMP-01**: `TEMPLATES['en-au']` inline template in AccessibilityStatement with AU-specific legislation references
+- [x] **CMP-02**: locale-chrome.ts includes en-au entries for BADGE_LABELS, UPDATED_LABEL, FOOTER_TEXT
 
 ### Testing
 
@@ -76,11 +76,11 @@ Which phases cover which requirements. Updated during roadmap creation.
 | STD-02 | Phase 18 | Complete |
 | STD-03 | Phase 18 | Complete |
 | STD-04 | Phase 18 | Complete |
-| ENG-01 | Phase 20 | Pending |
-| ENG-02 | Phase 20 | Pending |
-| ENG-03 | Phase 20 | Pending |
-| CMP-01 | Phase 19 | Pending |
-| CMP-02 | Phase 19 | Pending |
+| ENG-01 | Phase 20 | Complete |
+| ENG-02 | Phase 20 | Complete |
+| ENG-03 | Phase 20 | Complete |
+| CMP-01 | Phase 19 | Complete |
+| CMP-02 | Phase 19 | Complete |
 | TST-01 | Phase 21 | Pending |
 | TST-02 | Phase 21 | Pending |
 | TST-03 | Phase 21 | Pending |
