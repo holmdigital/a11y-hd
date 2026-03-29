@@ -1,7 +1,7 @@
 {
     "name": "@holmdigital/components",
     "author": "Holm Digital AB",
-    "version": "2.2.2",
+    "version": "2.3.0",
     "private": false,
     "publishConfig": {
         "access": "public"
@@ -154,7 +154,7 @@
         "typescript": "^5.7.2"
     },
     "dependencies": {
-        "@holmdigital/standards": "^2.2.0",
+        "@holmdigital/standards": "^2.3.0",
         "lucide-react": "^0.556.0"
     }
 }
