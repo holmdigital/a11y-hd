@@ -1,158 +1,233 @@
-# Feature Landscape
+# Feature Research
 
-**Domain:** TypeScript monorepo stability pass — accessibility library
-**Researched:** 2026-03-02
-**Confidence:** HIGH (based on direct codebase analysis + established TypeScript/npm/i18n patterns)
+**Domain:** Australian jurisdiction support for accessibility compliance tooling
+**Researched:** 2026-03-27
+**Confidence:** HIGH (AHRC, DTA, WAI/W3C official sources verified; AS EN 301 549 confirmed via Standards Australia)
 
 ---
 
 ## Scope of This Research
 
-This milestone is a **stability pass**, not a feature pass. The three technical capability domains under investigation are:
+This milestone adds Australia (AU) as a fully supported jurisdiction to an existing multi-jurisdiction accessibility compliance monorepo. The existing system already handles:
 
-1. **Properly typed TypeScript accessibility library** — type exports, discriminated unions, generic constraints
-2. **Version management in npm monorepos** — single source of truth, build-time injection, runtime resolution
-3. **Multi-locale React component libraries** — template loading, locale routing, fallback chains
+- EU jurisdictions (EN 301 549, WAD, EAA) across 9 countries
+- UK (Equality Act + PSBAR), US (ADA + Section 508), Canada (ACA)
+- TLD-based country detection, sector-aware enforcement selection
+- Accessibility statement generation in 12 locales
 
-Each feature below is evaluated against the actual codebase state (audited 2026-02-26) to ensure recommendations are grounded in what is broken, not hypothetical.
-
----
-
-## Table Stakes
-
-Features that a stable library must have. Missing or broken = library cannot be trusted by consumers.
-
-### Domain 1: TypeScript Type Safety
-
-| Feature | Why Expected | Complexity | Current State |
-|---------|--------------|------------|---------------|
-| Exported named interfaces for all public data shapes | Consumers need to type-check against library contracts. Without named exports, consumers write `any` or duplicate types. | Low | BROKEN — `RegulatoryReport` is exported but missing `failingNodes` and `legalContext` which are added at runtime by the engine |
-| No `as any` casts in core data flow paths | `as any` bypasses the compiler entirely. Every cast is a latent bug that the type system cannot catch. | Medium | BROKEN — 40+ instances. The `enrichResults()` → reporting pipeline casts `report as any` in every downstream consumer: `html-template.ts`, `junit-generator.ts`, `github-actions.ts` |
-| Discriminated union or explicit optional properties for runtime-extended types | When a base type (`RegulatoryReport`) is extended at runtime with additional properties (`failingNodes`, `legalContext`), the extension must be modeled in the type system, not worked around with casts | Low | BROKEN — `enrichResults()` uses `as any` to attach `failingNodes` and `legalContext` rather than returning a properly typed `EnrichedReport` |
-| Explicit optional keys instead of index signatures on domain interfaces | `[key: string]: any` on `HolmDigitalInsight` makes the entire object escape the type system. All known dynamic keys should be explicit optional properties. | Low | BROKEN — `HolmDigitalInsight` has `[key: string]: any` (types.ts line 57) |
-| All public type exports re-exported from package entry point | Consumers importing `@holmdigital/standards` must be able to use all types without reaching into internal paths | Low | PARTIAL — `LegalContext`, `FailingNode` (not yet defined) need to be added to the public export surface |
-| TypeScript strict mode throughout | `strict: true` ensures `null` checks, no implicit `any`, no unchecked indexing | Low | EXISTING — TypeScript 5.7.2 strict mode is on, but ESLint `no-explicit-any` is warning-only, not error |
-| `.d.ts` declaration files emitted for all packages | Consumers using the library in a TypeScript project need type information. tsup `--dts` covers this. | Low | EXISTING — all three packages emit `--dts` via tsup |
-
-### Domain 2: Version Management
-
-| Feature | Why Expected | Complexity | Current State |
-|---------|--------------|------------|---------------|
-| Single source of truth for package version | Hardcoded version strings drift from `package.json` after every release. The only authoritative source is `package.json`. | Low | BROKEN — three different hardcoded versions in `cloud-client.ts` (`1.4.4`), `cli/index.ts` (`0.1.0`), `regulatory-scanner.ts` fallback (`2.1.1`) against actual `2.1.5` |
-| CLI `--version` reports correct package version | Users and CI pipelines rely on `--version` for debugging, audit trails, and compatibility checks | Low | BROKEN — reports `0.1.0` |
-| Cloud API payload sends correct engine version | The HolmDigital Cloud uses `engine_version` for filtering, dashboards, and regression tracking | Low | BROKEN — sends `1.4.4` |
-| Version read at build time or startup, not hardcoded | Hardcoded strings require manual updates; automated version reads never drift | Low | PARTIAL — `getEngineVersion()` in `regulatory-scanner.ts` reads from `package.json` at runtime, but `cloud-client.ts` and `cli/index.ts` ignore it |
-| Consistent version string across all entry points | Cloud client, CLI, scanner metadata, and scan results must all report identical versions | Low | BROKEN — they each use different values |
-
-### Domain 3: Multi-Locale Support
-
-| Feature | Why Expected | Complexity | Current State |
-|---------|--------------|------------|---------------|
-| All supported locales produce correct output (not silent English fallback) | If a library advertises 9-locale support, passing any of those locales must produce locale-specific output | Medium | BROKEN — `AccessibilityStatement` component routes `sv` → Swedish and everything else → English via `(locale === 'sv' ? 'sv' : 'en')`. Norwegian (`no`) has a template but is silently shadowed |
-| Locale routing via an exhaustive map | A hardcoded ternary cannot scale. A lookup map over all supported locales is the minimum viable approach | Low | PARTIAL — `supportedLocales` map exists (`{sv: 'sv', no: 'no', nb: 'no'}`) but only covers 3 of 9 locales; `da`, `de`, `fi`, `fr`, `nl`, `es` all fall through to English |
-| Template existence validated at load time (not silently absent) | If a template is missing, it should fail loudly rather than substituting English and producing a legally non-compliant document | Medium | BROKEN — component uses in-source `TEMPLATES` constant containing only `sv`, `en`, `no`; other locales silently get English |
-| Consistent template source between engine and component | The engine's `statement-generator.ts` loads from 9 external JSON files. The component's `AccessibilityStatement.tsx` uses inline hardcoded strings for 3 locales. These can diverge. | High | BROKEN — two separate template systems with different logic ordering (component: conditionals → substitution → choices; generator: load JSON → substitution → choices → conditionals differ) |
-| Date formatting respects locale | Dates in compliance statements must match the locale's conventional format to be legally valid (e.g., "1 januari 2025" in Swedish, "1. Januar 2025" in German) | Low | EXISTING — `formatDiggDate()` uses `Intl.DateTimeFormat` locale map correctly, but `da`, `de`, `fi`, `fr`, `nl`, `es` are missing from the locale map (line 154-163), falling back to `en-US` |
-| Fallback chain: requested locale → English | When a locale is unknown or unsupported, falling back to English is acceptable provided the fallback is explicit, not accidental | Low | PARTIAL — fallback to English happens but is invisible to the caller; callers cannot detect the fallback |
-
-### Domain 4: Test Coverage for Changed Code
-
-| Feature | Why Expected | Complexity | Current State |
-|---------|--------------|------------|---------------|
-| Tests for type-safety changes (enrichment flow, reporting modules) | Type fixes without tests can regress silently | Medium | MISSING — `enrichResults()`, `html-template.ts`, `junit-generator.ts`, `github-actions.ts` have 0 tests |
-| Tests for version resolution | Version logic must be verified to prove the fix works in both CJS and ESM contexts | Low | MISSING — `getEngineVersion()` has no test, cloud client version field has no test |
-| Tests for locale/template routing in AccessibilityStatement | Bug being fixed (Norwegian silent fallback) needs a regression test | Medium | MISSING — no component tests for `AccessibilityStatement` |
-| Existing 7 test files must continue passing | Regression gate for the stability pass | Low | EXISTING — 7 files pass; this is a constraint, not a feature to add |
+The features below are evaluated against **what AU jurisdiction support requires** specifically — not what is already built.
 
 ---
 
-## Differentiators
+## Australian Regulatory Landscape (Research Findings)
 
-Nice-to-have improvements that add quality but are not blocking stability. These should be noted for a future pass, not addressed in this milestone.
+### Primary Legal Framework
+
+**Disability Discrimination Act 1992 (DDA)** — the foundational law. Applies to all sectors (public and private). No specific WCAG version mandated in the legislation itself; WCAG compliance is the established standard of care via AHRC advisory notes and 2025 guidelines.
+
+**2025 AHRC Guidelines (April 2025)** — updated guidance affirming WCAG 2.2 Level AA as the minimum standard, replacing the 2014 advisory notes which referenced WCAG 2.0. Extended scope to SaaS platforms, AI tools, IoT devices, mobile apps, CAPTCHAs, two-factor authentication, and QR codes.
+
+**Digital Transformation Agency (DTA) — Digital Experience Policy** — effective 1 January 2025 for new government services, 1 July 2025 for existing services. Mandatory for federal government departments and agencies only. Contains four sub-standards: Digital Service Standard, Digital Inclusion Standard, Digital Access Standard, Digital Performance Standard.
+
+**AS EN 301 549:2024** — voluntary standard (not legislated federally) that identically adopts EN 301 549:2021. Used in ICT procurement by NSW, Victoria, Queensland state governments. Aligns with WCAG 2.2 AA.
+
+### Enforcement Body
+
+**Australian Human Rights Commission (AHRC)** — receives and investigates DDA complaints. Conciliation is the primary mechanism; unresolved complaints escalate to the **Federal Court of Australia**. Maximum penalty: AUD 100,000.
+
+DTA enforces the Digital Experience Policy for government agencies only (via compliance reporting, not court action).
+
+### Sector Scope
+
+**DDA applies to both public and private sectors.** This is a key difference from EU WAD/EAA split:
+- EU: WAD = public sector, EAA = private sector (two distinct enforcement regimes)
+- AU: DDA covers both; AHRC is the single enforcement body for both sectors
+- DTA's Digital Experience Policy = government only (not private sector)
+
+### State/Territory Variations
+
+- **Victoria**: WCAG 2.1 AA mandatory for all Victorian government digital services (internal and external)
+- **NSW**: References AS EN 301 549 in ICT procurement
+- **Queensland**: Agency policies reiterate WCAG 2.1 AA baseline
+- All states/territories have accessibility commitments; no state-level equivalent of DDA (DDA is federal)
+
+---
+
+## Feature Landscape
+
+### Table Stakes (Users Expect These)
+
+Features an AU compliance tool must have. Missing = product is not usable for AU market.
+
+| Feature | Why Expected | Complexity | Notes |
+|---------|--------------|------------|-------|
+| DDA (Disability Discrimination Act 1992) as mapped law | AU users expect DDA to appear as the legal basis in scan reports, just as DOS-lagen appears for SE users | LOW | Add to national-laws.json; framework key is `DDA` (not WAD/EAA) |
+| AHRC as enforcement body | AU users expect the Australian Human Rights Commission to be named as enforcer, not a European body | LOW | Add `AU` entry to ENFORCEMENT_BODIES and ENFORCEMENT_BODIES_DETAILED |
+| en-au locale statement template | Compliance statements must reference DDA, not WAD/EU Directive 2016/2102. Legal prose must be AU-appropriate. | MEDIUM | New JSON template for engine; new inline template for component; mirrors en-gb/en-us/en-ca pattern |
+| .au and .com.au TLD detection | Sites on .com.au are clearly Australian; scanner must auto-detect country without requiring explicit --country flag | LOW | Extend TLD map; `.com.au` is a second-level TLD and needs special handling (not just last segment) |
+| WCAG 2.2 AA as the stated standard in AU output | 2025 AHRC guidelines affirm WCAG 2.2 AA. Citing WCAG 2.0 or 2.1 in AU statements is outdated. | LOW | Template prose must specify WCAG 2.2 AA (or parameterized WCAG version field) |
+| en-au UI chrome (component badges, labels, footer) | Component renders jurisdiction-specific chrome (law name, enforcement body) per locale; en-au must be wired in | LOW | Add en-au entries to locale-chrome.ts and relevant locale maps |
+| Single enforcement body for all sectors (no WAD/EAA split) | DDA applies to public and private sectors equally — no sector-specific enforcement body switch for AU | LOW | `getEnforcementBody('AU', sector)` should return AHRC regardless of sector param |
+
+### Differentiators (Competitive Advantage)
+
+Features that set the product apart in the AU market. Not required by law, but provide meaningful value.
 
 | Feature | Value Proposition | Complexity | Notes |
 |---------|-------------------|------------|-------|
-| Branded types for locale codes (`type LocaleCode = 'sv' \| 'en' \| 'no' \| ...`) | Prevents passing arbitrary strings as locale identifiers; compiler catches invalid locales at call sites | Low | Simple union type addition; safe to do during stability pass as a byproduct |
-| Generic `EnrichedReport<T extends RegulatoryReport>` | More flexible than a flat extension; allows future specialization | Medium | Over-engineering for current needs. Plain `EnrichedReport extends RegulatoryReport` is sufficient. Defer. |
-| Template prop injection on `AccessibilityStatement` (`templateData?: LocaleTemplate`) | Allows consumers to supply custom templates, decoupling the component from template management | Medium | Architectural change. Out of scope for stability pass. |
-| Build-time template bundling via tsup `define` | Bundle template JSON into the component at build time, eliminating runtime file loading risk | Medium | Worthwhile for the engine's `statement-generator.ts` path fragility, but complex to implement correctly for ESM+CJS. |
-| Changesets integration for version management | Automates version bumping, changelog generation, and coordinated monorepo releases | High | Current manual process works. Changesets adds CI overhead. Not needed for this milestone. |
-| Explicit `isBrave` API for external locale detection | Return the resolved locale so callers can detect fallbacks | Low | Useful but not blocking |
-| `@testing-library/react` snapshot tests for each locale | Verify rendered output per locale | Medium | High value but exceeds "test what we change" scope |
+| AS EN 301 549 procurement reference in AU reports | State governments (NSW, Victoria, QLD) use AS EN 301 549 for ICT procurement; flagging this in reports helps procurement officers | MEDIUM | Add AS EN 301 549 as a secondary standard reference for AU, noting it is voluntary but procurement-relevant; maps to same WCAG 2.2 AA content as EU EN 301 549 |
+| DTA Digital Experience Policy annotation for .gov.au domains | Federal government agencies face mandatory DTA compliance from 2025; annotating government scans with DTA policy reference adds actionable context competitors do not provide | MEDIUM | Detect .gov.au TLD as government sector; append DTA Digital Experience Policy note to government scan output. Requires special .gov.au TLD handling. |
+| WCAG 2.2 AA call-out (vs 2.1) in AU context | 2025 AHRC guidelines updated from 2.0 to 2.2 AA; tools still citing 2.0 create compliance risk for users | LOW | In en-au template prose, explicitly state "WCAG 2.2 Level AA as recommended by the AHRC (April 2025 guidelines)" |
+| AHRC complaint pathway guidance in statement | Unlike EU (formal enforcement body decisions), AU enforcement is complaint-driven via AHRC conciliation; statements should reference how users can lodge accessibility complaints with the AHRC | LOW | Add AHRC complaints URL (humanrights.gov.au) to en-au statement template feedback/contact section |
+| State government procurement note (AS EN 301 549) | For NSW/Victoria/QLD government clients, noting AS EN 301 549:2024 adoption strengthens the procurement case for accessibility tooling investment | LOW | Conditional annotation in AU government reports; no new data structure needed |
 
----
+### Anti-Features (Commonly Requested, Often Problematic)
 
-## Anti-Features
+Features to explicitly NOT build for AU jurisdiction support.
 
-Things to explicitly NOT do during this stability pass. These would introduce risk without solving the stability problems.
-
-| Anti-Feature | Why Avoid | What to Do Instead |
-|--------------|-----------|-------------------|
-| Rewrite `renderTemplate()` / `processText()` into a shared utility | Dedup is noted in CONCERNS.md but explicitly called out-of-scope in PROJECT.md. Touching both template systems risks breaking statement generation behavior for all locales and formats. | Fix the locale routing bug inside the existing `AccessibilityStatement` component without changing the rendering logic |
-| Remove the inline `TEMPLATES` constant entirely in favor of JSON files | This would require the component to load JSON at runtime (async, bundler-dependent path resolution) or at build time (tsup config change). Both are architectural changes beyond the stability scope. | Expand the existing `supportedLocales` map to cover all 9 locales using the inline templates. The inline templates already exist for `sv`, `en`, and `no` — add `da`, `de`, `fi`, `fr`, `nl`, `es` inline templates matching the JSON sources, or extend the map. |
-| Change `RegulatoryReport` public type in a breaking way | Existing consumers depend on the current shape. Adding required fields breaks them. | Add `failingNodes?` and `legalContext?` as optional fields, or introduce `EnrichedReport extends RegulatoryReport` as an additive subtype |
-| Upgrade tsup, TypeScript, axe-core, or Puppeteer | Dependency upgrades are not stability fixes; they introduce their own regression risk | Fix code bugs within current toolchain versions |
-| Add integration tests that require a live browser | Integration tests for the scanner require Puppeteer + a real URL; they are high value but out of scope for a stability pass that focuses on unit-testable changes | Test `enrichResults()` with mocked axe output; test `generateStatementContent()` with fixture scan results |
-| Convert global `currentLang` mutable state to React Context or a class instance | Correct architecture, but this is a refactor that changes the calling convention for `setLanguage()`/`t()` throughout the CLI | Leave the global for now; ensure tests don't rely on leaked state between test runs by resetting `currentLang` in `beforeEach` |
-| Fix the monorepo build script fragility (components `package.json` glob) | Valid tech debt but unrelated to type safety, versioning, or locale bugs | Noted in CONCERNS.md; address in a separate "build hygiene" task |
-| Fix the `--no-sandbox` Puppeteer security concern | Security improvement, not a stability bug | Out of scope; document in a security backlog |
+| Feature | Why Requested | Why Problematic | Alternative |
+|---------|---------------|-----------------|-------------|
+| State/territory-level enforcement body switching | AU has 8 states/territories; users may expect Victoria vs NSW to route to different bodies | There is no state-level DDA equivalent. All DDA complaints go to AHRC regardless of state. Building state routing would be legally incorrect and confusing. | Use AHRC as the single AU enforcement body for all states. Add a note that state governments have their own accessibility policies but DDA enforcement remains federal. |
+| WAD/EAA sector split for AU | The existing EU sector logic (WAD = public, EAA = private) is a natural template for AU | DDA has no equivalent split. Applying WAD/EAA framing to AU would misrepresent the legal structure and produce incorrect compliance statements. | `getEnforcementBody('AU', sector)` returns AHRC regardless of sector. DTA is government-only and is not a complaints enforcement body. |
+| Mobile app scanning for AU compliance | AHRC 2025 guidelines extend DDA to mobile apps | Mobile app scanning requires a fundamentally different scanner architecture (native app inspection vs web page scanning). This is an architectural expansion, not a jurisdiction addition. | Note in en-au statement that WCAG 2.2 AA guidance applies to mobile apps under 2025 AHRC guidelines, but mobile scanning is out of scope for this milestone. |
+| Hardcoded WCAG version in AU template | Lock template to "WCAG 2.2 AA" to match current AHRC guidance | WCAG versions evolve; EN 301 549 v4.1.1 (expected 2026) will update to WCAG 2.2 AA in EN 301 549 context. Hardcoding creates a maintenance burden. | Use a parameterized WCAG version field consistent with how other templates handle it, defaulting to "2.2 Level AA" for en-au. |
+| Separate "DTA compliance" scan mode | DTA Digital Experience Policy is sometimes treated as a distinct compliance regime | DTA policy mandates WCAG 2.2 AA — the same standard as DDA. A separate mode would duplicate effort with no technical difference. | Annotate DTA policy in .gov.au output without creating a separate scan pipeline. |
 
 ---
 
 ## Feature Dependencies
 
 ```
-TS-1: Define FailingNode interface
-  → TS-2: Define EnrichedReport extending RegulatoryReport (requires FailingNode)
-  → TS-3: Remove `as any` in enrichResults() (requires EnrichedReport)
-  → TS-4: Remove `as any` in reporting modules (requires TS-3 — EnrichedReport must be visible)
-  → TS-5: Remove [key: string]: any from HolmDigitalInsight (independent of above)
-  → TS-6: Tests for enrichment and reporting paths (requires TS-3, TS-4)
+AU-LAWS-1: Add DDA to national-laws.json in @holmdigital/standards
+    └──required-by──> AU-ENFORCEMENT-1: Add AHRC to ENFORCEMENT_BODIES (needs Country type to include 'AU')
+    └──required-by──> AU-TEMPLATE-1: en-au engine JSON statement template (references DDA law name)
+    └──required-by──> AU-COMPONENT-1: en-au component inline template (references DDA law name)
 
-VER-1: Decide version source approach (build-time tsup define vs runtime getEngineVersion())
-  → VER-2: Remove hardcoded version in cli/index.ts (requires VER-1 decision)
-  → VER-3: Remove hardcoded version in cloud-client.ts (requires VER-1 decision)
-  → VER-4: Update fallback in regulatory-scanner.ts getEngineVersion() (independent, minor)
-  → VER-5: Tests for version resolution (requires VER-2, VER-3)
+AU-TLD-1: Extend TLD detection map with .au and .com.au
+    └──independent (reads Country type, does not need new law data)
+    └──note: .com.au is a second-level TLD — requires substring match, not simple last-segment split
 
-I18N-1: Expand supportedLocales map in AccessibilityStatement to all 9 locales
-  → I18N-2: Add missing inline templates for da, de, fi, fr, nl, es (requires I18N-1)
-  → I18N-3: Expand date formatting localeMap to include all 9 locales (parallel to I18N-1)
-  → I18N-4: Tests for locale routing and template rendering per locale (requires I18N-1, I18N-2)
+AU-ENFORCEMENT-1: AHRC in ENFORCEMENT_BODIES_DETAILED
+    └──required-by──> AU-TEMPLATE-1 (template references enforcement body name)
+    └──required-by──> AU-COMPONENT-1 (component chrome uses enforcement body name)
+    └──requires──> AU-LAWS-1 (Country type must include 'AU' before map entry is valid)
+
+AU-SECTOR-1: Sector-aware enforcement wiring for AU (no WAD/EAA split)
+    └──requires──> AU-ENFORCEMENT-1
+    └──note: getEnforcementBody('AU', sector) must return AHRC for both 'public' and 'private'
+
+AU-TEMPLATE-1: en-au engine JSON statement template
+    └──requires──> AU-LAWS-1, AU-ENFORCEMENT-1
+    └──parallel-with──> AU-COMPONENT-1 (both reference same law/enforcement data)
+
+AU-COMPONENT-1: en-au component inline template + UI chrome
+    └──requires──> AU-LAWS-1, AU-ENFORCEMENT-1
+    └──parallel-with──> AU-TEMPLATE-1
+
+AU-CHROME-1: en-au locale-chrome.ts entries (badges, labels, footer)
+    └──requires──> AU-COMPONENT-1 (or simultaneous — same file edit)
+
+AU-TESTS-1: Test coverage for all AU additions
+    └──requires──> AU-LAWS-1, AU-ENFORCEMENT-1, AU-TLD-1, AU-TEMPLATE-1, AU-COMPONENT-1, AU-SECTOR-1
 
 Build order constraint:
-  @holmdigital/standards (TS-1, TS-2, TS-5) must build before
-  @holmdigital/components (I18N-1, I18N-2, I18N-3) must build before
-  @holmdigital/engine (TS-3, TS-4, VER-2, VER-3)
+    @holmdigital/standards (AU-LAWS-1, AU-ENFORCEMENT-1) must build before
+    @holmdigital/components (AU-COMPONENT-1, AU-CHROME-1) must build before
+    @holmdigital/engine (AU-TEMPLATE-1, AU-TLD-1, AU-SECTOR-1)
 ```
+
+### Dependency Notes
+
+- **AU-LAWS-1 is the root dependency.** Country type must include 'AU' before enforcement body maps, TLD maps, or template wiring can reference it without TypeScript errors.
+- **.com.au TLD requires non-trivial detection.** The existing pattern splits on the last segment of the hostname. `.com.au` has two suffix segments; detection logic must check for `.com.au` before falling back to `.au` split.
+- **AU-SECTOR-1 is deliberately a no-op for sector switching.** The sector param is accepted but both values resolve to AHRC. This is correct behavior, not an omission.
+- **DTA annotation (differentiator) depends on .gov.au TLD detection**, which is a special case of AU-TLD-1. Can be implemented in the same TLD extension pass.
 
 ---
 
-## MVP Recommendation
+## MVP Definition
 
-Prioritize in this order to respect the build dependency chain and minimize regression risk:
+### Launch With (v0.5 — this milestone)
 
-1. **TS-1 + TS-2** — Define `FailingNode` interface and `EnrichedReport` type in `@holmdigital/standards`. This is the foundation for all `as any` removal. Zero behavior change, pure type addition.
+Minimum features needed to call AU a "fully supported jurisdiction" in the same sense as UK, US, CA, and EU countries.
 
-2. **TS-5** — Remove `[key: string]: any` from `HolmDigitalInsight` and add explicit optional keys. Independent of the above; do it first in `standards` while touching the file.
+- [x] AU-LAWS-1 — DDA + DTA in national-laws.json. Without this, no AU-specific legal reference exists.
+- [x] AU-ENFORCEMENT-1 — AHRC in ENFORCEMENT_BODIES and ENFORCEMENT_BODIES_DETAILED. Without this, enforcement body output is wrong.
+- [x] AU-TLD-1 — .au and .com.au TLD detection. Without this, AU sites fall through to EU fallback.
+- [x] AU-TEMPLATE-1 — en-au engine JSON statement template. Without this, engine generates a legally incorrect statement.
+- [x] AU-COMPONENT-1 — en-au component inline template. Without this, component renders wrong jurisdiction data.
+- [x] AU-CHROME-1 — en-au locale-chrome entries. Without this, badges/labels reference wrong law/body.
+- [x] AU-SECTOR-1 — Sector wiring that routes both public and private to AHRC.
+- [x] AU-TESTS-1 — Tests covering all new law data, TLD detection, enforcement routing, and template generation.
 
-3. **VER-1 decision + VER-2 + VER-3** — `getEngineVersion()` already exists and works. Both `cli/index.ts` and `cloud-client.ts` import from `regulatory-scanner.ts` anyway. The fix is: call `getEngineVersion()` instead of the hardcoded literal. One-liner change per file.
+### Add After Validation (v0.5.x or v0.6)
 
-4. **TS-3 + TS-4** — Remove `as any` casts from `enrichResults()` and all reporting modules once `EnrichedReport` is defined and visible.
+- [ ] DTA Digital Experience Policy annotation for .gov.au domains — adds government-sector differentiation; trigger: government agency customers request it
+- [ ] AS EN 301 549 procurement note in AU reports — adds value for state government procurement; trigger: NSW/VIC/QLD government clients
+- [ ] AHRC complaint pathway URL in statement contact section — adds actionable guidance; trigger: user testing feedback
 
-5. **I18N-1 + I18N-2 + I18N-3** — Expand the locale map and add inline templates for all 9 locales. Match content from the existing JSON templates in `packages/engine/src/reporting/templates/`.
+### Future Consideration (v1.0+)
 
-6. **TS-6 + VER-5 + I18N-4** — Tests for every area touched above. Scope to: `enrichResults()` unit test (mock axe output), version field tests, locale routing tests for all 9 locales in `AccessibilityStatement`.
+- [ ] State-level government policy annotations (Victoria WCAG 2.1 AA mandate, NSW AS EN 301 549 procurement) — requires state detection beyond TLD (no state-specific TLDs exist); needs explicit metadata
+- [ ] Mobile app compliance notes (AHRC 2025 scope expansion) — requires architectural work beyond this tool's web scanning scope
+- [ ] WCAG 2.2 AA vs 2.1 AA delta highlighting for AU — useful as AHRC updates from 2.0 to 2.2 baseline; needs per-criterion version tagging
 
-**Defer:** Template dedup, build script globbing, security flags, integration tests, changesets.
+---
+
+## Feature Prioritization Matrix
+
+| Feature | User Value | Implementation Cost | Priority |
+|---------|------------|---------------------|----------|
+| DDA in national-laws.json | HIGH | LOW | P1 |
+| AHRC enforcement body | HIGH | LOW | P1 |
+| .au / .com.au TLD detection | HIGH | LOW (with .com.au caveat) | P1 |
+| en-au engine JSON template | HIGH | MEDIUM | P1 |
+| en-au component inline template | HIGH | MEDIUM | P1 |
+| en-au locale-chrome entries | HIGH | LOW | P1 |
+| AU sector wiring (no split) | HIGH | LOW | P1 |
+| Tests for all AU additions | HIGH | MEDIUM | P1 |
+| DTA .gov.au annotation | MEDIUM | LOW | P2 |
+| AS EN 301 549 procurement note | MEDIUM | LOW | P2 |
+| AHRC complaint URL in statement | MEDIUM | LOW | P2 |
+| State-level policy annotations | LOW | HIGH | P3 |
+| Mobile app compliance notes | LOW | HIGH | P3 |
+
+**Priority key:**
+- P1: Must have for v0.5 launch (AU jurisdiction is unusable without these)
+- P2: Should have; add in v0.5.x when P1 is stable
+- P3: Defer; requires architecture work or external research beyond this milestone
+
+---
+
+## Competitor Feature Analysis
+
+| Feature | AccessibilityCheck.au (AU-local tool) | Siteimprove / Deque (global tools) | Our Approach |
+|---------|---------------------------------------|------------------------------------|--------------|
+| DDA law reference in reports | Yes — primary differentiator for AU tool | DDA listed as a supported standard | Named in legal context of each failing criterion |
+| AHRC enforcement body reference | Unclear from public docs | Not jurisdiction-specific in report output | Explicit per-country enforcement body in statement and report |
+| Sector-aware enforcement | No evidence of sector switching | No AU-specific sector logic found | AU gets AHRC for both sectors; EU retains WAD/EAA split |
+| .com.au TLD auto-detection | N/A (AU-only tool, assumes AU context) | Not applicable (manual country selection) | Automatic via TLD map; .com.au needs two-segment check |
+| WCAG version in AU context | WCAG 2.2 AA (matches 2025 AHRC guidance) | WCAG 2.2 AA | WCAG 2.2 AA explicitly in en-au template prose |
+| Accessibility statement generation | Yes | Enterprise tier only | Included — en-au template with DDA + AHRC references |
+| AS EN 301 549 reference for AU | Not found | Not AU-specific | P2 differentiator for procurement context |
 
 ---
 
 ## Sources
 
-- Direct codebase audit: `packages/standards/src/types.ts`, `packages/engine/src/core/regulatory-scanner.ts`, `packages/engine/src/cli/index.ts`, `packages/engine/src/cli/cloud-client.ts`, `packages/engine/src/i18n/index.ts`, `packages/components/src/AccessibilityStatement/AccessibilityStatement.tsx`, `packages/engine/src/reporting/junit-generator.ts` — HIGH confidence, source of truth
-- `.planning/codebase/CONCERNS.md` (2026-02-26 audit) — HIGH confidence, cross-validated against source
-- `.planning/PROJECT.md` (2026-03-02) — HIGH confidence, authoritative scope definition
-- TypeScript 5.x interface extension and discriminated union patterns — HIGH confidence (well-established language features, no version staleness concern)
-- tsup `define` option for build-time constant injection — MEDIUM confidence (known feature, not verified against current tsup 8.x docs due to tool restrictions)
-- npm `package.json` as version source of truth — HIGH confidence (universal npm convention)
+- [AHRC — Standards and Guidelines on Digital Accessibility](https://humanrights.gov.au/our-work/disability-rights/chapter-3-standards-and-guidelines-digital-accessibility) — HIGH confidence, official body
+- [W3C WAI — Australia Policy](https://www.w3.org/WAI/policies/australia/) — HIGH confidence, authoritative policy index
+- [DTA — Accessibility and Digital Service Standard](https://www.dta.gov.au/blogs/accessibility-and-digital-service-standard) — HIGH confidence, official government
+- [digital.gov.au — Digital Service Standard](https://www.digital.gov.au/policy/digital-experience/digital-service-standard) — HIGH confidence, official
+- [Deque — Three major accessibility updates in Australia in 2026](https://www.deque.com/blog/accessibility-updates-in-australia-in-2026/) — MEDIUM confidence, specialist analysis
+- [Deque — The 2025 AHRC accessibility guidelines: What's new and why it matters](https://www.deque.com/blog/the-2025-ahrc-accessibility-guidelines-whats-new-and-why-it-matters/) — MEDIUM confidence
+- [Intopia — EN 301 549: What it means for Australia](https://intopia.digital/articles/en-301-549-australia/) — MEDIUM confidence, AU accessibility specialists
+- [Standards Australia — AS EN 301 549:2024](https://store.standards.org.au/product/AS-EN-301-549-2024) — HIGH confidence, official standards body
+- [iconagency.com.au — Australian Government website accessibility in 2025](https://iconagency.com.au/news/2025-10-21-australian-government-website-accessibility-2025-dss-wcag-22-and-multilingual) — MEDIUM confidence
+- [OZeWAI — Three major accessibility updates in Australia](https://ozewai.org/blog/standards/three-major-accessibility-updates-in-australia/) — MEDIUM confidence, AU accessibility community
+- [vic.gov.au — Digital accessibility requirements](https://www.vic.gov.au/digital-accessibility-requirements) — HIGH confidence, official state government
+
+---
+
+*Feature research for: Australian jurisdiction support (v0.5 milestone)*
+*Researched: 2026-03-27*

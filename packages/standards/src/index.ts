@@ -39,6 +39,7 @@ export const ENFORCEMENT_BODIES: Record<Country, string> = {
     GB: 'Equality and Human Rights Commission (EHRC)',
     US: 'Department of Justice (Civil Rights Division)',
     CA: 'Accessibility Commissioner (Canadian Human Rights Commission)',
+    AU: 'Australian Human Rights Commission (AHRC)',
     EU: 'European Commission (DG CNECT)'
 };
 
@@ -58,6 +59,7 @@ export const ENFORCEMENT_BODIES_DETAILED: Record<Country, { wad: string; eaa: st
     GB: { wad: 'Equality and Human Rights Commission (EHRC)', eaa: 'Equality and Human Rights Commission (EHRC)' },
     US: { wad: 'Department of Justice (Civil Rights Division)', eaa: 'Department of Justice (Civil Rights Division)' },
     CA: { wad: 'Accessibility Commissioner (Canadian Human Rights Commission)', eaa: 'Accessibility Commissioner (Canadian Human Rights Commission)' },
+    AU: { wad: 'Australian Human Rights Commission (AHRC)', eaa: 'Australian Human Rights Commission (AHRC)' },
     EU: { wad: 'European Commission (DG CNECT)', eaa: 'European Commission (DG JUST)' }
 };
 

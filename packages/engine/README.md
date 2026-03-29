@@ -14,16 +14,16 @@ Most accessibility tools give you technical errors (e.g., "Color contrast must b
 It handles the heavy lifting of:
 1.  **Mapping** technical failures to specific legal clauses.
 2.  **Validating** HTML structure to ensure test accuracy.
-3.  **Reporting** in multiple languages (EN, SV, NO, FI, DA, NL, DE, FR, ES, IT, PT, PL) for non-technical stakeholders.
+3.  **Reporting** in multiple languages (EN, SV, NO, FI, DA, NL, DE, FR, ES, IT, PT, PL, EN-AU) for non-technical stakeholders.
 4.  **CI/CD Pipeline Integration** with automatic enforcement.
 
 For a comprehensive guide on CLI flags, CI/CD integration, and configuration files, see the **[Engine Library Catalog](../../docs/reference/engine.md)**.
 
 ## Features
 
-- **Regulatory Mapping**: Maps technical failures to EU laws (EN 301 549, EAA).
+- **Regulatory Mapping**: Maps technical failures to EU laws (EN 301 549, EAA) and international laws (Australian DDA).
 - **HTML Structure Validation**: Built-in `html-validate` checks to prevent false positives/negatives.
-- **Internationalization (i18n)**: Comprehensive support for 12 languages: English (`en`), Swedish (`sv`), Norwegian (`no`), Finnish (`fi`), Danish (`da`), German (`de`), French (`fr`), Spanish (`es`), Dutch (`nl`), Italian (`it`), Portuguese (`pt`), and Polish (`pl`).
+- **Internationalization (i18n)**: Comprehensive support for 13 languages: English (`en`), Swedish (`sv`), Norwegian (`no`), Finnish (`fi`), Danish (`da`), German (`de`), French (`fr`), Spanish (`es`), Dutch (`nl`), Italian (`it`), Portuguese (`pt`), Polish (`pl`), and Australian English (`en-au`).
 - **Template-Driven Accessibility Statements**: Generates modern, glassmorphism-styled statements using externalized JSON templates for each language, allowing for professional legal phrasing and deep customization.
 - **Multi-Company Metadata**: Easily customize statements via CLI flags or `.a11yrc` for scalable client generation.
 - **Enriched JUnit XML**: Professional CI/CD reports including scan duration, page title, engine metadata, and **detailed failing node** snippets (Target + HTML).
@@ -60,7 +60,7 @@ npx hd-a11y-scan <url> [options]
 | `--phone <number>` | Contact phone for the statement metadata |
 | `--response-time <val>` | Response time for the statement metadata |
 | `--publish-date <date>` | Publish date for the website (YYYY-MM-DD) |
-| `--country <code>` | Country code for enforcement body (`SE`, `NO`, `DE`, `IT`, `PT`, `PL`, etc.) |
+| `--country <code>` | Country code for enforcement body (`SE`, `NO`, `DE`, `IT`, `PT`, `PL`, `AU`, etc.) |
 | `--sector <type>` | Sector type: `public` (WAD) or `private` (EAA). Default: `public` |
 | `--viewport <size>` | Set viewport size (`mobile`, `tablet`, `desktop`, or custom `1024x768`) |
 | `--generate-tests` | Generate Pseudo-Automation tests |

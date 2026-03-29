@@ -132,10 +132,10 @@ describe('EU Legal Framework', () => {
 });
 
 describe('Enforcement Bodies', () => {
-    const ALL_COUNTRIES: Country[] = ['SE', 'NO', 'DK', 'FI', 'NL', 'DE', 'FR', 'ES', 'IE', 'IT', 'PT', 'PL', 'GB', 'US', 'CA', 'EU'];
+    const ALL_COUNTRIES: Country[] = ['SE', 'NO', 'DK', 'FI', 'NL', 'DE', 'FR', 'ES', 'IE', 'IT', 'PT', 'PL', 'GB', 'US', 'CA', 'AU', 'EU'];
 
-    it('should have entries for all 16 countries', () => {
-        expect(Object.keys(ENFORCEMENT_BODIES)).toHaveLength(16);
+    it('should have entries for all 17 countries', () => {
+        expect(Object.keys(ENFORCEMENT_BODIES)).toHaveLength(17);
         for (const country of ALL_COUNTRIES) {
             expect(ENFORCEMENT_BODIES[country]).toBeDefined();
             expect(ENFORCEMENT_BODIES[country].length).toBeGreaterThan(0);
@@ -156,9 +156,14 @@ describe('Enforcement Bodies', () => {
         expect(ENFORCEMENT_BODIES.CA).toBe('Accessibility Commissioner (Canadian Human Rights Commission)');
     });
 
+    it('should include Australia', () => {
+        expect(ENFORCEMENT_BODIES.AU).toBe(getEnforcementBody('AU'));
+        expect(ENFORCEMENT_BODIES.AU.length).toBeGreaterThan(0);
+    });
+
     describe('ENFORCEMENT_BODIES_DETAILED', () => {
-        it('should have WAD and EAA entries for all 16 countries', () => {
-            expect(Object.keys(ENFORCEMENT_BODIES_DETAILED)).toHaveLength(16);
+        it('should have WAD and EAA entries for all 17 countries', () => {
+            expect(Object.keys(ENFORCEMENT_BODIES_DETAILED)).toHaveLength(17);
             for (const country of ALL_COUNTRIES) {
                 const entry = ENFORCEMENT_BODIES_DETAILED[country];
                 expect(entry.wad).toBeDefined();
@@ -172,6 +177,12 @@ describe('Enforcement Bodies', () => {
             for (const country of ALL_COUNTRIES) {
                 expect(ENFORCEMENT_BODIES_DETAILED[country].wad).toBe(ENFORCEMENT_BODIES[country]);
             }
+        });
+
+        it('should have AHRC for both AU sectors', () => {
+            const au = ENFORCEMENT_BODIES_DETAILED.AU;
+            expect(au.wad).toBe(ENFORCEMENT_BODIES.AU);
+            expect(au.eaa).toBe(ENFORCEMENT_BODIES.AU);
         });
     });
 
@@ -203,6 +214,12 @@ describe('Enforcement Bodies', () => {
         it('should work for Poland', () => {
             expect(getEnforcementBody('PL')).toBe('Ministry of Digitization (Ministerstwo Cyfryzacji)');
             expect(getEnforcementBody('PL', 'private')).toBe('Office of Competition and Consumer Protection (UOKiK)');
+        });
+
+        it('should work for Australia (single body for all sectors)', () => {
+            expect(getEnforcementBody('AU')).toBe(ENFORCEMENT_BODIES.AU);
+            expect(getEnforcementBody('AU', 'public')).toBe(ENFORCEMENT_BODIES.AU);
+            expect(getEnforcementBody('AU', 'private')).toBe(ENFORCEMENT_BODIES.AU);
         });
     });
 });
@@ -238,5 +255,27 @@ describe('National Laws — IT, PT, PL', () => {
     it('should have distinct WAD and EAA bodies for PT and PL', () => {
         expect(getEnforcementBody('PT', 'private')).not.toBe(getEnforcementBody('PT', 'public'));
         expect(getEnforcementBody('PL', 'private')).not.toBe(getEnforcementBody('PL', 'public'));
+    });
+});
+
+describe('National Laws — AU', () => {
+    it('should return DDA law for AU', () => {
+        expect(getNationalLawByFramework('DDA', 'AU')).not.toBeNull();
+    });
+
+    it('should return au-dda as the primary AU entry', () => {
+        const law = getNationalLawByFramework('DDA', 'AU');
+        expect(law?.id).toBe('au-dda');
+        expect(law?.scope).toBe('both');
+    });
+
+    it('should have AHRC as enforcement body for both sectors', () => {
+        expect(getEnforcementBody('AU')).toBe(ENFORCEMENT_BODIES.AU);
+        expect(getEnforcementBody('AU', 'public')).toBe(ENFORCEMENT_BODIES.AU);
+        expect(getEnforcementBody('AU', 'private')).toBe(ENFORCEMENT_BODIES.AU);
+    });
+
+    it('should have inForce true for au-dda', () => {
+        expect(getNationalLawByFramework('DDA', 'AU')?.inForce).toBe(true);
     });
 });

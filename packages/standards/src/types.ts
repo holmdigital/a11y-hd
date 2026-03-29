@@ -9,9 +9,9 @@ export type EAAImpact = 'none' | 'low' | 'medium' | 'high' | 'critical';
 export type TestComplexity = 'simple' | 'moderate' | 'complex';
 
 // EU Legal Framework types
-export type LegalFramework = 'WAD' | 'EAA';
+export type LegalFramework = 'WAD' | 'EAA' | 'DDA';
 export type Sector = 'public' | 'private' | 'both';
-export type Country = 'SE' | 'NO' | 'DK' | 'FI' | 'NL' | 'DE' | 'FR' | 'ES' | 'IE' | 'IT' | 'PT' | 'PL' | 'GB' | 'US' | 'CA' | 'EU';
+export type Country = 'SE' | 'NO' | 'DK' | 'FI' | 'NL' | 'DE' | 'FR' | 'ES' | 'IE' | 'IT' | 'PT' | 'PL' | 'GB' | 'US' | 'CA' | 'AU' | 'EU';
 
 /**
  * Convergence Schema Rule

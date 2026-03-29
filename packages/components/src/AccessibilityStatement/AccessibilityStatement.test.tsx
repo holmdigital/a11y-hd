@@ -34,6 +34,7 @@ const LOCALE_TITLE_MARKERS: Record<string, string> = {
     'en-gb': 'Accessibility of',
     'en-us': 'Accessibility of',
     'en-ca': 'Accessibility of',
+    'en-au': 'Accessibility of',
 };
 
 const PLACEHOLDER_PATTERN = /\{<[^>]+>\}/;
@@ -78,6 +79,7 @@ const CHROME_BADGE_MARKERS: Record<string, string> = {
     'en-gb': 'Fully compliant',
     'en-us': 'Fully compliant',
     'en-ca': 'Fully compliant',
+    'en-au': 'Fully compliant',
 };
 
 const CHROME_UPDATED_MARKERS: Record<string, string> = {
@@ -93,6 +95,7 @@ const CHROME_UPDATED_MARKERS: Record<string, string> = {
     'en-gb': 'Updated:',
     'en-us': 'Updated:',
     'en-ca': 'Updated:',
+    'en-au': 'Updated:',
 };
 
 const CHROME_FOOTER_MARKERS: Record<string, string> = {
@@ -108,6 +111,7 @@ const CHROME_FOOTER_MARKERS: Record<string, string> = {
     'en-gb': 'Generated using',
     'en-us': 'Generated using',
     'en-ca': 'Generated using',
+    'en-au': 'Generated using',
 };
 
 describe('AccessibilityStatement chrome badge localization', () => {
@@ -142,7 +146,7 @@ describe('AccessibilityStatement chrome label localization', () => {
 });
 
 describe('AccessibilityStatement en-gb/en-us/en-ca chrome', () => {
-    const englishVariants = ['en-gb', 'en-us', 'en-ca'];
+    const englishVariants = ['en-gb', 'en-us', 'en-ca', 'en-au'];
 
     englishVariants.forEach((locale) => {
         it(`renders ${locale} with English badge text without console warning`, () => {
@@ -203,6 +207,54 @@ describe('AccessibilityStatement en-gb/en-us/en-ca jurisdiction content', () => 
     });
 });
 
+describe('AccessibilityStatement en-au jurisdiction content', () => {
+    it('renders en-au with DDA 1992 legislation references', () => {
+        const { container } = render(
+            <AccessibilityStatement {...defaultProps} locale="en-au" country="AU" />
+        );
+        const html = container.innerHTML;
+        expect(html).toContain('Disability Discrimination Act 1992');
+        expect(html).toContain('Australian Human Rights Commission');
+    });
+
+    it('renders en-au without EU-specific concepts', () => {
+        const { container } = render(
+            <AccessibilityStatement {...defaultProps} locale="en-au" country="AU" />
+        );
+        const html = container.innerHTML;
+        expect(html).not.toContain('disproportionate burden');
+        expect(html).not.toContain('Web Accessibility Directive');
+        expect(html).not.toContain('EN 301 549');
+    });
+
+    it('renders en-au with AHRC complaint URL', () => {
+        const { container } = render(
+            <AccessibilityStatement {...defaultProps} locale="en-au" country="AU" />
+        );
+        const html = container.innerHTML;
+        expect(html).toContain('humanrights.gov.au/complaints');
+    });
+
+    it('renders en-au with DTA policy section', () => {
+        const { container } = render(
+            <AccessibilityStatement {...defaultProps} locale="en-au" country="AU" />
+        );
+        const html = container.innerHTML;
+        expect(html).toContain('Digital Transformation Agency');
+        expect(html).toContain('Digital Inclusion Standard');
+    });
+
+    it('renders en-au with voluntary framing (not mandatory statement language)', () => {
+        const { container } = render(
+            <AccessibilityStatement {...defaultProps} locale="en-au" country="AU" />
+        );
+        const html = container.innerHTML;
+        expect(html).toContain('This statement describes how');
+        expect(html).not.toContain('required by law');
+        expect(html).not.toContain('is required to');
+    });
+});
+
 // Chrome badge text expected for complianceLevel="non-compliant" per canonical locale
 const CHROME_NON_COMPLIANT_MARKERS: Record<string, string> = {
     sv: 'Inte förenlig',
@@ -217,6 +269,7 @@ const CHROME_NON_COMPLIANT_MARKERS: Record<string, string> = {
     'en-gb': 'Non-compliant',
     'en-us': 'Non-compliant',
     'en-ca': 'Non-compliant',
+    'en-au': 'Non-compliant',
 };
 
 describe('AccessibilityStatement chrome badge non-compliant localization', () => {
@@ -295,6 +348,8 @@ const NEW_LOCALE_COUNTRY_MAP: Array<{ locale: string; country: string }> = [
     { locale: 'pt', country: 'PT' },
     { locale: 'pl', country: 'PL' },
 ];
+
+// AU uses DDA framework (not WAD/EAA), so en-au placeholder leakage is tested in the en-au describe block below
 
 describe('AccessibilityStatement placeholder leakage - new locales (it/pt/pl)', () => {
     NEW_LOCALE_COUNTRY_MAP.forEach(({ locale, country }) => {
@@ -394,5 +449,48 @@ describe('AccessibilityStatement chrome localization - new locales (it/pt/pl)', 
             );
             expect(container.innerHTML).toContain(expectedFooter);
         });
+    });
+});
+
+describe('AccessibilityStatement placeholder leakage - en-au', () => {
+    it('no {<...>} placeholders survive in en-au locale output', () => {
+        const { container } = render(
+            <AccessibilityStatement
+                {...defaultProps}
+                locale="en-au"
+                country="AU"
+                sector="public"
+            />
+        );
+        expect(container.innerHTML).not.toMatch(PLACEHOLDER_PATTERN);
+    });
+});
+
+describe('AccessibilityStatement national compliance - AU enforcement body', () => {
+    it('en-au locale renders correct enforcement body for country=AU', () => {
+        const { container } = render(
+            <AccessibilityStatement
+                {...defaultProps}
+                locale="en-au"
+                country={'AU' as any}
+                sector="public"
+            />
+        );
+        const expectedBody = getEnforcementBody('AU' as any, 'public');
+        expect(container.innerHTML).toContain(expectedBody);
+    });
+
+    it('en-au locale renders correct national law for country=AU', () => {
+        const { container } = render(
+            <AccessibilityStatement
+                {...defaultProps}
+                locale="en-au"
+                country={'AU' as any}
+                sector="public"
+            />
+        );
+        const law = getNationalLawByFramework('DDA' as any, 'AU' as any);
+        expect(law).not.toBeNull();
+        expect(container.innerHTML).toContain(law!.fullName);
     });
 });

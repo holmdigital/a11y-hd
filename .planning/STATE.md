@@ -1,75 +1,71 @@
 ---
 gsd_state_version: 1.0
-milestone: v0.4
-milestone_name: Locale Expansion + EAA Sector
-status: in-progress
-last_updated: "2026-03-07T09:17:00Z"
+milestone: v0.5
+milestone_name: Australia Jurisdiction
+status: executing
+stopped_at: Phase 21 Plan 01 complete
+last_updated: "2026-03-27T03:08:00.000Z"
+last_activity: 2026-03-27 — Phase 21 Plan 01 executed
 progress:
   total_phases: 4
-  completed_phases: 4
-  total_plans: 4
-  completed_plans: 4
+  completed_phases: 3
+  total_plans: 3
+  completed_plans: 3
+  percent: 0
 ---
 
 # Project State
 
 ## Project Reference
 
-See: .planning/PROJECT.md (updated 2026-03-06)
+See: .planning/PROJECT.md (updated 2026-03-27)
 
 **Core value:** The type system and tests must catch bugs before users do -- no `as any` escape hatches in core paths, no silent wrong behavior.
-**Current focus:** v0.4 Locale Expansion + EAA Sector — Phase 17 complete (1/1 plans done)
+**Current focus:** v0.5 Australia Jurisdiction — Phase 18: AU Standards Foundation
 
 ## Current Position
 
-Phase: 17 of 17 (EAA Sector Support)
-Plan: 1 of 1 in current phase
-Status: Complete — plan 17-01 done
-Last activity: 2026-03-07 — 17-01 executed (--sector CLI flag, EAA enforcement body + law wiring, 7 new tests)
+Phase: 21 of 21 (AU Test Coverage)
+Plan: 1 of 1
+Status: Complete
+Last activity: 2026-03-27 — Phase 21 Plan 01 executed
 
-Progress: [██████████] 100% (v0.4, 4/4 phases)
+Progress: [████████████████████] 100% (v0.5: 4/4 phases)
 
 ## Performance Metrics
 
 **Prior milestones:**
 - v0.1: 5 phases, 9 plans, 20 commits
 - v0.2: 5 phases, 8 plans, 25 commits
-- v0.3: 3 phases, 4 plans, 13 commits (1 session, same-day ship)
+- v0.3: 3 phases, 4 plans, 13 commits (same-day ship)
+- v0.4: 4 phases, 4 plans (3 min avg/plan)
 
 | Phase | Plan | Duration | Tasks | Files |
 |-------|------|----------|-------|-------|
 | 15-01 | new-locale-engine-templates | ~5min | 3 | 4 |
 | 16-01 | new-locale-component-templates | 3min | 3 | 3 |
 | 17-01 | eaa-sector-support | 3min | 2 | 4 |
+| Phase 18 P01 | 3min | 2 tasks | 4 files |
+| Phase 19-01 Pen-au-component-locale | 12min | 2 tasks | 3 files |
+| Phase 20-01 Pau-engine-integration | 2min | 2 tasks | 3 files |
+| Phase 21-01 | 6min | 2 tasks | 3 files |
 
 ## Accumulated Context
 
 ### Decisions
 
-Decisions logged in PROJECT.md Key Decisions table.
-Prior milestone decisions archived in:
-- .planning/milestones/v0.1-ROADMAP.md
-- .planning/milestones/v0.2-ROADMAP.md
-- .planning/milestones/v0.3-ROADMAP.md
+**Critical v0.5 decision (confirmed):**
+- `LegalFramework` MUST extend to `'DDA'` — reusing `'WAD'` would cause AU templates to reference EU Web Accessibility Directive for Australian clients (legally misleading output)
 
-**14-01 decisions:**
-- PT and PL added after IT in Country union (geographic grouping before GB)
-- All new national law sanctions set to minAmount=0 maxAmount=0 (confirmed amounts not publicly available)
-- EAA laws for IT/PT/PL have inForce=true with effectiveDate 2025-06-28 (EU EAA application deadline)
-
-**15-01 decisions:**
-- Standards dist rebuilt (Rule 3) to expose PT/PL in Country type before engine tsc check
-- Shared placeholder names used throughout all three templates (no locale-specific alternatives needed)
-- Locale-specific issues placeholders: {<carenze>} (IT), {<deficiencias>} (PT), {<braki>} (PL)
-
-**16-01 decisions:**
-- Followed established locale-specific placeholder pattern from phase 15
-- Placed new locale entries after nl before en-gb for geographic consistency
-- Created separate NEW_LOCALE_COUNTRY_MAP test array to avoid mutating existing test data
-
-**17-01 decisions:**
-- TDD tests and implementation committed together since the plan's two tasks naturally overlap
-- 7 EAA sector tests cover DE and SE enforcement bodies, law name divergence, and default WAD behavior
+**Prior milestone decisions logged in PROJECT.md Key Decisions table.**
+- [Phase 18]: DDA as new LegalFramework value (not WAD/EAA) to avoid EU directive references in AU output
+- [Phase 18]: AHRC is enforcement body for both public and private AU sectors — set to both wad/eaa keys in ENFORCEMENT_BODIES_DETAILED
+- [Phase 18]: au-dda placed first in AU national-laws.json array so getNationalLawByFramework Array.find returns it as primary entry
+- [Phase 19]: en-au template uses voluntary framing — AU has no mandatory statement requirement; DDA fallback via ?? operator for national_law when WAD/EAA return null for country=AU
+- [Phase 20]: Use ddaLaw.fullName alone for AU national_law to avoid (Cth) duplication — fullName already contains it
+- [Phase 20]: ahrc_url hardcoded as static substitution string in statement-generator — URL is stable and known
+- [Phase 21]: Modify hardcoded AU assertions in-place (not add companion tests) — cleaner, no double assertions
+- [Phase 21]: Auto-sync test pattern: all AU enforcement body assertions use ENFORCEMENT_BODIES.AU or getEnforcementBody() as expected value, never string literals
 
 ### Pending Todos
 
@@ -78,9 +74,11 @@ None.
 ### Blockers/Concerns
 
 - Component dist rebuild needed before npm publish (v0.3 source changes not built to dist yet)
+- `en-au` template prose should be reviewed by an AU-familiar legal practitioner before external release (voluntary statement framing, AHRC complaint language)
+- `diggRisk` i18n key path in `packages/engine/src/locales/en.json` must be located before authoring en-au locale override (Phase 20)
 
 ## Session Continuity
 
-Last session: 2026-03-07
-Stopped at: Completed 17-01-PLAN.md — Phase 17 plan 1 done, v0.4 milestone complete
-Resume: `/gsd:new-milestone` for v0.5
+Last session: 2026-03-27T03:08:00.000Z
+Stopped at: Phase 21 Plan 01 complete — milestone v0.5 AU Jurisdiction all phases done
+Resume: n/a — v0.5 milestone complete

@@ -5,7 +5,8 @@
 - ✅ **v0.1 Stability Pass** — Phases 1-5 (shipped 2026-03-03)
 - ✅ **v0.2 Full Localization** — Phases 6-10 (shipped 2026-03-05)
 - ✅ **v0.3 National Compliance** — Phases 11-13 (shipped 2026-03-06)
-- 🚧 **v0.4 Locale Expansion + EAA Sector** — Phases 14-17 (in progress)
+- ✅ **v0.4 Locale Expansion + EAA Sector** — Phases 14-17 (shipped 2026-03-07)
+- 🚧 **v0.5 Australia Jurisdiction** — Phases 18-21 (in progress)
 
 ## Phases
 
@@ -46,71 +47,80 @@ See: `.planning/milestones/v0.3-ROADMAP.md` for full details
 
 </details>
 
-### 🚧 v0.4 Locale Expansion + EAA Sector (In Progress)
+<details>
+<summary>✅ v0.4 Locale Expansion + EAA Sector (Phases 14-17) — SHIPPED 2026-03-07</summary>
 
-**Milestone Goal:** Add Italian, Portuguese, and Polish locale support (engine templates, component templates, chrome strings, tests) and wire the `--sector private` CLI flag to generate EAA-compliant accessibility statements.
+- [x] Phase 14: Locale Standards Data (1/1 plan) — completed 2026-03-06
+- [x] Phase 15: New Locale Engine Templates (1/1 plan) — completed 2026-03-07
+- [x] Phase 16: New Locale Component Templates (1/1 plan) — completed 2026-03-07
+- [x] Phase 17: EAA Sector Support (1/1 plan) — completed 2026-03-07
 
-- [x] **Phase 14: Locale Standards Data** — PT and PL Country type entries + WAD/EAA enforcement bodies; IT/PT/PL national laws (completed 2026-03-06)
-- [x] **Phase 15: New Locale Engine Templates** — it/pt/pl JSON templates + TLD .pt/.pl + engine locale tests (completed 2026-03-07)
-- [x] **Phase 16: New Locale Component Templates** — it/pt/pl inline TEMPLATES + chrome strings + component locale tests (completed 2026-03-07)
-- [x] **Phase 17: EAA Sector Support** — `--sector` CLI flag wired to enforcement body + law selection + EAA tests (completed 2026-03-07)
+See: `.planning/milestones/v0.4-ROADMAP.md` for full details
+
+</details>
+
+### v0.5 Australia Jurisdiction (In Progress)
+
+**Milestone Goal:** Add Australia as a fully supported jurisdiction across all three packages — standards (DDA + DTA), components (en-au UI chrome and inline template), engine (en-au statement template + .au TLD detection), and sector-aware enforcement routing for AU. All output for Australian clients must reference DDA 1992 and AHRC, not EU law.
+
+- [x] **Phase 18: AU Standards Foundation** - `LegalFramework` extended to `'DDA'`, `Country` extended to `'AU'`, DDA + DTA law data, AHRC enforcement bodies (completed 2026-03-28)
+- [x] **Phase 19: AU Component Locale** - `TEMPLATES['en-au']` inline template and locale-chrome entries for en-au (completed 2026-03-28)
+- [x] **Phase 20: AU Engine Integration** - `en-au.json` statement template, `.au`/`.com.au` TLD detection, engine locale maps (completed 2026-03-28)
+- [x] **Phase 21: AU Test Coverage** - Auto-syncing enforcement/law tests, en-au template placeholder exhaustiveness, component rendering and locale routing tests (completed 2026-03-29)
 
 ## Phase Details
 
-### Phase 14: Locale Standards Data
-**Goal**: The standards package contains complete, authoritative data for Italian, Portuguese, and Polish — Country type entries, WAD and EAA enforcement bodies, and national law records — so engine and component packages can reference them without hardcoding.
-**Depends on**: Phase 13 (v0.3 complete)
-**Requirements**: STD-03, STD-04
+### Phase 18: AU Standards Foundation
+**Goal**: The standards package contains all AU type entries and data required for downstream packages to compile — `'DDA'` in `LegalFramework`, `'AU'` in `Country`, DDA and DTA law records in `national-laws.json`, and AHRC in both enforcement body maps — committed atomically so the TypeScript build never breaks mid-update.
+**Depends on**: Phase 17 (v0.4 complete)
+**Requirements**: STD-01, STD-02, STD-03, STD-04
 **Success Criteria** (what must be TRUE):
-  1. `Country` type in `packages/standards/src/types.ts` includes `PT` and `PL` as valid values
-  2. `ENFORCEMENT_BODIES` and `ENFORCEMENT_BODIES_DETAILED` in `packages/standards/src/index.ts` have entries for PT and PL with both WAD and EAA enforcement body names
-  3. `getEnforcementBody('PT', 'private')` and `getEnforcementBody('PL', 'private')` return the correct EAA body names
-  4. `national-laws.json` contains WAD and EAA entries for IT, PT, and PL with correct `.law` and `.fullName` fields
-  5. `getNationalLawByFramework('EAA', 'IT')`, `getNationalLawByFramework('EAA', 'PT')`, `getNationalLawByFramework('EAA', 'PL')` each return a non-null result
+  1. `LegalFramework` type includes `'DDA'` as a valid value alongside `'WAD'` and `'EAA'`
+  2. `Country` type includes `'AU'` and the build fails if any `Record<Country, ...>` map is missing the `'AU'` key
+  3. `national-laws.json` has an `au-dda` entry (scope both, enforcer AHRC) and an `au-dta` entry (scope public, enforcer DTA)
+  4. `ENFORCEMENT_BODIES['AU']` and `ENFORCEMENT_BODIES_DETAILED['AU']` are present with both `wad` and `eaa` fields pointing to AHRC
+  5. `getEnforcementBody('AU', 'private')` returns AHRC (not DTA) — DDA applies to both sectors under one body
 **Plans**: 1 plan
 Plans:
-- [ ] 14-01-PLAN.md — Expand Country type, add PT/PL enforcement bodies, add IT/PT/PL national laws, add tests
+- [x] 18-01-PLAN.md — Extend types, add AU enforcement bodies, national law entries, and tests
 
-### Phase 15: New Locale Engine Templates
-**Goal**: The engine generates correct, localized accessibility statements for Italian, Portuguese, and Polish locales — with the right enforcement body and national law referenced — and TLD detection routes `.pt` and `.pl` domains to the correct country.
-**Depends on**: Phase 14
-**Requirements**: ENG-05, ENG-06, ENG-08 (locale tests)
+### Phase 19: AU Component Locale
+**Goal**: The `AccessibilityStatement` React component renders a legally accurate Australian statement for `locale="en-au"` — referencing DDA 1992 and AHRC, using complaint-based enforcement framing (not mandatory statement framing), and displaying correct AU-specific badge labels and footer text.
+**Depends on**: Phase 18
+**Requirements**: CMP-01, CMP-02
 **Success Criteria** (what must be TRUE):
-  1. Engine JSON templates exist for `it`, `pt`, and `pl` locales in `packages/engine/src/reporting/templates/`
-  2. Each template uses `{<enforcement_body>}` and `{<national_law>}` placeholders (no hardcoded law names)
-  3. `TLD_MAP` in `statement-generator.ts` maps `.pt` to `PT` and `.pl` to `PL`
-  4. A report generated for a `.pt` domain produces a Portuguese statement referencing the correct PT enforcement body and law
-  5. Automated tests confirm correct enforcement body and national law output for it, pt, and pl locales
+  1. `TEMPLATES['en-au']` exists in `AccessibilityStatement.tsx` and references DDA legislation and AHRC (no EU Web Accessibility Directive references)
+  2. `locale-chrome.ts` contains `en-au` entries for `BADGE_LABELS`, `UPDATED_LABEL`, and `FOOTER_TEXT`
+  3. Rendering `<AccessibilityStatement locale="en-au" />` produces HTML with DDA and AHRC text and zero placeholder leakage (`{<` must not appear in output)
 **Plans**: 1 plan
 Plans:
-- [ ] 15-01-PLAN.md — Create it/pt/pl JSON templates, update TLD_MAP + locale maps + substitutions, add auto-syncing tests
+- [x] 19-01-PLAN.md — Add en-au template, locale routing, national_law DDA fallback, locale-chrome entries, and tests
 
-### Phase 16: New Locale Component Templates
-**Goal**: The `AccessibilityStatement` React component renders correct, localized statements for Italian, Portuguese, and Polish — with the correct enforcement body, national law, and UI chrome (badge labels, footer text) displayed in each locale.
-**Depends on**: Phase 14
-**Requirements**: CMP-04, CMP-05, CMP-06
+### Phase 20: AU Engine Integration
+**Goal**: The engine automatically detects Australian domains via `.au` and `.com.au` TLD matching, routes them to the `en-au` locale, and generates a legally accurate accessibility statement referencing DDA 1992, AHRC, and WCAG 2.2 AA — with correct evaluationMethod and statusMap entries for the en-au locale.
+**Depends on**: Phase 19
+**Requirements**: ENG-01, ENG-02, ENG-03
 **Success Criteria** (what must be TRUE):
-  1. `AccessibilityStatement.tsx` TEMPLATES object includes `it`, `pt`, and `pl` inline templates using `{<enforcement_body>}` and `{<national_law>}` placeholders
-  2. `locale-chrome.ts` contains badge labels, updated label, and footer text for `it`, `pt`, and `pl`
-  3. Rendering `<AccessibilityStatement locale="it" />` produces HTML containing the Italian enforcement body name and IT national law name
-  4. Rendering `<AccessibilityStatement locale="pt" />` and `<AccessibilityStatement locale="pl" />` each produce HTML with their respective enforcement body and law name
-  5. Automated component tests verify rendered HTML for all three new locales with zero placeholder leakage (`{<` strings must not appear in output)
+  1. `TLD_MAP` maps `'au'` to `'AU'` and the existing `hostname.split('.').pop()` parser correctly routes `.au`, `.com.au`, and `.gov.au` domains to country `AU`
+  2. `en-au.json` statement template exists in `packages/engine/src/reporting/templates/` with DDA-specific prose, voluntary framing, and AHRC complaint pathway — no "disproportionate burden" or mandatory statement language from EU/UK templates
+  3. Engine locale maps (`evaluationMethod`, `statusMap`, locale routing) include `en-au` entries
+  4. The risk-level display label for `en-au` reads "Risk level" (not "DIGG Risk") in CLI output
 **Plans**: 1 plan
 Plans:
-- [ ] 16-01-PLAN.md — Add it/pt/pl TEMPLATES + chrome strings + locale-specific replacements + auto-syncing tests
+- [x] 20-01-PLAN.md — Create en-au.json template, wire TLD detection, locale maps, DDA substitution, and i18n routing
 
-### Phase 17: EAA Sector Support
-**Goal**: Passing `--sector private` to the CLI produces an accessibility statement that references the EAA enforcement body and law instead of the WAD equivalents — fully data-driven, using the existing `getEnforcementBody(country, sector)` and `getNationalLawByFramework('EAA', country)` helpers.
-**Depends on**: Phase 15 (engine templates in place)
-**Requirements**: ENG-07, ENG-08 (EAA tests)
+### Phase 21: AU Test Coverage
+**Goal**: The test suite verifies all AU additions end-to-end — enforcement body routing, national law retrieval, TLD detection, statement template placeholder exhaustiveness, and component rendering — using the auto-syncing pattern so tests call standards functions directly and do not hardcode law or enforcement body names.
+**Depends on**: Phase 20
+**Requirements**: TST-01, TST-02, TST-03
 **Success Criteria** (what must be TRUE):
-  1. The CLI (`hd-a11y-scan`) accepts a `--sector` flag with values `public` and `private`
-  2. When `--sector private` is passed, the generated statement calls `getEnforcementBody(country, 'private')` and resolves the EAA enforcement body name
-  3. When `--sector private` is passed, the generated statement calls `getNationalLawByFramework('EAA', country)` and resolves the EAA law name
-  4. Automated tests confirm that EAA sector output differs from WAD output (different enforcement body and law names) for at least two countries
+  1. Tests assert `getEnforcementBody('AU')` and `getEnforcementBody('AU', 'private')` both return AHRC using the auto-syncing pattern (no hardcoded strings)
+  2. Tests assert `getNationalLawByFramework('DDA', 'AU')` returns a non-null result with correct `.law` and `.fullName` fields
+  3. en-au engine template placeholder exhaustiveness tests confirm every `{<placeholder>}` is substituted and no placeholder leakage occurs in generated output
+  4. Component tests confirm `<AccessibilityStatement locale="en-au" />` renders AU-specific content and all 225 pre-existing tests continue to pass
 **Plans**: 1 plan
 Plans:
-- [ ] 17-01-PLAN.md — Wire --sector CLI flag through engine and component, add EAA sector tests
+- [ ] 21-01-PLAN.md — Close 7 auto-sync and coverage gaps across standards, engine, and component test files + full regression
 
 ## Progress
 
@@ -131,5 +141,9 @@ Plans:
 | 13. Component National Compliance | v0.3 | 1/1 | Complete | 2026-03-06 |
 | 14. Locale Standards Data | v0.4 | 1/1 | Complete | 2026-03-06 |
 | 15. New Locale Engine Templates | v0.4 | 1/1 | Complete | 2026-03-07 |
-| 16. New Locale Component Templates | 1/1 | Complete    | 2026-03-07 | - |
-| 17. EAA Sector Support | 1/1 | Complete   | 2026-03-07 | - |
+| 16. New Locale Component Templates | v0.4 | 1/1 | Complete | 2026-03-07 |
+| 17. EAA Sector Support | v0.4 | 1/1 | Complete | 2026-03-07 |
+| 18. AU Standards Foundation | v0.5 | 1/1 | Complete | 2026-03-28 |
+| 19. AU Component Locale | v0.5 | 1/1 | Complete | 2026-03-28 |
+| 20. AU Engine Integration | v0.5 | 1/1 | Complete | 2026-03-28 |
+| 21. AU Test Coverage | 1/1 | Complete   | 2026-03-29 | - |

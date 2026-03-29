@@ -274,6 +274,19 @@ const TEMPLATES: Record<string, StatementTemplate> = {
             { id: "testing", title: "How we tested this website", content: "{We have performed a self-assessment (internal testing) of {<website>}./{<third party>} has tested {<website>}./We have estimated the accessibility without testing.}\n\nThe last assessment was made on {<assessment date>}.\n\n[Assessment method: {<method>}]\n\nThe website was published on {<publish date>}.\n\nThe statement was last updated on {<update date>}." }
         ]
     },
+    'en-au': {
+        title: "Accessibility of {<website>}",
+        intro: "This statement describes how {<organisation>} addresses accessibility under the {<national_law>}. {<organisation>} is committed to ensuring its website is accessible to people with disability in accordance with WCAG 2.2 Level AA, as recommended by the {<enforcement_body>}.",
+        sections: [
+            { id: "how-accessible", title: "How accessible is this website?", content: "{There are no known accessibility issues with this website./We know some parts of this website are not fully accessible. See the section on known accessibility barriers below for more information./This website has significant accessibility barriers. See the section on known accessibility barriers below for more information.}" },
+            { id: "what-to-do", title: "What to do if you experience accessibility issues", content: "If you experience difficulty accessing any part of this website, please contact us.\n\n[Our normal response time is {<response time>}.]\n\n[You can also contact us:\n\n* by email: {<email address>}\n* by phone: {<telephone number>}]" },
+            { id: "reporting", title: "Reporting accessibility problems", content: "We are always working to improve the accessibility of this website. If you find a problem that is not listed on this page, or if you believe we are not meeting the requirements described here, please contact us.\n\nIf you are not satisfied with our response, you may lodge a complaint with the {<enforcement_body>} under the {<national_law>}. The AHRC complaint form is available at {<ahrc_url>}." },
+            { id: "non-accessible", title: "Known accessibility barriers", content: "[\n{<issues>}\n]" },
+            { id: "wcag-conformance", title: "Technical information about accessibility", content: "{This website is fully compliant with WCAG 2.2 Level AA./This website is partially compliant with WCAG 2.2 Level AA, due to the barriers listed above./This website is not compliant with WCAG 2.2 Level AA. The known barriers are listed above.}\n\nWCAG 2.2 Level AA is the standard recommended by the {<enforcement_body>} under the {<national_law>}." },
+            { id: "dta-policy", title: "Australian Government digital policy", content: "Federal government agencies are subject to the Digital Transformation Agency (DTA) Digital Experience Policy, which has included the Digital Inclusion Standard since 1 January 2025 for new services and 1 July 2025 for existing services. The Digital Inclusion Standard requires Commonwealth agencies to meet WCAG 2.2 Level AA.\n\nThis statement was prepared in accordance with best practice guidance from the DTA and the Australian Human Rights Commission (AHRC)." },
+            { id: "testing", title: "How we tested this website", content: "{We have performed a self-assessment (internal testing) of {<website>}./{<third party>} has tested {<website>}./We have estimated the accessibility without testing.}\n\nThe last assessment was made on {<assessment date>}.\n\n[Assessment method: {<method>}]\n\nThe statement was last updated on {<update date>}." }
+        ]
+    },
     it: {
         title: "Dichiarazione di accessibilità per {<webbplats>}",
         intro: "{<organisation>} si impegna a rendere accessibile il proprio sito web ai sensi della {<national_law>}. La presente dichiarazione di accessibilità si applica a {<webbplats>}.",
@@ -330,7 +343,8 @@ const formatDiggDate = (date: Date, locale: string) => {
         pl: 'pl-PL',
         'en-gb': 'en-GB',
         'en-us': 'en-US',
-        'en-ca': 'en-CA'
+        'en-ca': 'en-CA',
+        'en-au': 'en-AU'
     };
     return date.toLocaleDateString(localeMap[locale] || 'en-US', {
         year: 'numeric',
@@ -375,7 +389,8 @@ export const AccessibilityStatement: React.FC<AccessibilityStatementProps> = ({
         sv: 'sv', en: 'en', no: 'no', nb: 'no', dk: 'da',
         da: 'da', de: 'de', fr: 'fr', es: 'es', fi: 'fi', nl: 'nl',
         it: 'it', pt: 'pt', pl: 'pl',
-        'en-gb': 'en-gb', 'en-us': 'en-us', 'en-ca': 'en-ca'
+        'en-gb': 'en-gb', 'en-us': 'en-us', 'en-ca': 'en-ca',
+        'en-au': 'en-au'
     };
     const lang = supportedLocales[locale];
     if (!lang) {
@@ -413,7 +428,8 @@ export const AccessibilityStatement: React.FC<AccessibilityStatementProps> = ({
         '{<third party>}': generatorTool?.name || 'HolmDigital Engine',
         '{<enforcement_body>}': enforcementBody,
         '{<national_law>}': (() => {
-            const law = getNationalLawByFramework(sector === 'private' ? 'EAA' : 'WAD', country);
+            const law = getNationalLawByFramework(sector === 'private' ? 'EAA' : 'WAD', country)
+                     ?? getNationalLawByFramework('DDA', country);
             return law ? `${law.fullName} (${law.law})` : '';
         })(),
     };
@@ -527,6 +543,9 @@ export const AccessibilityStatement: React.FC<AccessibilityStatementProps> = ({
     replacements['{<metoda_pl>}'] = evaluationMethod || 'Automated Scan';
     replacements['{<podmiot zewnętrzny>}'] = generatorTool?.name || 'HolmDigital Engine';
     replacements['{<braki>}'] = issuesContent;
+
+    // AU-specific mappings
+    replacements['{<ahrc_url>}'] = 'https://humanrights.gov.au/complaints';
 
     const renderTemplate = (tmpl: string) => {
         let text = tmpl;

@@ -90,11 +90,11 @@ describe('Template placeholder exhaustiveness', () => {
         ).rejects.toThrow(/template not found for locale "xx"/i);
     });
 
-    it('should discover all 15 expected template files', () => {
-        expect(templateFiles.length).toBeGreaterThanOrEqual(15);
+    it('should discover all 16 expected template files', () => {
+        expect(templateFiles.length).toBeGreaterThanOrEqual(16);
         const langs = templateFiles.map(f => f.replace('.json', '')).sort();
         expect(langs).toEqual(
-            expect.arrayContaining(['da', 'de', 'en', 'en-ca', 'en-gb', 'en-us', 'es', 'fi', 'fr', 'it', 'nl', 'no', 'pl', 'pt', 'sv'])
+            expect.arrayContaining(['da', 'de', 'en', 'en-au', 'en-ca', 'en-gb', 'en-us', 'es', 'fi', 'fr', 'it', 'nl', 'no', 'pl', 'pt', 'sv'])
         );
     });
 });
@@ -114,6 +114,7 @@ describe('Locale-specific output verification', () => {
     const localeExpectations: [string, string, string][] = [
         ['sv', 'Automatiserad granskning', 'delvis förenlig'],
         ['en', 'Automated scan', 'partially compliant'],
+        ['en-au', 'Automated scan', 'partially compliant'],
         ['no', 'Automatisert gjennomgang', 'delvis i samsvar'],
         ['fi', 'Automaattinen tarkistus', 'osittain'],
         ['da', 'Automatiseret gennemgang', 'delvist i overensstemmelse'],
@@ -163,6 +164,12 @@ describe('TLD country detection for en-* locales', () => {
         const caResult = { ...mockResult, url: 'https://example.gc.ca' };
         const output = await generateStatementContent(caResult, 'en-ca', 'md', { ...metadata, country: undefined });
         expect(output).toContain('Accessibility Commissioner');
+    });
+
+    it('should detect .com.au TLD as AU country', async () => {
+        const auResult = { ...mockResult, url: 'https://example.com.au' };
+        const output = await generateStatementContent(auResult, 'en-au', 'md', { ...metadata, country: undefined });
+        expect(output).toContain(getEnforcementBody('AU'));
     });
 
     it('should not detect .gov TLD as any specific country — falls back to EU', async () => {

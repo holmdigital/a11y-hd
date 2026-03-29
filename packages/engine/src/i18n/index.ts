@@ -26,6 +26,7 @@ const locales: Record<string, LocaleData> = {
     'en-gb': en,
     'en-us': en,
     'en-ca': en,
+    'en-au': en,
     'da': dk,
     'nb': no // Norwegian Bokmål alias
 };

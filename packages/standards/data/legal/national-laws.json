@@ -431,6 +431,56 @@
                 "effectiveDate": "2005-06-13"
             }
         ],
+        "AU": [
+            {
+                "id": "au-dda",
+                "law": "Disability Discrimination Act 1992",
+                "fullName": "Disability Discrimination Act 1992 (Cth)",
+                "euFramework": "DDA",
+                "scope": "both",
+                "lawUrl": "https://www.legislation.gov.au/Details/C2016C00763",
+                "enforcement": {
+                    "authority": "au-ahrc",
+                    "authorityName": "Australian Human Rights Commission (AHRC)",
+                    "responsibility": "Investigates complaints of disability discrimination in digital services. Unresolved complaints may be referred to the Federal Court of Australia.",
+                    "website": "https://humanrights.gov.au"
+                },
+                "sanctions": {
+                    "type": "Complaint / Federal Court Damages",
+                    "description": "No statutory fine cap. Complaints are lodged with the AHRC. If conciliation fails, parties may proceed to the Federal Court for monetary damages and remediation orders.",
+                    "minAmount": 0,
+                    "maxAmount": 0,
+                    "currency": "AUD"
+                },
+                "inForce": true,
+                "effectiveDate": "1993-03-01",
+                "note": "WCAG 2.2 Level AA is the AHRC-recommended benchmark since April 2025. Applies to both public and private sector."
+            },
+            {
+                "id": "au-dta",
+                "law": "Digital Experience Policy — Digital Access Standard",
+                "fullName": "Australian Government Digital Experience Policy — Digital Access Standard",
+                "euFramework": "DDA",
+                "scope": "public",
+                "lawUrl": "https://www.digital.gov.au/policy/digital-experience/digital-access-standard",
+                "enforcement": {
+                    "authority": "au-dta",
+                    "authorityName": "Digital Transformation Agency (DTA)",
+                    "responsibility": "Monitors compliance of Australian Federal Government digital services with WCAG 2.2 Level AA.",
+                    "website": "https://www.dta.gov.au"
+                },
+                "sanctions": {
+                    "type": "Agency Compliance Reporting",
+                    "description": "No financial sanctions. Non-compliant federal agencies are reported through DTA performance monitoring.",
+                    "minAmount": 0,
+                    "maxAmount": 0,
+                    "currency": "AUD"
+                },
+                "inForce": true,
+                "effectiveDate": "2025-01-01",
+                "note": "Applies to Australian Federal Government agencies only, not state/territory or private sector."
+            }
+        ],
         "IT": [
             {
                 "id": "it-wad",
