@@ -270,9 +270,9 @@ describe('National Laws — AU', () => {
     });
 
     it('should have AHRC as enforcement body for both sectors', () => {
-        expect(getEnforcementBody('AU')).toBe('Australian Human Rights Commission (AHRC)');
-        expect(getEnforcementBody('AU', 'public')).toBe('Australian Human Rights Commission (AHRC)');
-        expect(getEnforcementBody('AU', 'private')).toBe('Australian Human Rights Commission (AHRC)');
+        expect(getEnforcementBody('AU')).toBe(ENFORCEMENT_BODIES.AU);
+        expect(getEnforcementBody('AU', 'public')).toBe(ENFORCEMENT_BODIES.AU);
+        expect(getEnforcementBody('AU', 'private')).toBe(ENFORCEMENT_BODIES.AU);
     });
 
     it('should have inForce true for au-dda', () => {
