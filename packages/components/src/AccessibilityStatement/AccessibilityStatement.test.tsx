@@ -465,3 +465,32 @@ describe('AccessibilityStatement placeholder leakage - en-au', () => {
         expect(container.innerHTML).not.toMatch(PLACEHOLDER_PATTERN);
     });
 });
+
+describe('AccessibilityStatement national compliance - AU enforcement body', () => {
+    it('en-au locale renders correct enforcement body for country=AU', () => {
+        const { container } = render(
+            <AccessibilityStatement
+                {...defaultProps}
+                locale="en-au"
+                country={'AU' as any}
+                sector="public"
+            />
+        );
+        const expectedBody = getEnforcementBody('AU' as any, 'public');
+        expect(container.innerHTML).toContain(expectedBody);
+    });
+
+    it('en-au locale renders correct national law for country=AU', () => {
+        const { container } = render(
+            <AccessibilityStatement
+                {...defaultProps}
+                locale="en-au"
+                country={'AU' as any}
+                sector="public"
+            />
+        );
+        const law = getNationalLawByFramework('DDA' as any, 'AU' as any);
+        expect(law).not.toBeNull();
+        expect(container.innerHTML).toContain(law!.fullName);
+    });
+});
