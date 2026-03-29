@@ -3,9 +3,9 @@ gsd_state_version: 1.0
 milestone: v0.5
 milestone_name: Australia Jurisdiction
 status: executing
-stopped_at: Completed 20-01-PLAN.md
-last_updated: "2026-03-28T21:23:39.884Z"
-last_activity: 2026-03-28 — Phase 20 Plan 01 executed
+stopped_at: Phase 21 Plan 01 complete
+last_updated: "2026-03-27T03:08:00.000Z"
+last_activity: 2026-03-27 — Phase 21 Plan 01 executed
 progress:
   total_phases: 4
   completed_phases: 3
@@ -25,12 +25,12 @@ See: .planning/PROJECT.md (updated 2026-03-27)
 
 ## Current Position
 
-Phase: 20 of 21 (AU Engine Integration)
+Phase: 21 of 21 (AU Test Coverage)
 Plan: 1 of 1
-Status: In progress
-Last activity: 2026-03-28 — Phase 20 Plan 01 executed
+Status: Complete
+Last activity: 2026-03-27 — Phase 21 Plan 01 executed
 
-Progress: [░░░░░░░░░░░░░░░░░░░░] 0% (v0.5: 0/4 phases)
+Progress: [████████████████████] 100% (v0.5: 4/4 phases)
 
 ## Performance Metrics
 
@@ -48,6 +48,7 @@ Progress: [░░░░░░░░░░░░░░░░░░░░] 0% (v0.
 | Phase 18 P01 | 3min | 2 tasks | 4 files |
 | Phase 19-01 Pen-au-component-locale | 12min | 2 tasks | 3 files |
 | Phase 20-01 Pau-engine-integration | 2min | 2 tasks | 3 files |
+| Phase 21-01 | 6min | 2 tasks | 3 files |
 
 ## Accumulated Context
 
@@ -63,6 +64,8 @@ Progress: [░░░░░░░░░░░░░░░░░░░░] 0% (v0.
 - [Phase 19]: en-au template uses voluntary framing — AU has no mandatory statement requirement; DDA fallback via ?? operator for national_law when WAD/EAA return null for country=AU
 - [Phase 20]: Use ddaLaw.fullName alone for AU national_law to avoid (Cth) duplication — fullName already contains it
 - [Phase 20]: ahrc_url hardcoded as static substitution string in statement-generator — URL is stable and known
+- [Phase 21]: Modify hardcoded AU assertions in-place (not add companion tests) — cleaner, no double assertions
+- [Phase 21]: Auto-sync test pattern: all AU enforcement body assertions use ENFORCEMENT_BODIES.AU or getEnforcementBody() as expected value, never string literals
 
 ### Pending Todos
 
@@ -76,6 +79,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-03-28T21:23:39.880Z
-Stopped at: Completed 20-01-PLAN.md
-Resume: `/gsd:plan-phase 18`
+Last session: 2026-03-27T03:08:00.000Z
+Stopped at: Phase 21 Plan 01 complete — milestone v0.5 AU Jurisdiction all phases done
+Resume: n/a — v0.5 milestone complete

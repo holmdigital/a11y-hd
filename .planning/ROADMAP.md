@@ -59,14 +59,14 @@ See: `.planning/milestones/v0.4-ROADMAP.md` for full details
 
 </details>
 
-### 🚧 v0.5 Australia Jurisdiction (In Progress)
+### v0.5 Australia Jurisdiction (In Progress)
 
 **Milestone Goal:** Add Australia as a fully supported jurisdiction across all three packages — standards (DDA + DTA), components (en-au UI chrome and inline template), engine (en-au statement template + .au TLD detection), and sector-aware enforcement routing for AU. All output for Australian clients must reference DDA 1992 and AHRC, not EU law.
 
 - [x] **Phase 18: AU Standards Foundation** - `LegalFramework` extended to `'DDA'`, `Country` extended to `'AU'`, DDA + DTA law data, AHRC enforcement bodies (completed 2026-03-28)
 - [x] **Phase 19: AU Component Locale** - `TEMPLATES['en-au']` inline template and locale-chrome entries for en-au (completed 2026-03-28)
 - [x] **Phase 20: AU Engine Integration** - `en-au.json` statement template, `.au`/`.com.au` TLD detection, engine locale maps (completed 2026-03-28)
-- [ ] **Phase 21: AU Test Coverage** - Auto-syncing enforcement/law tests, en-au template placeholder exhaustiveness, component rendering and locale routing tests
+- [x] **Phase 21: AU Test Coverage** - Auto-syncing enforcement/law tests, en-au template placeholder exhaustiveness, component rendering and locale routing tests (completed 2026-03-29)
 
 ## Phase Details
 
@@ -94,7 +94,7 @@ Plans:
   3. Rendering `<AccessibilityStatement locale="en-au" />` produces HTML with DDA and AHRC text and zero placeholder leakage (`{<` must not appear in output)
 **Plans**: 1 plan
 Plans:
-- [ ] 19-01-PLAN.md — Add en-au template, locale routing, national_law DDA fallback, locale-chrome entries, and tests
+- [x] 19-01-PLAN.md — Add en-au template, locale routing, national_law DDA fallback, locale-chrome entries, and tests
 
 ### Phase 20: AU Engine Integration
 **Goal**: The engine automatically detects Australian domains via `.au` and `.com.au` TLD matching, routes them to the `en-au` locale, and generates a legally accurate accessibility statement referencing DDA 1992, AHRC, and WCAG 2.2 AA — with correct evaluationMethod and statusMap entries for the en-au locale.
@@ -107,7 +107,7 @@ Plans:
   4. The risk-level display label for `en-au` reads "Risk level" (not "DIGG Risk") in CLI output
 **Plans**: 1 plan
 Plans:
-- [ ] 20-01-PLAN.md — Create en-au.json template, wire TLD detection, locale maps, DDA substitution, and i18n routing
+- [x] 20-01-PLAN.md — Create en-au.json template, wire TLD detection, locale maps, DDA substitution, and i18n routing
 
 ### Phase 21: AU Test Coverage
 **Goal**: The test suite verifies all AU additions end-to-end — enforcement body routing, national law retrieval, TLD detection, statement template placeholder exhaustiveness, and component rendering — using the auto-syncing pattern so tests call standards functions directly and do not hardcode law or enforcement body names.
@@ -120,7 +120,7 @@ Plans:
   4. Component tests confirm `<AccessibilityStatement locale="en-au" />` renders AU-specific content and all 225 pre-existing tests continue to pass
 **Plans**: 1 plan
 Plans:
-- [ ] 21-01-PLAN.md — TBD
+- [ ] 21-01-PLAN.md — Close 7 auto-sync and coverage gaps across standards, engine, and component test files + full regression
 
 ## Progress
 
@@ -144,6 +144,6 @@ Plans:
 | 16. New Locale Component Templates | v0.4 | 1/1 | Complete | 2026-03-07 |
 | 17. EAA Sector Support | v0.4 | 1/1 | Complete | 2026-03-07 |
 | 18. AU Standards Foundation | v0.5 | 1/1 | Complete | 2026-03-28 |
-| 19. AU Component Locale | 1/1 | Complete    | 2026-03-28 | - |
-| 20. AU Engine Integration | 1/1 | Complete   | 2026-03-28 | - |
-| 21. AU Test Coverage | v0.5 | 0/TBD | Not started | - |
+| 19. AU Component Locale | v0.5 | 1/1 | Complete | 2026-03-28 |
+| 20. AU Engine Integration | v0.5 | 1/1 | Complete | 2026-03-28 |
+| 21. AU Test Coverage | 1/1 | Complete   | 2026-03-29 | - |

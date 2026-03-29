@@ -27,9 +27,9 @@ Requirements for v0.5 Australia Jurisdiction. Each maps to roadmap phases.
 
 ### Testing
 
-- [ ] **TST-01**: AU enforcement body and national law assertions using auto-syncing test pattern
-- [ ] **TST-02**: en-au engine template placeholder exhaustiveness tests
-- [ ] **TST-03**: en-au component template rendering and locale routing tests
+- [x] **TST-01**: AU enforcement body and national law assertions using auto-syncing test pattern
+- [x] **TST-02**: en-au engine template placeholder exhaustiveness tests
+- [x] **TST-03**: en-au component template rendering and locale routing tests
 
 ## Future Requirements
 
@@ -81,9 +81,9 @@ Which phases cover which requirements. Updated during roadmap creation.
 | ENG-03 | Phase 20 | Complete |
 | CMP-01 | Phase 19 | Complete |
 | CMP-02 | Phase 19 | Complete |
-| TST-01 | Phase 21 | Pending |
-| TST-02 | Phase 21 | Pending |
-| TST-03 | Phase 21 | Pending |
+| TST-01 | Phase 21 | Complete |
+| TST-02 | Phase 21 | Complete |
+| TST-03 | Phase 21 | Complete |
 
 **Coverage:**
 - v0.5 requirements: 12 total
