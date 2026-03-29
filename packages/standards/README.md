@@ -5,7 +5,7 @@
 ![TypeScript](https://img.shields.io/badge/TypeScript-Ready-blue)
 [![Downloads](https://img.shields.io/npm/dm/@holmdigital/standards.svg)](https://www.npmjs.com/package/@holmdigital/standards)
 
-> Machine-readable regulatory database for WCAG, EN 301 549, DOS-lagen, and EU Legal Frameworks (WAD/EAA).
+> Machine-readable regulatory database for WCAG, EN 301 549, DOS-lagen, EU Legal Frameworks (WAD/EAA), and Australian DDA.
 
 ## Why this package?
 
@@ -13,8 +13,8 @@ This package serves as the **Single Source of Truth** for accessibility complian
 
 1.  **WCAG 2.1 Criteria** (Technical Base)
 2.  **EN 301 549** (EU Standard Mapping)
-3.  **National Laws** (Specific legal references for SE, NL, DE, IT, PT, PL, etc.)
-4.  **EU Legal Frameworks** (WAD 2016/2102 & EAA 2019/882)
+3.  **National Laws** (Specific legal references for SE, NL, DE, IT, PT, PL, AU, etc.)
+4.  **Legal Frameworks** (WAD 2016/2102, EAA 2019/882, DDA 1992 Australia)
 5.  **Nordic Authority Data** (Digg, PTS, UU-tilsynet, etc.)
 
 It allows developers to query: *"Which law mandates WCAG 1.4.3 in Sweden?"* and get the exact legal paragraph (`Lag (2018:1937) 12 §`).
@@ -29,7 +29,7 @@ npm install @holmdigital/standards
 
 ## Features
 
-- **Multi-Language Support** (12 locale databases):
+- **Multi-Language Support** (13 locale databases):
   - `en` (Generic / UK PSBAR)
   - `sv` (Sweden / DOS-lagen)
   - `no` (Norway / IKT-forskrift)
@@ -45,11 +45,12 @@ npm install @holmdigital/standards
   - `en-gb` (UK / PSBAR)
   - `en-us` (USA / Section 508 & ADA)
   - `en-ca` (Canada / AODA)
+  - `en-au` (Australia / DDA)
 - **Risk Assessment**: DIGG-aligned risk levels (`critical`, `high`, `medium`, `low`).
 - **Remediation**: Maps issues to `@holmdigital/components` for fixing.
-- **EU Legal Frameworks**: WAD (public sector) and EAA (private sector) compliance data.
-- **Sector-Aware Enforcement**: `getEnforcementBody(country, 'public'|'private')` returns the correct authority based on WAD or EAA sector.
-- **Nordic Authorities & Enforcement**: Shared database of regulatory bodies (`ENFORCEMENT_BODIES`) for SE, NO, DK, FI, and the broader EU.
+- **Legal Frameworks**: WAD (public sector), EAA (private sector), and DDA (Australia — both sectors) compliance data.
+- **Sector-Aware Enforcement**: `getEnforcementBody(country, 'public'|'private')` returns the correct authority based on WAD, EAA, or DDA sector.
+- **Authorities & Enforcement**: Shared database of regulatory bodies (`ENFORCEMENT_BODIES`) for 17 countries including EU, Nordic, UK, US, CA, and AU.
 
 ## Usage
 
@@ -156,6 +157,7 @@ const sectors = getSectorAuthorities('SE');
 | 🇬🇧 GB | PSBAR | - | Unlawful Act Notice |
 | 🇺🇸 US | Section 508 | - | Civil Rights Complaint |
 | 🇨🇦 CA | AODA | - | $100k per day |
+| 🇦🇺 AU | DDA 1992 | DTA Policy | Court-determined (AHRC complaint) |
 
 ## API Reference
 
@@ -198,7 +200,7 @@ const sectors = getSectorAuthorities('SE');
 |----------|-------------|
 | `getNationalLaws(country)` | Get all laws for a country |
 | `getNationalLaw(id, country?)` | Get specific law by ID |
-| `getNationalLawByFramework(framework, country?)` | Get law by WAD/EAA |
+| `getNationalLawByFramework(framework, country?)` | Get law by WAD/EAA/DDA |
 | `getSanctions(lawId, country?)` | Get sanctions for a law |
 | `getMaxSanction(country?)` | Get maximum sanction amount |
 | `getSectorAuthorities(country?)` | Get EAA sector authorities |
