@@ -101,3 +101,24 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           # id-token: write permission handles auth via Trusted Publishing
+
+      - name: Trigger downstream deploys
+        if: github.ref == 'refs/heads/master' && steps.changesets.outputs.hasChangesets != 'true'
+        run: |
+          set -euo pipefail
+          ENGINE_VERSION=$(node -p "require('./packages/engine/package.json').version")
+          echo "Engine version: $ENGINE_VERSION"
+
+          if npm view "@holmdigital/engine@$ENGINE_VERSION" version > /dev/null 2>&1; then
+            for REPO in holmdigital/holmdigital-website holmdigital/accessibility-wiki; do
+              echo "Dispatching to $REPO"
+              curl -sf -X POST \
+                -H "Accept: application/vnd.github+json" \
+                -H "Authorization: token ${{ secrets.DISPATCH_TOKEN }}" \
+                "https://api.github.com/repos/$REPO/dispatches" \
+                -d "{\"event_type\":\"engine-release\",\"client_payload\":{\"version\":\"$ENGINE_VERSION\"}}"
+            done
+            echo "Dispatch events sent"
+          else
+            echo "Engine version not published (already existed), skipping dispatch"
+          fi
