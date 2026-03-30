@@ -334,11 +334,26 @@ export class RegulatoryScanner {
                 // så att vi inte tappar bort felet.
                 const isBestPractice = violation.tags.includes('best-practice');
                 const riskLevel = isBestPractice ? 'low' as const : 'medium' as const;
+
+                // Locale-aware fallback strings
+                const FALLBACK_STRINGS: Record<string, { bestPracticeRef: string; manualRef: string; bestPracticeRationale: string; unmappedRationale: string }> = {
+                    sv: { bestPracticeRef: 'Rekommendation (ej lagkrav)', manualRef: 'Kräver manuell bedömning', bestPracticeRationale: 'Best practice — rekommenderas för bättre tillgänglighet men är inget specifikt WCAG-krav.', unmappedRationale: 'Detta fel upptäcktes av scannern men saknar specifik mappning i HolmDigital-databasen.' },
+                    no: { bestPracticeRef: 'Anbefaling (ikke lovkrav)', manualRef: 'Krever manuell vurdering', bestPracticeRationale: 'Best practice — anbefales for bedre tilgjengelighet, men er ikke et spesifikt WCAG-krav.', unmappedRationale: 'Denne feilen ble oppdaget av skanneren, men mangler spesifikk kartlegging i HolmDigital-databasen.' },
+                    fi: { bestPracticeRef: 'Suositus (ei lakisääteinen)', manualRef: 'Vaatii manuaalisen arvioinnin', bestPracticeRationale: 'Best practice — suositellaan paremman saavutettavuuden vuoksi, mutta ei ole erityinen WCAG-vaatimus.', unmappedRationale: 'Tämä virhe havaittiin skannerilla, mutta sille ei ole tarkkaa kartoitusta HolmDigital-tietokannassa.' },
+                    de: { bestPracticeRef: 'Empfehlung (keine gesetzliche Pflicht)', manualRef: 'Erfordert manuelle Bewertung', bestPracticeRationale: 'Best Practice — empfohlen für bessere Barrierefreiheit, aber keine spezifische WCAG-Anforderung.', unmappedRationale: 'Dieser Fehler wurde vom Scanner erkannt, hat aber keine spezifische Zuordnung in der HolmDigital-Datenbank.' },
+                    fr: { bestPracticeRef: 'Recommandation (non obligatoire)', manualRef: 'Nécessite une évaluation manuelle', bestPracticeRationale: 'Bonne pratique — recommandée pour une meilleure accessibilité, mais pas une exigence WCAG spécifique.', unmappedRationale: 'Cette erreur a été détectée par le scanner mais n\'a pas de correspondance spécifique dans la base HolmDigital.' },
+                    es: { bestPracticeRef: 'Recomendación (no obligatorio)', manualRef: 'Requiere evaluación manual', bestPracticeRationale: 'Buena práctica — recomendada para mejor accesibilidad, pero no es un requisito WCAG específico.', unmappedRationale: 'Este error fue detectado por el escáner pero no tiene una correspondencia específica en la base de datos de HolmDigital.' },
+                    nl: { bestPracticeRef: 'Aanbeveling (geen wettelijke verplichting)', manualRef: 'Vereist handmatige beoordeling', bestPracticeRationale: 'Best practice — aanbevolen voor betere toegankelijkheid, maar geen specifieke WCAG-eis.', unmappedRationale: 'Deze fout is gedetecteerd door de scanner maar heeft geen specifieke toewijzing in de HolmDigital-database.' },
+                    da: { bestPracticeRef: 'Anbefaling (ikke lovkrav)', manualRef: 'Kræver manuel vurdering', bestPracticeRationale: 'Best practice — anbefales for bedre tilgængelighed, men er ikke et specifikt WCAG-krav.', unmappedRationale: 'Denne fejl blev opdaget af scanneren, men mangler specifik kortlægning i HolmDigital-databasen.' },
+                    en: { bestPracticeRef: 'Recommendation (not a legal requirement)', manualRef: 'Requires manual assessment', bestPracticeRationale: 'Best practice — recommended for better accessibility but not a specific WCAG requirement.', unmappedRationale: 'This issue was detected by the scanner but has no specific mapping in the HolmDigital database.' },
+                };
+                const fallback = FALLBACK_STRINGS[lang] || FALLBACK_STRINGS['en'];
+
                 reports.push({
                     ruleId: violation.id,
                     wcagCriteria: isBestPractice ? 'Best Practice' : 'Unknown',
                     en301549Criteria: isBestPractice ? 'N/A' : 'Unknown',
-                    dosLagenReference: isBestPractice ? 'Rekommendation (ej lagkrav)' : 'Kräver manuell bedömning',
+                    dosLagenReference: isBestPractice ? fallback.bestPracticeRef : fallback.manualRef,
                     diggRisk: riskLevel,
                     eaaImpact: riskLevel,
                     remediation: {
@@ -352,8 +367,8 @@ export class RegulatoryScanner {
                         reasoning: violation.help,
                         swedishInterpretation: violation.help,
                         priorityRationale: isBestPractice
-                            ? 'Best practice — rekommenderas för bättre tillgänglighet men är inget specifikt WCAG-krav.'
-                            : 'Detta fel upptäcktes av scannern men saknar specifik mappning i HolmDigital-databasen.'
+                            ? fallback.bestPracticeRationale
+                            : fallback.unmappedRationale
                     },
                     testability: {
                         automated: true,

@@ -133,6 +133,7 @@ describe('enrichResults', () => {
         expect(reports[0].en301549Criteria).toBe('N/A');
         expect(reports[0].diggRisk).toBe('low');
         expect(reports[0].holmdigitalInsight.priorityRationale).toContain('Best practice');
+        expect(reports[0].dosLagenReference).toBe('Recommendation (not a legal requirement)');
     });
 
     it('handles multiple violations in a single scan', async () => {
