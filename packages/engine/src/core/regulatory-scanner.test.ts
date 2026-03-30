@@ -110,6 +110,31 @@ describe('enrichResults', () => {
         expect(reports[0].remediation.technicalGuidance).toBe('Testing fallback path');
     });
 
+    it('labels best-practice rules correctly instead of Unknown', async () => {
+        const bestPracticeInput: AxeScanOutput = {
+            violations: [{
+                id: 'aria-allowed-role',
+                help: 'ARIA role should be appropriate for the element',
+                description: 'Ensures role attribute has an appropriate value for the element',
+                tags: ['cat.aria', 'best-practice'],
+                nodes: [{
+                    html: '<div role="button">click</div>',
+                    target: ['div[role="button"]'],
+                    failureSummary: 'Fix role usage'
+                }]
+            }],
+            passes: []
+        };
+
+        const reports = await enrichResults(bestPracticeInput);
+
+        expect(reports.length).toBe(1);
+        expect(reports[0].wcagCriteria).toBe('Best Practice');
+        expect(reports[0].en301549Criteria).toBe('N/A');
+        expect(reports[0].diggRisk).toBe('low');
+        expect(reports[0].holmdigitalInsight.priorityRationale).toContain('Best practice');
+    });
+
     it('handles multiple violations in a single scan', async () => {
         const multiViolation: AxeScanOutput = {
             violations: [...mockAxeOutput.violations, ...mockAxeOutputNoMatch.violations],

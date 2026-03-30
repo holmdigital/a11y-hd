@@ -257,7 +257,7 @@ export class RegulatoryScanner {
 
             return {
                 ruleId: violation.id,
-                wcagCriteria: violation.tags.find(t => t.startsWith('wcag')) || 'Unknown',
+                wcagCriteria: violation.tags.find(t => t.startsWith('wcag')) || (violation.tags.includes('best-practice') ? 'Best Practice' : 'Unknown'),
                 en301549Criteria: '',
                 dosLagenReference: '',
                 diggRisk: risk,
@@ -332,24 +332,28 @@ export class RegulatoryScanner {
             } else {
                 // Fallback: Om vi inte hittar en regeln i vår databas, skapa en generisk rapport
                 // så att vi inte tappar bort felet.
+                const isBestPractice = violation.tags.includes('best-practice');
+                const riskLevel = isBestPractice ? 'low' as const : 'medium' as const;
                 reports.push({
                     ruleId: violation.id,
-                    wcagCriteria: 'Unknown',
-                    en301549Criteria: 'Unknown',
-                    dosLagenReference: 'Kräver manuell bedömning',
-                    diggRisk: 'medium', // Default risk
-                    eaaImpact: 'medium',
+                    wcagCriteria: isBestPractice ? 'Best Practice' : 'Unknown',
+                    en301549Criteria: isBestPractice ? 'N/A' : 'Unknown',
+                    dosLagenReference: isBestPractice ? 'Rekommendation (ej lagkrav)' : 'Kräver manuell bedömning',
+                    diggRisk: riskLevel,
+                    eaaImpact: riskLevel,
                     remediation: {
                         description: violation.help,
                         technicalGuidance: violation.description,
                         component: undefined
                     },
                     holmdigitalInsight: {
-                        diggRisk: 'medium',
-                        eaaImpact: 'medium',
+                        diggRisk: riskLevel,
+                        eaaImpact: riskLevel,
                         reasoning: violation.help,
                         swedishInterpretation: violation.help,
-                        priorityRationale: 'Detta fel upptäcktes av scannern men saknar specifik mappning i HolmDigital-databasen.'
+                        priorityRationale: isBestPractice
+                            ? 'Best practice — rekommenderas för bättre tillgänglighet men är inget specifikt WCAG-krav.'
+                            : 'Detta fel upptäcktes av scannern men saknar specifik mappning i HolmDigital-databasen.'
                     },
                     testability: {
                         automated: true,
