@@ -47,7 +47,7 @@ npm install @holmdigital/standards
 - **Remediation**: Maps issues to `@holmdigital/components` for fixing.
 - **Legal Frameworks**: WAD (public sector), EAA (private sector), and DDA (Australia — both sectors) compliance data.
 - **Sector-Aware Enforcement**: `getEnforcementBody(country, 'public'|'private')` returns the correct authority based on WAD, EAA, or DDA sector.
-- **Authorities & Enforcement**: Shared database of regulatory bodies (`ENFORCEMENT_BODIES`) for 17 countries including EU, Nordic, UK, US, CA, and AU.
+- **Authorities & Enforcement**: Shared database of regulatory bodies (`ENFORCEMENT_BODIES`) covering **16 countries + EU** (17 jurisdictions total) — Nordic, UK, US, CA, AU, and the EU Commission (DG CNECT / DG JUST).
 
 ## Usage
 
