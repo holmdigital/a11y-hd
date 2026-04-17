@@ -17,8 +17,10 @@ A professional accessibility ecosystem bridging the gap between technical code v
     - 🇮🇹 **Legge Stanca** (Italy)
     - 🇵🇹 **DL 83/2018** (Portugal)
     - 🇵🇱 **Ustawa o dostępności cyfrowej** (Poland)
-    - 🇬🇧 **PSBAR** / 🇮🇪 **S.I. No. 358/2020** (UK/Ireland)
-    - 🇦🇺 **DDA** (Australia — Disability Discrimination Act 1992)
+    - 🇬🇧 **PSBAR** (UK) / 🇮🇪 **S.I. No. 358/2020** (Ireland)
+    - 🇺🇸 **Section 508 / ADA** (USA)
+    - 🇨🇦 **AODA** (Ontario) / **ACA** (Canada federal)
+    - 🇦🇺 **DDA 1992** (Australia — covers both public and private sectors)
 - **Sector-Aware Compliance**: Distinguishes between public sector (WAD) and private sector (EAA/DDA), routing to the correct enforcement body and national law via `--sector public|private`.
 - **Risk Assessment**: Classifies every violation based on regulatory enforcement practices (e.g., DIGG, uutilsynet, Logius).
 - **Professional CI/CD Reporting**: Enhanced JUnit XML reports with full metadata, success counts, and detailed failure snippets for seamless integration with modern DevOps dashboards.
