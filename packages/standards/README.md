@@ -185,10 +185,10 @@ const sectors = getSectorAuthorities('SE');
 ### EU Legal Framework Functions
 | Function | Description |
 |----------|-------------|
-| `getRulesByFramework(framework, lang?)` | Get rules by WAD or EAA |
+| `getRulesByFramework(framework, lang?)` | Get rules by WAD, EAA, or DDA |
 | `getRulesBySector(sector, lang?)` | Get rules by public/private sector |
-| `getLegalFrameworks()` | Get all EU legal frameworks |
-| `getLegalFramework(id)` | Get specific framework (WAD/EAA) |
+| `getLegalFrameworks()` | Get all legal frameworks |
+| `getLegalFramework(id)` | Get specific framework (WAD/EAA/DDA) |
 | `getNordicAuthorities()` | Get all Nordic authorities |
 | `getNordicAuthority(id)` | Get authority by ID |
 | `getNordicAuthoritiesByCountry(country)` | Get authorities by country |
@@ -201,9 +201,16 @@ const sectors = getSectorAuthorities('SE');
 | `getNationalLaws(country)` | Get all laws for a country |
 | `getNationalLaw(id, country?)` | Get specific law by ID |
 | `getNationalLawByFramework(framework, country?)` | Get law by WAD/EAA/DDA |
+| `getEnforcementBody(country, sector?)` | Get enforcement authority name |
 | `getSanctions(lawId, country?)` | Get sanctions for a law |
 | `getMaxSanction(country?)` | Get maximum sanction amount |
 | `getSectorAuthorities(country?)` | Get EAA sector authorities |
+| `getDatabaseStats(lang?)` | Get rule counts and coverage stats |
+
+### Constants
+| Export | Type | Description |
+|--------|------|-------------|
+| `ENFORCEMENT_BODIES` | `Record<Country, string>` | Enforcement authority per jurisdiction (17 entries incl. EU) |
 
 ## License
 

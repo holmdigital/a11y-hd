@@ -37,7 +37,8 @@ We map technical rules to actual legislation.
 |-----------|-------------|
 | **Web Accessibility Directive (WAD)** | Applies to **Public Sector** bodies in the EU. |
 | **European Accessibility Act (EAA)** | Applies to **Private Sector** services (e-commerce, banking) from June 2025. |
-| **EN 301 549** | The technical standard that underpins both laws. |
+| **Disability Discrimination Act (DDA)** | Australia — applies to **both** public and private sectors under DDA 1992. |
+| **EN 301 549** | The technical standard that underpins WAD and EAA. |
 | **National Laws** | Specific overrides for Sweden (`DOS-lagen`), Norway (`Forskrift om universell utforming av IKT`), Germany (`BFSG`), Italy (`Legge 4/2004`), etc. |
 
 ### 3. 🛡️ Verification Data
@@ -91,22 +92,31 @@ const deBody = getEnforcementBody('DE', 'public');
 ```
 
 ### 3. Access Centralized Enforcement Bodies
-Get a mapping of all regulatory authorities for supported countries.
+Get a mapping of all regulatory authorities for 17 supported jurisdictions (16 countries + EU).
 
 ```typescript
-import { ENFORCEMENT_BODIES, ENFORCEMENT_BODIES_DETAILED } from '@holmdigital/standards';
+import { ENFORCEMENT_BODIES } from '@holmdigital/standards';
 
-// Simple map (backward compatible)
+// Record<Country, string> — 17 keys including EU
 console.log(ENFORCEMENT_BODIES.SE);
 // Output: "Myndigheten for digital forvaltning (Digg)"
 
-// Detailed map with sector-specific bodies
-console.log(ENFORCEMENT_BODIES_DETAILED.IT);
-// Output: { wad: "AgID – Agenzia per l'Italia Digitale", eaa: "AgID – Agenzia per l'Italia Digitale" }
+console.log(ENFORCEMENT_BODIES.AU);
+// Output: "Australian Human Rights Commission (AHRC)"
 ```
 
-### 3. Check for EAA Deadlines
-Identify rules that become critical in June 2025.
+### 4. Get Database Stats
+Query rule counts and coverage at runtime.
+
+```typescript
+import { getDatabaseStats } from '@holmdigital/standards';
+
+const stats = getDatabaseStats();
+// { totalRules: 46, totalICTChecks: ..., rulesByLevel: { A: ..., AA: ..., AAA: ... } }
+```
+
+### 5. Check for EAA Deadlines
+Identify rules that became critical after June 2025.
 
 ```typescript
 import { getEAADeadlineRules } from '@holmdigital/standards';
@@ -115,14 +125,14 @@ const urgentRules = getEAADeadlineRules();
 // Returns list of rules that are mandatory for e-commerce under EAA
 ```
 
-### 4. Fetch Official Statement Tools
+### 6. Fetch Official Statement Tools
 Don't write your own statement if the government provides a mandatory tool.
 
 ```typescript
-import { getStatementToolsByCountry } from '@holmdigital/standards';
+import { getStatementTools } from '@holmdigital/standards';
 
-const tools = getStatementToolsByCountry('PT');
-// Output: Returns link to Portugal's official generator (O Gerador)
+const tools = getStatementTools();
+// Output: Returns official generator references (e.g. Digg generator for SE, O Gerador for PT)
 ```
 
 ---
