@@ -5,7 +5,7 @@ A professional accessibility ecosystem bridging the gap between technical code v
 
 ## 🎯 Value Proposition
 
-- **Multi-Language Regulatory Mapping**: Automatically maps WCAG failures to EN 301 549 and national laws across **13 languages** and **17 countries**:
+- **Multi-Language Regulatory Mapping**: Automatically maps WCAG failures to EN 301 549 and national laws across **13 languages** and **16 countries** (17 jurisdictions including EU):
     - 🇸🇪 **DOS-lagen** (Sweden)
     - 🇫🇮 **Laki digitaalisten palvelujen saavutettavuudesta** (Finland)
     - 🇳🇴 **Forskrift om universell utforming av IKT** (Norway)
@@ -63,7 +63,7 @@ npx hd-a11y-scan <url> [options]
 ```
 
 **Options:**
-- `--lang <code>` - Language code (`en`, `sv`, `no`, `fi`, `da`, `de`, `fr`, `es`, `nl`, `it`, `pt`, `pl`)
+- `--lang <code>` - Language code (`en`, `sv`, `no`, `fi`, `da`, `de`, `fr`, `es`, `nl`, `it`, `pt`, `pl`, `en-gb`, `en-us`, `en-ca`, `en-au`)
 - `--threshold <level>` - Severity threshold (`critical`, `high`, `medium`, `low`). Default: `high`
 - `--ci` - Run in CI mode (exit code 1 on critical failures)
 - `--json` - Output results as JSON
@@ -94,7 +94,7 @@ npm install @holmdigital/components
 ```
 
 ### 3. [@holmdigital/standards](./packages/standards)
-Machine-readable regulatory database with convergence schema, 13 locale databases, and fully typed exports (`EnrichedReport`, `FailingNode`, `LegalContext`).
+Machine-readable regulatory database with convergence schema, 12 locale databases, and fully typed exports (`EnrichedReport`, `FailingNode`, `LegalContext`).
 
 ```bash
 npm install @holmdigital/standards

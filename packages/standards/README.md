@@ -29,23 +29,20 @@ npm install @holmdigital/standards
 
 ## Features
 
-- **Multi-Language Support** (13 locale databases):
-  - `en` (Generic / UK PSBAR)
+- **Multi-Language Support** (12 rule locale databases):
+  - `en` (Generic / EU baseline)
+  - `en-gb` (UK / PSBAR)
+  - `en-us` (USA / Section 508 & ADA)
+  - `en-ca` (Canada / AODA + ACA)
   - `sv` (Sweden / DOS-lagen)
-  - `no` (Norway / IKT-forskrift)
+  - `no` (Norway / Forskrift om universell utforming av IKT)
   - `fi` (Finland / 306/2019)
   - `da` (Denmark / Tilgængelighed)
   - `de` (Germany / BITV 2.0)
   - `fr` (France / RGAA)
   - `es` (Spain / UNE 139803)
   - `nl` (Netherlands / Digitoegankelijk)
-  - `it` (Italy / Legge Stanca)
-  - `pt` (Portugal / DL 83/2018)
-  - `pl` (Poland / Ustawa o dostępności cyfrowej)
-  - `en-gb` (UK / PSBAR)
-  - `en-us` (USA / Section 508 & ADA)
-  - `en-ca` (Canada / AODA)
-  - `en-au` (Australia / DDA)
+  - *`it`, `pt`, `pl`, `au` — national law metadata only; rule text uses `en`*
 - **Risk Assessment**: DIGG-aligned risk levels (`critical`, `high`, `medium`, `low`).
 - **Remediation**: Maps issues to `@holmdigital/components` for fixing.
 - **Legal Frameworks**: WAD (public sector), EAA (private sector), and DDA (Australia — both sectors) compliance data.
