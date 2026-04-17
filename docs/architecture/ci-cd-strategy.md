@@ -48,7 +48,7 @@ jobs:
       - name: Run EAA Compliance Check
         # Scans the build itself before release
         run: |
-          npx @holmdigital/engine http://localhost:3000 \
+          npx hd-a11y-scan http://localhost:3000 \
             --threshold critical \
             --ci \
             --junit report.xml \

@@ -129,7 +129,7 @@ accessibility-check:
     - npm run build
     - npm run start &
     - npx wait-on http://localhost:3000
-    - npx @holmdigital/engine http://localhost:3000 
+    - npx hd-a11y-scan http://localhost:3000 
         --ci 
         --junit a11y-report.xml 
         --threshold high
@@ -148,10 +148,10 @@ accessibility-check:
 
 ```bash
 # Generate JUnit report
-npx @holmdigital/engine https://example.com --junit ./reports/a11y-results.xml
+npx hd-a11y-scan https://example.com --junit ./reports/a11y-results.xml
 
 # Combine with existing test results
-npx @holmdigital/engine https://example.com \
+npx hd-a11y-scan https://example.com \
   --junit ./test-results/accessibility.xml \
   --threshold critical \
   --ci
@@ -176,37 +176,30 @@ Example JUnit output:
 ## Recipe 7: Configuration File (.a11yrc)
 **Goal:** Store scan settings in a config file for consistent team usage.
 
-Create `.a11yrc` in your project root:
+Create `.a11yrc` in your project root. The schema mirrors the CLI flag names — all keys are flat (no nested `output` object, no `pages`/`exclude` array):
 
 ```json
 {
-  "url": "http://localhost:3000",
   "lang": "sv",
   "threshold": "high",
   "viewport": "desktop",
   "ci": true,
-  "pages": [
-    "/",
-    "/about",
-    "/contact",
-    "/products"
-  ],
-  "exclude": [
-    "/admin",
-    "/api"
-  ],
-  "output": {
-    "json": "./reports/a11y.json",
-    "junit": "./reports/a11y-junit.xml",
-    "pdf": "./reports/accessibility-report.pdf"
-  }
+  "sector": "public",
+  "junit": "./reports/a11y-junit.xml",
+  "pdf": "./reports/accessibility-report.pdf",
+  "org": "Acme Corp",
+  "email": "a11y@example.com",
+  "phone": "+46 70 000 00 00",
+  "responseTime": "2 dagar",
+  "publishDate": "2024-02-06",
+  "cloudUrl": "https://cloud.holmdigital.se"
 }
 ```
 
-Then run without arguments:
+Then pass the URL on each invocation (the URL is not stored in `.a11yrc`):
 ```bash
-npx @holmdigital/engine
-# Reads settings from .a11yrc automatically
+npx hd-a11y-scan http://localhost:3000
+# Reads settings from .a11yrc automatically — CLI flags override file values
 ```
 
 ## Recipe 8: Azure DevOps Pipeline
@@ -237,7 +230,7 @@ steps:
     displayName: 'Wait for server'
 
   - script: |
-      npx @holmdigital/engine http://localhost:3000 \
+      npx hd-a11y-scan http://localhost:3000 \
         --junit $(Build.ArtifactStagingDirectory)/a11y-results.xml \
         --ci \
         --lang sv
@@ -265,7 +258,7 @@ Add to `package.json`:
 {
   "lint-staged": {
     "*.{html,tsx,jsx}": [
-      "npx @holmdigital/engine --threshold critical --ci"
+      "npx hd-a11y-scan --threshold critical --ci"
     ]
   }
 }

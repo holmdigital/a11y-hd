@@ -117,19 +117,20 @@ Quick reference for accessibility enforcement authorities across supported count
 ## Using the API
 
 ```typescript
-import { getEnforcementBody } from '@holmdigital/standards';
+import {
+  getEnforcementBody,
+  getNordicAuthoritiesByCountry,
+  getNordicAuthority
+} from '@holmdigital/standards';
 
-// Get enforcement body by country and sector
-const body = getEnforcementBody('SE', 'public');
-// -> "Agency for Digital Government (Digg)"
+// Get enforcement body by sector
+getEnforcementBody('SE', 'public');   // → "Agency for Digital Government (Digg)"
+getEnforcementBody('SE', 'private');  // → "Swedish Post and Telecom Authority (PTS)"
+getEnforcementBody('IT', 'public');   // → "Agency for Digital Italy (AgID)"
 
-const eaaBody = getEnforcementBody('SE', 'private');
-// -> "Swedish Post and Telecom Authority (PTS)"
+// Get all Swedish authorities (Digg & PTS)
+const swedish = getNordicAuthoritiesByCountry('SE');
 
-const itBody = getEnforcementBody('IT', 'public');
-// -> "Agency for Digital Italy (AgID)"
-
-// Legacy Nordic-specific API (still supported)
-import { getNordicAuthority } from '@holmdigital/standards';
+// Get specific authority data
 const digg = getNordicAuthority('se-digg');
 ```
