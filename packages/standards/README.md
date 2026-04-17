@@ -189,7 +189,8 @@ const sectors = getSectorAuthorities('SE');
 | `getNordicAuthorities()` | Get all Nordic authorities |
 | `getNordicAuthority(id)` | Get authority by ID |
 | `getNordicAuthoritiesByCountry(country)` | Get authorities by country |
-| `getStatementTools()` | Get statement generator tools |
+| `getStatementTools()` | Get all registered statement generator tools |
+| `getStatementToolsByCountry(country)` | Get statement generator tools for a specific country |
 | `getEAADeadlineRules(lang?)` | Get rules with EAA deadlines |
 
 ### National Laws & Sanctions Functions

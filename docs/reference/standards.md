@@ -137,10 +137,13 @@ const urgentRules = getEAADeadlineRules();
 Don't write your own statement if the government provides a mandatory tool.
 
 ```typescript
-import { getStatementTools } from '@holmdigital/standards';
+import { getStatementTools, getStatementToolsByCountry } from '@holmdigital/standards';
 
-const tools = getStatementTools();
-// Output: Returns official generator references (e.g. Digg generator for SE, O Gerador for PT)
+// All registered official generators across every jurisdiction
+const all = getStatementTools();
+
+// Just the tools for a specific country (e.g. Portugal's "O Gerador")
+const ptTools = getStatementToolsByCountry('PT');
 ```
 
 ---
@@ -149,4 +152,4 @@ const tools = getStatementTools();
 
 1.  **Single Source of Truth:** Never hardcode "WCAG algorithm" logic in your UI components.
 2.  **Future Proof:** When laws change (like WCAG 2.2), you update this package, and your whole app updates.
-3.  **Global Ready:** Launch in Italy? Just switch locale to `it` and your error messages are legally compliant in Italian. Supports 16 locales across 16 countries (17 jurisdictions including EU).
+3.  **Global Ready:** Ships with 12 rule-locale databases and national-law metadata for 16 countries + EU (17 jurisdictions). Countries without a dedicated rule file (IT, PT, PL, IE, AU) fall back to the `en` rule set while still getting the correct national law context.

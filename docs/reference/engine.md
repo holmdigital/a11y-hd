@@ -25,7 +25,7 @@ hd-a11y-scan <url> [options]
 
 | Option | Description | Example |
 |--------|-------------|---------|
-| `--lang <code>` | Set the language for the report (default: `en`). Supports `en`, `en-gb`, `en-us`, `en-ca`, `sv`, `no`, `fi`, `da`, `nl`, `de`, `fr`, `es`, `it`, `pt`, `pl`. | `--lang sv` |
+| `--lang <code>` | Set the language for the report (default: `en`). CLI output: `en`, `sv`, `no`, `fi`, `da`, `nl`, `de`, `fr`, `es` (+ aliases `en-gb`/`en-us`/`en-ca`/`en-au` fall back to `en`). Statement templates also accept `it`, `pt`, `pl`, plus dedicated `en-gb`/`en-us`/`en-ca`/`en-au`. | `--lang sv` |
 | `--ci` | **CI Mode**: Exits with code 1 if critical issues are found. | `--ci` |
 | `--threshold <level>` | Minimum severity to report. Values: `critical`, `high`, `medium`, `low`. | `--threshold critical` |
 | `--viewport <size>` | Set screen size. Presets: `mobile`, `desktop`, `tablet` or custom `WxH`. | `--viewport mobile` |
@@ -44,6 +44,8 @@ hd-a11y-scan <url> [options]
 | `--country <code>` | Country code for enforcement body in statement. | `--country SE` |
 | `--format <type>` | Output format for statement (`html`, `md`). Default: `html`. | `--format md` |
 | `--sector <type>` | Sector type for enforcement body and law selection (`public` or `private`). Default: `public`. | `--sector private` |
+| `--light` | Fast score-only mode — skips HTML validation and detailed legal mapping. | `--light` |
+| `--invalid-https-cert` | Allow scanning sites with invalid/self-signed HTTPS certificates ⚠️ (trusted envs only). | `--invalid-https-cert` |
 
 ---
 
