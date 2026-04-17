@@ -38,7 +38,7 @@ We map technical rules to actual legislation.
 | **Web Accessibility Directive (WAD)** | Applies to **Public Sector** bodies in the EU. |
 | **European Accessibility Act (EAA)** | Applies to **Private Sector** services (e-commerce, banking) from June 2025. |
 | **EN 301 549** | The technical standard that underpins both laws. |
-| **National Laws** | Specific overrides for Sweden (`DOS-lagen`), Norway (`Diskrimineringsloven`), Germany (`BFSG`), Italy (`D.Lgs. 106/2018`), etc. |
+| **National Laws** | Specific overrides for Sweden (`DOS-lagen`), Norway (`Forskrift om universell utforming av IKT`), Germany (`BFSG`), Italy (`Legge 4/2004`), etc. |
 
 ### 3. 🛡️ Verification Data
 | Data Set | Purpose |
@@ -131,4 +131,4 @@ const tools = getStatementToolsByCountry('PT');
 
 1.  **Single Source of Truth:** Never hardcode "WCAG algorithm" logic in your UI components.
 2.  **Future Proof:** When laws change (like WCAG 2.2), you update this package, and your whole app updates.
-3.  **Global Ready:** Launch in Italy? Just switch locale to `it` and your error messages are legally compliant in Italian. Supports 15 locales across 14 countries.
+3.  **Global Ready:** Launch in Italy? Just switch locale to `it` and your error messages are legally compliant in Italian. Supports 16 locales across 16 countries (17 jurisdictions including EU).

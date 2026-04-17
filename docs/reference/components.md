@@ -522,7 +522,7 @@ import { DataTable } from '@holmdigital/components';
 
 | Component | Description | Status |
 |-----------|-------------|--------|
-| **[AccessibilityStatement](../../packages/components/src/AccessibilityStatement)** | Template-driven legal compliance statement (WAD/EAA) with support for 15 languages (EN, EN-GB, EN-US, EN-CA, SV, NO, FI, DA, NL, DE, FR, ES, IT, PT, PL), sector-driven enforcement body resolution, and dynamic date formatting. | ✅ Available |
+| **[AccessibilityStatement](../../packages/components/src/AccessibilityStatement)** | Template-driven legal compliance statement (WAD/EAA/DDA) with support for 13 locales (en, sv, no, fi, da, nl, de, fr, es, it, pt, pl, en-au), sector-driven enforcement body resolution, and dynamic date formatting. | ✅ Available |
 
 ---
 

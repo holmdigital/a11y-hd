@@ -151,13 +151,13 @@ const sectors = getSectorAuthorities('SE');
 | 🇳🇴 NO | IKT-forskrift | - | Daily fines |
 | 🇫🇮 FI | 306/2019 | EAA | Vite |
 | 🇩🇰 DK | Tilgængelighed | - | Fines |
-| 🇮🇹 IT | Legge 4/2004 | D.lgs. 82/2022 | Up to 5% of turnover |
-| 🇵🇹 PT | DL 83/2018 | DL 82/2022 | 44k EUR |
-| 🇵🇱 PL | Ustawa o dostępności cyfrowej | Ustawa o dostępności | 100k PLN |
+| 🇮🇹 IT | Legge 4/2004 | D.Lgs. 82/2024 | Up to 5% of turnover |
+| 🇵🇹 PT | DL 83/2018 | DL 101-D/2023 | 44k EUR |
+| 🇵🇱 PL | Ustawa o dostępności cyfrowej | Ustawa o dostępności produktów i usług | 100k PLN |
 | 🇬🇧 GB | PSBAR | - | Unlawful Act Notice |
 | 🇺🇸 US | Section 508 | - | Civil Rights Complaint |
-| 🇨🇦 CA | AODA | - | $100k per day |
-| 🇦🇺 AU | DDA 1992 | DTA Policy | Court-determined (AHRC complaint) |
+| 🇨🇦 CA | AODA (Ontario) | ACA (federal) | $100k per day |
+| 🇦🇺 AU | DDA 1992 | — (DDA covers both sectors) | Court-determined (AHRC complaint) |
 
 ## API Reference
 
