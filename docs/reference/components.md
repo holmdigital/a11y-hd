@@ -252,6 +252,16 @@ export const App = () => (
 ### 7. Checkbox
 **[Source Code](../../packages/components/src/Checkbox)** | Status: ✅ Available
 
+**Props Interface:**
+```typescript
+interface CheckboxProps extends React.InputHTMLAttributes<HTMLInputElement> {
+  label: string;
+  onCheckedChange?: (checked: boolean) => void;
+}
+```
+
+**Gotcha — dual callbacks:** The component fires **both** the native `onChange(ChangeEvent)` AND the boolean-friendly `onCheckedChange(checked)` when the state changes. Pick whichever fits your form layer; no need to reach for `e.target.checked` if you use `onCheckedChange`.
+
 **Usage:**
 ```tsx
 <Checkbox 
@@ -331,6 +341,11 @@ const frameworks = [
 
 ### 14. Select
 **[Source Code](../../packages/components/src/Select)** | Status: ✅ Available
+
+**Built-in Accessibility Features:**
+*   **Compound Components:** `Select` + `SelectTrigger` + `SelectContent` + `SelectItem` — children share state via React context.
+*   **Custom Implementation:** No Radix UI (or any other headless-UI) dependency. Everything is rolled in-package for bundle-size and licensing control.
+*   **Context-Guarded:** `SelectTrigger` / `SelectItem` throw if rendered outside a `<Select>` ancestor.
 
 **Usage:**
 ```tsx
@@ -577,7 +592,7 @@ import { Card } from '@holmdigital/components';
 
 | Component | Description | Status |
 |-----------|-------------|--------|
-| **[AccessibilityStatement](../../packages/components/src/AccessibilityStatement)** | Template-driven legal compliance statement (WAD/EAA/DDA) with 12 dedicated template locales (en, sv, no, fi, da, nl, de, fr, es, it, pt, pl). Additional input locales accepted: `nb` aliases to `no`, `dk` aliases to `da`, and `en-gb`/`en-us`/`en-ca`/`en-au` fall back to `en` template. Sector-driven enforcement body resolution and dynamic date formatting across all 16 countries + EU. | ✅ Available |
+| **[AccessibilityStatement](../../packages/components/src/AccessibilityStatement)** | Template-driven legal compliance statement (WAD/EAA/DDA). **`country`** accepts **all 17 `Country` values** — the 16 supported countries plus `'EU'` for EU Commission references. **`sector`** is `'public'` (WAD) or `'private'` (EAA). **`locale`** has 12 dedicated templates (en, sv, no, fi, da, nl, de, fr, es, it, pt, pl); `nb`→`no`, `dk`→`da`, and `en-gb`/`en-us`/`en-ca`/`en-au` fall back to the `en` template. | ✅ Available |
 
 ---
 
