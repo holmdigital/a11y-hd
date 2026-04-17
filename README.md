@@ -95,21 +95,81 @@ npx hd-a11y-scan <url> [options]
 npm install @holmdigital/components
 ```
 
+**Usage — accessible primitives:**
+```tsx
+import { Heading, Button, FormField, ErrorSummary, AccessibilityStatement } from '@holmdigital/components';
+
+<Heading level={1}>Kontakta oss</Heading>
+
+<FormField id="email" label="E-postadress" type="email" required
+           helpText="Vi delar aldrig din e-post." error={errors.email} />
+
+<Button variant="primary" isLoading={isSaving}>Skicka</Button>
+
+<AccessibilityStatement
+  country="SE"
+  sector="public"
+  organizationName="Stockholms kommun"
+  websiteUrl="https://stockholm.se"
+  complianceLevel="partial"
+  lastReviewDate={new Date()}
+  contactEmail="tillganglighet@stockholm.se"
+  locale="sv"
+/>
+```
+
+> **Gotcha:** `Checkbox` fires both `onChange` (native) and `onCheckedChange(checked)`. `Select` uses a custom compound pattern (`SelectTrigger`/`SelectContent`/`SelectItem`) — no Radix UI dependency. See [docs/reference/components.md](./docs/reference/components.md) for full component catalog.
+
 ### 3. [@holmdigital/standards](./packages/standards)
-Machine-readable regulatory database with convergence schema, 12 locale databases, and fully typed exports (`EnrichedReport`, `FailingNode`, `LegalContext`).
+Machine-readable regulatory database: 46 WCAG convergence rules, 12 rule-locale files, national-law metadata for 16 countries + EU (17 jurisdictions), and fully typed exports (`EnrichedReport`, `FailingNode`, `LegalContext`).
 
 ```bash
 npm install @holmdigital/standards
 ```
 
-**API:**
+**API — WCAG → EN 301 549 → national law mapping:**
 ```typescript
-import { getEN301549Mapping } from '@holmdigital/standards';
+import { getEN301549Mapping, getNationalLawByFramework } from '@holmdigital/standards';
 
-// Get mapping with Swedish legal context
+// Get WCAG → EN 301 549 → Swedish legal context
 const mapping = getEN301549Mapping('1.4.3', 'sv');
 // { wcagCriteria: "1.4.3", en301549Criteria: "9.1.4.3", dosLagenReference: "Lag 2018:1937 §7..." }
+
+// Resolve national law by sector (WAD = public, EAA = private, DDA = Australia)
+const law = getNationalLawByFramework('EAA', 'DE');
+// { fullName: "Barrierefreiheitsstärkungsgesetz", law: "BFSG", ... }
 ```
+
+**API — enforcement authorities:**
+```typescript
+import {
+  getEnforcementBody,
+  ENFORCEMENT_BODIES,
+  ENFORCEMENT_BODIES_DETAILED
+} from '@holmdigital/standards';
+
+// Sector-aware lookup (public → WAD body, private → EAA body)
+getEnforcementBody('SE', 'public');   // → "Agency for Digital Government (Digg)"
+getEnforcementBody('SE', 'private');  // → "Swedish Post and Telecom Authority (PTS)"
+getEnforcementBody('AU', 'public');   // → "Australian Human Rights Commission (AHRC)"
+
+// Raw record for all 17 jurisdictions (16 countries + EU)
+ENFORCEMENT_BODIES.IT;                // → "Agency for Digital Italy (AgID)"
+ENFORCEMENT_BODIES_DETAILED.IT.eaa;   // → "Communications Regulatory Authority (AGCOM)"
+```
+
+**API — runtime stats & EAA deadline rules:**
+```typescript
+import { getDatabaseStats, getEAADeadlineRules } from '@holmdigital/standards';
+
+const stats = getDatabaseStats();
+// { totalRules: 46, totalICTChecks: ..., rulesByLevel: { A, AA, AAA } }
+
+const eaaUrgent = getEAADeadlineRules();
+// Rules that became mandatory under the European Accessibility Act (June 2025)
+```
+
+> For the full API reference (national laws, sanctions, Nordic authorities, statement tools), see [packages/standards/README.md](./packages/standards/README.md) and [docs/reference/standards.md](./docs/reference/standards.md).
 
 ## 🤖 CI/CD Integration
 
