@@ -121,13 +121,13 @@ import { getEnforcementBody } from '@holmdigital/standards';
 
 // Get enforcement body by country and sector
 const body = getEnforcementBody('SE', 'public');
-// -> "Myndigheten for digital forvaltning (Digg)"
+// -> "Agency for Digital Government (Digg)"
 
 const eaaBody = getEnforcementBody('SE', 'private');
 // -> "Swedish Post and Telecom Authority (PTS)"
 
 const itBody = getEnforcementBody('IT', 'public');
-// -> "AgID - Agenzia per l'Italia Digitale"
+// -> "Agency for Digital Italy (AgID)"
 
 // Legacy Nordic-specific API (still supported)
 import { getNordicAuthority } from '@holmdigital/standards';

@@ -78,31 +78,39 @@ import { getEnforcementBody } from '@holmdigital/standards';
 
 // Public sector in Sweden → WAD enforcement
 const publicBody = getEnforcementBody('SE', 'public');
-console.log(publicBody);
-// Output: "Myndigheten for digital forvaltning (Digg)"
+// Output: "Agency for Digital Government (Digg)"
 
 // Private sector in Sweden → EAA enforcement
 const privateBody = getEnforcementBody('SE', 'private');
-console.log(privateBody);
 // Output: "Swedish Post and Telecom Authority (PTS)"
 
-// Works for all supported countries
+// Works for all 16 supported countries
 const deBody = getEnforcementBody('DE', 'public');
-// Output: "Uberwachungsstelle des Bundes fur Barrierefreiheit von Informationstechnik (BFIT-Bund)"
+// Output: "Federal Monitoring Body for Accessibility of Information Technology (BFIT-Bund)"
 ```
 
 ### 3. Access Centralized Enforcement Bodies
 Get a mapping of all regulatory authorities for 17 supported jurisdictions (16 countries + EU).
 
 ```typescript
-import { ENFORCEMENT_BODIES } from '@holmdigital/standards';
+import { ENFORCEMENT_BODIES, ENFORCEMENT_BODIES_DETAILED } from '@holmdigital/standards';
 
-// Record<Country, string> — 17 keys including EU
+// Simple map — WAD (public sector) body per jurisdiction (17 keys incl. EU)
 console.log(ENFORCEMENT_BODIES.SE);
-// Output: "Myndigheten for digital forvaltning (Digg)"
+// Output: "Agency for Digital Government (Digg)"
 
 console.log(ENFORCEMENT_BODIES.AU);
 // Output: "Australian Human Rights Commission (AHRC)"
+
+// Detailed map — sector-specific bodies (WAD vs EAA)
+console.log(ENFORCEMENT_BODIES_DETAILED.SE.wad);
+// Output: "Agency for Digital Government (Digg)"
+
+console.log(ENFORCEMENT_BODIES_DETAILED.SE.eaa);
+// Output: "Swedish Post and Telecom Authority (PTS)"
+
+console.log(ENFORCEMENT_BODIES_DETAILED.IT.eaa);
+// Output: "Communications Regulatory Authority (AGCOM)"
 ```
 
 ### 4. Get Database Stats

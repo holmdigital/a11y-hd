@@ -207,7 +207,8 @@ const sectors = getSectorAuthorities('SE');
 ### Constants
 | Export | Type | Description |
 |--------|------|-------------|
-| `ENFORCEMENT_BODIES` | `Record<Country, string>` | Enforcement authority per jurisdiction (17 entries incl. EU) |
+| `ENFORCEMENT_BODIES` | `Record<Country, string>` | WAD (public sector) enforcement authority per jurisdiction (17 entries incl. EU) |
+| `ENFORCEMENT_BODIES_DETAILED` | `Record<Country, { wad: string; eaa: string }>` | Sector-split enforcement bodies — `.wad` for public, `.eaa` for private/EAA |
 
 ## License
 
