@@ -21,6 +21,7 @@ interface AccordionProps {
   type?: 'single' | 'multiple'; // default: 'single'
   defaultValue?: string | string[];
   children: ReactNode;
+  className?: string;
 }
 ```
 
@@ -99,15 +100,15 @@ const LoadingCard = () => (
 ### 💡 Structure Examples
 
 **Card with "Stretched Link"**
-Makes the whole card clickable while keeping semantic focus on the headline link.
+Makes the whole card clickable while keeping semantic focus on the headline link. Props: `title?`, `href?`, `children`, `className?`, `as?` (`'div' | 'article' | 'section' | 'li'`). *Note: there is no `image` prop — render the image as part of `children` if needed.*
 
 ```tsx
 import { Card } from '@holmdigital/components';
 
-<Card 
-  title="Accessibility Strategy" 
+<Card
+  title="Accessibility Strategy"
   href="/articles/strategy"
-  image="/images/a11y-cover.jpg"
+  as="article"
 >
   Learn how to implement a component-first strategy.
 </Card>
@@ -216,12 +217,14 @@ const files = [
 **SkipLink (The #1 Accessibility Fix)**
 Place this at the very top of your App component.
 
+Props: `targetId?: string` (defaults to `"main"`). Text comes from `children` (default: `"Hoppa till huvudinnehåll"`). Extends `React.AnchorHTMLAttributes<HTMLAnchorElement>`.
+
 ```tsx
 import { SkipLink } from '@holmdigital/components';
 
 export const App = () => (
   <>
-    <SkipLink targetId="main-content" label="Hoppa till innehållet" />
+    <SkipLink targetId="main-content">Hoppa till innehållet</SkipLink>
     <Header />
     <main id="main-content">
       {/* Page content */}
@@ -481,7 +484,7 @@ import { LiveRegion } from '@holmdigital/components';
 
 | Component | Description | Status |
 |-----------|-------------|--------|
-### 6. DataTable
+### 25. DataTable
 **[Source Code](../../packages/components/src/DataTable)** | Status: ✅ Available
 
 **Built-in Accessibility Functions:**
@@ -516,6 +519,58 @@ import { DataTable } from '@holmdigital/components';
     { header: 'Datum', accessor: 'created_at', sortable: true }
   ]}
 />
+```
+
+## 🔤 Typography & Surface
+
+### 26. Heading
+**[Source Code](../../packages/components/src/Heading)** | Status: ✅ Available
+
+**Built-in Accessibility Features:**
+*   **Semantic Level Enforcement:** Always renders a real `h1`–`h6` element — no divs-with-roles.
+*   **Level-Only API:** The `level` prop (`1`–`6`) is required, preventing accidental level skipping.
+*   **`forwardRef`:** Extends `React.HTMLAttributes<HTMLHeadingElement>` so standard DOM props pass through.
+
+**Props Interface:**
+```typescript
+interface HeadingProps extends React.HTMLAttributes<HTMLHeadingElement> {
+  level: 1 | 2 | 3 | 4 | 5 | 6;
+}
+```
+
+**Usage Example:**
+```tsx
+import { Heading } from '@holmdigital/components';
+
+<Heading level={1}>Page Title</Heading>
+<Heading level={2}>Section Title</Heading>
+```
+
+### 27. Card
+**[Source Code](../../packages/components/src/Card)** | Status: ✅ Available
+
+**Built-in Accessibility Features:**
+*   **Stretched Link Pattern:** If `href` is passed, the title becomes a single link that covers the whole card via CSS — one tab stop, valid HTML (no nested interactives).
+*   **Semantic Container:** Use the `as` prop to render the appropriate element (`div` / `article` / `section` / `li`).
+
+**Props Interface:**
+```typescript
+interface CardProps {
+  title?: React.ReactNode;
+  href?: string;
+  children: React.ReactNode;
+  className?: string;
+  as?: 'div' | 'article' | 'section' | 'li'; // default: 'div'
+}
+```
+
+**Usage Example:**
+```tsx
+import { Card } from '@holmdigital/components';
+
+<Card title="Accessibility Strategy" href="/articles/strategy" as="article">
+  Learn how to implement a component-first strategy.
+</Card>
 ```
 
 ## ⚖️ Legal & Compliance
