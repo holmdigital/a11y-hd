@@ -129,7 +129,7 @@ function App() {
 - **High Contrast**: Default styles meet WCAG AA requirements.
 - **Keyboard Navigation**: Full focus management and visible focus indicators.
 - **Screen Reader Support**: Correct ARIA attributes and labels built-in.
-- **13-Locale Accessibility Statements**: The `AccessibilityStatement` component supports `en`, `sv`, `no`, `fi`, `da`, `nl`, `de`, `fr`, `es`, `it`, `pt`, `pl`, and `en-au` with complete legal phrasing per locale. Sector-aware (`public`/`private`) for correct enforcement body and law. Australian locale references DDA 1992 and AHRC with voluntary compliance framing.
+- **12-Locale Accessibility Statements**: The `AccessibilityStatement` component ships with professional legal templates for `en`, `sv`, `no`, `fi`, `da`, `nl`, `de`, `fr`, `es`, `it`, `pt`, `pl`. Additional locale codes are accepted as input — `nb` aliases to `no`, `dk` aliases to `da`, and `en-gb` / `en-us` / `en-ca` / `en-au` fall back to `en`. Sector-aware (`public`/`private`) for correct enforcement body and law. Supports the full 16-country + EU jurisdiction set including Australia (DDA 1992 / AHRC).
 
 ## License
 

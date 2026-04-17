@@ -89,7 +89,7 @@ npx hd-a11y-scan <url> [options]
 > **⚠️ Security:** `--invalid-https-cert` should only be used in trusted environments. *(Contributed by [@FerdiStro](https://github.com/FerdiStro))*
 
 ### 2. [@holmdigital/components](./packages/components)
-Accessible React components with built-in regulatory compliance. Includes a 13-locale `AccessibilityStatement` component for generating legal statements in EN, SV, NO, FI, DA, NL, DE, FR, ES, IT, PT, PL, and EN-AU.
+29 accessible React components with built-in regulatory compliance. Includes a 12-locale `AccessibilityStatement` component for generating legal statements in EN, SV, NO, FI, DA, NL, DE, FR, ES, IT, PT, PL (with aliases for NB/DK and EN-GB/EN-US/EN-CA/EN-AU fallbacks).
 
 ```bash
 npm install @holmdigital/components

@@ -14,7 +14,7 @@ Most accessibility tools give you technical errors (e.g., "Color contrast must b
 It handles the heavy lifting of:
 1.  **Mapping** technical failures to specific legal clauses.
 2.  **Validating** HTML structure to ensure test accuracy.
-3.  **Reporting** in multiple languages (EN, SV, NO, FI, DA, NL, DE, FR, ES, IT, PT, PL, EN-AU) for non-technical stakeholders.
+3.  **Reporting** in multiple languages — 9 CLI output locales (EN, SV, NO, FI, DA, NL, DE, FR, ES) and 16 accessibility statement template locales (adds IT, PT, PL, EN-GB, EN-US, EN-CA, EN-AU) — for non-technical stakeholders.
 4.  **CI/CD Pipeline Integration** with automatic enforcement.
 
 For a comprehensive guide on CLI flags, CI/CD integration, and configuration files, see the **[Engine Library Catalog](../../docs/reference/engine.md)**.
@@ -23,7 +23,9 @@ For a comprehensive guide on CLI flags, CI/CD integration, and configuration fil
 
 - **Regulatory Mapping**: Maps technical failures to EU laws (EN 301 549, EAA) and international laws (Australian DDA).
 - **HTML Structure Validation**: Built-in `html-validate` checks to prevent false positives/negatives.
-- **Internationalization (i18n)**: Comprehensive support for 13 languages: English (`en`), Swedish (`sv`), Norwegian (`no`), Finnish (`fi`), Danish (`da`), German (`de`), French (`fr`), Spanish (`es`), Dutch (`nl`), Italian (`it`), Portuguese (`pt`), Polish (`pl`), and Australian English (`en-au`).
+- **Internationalization (i18n)**:
+  - **CLI output**: 9 locale files (`en`, `sv`, `no`, `fi`, `da`, `de`, `fr`, `es`, `nl`) + 4 English aliases (`en-gb`, `en-us`, `en-ca`, `en-au`) that fall back to `en`.
+  - **Statement templates**: 16 locale files — adds `it`, `pt`, `pl`, and separate templates for each English variant (`en-gb`, `en-us`, `en-ca`, `en-au`).
 - **Template-Driven Accessibility Statements**: Generates modern, glassmorphism-styled statements using externalized JSON templates for each language, allowing for professional legal phrasing and deep customization.
 - **Multi-Company Metadata**: Easily customize statements via CLI flags or `.a11yrc` for scalable client generation.
 - **Enriched JUnit XML**: Professional CI/CD reports including scan duration, page title, engine metadata, and **detailed failing node** snippets (Target + HTML).
@@ -49,7 +51,7 @@ npx hd-a11y-scan <url> [options]
 **Options:**
 | Option | Description |
 |--------|-------------|
-| `--lang <code>` | Language code (`en`, `sv`, `no`, `fi`, `da`, `de`, `fr`, `es`, `nl`, `it`, `pt`, `pl`) |
+| `--lang <code>` | Language code. CLI output: `en`, `sv`, `no`, `fi`, `da`, `de`, `fr`, `es`, `nl` (+ aliases `en-gb`, `en-us`, `en-ca`, `en-au` fall back to `en`). Statement templates also accept `it`, `pt`, `pl`. |
 | `--threshold <level>` | Severity threshold for compliance (`critical`, `high`, `medium`, `low`). Default: `high` |
 | `--ci` | Run in CI mode (exit code 1 on failure) |
 | `--json` | Output results as JSON |
