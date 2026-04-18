@@ -18,10 +18,10 @@ A professional accessibility ecosystem bridging the gap between technical code v
     - 🇵🇹 **DL 83/2018** (Portugal)
     - 🇵🇱 **Ustawa o dostępności cyfrowej** (Poland)
     - 🇬🇧 **PSBAR** (UK) / 🇮🇪 **S.I. No. 358/2020** (Ireland)
-    - 🇺🇸 **Section 508 / ADA** (USA)
+    - 🇺🇸 **Section 508** (federal, GSA) / **ADA Title II** (state+local, DOJ) / **ADA Title III** (private sector, DOJ) — *deadline 2026-04-24 for state/local entities with 50k+ population*
     - 🇨🇦 **AODA** (Ontario) / **ACA** (Canada federal)
     - 🇦🇺 **DDA 1992** (Australia — covers both public and private sectors)
-- **Sector-Aware Compliance**: Distinguishes between public sector (WAD) and private sector (EAA/DDA), routing to the correct enforcement body and national law via `--sector public|private`.
+- **Sector-Aware Compliance**: Distinguishes between public sector (WAD / ADA Title II) and private sector (EAA / DDA / ADA Title III), routing to the correct enforcement body and national law via `--sector public|private`.
 - **Risk Assessment**: Classifies every violation based on regulatory enforcement practices (e.g., DIGG, uutilsynet, Logius).
 - **Professional CI/CD Reporting**: Enhanced JUnit XML reports with full metadata, success counts, and detailed failure snippets for seamless integration with modern DevOps dashboards.
 - **Template-Driven Statements**: Generates modern, glassmorphism-styled accessibility statements using professionalized JSON templates for deep localization.

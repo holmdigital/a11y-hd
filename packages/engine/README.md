@@ -21,7 +21,8 @@ For a comprehensive guide on CLI flags, CI/CD integration, and configuration fil
 
 ## Features
 
-- **Regulatory Mapping**: Maps technical failures to EU laws (EN 301 549, EAA) and international laws (Australian DDA).
+- **Regulatory Mapping**: Maps technical failures to EU laws (EN 301 549, EAA), international laws (Australian DDA), and **U.S. ADA (Title II state/local, Title III private sector) + Section 508 (federal agencies)**.
+- **Sector-Aware US Routing**: `--country US --sector public` references **ADA Title II + Section 508** (DOJ enforcement); `--sector private` references **ADA Title III** (DOJ enforcement).
 - **HTML Structure Validation**: Built-in `html-validate` checks to prevent false positives/negatives.
 - **Internationalization (i18n)**:
   - **CLI output**: 9 locale files (`en`, `sv`, `no`, `fi`, `da`, `de`, `fr`, `es`, `nl`) + 4 English aliases (`en-gb`, `en-us`, `en-ca`, `en-au`) that fall back to `en`.
@@ -93,6 +94,12 @@ npx hd-a11y-scan https://example.com --light
 
 # Light scan with JSON output (perfect for scan-server integration)
 npx hd-a11y-scan https://example.com --light --json
+
+# U.S. state/local government statement (ADA Title II + Section 508, DOJ)
+npx hd-a11y-scan https://example.gov --country US --sector public --statement statement.md --lang en-us
+
+# U.S. private sector / public accommodation statement (ADA Title III, DOJ)
+npx hd-a11y-scan https://shop.example.com --country US --sector private --statement statement.md --lang en-us
 ```
 
 ## JSON Output

@@ -38,6 +38,21 @@
             ],
             "international": true,
             "comment": "Internationellt verktyg som kan anpassas efter olika behov"
+        },
+        {
+            "id": "itic-vpat",
+            "name": "VPAT (Voluntary Product Accessibility Template)",
+            "provider": "Information Technology Industry Council (ITI)",
+            "type": "template",
+            "url": "https://www.itic.org/policy/accessibility/vpat",
+            "format": [
+                "docx",
+                "pdf"
+            ],
+            "country": "US",
+            "recommended": true,
+            "legalBasis": "ADA, Section 508, EN 301 549",
+            "comment": "Standard template for documenting accessibility conformance. Used for both ADA and Section 508 compliance documentation. Covers WCAG, Section 508, and EN 301 549."
         }
     ]
 }

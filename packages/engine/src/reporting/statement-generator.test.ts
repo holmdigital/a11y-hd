@@ -467,3 +467,70 @@ describe('EAA sector support', () => {
         expect(wadLaw!.fullName).not.toBe(eaaLaw!.fullName);
     });
 });
+
+describe('US ADA — sector-aware national law routing', () => {
+    // US has three laws: Section 508 (federal, public), ADA Title II (state/local, public),
+    // ADA Title III (private). statement-generator must resolve sector → correct ADA law.
+
+    it('should reference ADA Title II AND Section 508 for US public sector', async () => {
+        const usResult = { ...mockResult, url: 'https://example.gov' };
+        const output = await generateStatementContent(
+            usResult,
+            'en-us',
+            'md',
+            { ...metadata, country: 'US', sector: 'public' }
+        );
+        expect(output).toContain('ADA Title II');
+        expect(output).toContain('Section 508');
+    });
+
+    it('should reference ADA Title III for US private sector (not Title II)', async () => {
+        const usResult = { ...mockResult, url: 'https://shop.example.com' };
+        const output = await generateStatementContent(
+            usResult,
+            'en-us',
+            'md',
+            { ...metadata, country: 'US', sector: 'private' }
+        );
+        expect(output).toContain('ADA Title III');
+        // ADA Title II must not be cited as primary law in private-sector statement.
+        // Note: the en-us template still has legacy Section 508 references in the
+        // technical-compliance status choice block (out-of-scope P2 cleanup).
+        expect(output).not.toMatch(/ADA Title II[^I]/);
+    });
+
+    it('should reference DOJ as enforcement body for US (both sectors)', async () => {
+        const outputPublic = await generateStatementContent(
+            { ...mockResult, url: 'https://example.gov' },
+            'en-us', 'md',
+            { ...metadata, country: 'US', sector: 'public' }
+        );
+        const outputPrivate = await generateStatementContent(
+            { ...mockResult, url: 'https://shop.example.com' },
+            'en-us', 'md',
+            { ...metadata, country: 'US', sector: 'private' }
+        );
+        expect(outputPublic).toContain('Department of Justice');
+        expect(outputPrivate).toContain('Department of Justice');
+    });
+
+    it('should not leave {<national_law>} unsubstituted for US/public', async () => {
+        const output = await generateStatementContent(
+            mockResult,
+            'en-us',
+            'md',
+            { ...metadata, country: 'US', sector: 'public' }
+        );
+        expect(output).not.toMatch(/\{<national_law>\}/);
+    });
+
+    it('should not leave {<national_law>} unsubstituted for US/private', async () => {
+        const output = await generateStatementContent(
+            mockResult,
+            'en-us',
+            'md',
+            { ...metadata, country: 'US', sector: 'private' }
+        );
+        expect(output).not.toMatch(/\{<national_law>\}/);
+    });
+});

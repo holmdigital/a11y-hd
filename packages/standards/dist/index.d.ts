@@ -3,9 +3,9 @@ type WCAGVersion = '2.0' | '2.1' | '2.2';
 type DiggRisk = 'low' | 'medium' | 'high' | 'critical';
 type EAAImpact = 'none' | 'low' | 'medium' | 'high' | 'critical';
 type TestComplexity = 'simple' | 'moderate' | 'complex';
-type LegalFramework = 'WAD' | 'EAA';
+type LegalFramework = 'WAD' | 'EAA' | 'DDA' | 'ADA';
 type Sector = 'public' | 'private' | 'both';
-type Country = 'SE' | 'NO' | 'DK' | 'FI' | 'NL' | 'DE' | 'FR' | 'ES' | 'IE' | 'IT' | 'PT' | 'PL' | 'GB' | 'US' | 'CA' | 'EU';
+type Country = 'SE' | 'NO' | 'DK' | 'FI' | 'NL' | 'DE' | 'FR' | 'ES' | 'IE' | 'IT' | 'PT' | 'PL' | 'GB' | 'US' | 'CA' | 'AU' | 'EU';
 interface ConvergenceRule {
     ruleId: string;
     wcagCriteria: string;
@@ -182,6 +182,18 @@ interface NationalLaw {
     inForce: boolean;
     effectiveDate: string;
     note?: string;
+    complianceDeadlines?: {
+        largeEntity?: {
+            populationThreshold: number;
+            deadline: string;
+            description: string;
+        };
+        smallEntity?: {
+            populationThreshold: number;
+            deadline: string;
+            description: string;
+        };
+    };
 }
 
 declare const ENFORCEMENT_BODIES: Record<Country, string>;

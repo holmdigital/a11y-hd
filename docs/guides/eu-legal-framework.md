@@ -14,6 +14,30 @@ This guide explains how @holmdigital packages integrate with EU accessibility di
 **Deadline:** June 28, 2025  
 **Scope:** E-commerce, banking, transport, e-books, streaming
 
+## Outside EU: ADA (USA)
+
+The **Americans with Disabilities Act of 1990 (ADA)** is the primary US framework for digital accessibility in state/local government and private sector. Unlike WAD/EAA (EU directives), ADA is federal US law enforced via the Department of Justice (DOJ) Civil Rights Division.
+
+### ADA Title II — State & Local Government
+**Applies to:** Websites, mobile apps, and digital services of state and local government entities (excluding federal agencies — see Section 508)
+**Standard:** WCAG 2.1 Level AA
+**Enforcement:** DOJ, Civil Rights Division
+**Final rule:** 28 CFR Part 35 (DOJ, published 2024-04-24)
+**Compliance deadlines:**
+- **2026-04-24** for entities serving populations of 50,000+
+- **2027-04-24** for entities serving populations under 50,000
+
+### ADA Title III — Private Sector (Public Accommodations)
+**Applies to:** Places of public accommodation (hotels, restaurants, retail, healthcare, e-commerce)
+**Standard:** WCAG 2.1 Level AA (de facto via DOJ consent decrees and case law — Robles v. Domino's Pizza, Gil v. Winn-Dixie)
+**Enforcement:** DOJ, Civil Rights Division
+**Web rule:** NPRM published 2024; final rule pending
+
+### Section 508 (parallel federal framework)
+**Applies to:** Federal agencies only
+**Enforcement:** General Services Administration (GSA) via Section508.gov
+Not affected by the 2024 ADA final rule. Our CLI maps `--country US --sector public` to **ADA Title II + Section 508** and `--sector private` to **ADA Title III**.
+
 ## Visual Overview
 
 ### Does WAD or EAA apply?

@@ -57,7 +57,7 @@ export const ENFORCEMENT_BODIES_DETAILED: Record<Country, { wad: string; eaa: st
     PT: { wad: 'Administrative Modernization Agency (AMA)', eaa: 'Directorate-General for Consumer Affairs (DGAC)' },
     PL: { wad: 'Ministry of Digitization (Ministerstwo Cyfryzacji)', eaa: 'Office of Competition and Consumer Protection (UOKiK)' },
     GB: { wad: 'Equality and Human Rights Commission (EHRC)', eaa: 'Equality and Human Rights Commission (EHRC)' },
-    US: { wad: 'Department of Justice (Civil Rights Division)', eaa: 'Department of Justice (Civil Rights Division)' },
+    US: { wad: 'General Services Administration (GSA)', eaa: 'Department of Justice (Civil Rights Division)' },
     CA: { wad: 'Accessibility Commissioner (Canadian Human Rights Commission)', eaa: 'Accessibility Commissioner (Canadian Human Rights Commission)' },
     AU: { wad: 'Australian Human Rights Commission (AHRC)', eaa: 'Australian Human Rights Commission (AHRC)' },
     EU: { wad: 'European Commission (DG CNECT)', eaa: 'European Commission (DG JUST)' }
