@@ -25,7 +25,7 @@ The **Americans with Disabilities Act of 1990 (ADA)** is the primary US framewor
 **Final rule:** 28 CFR Part 35 (DOJ, published 2024-04-24)
 **Compliance deadlines:**
 - **2026-04-24** for entities serving populations of 50,000+
-- **2028-04-26** for entities serving populations under 50,000
+- **2027-04-24** for entities serving populations under 50,000
 
 ### ADA Title III — Private Sector (Public Accommodations)
 **Applies to:** Places of public accommodation (hotels, restaurants, retail, healthcare, e-commerce)

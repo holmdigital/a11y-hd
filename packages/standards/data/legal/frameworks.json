@@ -49,10 +49,9 @@
             "eurLexUrl": "https://www.ada.gov/law-and-regs/ada/",
             "adoptionDate": "1990-07-26",
             "transpositionDeadline": "1992-01-26",
-            "applicationDeadline": "2026-04-24",
             "wcagVersion": "2.1",
             "wcagLevel": "AA",
-            "technicalStandard": "WCAG 2.1 Level AA (28 CFR Part 35 Final Rule, 2024-04-24)",
+            "technicalStandard": "WCAG 2.1 Level AA (28 CFR Part 35 Final Rule, 2024-04-24 — Title II only; no final DOJ rule for Title III as of 2026-04)",
             "serviceScopes": [
                 "state-local-government",
                 "public-accommodations",

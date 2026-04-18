@@ -47,7 +47,7 @@ npm install @holmdigital/standards
 - **Remediation**: Maps issues to `@holmdigital/components` for fixing.
 - **Legal Frameworks**: WAD (EU public sector), EAA (EU private sector), DDA (Australia — both sectors), and **ADA (USA — Title II public, Title III private; Section 508 remains separate for federal agencies)**.
 - **Sector-Aware Enforcement**: `getEnforcementBody(country, 'public'|'private')` returns the correct authority based on WAD, EAA, DDA, or ADA sector.
-- **Compliance Deadlines**: Optional `NationalLaw.complianceDeadlines` field captures entity-size-based deadlines. Currently populated for ADA Title II (2026-04-24 for 50k+ populations, 2028-04-26 otherwise).
+- **Compliance Deadlines**: Optional `NationalLaw.complianceDeadlines` field captures entity-size-based deadlines. Currently populated for ADA Title II (2026-04-24 for 50k+ populations, 2027-04-24 otherwise).
 - **Authorities & Enforcement**: Shared database of regulatory bodies (`ENFORCEMENT_BODIES`) covering **16 countries + EU** (17 jurisdictions total) — Nordic, UK, US, CA, AU, and the EU Commission (DG CNECT / DG JUST).
 
 ## Usage

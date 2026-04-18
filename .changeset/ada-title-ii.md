@@ -7,7 +7,7 @@ Add ADA Title II and Title III support for US accessibility compliance
 
 **Background:** DOJ's final rule (28 CFR Part 35, published 2024-04-24) requires
 state and local governments to meet WCAG 2.1 Level AA by 2026-04-24 (entities
-serving 50,000+ population) or 2028-04-26 (smaller entities).
+serving 50,000+ population) or 2027-04-24 (smaller entities).
 
 **@holmdigital/standards:**
 - New `LegalFramework` value: `'ADA'`
@@ -15,7 +15,7 @@ serving 50,000+ population) or 2028-04-26 (smaller entities).
   `us-ada-title-iii` (private sector)
 - New DOJ authority id `us-doj`
 - New optional `NationalLaw.complianceDeadlines` field (Title II: 2026-04-24 /
-  2028-04-26)
+  2027-04-24)
 - ADA framework added to `frameworks.json` with WCAG 2.1 AA
 - 46 convergence rules across all 12 rule-locale files now tagged with `"ADA"`
   in `legalContext.appliesTo`

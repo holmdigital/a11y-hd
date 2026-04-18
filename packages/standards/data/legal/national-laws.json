@@ -419,26 +419,26 @@
                     "website": "https://www.ada.gov"
                 },
                 "sanctions": {
-                    "type": "Lawsuit / Civil Penalties / Consent Decree",
-                    "description": "DOJ can bring enforcement actions. Private individuals can file lawsuits. Civil penalties up to $75,000 for first violation, $150,000 for subsequent violations. Courts may order injunctive relief and damages.",
-                    "minAmount": 75000,
-                    "maxAmount": 150000,
+                    "type": "DOJ Enforcement / Private Lawsuit / Settlement Agreement",
+                    "description": "Title II enforcement uses the Rehabilitation Act remedies (42 U.S.C. § 12133 → 29 U.S.C. § 794a): DOJ compliance reviews, investigations, and settlement agreements; private individuals can file lawsuits for injunctive relief and compensatory damages. ADA Title II has no fixed civil monetary penalty schedule — unlike Title III, there is no $75k/$150k cap at the statute level.",
+                    "minAmount": 0,
+                    "maxAmount": 0,
                     "currency": "USD",
-                    "example": "DOJ has entered consent decrees requiring full WCAG 2.1 AA compliance within 12-24 months, plus damages to affected individuals."
+                    "example": "DOJ has entered consent decrees requiring full WCAG 2.1 AA compliance within 12-24 months, plus damages to affected individuals (e.g. settlement agreements with state university systems, municipal transit authorities)."
                 },
                 "inForce": true,
                 "effectiveDate": "2024-04-24",
-                "note": "Final rule (28 CFR Part 35): web content and mobile apps of state/local governments must conform to WCAG 2.1 Level AA. Compliance deadlines: entities serving 50,000+ population by 2026-04-24; entities serving under 50,000 population by 2028-04-26.",
+                "note": "Final rule (28 CFR Part 35, 89 FR 31320): web content and mobile apps of state/local governments must conform to WCAG 2.1 Level AA. Compliance deadlines per 28 CFR § 35.200(b): entities serving 50,000+ population by 2026-04-24 (two years from publication); entities serving under 50,000 population (and special district governments) by 2027-04-24 (three years from publication).",
                 "complianceDeadlines": {
                     "largeEntity": {
                         "populationThreshold": 50000,
                         "deadline": "2026-04-24",
-                        "description": "State/local governments serving populations of 50,000 or more"
+                        "description": "State/local governments serving populations of 50,000 or more (28 CFR § 35.200(b)(1))"
                     },
                     "smallEntity": {
                         "populationThreshold": 49999,
-                        "deadline": "2028-04-26",
-                        "description": "State/local governments serving populations under 50,000"
+                        "deadline": "2027-04-24",
+                        "description": "State/local governments serving populations under 50,000, and special district governments (28 CFR § 35.200(b)(2))"
                     }
                 }
             },
@@ -457,7 +457,7 @@
                 },
                 "sanctions": {
                     "type": "Lawsuit / Civil Penalties / Injunctive Relief",
-                    "description": "Private plaintiffs can file lawsuits (no damages in federal court, but injunctive relief). DOJ can seek civil penalties up to $75,000 for first violation, $150,000 for subsequent. State laws may allow additional damages.",
+                    "description": "Private plaintiffs can file lawsuits under 42 U.S.C. § 12188 (injunctive relief only — no damages in federal court; state laws may allow additional damages). DOJ can seek civil monetary penalties per 28 CFR § 36.504 — statutory base amounts are $75,000 (first violation) / $150,000 (subsequent), annually inflation-adjusted per 28 CFR Part 85 (Federal Civil Penalties Inflation Adjustment Act). Consult the latest Federal Register inflation adjustment notice for current amounts.",
                     "minAmount": 75000,
                     "maxAmount": 150000,
                     "currency": "USD",
@@ -465,7 +465,7 @@
                 },
                 "inForce": true,
                 "effectiveDate": "1992-01-26",
-                "note": "No specific final rule for web accessibility under Title III yet, but DOJ guidance and case law (e.g., Robles v. Domino's Pizza, Gil v. Winn-Dixie) establish that websites of public accommodations must be accessible. WCAG 2.1 AA is the de facto standard cited in settlements and consent decrees. NPRM for web accessibility was published 2024; final rule pending."
+                "note": "No final DOJ rule for web accessibility under Title III as of 2026-04. DOJ enforcement and private litigation under Title III frequently cite WCAG 2.0/2.1 Level AA as the technical reference in settlements and consent decrees (e.g. Robles v. Domino's Pizza, Gil v. Winn-Dixie), but no single standard is formally mandated by regulation — practice varies between circuits. Legal exposure is primarily through private lawsuits for injunctive relief (42 U.S.C. § 12188). NPRM for web accessibility was published 2024; final rule pending."
             }
         ],
         "CA": [
