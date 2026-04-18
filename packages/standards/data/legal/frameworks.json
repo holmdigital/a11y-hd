@@ -40,6 +40,29 @@
                 "transport",
                 "telecommunications"
             ]
+        },
+        "ADA": {
+            "id": "ADA-1990",
+            "name": "Americans with Disabilities Act",
+            "fullName": "Americans with Disabilities Act of 1990, as amended (42 U.S.C. ss 12101 et seq.)",
+            "scope": "both",
+            "eurLexUrl": "https://www.ada.gov/law-and-regs/ada/",
+            "adoptionDate": "1990-07-26",
+            "transpositionDeadline": "1992-01-26",
+            "applicationDeadline": "2026-04-24",
+            "wcagVersion": "2.1",
+            "wcagLevel": "AA",
+            "technicalStandard": "WCAG 2.1 Level AA (28 CFR Part 35 Final Rule, 2024-04-24)",
+            "serviceScopes": [
+                "state-local-government",
+                "public-accommodations",
+                "commercial-facilities",
+                "e-commerce",
+                "banking",
+                "healthcare",
+                "education",
+                "transportation"
+            ]
         }
     }
 }

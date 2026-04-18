@@ -38,6 +38,7 @@ We map technical rules to actual legislation.
 | **Web Accessibility Directive (WAD)** | Applies to **Public Sector** bodies in the EU. |
 | **European Accessibility Act (EAA)** | Applies to **Private Sector** services (e-commerce, banking) from June 2025. |
 | **Disability Discrimination Act (DDA)** | Australia — applies to **both** public and private sectors under DDA 1992. |
+| **Americans with Disabilities Act (ADA)** | USA — Title II (state/local government, DOJ) and Title III (private sector, DOJ). **Deadline 2026-04-24** for state/local entities serving 50,000+ population (28 CFR Part 35 Final Rule). Section 508 (federal agencies, GSA) remains a separate framework. |
 | **EN 301 549** | The technical standard that underpins WAD and EAA. |
 | **National Laws** | Specific overrides for Sweden (`DOS-lagen`), Norway (`Forskrift om universell utforming av IKT`), Germany (`BFSG`), Italy (`Legge 4/2004`), etc. |
 
@@ -57,7 +58,7 @@ Use these functions to build compliance features into your own apps.
 Automatically resolves the correct law based on sector (Public/Private) and location.
 
 ```typescript
-import { getNationalLawByFramework } from '@holmdigital/standards';
+import { getNationalLawByFramework, getNationalLaws } from '@holmdigital/standards';
 
 // Case: Public Sector in Sweden
 const law = getNationalLawByFramework('WAD', 'SE');
@@ -68,6 +69,18 @@ console.log(law.name);
 const law = getNationalLawByFramework('EAA', 'DE');
 console.log(law.name);
 // Output: "Barrierefreiheitsstärkungsgesetz (BFSG)"
+
+// Case: U.S. state/local government → ADA Title II (DOJ)
+const titleII = getNationalLawByFramework('ADA', 'US');
+console.log(titleII.law);
+// Output: "ADA Title II"
+console.log(titleII.complianceDeadlines.largeEntity.deadline);
+// Output: "2026-04-24"
+
+// Case: U.S. private sector → ADA Title III (scope-aware lookup)
+const titleIII = getNationalLaws('US').find(l => l.euFramework === 'ADA' && l.scope === 'private');
+console.log(titleIII.law);
+// Output: "ADA Title III"
 ```
 
 ### 2. Find the Enforcement Authority

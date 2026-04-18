@@ -1,7 +1,7 @@
 import React from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { AccessibilityStatement, AccessibilityStatementProps } from '@holmdigital/components';
-import { Country, getEnforcementBody, getNationalLawByFramework } from '@holmdigital/standards';
+import { Country, getEnforcementBody, getNationalLawByFramework, getNationalLaws } from '@holmdigital/standards';
 import { ScanResult } from '../core/regulatory-scanner';
 import fs from 'fs/promises';
 import path from 'path';
@@ -305,11 +305,36 @@ export async function generateStatementContent(
             '{<tiers externe>}': props.generatorTool?.name || 'HolmDigital Engine',
             '{<tercero externo>}': props.generatorTool?.name || 'HolmDigital Engine',
             '{<third party>}': props.generatorTool?.name || 'HolmDigital Engine',
-            '{<enforcement_body>}': getEnforcementBody(country, sector),
+            '{<enforcement_body>}': (() => {
+                // US: statements for our customers are primarily about state/local gov (Title II)
+                // or private sector (Title III) — both enforced by DOJ. Override the default
+                // GSA-returning lookup (which targets federal Section 508).
+                if (country === 'US') {
+                    const adaLaw = getNationalLaws('US').find(l => l.euFramework === 'ADA' && l.scope === sector);
+                    if (adaLaw) return adaLaw.enforcement.authorityName;
+                }
+                return getEnforcementBody(country, sector);
+            })(),
             '{<national_law>}': (() => {
                 if (country === 'AU') {
                     const ddaLaw = getNationalLawByFramework('DDA', 'AU');
                     return ddaLaw ? `${ddaLaw.fullName}` : 'Disability Discrimination Act 1992 (Cth)';
+                }
+                if (country === 'US') {
+                    // US has two ADA laws split by scope (Title II public / Title III private)
+                    // plus Section 508 as a parallel federal-agency framework.
+                    const usLaws = getNationalLaws('US');
+                    const adaLaw = usLaws.find(l => l.euFramework === 'ADA' && l.scope === sector);
+                    if (adaLaw) {
+                        if (sector === 'public') {
+                            // State/local: include Section 508 as parallel reference
+                            const s508 = usLaws.find(l => l.id === 'us-508');
+                            return s508
+                                ? `${adaLaw.fullName} (${adaLaw.law}) & ${s508.fullName} (${s508.law})`
+                                : `${adaLaw.fullName} (${adaLaw.law})`;
+                        }
+                        return `${adaLaw.fullName} (${adaLaw.law})`;
+                    }
                 }
                 const law = getNationalLawByFramework(sector === 'private' ? 'EAA' : 'WAD', country);
                 return law ? `${law.fullName} (${law.law})` : '';

@@ -5,7 +5,7 @@
 ![TypeScript](https://img.shields.io/badge/TypeScript-Ready-blue)
 [![Downloads](https://img.shields.io/npm/dm/@holmdigital/standards.svg)](https://www.npmjs.com/package/@holmdigital/standards)
 
-> Machine-readable regulatory database for WCAG, EN 301 549, DOS-lagen, EU Legal Frameworks (WAD/EAA), and Australian DDA.
+> Machine-readable regulatory database for WCAG, EN 301 549, DOS-lagen, EU Legal Frameworks (WAD/EAA), Australian DDA, and U.S. ADA (Title II / Title III / Section 508).
 
 ## Why this package?
 
@@ -14,7 +14,7 @@ This package serves as the **Single Source of Truth** for accessibility complian
 1.  **WCAG 2.1 Criteria** (Technical Base)
 2.  **EN 301 549** (EU Standard Mapping)
 3.  **National Laws** (Specific legal references for SE, NL, DE, IT, PT, PL, AU, etc.)
-4.  **Legal Frameworks** (WAD 2016/2102, EAA 2019/882, DDA 1992 Australia)
+4.  **Legal Frameworks** (WAD 2016/2102, EAA 2019/882, DDA 1992 Australia, **ADA 1990 USA**)
 5.  **Nordic Authority Data** (Digg, PTS, UU-tilsynet, etc.)
 
 It allows developers to query: *"Which law mandates WCAG 1.4.3 in Sweden?"* and get the exact legal paragraph (`Lag (2018:1937) 12 §`).
@@ -45,8 +45,9 @@ npm install @holmdigital/standards
   - *`it`, `pt`, `pl`, `au` — national law metadata only; rule text uses `en`*
 - **Risk Assessment**: DIGG-aligned risk levels (`critical`, `high`, `medium`, `low`).
 - **Remediation**: Maps issues to `@holmdigital/components` for fixing.
-- **Legal Frameworks**: WAD (public sector), EAA (private sector), and DDA (Australia — both sectors) compliance data.
-- **Sector-Aware Enforcement**: `getEnforcementBody(country, 'public'|'private')` returns the correct authority based on WAD, EAA, or DDA sector.
+- **Legal Frameworks**: WAD (EU public sector), EAA (EU private sector), DDA (Australia — both sectors), and **ADA (USA — Title II public, Title III private; Section 508 remains separate for federal agencies)**.
+- **Sector-Aware Enforcement**: `getEnforcementBody(country, 'public'|'private')` returns the correct authority based on WAD, EAA, DDA, or ADA sector.
+- **Compliance Deadlines**: Optional `NationalLaw.complianceDeadlines` field captures entity-size-based deadlines. Currently populated for ADA Title II (2026-04-24 for 50k+ populations, 2028-04-26 otherwise).
 - **Authorities & Enforcement**: Shared database of regulatory bodies (`ENFORCEMENT_BODIES`) covering **16 countries + EU** (17 jurisdictions total) — Nordic, UK, US, CA, AU, and the EU Commission (DG CNECT / DG JUST).
 
 ## Usage
@@ -152,7 +153,7 @@ const sectors = getSectorAuthorities('SE');
 | 🇵🇹 PT | DL 83/2018 | DL 101-D/2023 | 44k EUR |
 | 🇵🇱 PL | Ustawa o dostępności cyfrowej | Ustawa o dostępności produktów i usług | 100k PLN |
 | 🇬🇧 GB | PSBAR | - | Unlawful Act Notice |
-| 🇺🇸 US | Section 508 | - | Civil Rights Complaint |
+| 🇺🇸 US | Section 508 (federal, GSA) / ADA Title II (state+local, DOJ) | ADA Title III (private, DOJ) | Up to $150k/violation + civil rights lawsuits |
 | 🇨🇦 CA | AODA (Ontario) | ACA (federal) | $100k per day |
 | 🇦🇺 AU | DDA 1992 | — (DDA covers both sectors) | Court-determined (AHRC complaint) |
 

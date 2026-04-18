@@ -22,6 +22,7 @@ import {
     getEnforcementBody,
     // National laws
     getNationalLawByFramework,
+    getNationalLaws,
 } from './index';
 import type { Country } from './types';
 
@@ -175,8 +176,17 @@ describe('Enforcement Bodies', () => {
 
         it('should have WAD values matching ENFORCEMENT_BODIES', () => {
             for (const country of ALL_COUNTRIES) {
+                // US has split enforcement: GSA for Section 508 (wad) and DOJ for ADA (eaa + default).
+                // ENFORCEMENT_BODIES.US keeps DOJ as the primary accessibility body.
+                if (country === 'US') continue;
                 expect(ENFORCEMENT_BODIES_DETAILED[country].wad).toBe(ENFORCEMENT_BODIES[country]);
             }
+        });
+
+        it('should split GSA (Section 508) vs DOJ (ADA) for US', () => {
+            expect(ENFORCEMENT_BODIES_DETAILED.US.wad).toBe('General Services Administration (GSA)');
+            expect(ENFORCEMENT_BODIES_DETAILED.US.eaa).toBe('Department of Justice (Civil Rights Division)');
+            expect(ENFORCEMENT_BODIES.US).toBe('Department of Justice (Civil Rights Division)');
         });
 
         it('should have AHRC for both AU sectors', () => {
@@ -277,5 +287,61 @@ describe('National Laws — AU', () => {
 
     it('should have inForce true for au-dda', () => {
         expect(getNationalLawByFramework('DDA', 'AU')?.inForce).toBe(true);
+    });
+});
+
+describe('National Laws — US (ADA)', () => {
+    it('should return 3 laws for US', () => {
+        const usLaws = getNationalLaws('US');
+        expect(usLaws).toHaveLength(3);
+    });
+
+    it('should return WAD law (Section 508) for US', () => {
+        const s508 = getNationalLawByFramework('WAD', 'US');
+        expect(s508).not.toBeNull();
+        expect(s508?.law).toBe('Section 508');
+        expect(s508?.enforcement.authority).toBe('us-gsa');
+    });
+
+    it('should return ADA Title II as first ADA match for US (public scope)', () => {
+        const adaLaw = getNationalLawByFramework('ADA', 'US');
+        expect(adaLaw).not.toBeNull();
+        expect(adaLaw?.id).toBe('us-ada-title-ii');
+        expect(adaLaw?.scope).toBe('public');
+        expect(adaLaw?.enforcement.authority).toBe('us-doj');
+    });
+
+    it('should expose ADA Title III via scope-aware lookup', () => {
+        const titleIII = getNationalLaws('US').find(l => l.euFramework === 'ADA' && l.scope === 'private');
+        expect(titleIII).toBeDefined();
+        expect(titleIII?.id).toBe('us-ada-title-iii');
+        expect(titleIII?.law).toBe('ADA Title III');
+    });
+
+    it('should have compliance deadlines on Title II', () => {
+        const titleII = getNationalLaws('US').find(l => l.id === 'us-ada-title-ii');
+        expect(titleII?.complianceDeadlines?.largeEntity?.deadline).toBe('2026-04-24');
+        expect(titleII?.complianceDeadlines?.largeEntity?.populationThreshold).toBe(50000);
+        expect(titleII?.complianceDeadlines?.smallEntity?.deadline).toBe('2028-04-26');
+    });
+
+    it('should have inForce true for all US laws', () => {
+        for (const law of getNationalLaws('US')) {
+            expect(law.inForce).toBe(true);
+        }
+    });
+
+    it('should resolve sector-specific enforcement for US', () => {
+        // Default / public → Section 508 domain → GSA (federal agencies)
+        expect(getEnforcementBody('US')).toBe('General Services Administration (GSA)');
+        expect(getEnforcementBody('US', 'public')).toBe('General Services Administration (GSA)');
+        // Private → ADA Title III → DOJ
+        expect(getEnforcementBody('US', 'private')).toBe('Department of Justice (Civil Rights Division)');
+    });
+
+    it('should expose DOJ via ENFORCEMENT_BODIES.US as the primary accessibility authority', () => {
+        // Constant kept as DOJ per Juno's ruling (DOJ is the recognized US accessibility authority).
+        // For per-law enforcement consumers should use getNationalLaws('US')[*].enforcement.
+        expect(ENFORCEMENT_BODIES.US).toBe('Department of Justice (Civil Rights Division)');
     });
 });

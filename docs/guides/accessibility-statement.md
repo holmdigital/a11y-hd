@@ -116,6 +116,49 @@ The component automatically includes:
 - ⚠️ EAA deadline: June 28, 2025
 - 💶 Sanctions up to 500,000 EUR
 
+## Example: US State/Local Government (ADA Title II)
+
+```tsx
+<AccessibilityStatement
+  country="US"
+  sector="public"
+  organizationName="City of Example"
+  websiteUrl="https://cityofexample.gov"
+  complianceLevel="partial"
+  lastReviewDate={new Date()}
+  contactEmail="accessibility@cityofexample.gov"
+  locale="en-us"
+/>
+```
+
+**Output includes:**
+- 📜 ADA Title II (28 CFR Part 35, DOJ Final Rule 2024-04-24) + Section 508 as parallel federal reference
+- 🏛️ U.S. Department of Justice, Civil Rights Division as enforcement authority
+- ⚠️ Compliance deadline: 2026-04-24 for entities serving 50,000+ population
+- 💵 Civil penalties up to $75k (first violation) / $150k (subsequent) + private lawsuits
+
+## Example: US Private Sector (ADA Title III)
+
+```tsx
+<AccessibilityStatement
+  country="US"
+  sector="private"
+  organizationName="Example Retail Inc."
+  websiteUrl="https://shop.example.com"
+  complianceLevel="partial"
+  lastReviewDate={new Date()}
+  contactEmail="accessibility@example.com"
+  locale="en-us"
+/>
+```
+
+**Output includes:**
+- 📜 ADA Title III (28 CFR Part 36)
+- 🏛️ U.S. Department of Justice, Civil Rights Division as enforcement authority
+- 📎 WCAG 2.1 Level AA as de facto standard (per Robles v. Domino's and Gil v. Winn-Dixie)
+
+> **Note on `country="US"`:** The rendered law and enforcement body both depend on `sector`. Set `"public"` for state/local governments (Title II + Section 508), `"private"` for commercial/public-accommodation entities (Title III).
+
 ## Template-Driven Architecture
 
 Since version 2.0.0, the accessibility statement system uses **externalized JSON templates**. This allows for:

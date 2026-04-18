@@ -120,7 +120,8 @@ var rules_en_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -189,7 +190,8 @@ var rules_en_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -259,7 +261,8 @@ var rules_en_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -346,7 +349,8 @@ var rules_en_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -415,7 +419,8 @@ var rules_en_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -483,7 +488,8 @@ var rules_en_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -551,7 +557,8 @@ var rules_en_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -618,7 +625,8 @@ var rules_en_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -683,7 +691,8 @@ var rules_en_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -747,7 +756,8 @@ var rules_en_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -813,7 +823,8 @@ var rules_en_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -880,7 +891,8 @@ var rules_en_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -945,7 +957,8 @@ var rules_en_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -1009,7 +1022,8 @@ var rules_en_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -1074,7 +1088,8 @@ var rules_en_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -1138,7 +1153,8 @@ var rules_en_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -1201,7 +1217,8 @@ var rules_en_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -1266,7 +1283,8 @@ var rules_en_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -1332,7 +1350,8 @@ var rules_en_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -1397,7 +1416,8 @@ var rules_en_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -1464,7 +1484,8 @@ var rules_en_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -1531,7 +1552,8 @@ var rules_en_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -1597,7 +1619,8 @@ var rules_en_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -1662,7 +1685,8 @@ var rules_en_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -1727,7 +1751,8 @@ var rules_en_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -1794,7 +1819,8 @@ var rules_en_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -1858,7 +1884,8 @@ var rules_en_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -1921,7 +1948,8 @@ var rules_en_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -1986,7 +2014,8 @@ var rules_en_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -2052,7 +2081,8 @@ var rules_en_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -2116,7 +2146,8 @@ var rules_en_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -2181,7 +2212,8 @@ var rules_en_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -2246,7 +2278,8 @@ var rules_en_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -2310,7 +2343,8 @@ var rules_en_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -2376,7 +2410,8 @@ var rules_en_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -2441,7 +2476,8 @@ var rules_en_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -2515,7 +2551,8 @@ var rules_en_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -2588,7 +2625,8 @@ var rules_en_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -2651,7 +2689,8 @@ var rules_en_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -2713,7 +2752,8 @@ var rules_en_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -2774,7 +2814,8 @@ var rules_en_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -2835,7 +2876,8 @@ var rules_en_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -2896,7 +2938,8 @@ var rules_en_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -2957,7 +3000,8 @@ var rules_en_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -3019,7 +3063,8 @@ var rules_en_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -3080,7 +3125,8 @@ var rules_en_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -3161,7 +3207,8 @@ var rules_sv_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -3230,7 +3277,8 @@ var rules_sv_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -3300,7 +3348,8 @@ var rules_sv_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -3387,7 +3436,8 @@ var rules_sv_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -3456,7 +3506,8 @@ var rules_sv_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -3524,7 +3575,8 @@ var rules_sv_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -3592,7 +3644,8 @@ var rules_sv_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -3659,7 +3712,8 @@ var rules_sv_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -3724,7 +3778,8 @@ var rules_sv_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -3788,7 +3843,8 @@ var rules_sv_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -3854,7 +3910,8 @@ var rules_sv_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -3921,7 +3978,8 @@ var rules_sv_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -3986,7 +4044,8 @@ var rules_sv_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -4050,7 +4109,8 @@ var rules_sv_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -4115,7 +4175,8 @@ var rules_sv_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -4179,7 +4240,8 @@ var rules_sv_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -4242,7 +4304,8 @@ var rules_sv_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -4307,7 +4370,8 @@ var rules_sv_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -4373,7 +4437,8 @@ var rules_sv_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -4438,7 +4503,8 @@ var rules_sv_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -4505,7 +4571,8 @@ var rules_sv_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -4572,7 +4639,8 @@ var rules_sv_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -4638,7 +4706,8 @@ var rules_sv_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -4703,7 +4772,8 @@ var rules_sv_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -4768,7 +4838,8 @@ var rules_sv_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -4835,7 +4906,8 @@ var rules_sv_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -4899,7 +4971,8 @@ var rules_sv_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -4962,7 +5035,8 @@ var rules_sv_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -5027,7 +5101,8 @@ var rules_sv_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -5093,7 +5168,8 @@ var rules_sv_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -5157,7 +5233,8 @@ var rules_sv_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -5222,7 +5299,8 @@ var rules_sv_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -5287,7 +5365,8 @@ var rules_sv_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -5351,7 +5430,8 @@ var rules_sv_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -5417,7 +5497,8 @@ var rules_sv_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -5482,7 +5563,8 @@ var rules_sv_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -5556,7 +5638,8 @@ var rules_sv_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -5629,7 +5712,8 @@ var rules_sv_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -5692,7 +5776,8 @@ var rules_sv_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -5754,7 +5839,8 @@ var rules_sv_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -5815,7 +5901,8 @@ var rules_sv_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -5876,7 +5963,8 @@ var rules_sv_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -5937,7 +6025,8 @@ var rules_sv_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -5998,7 +6087,8 @@ var rules_sv_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -6060,7 +6150,8 @@ var rules_sv_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -6121,7 +6212,8 @@ var rules_sv_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -6202,7 +6294,8 @@ var rules_de_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -6271,7 +6364,8 @@ var rules_de_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -6341,7 +6435,8 @@ var rules_de_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -6428,7 +6523,8 @@ var rules_de_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -6497,7 +6593,8 @@ var rules_de_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -6565,7 +6662,8 @@ var rules_de_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -6633,7 +6731,8 @@ var rules_de_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -6700,7 +6799,8 @@ var rules_de_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -6765,7 +6865,8 @@ var rules_de_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -6829,7 +6930,8 @@ var rules_de_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -6895,7 +6997,8 @@ var rules_de_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -6962,7 +7065,8 @@ var rules_de_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -7027,7 +7131,8 @@ var rules_de_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -7091,7 +7196,8 @@ var rules_de_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -7156,7 +7262,8 @@ var rules_de_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -7220,7 +7327,8 @@ var rules_de_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -7283,7 +7391,8 @@ var rules_de_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -7348,7 +7457,8 @@ var rules_de_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -7414,7 +7524,8 @@ var rules_de_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -7479,7 +7590,8 @@ var rules_de_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -7546,7 +7658,8 @@ var rules_de_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -7612,7 +7725,8 @@ var rules_de_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -7678,7 +7792,8 @@ var rules_de_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -7743,7 +7858,8 @@ var rules_de_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -7808,7 +7924,8 @@ var rules_de_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -7875,7 +7992,8 @@ var rules_de_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -7939,7 +8057,8 @@ var rules_de_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -8002,7 +8121,8 @@ var rules_de_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -8067,7 +8187,8 @@ var rules_de_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -8133,7 +8254,8 @@ var rules_de_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -8197,7 +8319,8 @@ var rules_de_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -8262,7 +8385,8 @@ var rules_de_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -8327,7 +8451,8 @@ var rules_de_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -8391,7 +8516,8 @@ var rules_de_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -8457,7 +8583,8 @@ var rules_de_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -8522,7 +8649,8 @@ var rules_de_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -8596,7 +8724,8 @@ var rules_de_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -8669,7 +8798,8 @@ var rules_de_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -8732,7 +8862,8 @@ var rules_de_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -8794,7 +8925,8 @@ var rules_de_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -8855,7 +8987,8 @@ var rules_de_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -8916,7 +9049,8 @@ var rules_de_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -8977,7 +9111,8 @@ var rules_de_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -9038,7 +9173,8 @@ var rules_de_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -9100,7 +9236,8 @@ var rules_de_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -9161,7 +9298,8 @@ var rules_de_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -9242,7 +9380,8 @@ var rules_fr_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -9311,7 +9450,8 @@ var rules_fr_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -9381,7 +9521,8 @@ var rules_fr_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -9467,7 +9608,8 @@ var rules_fr_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -9535,7 +9677,8 @@ var rules_fr_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -9603,7 +9746,8 @@ var rules_fr_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -9671,7 +9815,8 @@ var rules_fr_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -9738,7 +9883,8 @@ var rules_fr_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -9803,7 +9949,8 @@ var rules_fr_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -9867,7 +10014,8 @@ var rules_fr_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -9933,7 +10081,8 @@ var rules_fr_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -10000,7 +10149,8 @@ var rules_fr_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -10064,7 +10214,8 @@ var rules_fr_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -10128,7 +10279,8 @@ var rules_fr_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -10193,7 +10345,8 @@ var rules_fr_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -10257,7 +10410,8 @@ var rules_fr_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -10320,7 +10474,8 @@ var rules_fr_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -10385,7 +10540,8 @@ var rules_fr_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -10451,7 +10607,8 @@ var rules_fr_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -10516,7 +10673,8 @@ var rules_fr_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -10583,7 +10741,8 @@ var rules_fr_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -10650,7 +10809,8 @@ var rules_fr_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -10716,7 +10876,8 @@ var rules_fr_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -10781,7 +10942,8 @@ var rules_fr_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -10846,7 +11008,8 @@ var rules_fr_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -10913,7 +11076,8 @@ var rules_fr_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -10977,7 +11141,8 @@ var rules_fr_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -11040,7 +11205,8 @@ var rules_fr_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -11105,7 +11271,8 @@ var rules_fr_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -11171,7 +11338,8 @@ var rules_fr_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -11236,7 +11404,8 @@ var rules_fr_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -11301,7 +11470,8 @@ var rules_fr_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -11366,7 +11536,8 @@ var rules_fr_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -11430,7 +11601,8 @@ var rules_fr_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -11497,7 +11669,8 @@ var rules_fr_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -11562,7 +11735,8 @@ var rules_fr_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -11636,7 +11810,8 @@ var rules_fr_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -11709,7 +11884,8 @@ var rules_fr_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -11772,7 +11948,8 @@ var rules_fr_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -11834,7 +12011,8 @@ var rules_fr_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -11895,7 +12073,8 @@ var rules_fr_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -11956,7 +12135,8 @@ var rules_fr_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -12017,7 +12197,8 @@ var rules_fr_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -12078,7 +12259,8 @@ var rules_fr_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -12140,7 +12322,8 @@ var rules_fr_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -12201,7 +12384,8 @@ var rules_fr_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -12282,7 +12466,8 @@ var rules_es_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -12351,7 +12536,8 @@ var rules_es_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -12420,7 +12606,8 @@ var rules_es_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -12507,7 +12694,8 @@ var rules_es_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -12576,7 +12764,8 @@ var rules_es_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -12644,7 +12833,8 @@ var rules_es_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -12712,7 +12902,8 @@ var rules_es_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -12779,7 +12970,8 @@ var rules_es_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -12844,7 +13036,8 @@ var rules_es_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -12908,7 +13101,8 @@ var rules_es_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -12974,7 +13168,8 @@ var rules_es_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -13041,7 +13236,8 @@ var rules_es_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -13106,7 +13302,8 @@ var rules_es_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -13170,7 +13367,8 @@ var rules_es_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -13235,7 +13433,8 @@ var rules_es_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -13299,7 +13498,8 @@ var rules_es_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -13362,7 +13562,8 @@ var rules_es_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -13427,7 +13628,8 @@ var rules_es_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -13493,7 +13695,8 @@ var rules_es_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -13558,7 +13761,8 @@ var rules_es_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -13625,7 +13829,8 @@ var rules_es_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -13692,7 +13897,8 @@ var rules_es_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -13758,7 +13964,8 @@ var rules_es_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -13823,7 +14030,8 @@ var rules_es_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -13888,7 +14096,8 @@ var rules_es_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -13955,7 +14164,8 @@ var rules_es_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -14019,7 +14229,8 @@ var rules_es_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -14082,7 +14293,8 @@ var rules_es_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -14147,7 +14359,8 @@ var rules_es_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -14213,7 +14426,8 @@ var rules_es_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -14277,7 +14491,8 @@ var rules_es_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -14342,7 +14557,8 @@ var rules_es_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -14407,7 +14623,8 @@ var rules_es_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -14471,7 +14688,8 @@ var rules_es_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -14537,7 +14755,8 @@ var rules_es_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -14602,7 +14821,8 @@ var rules_es_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -14676,7 +14896,8 @@ var rules_es_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -14749,7 +14970,8 @@ var rules_es_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -14812,7 +15034,8 @@ var rules_es_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -14874,7 +15097,8 @@ var rules_es_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -14935,7 +15159,8 @@ var rules_es_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -14996,7 +15221,8 @@ var rules_es_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -15057,7 +15283,8 @@ var rules_es_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -15118,7 +15345,8 @@ var rules_es_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -15180,7 +15408,8 @@ var rules_es_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -15241,7 +15470,8 @@ var rules_es_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -15322,7 +15552,8 @@ var rules_nl_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -15391,7 +15622,8 @@ var rules_nl_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -15461,7 +15693,8 @@ var rules_nl_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -15548,7 +15781,8 @@ var rules_nl_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -15617,7 +15851,8 @@ var rules_nl_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -15685,7 +15920,8 @@ var rules_nl_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -15753,7 +15989,8 @@ var rules_nl_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -15820,7 +16057,8 @@ var rules_nl_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -15885,7 +16123,8 @@ var rules_nl_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -15949,7 +16188,8 @@ var rules_nl_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -16015,7 +16255,8 @@ var rules_nl_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -16082,7 +16323,8 @@ var rules_nl_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -16147,7 +16389,8 @@ var rules_nl_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -16211,7 +16454,8 @@ var rules_nl_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -16276,7 +16520,8 @@ var rules_nl_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -16340,7 +16585,8 @@ var rules_nl_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -16403,7 +16649,8 @@ var rules_nl_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -16468,7 +16715,8 @@ var rules_nl_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -16534,7 +16782,8 @@ var rules_nl_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -16599,7 +16848,8 @@ var rules_nl_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -16666,7 +16916,8 @@ var rules_nl_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -16733,7 +16984,8 @@ var rules_nl_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -16799,7 +17051,8 @@ var rules_nl_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -16864,7 +17117,8 @@ var rules_nl_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -16929,7 +17183,8 @@ var rules_nl_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -16996,7 +17251,8 @@ var rules_nl_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -17060,7 +17316,8 @@ var rules_nl_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -17123,7 +17380,8 @@ var rules_nl_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -17188,7 +17446,8 @@ var rules_nl_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -17254,7 +17513,8 @@ var rules_nl_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -17318,7 +17578,8 @@ var rules_nl_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -17383,7 +17644,8 @@ var rules_nl_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -17448,7 +17710,8 @@ var rules_nl_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -17512,7 +17775,8 @@ var rules_nl_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -17578,7 +17842,8 @@ var rules_nl_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -17643,7 +17908,8 @@ var rules_nl_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -17717,7 +17983,8 @@ var rules_nl_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -17790,7 +18057,8 @@ var rules_nl_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -17853,7 +18121,8 @@ var rules_nl_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -17915,7 +18184,8 @@ var rules_nl_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -17976,7 +18246,8 @@ var rules_nl_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -18037,7 +18308,8 @@ var rules_nl_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -18098,7 +18370,8 @@ var rules_nl_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -18159,7 +18432,8 @@ var rules_nl_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -18221,7 +18495,8 @@ var rules_nl_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -18282,7 +18557,8 @@ var rules_nl_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -18363,7 +18639,8 @@ var rules_no_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -18432,7 +18709,8 @@ var rules_no_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -18502,7 +18780,8 @@ var rules_no_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -18589,7 +18868,8 @@ var rules_no_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -18658,7 +18938,8 @@ var rules_no_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -18726,7 +19007,8 @@ var rules_no_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -18794,7 +19076,8 @@ var rules_no_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -18861,7 +19144,8 @@ var rules_no_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -18926,7 +19210,8 @@ var rules_no_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -18990,7 +19275,8 @@ var rules_no_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -19056,7 +19342,8 @@ var rules_no_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -19123,7 +19410,8 @@ var rules_no_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -19188,7 +19476,8 @@ var rules_no_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -19252,7 +19541,8 @@ var rules_no_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -19317,7 +19607,8 @@ var rules_no_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -19381,7 +19672,8 @@ var rules_no_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -19444,7 +19736,8 @@ var rules_no_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -19509,7 +19802,8 @@ var rules_no_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -19575,7 +19869,8 @@ var rules_no_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -19640,7 +19935,8 @@ var rules_no_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -19707,7 +20003,8 @@ var rules_no_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -19774,7 +20071,8 @@ var rules_no_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -19840,7 +20138,8 @@ var rules_no_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -19905,7 +20204,8 @@ var rules_no_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -19970,7 +20270,8 @@ var rules_no_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -20037,7 +20338,8 @@ var rules_no_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -20101,7 +20403,8 @@ var rules_no_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -20164,7 +20467,8 @@ var rules_no_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -20229,7 +20533,8 @@ var rules_no_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -20295,7 +20600,8 @@ var rules_no_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -20359,7 +20665,8 @@ var rules_no_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -20424,7 +20731,8 @@ var rules_no_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -20489,7 +20797,8 @@ var rules_no_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -20553,7 +20862,8 @@ var rules_no_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -20619,7 +20929,8 @@ var rules_no_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -20684,7 +20995,8 @@ var rules_no_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -20758,7 +21070,8 @@ var rules_no_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -20831,7 +21144,8 @@ var rules_no_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -20894,7 +21208,8 @@ var rules_no_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -20956,7 +21271,8 @@ var rules_no_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -21017,7 +21333,8 @@ var rules_no_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -21078,7 +21395,8 @@ var rules_no_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -21139,7 +21457,8 @@ var rules_no_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -21200,7 +21519,8 @@ var rules_no_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -21262,7 +21582,8 @@ var rules_no_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -21323,7 +21644,8 @@ var rules_no_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -21404,7 +21726,8 @@ var rules_fi_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -21473,7 +21796,8 @@ var rules_fi_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -21543,7 +21867,8 @@ var rules_fi_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -21630,7 +21955,8 @@ var rules_fi_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -21699,7 +22025,8 @@ var rules_fi_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -21767,7 +22094,8 @@ var rules_fi_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -21835,7 +22163,8 @@ var rules_fi_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -21902,7 +22231,8 @@ var rules_fi_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -21967,7 +22297,8 @@ var rules_fi_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -22031,7 +22362,8 @@ var rules_fi_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -22097,7 +22429,8 @@ var rules_fi_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -22164,7 +22497,8 @@ var rules_fi_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -22229,7 +22563,8 @@ var rules_fi_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -22293,7 +22628,8 @@ var rules_fi_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -22358,7 +22694,8 @@ var rules_fi_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -22422,7 +22759,8 @@ var rules_fi_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -22485,7 +22823,8 @@ var rules_fi_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -22550,7 +22889,8 @@ var rules_fi_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -22616,7 +22956,8 @@ var rules_fi_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -22681,7 +23022,8 @@ var rules_fi_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -22748,7 +23090,8 @@ var rules_fi_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -22815,7 +23158,8 @@ var rules_fi_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -22881,7 +23225,8 @@ var rules_fi_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -22946,7 +23291,8 @@ var rules_fi_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -23011,7 +23357,8 @@ var rules_fi_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -23078,7 +23425,8 @@ var rules_fi_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -23142,7 +23490,8 @@ var rules_fi_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -23205,7 +23554,8 @@ var rules_fi_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -23270,7 +23620,8 @@ var rules_fi_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -23336,7 +23687,8 @@ var rules_fi_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -23400,7 +23752,8 @@ var rules_fi_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -23465,7 +23818,8 @@ var rules_fi_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -23530,7 +23884,8 @@ var rules_fi_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -23594,7 +23949,8 @@ var rules_fi_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -23660,7 +24016,8 @@ var rules_fi_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -23725,7 +24082,8 @@ var rules_fi_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -23799,7 +24157,8 @@ var rules_fi_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -23872,7 +24231,8 @@ var rules_fi_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -23935,7 +24295,8 @@ var rules_fi_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -23997,7 +24358,8 @@ var rules_fi_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -24058,7 +24420,8 @@ var rules_fi_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -24119,7 +24482,8 @@ var rules_fi_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -24180,7 +24544,8 @@ var rules_fi_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -24241,7 +24606,8 @@ var rules_fi_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -24303,7 +24669,8 @@ var rules_fi_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -24364,7 +24731,8 @@ var rules_fi_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -24445,7 +24813,8 @@ var rules_da_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -24514,7 +24883,8 @@ var rules_da_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -24584,7 +24954,8 @@ var rules_da_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -24671,7 +25042,8 @@ var rules_da_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -24740,7 +25112,8 @@ var rules_da_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -24808,7 +25181,8 @@ var rules_da_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -24876,7 +25250,8 @@ var rules_da_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -24943,7 +25318,8 @@ var rules_da_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -25008,7 +25384,8 @@ var rules_da_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -25072,7 +25449,8 @@ var rules_da_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -25138,7 +25516,8 @@ var rules_da_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -25205,7 +25584,8 @@ var rules_da_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -25270,7 +25650,8 @@ var rules_da_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -25334,7 +25715,8 @@ var rules_da_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -25399,7 +25781,8 @@ var rules_da_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -25463,7 +25846,8 @@ var rules_da_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -25526,7 +25910,8 @@ var rules_da_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -25591,7 +25976,8 @@ var rules_da_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -25657,7 +26043,8 @@ var rules_da_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -25722,7 +26109,8 @@ var rules_da_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -25789,7 +26177,8 @@ var rules_da_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -25856,7 +26245,8 @@ var rules_da_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -25922,7 +26312,8 @@ var rules_da_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -25987,7 +26378,8 @@ var rules_da_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -26052,7 +26444,8 @@ var rules_da_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -26119,7 +26512,8 @@ var rules_da_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -26183,7 +26577,8 @@ var rules_da_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -26246,7 +26641,8 @@ var rules_da_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -26311,7 +26707,8 @@ var rules_da_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -26377,7 +26774,8 @@ var rules_da_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -26441,7 +26839,8 @@ var rules_da_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -26506,7 +26905,8 @@ var rules_da_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -26571,7 +26971,8 @@ var rules_da_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -26635,7 +27036,8 @@ var rules_da_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -26701,7 +27103,8 @@ var rules_da_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -26766,7 +27169,8 @@ var rules_da_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -26840,7 +27244,8 @@ var rules_da_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -26913,7 +27318,8 @@ var rules_da_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -26976,7 +27382,8 @@ var rules_da_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -27038,7 +27445,8 @@ var rules_da_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -27099,7 +27507,8 @@ var rules_da_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -27160,7 +27569,8 @@ var rules_da_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -27221,7 +27631,8 @@ var rules_da_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -27282,7 +27693,8 @@ var rules_da_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -27344,7 +27756,8 @@ var rules_da_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -27405,7 +27818,8 @@ var rules_da_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -27486,7 +27900,8 @@ var rules_en_gb_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -27555,7 +27970,8 @@ var rules_en_gb_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -27625,7 +28041,8 @@ var rules_en_gb_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -27712,7 +28129,8 @@ var rules_en_gb_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -27781,7 +28199,8 @@ var rules_en_gb_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -27849,7 +28268,8 @@ var rules_en_gb_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -27917,7 +28337,8 @@ var rules_en_gb_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -27984,7 +28405,8 @@ var rules_en_gb_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -28049,7 +28471,8 @@ var rules_en_gb_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -28113,7 +28536,8 @@ var rules_en_gb_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -28179,7 +28603,8 @@ var rules_en_gb_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -28246,7 +28671,8 @@ var rules_en_gb_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -28311,7 +28737,8 @@ var rules_en_gb_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -28375,7 +28802,8 @@ var rules_en_gb_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -28440,7 +28868,8 @@ var rules_en_gb_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -28504,7 +28933,8 @@ var rules_en_gb_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -28567,7 +28997,8 @@ var rules_en_gb_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -28632,7 +29063,8 @@ var rules_en_gb_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -28698,7 +29130,8 @@ var rules_en_gb_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -28763,7 +29196,8 @@ var rules_en_gb_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -28830,7 +29264,8 @@ var rules_en_gb_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -28897,7 +29332,8 @@ var rules_en_gb_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -28963,7 +29399,8 @@ var rules_en_gb_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -29028,7 +29465,8 @@ var rules_en_gb_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -29093,7 +29531,8 @@ var rules_en_gb_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -29160,7 +29599,8 @@ var rules_en_gb_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -29224,7 +29664,8 @@ var rules_en_gb_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -29287,7 +29728,8 @@ var rules_en_gb_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -29352,7 +29794,8 @@ var rules_en_gb_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -29418,7 +29861,8 @@ var rules_en_gb_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -29482,7 +29926,8 @@ var rules_en_gb_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -29547,7 +29992,8 @@ var rules_en_gb_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -29612,7 +30058,8 @@ var rules_en_gb_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -29676,7 +30123,8 @@ var rules_en_gb_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -29742,7 +30190,8 @@ var rules_en_gb_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -29807,7 +30256,8 @@ var rules_en_gb_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -29874,7 +30324,8 @@ var rules_en_gb_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -29940,7 +30391,8 @@ var rules_en_gb_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -30003,7 +30455,8 @@ var rules_en_gb_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -30065,7 +30518,8 @@ var rules_en_gb_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -30126,7 +30580,8 @@ var rules_en_gb_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -30187,7 +30642,8 @@ var rules_en_gb_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -30248,7 +30704,8 @@ var rules_en_gb_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -30309,7 +30766,8 @@ var rules_en_gb_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -30371,7 +30829,8 @@ var rules_en_gb_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -30432,7 +30891,8 @@ var rules_en_gb_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -30513,7 +30973,8 @@ var rules_en_us_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -30582,7 +31043,8 @@ var rules_en_us_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -30652,7 +31114,8 @@ var rules_en_us_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -30739,7 +31202,8 @@ var rules_en_us_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -30808,7 +31272,8 @@ var rules_en_us_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -30876,7 +31341,8 @@ var rules_en_us_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -30944,7 +31410,8 @@ var rules_en_us_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -31011,7 +31478,8 @@ var rules_en_us_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -31076,7 +31544,8 @@ var rules_en_us_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -31140,7 +31609,8 @@ var rules_en_us_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -31206,7 +31676,8 @@ var rules_en_us_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -31273,7 +31744,8 @@ var rules_en_us_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -31338,7 +31810,8 @@ var rules_en_us_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -31402,7 +31875,8 @@ var rules_en_us_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -31467,7 +31941,8 @@ var rules_en_us_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -31531,7 +32006,8 @@ var rules_en_us_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -31594,7 +32070,8 @@ var rules_en_us_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -31659,7 +32136,8 @@ var rules_en_us_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -31725,7 +32203,8 @@ var rules_en_us_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -31790,7 +32269,8 @@ var rules_en_us_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -31857,7 +32337,8 @@ var rules_en_us_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -31924,7 +32405,8 @@ var rules_en_us_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -31990,7 +32472,8 @@ var rules_en_us_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -32055,7 +32538,8 @@ var rules_en_us_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -32120,7 +32604,8 @@ var rules_en_us_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -32187,7 +32672,8 @@ var rules_en_us_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -32251,7 +32737,8 @@ var rules_en_us_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -32314,7 +32801,8 @@ var rules_en_us_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -32379,7 +32867,8 @@ var rules_en_us_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -32445,7 +32934,8 @@ var rules_en_us_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -32509,7 +32999,8 @@ var rules_en_us_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -32574,7 +33065,8 @@ var rules_en_us_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -32639,7 +33131,8 @@ var rules_en_us_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -32703,7 +33196,8 @@ var rules_en_us_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -32769,7 +33263,8 @@ var rules_en_us_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -32834,7 +33329,8 @@ var rules_en_us_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -32901,7 +33397,8 @@ var rules_en_us_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -32967,7 +33464,8 @@ var rules_en_us_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -33030,7 +33528,8 @@ var rules_en_us_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -33092,7 +33591,8 @@ var rules_en_us_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -33153,7 +33653,8 @@ var rules_en_us_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -33214,7 +33715,8 @@ var rules_en_us_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -33275,7 +33777,8 @@ var rules_en_us_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -33336,7 +33839,8 @@ var rules_en_us_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -33398,7 +33902,8 @@ var rules_en_us_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -33459,7 +33964,8 @@ var rules_en_us_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -33540,7 +34046,8 @@ var rules_en_ca_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -33609,7 +34116,8 @@ var rules_en_ca_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -33679,7 +34187,8 @@ var rules_en_ca_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -33766,7 +34275,8 @@ var rules_en_ca_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -33835,7 +34345,8 @@ var rules_en_ca_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -33903,7 +34414,8 @@ var rules_en_ca_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -33971,7 +34483,8 @@ var rules_en_ca_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -34038,7 +34551,8 @@ var rules_en_ca_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -34103,7 +34617,8 @@ var rules_en_ca_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -34167,7 +34682,8 @@ var rules_en_ca_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -34233,7 +34749,8 @@ var rules_en_ca_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -34300,7 +34817,8 @@ var rules_en_ca_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -34365,7 +34883,8 @@ var rules_en_ca_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -34429,7 +34948,8 @@ var rules_en_ca_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -34494,7 +35014,8 @@ var rules_en_ca_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -34558,7 +35079,8 @@ var rules_en_ca_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -34621,7 +35143,8 @@ var rules_en_ca_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -34686,7 +35209,8 @@ var rules_en_ca_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -34752,7 +35276,8 @@ var rules_en_ca_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -34817,7 +35342,8 @@ var rules_en_ca_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -34884,7 +35410,8 @@ var rules_en_ca_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -34951,7 +35478,8 @@ var rules_en_ca_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -35017,7 +35545,8 @@ var rules_en_ca_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -35082,7 +35611,8 @@ var rules_en_ca_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -35147,7 +35677,8 @@ var rules_en_ca_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -35214,7 +35745,8 @@ var rules_en_ca_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -35278,7 +35810,8 @@ var rules_en_ca_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -35341,7 +35874,8 @@ var rules_en_ca_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -35406,7 +35940,8 @@ var rules_en_ca_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -35472,7 +36007,8 @@ var rules_en_ca_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -35536,7 +36072,8 @@ var rules_en_ca_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -35601,7 +36138,8 @@ var rules_en_ca_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -35666,7 +36204,8 @@ var rules_en_ca_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -35730,7 +36269,8 @@ var rules_en_ca_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -35796,7 +36336,8 @@ var rules_en_ca_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -35861,7 +36402,8 @@ var rules_en_ca_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -35928,7 +36470,8 @@ var rules_en_ca_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -35994,7 +36537,8 @@ var rules_en_ca_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -36057,7 +36601,8 @@ var rules_en_ca_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -36119,7 +36664,8 @@ var rules_en_ca_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -36180,7 +36726,8 @@ var rules_en_ca_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -36241,7 +36788,8 @@ var rules_en_ca_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -36302,7 +36850,8 @@ var rules_en_ca_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -36363,7 +36912,8 @@ var rules_en_ca_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -36425,7 +36975,8 @@ var rules_en_ca_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -36486,7 +37037,8 @@ var rules_en_ca_default = [
     legalContext: {
       appliesTo: [
         "WAD",
-        "EAA"
+        "EAA",
+        "ADA"
       ],
       sectors: [
         "public",
@@ -36739,6 +37291,29 @@ var frameworks_default = {
         "transport",
         "telecommunications"
       ]
+    },
+    ADA: {
+      id: "ADA-1990",
+      name: "Americans with Disabilities Act",
+      fullName: "Americans with Disabilities Act of 1990, as amended (42 U.S.C. ss 12101 et seq.)",
+      scope: "both",
+      eurLexUrl: "https://www.ada.gov/law-and-regs/ada/",
+      adoptionDate: "1990-07-26",
+      transpositionDeadline: "1992-01-26",
+      applicationDeadline: "2026-04-24",
+      wcagVersion: "2.1",
+      wcagLevel: "AA",
+      technicalStandard: "WCAG 2.1 Level AA (28 CFR Part 35 Final Rule, 2024-04-24)",
+      serviceScopes: [
+        "state-local-government",
+        "public-accommodations",
+        "commercial-facilities",
+        "e-commerce",
+        "banking",
+        "healthcare",
+        "education",
+        "transportation"
+      ]
     }
   }
 };
@@ -36845,6 +37420,21 @@ var statement_tools_default = {
       ],
       international: true,
       comment: "Internationellt verktyg som kan anpassas efter olika behov"
+    },
+    {
+      id: "itic-vpat",
+      name: "VPAT (Voluntary Product Accessibility Template)",
+      provider: "Information Technology Industry Council (ITI)",
+      type: "template",
+      url: "https://www.itic.org/policy/accessibility/vpat",
+      format: [
+        "docx",
+        "pdf"
+      ],
+      country: "US",
+      recommended: true,
+      legalBasis: "ADA, Section 508, EN 301 549",
+      comment: "Standard template for documenting accessibility conformance. Used for both ADA and Section 508 compliance documentation. Covers WCAG, Section 508, and EN 301 549."
     }
   ]
 };
@@ -37256,6 +37846,68 @@ var national_laws_default = {
         },
         inForce: true,
         effectiveDate: "2001-06-21"
+      },
+      {
+        id: "us-ada-title-ii",
+        law: "ADA Title II",
+        fullName: "Americans with Disabilities Act Title II - Nondiscrimination on the Basis of Disability in State and Local Government Services (28 CFR Part 35)",
+        euFramework: "ADA",
+        scope: "public",
+        lawUrl: "https://www.ada.gov/law-and-regs/title-ii-2024/",
+        enforcement: {
+          authority: "us-doj",
+          authorityName: "U.S. Department of Justice, Civil Rights Division",
+          responsibility: "Enforces web accessibility requirements for state and local government entities under ADA Title II. Final rule published 2024-04-24.",
+          website: "https://www.ada.gov"
+        },
+        sanctions: {
+          type: "Lawsuit / Civil Penalties / Consent Decree",
+          description: "DOJ can bring enforcement actions. Private individuals can file lawsuits. Civil penalties up to $75,000 for first violation, $150,000 for subsequent violations. Courts may order injunctive relief and damages.",
+          minAmount: 75e3,
+          maxAmount: 15e4,
+          currency: "USD",
+          example: "DOJ has entered consent decrees requiring full WCAG 2.1 AA compliance within 12-24 months, plus damages to affected individuals."
+        },
+        inForce: true,
+        effectiveDate: "2024-04-24",
+        note: "Final rule (28 CFR Part 35): web content and mobile apps of state/local governments must conform to WCAG 2.1 Level AA. Compliance deadlines: entities serving 50,000+ population by 2026-04-24; entities serving under 50,000 population by 2028-04-26.",
+        complianceDeadlines: {
+          largeEntity: {
+            populationThreshold: 5e4,
+            deadline: "2026-04-24",
+            description: "State/local governments serving populations of 50,000 or more"
+          },
+          smallEntity: {
+            populationThreshold: 49999,
+            deadline: "2028-04-26",
+            description: "State/local governments serving populations under 50,000"
+          }
+        }
+      },
+      {
+        id: "us-ada-title-iii",
+        law: "ADA Title III",
+        fullName: "Americans with Disabilities Act Title III - Nondiscrimination on the Basis of Disability in Public Accommodations and Commercial Facilities (28 CFR Part 36)",
+        euFramework: "ADA",
+        scope: "private",
+        lawUrl: "https://www.ada.gov/law-and-regs/title-iii-regulations/",
+        enforcement: {
+          authority: "us-doj",
+          authorityName: "U.S. Department of Justice, Civil Rights Division",
+          responsibility: "Enforces accessibility requirements for places of public accommodation (hotels, restaurants, retail, healthcare, etc.) including their websites and digital services.",
+          website: "https://www.ada.gov"
+        },
+        sanctions: {
+          type: "Lawsuit / Civil Penalties / Injunctive Relief",
+          description: "Private plaintiffs can file lawsuits (no damages in federal court, but injunctive relief). DOJ can seek civil penalties up to $75,000 for first violation, $150,000 for subsequent. State laws may allow additional damages.",
+          minAmount: 75e3,
+          maxAmount: 15e4,
+          currency: "USD",
+          example: "Thousands of ADA Title III web accessibility lawsuits filed annually. Notable settlements include Domino's Pizza, Winn-Dixie, and major retail chains."
+        },
+        inForce: true,
+        effectiveDate: "1992-01-26",
+        note: "No specific final rule for web accessibility under Title III yet, but DOJ guidance and case law (e.g., Robles v. Domino's Pizza, Gil v. Winn-Dixie) establish that websites of public accommodations must be accessible. WCAG 2.1 AA is the de facto standard cited in settlements and consent decrees. NPRM for web accessibility was published 2024; final rule pending."
       }
     ],
     CA: [
@@ -37281,6 +37933,56 @@ var national_laws_default = {
         },
         inForce: true,
         effectiveDate: "2005-06-13"
+      }
+    ],
+    AU: [
+      {
+        id: "au-dda",
+        law: "Disability Discrimination Act 1992",
+        fullName: "Disability Discrimination Act 1992 (Cth)",
+        euFramework: "DDA",
+        scope: "both",
+        lawUrl: "https://www.legislation.gov.au/Details/C2016C00763",
+        enforcement: {
+          authority: "au-ahrc",
+          authorityName: "Australian Human Rights Commission (AHRC)",
+          responsibility: "Investigates complaints of disability discrimination in digital services. Unresolved complaints may be referred to the Federal Court of Australia.",
+          website: "https://humanrights.gov.au"
+        },
+        sanctions: {
+          type: "Complaint / Federal Court Damages",
+          description: "No statutory fine cap. Complaints are lodged with the AHRC. If conciliation fails, parties may proceed to the Federal Court for monetary damages and remediation orders.",
+          minAmount: 0,
+          maxAmount: 0,
+          currency: "AUD"
+        },
+        inForce: true,
+        effectiveDate: "1993-03-01",
+        note: "WCAG 2.2 Level AA is the AHRC-recommended benchmark since April 2025. Applies to both public and private sector."
+      },
+      {
+        id: "au-dta",
+        law: "Digital Experience Policy \u2014 Digital Access Standard",
+        fullName: "Australian Government Digital Experience Policy \u2014 Digital Access Standard",
+        euFramework: "DDA",
+        scope: "public",
+        lawUrl: "https://www.digital.gov.au/policy/digital-experience/digital-access-standard",
+        enforcement: {
+          authority: "au-dta",
+          authorityName: "Digital Transformation Agency (DTA)",
+          responsibility: "Monitors compliance of Australian Federal Government digital services with WCAG 2.2 Level AA.",
+          website: "https://www.dta.gov.au"
+        },
+        sanctions: {
+          type: "Agency Compliance Reporting",
+          description: "No financial sanctions. Non-compliant federal agencies are reported through DTA performance monitoring.",
+          minAmount: 0,
+          maxAmount: 0,
+          currency: "AUD"
+        },
+        inForce: true,
+        effectiveDate: "2025-01-01",
+        note: "Applies to Australian Federal Government agencies only, not state/territory or private sector."
       }
     ],
     IT: [
@@ -37441,6 +38143,7 @@ var ENFORCEMENT_BODIES = {
   GB: "Equality and Human Rights Commission (EHRC)",
   US: "Department of Justice (Civil Rights Division)",
   CA: "Accessibility Commissioner (Canadian Human Rights Commission)",
+  AU: "Australian Human Rights Commission (AHRC)",
   EU: "European Commission (DG CNECT)"
 };
 var ENFORCEMENT_BODIES_DETAILED = {
@@ -37457,8 +38160,9 @@ var ENFORCEMENT_BODIES_DETAILED = {
   PT: { wad: "Administrative Modernization Agency (AMA)", eaa: "Directorate-General for Consumer Affairs (DGAC)" },
   PL: { wad: "Ministry of Digitization (Ministerstwo Cyfryzacji)", eaa: "Office of Competition and Consumer Protection (UOKiK)" },
   GB: { wad: "Equality and Human Rights Commission (EHRC)", eaa: "Equality and Human Rights Commission (EHRC)" },
-  US: { wad: "Department of Justice (Civil Rights Division)", eaa: "Department of Justice (Civil Rights Division)" },
+  US: { wad: "General Services Administration (GSA)", eaa: "Department of Justice (Civil Rights Division)" },
   CA: { wad: "Accessibility Commissioner (Canadian Human Rights Commission)", eaa: "Accessibility Commissioner (Canadian Human Rights Commission)" },
+  AU: { wad: "Australian Human Rights Commission (AHRC)", eaa: "Australian Human Rights Commission (AHRC)" },
   EU: { wad: "European Commission (DG CNECT)", eaa: "European Commission (DG JUST)" }
 };
 function getEnforcementBody(country, sector) {

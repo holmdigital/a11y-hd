@@ -404,6 +404,68 @@
                 },
                 "inForce": true,
                 "effectiveDate": "2001-06-21"
+            },
+            {
+                "id": "us-ada-title-ii",
+                "law": "ADA Title II",
+                "fullName": "Americans with Disabilities Act Title II - Nondiscrimination on the Basis of Disability in State and Local Government Services (28 CFR Part 35)",
+                "euFramework": "ADA",
+                "scope": "public",
+                "lawUrl": "https://www.ada.gov/law-and-regs/title-ii-2024/",
+                "enforcement": {
+                    "authority": "us-doj",
+                    "authorityName": "U.S. Department of Justice, Civil Rights Division",
+                    "responsibility": "Enforces web accessibility requirements for state and local government entities under ADA Title II. Final rule published 2024-04-24.",
+                    "website": "https://www.ada.gov"
+                },
+                "sanctions": {
+                    "type": "Lawsuit / Civil Penalties / Consent Decree",
+                    "description": "DOJ can bring enforcement actions. Private individuals can file lawsuits. Civil penalties up to $75,000 for first violation, $150,000 for subsequent violations. Courts may order injunctive relief and damages.",
+                    "minAmount": 75000,
+                    "maxAmount": 150000,
+                    "currency": "USD",
+                    "example": "DOJ has entered consent decrees requiring full WCAG 2.1 AA compliance within 12-24 months, plus damages to affected individuals."
+                },
+                "inForce": true,
+                "effectiveDate": "2024-04-24",
+                "note": "Final rule (28 CFR Part 35): web content and mobile apps of state/local governments must conform to WCAG 2.1 Level AA. Compliance deadlines: entities serving 50,000+ population by 2026-04-24; entities serving under 50,000 population by 2028-04-26.",
+                "complianceDeadlines": {
+                    "largeEntity": {
+                        "populationThreshold": 50000,
+                        "deadline": "2026-04-24",
+                        "description": "State/local governments serving populations of 50,000 or more"
+                    },
+                    "smallEntity": {
+                        "populationThreshold": 49999,
+                        "deadline": "2028-04-26",
+                        "description": "State/local governments serving populations under 50,000"
+                    }
+                }
+            },
+            {
+                "id": "us-ada-title-iii",
+                "law": "ADA Title III",
+                "fullName": "Americans with Disabilities Act Title III - Nondiscrimination on the Basis of Disability in Public Accommodations and Commercial Facilities (28 CFR Part 36)",
+                "euFramework": "ADA",
+                "scope": "private",
+                "lawUrl": "https://www.ada.gov/law-and-regs/title-iii-regulations/",
+                "enforcement": {
+                    "authority": "us-doj",
+                    "authorityName": "U.S. Department of Justice, Civil Rights Division",
+                    "responsibility": "Enforces accessibility requirements for places of public accommodation (hotels, restaurants, retail, healthcare, etc.) including their websites and digital services.",
+                    "website": "https://www.ada.gov"
+                },
+                "sanctions": {
+                    "type": "Lawsuit / Civil Penalties / Injunctive Relief",
+                    "description": "Private plaintiffs can file lawsuits (no damages in federal court, but injunctive relief). DOJ can seek civil penalties up to $75,000 for first violation, $150,000 for subsequent. State laws may allow additional damages.",
+                    "minAmount": 75000,
+                    "maxAmount": 150000,
+                    "currency": "USD",
+                    "example": "Thousands of ADA Title III web accessibility lawsuits filed annually. Notable settlements include Domino's Pizza, Winn-Dixie, and major retail chains."
+                },
+                "inForce": true,
+                "effectiveDate": "1992-01-26",
+                "note": "No specific final rule for web accessibility under Title III yet, but DOJ guidance and case law (e.g., Robles v. Domino's Pizza, Gil v. Winn-Dixie) establish that websites of public accommodations must be accessible. WCAG 2.1 AA is the de facto standard cited in settlements and consent decrees. NPRM for web accessibility was published 2024; final rule pending."
             }
         ],
         "CA": [

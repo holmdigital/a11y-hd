@@ -9,7 +9,7 @@ export type EAAImpact = 'none' | 'low' | 'medium' | 'high' | 'critical';
 export type TestComplexity = 'simple' | 'moderate' | 'complex';
 
 // EU Legal Framework types
-export type LegalFramework = 'WAD' | 'EAA' | 'DDA';
+export type LegalFramework = 'WAD' | 'EAA' | 'DDA' | 'ADA';
 export type Sector = 'public' | 'private' | 'both';
 export type Country = 'SE' | 'NO' | 'DK' | 'FI' | 'NL' | 'DE' | 'FR' | 'ES' | 'IE' | 'IT' | 'PT' | 'PL' | 'GB' | 'US' | 'CA' | 'AU' | 'EU';
 
@@ -269,4 +269,9 @@ export interface NationalLaw {
     inForce: boolean;
     effectiveDate: string;
     note?: string;
+    /** ADA-specific: compliance deadlines keyed by entity size (currently only populated for us-ada-title-ii). */
+    complianceDeadlines?: {
+        largeEntity?: { populationThreshold: number; deadline: string; description: string };
+        smallEntity?: { populationThreshold: number; deadline: string; description: string };
+    };
 }

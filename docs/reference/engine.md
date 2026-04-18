@@ -41,7 +41,7 @@ hd-a11y-scan <url> [options]
 | `--publish-date <date>` | Website publish date (YYYY-MM-DD). | `--publish-date 2024-02-06` |
 | `--api-key <key>` | Upload results to HolmDigital Cloud. | `--api-key abc-123` |
 | `--cloud-url <url>` | Cloud API URL (default: `https://cloud.holmdigital.se`). | `--cloud-url https://custom.api` |
-| `--country <code>` | Country code for enforcement body in statement. | `--country SE` |
+| `--country <code>` | Country code for enforcement body in statement. For `US`: combined with `--sector public` → ADA Title II + Section 508 (DOJ); combined with `--sector private` → ADA Title III (DOJ). | `--country SE` |
 | `--format <type>` | Output format for statement (`html`, `md`). Default: `html`. | `--format md` |
 | `--sector <type>` | Sector type for enforcement body and law selection (`public` or `private`). Default: `public`. | `--sector private` |
 | `--light` | Fast score-only mode — skips HTML validation and detailed legal mapping. | `--light` |
