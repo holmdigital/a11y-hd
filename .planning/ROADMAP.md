@@ -122,6 +122,32 @@ Plans:
 Plans:
 - [ ] 21-01-PLAN.md — Close 7 auto-sync and coverage gaps across standards, engine, and component test files + full regression
 
+### DRAFT: Engine Redesign — Detektion + Scoring + Kommunikation (ej planlagd)
+
+**Draft:** `.planning/milestones/v2.0-scoring-redesign-DRAFT.md`
+**Research:** `.planning/research/tool-comparison-gov-sites.md`, `test-methodology.md`, `tool-comparison-lptt-se.md`
+
+**Bakgrund:** Jämförande research (10 myndighets-sajter × 4 verktyg) visar att HolmDigital hittar 5 unika problem ingen annan ser, men ger lägre score pga strängare modell + renderings-timing-gap. 8/10 Webperf 5.00-sajter har kontrastproblem vi missar. Paradoxen: en grundligare scanner ser sämre ut i siffror.
+
+**Prioritetsordning: Fixa → Förbättra → Kommunicera**
+
+**P0 — Fixa detektion:**
+- Fas 0: Dual-pass axe-scanning (pre + post networkIdle) — fångar kontrast i cookie-banners
+- Fas 1: Saknade violations (aria-required-children, nested-interactive, button-name)
+- Fas 2: Multi-viewport scanning (desktop + mobil)
+
+**P1 — Förbättra scoring:**
+- Fas 3: Violation dedup per rule-ID
+- Fas 4: Trelagersmodell (complianceScore + riskIndicator + testCoverage) + html-validate i score
+
+**P2 — Kommunicera styrka:**
+- Fas 5: WCAG Coverage Mapping
+- Fas 6: CLI & Report Output med förklaring
+- Fas 7: Dokumentation & Artikel
+- Fas 8: Test & Regression
+
+---
+
 ## Progress
 
 | Phase | Milestone | Plans Complete | Status | Completed |
