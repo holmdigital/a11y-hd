@@ -195,7 +195,8 @@ jobs:
         run: npx wait-on http://localhost:3000
 
       - name: Run Scan
-        run: npx hd-a11y-scan http://localhost:3000 --ci --lang en --junit report.xml --pdf report.pdf
+        run: npx hd-a11y-scan http://localhost:3000 --ci --lang en --sector public --junit report.xml --pdf report.pdf
+        # Use --sector private for e-commerce, fintech, and other private sector sites (applies EAA instead of WAD)
 
       - name: Upload Artifacts
         if: always()

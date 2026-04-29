@@ -24,7 +24,7 @@ const LOCALE_TO_INTL: Record<string, string> = {
     'en-ca': 'en-CA',
 };
 
-export function generateReportHTML(result: ScanResult): string {
+export function generateReportHTML(result: ScanResult, sector: 'public' | 'private' = 'public'): string {
     const criticalCount = result.stats.critical;
     const highCount = result.stats.high;
     const htmlErrorsCount = result.htmlValidation?.errors?.length ?? 0;
@@ -164,7 +164,7 @@ export function generateReportHTML(result: ScanResult): string {
             }
             .legal-grid {
                 display: grid;
-                grid-template-columns: repeat(3, 1fr);
+                grid-template-columns: repeat(var(--legal-cols, 1), 1fr);
                 gap: 1rem;
             }
             .legal-stat {
@@ -249,11 +249,13 @@ export function generateReportHTML(result: ScanResult): string {
         ${result.legalSummary ? `
         <div class="legal-summary">
             <div class="legal-summary-title">🇪🇺 EU Legal Framework Impact</div>
-            <div class="legal-grid">
+            <div class="legal-grid" style="--legal-cols: ${sector === 'public' ? 1 : 2}">
+                ${sector === 'public' ? `
                 <div class="legal-stat">
                     <div class="legal-stat-value" style="color: #1d4ed8;">${result.legalSummary.wadApplicable}</div>
                     <div class="legal-stat-label">WAD (Public Sector) Violations</div>
                 </div>
+                ` : `
                 <div class="legal-stat">
                     <div class="legal-stat-value" style="color: #7c3aed;">${result.legalSummary.eaaApplicable}</div>
                     <div class="legal-stat-label">EAA (Private Sector) Violations</div>
@@ -262,6 +264,7 @@ export function generateReportHTML(result: ScanResult): string {
                     <div class="legal-stat-value" style="color: #dc2626;">${result.legalSummary.eaaDeadlineViolations}</div>
                     <div class="legal-stat-label">EAA 2025 Deadline Issues</div>
                 </div>
+                `}
             </div>
         </div>
         ` : ''}
@@ -281,8 +284,8 @@ export function generateReportHTML(result: ScanResult): string {
                     <div class="violation-title">${report.ruleId}</div>
                     <div>
                         <span class="badge ${riskClass}">${report.holmdigitalInsight.diggRisk}</span>
-                        ${report.legalContext?.appliesTo?.includes('WAD') ? '<span class="badge badge-wad">WAD</span>' : ''}
-                        ${report.legalContext?.appliesTo?.includes('EAA') ? '<span class="badge badge-eaa">EAA</span>' : ''}
+                        ${sector === 'public' && report.legalContext?.appliesTo?.includes('WAD') ? '<span class="badge badge-wad">WAD</span>' : ''}
+                        ${sector === 'private' && report.legalContext?.appliesTo?.includes('EAA') ? '<span class="badge badge-eaa">EAA</span>' : ''}
                     </div>
                 </div>
                 <div class="violation-meta">

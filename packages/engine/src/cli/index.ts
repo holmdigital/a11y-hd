@@ -171,7 +171,7 @@ program
             // PDF Generation
             if (options.pdf) {
                 if (spinner) spinner.start(t('cli.generating_pdf'));
-                const html = generateReportHTML(result);
+                const html = generateReportHTML(result, options.sector as 'public' | 'private');
                 await generatePDF(html, options.pdf);
                 if (spinner) spinner.succeed(t('cli.pdf_saved', { path: options.pdf }));
             }
