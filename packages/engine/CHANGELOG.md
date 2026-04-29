@@ -1,5 +1,17 @@
 # @holmdigital/engine
 
+## 2.5.1
+
+### Patch Changes
+
+- Fix: PDF-rapport och violation-badges filtreras nu korrekt baserat på `--sector`.
+
+  Tidigare visades alltid både WAD och EAA oavsett vald sektor. Nu gäller:
+  - `--sector public` (default): visar enbart WAD-violations och WAD-badges
+  - `--sector private`: visar enbart EAA-violations, EAA deadline-stats och EAA-badges
+
+  GitHub Actions-exemplet i README uppdaterat med `--sector` och förklarande kommentar.
+
 ## 2.5.0
 
 ### Minor Changes
