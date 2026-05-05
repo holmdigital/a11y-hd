@@ -291,9 +291,9 @@ describe('National Laws — AU', () => {
 });
 
 describe('National Laws — US (ADA)', () => {
-    it('should return 3 laws for US', () => {
+    it('should return 4 laws for US', () => {
         const usLaws = getNationalLaws('US');
-        expect(usLaws).toHaveLength(3);
+        expect(usLaws).toHaveLength(4);
     });
 
     it('should return WAD law (Section 508) for US', () => {
@@ -326,8 +326,9 @@ describe('National Laws — US (ADA)', () => {
         expect(titleII?.complianceDeadlines?.smallEntity?.deadline).toBe('2027-04-24');
     });
 
-    it('should have inForce true for all US laws', () => {
-        for (const law of getNationalLaws('US')) {
+    it('should have inForce true for enacted US laws', () => {
+        const enacted = getNationalLaws('US').filter(l => l.id !== 'us-hhs-section-504');
+        for (const law of enacted) {
             expect(law.inForce).toBe(true);
         }
     });
@@ -344,5 +345,29 @@ describe('National Laws — US (ADA)', () => {
         // Constant kept as DOJ per Juno's ruling (DOJ is the recognized US accessibility authority).
         // For per-law enforcement consumers should use getNationalLaws('US')[*].enforcement.
         expect(ENFORCEMENT_BODIES.US).toBe('Department of Justice (Civil Rights Division)');
+    });
+});
+
+describe('National Laws — US HHS Section 504', () => {
+    it('should expose us-hhs-section-504 in US laws', () => {
+        const law = getNationalLaws('US').find(l => l.id === 'us-hhs-section-504');
+        expect(law).toBeDefined();
+        expect(law?.euFramework).toBe('REHAB');
+        expect(law?.scope).toBe('private');
+        expect(law?.inForce).toBe(false);
+        expect(law?.effectiveDate).toBe('2026-05-11');
+    });
+
+    it('should have tiered compliance deadlines for HHS Section 504', () => {
+        const law = getNationalLaws('US').find(l => l.id === 'us-hhs-section-504');
+        expect(law?.complianceDeadlines?.largeEntity?.deadline).toBe('2026-05-11');
+        expect(law?.complianceDeadlines?.largeEntity?.employeeThreshold).toBe(15);
+        expect(law?.complianceDeadlines?.smallEntity?.deadline).toBe('2027-05-10');
+    });
+
+    it('should have HHS OCR as enforcement authority', () => {
+        const law = getNationalLaws('US').find(l => l.id === 'us-hhs-section-504');
+        expect(law?.enforcement.authority).toBe('us-hhs-ocr');
+        expect(law?.enforcement.authorityName).toBe('HHS Office for Civil Rights (OCR)');
     });
 });

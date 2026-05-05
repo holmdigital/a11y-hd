@@ -466,6 +466,43 @@
                 "inForce": true,
                 "effectiveDate": "1992-01-26",
                 "note": "No final DOJ rule for web accessibility under Title III as of 2026-04. DOJ enforcement and private litigation under Title III frequently cite WCAG 2.0/2.1 Level AA as the technical reference in settlements and consent decrees (e.g. Robles v. Domino's Pizza, Gil v. Winn-Dixie), but no single standard is formally mandated by regulation — practice varies between circuits. Legal exposure is primarily through private lawsuits for injunctive relief (42 U.S.C. § 12188). NPRM for web accessibility was published 2024; final rule pending."
+            },
+            {
+                "id": "us-hhs-section-504",
+                "law": "Section 504 (HHS Final Rule)",
+                "fullName": "Section 504 of the Rehabilitation Act of 1973 — Nondiscrimination on the Basis of Disability in Programs or Activities Receiving Federal Financial Assistance (HHS Digital Accessibility Final Rule, 45 C.F.R. Part 84, 89 FR 40066)",
+                "euFramework": "REHAB",
+                "scope": "private",
+                "lawUrl": "https://www.federalregister.gov/documents/2024/05/09/2024-09237/nondiscrimination-on-the-basis-of-disability-in-programs-or-activities-receiving-federal-financial",
+                "enforcement": {
+                    "authority": "us-hhs-ocr",
+                    "authorityName": "HHS Office for Civil Rights (OCR)",
+                    "responsibility": "Enforces Section 504 obligations for recipients of HHS federal financial assistance. Investigates complaints, conducts compliance reviews, and may recommend suspension or termination of federal funding. WCAG 2.1 AA is the technical benchmark applied in OCR enforcement actions from the compliance deadline (45 C.F.R. § 84.85).",
+                    "website": "https://www.hhs.gov/ocr/index.html"
+                },
+                "sanctions": {
+                    "type": "Funding Suspension / Termination / Private Lawsuit",
+                    "description": "HHS OCR may suspend or terminate federal financial assistance for non-compliant recipients. Section 504 also provides a private right of action — individuals with disabilities may file lawsuits for injunctive relief and compensatory damages. No fixed statutory cap on damages; amounts vary by circuit and case. OCR may also initiate compliance investigations and require remediation plans.",
+                    "minAmount": 0,
+                    "maxAmount": 0,
+                    "currency": "USD",
+                    "example": "Loss of Medicare/Medicaid funding is the primary financial risk for healthcare organizations. Private Section 504 lawsuits have resulted in settlements and injunctions requiring full WCAG compliance with monitoring periods."
+                },
+                "inForce": false,
+                "effectiveDate": "2026-05-11",
+                "note": "Applies to private organizations — including hospitals, physician practices, federally qualified health centers, long-term care facilities, health plans, and research institutions — that receive federal financial assistance from the U.S. Department of Health and Human Services (HHS), directly or indirectly. HHS administers over 100 programs, making the scope extensive. Medicare Part B reimbursements are considered federal financial assistance triggering Section 504 obligations. Five content exemptions exist: archived content, pre-existing conventional documents, individualized password-protected documents, pre-existing social media posts, and third-party content not controlled by the recipient. Does NOT cover federal agencies (see us-508) or state/local governments (see us-ada-title-ii). Rule published 89 FR 40066 (May 9, 2024); general Section 504 obligations effective July 8, 2024; WCAG technical standards enforcement begins at compliance deadlines.",
+                "complianceDeadlines": {
+                    "largeEntity": {
+                        "employeeThreshold": 15,
+                        "deadline": "2026-05-11",
+                        "description": "Recipients of HHS federal financial assistance with 15 or more employees must conform web content and mobile apps to WCAG 2.1 Level A and AA (45 C.F.R. § 84.85)."
+                    },
+                    "smallEntity": {
+                        "employeeThreshold": 14,
+                        "deadline": "2027-05-10",
+                        "description": "Recipients of HHS federal financial assistance with fewer than 15 employees must conform web content and mobile apps to WCAG 2.1 Level A and AA (45 C.F.R. § 84.85)."
+                    }
+                }
             }
         ],
         "CA": [
