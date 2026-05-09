@@ -156,6 +156,7 @@ export const Combobox: React.FC<ComboboxProps> = ({
                 break;
             case 'Escape':
                 e.preventDefault();
+                e.stopPropagation();
                 setIsOpen(false);
                 setFocusedIndex(-1);
                 // Reset to valid state
@@ -164,6 +165,30 @@ export const Combobox: React.FC<ComboboxProps> = ({
                     if (selectedOption) setInputValue(selectedOption.label);
                 } else {
                     setInputValue('');
+                }
+                break;
+            case 'Home':
+                if (isOpen) {
+                    e.preventDefault();
+                    setFocusedIndex(0);
+                }
+                break;
+            case 'End':
+                if (isOpen) {
+                    e.preventDefault();
+                    setFocusedIndex(filteredOptions.length - 1);
+                }
+                break;
+            case 'PageDown':
+                if (isOpen) {
+                    e.preventDefault();
+                    setFocusedIndex(prev => Math.min(prev + 10, filteredOptions.length - 1));
+                }
+                break;
+            case 'PageUp':
+                if (isOpen) {
+                    e.preventDefault();
+                    setFocusedIndex(prev => Math.max(prev - 10, 0));
                 }
                 break;
             case 'Tab':
