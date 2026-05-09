@@ -1,0 +1,149 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "https://holmdigital.dev/schema/national-laws.json",
+    "title": "National Accessibility Laws Database",
+    "description": "Schema for packages/standards/data/legal/national-laws.json. Validates structural integrity of country → laws[] mappings.",
+    "type": "object",
+    "required": ["laws"],
+    "additionalProperties": false,
+    "properties": {
+        "laws": {
+            "type": "object",
+            "description": "Country code (ISO 3166-1 alpha-2) → array of national laws",
+            "patternProperties": {
+                "^[A-Z]{2}$": {
+                    "type": "array",
+                    "items": { "$ref": "#/definitions/NationalLaw" }
+                }
+            },
+            "additionalProperties": false
+        }
+    },
+    "definitions": {
+        "NationalLaw": {
+            "type": "object",
+            "required": [
+                "id",
+                "law",
+                "fullName",
+                "euFramework",
+                "scope",
+                "enforcement",
+                "sanctions",
+                "inForce",
+                "effectiveDate"
+            ],
+            "additionalProperties": false,
+            "properties": {
+                "id": { "type": "string", "pattern": "^[a-z][a-z0-9-]*$" },
+                "law": { "type": "string", "minLength": 1 },
+                "fullName": { "type": "string", "minLength": 1 },
+                "euFramework": { "enum": ["WAD", "EAA", "DDA", "ADA", "REHAB"] },
+                "scope": { "enum": ["public", "private", "both"] },
+                "lawUrl": { "type": "string", "pattern": "^https?://" },
+                "enforcement": { "$ref": "#/definitions/Enforcement" },
+                "sectorAuthorities": {
+                    "type": "array",
+                    "items": { "$ref": "#/definitions/SectorAuthority" }
+                },
+                "sanctions": { "$ref": "#/definitions/Sanction" },
+                "inForce": { "type": "boolean" },
+                "effectiveDate": { "type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}$" },
+                "note": { "type": "string" },
+                "complianceDeadlines": { "$ref": "#/definitions/ComplianceDeadlines" },
+                "exemptions": { "$ref": "#/definitions/Exemptions" }
+            }
+        },
+        "Enforcement": {
+            "type": "object",
+            "required": ["authority", "authorityName", "responsibility", "website"],
+            "additionalProperties": false,
+            "properties": {
+                "authority": { "type": "string" },
+                "authorityName": { "type": "string" },
+                "responsibility": { "type": "string" },
+                "website": { "type": "string", "pattern": "^https?://" }
+            }
+        },
+        "SectorAuthority": {
+            "type": "object",
+            "required": ["authority", "responsibility"],
+            "additionalProperties": false,
+            "properties": {
+                "authority": { "type": "string" },
+                "responsibility": { "type": "string" }
+            }
+        },
+        "Sanction": {
+            "type": "object",
+            "required": ["type", "minAmount", "maxAmount", "currency"],
+            "additionalProperties": false,
+            "properties": {
+                "type": { "type": "string" },
+                "description": { "type": "string" },
+                "minAmount": { "type": "number", "minimum": 0 },
+                "maxAmount": { "type": "number", "minimum": 0 },
+                "currency": { "type": "string", "pattern": "^[A-Z]{3}$" },
+                "example": { "type": "string" }
+            }
+        },
+        "ComplianceDeadlines": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "largeEntity": { "$ref": "#/definitions/ComplianceDeadlineEntry" },
+                "smallEntity": { "$ref": "#/definitions/ComplianceDeadlineEntry" }
+            }
+        },
+        "ComplianceDeadlineEntry": {
+            "oneOf": [
+                {
+                    "type": "object",
+                    "required": ["populationThreshold", "deadline", "description"],
+                    "additionalProperties": false,
+                    "properties": {
+                        "populationThreshold": { "type": "integer", "minimum": 0 },
+                        "deadline": { "type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}$" },
+                        "description": { "type": "string" }
+                    }
+                },
+                {
+                    "type": "object",
+                    "required": ["employeeThreshold", "deadline", "description"],
+                    "additionalProperties": false,
+                    "properties": {
+                        "employeeThreshold": { "type": "integer", "minimum": 0 },
+                        "deadline": { "type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}$" },
+                        "description": { "type": "string" }
+                    }
+                }
+            ]
+        },
+        "Exemptions": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "microbusiness": { "$ref": "#/definitions/MicrobusinessExemption" }
+            }
+        },
+        "MicrobusinessExemption": {
+            "type": "object",
+            "required": [
+                "employeeThreshold",
+                "revenueThreshold",
+                "revenueCurrency",
+                "appliesTo",
+                "description"
+            ],
+            "additionalProperties": false,
+            "properties": {
+                "employeeThreshold": { "type": "integer", "minimum": 0 },
+                "revenueThreshold": { "type": "number", "minimum": 0 },
+                "revenueCurrency": { "type": "string", "pattern": "^[A-Z]{3}$" },
+                "appliesTo": { "enum": ["services", "products", "both"] },
+                "description": { "type": "string" },
+                "legalBasis": { "type": "string" }
+            }
+        }
+    }
+}

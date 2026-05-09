@@ -1,5 +1,8 @@
 
 import { describe, it, expect } from 'vitest';
+import { readFileSync } from 'fs';
+import { join } from 'path';
+import Ajv from 'ajv';
 import {
     getEN301549Mapping,
     getDOSLagenReference,
@@ -320,17 +323,38 @@ describe('National Laws — US (ADA)', () => {
 
     it('should have compliance deadlines on Title II per 28 CFR § 35.200(b)', () => {
         const titleII = getNationalLaws('US').find(l => l.id === 'us-ada-title-ii');
-        expect(titleII?.complianceDeadlines?.largeEntity?.deadline).toBe('2026-04-24');
-        expect(titleII?.complianceDeadlines?.largeEntity?.populationThreshold).toBe(50000);
+        const large = titleII?.complianceDeadlines?.largeEntity;
+        expect(large?.deadline).toBe('2026-04-24');
+        // Narrow on the discriminant before reading populationThreshold
+        expect(large && 'populationThreshold' in large ? large.populationThreshold : undefined).toBe(50000);
         // Small entity deadline is three years from final rule publication (2024-04-24), not four.
         expect(titleII?.complianceDeadlines?.smallEntity?.deadline).toBe('2027-04-24');
     });
 
-    it('should have inForce true for enacted US laws', () => {
-        const enacted = getNationalLaws('US').filter(l => l.id !== 'us-hhs-section-504');
-        for (const law of enacted) {
-            expect(law.inForce).toBe(true);
+    it('should have inForce match effectiveDate <= today for all US laws', () => {
+        const today = new Date();
+        for (const law of getNationalLaws('US')) {
+            const isPastEffective = new Date(law.effectiveDate) <= today;
+            expect(law.inForce).toBe(isPastEffective);
         }
+    });
+
+    it('should have inForce match effectiveDate <= today for ALL national laws', () => {
+        // Drift guard: every national law's `inForce` must agree with its `effectiveDate`.
+        // Catches the failure mode where an entry was added with a future effectiveDate
+        // and inForce: false, but nobody flips inForce when the date passes.
+        const today = new Date();
+        const COUNTRIES: Country[] = ['SE','NO','DK','FI','NL','DE','FR','ES','IE','IT','PT','PL','GB','US','CA','AU'];
+        const drift: string[] = [];
+        for (const country of COUNTRIES) {
+            for (const law of getNationalLaws(country)) {
+                const isPastEffective = new Date(law.effectiveDate) <= today;
+                if (law.inForce !== isPastEffective) {
+                    drift.push(`${country}/${law.id}: inForce=${law.inForce} but effectiveDate=${law.effectiveDate} (today=${today.toISOString().slice(0,10)})`);
+                }
+            }
+        }
+        expect(drift).toEqual([]);
     });
 
     it('should resolve sector-specific enforcement for US', () => {
@@ -354,20 +378,108 @@ describe('National Laws — US HHS Section 504', () => {
         expect(law).toBeDefined();
         expect(law?.euFramework).toBe('REHAB');
         expect(law?.scope).toBe('private');
-        expect(law?.inForce).toBe(false);
-        expect(law?.effectiveDate).toBe('2026-05-11');
+        expect(law?.inForce).toBe(true);
+        expect(law?.effectiveDate).toBe('2024-07-08');
     });
 
     it('should have tiered compliance deadlines for HHS Section 504', () => {
         const law = getNationalLaws('US').find(l => l.id === 'us-hhs-section-504');
-        expect(law?.complianceDeadlines?.largeEntity?.deadline).toBe('2026-05-11');
-        expect(law?.complianceDeadlines?.largeEntity?.employeeThreshold).toBe(15);
-        expect(law?.complianceDeadlines?.smallEntity?.deadline).toBe('2027-05-10');
+        const large = law?.complianceDeadlines?.largeEntity;
+        const small = law?.complianceDeadlines?.smallEntity;
+        expect(large?.deadline).toBe('2026-05-11');
+        expect(small?.deadline).toBe('2027-05-10');
+        // Narrow on the discriminant before reading employeeThreshold
+        expect(large && 'employeeThreshold' in large ? large.employeeThreshold : undefined).toBe(15);
+        expect(small && 'employeeThreshold' in small ? small.employeeThreshold : undefined).toBe(14);
     });
 
     it('should have HHS OCR as enforcement authority', () => {
         const law = getNationalLaws('US').find(l => l.id === 'us-hhs-section-504');
         expect(law?.enforcement.authority).toBe('us-hhs-ocr');
         expect(law?.enforcement.authorityName).toBe('HHS Office for Civil Rights (OCR)');
+    });
+
+    it('should resolve us-hhs-section-504 via getNationalLawByFramework(\'REHAB\', \'US\')', () => {
+        const law = getNationalLawByFramework('REHAB', 'US');
+        expect(law).not.toBeNull();
+        expect(law?.id).toBe('us-hhs-section-504');
+    });
+
+    it('should not include HHS Section 504 when filtering ADA private-sector laws', () => {
+        // Regression guard: us-ada-title-iii and us-hhs-section-504 both have scope='private',
+        // but only Title III carries euFramework='ADA'. Make sure framework filtering keeps them apart.
+        const adaPrivate = getNationalLaws('US').filter(l => l.euFramework === 'ADA' && l.scope === 'private');
+        expect(adaPrivate).toHaveLength(1);
+        expect(adaPrivate[0].id).toBe('us-ada-title-iii');
+    });
+
+    it('should resolve REHAB framework metadata via getLegalFramework', () => {
+        const framework = getLegalFramework('REHAB');
+        expect(framework).not.toBeNull();
+        expect(framework?.name).toBe('Rehabilitation Act of 1973 (Section 504)');
+        expect(framework?.wcagLevel).toBe('AA');
+    });
+
+    it('should return WCAG 2.1 A/AA convergence rules for REHAB framework', () => {
+        // Section 504 (HHS) requires WCAG 2.1 Level A and AA — getRulesByFramework('REHAB')
+        // should mirror ADA's coverage minus any AAA rules (none in current dataset).
+        const rehabRules = getRulesByFramework('REHAB');
+        expect(rehabRules.length).toBeGreaterThan(0);
+        for (const rule of rehabRules) {
+            expect(['A', 'AA']).toContain(rule.wcagLevel);
+        }
+    });
+
+    it('should resolve DDA framework metadata via getLegalFramework', () => {
+        // Companion guard for the same union/data symmetry as REHAB
+        const framework = getLegalFramework('DDA');
+        expect(framework).not.toBeNull();
+        expect(framework?.wcagLevel).toBe('AA');
+    });
+});
+
+describe('National Laws — EAA microbusiness exemption (Article 4(5))', () => {
+    const EAA_PRIVATE_COUNTRIES: Country[] = ['SE','FI','DE','NL','IT','PT','PL'];
+
+    it('should expose microbusiness exemption on every EAA private-sector law', () => {
+        const missing: string[] = [];
+        for (const country of EAA_PRIVATE_COUNTRIES) {
+            const law = getNationalLaws(country).find(l => l.euFramework === 'EAA' && l.scope === 'private');
+            if (!law?.exemptions?.microbusiness) {
+                missing.push(`${country}/${law?.id ?? '<missing>'}`);
+            }
+        }
+        expect(missing).toEqual([]);
+    });
+
+    it('should encode the EAA-mandated thresholds (10 employees / 2M EUR)', () => {
+        for (const country of EAA_PRIVATE_COUNTRIES) {
+            const law = getNationalLaws(country).find(l => l.euFramework === 'EAA' && l.scope === 'private');
+            const ex = law?.exemptions?.microbusiness;
+            expect(ex?.employeeThreshold).toBe(10);
+            expect(ex?.revenueThreshold).toBe(2_000_000);
+            expect(ex?.revenueCurrency).toBe('EUR');
+            expect(ex?.appliesTo).toBe('services');
+        }
+    });
+});
+
+describe('National Laws — schema validation', () => {
+    it('should validate national-laws.json against national-laws-schema.json', () => {
+        const dataPath = join(__dirname, '..', 'data', 'legal', 'national-laws.json');
+        const schemaPath = join(__dirname, '..', 'schema', 'national-laws-schema.json');
+        const data = JSON.parse(readFileSync(dataPath, 'utf-8'));
+        const schema = JSON.parse(readFileSync(schemaPath, 'utf-8'));
+
+        const ajv = new Ajv({ allErrors: true, strict: false });
+        const validate = ajv.compile(schema);
+        const valid = validate(data);
+
+        if (!valid) {
+            // Surface every violation so authors see all issues at once
+            const summary = (validate.errors ?? []).map(e => `${e.instancePath || '<root>'} ${e.message}`).join('\n');
+            throw new Error(`national-laws.json failed schema validation:\n${summary}`);
+        }
+        expect(valid).toBe(true);
     });
 });

@@ -62,6 +62,42 @@
                 "education",
                 "transportation"
             ]
+        },
+        "REHAB": {
+            "id": "Rehab-1973",
+            "name": "Rehabilitation Act of 1973 (Section 504)",
+            "fullName": "Section 504 of the Rehabilitation Act of 1973 (29 U.S.C. § 794)",
+            "scope": "both",
+            "eurLexUrl": "https://www.hhs.gov/civil-rights/for-individuals/disability/section-504-rehabilitation-act/index.html",
+            "adoptionDate": "1973-09-26",
+            "transpositionDeadline": "1977-06-03",
+            "wcagVersion": "2.1",
+            "wcagLevel": "AA",
+            "technicalStandard": "WCAG 2.1 Level A and AA (45 C.F.R. § 84.85, HHS Final Rule 89 FR 40066, effective 2026-05-11 for entities with 15+ employees)",
+            "serviceScopes": [
+                "federal-financial-assistance-recipients",
+                "healthcare",
+                "research",
+                "social-services"
+            ]
+        },
+        "DDA": {
+            "id": "DDA-1992",
+            "name": "Disability Discrimination Act 1992 (Australia)",
+            "fullName": "Disability Discrimination Act 1992 (Cth) — Section 24",
+            "scope": "both",
+            "eurLexUrl": "https://www.legislation.gov.au/C2004A04426/latest/text",
+            "adoptionDate": "1992-10-22",
+            "transpositionDeadline": "1993-03-01",
+            "wcagVersion": "2.1",
+            "wcagLevel": "AA",
+            "technicalStandard": "WCAG 2.1 Level AA (Digital Service Standard — voluntary benchmark; AHRC enforces via complaint mechanism)",
+            "serviceScopes": [
+                "public-services",
+                "commercial-goods-services",
+                "education",
+                "employment"
+            ]
         }
     }
 }

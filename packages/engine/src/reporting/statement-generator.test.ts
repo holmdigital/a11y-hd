@@ -533,4 +533,16 @@ describe('US ADA — sector-aware national law routing', () => {
         );
         expect(output).not.toMatch(/\{<national_law>\}/);
     });
+
+    it('should reference HHS Section 504 alongside ADA Title III for US private sector', async () => {
+        const output = await generateStatementContent(
+            { ...mockResult, url: 'https://hospital.example.com' },
+            'en-us',
+            'md',
+            { ...metadata, country: 'US', sector: 'private' }
+        );
+        // Healthcare/HHS-funded private organisations need both references
+        expect(output).toContain('ADA Title III');
+        expect(output).toContain('Section 504');
+    });
 });

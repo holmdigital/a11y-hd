@@ -322,7 +322,8 @@ export async function generateStatementContent(
                 }
                 if (country === 'US') {
                     // US has two ADA laws split by scope (Title II public / Title III private)
-                    // plus Section 508 as a parallel federal-agency framework.
+                    // plus Section 508 as a parallel federal-agency framework, plus HHS
+                    // Section 504 (REHAB) for healthcare/HHS-funded private organisations.
                     const usLaws = getNationalLaws('US');
                     const adaLaw = usLaws.find(l => l.euFramework === 'ADA' && l.scope === sector);
                     if (adaLaw) {
@@ -333,7 +334,12 @@ export async function generateStatementContent(
                                 ? `${adaLaw.fullName} (${adaLaw.law}) & ${s508.fullName} (${s508.law})`
                                 : `${adaLaw.fullName} (${adaLaw.law})`;
                         }
-                        return `${adaLaw.fullName} (${adaLaw.law})`;
+                        // Private sector: append Section 504 (HHS) as parallel reference for
+                        // HHS-funded organisations (hospitals, FQHCs, research, health plans).
+                        const hhs504 = usLaws.find(l => l.euFramework === 'REHAB' && l.scope === 'private');
+                        return hhs504
+                            ? `${adaLaw.fullName} (${adaLaw.law}) & ${hhs504.fullName} (${hhs504.law})`
+                            : `${adaLaw.fullName} (${adaLaw.law})`;
                     }
                 }
                 const law = getNationalLawByFramework(sector === 'private' ? 'EAA' : 'WAD', country);

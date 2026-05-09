@@ -269,9 +269,58 @@ export interface NationalLaw {
     inForce: boolean;
     effectiveDate: string;
     note?: string;
-    /** ADA-specific: compliance deadlines keyed by entity size (currently only populated for us-ada-title-ii). */
+    /**
+     * Tiered compliance deadlines keyed by entity size.
+     *
+     * Each entry carries exactly one threshold field. Consumers MUST narrow on
+     * the threshold key before reading it.
+     *
+     * - `populationThreshold` — entity-served population (e.g. ADA Title II).
+     *   `largeEntity` value is an inclusive lower bound (population >= N qualifies).
+     *   `smallEntity` value is an inclusive upper bound (population <= N qualifies).
+     * - `employeeThreshold` — recipient headcount (e.g. HHS Section 504).
+     *   Same comparator convention as above.
+     */
     complianceDeadlines?: {
-        largeEntity?: { populationThreshold: number; deadline: string; description: string };
-        smallEntity?: { populationThreshold: number; deadline: string; description: string };
+        largeEntity?: ComplianceDeadlineEntry;
+        smallEntity?: ComplianceDeadlineEntry;
     };
+    /** Statutory exemptions that remove an organisation from the law's scope entirely. */
+    exemptions?: {
+        microbusiness?: MicrobusinessExemption;
+    };
+}
+
+/**
+ * One tier of a `NationalLaw.complianceDeadlines` map.
+ * Discriminated by the threshold field present.
+ */
+export type ComplianceDeadlineEntry =
+    | { populationThreshold: number; deadline: string; description: string }
+    | { employeeThreshold: number; deadline: string; description: string };
+
+/**
+ * Microbusiness exemption metadata.
+ *
+ * Used by EU Member States transposing the European Accessibility Act
+ * (Article 4(5) of Directive 2019/882): microenterprises providing services
+ * are exempt from accessibility requirements. The "microenterprise" definition
+ * comes from Commission Recommendation 2003/361/EC: fewer than `employeeThreshold`
+ * persons AND annual turnover or balance sheet at or below `revenueThreshold`.
+ *
+ * Both conditions must be met cumulatively for the exemption to apply.
+ */
+export interface MicrobusinessExemption {
+    /** Strict less-than: an entity with FEWER than this many employees may qualify. */
+    employeeThreshold: number;
+    /** Inclusive upper bound: turnover OR balance sheet at or below this value. */
+    revenueThreshold: number;
+    /** ISO 4217 currency code of `revenueThreshold` (e.g. 'EUR'). */
+    revenueCurrency: string;
+    /** Which side of the law the exemption covers. EAA exempts services only. */
+    appliesTo: 'services' | 'products' | 'both';
+    /** Human-readable summary of the exemption (free text). */
+    description: string;
+    /** Citation to the statutory or directive provision granting the exemption. */
+    legalBasis?: string;
 }

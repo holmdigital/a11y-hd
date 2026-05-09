@@ -63,8 +63,18 @@
                     "maxAmount": 10000000,
                     "currency": "SEK"
                 },
-                "inForce": false,
-                "effectiveDate": "2025-06-28"
+                "inForce": true,
+                "effectiveDate": "2025-06-28",
+                "exemptions": {
+                    "microbusiness": {
+                        "employeeThreshold": 10,
+                        "revenueThreshold": 2000000,
+                        "revenueCurrency": "EUR",
+                        "appliesTo": "services",
+                        "description": "Microenterprises providing services are exempt from accessibility requirements: organisations with fewer than 10 employees AND annual turnover or balance sheet at or below 2 million EUR. Both conditions must be met cumulatively. Microenterprises providing products are NOT exempt but qualify for relaxed obligations under EAA Annex IV.",
+                        "legalBasis": "Directive (EU) 2019/882 Article 4(5); microenterprise definition per Commission Recommendation 2003/361/EC"
+                    }
+                }
             }
         ],
         "FI": [
@@ -120,8 +130,18 @@
                     "maxAmount": 0,
                     "currency": "EUR"
                 },
-                "inForce": false,
-                "effectiveDate": "2025-06-28"
+                "inForce": true,
+                "effectiveDate": "2025-06-28",
+                "exemptions": {
+                    "microbusiness": {
+                        "employeeThreshold": 10,
+                        "revenueThreshold": 2000000,
+                        "revenueCurrency": "EUR",
+                        "appliesTo": "services",
+                        "description": "Microenterprises providing services are exempt from accessibility requirements: organisations with fewer than 10 employees AND annual turnover or balance sheet at or below 2 million EUR. Both conditions must be met cumulatively. Microenterprises providing products are NOT exempt but qualify for relaxed obligations under EAA Annex IV.",
+                        "legalBasis": "Directive (EU) 2019/882 Article 4(5); microenterprise definition per Commission Recommendation 2003/361/EC"
+                    }
+                }
             }
         ],
         "NO": [
@@ -220,8 +240,18 @@
                     "maxAmount": 500000,
                     "currency": "EUR"
                 },
-                "inForce": false,
-                "effectiveDate": "2025-06-28"
+                "inForce": true,
+                "effectiveDate": "2025-06-28",
+                "exemptions": {
+                    "microbusiness": {
+                        "employeeThreshold": 10,
+                        "revenueThreshold": 2000000,
+                        "revenueCurrency": "EUR",
+                        "appliesTo": "services",
+                        "description": "Microenterprises providing services are exempt from accessibility requirements: organisations with fewer than 10 employees AND annual turnover or balance sheet at or below 2 million EUR. Both conditions must be met cumulatively. Microenterprises providing products are NOT exempt but qualify for relaxed obligations under EAA Annex IV.",
+                        "legalBasis": "Directive (EU) 2019/882 Article 4(5); microenterprise definition per Commission Recommendation 2003/361/EC"
+                    }
+                }
             }
         ],
         "FR": [
@@ -352,8 +382,18 @@
                     "maxAmount": 900000,
                     "currency": "EUR"
                 },
-                "inForce": false,
-                "effectiveDate": "2025-06-28"
+                "inForce": true,
+                "effectiveDate": "2025-06-28",
+                "exemptions": {
+                    "microbusiness": {
+                        "employeeThreshold": 10,
+                        "revenueThreshold": 2000000,
+                        "revenueCurrency": "EUR",
+                        "appliesTo": "services",
+                        "description": "Microenterprises providing services are exempt from accessibility requirements: organisations with fewer than 10 employees AND annual turnover or balance sheet at or below 2 million EUR. Both conditions must be met cumulatively. Microenterprises providing products are NOT exempt but qualify for relaxed obligations under EAA Annex IV.",
+                        "legalBasis": "Directive (EU) 2019/882 Article 4(5); microenterprise definition per Commission Recommendation 2003/361/EC"
+                    }
+                }
             }
         ],
         "GB": [
@@ -488,9 +528,9 @@
                     "currency": "USD",
                     "example": "Loss of Medicare/Medicaid funding is the primary financial risk for healthcare organizations. Private Section 504 lawsuits have resulted in settlements and injunctions requiring full WCAG compliance with monitoring periods."
                 },
-                "inForce": false,
-                "effectiveDate": "2026-05-11",
-                "note": "Applies to private organizations — including hospitals, physician practices, federally qualified health centers, long-term care facilities, health plans, and research institutions — that receive federal financial assistance from the U.S. Department of Health and Human Services (HHS), directly or indirectly. HHS administers over 100 programs, making the scope extensive. Medicare Part B reimbursements are considered federal financial assistance triggering Section 504 obligations. Five content exemptions exist: archived content, pre-existing conventional documents, individualized password-protected documents, pre-existing social media posts, and third-party content not controlled by the recipient. Does NOT cover federal agencies (see us-508) or state/local governments (see us-ada-title-ii). Rule published 89 FR 40066 (May 9, 2024); general Section 504 obligations effective July 8, 2024; WCAG technical standards enforcement begins at compliance deadlines.",
+                "inForce": true,
+                "effectiveDate": "2024-07-08",
+                "note": "Applies to private organizations — including hospitals, physician practices, federally qualified health centers, long-term care facilities, health plans, and research institutions — that receive federal financial assistance from the U.S. Department of Health and Human Services (HHS), directly or indirectly. HHS administers over 100 programs, making the scope extensive. Medicare Part B reimbursements are considered federal financial assistance triggering Section 504 obligations. Five content exemptions exist: archived content, pre-existing conventional documents, individualized password-protected documents, pre-existing social media posts, and third-party content not controlled by the recipient. Does NOT cover federal agencies (see us-508) or state/local governments (see us-ada-title-ii). Rule published 89 FR 40066 (May 9, 2024); general Section 504 obligations and Final Rule effective July 8, 2024; WCAG 2.1 AA technical benchmark enforcement begins 2026-05-11 (15+ employees) / 2027-05-10 (<15 employees) — see complianceDeadlines.",
                 "complianceDeadlines": {
                     "largeEntity": {
                         "employeeThreshold": 15,
@@ -623,7 +663,17 @@
                     "currency": "EUR"
                 },
                 "inForce": true,
-                "effectiveDate": "2025-06-28"
+                "effectiveDate": "2025-06-28",
+                "exemptions": {
+                    "microbusiness": {
+                        "employeeThreshold": 10,
+                        "revenueThreshold": 2000000,
+                        "revenueCurrency": "EUR",
+                        "appliesTo": "services",
+                        "description": "Microenterprises providing services are exempt from accessibility requirements: organisations with fewer than 10 employees AND annual turnover or balance sheet at or below 2 million EUR. Both conditions must be met cumulatively. Microenterprises providing products are NOT exempt but qualify for relaxed obligations under EAA Annex IV.",
+                        "legalBasis": "Directive (EU) 2019/882 Article 4(5); microenterprise definition per Commission Recommendation 2003/361/EC"
+                    }
+                }
             }
         ],
         "PT": [
@@ -669,7 +719,17 @@
                     "currency": "EUR"
                 },
                 "inForce": true,
-                "effectiveDate": "2025-06-28"
+                "effectiveDate": "2025-06-28",
+                "exemptions": {
+                    "microbusiness": {
+                        "employeeThreshold": 10,
+                        "revenueThreshold": 2000000,
+                        "revenueCurrency": "EUR",
+                        "appliesTo": "services",
+                        "description": "Microenterprises providing services are exempt from accessibility requirements: organisations with fewer than 10 employees AND annual turnover or balance sheet at or below 2 million EUR. Both conditions must be met cumulatively. Microenterprises providing products are NOT exempt but qualify for relaxed obligations under EAA Annex IV.",
+                        "legalBasis": "Directive (EU) 2019/882 Article 4(5); microenterprise definition per Commission Recommendation 2003/361/EC"
+                    }
+                }
             }
         ],
         "PL": [
@@ -715,7 +775,17 @@
                     "currency": "PLN"
                 },
                 "inForce": true,
-                "effectiveDate": "2025-06-28"
+                "effectiveDate": "2025-06-28",
+                "exemptions": {
+                    "microbusiness": {
+                        "employeeThreshold": 10,
+                        "revenueThreshold": 2000000,
+                        "revenueCurrency": "EUR",
+                        "appliesTo": "services",
+                        "description": "Microenterprises providing services are exempt from accessibility requirements: organisations with fewer than 10 employees AND annual turnover or balance sheet at or below 2 million EUR. Both conditions must be met cumulatively. Microenterprises providing products are NOT exempt but qualify for relaxed obligations under EAA Annex IV.",
+                        "legalBasis": "Directive (EU) 2019/882 Article 4(5); microenterprise definition per Commission Recommendation 2003/361/EC"
+                    }
+                }
             }
         ]
     }
