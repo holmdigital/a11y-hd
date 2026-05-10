@@ -1,155 +1,143 @@
 # Technology Stack
 
-**Analysis Date:** 2026-02-26
+**Analysis Date:** 2026-05-10
 
 ## Languages
 
 **Primary:**
-- TypeScript 5.7.2 - All source code across all three workspace packages
-- JSON - Regulatory rules database (13 locale files), legal frameworks, JSON schemas
+- TypeScript ^5.7.2 — All three packages (`packages/engine`, `packages/components`, `packages/standards`)
 
 **Secondary:**
-- JavaScript (ESM) - Build scripts (`packages/engine/scripts/copy-assets.mjs`), data transformation scripts (`packages/standards/scripts/add-legal-context.js`)
-- TSX - React components in `packages/components/src/`
+- JavaScript (ESM) — Build/validation scripts (`packages/engine/scripts/copy-assets.mjs`, `packages/standards/scripts/validate-*.js`)
+- JSON — Regulatory data (`packages/standards/data/`) and JSON Schema (`packages/standards/schema/`)
+- TSX — React component sources (`packages/components/src/<Component>/<Component>.tsx`)
+- YAML — GitHub Actions workflows (`.github/workflows/*.yml`)
 
 ## Runtime
 
 **Environment:**
-- Node.js >= 18.0.0 (enforced via `engines` in root `package.json`)
-- Node.js 20 used in CI (GitHub Actions)
-- Browser runtime via Puppeteer (Chromium) for scanning
+- Node.js >=18.0.0 (declared in root `package.json` `engines`)
+- CI runs on Node.js 20 (`.github/workflows/release.yml`, `release-wiki.yml`, `deploy-wiki.yml`)
+- Browser runtime: Chromium (bundled via Puppeteer 23.10.4) for headless scanning
+- Browser runtime: jsdom ^28.0.0 (test-only, components)
 
 **Package Manager:**
-- npm >= 9.0.0 (enforced via `engines`)
-- Lockfile: `package-lock.json` present (384KB)
-- pnpm workspace config exists (`pnpm-workspace.yaml`, `pnpm-lock.yaml`) but npm workspaces are the primary mechanism
-
-## Monorepo Structure
-
-**Workspace Manager:** npm workspaces (configured in root `package.json`)
-
-**Packages:**
-| Package | Name | Version | Public |
-|---------|------|---------|--------|
-| `packages/standards` | `@holmdigital/standards` | 2.1.0 | Yes |
-| `packages/components` | `@holmdigital/components` | 2.1.0 | Yes |
-| `packages/engine` | `@holmdigital/engine` | 2.1.2 | Yes |
-
-**Dependency Order (build must follow this):**
-1. `@holmdigital/standards` (no internal deps)
-2. `@holmdigital/components` (depends on `@holmdigital/standards`)
-3. `@holmdigital/engine` (depends on both `@holmdigital/standards` and `@holmdigital/components`)
+- npm >=9.0.0 with workspaces (declared in root `package.json` `engines`)
+- Lockfile: `package-lock.json` present at repo root
+- Workspaces: `packages/engine`, `packages/components`, `packages/standards`
 
 ## Frameworks
 
 **Core:**
-- React 18.3.1 - Used in `packages/components` (peer dep >= 18.0.0) and `packages/engine` for server-side rendering of accessibility statements
-- React DOM 18.3.1 - Server-side rendering via `renderToStaticMarkup` in `packages/engine/src/reporting/statement-generator.ts`
-
-**Accessibility Testing:**
-- axe-core 4.10.2 - Core accessibility rule engine, injected into Puppeteer pages (`packages/engine/src/core/regulatory-scanner.ts`)
-- html-validate 10.4.0 - Structural HTML validation (`packages/engine/src/core/html-validator.ts`)
-
-**Browser Automation:**
-- Puppeteer 23.10.4 - Headless Chromium for page scanning and PDF generation (`packages/engine/src/core/regulatory-scanner.ts`, `packages/engine/src/reporting/pdf-generator.ts`)
+- React ^18.3.1 || ^19.0.0 — UI components (`packages/components`); also a runtime/peer of `packages/engine` for report rendering helpers
+- axe-core ^4.11.1 — Accessibility rules engine (`packages/engine`)
+- html-validate 10.4.0 (pinned) — Static HTML validation (`packages/engine/src/core/html-validator.ts`)
+- Puppeteer 23.10.4 (pinned) — Headless browser scanning (`packages/engine/src/core/regulatory-scanner.ts`)
 
 **Testing:**
-- Vitest 4.0.16 - Unit and integration tests across all packages
-- @testing-library/react 16.3.2 - Component testing in `packages/components`
-- jsdom 28.0.0 - DOM environment for component tests
+- Vitest ^4.0.16 — Unit and integration test runner (all packages)
+- @testing-library/react ^16.3.2 — React component testing (`packages/components`)
+- jsdom ^28.0.0 — DOM environment for component tests
+- @vitest/coverage v8 (provider configured in `packages/engine/vitest.config.ts`)
 
 **Build/Dev:**
-- tsup 8.3.5 - TypeScript bundler for all three packages, outputs CJS + ESM + DTS
-- TypeScript 5.7.2 - Strict mode enabled globally via `tsconfig.base.json`
-
-**Documentation/Design:**
-- Storybook 10.2.4 - Component documentation with a11y addon (`packages/components/.storybook/`)
-- @storybook/react-vite 10.2.4 - Storybook framework (Vite-based)
-- @storybook/addon-a11y 10.2.4 - Accessibility testing within Storybook
-
-**CLI:**
-- Commander 12.1.0 - CLI argument parsing for `hd-a11y-scan` command (`packages/engine/src/cli/index.ts`)
-- chalk 5.3.0 - Terminal colors
-- ora 8.1.1 - Terminal spinners
-
-**Versioning/Release:**
-- @changesets/cli 2.29.8 - Monorepo versioning and changelog management
+- tsup ^8.3.5 — Bundler producing CJS + ESM + DTS (all packages)
+- TypeScript Compiler 5.7+ — Type checking + DTS emission via tsup
+- Storybook ^10.2.13 + @storybook/react-vite ^10.2.4 + @storybook/addon-a11y ^10.2.4 — Component dev environment (`packages/components`)
+- ESLint ^9.17.0 + @typescript-eslint/{parser,eslint-plugin} ^8.18.1 — Linting
+- Prettier ^3.4.2 — Formatting (root devDependency)
+- rimraf ^5.0.5 — Cross-platform clean
+- @changesets/cli ^2.29.8 — Versioning + release automation
 
 ## Key Dependencies
 
-**Critical (packages/engine):**
-- `axe-core` 4.10.2 - The actual accessibility rule engine that finds violations. Injected into browser pages via `page.evaluate(axeCore.source)`
-- `puppeteer` 23.10.4 - Headless browser for navigating to URLs, building virtual DOM, running axe-core, and generating PDFs
-- `html-validate` 10.4.0 - Structural HTML validation separate from axe-core
-- `commander` 12.1.0 - Powers the `hd-a11y-scan` CLI binary
-- `cosmiconfig` 9.0.0 - Config file discovery (`.a11yrc`, `package.json` a11y key, etc.)
-- `ws` 8.18.0 - WebSocket client (likely for Puppeteer communication)
+### `@holmdigital/engine` v2.5.2 (`packages/engine/package.json`)
 
-**Critical (packages/standards):**
-- `ajv` 8.17.1 - JSON Schema validation for the convergence schema (`packages/standards/schema/convergence-schema.json`)
+**Production:**
+- `@holmdigital/components` ^2.3.0 — Internal: rendered into HTML reports
+- `@holmdigital/standards` * (workspace) — Internal: regulatory rule database
+- `axe-core` ^4.11.1 — Accessibility rules
+- `chalk` ^5.3.0 — Terminal colour output (CLI)
+- `commander` ^12.1.0 — CLI argument parsing (`src/cli/index.ts`)
+- `cosmiconfig` ^9.0.0 — Loads `.hd-a11yrc` / `hd-a11y.config.*` files
+- `html-validate` 10.4.0 (pinned) — Static HTML conformance
+- `ora` ^8.1.1 — CLI spinners
+- `puppeteer` 23.10.4 (pinned) — Headless Chromium driver
+- `react` / `react-dom` ^18.3.1 || ^19.0.0 — Report rendering
+- `ws` ^8.18.0 — WebSocket (Puppeteer transport)
 
-**Critical (packages/components):**
-- `lucide-react` 0.556.0 - Icon library for accessible components
-- `react` >= 18.0.0 (peer dependency)
+**Dev:**
+- `@types/cosmiconfig`, `@types/node` ^22.10.2, `@types/react`, `@types/react-dom`, `@types/ws`, `tsup`, `typescript`, `vitest`
 
-**Infrastructure:**
-- `rimraf` 5.0.5 - Cross-platform clean scripts
+**Bin:**
+- `hd-a11y-scan` → `./dist/cli/index.js`
 
-**Linting/Formatting:**
-- `eslint` 9.17.0 - Flat config format (`eslint.config.mjs`)
-- `@typescript-eslint/eslint-plugin` 8.18.1 + `@typescript-eslint/parser` 8.18.1
-- `prettier` 3.4.2 - Code formatting (no config file detected, using defaults)
+### `@holmdigital/components` v2.3.0 (`packages/components/package.json`)
+
+**Production:**
+- `@holmdigital/standards` ^2.3.0 — Country/framework metadata for `AccessibilityStatement`
+- `lucide-react` ^0.556.0 — Icon set
+
+**Peer:**
+- `react` >=18.0.0
+- `react-dom` >=18.0.0
+
+**Dev:**
+- `@testing-library/react` ^16.3.2, `jsdom` ^28.0.0, `react`/`react-dom` ^18.2.0, `storybook` ^10.2.13, `tsup`, `typescript`
+
+**Subpath exports:** Each component is independently importable (e.g. `@holmdigital/components/Button`, `/AccessibilityStatement`, `/DataTable`, etc.; 24 subpath exports total).
+
+### `@holmdigital/standards` v2.5.1 (`packages/standards/package.json`)
+
+**Production:**
+- `ajv` ^8.18.0 — JSON Schema validation of regulatory data
+
+**Dev:**
+- `@types/node` ^22.10.2, `tsup`, `typescript`, `vitest`
+
+**Data exports:** `./data/*` and `./schema/*` are exposed as raw subpath exports for downstream consumers.
 
 ## Configuration
 
-**TypeScript:**
-- Base config: `tsconfig.base.json` - Target ES2022, strict mode, bundler module resolution
-- Per-package overrides: `packages/*/tsconfig.json` (each extends base)
-- Components package adds `"jsx": "react-jsx"`
-- Standards package adds `"resolveJsonModule": true`
-
-**ESLint:**
-- Flat config: `eslint.config.mjs`
-- Key rules: `@typescript-eslint/no-explicit-any: "warn"`, `@typescript-eslint/no-unused-vars: ["warn", { argsIgnorePattern: "^_" }]`
-- Ignores: `dist/`, `node_modules/`, `coverage/`
-
-**Build (tsup):**
-- All packages use tsup for building
-- Output formats: CJS (`.js`) + ESM (`.mjs`) + DTS (`.d.ts`)
-- Engine has a post-build script: `scripts/copy-assets.mjs` (copies templates + assets to dist)
-
-**Cosmiconfig (Runtime):**
-- The CLI searches for config via cosmiconfig with module name `'a11y'`
-- Supports: `.a11yrc`, `.a11yrc.json`, `.a11yrc.yaml`, `a11y.config.js`, `package.json` `a11y` key
-
 **Environment:**
-- `.env` file listed in `.gitignore` - existence not confirmed
-- No `.env.example` detected
-- API key for cloud integration passed via `--api-key` CLI flag
+- No `.env` file required by any package at runtime
+- CLI-side: `--api-key` / `HD_A11Y_API_KEY` (referenced in `packages/engine/src/cli/index.ts`) and `cloudUrl` default `https://cloud.holmdigital.se` for optional cloud ingest
+- Config files loaded via cosmiconfig (engine): `hd-a11y.config.{js,ts,json}`, `.hd-a11yrc`, `package.json#hd-a11y`
+- CI env vars: `GITHUB_TOKEN`, `DISPATCH_TOKEN` (workflow-only, used by `release.yml`)
 
-**Changesets:**
-- Config: `.changeset/config.json`
-- Base branch: `master`
-- Access: `public`
-- Publish with provenance
+**Build:**
+- `tsconfig.base.json` — Shared TS config (`target: ES2022`, `module: ESNext`, `moduleResolution: bundler`, `strict: true`, `noUnusedLocals`, `noUnusedParameters`, `isolatedModules`)
+- Per-package `tsconfig.json` extending the base
+- `packages/engine/tsup.config.ts` — Two entries (`src/index.ts`, `src/cli/index.ts`), CJS+ESM, DTS, `shims: true`, injects `__ENGINE_VERSION__` define
+- `packages/components` — Inline tsup CLI in `package.json` build script enumerates each component as a separate entry; externalises `react` and `@holmdigital/standards`
+- `packages/standards` — Inline tsup CLI: `src/index.ts` only, CJS+ESM+DTS
+
+**Test:**
+- `packages/engine/vitest.config.ts` — `environment: node`, includes `src/**/*.{test,spec}.ts`, v8 coverage excluding `src/cli/**` and test files
+- `packages/engine/vitest.integration.config.ts` — Integration suite (referenced by `test:integration` script)
+- Components/standards: default Vitest discovery
+
+**Versioning / Release:**
+- `.changeset/config.json` — `baseBranch: master`, `access: public`, `updateInternalDependencies: patch`, default changelog generator
 
 ## Platform Requirements
 
 **Development:**
-- Node.js >= 18.0.0, npm >= 9.0.0
-- Chromium (auto-downloaded by Puppeteer)
-- Git
+- Node.js >=18 (CI uses 20)
+- npm >=9
+- OS: cross-platform; Puppeteer downloads a Chromium build matching host OS
+- Disk: Puppeteer's bundled Chromium adds significant `node_modules` weight under `packages/engine/node_modules/puppeteer`
 
-**Production/Runtime:**
-- Published to npm registry as three public packages
-- CLI binary: `hd-a11y-scan` (installed via `@holmdigital/engine`)
-- Requires Chromium at runtime for scanning (Puppeteer downloads it)
+**Production / Consumers:**
+- `@holmdigital/engine` ships as an npm package with both CJS and ESM; CLI runs under any Node >=18
+- `@holmdigital/components` consumed by React 18+ apps (browser); ships as CJS + ESM with per-component subpath ESM bundles
+- `@holmdigital/standards` is runtime-agnostic (pure TS/JSON); CJS + ESM + DTS
 
-**CI:**
-- GitHub Actions on `ubuntu-latest`
-- Node.js 20
-- NPM publishing with OIDC Trusted Publishing (no npm token needed)
+**Deployment Targets:**
+- npm registry (`https://registry.npmjs.org/`) via `changesets` + npm OIDC Trusted Publishing in `release.yml`
+- Downstream consumers: `holmdigital/holmdigital-website`, `holmdigital/accessibility-wiki` (triggered via `repository_dispatch` from `release.yml`)
+- GitHub Pages (wiki) deploy in `deploy-wiki.yml`
 
 ---
 
-*Stack analysis: 2026-02-26*
+*Stack analysis: 2026-05-10*

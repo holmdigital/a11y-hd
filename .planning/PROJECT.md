@@ -43,7 +43,7 @@ The type system and tests must catch bugs before users do — no `as any` escape
 
 ### Active
 
-(No active requirements — next milestone not yet planned)
+**v0.6 Components Quality** — TBD pending requirements definition (see REQUIREMENTS.md)
 
 ### Out of Scope
 
@@ -100,5 +100,40 @@ The type system and tests must catch bugs before users do — no `as any` escape
 | Auto-syncing test pattern for enforcement body/law expectations | Tests call standards functions directly — never need manual updates when law data changes | ✓ Good |
 | IT (Italian) country added to Country type but template deferred | IT falls back to English; Italian locale work is its own milestone scope | ✓ Good |
 
+## Current Milestone: v0.6 Components Quality
+
+**Goal:** Lift `@holmdigital/components` from "ships and renders" to "production-grade prescriptive UI library" — resolve the styling-strategy ambiguity (Tailwind vs inline-style), close test coverage gaps on the most critical untested components, and remove stale data-hygiene defaults that leak into customer output.
+
+**Target features:**
+- Styling strategy resolution (Tailwind components → inline-style OR documented hard peer dep)
+- Test coverage for top-priority untested components (Button, FormField, Modal, Checkbox, RadioGroup at minimum)
+- AccessibilityStatement publishDate fallback fix (`'2024-01-01'` → empty + `[YOUR PUBLISH DATE]` placeholder, 14 locales)
+- Component pre-publish hygiene (gate dist-rebuild requirement)
+
+**Out of scope (deliberately):**
+- AccessibilityStatement refactor — 131 tests cover it, low ROI
+- Engine and Standards work — separate packages, future milestones
+- Storybook — dev-only, blocked on upstream esbuild patch
+- New component additions
+
+**Phase numbering:** continues from v0.5 (last phase = 21) → v0.6 starts at Phase 22
+
+## Evolution
+
+This document evolves at phase transitions and milestone boundaries.
+
+**After each phase transition** (via `/gsd-transition`):
+1. Requirements invalidated? → Move to Out of Scope with reason
+2. Requirements validated? → Move to Validated with phase reference
+3. New requirements emerged? → Add to Active
+4. Decisions to log? → Add to Key Decisions
+5. "What This Is" still accurate? → Update if drifted
+
+**After each milestone** (via `/gsd-complete-milestone`):
+1. Full review of all sections
+2. Core Value check — still the right priority?
+3. Audit Out of Scope — reasons still valid?
+4. Update Context with current state
+
 ---
-*Last updated: 2026-03-06 after v0.3 milestone completion*
+*Last updated: 2026-05-10 — v0.6 Components Quality milestone started*

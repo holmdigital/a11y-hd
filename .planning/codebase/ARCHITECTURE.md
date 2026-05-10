@@ -1,238 +1,231 @@
+<!-- refreshed: 2026-05-10 -->
 # Architecture
 
-**Analysis Date:** 2026-03-02
+**Analysis Date:** 2026-05-10
+
+## System Overview
+
+```text
+┌─────────────────────────────────────────────────────────────────────┐
+│                        CLI / Programmatic API                        │
+│  `packages/engine/src/cli/index.ts`  │  `packages/engine/src/index.ts`│
+└─────────────────────┬───────────────────────────────────────────────┘
+                      │
+                      ▼
+┌─────────────────────────────────────────────────────────────────────┐
+│                        @holmdigital/engine                           │
+├──────────────────┬──────────────────┬───────────────────────────────┤
+│  RegulatoryScanner│  Reporting       │  Statement Generator          │
+│  (axe + html-val │  (HTML/PDF/JUnit │  (renders React component     │
+│   + Puppeteer)   │   /Badge)        │   to static HTML/MD)          │
+│  `core/`         │  `reporting/`    │  `reporting/statement-*`      │
+└────────┬─────────┴────────┬─────────┴──────────┬────────────────────┘
+         │                  │                     │
+         │ enrichResults    │ getEnforcementBody  │ AccessibilityStatement
+         ▼                  ▼                     ▼
+┌──────────────────────────────┐    ┌───────────────────────────────┐
+│   @holmdigital/standards     │    │   @holmdigital/components     │
+│   Convergence DB + EU/US     │    │   React UI primitives +       │
+│   national-laws lookups      │    │   AccessibilityStatement      │
+│  `packages/standards/src`    │    │  `packages/components/src`    │
+│  + `data/*.json`             │    │                                │
+└──────────────────────────────┘    └───────────────────────────────┘
+         │
+         ▼
+┌─────────────────────────────────────────────────────────────────────┐
+│   JSON data files (rules per locale, legal frameworks, national     │
+│   laws, statement tools)  `packages/standards/data/**`              │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+## Component Responsibilities
+
+| Component | Responsibility | File |
+|-----------|----------------|------|
+| `RegulatoryScanner` | Runs Puppeteer + axe-core + html-validate, enriches violations with regulatory context, computes score and stats | `packages/engine/src/core/regulatory-scanner.ts` |
+| `VirtualDOMBuilder` | Builds a serialised DOM snapshot from the live page for rule evaluation | `packages/engine/src/core/virtual-dom.ts` |
+| `HtmlValidator` | Wraps `html-validate` to produce `ValidationResult`s used in reports | `packages/engine/src/core/html-validator.ts` |
+| `PseudoAutomationEngine` | Generates pseudo-automated test scaffolding for manual checks | `packages/engine/src/automation/pseudo-automation.ts` |
+| `generateReportHTML` | Renders the full scan report as standalone HTML | `packages/engine/src/reporting/html-template.ts` |
+| `generatePDF` | Wraps Puppeteer to print the HTML report to PDF | `packages/engine/src/reporting/pdf-generator.ts` |
+| `generateStatement` / `generateStatementContent` | Builds a regulatory accessibility statement (HTML or Markdown) for a country/sector | `packages/engine/src/reporting/statement-generator.ts` |
+| `generateBadgeMarkdown` / `generateBadgeUrl` | Produces shields.io-style compliance badges | `packages/engine/src/reporting/badge-generator.ts` |
+| `generateJUnitXML` | Emits CI-friendly JUnit XML for failures | `packages/engine/src/reporting/junit-generator.ts` |
+| `setLanguage` / `t` | i18n helpers backed by `locales/*.json` | `packages/engine/src/i18n/index.ts` |
+| `sendToCloud` | Optional uploader to HolmDigital Cloud | `packages/engine/src/cli/cloud-client.ts` |
+| Convergence DB API | Lookups for WCAG → EN 301 549, frameworks, national laws, sanctions | `packages/standards/src/index.ts` |
+| `AccessibilityStatement` (React) | Renders the legal accessibility statement for any of 17 countries | `packages/components/src/AccessibilityStatement/AccessibilityStatement.tsx` |
+| All other components (`Button`, `FormField`, `Dialog`, …) | Prescriptive, accessible-by-default React primitives consumed downstream | `packages/components/src/<Component>/<Component>.tsx` |
 
 ## Pattern Overview
 
-**Overall:** Monorepo with layered package architecture (Standards -> Components -> Engine)
+**Overall:** TypeScript monorepo (`npm workspaces`) with three publishable packages organised as a one-directional dependency chain — `standards` is leaf, `components` depends on `standards`, `engine` depends on both.
 
 **Key Characteristics:**
-- Three-package monorepo with strict dependency hierarchy: `standards` (base) -> `components` (depends on standards) -> `engine` (depends on both)
-- Data-driven regulatory rules stored as JSON, exposed through typed TypeScript API
-- CLI-first scanning tool that orchestrates browser automation (Puppeteer), accessibility testing (axe-core), HTML validation (html-validate), and regulatory enrichment
-- Components are "prescriptive" -- they enforce accessibility compliance by design (contrast, touch targets, ARIA attributes)
-- Internationalization throughout: 12+ language/locale variants for rules data, 9 locales for CLI/report UI strings, and localized accessibility statement templates
+- Strict layered separation: data (`standards`) → presentation primitives (`components`) → orchestration (`engine`).
+- Dual build (CJS + ESM + DTS) via `tsup` for every package.
+- Engine is both a library and a CLI (`hd-a11y-scan` bin) sharing the same exports surface.
+- Regulatory data is JSON-first: locale rule files + machine-readable legal database; runtime code is a thin lookup/enrichment layer.
+- Server-side React rendering (`renderToStaticMarkup`) is used inside the engine to reuse the components package for HTML output.
 
 ## Layers
 
-**Standards Layer (`@holmdigital/standards`):**
-- Purpose: Machine-readable regulatory database mapping WCAG -> EN 301 549 -> DOS-lagen (Swedish accessibility law), plus EU legal framework data
-- Location: `packages/standards/`
-- Contains: JSON rule data files (`data/rules.*.json`), legal data (`data/legal/*.json`), JSON Schema (`schema/convergence-schema.json`), TypeScript types (`src/types.ts`), and query/lookup functions (`src/index.ts`)
-- Key exports: `getEN301549Mapping()`, `getConvergenceRule()`, `getRecommendedComponent()`, `getNationalLaws()`, `getStatementTools()`, and 30+ other query functions
-- Depends on: `ajv` (JSON Schema validation)
-- Used by: `@holmdigital/components`, `@holmdigital/engine`
+**Data Layer (`@holmdigital/standards`):**
+- Purpose: Pure regulatory database + lookup API. No DOM, no I/O beyond JSON imports.
+- Location: `packages/standards/src`, data in `packages/standards/data/`.
+- Contains: Convergence rules per locale, EU/US frameworks, national laws (EAA, WAD, ADA Title II/III, REHAB §504, DOS-lagen, BITV, RGAA, AODA), enforcement bodies, statement tools, JSON schemas.
+- Depends on: `ajv` only (schema validation in scripts).
+- Used by: `engine`, `components`.
 
-**Components Layer (`@holmdigital/components`):**
-- Purpose: Prescriptive, accessible React UI components that enforce regulatory compliance by design
-- Location: `packages/components/`
-- Contains: 29 React components (Button, Dialog, Modal, DataTable, AccessibilityStatement, etc.), each in its own PascalCase directory with `.tsx` file
-- Design pattern: Each component includes JSDoc comments mapping to WCAG criteria and EN 301 549 sections (e.g., Button enforces WCAG 1.4.3 contrast, 2.1.1 keyboard access, 2.4.7 focus indicators)
-- Build: tsup produces both ESM and CJS with individual entry points per component in `package.json` exports
-- Depends on: `@holmdigital/standards` (for enforcement body data, statement tools), `lucide-react` (icons), React 18+
-- Used by: `@holmdigital/engine` (server-side rendering of AccessibilityStatement component for report generation), external React applications
+**Presentation Layer (`@holmdigital/components`):**
+- Purpose: Accessible React primitives used both by end-user apps and by the engine when rendering statements/reports.
+- Location: `packages/components/src`.
+- Contains: 29 component folders, shared `_hooks/`, single `index.ts` barrel.
+- Depends on: `react` (peer), `lucide-react`, `@holmdigital/standards` (for `AccessibilityStatement`).
+- Used by: `engine` (server-side render), external consumers.
 
-**Engine Layer (`@holmdigital/engine`):**
-- Purpose: Regulatory accessibility scanning engine with CLI, browser automation, reporting, and cloud integration
-- Location: `packages/engine/`
-- Core modules:
-  - `src/core/`: Scanner orchestration, Virtual DOM builder, HTML validator
-  - `src/cli/`: CLI entry point with Commander framework, config loading via cosmiconfig
-  - `src/reporting/`: Multi-format output generators (PDF, HTML, JUnit XML, accessibility statements, badges)
-  - `src/automation/`: Pseudo-automation test script generator for manual verification
-  - `src/i18n/`: Language selection and string translation
-  - `src/locales/`: 9 language JSON files for CLI/report UI strings
-- Depends on: `@holmdigital/standards`, `@holmdigital/components`, `axe-core`, `puppeteer`, `html-validate`, `commander`, `chalk`, `ora`, `cosmiconfig`, `ws` (cloud WebSocket)
-- Used by: End users via CLI (`hd-a11y-scan`) or programmatic API in Node.js
+**Orchestration Layer (`@holmdigital/engine`):**
+- Purpose: Runs scans, enriches results with regulatory metadata, and emits multi-format reports + statements.
+- Location: `packages/engine/src`.
+- Contains: `core/` (scanner), `automation/`, `reporting/`, `cli/`, `i18n/`, `locales/`, `assets/`.
+- Depends on: `axe-core`, `puppeteer`, `html-validate`, `commander`, `cosmiconfig`, `chalk`, `ora`, `@holmdigital/standards`, `@holmdigital/components`, `react`, `react-dom`.
+- Used by: end users via CLI or programmatic import.
 
 ## Data Flow
 
-**Scan Flow (CLI invocation):**
+### Primary Scan → Report Path
 
-1. User runs `hd-a11y-scan <url> [options]` -- CLI entry point at `packages/engine/src/cli/index.ts`
-2. `cosmiconfig` loads config from `.a11yrc`, `a11y.config.js`, `package.json`, etc. CLI options override file config; defaults fill missing values.
-3. `setLanguage()` sets the i18n locale for the session (affects all subsequent `t()` calls and standards `getData(lang)` calls)
-4. `RegulatoryScanner` (`packages/engine/src/core/regulatory-scanner.ts`) is instantiated with merged options (url, headless, standard, viewport, silent mode, severity threshold, certificate validation)
-5. Scanner launches headless Puppeteer browser with optional invalid HTTPS cert support
-6. Navigates to URL with 3-attempt retry logic (2-second delay between retries)
-7. Sets viewport if specified (e.g., "mobile", "desktop", or "1024x768")
-8. Waits for network idle (500ms timeout, 10s max) before proceeding
-9. `HtmlValidator` (`packages/engine/src/core/html-validator.ts`) validates raw page HTML using `html-validate` library with accessibility-focused rule configuration
-10. `VirtualDOMBuilder` (`packages/engine/src/core/virtual-dom.ts`) builds a flat representation of DOM + Shadow DOM via single in-page script evaluation (minimizes Puppeteer IPC overhead)
-11. `axe-core` is injected into the page and runs automated accessibility analysis, returns violations
-12. `enrichResults()` maps each axe violation to a `ConvergenceRule` from `@holmdigital/standards`:
-    - First tries exact `ruleId` match
-    - Falls back to tag-based search
-    - Creates generic "medium" risk report if no match found
-13. `generateResultPackage()` computes weighted compliance score (0-100), stats by severity (critical/high/medium/low), compliance status (PASS/FAIL), and EU legal summary (WAD/EAA applicability)
-14. Results returned as `ScanResult` object containing: URL, timestamp, metadata (versions, scan duration), reports array, statistics, score, compliance status, optional HTML validation results, legal summary
+1. CLI parses args + cosmiconfig file (`.a11yrc`, `package.json#a11y`) — `packages/engine/src/cli/index.ts:38`.
+2. `RegulatoryScanner.scan()` launches Puppeteer, navigates to URL, optionally sets viewport — `packages/engine/src/core/regulatory-scanner.ts` (`class RegulatoryScanner`).
+3. axe-core is injected and executed in-page (`page.evaluate`) producing `AxeScanOutput`.
+4. `HtmlValidator` runs html-validate on the page source (skipped in `--light` mode) — `packages/engine/src/core/html-validator.ts`.
+5. Each axe violation is enriched: `getEN301549Mapping`, `getConvergenceRule`, `getHolmDigitalInsight` from `@holmdigital/standards` produce `EnrichedReport[]`.
+6. Stats + score + `complianceStatus` aggregated into `ScanResult` — `regulatory-scanner.ts:65` (`interface ScanResult`).
+7. CLI dispatches `ScanResult` to one or more emitters: `generateReportHTML`, `generatePDF`, `generateStatement`, `generateBadgeMarkdown`, `generateJUnitXML`, optionally `sendToCloud`.
+8. CI mode: process exits with code 1 when `complianceStatus === 'FAIL'` (or threshold breached).
 
-**Report Generation Flow:**
+### Statement Generation Flow
 
-1. `ScanResult` feeds into multiple output generators based on CLI flags:
-   - `--json`: Raw JSON to stdout
-   - `--pdf <path>`: `generateReportHTML()` -> `generatePDF()` (uses Puppeteer to render HTML to PDF)
-   - `--statement <path>`: `generateStatementContent()` renders `AccessibilityStatement` React component server-side using `renderToStaticMarkup()`, with fallback to Markdown from localized templates
-   - `--junit <path>`: `generateJUnitXML()` produces CI-compatible JUnit XML with test cases per violation
-   - `--ci`: Sets exit code 1 if violations meet threshold; integrates with GitHub Actions via `--threshold`
-   - `--api-key <key>`: `CloudClient.sendToCloud()` POSTs results to HolmDigital Cloud API
-2. Templates loaded from multiple fallback paths: dist, src, project root
-3. All output strings localized based on current language set at CLI startup
+1. `generateStatement(scanResult, metadata, lang, outPath)` invoked by CLI `--statement` or programmatically — `packages/engine/src/reporting/statement-generator.ts`.
+2. `metadata.country` + `metadata.sector` resolve enforcement body via `getEnforcementBody(country, sector)`.
+3. National law(s) looked up via `getNationalLawByFramework` / `getNationalLaws` — note the **US private-sector branch** must reference both ADA Title III AND `us-hhs-section-504` (REHAB) per CLAUDE.md.
+4. `<AccessibilityStatement {...props} />` rendered via `renderToStaticMarkup` from `@holmdigital/components`.
+5. HTML (or Markdown via `--format md`) written to disk with `fs/promises`.
 
-**Regulatory Data Flow:**
+### Convergence Lookup Flow
 
-1. Rule data originates in JSON files: `packages/standards/data/rules.{lang}.json` (12 languages)
-2. Each rule follows the Convergence Schema (`packages/standards/schema/convergence-schema.json`) validated with AJV
-3. Rules contain: WCAG criteria -> EN 301 549 clauses -> DOS-lagen references, plus remediation guidance, component recommendations, DIGG risk levels, EAA deadline impact, testability flags
-4. `getData(lang)` in `packages/standards/src/index.ts` selects the correct locale-specific rule set; falls back to English with console warning if language unsupported
-5. Query functions (`getConvergenceRule`, `searchRulesByTags`, `generateRegulatoryReport`, `getRulesByFramework`, `getNationalLaws`, etc.) provide typed access to the data
-6. Legal data loaded from `data/legal/*.json`: frameworks, Nordic authorities, statement tools, national laws with sanction information
-
-**Accessibility Statement Generation Flow:**
-
-1. `generateStatementContent()` receives `ScanResult` + optional metadata (org name, email, phone, country, response time, publish date)
-2. Loads localized template JSON from `packages/engine/src/reporting/templates/{lang}.json` with fallback chain
-3. Determines compliance level based on:
-   - Critical violations present → "non-compliant"
-   - Score < 100 but no critical → "partial"
-   - Score = 100 → "full"
-4. Extracts non-compliance items from reports (ruleId + wcagCriteria)
-5. Renders React component `AccessibilityStatement` (from `@holmdigital/components`) via `renderToStaticMarkup()` with compliance level, known issues, enforcement body (based on country), and metadata
-6. Returns HTML output or converts to Markdown if requested
+1. WCAG criterion (e.g. `1.1.1`) arrives from axe violation tag.
+2. `getConvergenceRule(ruleId, lang)` → returns `ConvergenceRule` with `wcagCriteria`, `en301549Criteria`, `dosLagenReference`, `legalContext` — `packages/standards/src/index.ts:237`.
+3. `legalContext` resolves applicable frameworks (WAD/EAA/DDA/ADA/REHAB) and risk metadata (`diggRisk`, `eaaImpact`).
+4. Locale-specific interpretation field (e.g. `swedishInterpretation`, `usInterpretation`) selected by `lang`.
 
 **State Management:**
-
-- No client-side state management library. Engine is stateless per-scan.
-- Scanner holds browser instance state (`this.browser`) during scan lifecycle, released in `close()` method
-- i18n uses module-level singleton (`currentLang` variable in `packages/engine/src/i18n/index.ts`) set once at CLI startup
-- Components use standard React hooks (`useState`, `useMemo`, `useRef`, `useEffect`) for local component state only (no Redux, Zustand, etc.)
+- Engine: per-scan instance state on `RegulatoryScanner` (browser handle + options); no global mutable state.
+- i18n: module-level `currentLang` set via `setLanguage()` — single global, **must be set before reporting calls**.
+- Standards: pure functions over imported JSON; no runtime mutation.
 
 ## Key Abstractions
 
-**ConvergenceRule:**
-- Purpose: Core data type that maps accessibility standards across WCAG, EN 301 549, and DOS-lagen
-- Location: Defined in `packages/standards/src/types.ts`, instantiated from `packages/standards/data/rules.*.json`
-- Contains: `ruleId`, `wcagCriteria`, `wcagLevel`, `wcagTitle`, `en301549Criteria`, `en301549Title`, `dosLagenReference`, `dosLagenApplies`, `remediation` (description, component, codeExample, technicalGuidance), `holmdigitalInsight` (diggRisk, eaaImpact, swedishInterpretation), `testability` (automated, requiresManualCheck, pseudoAutomation), `tags`, `legalContext` (frameworks, sectors, eaaDeadline), `componentRecommendation`
-- Pattern: Static JSON data queried through functional API (`getConvergenceRule`, `searchRulesByTags`, etc.)
+**`ConvergenceRule`:**
+- Purpose: Single record mapping one WCAG criterion → EN 301 549 clause → DOS-lagen reference + remediation + risk + legal context.
+- Examples: `packages/standards/data/rules.en.json`, type at `packages/standards/src/types.ts:21`.
+- Pattern: JSON document validated against `packages/standards/schema/convergence-schema.json`.
 
-**RegulatoryReport:**
-- Purpose: Represents a single violation enriched with regulatory context
-- Location: Defined in `packages/standards/src/types.ts`
-- Created by: `generateRegulatoryReport()` in standards; enriched by `enrichResults()` in engine with axe-core violations
-- Contains: Everything from ConvergenceRule plus runtime data (failing nodes, axe help text, number of instances)
+**`EnrichedReport` / `RegulatoryReport`:**
+- Purpose: Output shape passed between scanner and reporters. Carries axe violation + convergence metadata + enforcement context.
+- Re-exported from `@holmdigital/standards` and consumed everywhere in `engine/src/reporting/`.
 
-**ScanResult:**
-- Purpose: Complete result package from a scan operation
-- Location: Defined in `packages/engine/src/core/regulatory-scanner.ts`
-- Contains: `url`, `timestamp`, `metadata` (engineVersion, axeCoreVersion, standardsVersion, scanDuration, pageTitle, pageLanguage), `reports` array, `stats` (passed/critical/high/medium/low counts, total), `score` (0-100), `complianceStatus` (PASS/FAIL), `htmlValidation` (optional), `legalSummary` (WAD/EAA/EAA deadline violation counts)
+**`NationalLaw` (discriminated union via `ComplianceDeadlineEntry`):**
+- Purpose: Country/framework-specific regulation metadata including `effectiveDate`, `inForce`, `complianceDeadlines`, `exemptions`, `sanctions`.
+- Examples: `packages/standards/data/legal/national-laws.json`.
+- Pattern: Looked up by id, country, or framework; consumers MUST narrow on the deadline discriminant before reading threshold fields (see CLAUDE.md REHAB gotcha).
 
-**RegulatoryScanner:**
-- Purpose: Orchestrates the full scan pipeline
-- Location: `packages/engine/src/core/regulatory-scanner.ts`
-- Pattern: Class-based with lifecycle management (init browser, scan, close)
-- Constructor takes: `ScannerOptions` (url, headless, standard, failOnCritical, viewport, silent, severityThreshold, invalidHttpsCert)
-- Key methods: `scan()` -> Promise<ScanResult>, `enrichResults()`, `generateResultPackage()`, `close()`
-
-**VirtualDOMBuilder:**
-- Purpose: Creates a flat `VirtualNode` tree including Shadow DOM for advanced analysis beyond Axe-core's Light DOM-only capabilities
-- Location: `packages/engine/src/core/virtual-dom.ts`
-- Pattern: Injects browser-side script via Puppeteer `page.evaluate()` for efficient single-pass traversal (minimizes IPC round-trips)
-- Returns: Root `VirtualNode` with full tree of nodes containing tagName, attributes, children, parentId, isShadowRoot flag, shadowMode, bounding rect, computed style, textContent
-- Used for: Shadow DOM penetration, custom element inspection, computed style analysis
-
-**HtmlValidator:**
-- Purpose: Validates structural HTML issues that impact accessibility tool accuracy
-- Location: `packages/engine/src/core/html-validator.ts`
-- Pattern: Wraps `html-validate` library with custom configuration disabling non-accessibility rules
-- Returns: `ValidationResult` object with valid flag and array of errors (rule, message, line, column, selector)
-
-**PseudoAutomationEngine:**
-- Purpose: Generates Playwright test script stubs and manual verification checklists for rules requiring human judgment
-- Location: `packages/engine/src/automation/pseudo-automation.ts`
-- Methods: `generateTestScript(report, url)` -> Playwright test skeleton, `generateManualChecklist(report)` -> Markdown checklist
+**`AccessibilityStatement` (React component):**
+- Purpose: Single source of truth for the legal accessibility statement UI; works for all 17 supported countries plus `EU`.
+- Location: `packages/components/src/AccessibilityStatement/AccessibilityStatement.tsx`.
+- Pattern: Consumes country + sector + complianceLevel props; renders semantically correct WAD/EAA boilerplate.
 
 ## Entry Points
 
-**CLI Entry (`hd-a11y-scan`):**
-- Location: `packages/engine/src/cli/index.ts`
-- Triggers: `hd-a11y-scan <url> [options]` from command line or via NPM script `npm run scan:local`
-- Responsibilities: Parse args via Commander, load config via cosmiconfig, merge with defaults, instantiate scanner, run scan, generate outputs (JSON, PDF, HTML, JUnit, statement, cloud upload), handle errors with user-friendly messages, set exit codes for CI (0 on pass, 1 on critical violations if `--ci` flag set)
-- Outputs: Spinner feedback via ora, colored output via chalk, file writes for reports, console JSON output, HTTP cloud upload
+**CLI (`hd-a11y-scan`):**
+- Location: `packages/engine/src/cli/index.ts` (built to `dist/cli/index.js`, exposed via `bin` in `package.json`).
+- Triggers: User shell, CI workflows, npm scripts.
+- Responsibilities: Arg parsing, config merge, scan orchestration, multi-format output.
 
-**Engine Programmatic API:**
-- Location: `packages/engine/src/index.ts`
-- Triggers: `import { RegulatoryScanner, ... } from '@holmdigital/engine'`
-- Exports: `RegulatoryScanner` (class), `VirtualDOMBuilder`, `VirtualNode` (type), `PseudoAutomationEngine`, i18n functions (`setLanguage`, `t`), `generateStatement`, `generateStatementContent`
-- Use case: Node.js applications that need to programmatically scan pages and generate reports
+**Programmatic Engine API:**
+- Location: `packages/engine/src/index.ts` — re-exports scanner, virtual DOM, automation, i18n, statement-generator.
+- Triggers: `import { RegulatoryScanner } from '@holmdigital/engine'`.
 
 **Standards API:**
-- Location: `packages/standards/src/index.ts`
-- Triggers: `import { getConvergenceRule, ... } from '@holmdigital/standards'`
-- Exports: 30+ query functions (getEN301549Mapping, getConvergenceRule, getRecommendedComponent, getNationalLaws, getLegalFrameworks, getNordicAuthorities, getStatementTools, searchRulesByTags, etc.), all types, `ENFORCEMENT_BODIES` constant, legal framework data
-- Use case: Applications needing regulatory data lookup independent of scanning engine
+- Location: `packages/standards/src/index.ts` — 30+ named exports for lookups.
+- Triggers: `import { getConvergenceRule, getNationalLaws, … } from '@holmdigital/standards'`.
 
 **Components API:**
-- Location: `packages/components/src/index.ts`
-- Triggers: `import { Button, Dialog, ... } from '@holmdigital/components'`
-- Exports: All 29 components (barrel file re-exports from individual component directories)
-- Also supports tree-shaking via per-component exports in `package.json`: `import { Button } from '@holmdigital/components/Button'`
-- Use case: React applications embedding accessible, compliance-ready UI components
+- Location: `packages/components/src/index.ts` — barrel export of all 29 components plus per-component subpath exports declared in `package.json`.
+
+## Architectural Constraints
+
+- **Threading:** Single-threaded Node event loop. Puppeteer spawns a child Chromium process; axe runs inside the browser context, not the engine process.
+- **Global state:** `i18n` keeps a module-level current language in `packages/engine/src/i18n/index.ts`. No other shared mutables.
+- **Circular imports:** None. Dependency graph is strictly `standards → components → engine`.
+- **Browser dependency:** Puppeteer ships its own Chromium; CI must allow downloading it (or set `PUPPETEER_SKIP_DOWNLOAD`).
+- **React version:** Engine and components both accept React 18 or 19; React is `peerDependencies` in components and a hard dep in engine for SSR rendering.
+- **JSON-as-source-of-truth:** Adding a new country/law requires updating both `data/legal/national-laws.json` AND ensuring `inForce` matches `effectiveDate <= today` (drift-guard test in `packages/standards/src/index.test.ts`).
+- **Public API stability:** `tsup --dts` ships `.d.ts` files; breaking changes to types in `standards` cascade to engine and downstream consumers — bump major.
+
+## Anti-Patterns
+
+### Hardcoded enforcement body strings in reports
+
+**What happens:** Tempting to inline `'Digg'` or `'DoJ'` in HTML templates instead of routing through `getEnforcementBody(country, sector)`.
+**Why it's wrong:** Enforcement bodies differ between WAD (public) and EAA (private) sectors and across 17 countries; hardcoding silently produces wrong statements for the other sector.
+**Do this instead:** Call `getEnforcementBody(country, sector)` from `@holmdigital/standards` — see `packages/engine/src/reporting/statement-generator.ts` and `html-template.ts`.
+
+### `getNationalLawByFramework('ADA', 'US')` for private-sector statements
+
+**What happens:** First match is ADA Title II (public). Private-sector callers get the wrong scope.
+**Why it's wrong:** US private-sector statements must reference Title III AND HHS §504 (REHAB) for HHS-funded orgs.
+**Do this instead:** Use `getNationalLaws('US').filter(l => l.scope === 'private')` and handle ADA + REHAB explicitly. See `statement-generator.ts` US branch.
+
+### Reading `complianceDeadlines.largeEntity.populationThreshold` without narrowing
+
+**What happens:** Section 504 entry uses `employeeThreshold: 15`, not `populationThreshold`. Direct field access yields `undefined`.
+**Why it's wrong:** `ComplianceDeadlineEntry` is a discriminated union; field shape depends on `kind`.
+**Do this instead:** Narrow on the discriminant before reading. See REHAB gotcha in CLAUDE.md.
+
+### Bypassing the convergence DB
+
+**What happens:** Reporter code looks up WCAG → law mapping by ad-hoc `if/else` chains.
+**Why it's wrong:** Drifts away from JSON-validated source; new countries/laws never surface in reports.
+**Do this instead:** Always go through `@holmdigital/standards` exports.
+
+### Mutating JSON data at runtime
+
+**What happens:** Helper accidentally pushes to an array returned by `getAllConvergenceRules()`.
+**Why it's wrong:** JSON imports are shared by reference across the process; mutation poisons subsequent lookups.
+**Do this instead:** Treat lookup return values as readonly; clone before mutation.
 
 ## Error Handling
 
-**Strategy:** Defensive error handling with user-friendly messages, graceful degradation, and fallback behavior
+**Strategy:** Fail-soft for individual rule lookups (return `null`), fail-hard at the scan level (throw).
 
 **Patterns:**
-
-- **Scanner Initialization:** Try/catch with specific error type detection (ERR_NAME_NOT_RESOLVED = DNS failure, ERR_CONNECTION_REFUSED = server not running, Timeout = slow/unreachable) to provide actionable CLI messages
-- **Navigation:** 3-attempt retry logic with 2-second delays between attempts; throws if all retries fail
-- **Network Idle:** Best-effort wait (500ms idle time, 10s absolute timeout); catches timeout and proceeds anyway
-- **Enrichment:** `enrichResults()` always produces a report for every violation -- if no matching `ConvergenceRule` is found, a generic fallback report is created with "medium" risk
-- **Standards Lookup:** `getData()` falls back to English for unsupported languages with console warning; `t()` i18n function falls back to English locale if key missing, returns raw key string as last resort
-- **Template Loading:** `generateStatementContent()` tries multiple file paths (dist, src, cwd-relative) before throwing
-- **Cloud Integration:** `CloudClient` catches network errors (ENOTFOUND, ECONNREFUSED) and returns structured `CloudResponse` with error messages
-- **Resource Cleanup:** Browser always closed in `finally` block to prevent resource leaks
-- **Exit Codes:** 0 on clean scan, 1 on violations meeting `--threshold` severity (default "high" = critical + high violations)
+- Standards lookups return `null` on miss (e.g. `getEN301549Mapping`, `getConvergenceRule`); callers must null-check.
+- `RegulatoryScanner.scan()` throws on Puppeteer/network failure; CLI catches and prints via `chalk.red`.
+- `--invalid-https-cert` flag opts into ignoring TLS errors during scan.
+- CI mode (`--ci` or `failOnCritical`) maps `complianceStatus === 'FAIL'` to `process.exit(1)`.
+- Statement generator throws on missing required `metadata.country`.
 
 ## Cross-Cutting Concerns
 
-**Logging:**
-- Console-based logging with `chalk` for colored output
-- Scanner has `silent` mode (controlled by `--json` flag) that suppresses debug logs
-- Progress indication via `ora` spinner for long-running operations
-- No structured logging framework (no Winston, Pino, etc.)
+**Logging:** `console.log` + `chalk` for human output; `ora` for spinners during long operations. `silent: true` ScannerOption suppresses output for `--json` mode.
 
-**Validation:**
-- JSON Schema validation for rule data via AJV (`packages/standards/schema/convergence-schema.json`)
-- HTML structure validation via `html-validate` in the engine core
-- TypeScript strict mode (`strict: true`) across all packages for type safety
-- No runtime input validation middleware (URL format checked in CLI, browser errors caught by Puppeteer)
+**Validation:** `ajv` (in `packages/standards/scripts/validate-data.js` + `validate-schema.js`) gate-keeps JSON before publish; html-validate gate-keeps scanned pages.
 
-**Authentication:**
-- API key authentication for HolmDigital Cloud integration (`x-api-key` header)
-- No user authentication in the open-source packages themselves
-- `--api-key` flag or `.a11yrc` config file for cloud credentials
+**Authentication:** Optional `--api-key` for HolmDigital Cloud upload, handled in `packages/engine/src/cli/cloud-client.ts`.
 
-**Internationalization:**
-- Dual-layer i18n system:
-  1. Standards data: 12 locale-specific JSON rule files (`rules.en.json`, `rules.sv.json`, `rules.de.json`, `rules.fr.json`, `rules.es.json`, `rules.nl.json`, `rules.no.json`, `rules.fi.json`, `rules.da.json`, `rules.en-gb.json`, `rules.en-us.json`, `rules.en-ca.json`)
-  2. Engine UI strings: 9 locale JSON files (`packages/engine/src/locales/*.json`) with typed key paths and template variable support (e.g., `{url}`, `{path}`, `{score}`)
-  3. Statement templates: 9 language template JSON files (`packages/engine/src/reporting/templates/*.json`) for compliance statements
-- Language selection: `--lang <code>` CLI flag or `.a11yrc` config; global `currentLang` state in i18n module
-- Fallback chain: Requested language → English (with warning)
-
-**Configuration:**
-- cosmiconfig-based config loading in CLI (supports `.a11yrc`, `a11y.config.js`, `a11y.config.json`, `package.json` field `a11y`)
-- CLI options take precedence over file config, with sensible defaults
-- Config key names match CLI option names (e.g., `--lang` maps to `config.lang`)
-
-**Build & Bundling:**
-- tsup for all packages (CJS + ESM dual output with `.d.ts` declaration maps for source map support)
-- Standards builds first, then Components, then Engine (respecting dependency order in root `package.json` build script)
-- Copy-assets script for engine (`packages/engine/scripts/copy-assets.mjs`) to copy locales and templates into dist
-- Individual component entry points via `package.json` exports for tree-shaking
-- Source maps enabled for debugging (`sourceMap: true` in tsconfig)
+**i18n:** `packages/engine/src/i18n/index.ts` loads from `packages/engine/src/locales/<lang>.json`; reporting templates additionally pull from `packages/engine/src/reporting/templates/<lang>.json` (16 locales incl. regional variants).
 
 ---
 
-*Architecture analysis: 2026-03-02*
+*Architecture analysis: 2026-05-10*

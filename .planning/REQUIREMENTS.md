@@ -91,5 +91,138 @@ Which phases cover which requirements. Updated during roadmap creation.
 - Unmapped: 0 ✓
 
 ---
-*Requirements defined: 2026-03-27*
-*Last updated: 2026-03-27 — traceability updated after v0.5 roadmap creation (phases 18-21)*
+
+## v0.6 Requirements
+
+Requirements for v0.6 Components Quality. Each maps to roadmap phases (22–26). Locked decisions embedded:
+- **Styling pattern:** CSS-file-per-component (side-effect import, SSR-safe, preserves `:focus-visible`)
+- **Theming:** CSS custom properties (`--hd-button-bg` etc.) with inline fallbacks
+- **Dist policy:** Stop committing `packages/*/dist/`; build only in CI for publish
+- **lucide-react:** Move to optional `peerDependencies` with text-glyph fallbacks
+- **Anti-patterns enforced:** No DOM snapshots, no class-selector queries, no internal-state probing, no `data-testid` on library components, no `fireEvent.click` without paired keyboard test, no coverage-percent chasing
+
+### Test Infrastructure
+
+- [ ] **TI-01**: `@chialab/vitest-axe`, `@testing-library/user-event`, `@testing-library/jest-dom`, `eslint-plugin-testing-library` added as devDependencies in `@holmdigital/components`
+- [ ] **TI-02**: `_test/setup.ts` polyfills jsdom gaps (IntersectionObserver, ResizeObserver, matchMedia, `offsetParent`, `HTMLDialogElement.showModal`, `Element.animate`, `scrollIntoView`)
+- [ ] **TI-03**: `_test/axe.ts` centralises axe-core configuration with documented disables for jsdom-incompatible rules (`color-contrast`, `region`, `landmark-*`, `bypass`, `meta-viewport`, `document-title`, `html-has-lang`)
+- [ ] **TI-04**: Three reusable test helpers extracted: `expectNoAxeViolations`, `expectUniqueIds`, `expectKeyboardSequence`
+- [ ] **TI-05**: `TESTING-CONVENTIONS.md` documents the test grammar (Tier 1 / Tier 2 / Tier 3 / WCAG-SC traceability convention at top of each test file)
+- [ ] **TI-06**: SSR consumer audit — grep across all packages for `renderToStaticMarkup` / `renderToString` / `renderToPipeableStream` to confirm engine is the only SSR consumer; documented in PROJECT.md
+
+### Test Coverage — Priority 7
+
+- [ ] **TC-01**: `useFocusTrap.test.tsx` covers 5 scenarios (multiple focusables, `initialFocusRef`, Tab cycle, focus restore on unmount, no-focusables container) — must land BEFORE Modal tests
+- [ ] **TC-02**: Button test suite — Tier 1 + Tier 2 (loading state ARIA, disabled state, variants render, ref forwarding, axe-clean, keyboard activation)
+- [ ] **TC-03**: FormField test suite — label association, error/help text via `aria-describedby`, required state, axe-clean, ID uniqueness across multiple instances
+- [ ] **TC-04**: Modal test suite — focus trap engages on open and restores on close, Escape closes, click-outside behaviour, ARIA attributes, axe-clean
+- [ ] **TC-05**: Checkbox test suite — controlled/uncontrolled, `onCheckedChange`, indeterminate, keyboard (Space), label association, axe-clean
+- [ ] **TC-06**: RadioGroup test suite — Arrow-key roving tabindex, Space/Enter selection, controlled/uncontrolled, axe-clean
+- [ ] **TC-07**: ErrorSummary test suite — focusable headings, links resolve to fields, live-region announcement on update, axe-clean (regression-prevents the WCAG 3.3.1 failure the component exists to prevent)
+- [ ] **TC-08**: Tabs test suite — automatic vs manual activation modes, Arrow keys cycle, Home/End jump, ARIA `aria-selected`/`aria-controls`/`aria-labelledby`, axe-clean (establishes APG roving-tabindex test template for Phase C)
+
+### Test Coverage — Complex APG Widgets
+
+- [ ] **TC-09**: Combobox test suite — APG combobox pattern (`role="combobox"`, `aria-expanded`, `aria-controls`, `aria-activedescendant`), Arrow/Enter/Escape/type-ahead, live-region for results count, axe-clean
+- [ ] **TC-10**: DatePicker test suite — APG dialog grid pattern, keyboard date navigation, Escape closes, selected-date live-region announcement, axe-clean
+- [ ] **TC-11**: MultiSelect test suite — multi-selection state, Arrow/Space/Enter, removable chips with keyboard, live-region for count, axe-clean
+- [ ] **TC-12**: DataTable test suite — APG grid pattern (Arrow keys cell navigation, Home/End row, PageUp/PageDown), sortable column ARIA, axe-clean
+- [ ] **TC-13**: TreeView test suite — APG tree pattern (Arrow keys expand/collapse/navigate, Asterisk expands all siblings, type-ahead), axe-clean
+- [ ] **TC-14**: NavigationMenu test suite — APG menubar pattern (Arrow keys, Home/End, Enter activates, Escape closes submenu), axe-clean
+
+### Styling Migration
+
+- [ ] **STY-01**: `Tabs`, `Accordion`, `Breadcrumbs` migrated from Tailwind utility classes to inline-style + co-located CSS file pattern
+- [ ] **STY-02**: Each migrated component ships its own `.css` file as side-effect import; tsup CSS pipeline configured
+- [ ] **STY-03**: CSS custom properties define theming surface (`--hd-tabs-active-color`, `--hd-accordion-border` etc.) with inline fallbacks
+- [ ] **STY-04**: `:focus-visible` styling preserved (no JS-event-handler workarounds — would break WCAG 2.4.7)
+- [ ] **STY-05**: Regression-guard test in `src/index.test.ts` greps `dist/**/*.{js,mjs}` for Tailwind utility patterns inside `className=` and fails build if any leak
+- [ ] **STY-06**: Migrated components retain `className` as passthrough only; layout/visual classes removed
+
+### AccessibilityStatement Hygiene
+
+- [ ] **STMT-01**: All 14 locale `'2024-01-01'` `publishDate` fallbacks replaced with empty string + `[YOUR PUBLISH DATE]` placeholder pattern in `AccessibilityStatement.tsx`
+- [ ] **STMT-02**: Regression-guard test asserts no literal `2024-01-01` appears anywhere in component source
+- [ ] **STMT-03**: Regression-guard test asserts `country='US'` never produces empty `{<national_law>}` placeholder (covers the live US bug already fixed in commit 859f301)
+
+### Publish Hygiene
+
+- [ ] **PUB-01**: `publint --strict` and `attw --pack .` run as part of `verify` script in all three packages (`@holmdigital/standards`, `@holmdigital/components`, `@holmdigital/engine`)
+- [ ] **PUB-02**: `prepublishOnly` script gates `npm publish` behind `verify` — build, lint, type-check, tests, publint, attw must all pass
+- [ ] **PUB-03**: `packages/*/dist/` added to `.gitignore`; CI builds and publishes from a clean dist; `standards/dist/` drift in current `git status` resolved
+- [ ] **PUB-04**: Subpath exports `require` field gap closed — either add `require` to all 29 component subpaths OR document and configure as ESM-only (whichever publint accepts)
+- [ ] **PUB-05**: tsup entry replaced with glob exclusion (`src/index.ts`, `src/*/!(*.test|*.stories).{ts,tsx}`); CI guard greps `dist/**` for `vitest`, `@testing-library`, `describe(`, `it(` and fails if any test code leaks
+- [ ] **PUB-06**: lucide-react moved from `dependencies` to optional `peerDependencies` with text-glyph fallbacks (`▾`, `⚠`, `ℹ`) when not installed; documented in README
+
+## Future Requirements (added in v0.6 planning)
+
+- **TC-15**: Card, Skeleton, HelpText, Heading, ProgressBar, Pagination, SkipLink, Switch, Accordion test coverage (deferred to v0.7+ — failure modes are visible rather than silent)
+- **STY-07**: Audit remaining 26 components for inline-style consistency (variant/state object pattern)
+- **PUB-07**: Real-browser axe-core run for layout-dependent rules (deferred to v0.7+)
+- **PUB-08**: Automated visual regression (Chromatic / Playwright Component Testing) — blocked on Storybook esbuild upstream patch
+
+## Out of Scope (v0.6)
+
+| Feature | Reason |
+|---|---|
+| AccessibilityStatement refactor (1018 lines) | 131 existing tests cover prose; refactor is high-risk, low-ROI; STMT-02/03 add regression guards |
+| Engine package work | Separate package, future milestone |
+| Standards package work | Separate package, future milestone |
+| Storybook upgrade | Blocked on upstream esbuild patch |
+| New component additions | Quality-on-existing milestone, not surface expansion |
+| CSS-in-JS runtime libraries (vanilla-extract, panda) | Disproportionate tooling burden for 29 components |
+| shadcn-style copy-paste registry | Wrong distribution model for versioned compliance library |
+| Hard Tailwind peer dep | Setup-cost vs benefit ratio wrong for non-frontend-shop consumers |
+| Real-browser test runner | Defer to v0.7+ — jsdom + centralised axe disables sufficient for v0.6 |
+| Snapshot testing | Anti-pattern for prescriptive a11y library — encourages drift acceptance |
+
+## Traceability
+
+Updated during roadmap creation.
+
+| Requirement | Phase | Status |
+|-------------|-------|--------|
+| TI-01 | Phase 22 | Pending |
+| TI-02 | Phase 22 | Pending |
+| TI-03 | Phase 22 | Pending |
+| TI-04 | Phase 22 | Pending |
+| TI-05 | Phase 22 | Pending |
+| TI-06 | Phase 22 | Pending |
+| TC-01 | Phase 22 | Pending |
+| TC-02 | Phase 22 | Pending |
+| TC-03 | Phase 22 | Pending |
+| TC-04 | Phase 22 | Pending |
+| TC-05 | Phase 22 | Pending |
+| TC-06 | Phase 22 | Pending |
+| TC-07 | Phase 22 | Pending |
+| TC-08 | Phase 22 | Pending |
+| TC-09 | Phase 24 | Pending |
+| TC-10 | Phase 24 | Pending |
+| TC-11 | Phase 24 | Pending |
+| TC-12 | Phase 24 | Pending |
+| TC-13 | Phase 24 | Pending |
+| TC-14 | Phase 24 | Pending |
+| STY-01 | Phase 23 | Pending |
+| STY-02 | Phase 23 | Pending |
+| STY-03 | Phase 23 | Pending |
+| STY-04 | Phase 23 | Pending |
+| STY-05 | Phase 23 | Pending |
+| STY-06 | Phase 23 | Pending |
+| STMT-01 | Phase 25 | Pending |
+| STMT-02 | Phase 25 | Pending |
+| STMT-03 | Phase 25 | Pending |
+| PUB-01 | Phase 26 | Pending |
+| PUB-02 | Phase 26 | Pending |
+| PUB-03 | Phase 26 | Pending |
+| PUB-04 | Phase 26 | Pending |
+| PUB-05 | Phase 26 | Pending |
+| PUB-06 | Phase 26 | Pending |
+
+**Coverage:**
+- v0.6 requirements: 32 total
+- Mapped to phases: 32 ✓
+- Unmapped: 0 ✓
+
+---
+*Requirements defined: 2026-03-27 (v0.5)*
+*Last updated: 2026-05-10 — v0.6 roadmap created, all 32 requirements mapped to Phases 22–26*
