@@ -183,17 +183,29 @@ interface NationalLaw {
     effectiveDate: string;
     note?: string;
     complianceDeadlines?: {
-        largeEntity?: {
-            populationThreshold: number;
-            deadline: string;
-            description: string;
-        };
-        smallEntity?: {
-            populationThreshold: number;
-            deadline: string;
-            description: string;
-        };
+        largeEntity?: ComplianceDeadlineEntry;
+        smallEntity?: ComplianceDeadlineEntry;
     };
+    exemptions?: {
+        microbusiness?: MicrobusinessExemption;
+    };
+}
+type ComplianceDeadlineEntry = {
+    populationThreshold: number;
+    deadline: string;
+    description: string;
+} | {
+    employeeThreshold: number;
+    deadline: string;
+    description: string;
+};
+interface MicrobusinessExemption {
+    employeeThreshold: number;
+    revenueThreshold: number;
+    revenueCurrency: string;
+    appliesTo: 'services' | 'products' | 'both';
+    description: string;
+    legalBasis?: string;
 }
 
 declare const ENFORCEMENT_BODIES: Record<Country, string>;
