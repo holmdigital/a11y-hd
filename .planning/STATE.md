@@ -3,9 +3,9 @@ gsd_state_version: 1.0
 milestone: v0.5
 milestone_name: Australia Jurisdiction
 status: executing
-stopped_at: Phase 21 Plan 01 complete
-last_updated: "2026-03-27T03:08:00.000Z"
-last_activity: 2026-03-27 — Phase 21 Plan 01 executed
+stopped_at: Phase 22 Plan 03 complete (TI-05, TI-06, D-03a)
+last_updated: "2026-05-10T00:00:00.000Z"
+last_activity: 2026-05-10 — Phase 22 Plan 03 executed (conventions doc + WCAG header guard + SSR audit)
 progress:
   total_phases: 4
   completed_phases: 3
