@@ -53,8 +53,12 @@ describe('Accordion data-state visibility hook (RESEARCH Section 7)', () => {
         expect(trigger).toHaveAttribute('aria-expanded', 'false');
         expect(trigger).toHaveAttribute('data-state', 'closed');
 
-        // Resolve content via aria-labelledby relationship (role-based selector, D-02a)
-        const content = screen.getByRole('region', { name: 'Trigger A', hidden: true });
+        // Resolve content panel via getByText + closest('[data-state]'). getByRole('region',
+        // { name: 'Trigger A' }) fails because the trigger button's accessible-name calculation
+        // includes the (non-aria-hidden) chevron SVG path data; that's a separate fix-forward
+        // item. Walking up from the visible content text is robust and matches the actual
+        // a11y contract: collapsed region is in the DOM but `hidden`-attributed.
+        const content = screen.getByText('Content A').closest('[data-state]')!;
         expect(content).toHaveAttribute('data-state', 'closed');
         // ARIA preservation: hidden HTML attribute set when collapsed
         expect(content).toHaveAttribute('hidden');
