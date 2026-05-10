@@ -4,14 +4,14 @@ milestone: v0.6
 milestone_name: Components Quality
 status: executing
 stopped_at: v0.6 roadmap created (Phases 22-26)
-last_updated: "2026-05-10T16:54:54Z"
-last_activity: 2026-05-10 -- Phase 22 plan 01 complete (test infra TI-01 + TI-02)
+last_updated: "2026-05-10T17:03:20Z"
+last_activity: 2026-05-10 -- Phase 22 plan 02 complete (axe wrapper + helpers TI-03 + TI-04)
 progress:
   total_phases: 9
   completed_phases: 1
   total_plans: 10
-  completed_plans: 2
-  percent: 20
+  completed_plans: 3
+  percent: 30
 ---
 
 # Project State
@@ -26,9 +26,9 @@ See: .planning/PROJECT.md (updated 2026-05-10)
 ## Current Position
 
 Phase: 22 (test-infra-and-first-7-components) — EXECUTING
-Plan: 2 of 9 (Plan 01 complete: TI-01 + TI-02 test infra wired)
-Status: Executing Phase 22 — Wave 1 foundation landed, Wave 2 unblocked
-Last activity: 2026-05-10 -- Phase 22 plan 01 complete (test infra TI-01 + TI-02)
+Plan: 3 of 9 (Plans 01 + 02 complete: TI-01..04 — test infra + axe wrapper + helpers)
+Status: Executing Phase 22 — Wave 2 partly landed (22-02), 22-03 in parallel; component plans 22-04..09 unblocked once 22-03 completes
+Last activity: 2026-05-10 -- Phase 22 plan 02 complete (axe wrapper + helpers TI-03 + TI-04)
 
 ## Performance Metrics
 
@@ -71,6 +71,10 @@ Last activity: 2026-05-10 -- Phase 22 plan 01 complete (test infra TI-01 + TI-02
 
 - [Rule 1 - Bug] `@chialab/vitest-axe@0.19.1` exposes matchers as the default export of the main entry, not via the `./matchers` subpath (which ships types only). Imported via `import axeMatchers from '@chialab/vitest-axe'` in `src/_test/setup.ts`. Downstream plans should follow the same pattern.
 
+### Plan 22-02 deviations (logged 2026-05-10)
+
+- [Rule 1 - Bug] `@chialab/vitest-axe@0.19.1` ships ONLY the `toHaveNoViolations` matcher (default export) — it does NOT export `configureAxe` or `axe`. `_test/axe.ts` therefore calls `axe-core` directly (`axe.run` + `axe.configure`) and feeds the `AxeResults` into the package's matcher. Downstream plans that need axe should use the `expectNoAxeViolations` helper, never reach for `configureAxe` from `@chialab/vitest-axe`.
+
 ### Blockers/Concerns
 
 - Component dist rebuild needed before npm publish (carryover from v0.3 — addressed by Phase 26)
@@ -80,6 +84,6 @@ Last activity: 2026-05-10 -- Phase 22 plan 01 complete (test infra TI-01 + TI-02
 
 ## Session Continuity
 
-Last session: 2026-05-10T16:54:54Z
-Stopped at: Phase 22 Plan 01 complete (TI-01 + TI-02). Wave 2 (22-02..22-09) unblocked.
-Resume: `/gsd-execute-plan 22-02` (or next plan in Wave 2)
+Last session: 2026-05-10T17:03:20Z
+Stopped at: Phase 22 Plan 02 complete (TI-03 + TI-04 — axe wrapper + helpers + meta-tests). Plan 22-03 runs in parallel; component plans 22-04..09 unblock when 22-03 completes.
+Resume: `/gsd-execute-plan 22-03` (or next plan in Wave 2)
