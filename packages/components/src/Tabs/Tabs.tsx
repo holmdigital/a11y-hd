@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useRef, ReactNode, KeyboardEvent } from 'react';
+import React, { createContext, useContext, useState, useRef, useId, ReactNode, KeyboardEvent } from 'react';
 
 // --- Context ---
 interface TabsContextType {
@@ -32,8 +32,9 @@ export const Tabs = ({
     children,
     className
 }: TabsProps) => {
-    // Generate a stable base ID for aria connections
-    const [baseId] = useState(() => Math.random().toString(36).substr(2, 9));
+    // Stable base ID for aria connections — useId() is SSR-safe (Math.random
+    // would cause hydration mismatches between server and client output).
+    const baseId = useId();
 
     // Controlled vs Uncontrolled state
     const [internalValue, setInternalValue] = useState(defaultValue || '');
