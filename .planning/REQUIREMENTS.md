@@ -184,22 +184,16 @@ Updated during roadmap creation.
 |-------------|-------|--------|
 | TI-01 | Phase 22 (22-01) | Complete (2026-05-10) |
 | TI-02 | Phase 22 (22-01) | Complete (2026-05-10) |
-| TI-03 | Phase 22 | Pending |
-| TI-04 | Phase 22 | Pending |
-| TI-05 | Phase 22 | Pending |
-| TI-06 | Phase 22 | Pending |
-| TC-01 | Phase 22 | Pending |
-| TC-02 | Phase 22 | Pending |
-| TC-03 | Phase 22 | Pending |
-<<<<<<< HEAD
-| TC-04 | Phase 22 | Pending |
-| TC-05 | Phase 22 | Complete (Plan 22-06, 2026-05-10) |
-| TC-06 | Phase 22 | Complete (Plan 22-06, 2026-05-10) |
-=======
-| TC-04 | Phase 22 | Complete (22-08) |
-| TC-05 | Phase 22 | Pending |
-| TC-06 | Phase 22 | Pending |
->>>>>>> worktree-agent-a3a6b339f0c8efed8
+| TI-03 | Phase 22 (22-02) | Complete (2026-05-10) |
+| TI-04 | Phase 22 (22-02) | Complete (2026-05-10) |
+| TI-05 | Phase 22 (22-03) | Complete (2026-05-10) |
+| TI-06 | Phase 22 (22-03) | Complete (2026-05-10) |
+| TC-01 | Phase 22 (22-04) | Complete (2026-05-10) |
+| TC-02 | Phase 22 (22-05) | Complete (2026-05-10) |
+| TC-03 | Phase 22 (22-07) | Complete (2026-05-10) |
+| TC-04 | Phase 22 (22-08) | Complete (2026-05-10) |
+| TC-05 | Phase 22 (22-06) | Complete (2026-05-10) |
+| TC-06 | Phase 22 (22-06) | Complete (2026-05-10) |
 | TC-07 | Phase 22 | Pending |
 | TC-08 | Phase 22 | Pending |
 | TC-09 | Phase 24 | Pending |
