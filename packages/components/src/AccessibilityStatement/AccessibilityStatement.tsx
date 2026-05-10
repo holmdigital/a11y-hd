@@ -428,6 +428,26 @@ export const AccessibilityStatement: React.FC<AccessibilityStatementProps> = ({
         '{<third party>}': generatorTool?.name || 'HolmDigital Engine',
         '{<enforcement_body>}': enforcementBody,
         '{<national_law>}': (() => {
+            // US has two ADA laws split by scope (Title II public / Title III private),
+            // Section 508 as parallel federal-agency framework, and HHS Section 504
+            // (REHAB) for HHS-funded private organisations. Mirrors engine's
+            // statement-generator.ts US branch.
+            if (country === 'US') {
+                const usLaws = getNationalLaws('US');
+                const adaLaw = usLaws.find(l => l.euFramework === 'ADA' && l.scope === sector);
+                if (adaLaw) {
+                    if (sector === 'public') {
+                        const s508 = usLaws.find(l => l.id === 'us-508');
+                        return s508
+                            ? `${adaLaw.fullName} (${adaLaw.law}) & ${s508.fullName} (${s508.law})`
+                            : `${adaLaw.fullName} (${adaLaw.law})`;
+                    }
+                    const hhs504 = usLaws.find(l => l.euFramework === 'REHAB' && l.scope === 'private');
+                    return hhs504
+                        ? `${adaLaw.fullName} (${adaLaw.law}) & ${hhs504.fullName} (${hhs504.law})`
+                        : `${adaLaw.fullName} (${adaLaw.law})`;
+                }
+            }
             const law = getNationalLawByFramework(sector === 'private' ? 'EAA' : 'WAD', country)
                      ?? getNationalLawByFramework('DDA', country);
             return law ? `${law.fullName} (${law.law})` : '';
