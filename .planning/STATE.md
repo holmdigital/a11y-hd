@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v0.6
 milestone_name: Components Quality
 status: executing
-stopped_at: Phase 22 Plan 04 complete (TC-01 useFocusTrap test) — PR #1 ready (7 atomic commits)
+stopped_at: Phase 22 Plan 05 complete (TC-02 Button.test.tsx — template-setter for Wave 2)
 last_updated: "2026-05-10T19:15:00Z"
-last_activity: 2026-05-10 — Phase 22 Plan 04 complete (TC-01: useFocusTrap.test.tsx with 5 APG scenarios)
+last_activity: 2026-05-10 — Phase 22 Plan 05 complete (TC-02: Button.test.tsx, 19 tests, template-setter for Plans 06–09)
 progress:
   total_phases: 9
   completed_phases: 1
   total_plans: 10
-  completed_plans: 4
-  percent: 40
+  completed_plans: 5
+  percent: 50
 ---
 
 # Project State
@@ -26,9 +26,9 @@ See: .planning/PROJECT.md (updated 2026-05-10)
 ## Current Position
 
 Phase: 22 (test-infra-and-first-7-components) — EXECUTING
-Plan: 4 of 9 complete (Plans 01 + 02 + 03 + 04: TI-01..06 + TC-01 — full PR #1 scope landed)
-Status: Executing Phase 22 — PR #1 ready to open (7 atomic commits). PR #2 territory (TC-02..08, Plans 22-05..09) unblocked.
-Last activity: 2026-05-10 -- Phase 22 plan 04 complete (TC-01: useFocusTrap.test.tsx, 5 APG scenarios, 6 tests passing)
+Plan: 5 of 9 complete (Plans 01 + 02 + 03 + 04 + 05: TI-01..06 + TC-01 + TC-02 — Button template-setter landed)
+Status: Executing Phase 22 — PR #1 ready (7 atomic commits). PR #2 in flight: Plan 05 (Button) done; Plans 06–09 (Checkbox, RadioGroup, FormField, Modal, ErrorSummary, Tabs) mirror Button.test.tsx structure.
+Last activity: 2026-05-10 -- Phase 22 plan 05 complete (TC-02: Button.test.tsx, 19 tests, template established for Plans 06–09)
 
 ## Performance Metrics
 
@@ -79,6 +79,10 @@ Last activity: 2026-05-10 -- Phase 22 plan 04 complete (TC-01: useFocusTrap.test
 
 - None. Planner's harness shape and 5-scenario list executed verbatim. Hook contract held under jsdom thanks to the offsetParent polyfill (Plan 22-01). Scenario 3 (Tab cycle) used native `KeyboardEvent` dispatch per PITFALLS §3.3 because the hook attaches a raw keydown listener and reads `document.activeElement` synchronously — documented inline in the test file.
 
+### Plan 22-05 deviations (logged 2026-05-10)
+
+- [Rule 1 - Bug] Initial draft of `Button.test.tsx` used `container.querySelectorAll('[aria-hidden="true"]')` in the spinner-glyph test. Refactored to `btn.firstElementChild + toHaveAttribute('aria-hidden', 'true')` to satisfy the D-02a anti-pattern grep gate (querySelector count must be 0). Same coverage, no DOM reach. Pattern guidance for Plans 06–09: never `querySelector` — query by role then walk via `firstElementChild` / `children` if you need to inspect a hidden glyph or icon.
+
 ### Blockers/Concerns
 
 - Component dist rebuild needed before npm publish (carryover from v0.3 — addressed by Phase 26)
@@ -89,5 +93,5 @@ Last activity: 2026-05-10 -- Phase 22 plan 04 complete (TC-01: useFocusTrap.test
 ## Session Continuity
 
 Last session: 2026-05-10T19:15:00Z
-Stopped at: Phase 22 Plan 04 complete (TC-01 — useFocusTrap.test.tsx, 5 APG scenarios). PR #1 ready to open with 7 atomic commits (TI-01..06 + TC-01). Component plans 22-05..09 (TC-02..08) unblocked.
-Resume: `/gsd-execute-plan 22-05` (or open PR #1 first)
+Stopped at: Phase 22 Plan 05 complete (TC-02 — Button.test.tsx, 19 tests, template-setter for Wave 2). Plans 06–09 (Checkbox, RadioGroup, FormField, Modal, ErrorSummary, Tabs) ready to mirror Button.test.tsx file shape.
+Resume: `/gsd-execute-plan 22-06`
