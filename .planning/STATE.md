@@ -3,9 +3,9 @@ gsd_state_version: 1.0
 milestone: v0.6
 milestone_name: Components Quality
 status: executing
-stopped_at: v0.6 roadmap created (Phases 22-26)
-last_updated: "2026-05-10T17:03:20Z"
-last_activity: 2026-05-10 -- Phase 22 plan 02 complete (axe wrapper + helpers TI-03 + TI-04)
+stopped_at: Phase 22 Wave 2 complete (Plans 02 + 03)
+last_updated: "2026-05-10T17:10:00Z"
+last_activity: 2026-05-10 — Phase 22 Wave 2 complete (Plan 02 axe+helpers, Plan 03 conventions+guard+SSR audit)
 progress:
   total_phases: 9
   completed_phases: 1

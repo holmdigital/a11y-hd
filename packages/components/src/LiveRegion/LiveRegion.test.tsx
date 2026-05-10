@@ -1,4 +1,9 @@
 // @vitest-environment jsdom
+/**
+ * WCAG SCs covered:
+ * - 4.1.3 Status Messages — aria-live region announcement contract
+ * - 4.1.2 Name, Role, Value — aria-live, aria-atomic, role attributes
+ */
 import { render, act } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { LiveRegion } from './LiveRegion';

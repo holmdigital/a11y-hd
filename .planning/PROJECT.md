@@ -135,5 +135,29 @@ This document evolves at phase transitions and milestone boundaries.
 3. Audit Out of Scope — reasons still valid?
 4. Update Context with current state
 
+## SSR Consumer Audit (Phase 22 / TI-06)
+
+**Audit date:** 2026-05-10
+
+**Command run:**
+
+```bash
+grep -rn -E "renderToStaticMarkup|renderToString|renderToPipeableStream|renderToReadableStream" packages/ apps/ \
+  --include="*.ts" --include="*.tsx" --include="*.mts" --include="*.cts" --include="*.js" --include="*.mjs"
+```
+
+**Matches (source files only; `dist/` build artefacts excluded):**
+
+- `packages/engine/src/reporting/statement-generator.ts:2` — `import { renderToStaticMarkup } from 'react-dom/server';`
+- `packages/engine/src/reporting/statement-generator.ts:218` — `const markup = renderToStaticMarkup(element);`
+
+No matches outside `packages/engine/src/`. No occurrences of `renderToString`, `renderToPipeableStream`, or `renderToReadableStream` anywhere in the repo.
+
+**Note on plan reference:** The plan's frontmatter cited `packages/engine/src/reporting/html-template.ts` as the known SSR consumer. The actual consumer is `statement-generator.ts` (which calls `renderToStaticMarkup` to materialise the `AccessibilityStatement` React component into HTML). `html-template.ts` builds report HTML via template-literal string concatenation, not React SSR. The conclusion (engine package is the sole SSR consumer of `@holmdigital/components`) is unchanged.
+
+**Conclusion:** The engine package (`packages/engine/src/reporting/statement-generator.ts`) is the **only** SSR consumer of `@holmdigital/components`. No application or other package renders components via `react-dom/server`.
+
+**Implication for Phase 23 styling unification:** This finding **confirms** the styling-strategy assumption (CONTEXT D-Styling). A CSS-file-per-component side-effect import (`import './Button.css'`) is SSR-safe in this codebase: the only SSR path is engine's `renderToStaticMarkup` call, which executes inside a Node process where bundler resolution of CSS side-effect imports is handled at engine build time, not at SSR time. Phase 23 may proceed with the file-per-component CSS strategy without further audit.
+
 ---
-*Last updated: 2026-05-10 — v0.6 Components Quality milestone started*
+*Last updated: 2026-05-10 — Phase 22 Wave 2 (v0.6 milestone, SSR consumer audit recorded TI-06)*
