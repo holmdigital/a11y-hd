@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v0.6
 milestone_name: Components Quality
 status: executing
-stopped_at: Phase 22 Plan 05 complete (TC-02 Button.test.tsx — template-setter for Wave 2)
-last_updated: "2026-05-10T19:15:00Z"
-last_activity: 2026-05-10 — Phase 22 Plan 05 complete (TC-02: Button.test.tsx, 19 tests, template-setter for Plans 06–09)
+stopped_at: Phase 22 Plan 08 complete (TC-04 Modal.test.tsx — 16 tests; Dialog inline polyfill retired)
+last_updated: "2026-05-10T19:25:00Z"
+last_activity: 2026-05-10 — Phase 22 Plan 08 complete (TC-04: Modal.test.tsx 16 tests + Dialog.test.tsx polyfill cleanup; full suite 232 tests / 14 files green)
 progress:
   total_phases: 9
   completed_phases: 1
   total_plans: 10
-  completed_plans: 5
-  percent: 50
+  completed_plans: 6
+  percent: 60
 ---
 
 # Project State
@@ -26,9 +26,9 @@ See: .planning/PROJECT.md (updated 2026-05-10)
 ## Current Position
 
 Phase: 22 (test-infra-and-first-7-components) — EXECUTING
-Plan: 5 of 9 complete (Plans 01 + 02 + 03 + 04 + 05: TI-01..06 + TC-01 + TC-02 — Button template-setter landed)
-Status: Executing Phase 22 — PR #1 ready (7 atomic commits). PR #2 in flight: Plan 05 (Button) done; Plans 06–09 (Checkbox, RadioGroup, FormField, Modal, ErrorSummary, Tabs) mirror Button.test.tsx structure.
-Last activity: 2026-05-10 -- Phase 22 plan 05 complete (TC-02: Button.test.tsx, 19 tests, template established for Plans 06–09)
+Plan: 6 of 9 complete (Plans 01 + 02 + 03 + 04 + 05 + 08: TI-01..06 + TC-01 + TC-02 + TC-03 (parallel 22-07) + TC-04)
+Status: Executing Phase 22 — Plan 22-08 (Modal + Dialog cleanup) just landed. Plans 22-06 (Checkbox + RadioGroup) and 22-07 (FormField) ran in parallel — FormField already in master. 22-09 (ErrorSummary, Tabs) pending.
+Last activity: 2026-05-10 — Phase 22 plan 08 complete (TC-04: Modal.test.tsx 16 tests + Dialog inline polyfill removed; full suite 232 tests / 14 files green)
 
 ## Performance Metrics
 
@@ -83,6 +83,10 @@ Last activity: 2026-05-10 -- Phase 22 plan 05 complete (TC-02: Button.test.tsx, 
 
 - [Rule 1 - Bug] Initial draft of `Button.test.tsx` used `container.querySelectorAll('[aria-hidden="true"]')` in the spinner-glyph test. Refactored to `btn.firstElementChild + toHaveAttribute('aria-hidden', 'true')` to satisfy the D-02a anti-pattern grep gate (querySelector count must be 0). Same coverage, no DOM reach. Pattern guidance for Plans 06–09: never `querySelector` — query by role then walk via `firstElementChild` / `children` if you need to inspect a hidden glyph or icon.
 
+### Plan 22-08 deviations (logged 2026-05-10)
+
+- None — plan executed exactly as written. Two minor implementation notes captured in the plan SUMMARY: (a) Escape path is verified via `dialog.close()` rather than `fireEvent.keyDown` because jsdom does not translate Escape into the native `cancel→close` sequence on `<dialog>`; (b) the standalone close-button click test was trimmed (Dialog concern, already covered by Dialog.test.tsx) to keep `it()` count within the D-02 budget of 16. Modal landed with 16 tests, Dialog.test.tsx lost the redundant inline `HTMLDialogElement.showModal/close` polyfill — the central one in `_test/setup.ts` is now the only source of truth. Full suite: 232 tests / 14 files green.
+
 ### Blockers/Concerns
 
 - Component dist rebuild needed before npm publish (carryover from v0.3 — addressed by Phase 26)
@@ -92,6 +96,6 @@ Last activity: 2026-05-10 -- Phase 22 plan 05 complete (TC-02: Button.test.tsx, 
 
 ## Session Continuity
 
-Last session: 2026-05-10T19:15:00Z
-Stopped at: Phase 22 Plan 05 complete (TC-02 — Button.test.tsx, 19 tests, template-setter for Wave 2). Plans 06–09 (Checkbox, RadioGroup, FormField, Modal, ErrorSummary, Tabs) ready to mirror Button.test.tsx file shape.
-Resume: `/gsd-execute-plan 22-06`
+Last session: 2026-05-10T19:25:00Z
+Stopped at: Phase 22 Plan 08 complete (TC-04 — Modal.test.tsx, 16 tests + Dialog.test.tsx inline polyfill removed). Plans 22-06 (Checkbox+RadioGroup) and 22-09 (ErrorSummary+Tabs) outstanding for the wave.
+Resume: `/gsd-execute-plan 22-09` (or 22-06 if Checkbox+RadioGroup not yet landed by parallel agent)

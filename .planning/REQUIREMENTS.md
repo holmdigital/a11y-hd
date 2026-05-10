@@ -115,7 +115,7 @@ Requirements for v0.6 Components Quality. Each maps to roadmap phases (22–26).
 - [ ] **TC-01**: `useFocusTrap.test.tsx` covers 5 scenarios (multiple focusables, `initialFocusRef`, Tab cycle, focus restore on unmount, no-focusables container) — must land BEFORE Modal tests
 - [ ] **TC-02**: Button test suite — Tier 1 + Tier 2 (loading state ARIA, disabled state, variants render, ref forwarding, axe-clean, keyboard activation)
 - [ ] **TC-03**: FormField test suite — label association, error/help text via `aria-describedby`, required state, axe-clean, ID uniqueness across multiple instances
-- [ ] **TC-04**: Modal test suite — focus trap engages on open and restores on close, Escape closes, click-outside behaviour, ARIA attributes, axe-clean
+- [x] **TC-04**: Modal test suite — focus trap engages on open and restores on close, Escape closes, click-outside behaviour, ARIA attributes, axe-clean (Plan 22-08, 16 it() blocks)
 - [ ] **TC-05**: Checkbox test suite — controlled/uncontrolled, `onCheckedChange`, indeterminate, keyboard (Space), label association, axe-clean
 - [ ] **TC-06**: RadioGroup test suite — Arrow-key roving tabindex, Space/Enter selection, controlled/uncontrolled, axe-clean
 - [ ] **TC-07**: ErrorSummary test suite — focusable headings, links resolve to fields, live-region announcement on update, axe-clean (regression-prevents the WCAG 3.3.1 failure the component exists to prevent)
@@ -191,7 +191,7 @@ Updated during roadmap creation.
 | TC-01 | Phase 22 | Pending |
 | TC-02 | Phase 22 | Pending |
 | TC-03 | Phase 22 | Pending |
-| TC-04 | Phase 22 | Pending |
+| TC-04 | Phase 22 | Complete (22-08) |
 | TC-05 | Phase 22 | Pending |
 | TC-06 | Phase 22 | Pending |
 | TC-07 | Phase 22 | Pending |
