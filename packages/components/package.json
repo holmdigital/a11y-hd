@@ -16,6 +16,9 @@
     "main": "./dist/index.js",
     "module": "./dist/index.mjs",
     "types": "./dist/index.d.ts",
+    "sideEffects": [
+        "**/*.css"
+    ],
     "exports": {
         ".": {
             "types": "./dist/index.d.ts",
@@ -118,10 +121,12 @@
             "types": "./dist/Tabs/Tabs.d.ts",
             "import": "./dist/Tabs/Tabs.mjs"
         },
+        "./Tabs.css": "./dist/Tabs/Tabs.css",
         "./Accordion": {
             "types": "./dist/Accordion/Accordion.d.ts",
             "import": "./dist/Accordion/Accordion.mjs"
         },
+        "./Accordion.css": "./dist/Accordion/Accordion.css",
         "./ProgressBar": {
             "types": "./dist/ProgressBar/ProgressBar.d.ts",
             "import": "./dist/ProgressBar/ProgressBar.mjs"
@@ -137,7 +142,8 @@
         "./Breadcrumbs": {
             "types": "./dist/Breadcrumbs/Breadcrumbs.d.ts",
             "import": "./dist/Breadcrumbs/Breadcrumbs.mjs"
-        }
+        },
+        "./Breadcrumbs.css": "./dist/Breadcrumbs/Breadcrumbs.css"
     },
     "files": [
         "dist",
@@ -145,9 +151,10 @@
         "LICENSE"
     ],
     "scripts": {
-        "build": "tsup src/index.ts src/Button/Button.tsx src/FormField/FormField.tsx src/Dialog/Dialog.tsx src/Modal/Modal.tsx src/SkipLink/SkipLink.tsx src/NavigationMenu/NavigationMenu.tsx src/Checkbox/Checkbox.tsx src/RadioGroup/RadioGroup.tsx src/Select/Select.tsx src/Switch/Switch.tsx src/Toast/Toast.tsx src/Tooltip/Tooltip.tsx src/Heading/Heading.tsx src/AccessibilityStatement/AccessibilityStatement.tsx src/ErrorSummary/ErrorSummary.tsx src/Combobox/Combobox.tsx src/DatePicker/DatePicker.tsx src/MultiSelect/MultiSelect.tsx src/DataTable/DataTable.tsx src/Pagination/Pagination.tsx src/Card/Card.tsx src/TreeView/TreeView.tsx src/LiveRegion/LiveRegion.tsx src/Tabs/Tabs.tsx src/Accordion/Accordion.tsx src/ProgressBar/ProgressBar.tsx src/Skeleton/Skeleton.tsx src/HelpText/HelpText.tsx src/Breadcrumbs/Breadcrumbs.tsx --format cjs,esm --dts --clean --external react --external @holmdigital/standards",
-        "dev": "tsup src/index.ts src/Button/Button.tsx src/FormField/FormField.tsx src/Dialog/Dialog.tsx src/Modal/Modal.tsx src/SkipLink/SkipLink.tsx src/NavigationMenu/NavigationMenu.tsx src/Checkbox/Checkbox.tsx src/RadioGroup/RadioGroup.tsx src/Select/Select.tsx src/Switch/Switch.tsx src/Toast/Toast.tsx src/Tooltip/Tooltip.tsx src/Heading/Heading.tsx src/AccessibilityStatement/AccessibilityStatement.tsx src/ErrorSummary/ErrorSummary.tsx src/Combobox/Combobox.tsx src/DatePicker/DatePicker.tsx src/MultiSelect/MultiSelect.tsx src/DataTable/DataTable.tsx src/Pagination/Pagination.tsx src/Card/Card.tsx src/TreeView/TreeView.tsx src/LiveRegion/LiveRegion.tsx src/Tabs/Tabs.tsx src/Accordion/Accordion.tsx src/ProgressBar/ProgressBar.tsx src/Skeleton/Skeleton.tsx src/HelpText/HelpText.tsx src/Breadcrumbs/Breadcrumbs.tsx --format cjs,esm --dts --watch --external react --external @holmdigital/standards",
+        "build": "tsup",
+        "dev": "tsup --watch",
         "lint": "eslint src --ext .ts,.tsx",
+        "check:no-tailwind-leak": "node scripts/check-no-tailwind-leak.mjs",
         "test": "vitest",
         "test:ci": "vitest run && npm run test:wcag-headers",
         "test:wcag-headers": "node scripts/check-wcag-headers.mjs",
