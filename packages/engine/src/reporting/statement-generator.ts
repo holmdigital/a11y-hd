@@ -202,8 +202,10 @@ export async function generateStatementContent(
             url: 'https://holmdigital.se'
         },
         logoUrl,
-        contactEmail: metadata?.contactEmail || 'hej@holmdigital.se',
-        phoneNumber: metadata?.phoneNumber || '070-123 45 67',
+        // Placeholders make it obvious the consumer must supply real contact info.
+        // Previous fallback leaked HolmDigital's own contact details into customer statements.
+        contactEmail: metadata?.contactEmail || '[YOUR EMAIL]',
+        phoneNumber: metadata?.phoneNumber || '[YOUR PHONE]',
         responseTime: metadata?.responseTime || RESPONSE_TIME_DEFAULT[lang] || RESPONSE_TIME_DEFAULT['en'],
         nonComplianceItems,
         locale: lang,
