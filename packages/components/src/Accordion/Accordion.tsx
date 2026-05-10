@@ -1,14 +1,39 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react';
+import './Accordion.css';
 
+/**
+ * Accordion — accessible expandable-content interface.
+ *
+ * Theming (CSS custom properties; override at :root or component scope):
+ *   --hd-accordion-border             (default: #e2e8f0)
+ *   --hd-accordion-trigger-color      (default: #0f172a)
+ *   --hd-accordion-trigger-bg         (default: #ffffff)
+ *   --hd-accordion-hover-bg           (default: #f8fafc)
+ *   --hd-accordion-focus-ring         (default: #3b82f6)
+ *   --hd-accordion-chevron-color      (default: #64748b)
+ *   --hd-accordion-content-color      (default: #475569)
+ *   --hd-accordion-content-bg         (default: #ffffff)
+ *   --hd-accordion-content-border     (default: #f1f5f9)
+ *
+ * Visibility hook: AccordionContent uses BOTH the native `hidden` HTML attribute
+ * (assistive-tech semantics) AND `data-state="open"|"closed"` (CSS styling hook).
+ * The CSS rule `[data-state="closed"] { display: none }` controls visual presence;
+ * ARIA `aria-expanded` + `hidden` remain intact.
+ *
+ * CSS imported as a side effect; consumers' bundlers must honor
+ * `"sideEffects": ["**\/*.css"]`. Explicit fallback:
+ * `import '@holmdigital/components/Accordion.css';`.
+ */
 
-// We will use inline SVG for the chevron to avoid dependencies, just like Breadcrumbs.
-const ChevronIcon = ({ className }: { className?: string }) => (
+// Inline SVG chevron — no icon-library dependency (matches Breadcrumbs convention).
+const ChevronIcon = ({ className, style }: { className?: string; style?: React.CSSProperties }) => (
     <svg
         xmlns="http://www.w3.org/2000/svg"
         width="24" height="24" viewBox="0 0 24 24"
         fill="none" stroke="currentColor" strokeWidth="2"
         strokeLinecap="round" strokeLinejoin="round"
         className={className}
+        style={style}
     >
         <path d="m6 9 6 6 6-6" />
     </svg>
@@ -48,7 +73,7 @@ export const Accordion = ({ type = 'single', defaultValue, children, className }
 
     return (
         <AccordionContext.Provider value={{ openItems, toggleItem }}>
-            <div className={`space-y-1 ${className || ''}`}>
+            <div className={`hd-accordion${className ? ' ' + className : ''}`}>
                 {children}
             </div>
         </AccordionContext.Provider>
@@ -68,7 +93,7 @@ export const AccordionItem = ({ value, children, className }: AccordionItemProps
     const isOpen = context.openItems.includes(value);
 
     return (
-        <div className={`border border-slate-200 rounded-lg overflow-hidden ${className || ''}`}>
+        <div className={`hd-accordion__item${className ? ' ' + className : ''}`}>
             {React.Children.map(children, child => {
                 if (React.isValidElement(child)) {
                     return React.cloneElement(child, {
@@ -95,15 +120,19 @@ export const AccordionTrigger = ({ children, className, value, isOpen, ...props 
     return (
         <button
             type="button"
-            className={`w-full flex items-center justify-between px-4 py-3 text-left font-medium text-slate-900 bg-white hover:bg-slate-50 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-inset ${className || ''}`}
+            className={`hd-accordion__trigger${className ? ' ' + className : ''}`}
             onClick={() => value && context?.toggleItem(value)}
             aria-expanded={isOpen}
             aria-controls={`accordion-content-${value}`}
             id={`accordion-trigger-${value}`}
+            data-state={isOpen ? 'open' : 'closed'}
             {...props}
         >
             {children}
-            <ChevronIcon className={`h-4 w-4 text-slate-500 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} />
+            <ChevronIcon
+                className="hd-accordion__chevron"
+                style={{ transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)' }}
+            />
         </button>
     );
 };
@@ -122,7 +151,8 @@ export const AccordionContent = ({ children, className, value, isOpen }: Accordi
             role="region"
             aria-labelledby={`accordion-trigger-${value}`}
             hidden={!isOpen}
-            className={`px-4 py-3 bg-white text-slate-600 border-t border-slate-100 text-sm leading-relaxed ${!isOpen ? 'hidden' : ''} ${className || ''}`}
+            data-state={isOpen ? 'open' : 'closed'}
+            className={`hd-accordion__content${className ? ' ' + className : ''}`}
         >
             {children}
         </div>
