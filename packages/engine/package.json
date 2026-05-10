@@ -61,7 +61,7 @@
     "license": "MIT",
     "dependencies": {
         "@holmdigital/components": "^2.3.0",
-        "@holmdigital/standards": "*",
+        "@holmdigital/standards": "^2.5.0",
         "axe-core": "^4.11.1",
         "chalk": "^5.3.0",
         "commander": "^12.1.0",
