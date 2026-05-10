@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v0.6
 milestone_name: Components Quality
-status: planning
-stopped_at: roadmap created — awaiting Phase 22 plan
-last_updated: "2026-05-10T00:00:00.000Z"
-last_activity: 2026-05-10 — v0.6 roadmap created (Phases 22-26, 32 requirements mapped)
+status: executing
+stopped_at: v0.6 roadmap created (Phases 22-26)
+last_updated: "2026-05-10T16:54:54Z"
+last_activity: 2026-05-10 -- Phase 22 plan 01 complete (test infra TI-01 + TI-02)
 progress:
-  total_phases: 5
-  completed_phases: 0
-  total_plans: 0
-  completed_plans: 0
-  percent: 0
+  total_phases: 9
+  completed_phases: 1
+  total_plans: 10
+  completed_plans: 2
+  percent: 20
 ---
 
 # Project State
@@ -21,18 +21,19 @@ progress:
 See: .planning/PROJECT.md (updated 2026-05-10)
 
 **Core value:** The type system and tests must catch bugs before users do — no `as any` escape hatches in core paths, no silent wrong behavior.
-**Current focus:** v0.6 Components Quality — roadmap done, planning Phase 22 next
+**Current focus:** Phase 22 — test-infra-and-first-7-components
 
 ## Current Position
 
-Phase: 22 (Test Infrastructure + First-7 Components) — not started
-Plan: —
-Status: Roadmap complete, ready for `/gsd-plan-phase 22`
-Last activity: 2026-05-10 — v0.6 roadmap created (Phases 22-26)
+Phase: 22 (test-infra-and-first-7-components) — EXECUTING
+Plan: 2 of 9 (Plan 01 complete: TI-01 + TI-02 test infra wired)
+Status: Executing Phase 22 — Wave 1 foundation landed, Wave 2 unblocked
+Last activity: 2026-05-10 -- Phase 22 plan 01 complete (test infra TI-01 + TI-02)
 
 ## Performance Metrics
 
 **Prior milestones:**
+
 - v0.1: 5 phases, 9 plans, 20 commits
 - v0.2: 5 phases, 8 plans, 25 commits
 - v0.3: 3 phases, 4 plans, 13 commits (same-day ship)
@@ -40,6 +41,7 @@ Last activity: 2026-05-10 — v0.6 roadmap created (Phases 22-26)
 - v0.5: 4 phases, 4 plans (Australia jurisdiction)
 
 **v0.6 plan:**
+
 - 5 phases (22-26), 0 plans drafted yet
 - 32 requirements mapped (TI: 6, TC: 14, STY: 6, STMT: 3, PUB: 6)
 - Phases 22, 23, 25 can run in parallel; 24 depends on 22; 26 runs last
@@ -51,6 +53,7 @@ Last activity: 2026-05-10 — v0.6 roadmap created (Phases 22-26)
 **Prior milestone decisions logged in PROJECT.md Key Decisions table.**
 
 **v0.6 locked decisions (from research synthesis + user sign-off):**
+
 - Styling pattern: CSS-file-per-component side-effect import (rejects JS event-handler approach which would break `:focus-visible`)
 - Theming: CSS custom properties with inline-style fallbacks
 - Dist policy: stop committing `packages/*/dist/`; CI builds for publish
@@ -61,8 +64,12 @@ Last activity: 2026-05-10 — v0.6 roadmap created (Phases 22-26)
 
 ### Pending Todos
 
-- `/gsd-plan-phase 22` to draft the test-infra + first-7 plan
 - Confirm SSR audit result during Phase 22 execution and update PROJECT.md
+- Address pre-existing TS2503 in `packages/components/src/LiveRegion/LiveRegion.tsx:37` (deferred from 22-01 — see `.planning/phases/22-test-infra-and-first-7-components/deferred-items.md`); fold into 22-09 or Phase 26.
+
+### Plan 22-01 deviations (logged 2026-05-10)
+
+- [Rule 1 - Bug] `@chialab/vitest-axe@0.19.1` exposes matchers as the default export of the main entry, not via the `./matchers` subpath (which ships types only). Imported via `import axeMatchers from '@chialab/vitest-axe'` in `src/_test/setup.ts`. Downstream plans should follow the same pattern.
 
 ### Blockers/Concerns
 
@@ -73,6 +80,6 @@ Last activity: 2026-05-10 — v0.6 roadmap created (Phases 22-26)
 
 ## Session Continuity
 
-Last session: 2026-05-10T00:00:00.000Z
-Stopped at: v0.6 roadmap created (Phases 22-26)
-Resume: `/gsd-plan-phase 22`
+Last session: 2026-05-10T16:54:54Z
+Stopped at: Phase 22 Plan 01 complete (TI-01 + TI-02). Wave 2 (22-02..22-09) unblocked.
+Resume: `/gsd-execute-plan 22-02` (or next plan in Wave 2)

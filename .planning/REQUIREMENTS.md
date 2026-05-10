@@ -103,8 +103,8 @@ Requirements for v0.6 Components Quality. Each maps to roadmap phases (22–26).
 
 ### Test Infrastructure
 
-- [ ] **TI-01**: `@chialab/vitest-axe`, `@testing-library/user-event`, `@testing-library/jest-dom`, `eslint-plugin-testing-library` added as devDependencies in `@holmdigital/components`
-- [ ] **TI-02**: `_test/setup.ts` polyfills jsdom gaps (IntersectionObserver, ResizeObserver, matchMedia, `offsetParent`, `HTMLDialogElement.showModal`, `Element.animate`, `scrollIntoView`)
+- [x] **TI-01**: `@chialab/vitest-axe`, `@testing-library/user-event`, `@testing-library/jest-dom`, `eslint-plugin-testing-library` added as devDependencies in `@holmdigital/components`
+- [x] **TI-02**: `_test/setup.ts` polyfills jsdom gaps (IntersectionObserver, ResizeObserver, matchMedia, `offsetParent`, `HTMLDialogElement.showModal`, `Element.animate`, `scrollIntoView`)
 - [ ] **TI-03**: `_test/axe.ts` centralises axe-core configuration with documented disables for jsdom-incompatible rules (`color-contrast`, `region`, `landmark-*`, `bypass`, `meta-viewport`, `document-title`, `html-has-lang`)
 - [ ] **TI-04**: Three reusable test helpers extracted: `expectNoAxeViolations`, `expectUniqueIds`, `expectKeyboardSequence`
 - [ ] **TI-05**: `TESTING-CONVENTIONS.md` documents the test grammar (Tier 1 / Tier 2 / Tier 3 / WCAG-SC traceability convention at top of each test file)
@@ -182,8 +182,8 @@ Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| TI-01 | Phase 22 | Pending |
-| TI-02 | Phase 22 | Pending |
+| TI-01 | Phase 22 (22-01) | Complete (2026-05-10) |
+| TI-02 | Phase 22 (22-01) | Complete (2026-05-10) |
 | TI-03 | Phase 22 | Pending |
 | TI-04 | Phase 22 | Pending |
 | TI-05 | Phase 22 | Pending |

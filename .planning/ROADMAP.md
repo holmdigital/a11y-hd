@@ -145,7 +145,7 @@ Plans:
   5. `TESTING-CONVENTIONS.md` exists in `packages/components/` codifying Tier 1 / Tier 2 / Tier 3 grammar and the anti-pattern list (no DOM snapshots, no class selectors, no internal-state probing, no `data-testid` on library components, no `fireEvent.click` without paired keyboard test); SSR consumer audit (`renderToStaticMarkup` / `renderToString` / `renderToPipeableStream` grep across all packages) confirms engine is the only SSR consumer and the result is recorded in `PROJECT.md`
 **Plans**: 9 plans
 Plans:
-- [ ] 22-01-PLAN.md — TI-01 + TI-02: install devDeps, create vitest config, _test/setup.ts with 7 jsdom polyfills
+- [x] 22-01-PLAN.md — TI-01 + TI-02: install devDeps, create vitest config, _test/setup.ts with 7 jsdom polyfills (completed 2026-05-10, see 22-01-SUMMARY.md)
 - [ ] 22-02-PLAN.md — TI-03 + TI-04: _test/axe.ts (11 disables) + 3 helpers + helper meta-tests with failure-mode (D-04)
 - [ ] 22-03-PLAN.md — TI-05 + TI-06: TESTING-CONVENTIONS.md, WCAG-SC header CI grep guard, SSR consumer audit recorded in PROJECT.md
 - [ ] 22-04-PLAN.md — TC-01: useFocusTrap.test.tsx, 5 APG scenarios (closes PR #1)
