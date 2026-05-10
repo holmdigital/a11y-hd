@@ -150,7 +150,7 @@ Plans:
 - [ ] 22-03-PLAN.md — TI-05 + TI-06: TESTING-CONVENTIONS.md, WCAG-SC header CI grep guard, SSR consumer audit recorded in PROJECT.md
 - [ ] 22-04-PLAN.md — TC-01: useFocusTrap.test.tsx, 5 APG scenarios (closes PR #1)
 - [ ] 22-05-PLAN.md — TC-02: Button Tier 1+2 suite (template-setter for Wave 2)
-- [ ] 22-06-PLAN.md — TC-05 + TC-06: Checkbox + RadioGroup (form primitives, roving-tabindex template)
+- [x] 22-06-PLAN.md — TC-05 + TC-06: Checkbox + RadioGroup (form primitives, roving-tabindex template-note for downstream) (completed 2026-05-10, see 22-06-SUMMARY.md)
 - [ ] 22-07-PLAN.md — TC-03: FormField (label/aria-describedby composition)
 - [ ] 22-08-PLAN.md — TC-04: Modal + Dialog.test.tsx polyfill cleanup (depends on TC-01)
 - [ ] 22-09-PLAN.md — TC-07 + TC-08: ErrorSummary (live-region template) + Tabs (APG roving + automatic/manual activation, closes PR #2)
