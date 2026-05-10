@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v0.6
 milestone_name: Components Quality
-status: executing
-stopped_at: Phase 22 Wave 5 complete (Plans 06+07+08 — TC-03 FormField, TC-04 Modal+Dialog cleanup, TC-05 Checkbox, TC-06 RadioGroup)
-last_updated: "2026-05-10T19:30:00Z"
-last_activity: 2026-05-10 — Phase 22 Wave 5 complete (Plans 06/07/08 in parallel; full components suite 248 tests / 17 files green)
+status: completed
+stopped_at: "Phase 22 Wave 5 complete (Plans 06+07+08 — TC-03 FormField, TC-04 Modal+Dialog cleanup, TC-05 Checkbox, TC-06 RadioGroup). Wave 6: Plan 22-09 (ErrorSummary + Tabs) pending. Tabs needs a real keyDown handler in component source for roving-tabindex per Plan 22-06 SUMMARY note."
+last_updated: "2026-05-10T17:42:13.819Z"
+last_activity: 2026-05-10 -- Phase 22 marked complete
 progress:
   total_phases: 9
-  completed_phases: 1
+  completed_phases: 2
   total_plans: 10
-  completed_plans: 6
-  percent: 60
+  completed_plans: 10
+  percent: 22
 ---
 
 # Project State
@@ -25,10 +25,10 @@ See: .planning/PROJECT.md (updated 2026-05-10)
 
 ## Current Position
 
-Phase: 22 (test-infra-and-first-7-components) — EXECUTING
-Plan: 8 of 9 complete (Plans 01 + 02 + 03 + 04 + 05 + 06 + 07 + 08: TI-01..06 + TC-01..06)
-Status: Executing Phase 22 — Wave 5 (22-06 Checkbox+RadioGroup, 22-07 FormField, 22-08 Modal+Dialog cleanup) all landed. Wave 6: 22-09 (ErrorSummary + Tabs) pending.
-Last activity: 2026-05-10 — Phase 22 Wave 5 complete (parallel: TC-03 FormField, TC-04 Modal+Dialog cleanup, TC-05 Checkbox, TC-06 RadioGroup; full suite 248 tests / 17 files green)
+Phase: 22 — COMPLETE
+Plan: 9 of 9 complete (Plans 01 + 02 + 03 + 04 + 05 + 06 + 07 + 08 + 09: TI-01..06 + TC-01..08)
+Status: Phase 22 complete
+Last activity: 2026-05-10 -- Phase 22 marked complete
 
 ## Performance Metrics
 
