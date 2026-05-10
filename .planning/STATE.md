@@ -3,9 +3,9 @@ gsd_state_version: 1.0
 milestone: v0.6
 milestone_name: Components Quality
 status: executing
-stopped_at: Phase 22 Plan 06 complete (TC-05 Checkbox + TC-06 RadioGroup — 14+15 tests, RadioGroup roving-tabindex template-note for Plan 22-09 + Phase 24)
-last_updated: "2026-05-10T19:25:00Z"
-last_activity: 2026-05-10 — Phase 22 Plan 06 complete (TC-05+TC-06: Checkbox.test.tsx 14 tests + RadioGroup.test.tsx 15 tests; full components suite 230/230)
+stopped_at: Phase 22 Wave 5 complete (Plans 06+07+08 — TC-03 FormField, TC-04 Modal+Dialog cleanup, TC-05 Checkbox, TC-06 RadioGroup)
+last_updated: "2026-05-10T19:30:00Z"
+last_activity: 2026-05-10 — Phase 22 Wave 5 complete (Plans 06/07/08 in parallel; full components suite 248 tests / 17 files green)
 progress:
   total_phases: 9
   completed_phases: 1
@@ -26,9 +26,9 @@ See: .planning/PROJECT.md (updated 2026-05-10)
 ## Current Position
 
 Phase: 22 (test-infra-and-first-7-components) — EXECUTING
-Plan: 6 of 9 complete (Plans 01 + 02 + 03 + 04 + 05 + 06: TI-01..06 + TC-01 + TC-02 + TC-05 + TC-06 — Checkbox + RadioGroup green)
-Status: Executing Phase 22 — PR #1 ready (7 atomic commits). PR #2 in flight: Plans 05+06 done (Button template + Checkbox + RadioGroup); Plans 07 (FormField), 08 (Modal/Dialog), 09 (Tabs) ran/run in parallel mirroring Button.test.tsx structure.
-Last activity: 2026-05-10 -- Phase 22 plan 06 complete (TC-05+TC-06: Checkbox 14 tests + RadioGroup 15 tests, full suite 230/230, RadioGroup roving-tabindex template note documented for Plan 22-09 + Phase 24)
+Plan: 8 of 9 complete (Plans 01 + 02 + 03 + 04 + 05 + 06 + 07 + 08: TI-01..06 + TC-01..06)
+Status: Executing Phase 22 — Wave 5 (22-06 Checkbox+RadioGroup, 22-07 FormField, 22-08 Modal+Dialog cleanup) all landed. Wave 6: 22-09 (ErrorSummary + Tabs) pending.
+Last activity: 2026-05-10 — Phase 22 Wave 5 complete (parallel: TC-03 FormField, TC-04 Modal+Dialog cleanup, TC-05 Checkbox, TC-06 RadioGroup; full suite 248 tests / 17 files green)
 
 ## Performance Metrics
 
@@ -85,8 +85,12 @@ Last activity: 2026-05-10 -- Phase 22 plan 06 complete (TC-05+TC-06: Checkbox 14
 
 ### Plan 22-06 deviations + downstream-impact decisions (logged 2026-05-10)
 
-- None (no auto-fixes needed). One important downstream-impact decision documented: RadioGroup.tsx implements ZERO custom keyboard handling — it relies on native HTML radio semantics, which jsdom does NOT simulate for arrow-key roving. The plan asked for "wrap-around vs no-wrap" assertions; that question is moot here because no JS layer governs the behaviour. RadioGroup.test.tsx therefore documents (in a JSDoc "Implementation note" block) that Plan 22-09 (Tabs) and Phase 24 widgets that DO need roving-tabindex MUST add an explicit `onKeyDown` handler with focus management AND replace the no-op arrow assertions with `expectKeyboardSequence(...)` calls. The arrow-key tests in this file assert keystrokes-do-not-throw only — pinning the testable contract (focus, click, Space).
-- Indeterminate-state pattern (useEffect+ref-on-mount) is the canonical template for FormField (Plan 22-07) tri-state checkbox rendering — `indeterminate` is a DOM property, not an HTML attribute.
+- None (no auto-fixes needed). RadioGroup.tsx implements ZERO custom keyboard handling — it relies on native HTML radio semantics, which jsdom does NOT simulate for arrow-key roving. RadioGroup.test.tsx documents (JSDoc "Implementation note") that Plan 22-09 (Tabs) and Phase 24 widgets that DO need roving-tabindex MUST add an explicit `onKeyDown` handler with focus management AND replace the no-op arrow assertions with `expectKeyboardSequence(...)` calls. Arrow-key tests in this file assert keystrokes-do-not-throw only — pinning the testable contract (focus, click, Space).
+- Indeterminate-state pattern (useEffect+ref-on-mount) is the canonical template for FormField tri-state checkbox rendering — `indeterminate` is a DOM property, not an HTML attribute.
+
+### Plan 22-08 deviations (logged 2026-05-10)
+
+- None. Two implementation notes captured in the plan SUMMARY: (a) Escape path is verified via `dialog.close()` rather than `fireEvent.keyDown` because jsdom does not translate Escape into the native `cancel→close` sequence on `<dialog>`; (b) the standalone close-button click test was trimmed (Dialog concern, already covered by Dialog.test.tsx) to keep `it()` count within the D-02 budget of 16. Modal landed with 16 tests, Dialog.test.tsx lost the redundant inline `HTMLDialogElement.showModal/close` polyfill — the central one in `_test/setup.ts` is now the only source of truth. Full suite: 232 tests / 14 files green.
 
 ### Blockers/Concerns
 
@@ -98,5 +102,5 @@ Last activity: 2026-05-10 -- Phase 22 plan 06 complete (TC-05+TC-06: Checkbox 14
 ## Session Continuity
 
 Last session: 2026-05-10T19:25:00Z
-Stopped at: Phase 22 Plan 06 complete (TC-05 + TC-06 — Checkbox.test.tsx 14 tests, RadioGroup.test.tsx 15 tests; full suite 230/230). Plans 07 (FormField), 08 (Modal/Dialog), 09 (Tabs) — last one will need a real keyDown handler in component source for roving-tabindex per the Plan 22-06 SUMMARY note.
-Resume: `/gsd-execute-plan 22-09` (07 and 08 ran/run in parallel)
+Stopped at: Phase 22 Wave 5 complete (Plans 06+07+08 — TC-03 FormField, TC-04 Modal+Dialog cleanup, TC-05 Checkbox, TC-06 RadioGroup). Wave 6: Plan 22-09 (ErrorSummary + Tabs) pending. Tabs needs a real keyDown handler in component source for roving-tabindex per Plan 22-06 SUMMARY note.
+Resume: `/gsd-execute-plan 22-09`

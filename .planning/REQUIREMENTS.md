@@ -115,9 +115,9 @@ Requirements for v0.6 Components Quality. Each maps to roadmap phases (22–26).
 - [ ] **TC-01**: `useFocusTrap.test.tsx` covers 5 scenarios (multiple focusables, `initialFocusRef`, Tab cycle, focus restore on unmount, no-focusables container) — must land BEFORE Modal tests
 - [ ] **TC-02**: Button test suite — Tier 1 + Tier 2 (loading state ARIA, disabled state, variants render, ref forwarding, axe-clean, keyboard activation)
 - [ ] **TC-03**: FormField test suite — label association, error/help text via `aria-describedby`, required state, axe-clean, ID uniqueness across multiple instances
-- [ ] **TC-04**: Modal test suite — focus trap engages on open and restores on close, Escape closes, click-outside behaviour, ARIA attributes, axe-clean
-- [x] **TC-05**: Checkbox test suite — controlled/uncontrolled, `onCheckedChange`, indeterminate, keyboard (Space), label association, axe-clean (completed 2026-05-10, Plan 22-06, 14 it() blocks)
-- [x] **TC-06**: RadioGroup test suite — controlled/uncontrolled, click+Space onChange, name attr, label-via-aria-labelledby, axe-clean; arrow-key tests assert no-throw (RadioGroup.tsx has no roving-tabindex JS — relies on native HTML radio semantics; see 22-06-SUMMARY.md for downstream-impact note for Tabs / Phase 24) (completed 2026-05-10, Plan 22-06, 15 it() blocks)
+- [x] **TC-04**: Modal test suite — focus trap engages on open and restores on close, Escape closes, click-outside behaviour, ARIA attributes, axe-clean (Plan 22-08, 16 it() blocks)
+- [x] **TC-05**: Checkbox test suite — controlled/uncontrolled, `onCheckedChange`, indeterminate, keyboard (Space), label association, axe-clean (Plan 22-06, 14 it() blocks)
+- [x] **TC-06**: RadioGroup test suite — controlled/uncontrolled, click+Space onChange, name attr, label-via-aria-labelledby, axe-clean; arrow-key tests assert no-throw (RadioGroup.tsx has no roving-tabindex JS — relies on native HTML radio semantics; see 22-06-SUMMARY.md for downstream-impact note for Tabs / Phase 24) (Plan 22-06, 15 it() blocks)
 - [ ] **TC-07**: ErrorSummary test suite — focusable headings, links resolve to fields, live-region announcement on update, axe-clean (regression-prevents the WCAG 3.3.1 failure the component exists to prevent)
 - [ ] **TC-08**: Tabs test suite — automatic vs manual activation modes, Arrow keys cycle, Home/End jump, ARIA `aria-selected`/`aria-controls`/`aria-labelledby`, axe-clean (establishes APG roving-tabindex test template for Phase C)
 
@@ -191,9 +191,15 @@ Updated during roadmap creation.
 | TC-01 | Phase 22 | Pending |
 | TC-02 | Phase 22 | Pending |
 | TC-03 | Phase 22 | Pending |
+<<<<<<< HEAD
 | TC-04 | Phase 22 | Pending |
 | TC-05 | Phase 22 | Complete (Plan 22-06, 2026-05-10) |
 | TC-06 | Phase 22 | Complete (Plan 22-06, 2026-05-10) |
+=======
+| TC-04 | Phase 22 | Complete (22-08) |
+| TC-05 | Phase 22 | Pending |
+| TC-06 | Phase 22 | Pending |
+>>>>>>> worktree-agent-a3a6b339f0c8efed8
 | TC-07 | Phase 22 | Pending |
 | TC-08 | Phase 22 | Pending |
 | TC-09 | Phase 24 | Pending |
