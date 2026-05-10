@@ -76,7 +76,7 @@ See: `.planning/milestones/v0.4-ROADMAP.md` for full details
 - [ ] **Phase 22: Test Infrastructure + First-7 Components** - jsdom shims, axe helper, three reusable test helpers, `useFocusTrap` hook tests, and Tier 1+2 suites for Button, FormField, Modal, Checkbox, RadioGroup, ErrorSummary, Tabs
 - [ ] **Phase 23: Styling Unification** - Migrate Tabs, Accordion, Breadcrumbs from Tailwind utility classes to inline-style + co-located CSS file pattern with CSS custom properties for theming and a regression-guard against Tailwind class leakage in `dist/`
 - [ ] **Phase 24: Complex APG Widget Test Coverage** - Tier 3 APG suites for Combobox, DatePicker, MultiSelect, DataTable, TreeView, NavigationMenu using helpers from Phase 22
-- [ ] **Phase 25: AccessibilityStatement publishDate Fix + Regression Guards** - All 14 locale `'2024-01-01'` defaults replaced with empty + `[YOUR PUBLISH DATE]` placeholder; regression-guards lock the date fix and the US national-law placeholder bug
+- [ ] **Phase 25: AccessibilityStatement publishDate Fix + Regression Guards** - All 13 `'2024-01-01'` `publishDate` fallbacks (across 13 locale replacement slots) replaced with `[YOUR PUBLISH DATE]` placeholder; regression-guards lock the date fix and the US national-law placeholder bug
 - [ ] **Phase 26: Publish Hygiene** - `publint`, `attw`, `prepublishOnly`, stop committing `packages/*/dist/`, close subpath `require` gap, ship-no-test-code CI guard, lucide-react moved to optional peer dep with text-glyph fallbacks
 
 ## Phase Details
@@ -181,14 +181,16 @@ Plans:
 **Plans**: TBD
 
 ### Phase 25: AccessibilityStatement publishDate Fix + Regression Guards
-**Goal**: The `AccessibilityStatement` component stops shipping the misleading `'2024-01-01'` `publishDate` fallback to consumers in any of its 14 locales — instead emitting an empty string + `[YOUR PUBLISH DATE]` placeholder pattern that makes the missing-data state obvious — and two regression-guard tests pin the fix and the US national-law placeholder bug already fixed in commit 859f301 so neither can silently re-occur.
+**Goal**: The `AccessibilityStatement` component stops shipping the misleading `'2024-01-01'` `publishDate` fallback to consumers in any of its 13 locale replacement slots — instead emitting a `[YOUR PUBLISH DATE]` placeholder that makes the missing-data state obvious — and two regression-guard tests pin the fix and the US national-law placeholder bug already fixed in commit 859f301 so neither can silently re-occur. (Original drafting said "14 locales" but a grep at plan time confirmed 13 occurrences; the manual count double-counted the Norwegian variant pair.)
 **Depends on**: Phase 21 (independent of Phases 22/23/24; component source change is local and the 131 existing tests cover the prose surface)
 **Requirements**: STMT-01, STMT-02, STMT-03
 **Success Criteria** (what must be TRUE):
-  1. All 14 locale entries in `AccessibilityStatement.tsx` (every `TEMPLATES[locale]` and every code path that supplies a default `publishDate`) use empty string + `[YOUR PUBLISH DATE]` placeholder instead of `'2024-01-01'` — no literal `2024-01-01` string remains anywhere in component source
+  1. All 13 locale `publishDate` fallback expressions in `AccessibilityStatement.tsx` (every `publishDate ? d(publishDate) : '...'` ternary across the locale replacement maps) use `[YOUR PUBLISH DATE]` placeholder instead of `'2024-01-01'` — no literal `2024-01-01` string remains anywhere in component source
   2. A regression-guard test asserts no literal `2024-01-01` appears anywhere in `packages/components/src/**/*.{ts,tsx}` — a simple file-content grep that fails the build if the fallback ever re-appears
   3. A regression-guard test renders `<AccessibilityStatement country="US" />` and asserts the rendered output contains zero literal `{<national_law>}` placeholder strings — covering the live US bug already fixed in commit 859f301 so it cannot silently regress
-**Plans**: TBD
+**Plans**: 1 plan
+Plans:
+- [ ] 25-01-PLAN.md — Replace 13 publishDate '2024-01-01' fallbacks with '[YOUR PUBLISH DATE]', add AccessibilityStatement.regression.test.tsx with STMT-02 grep guard + STMT-03 US render guard, full @holmdigital/components regression
 
 ### Phase 26: Publish Hygiene
 **Goal**: All three packages (`@holmdigital/standards`, `@holmdigital/components`, `@holmdigital/engine`) gate `npm publish` behind a single `verify` pipeline — `publint --strict` + `attw --pack .` + build + tests + type-check — committed `dist/` directories are eliminated as a drift source, the subpath `require` export gap that publint flags is closed, no test code can leak into `dist/`, and `lucide-react` moves out of hard runtime dependencies into an optional peer dep with text-glyph fallbacks so consumers without it still get correct, accessible output.
@@ -256,5 +258,5 @@ Plans:
 | 22. Test Infrastructure + First-7 Components | v0.6 | 0/0 | Not started | - |
 | 23. Styling Unification | v0.6 | 0/0 | Not started | - |
 | 24. Complex APG Widget Test Coverage | v0.6 | 0/0 | Not started | - |
-| 25. AccessibilityStatement publishDate Fix + Regression Guards | v0.6 | 0/0 | Not started | - |
+| 25. AccessibilityStatement publishDate Fix + Regression Guards | v0.6 | 0/1 | Planned | - |
 | 26. Publish Hygiene | v0.6 | 0/0 | Not started | - |

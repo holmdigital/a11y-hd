@@ -9,7 +9,9 @@ requirements: STMT-01, STMT-02, STMT-03
 
 ## Domain
 
-Replace the misleading `'2024-01-01'` `publishDate` fallback (14 locale replacement slots in `packages/components/src/AccessibilityStatement/AccessibilityStatement.tsx`, lines 424–562) with a `[YOUR PUBLISH DATE]` placeholder so the missing-data state is obvious. Add two regression-guard tests so neither this bug nor the previously-fixed US `{<national_law>}` placeholder bug (commit 859f301) can silently re-occur.
+Replace the misleading `'2024-01-01'` `publishDate` fallback (**13** locale replacement slots in `packages/components/src/AccessibilityStatement/AccessibilityStatement.tsx`, lines 424, 425, 487, 493, 498, 503, 511, 520, 528, 538, 546, 554, 562) with a `[YOUR PUBLISH DATE]` placeholder so the missing-data state is obvious. Add two regression-guard tests so neither this bug nor the previously-fixed US `{<national_law>}` placeholder bug (commit 859f301) can silently re-occur.
+
+Note: original ROADMAP/REQUIREMENTS drafting said "14 locales". A grep at plan time confirmed the actual count is **13** — the manual count double-counted the Norwegian variant pair (`{<publiseringsdatum>}` and `{<publiseringsdato>}` are two distinct slots, not three).
 
 Goal is local — change `AccessibilityStatement.tsx` source + test additions, no API breaks. The 131 existing tests in `AccessibilityStatement.test.tsx` cover the prose surface; the regression guards are net-new safety nets.
 
@@ -18,7 +20,7 @@ Goal is local — change `AccessibilityStatement.tsx` source + test additions, n
 - `.planning/ROADMAP.md` — Phase 25 goal + success criteria (3 items)
 - `.planning/REQUIREMENTS.md` — STMT-01, STMT-02, STMT-03
 - `.planning/PROJECT.md` — milestone v0.6 Components Quality scope
-- `packages/components/src/AccessibilityStatement/AccessibilityStatement.tsx` — source containing 14 publishDate replacement slots (lines 424, 425, 487, 493, 498, 503, 511, 520, 528, 538, 546, 554, 562)
+- `packages/components/src/AccessibilityStatement/AccessibilityStatement.tsx` — source containing 13 publishDate replacement slots (lines 424, 425, 487, 493, 498, 503, 511, 520, 528, 538, 546, 554, 562)
 - `packages/components/src/AccessibilityStatement/AccessibilityStatement.test.tsx` — existing 131-test prose-surface coverage
 - `packages/components/TESTING-CONVENTIONS.md` — Phase 22 conventions (WCAG-SC marker, helper imports, D-02a anti-pattern gate)
 - `packages/components/scripts/check-wcag-headers.mjs` — Phase 22 reference for repo-level guard scripts (relevant pattern for one resolved decision below)
@@ -29,7 +31,7 @@ Goal is local — change `AccessibilityStatement.tsx` source + test additions, n
 **Current state (read at discussion time):**
 - `AccessibilityStatement.tsx:106` declares `publishDate?: Date` (optional)
 - `AccessibilityStatement.tsx:386` destructures `publishDate` from props
-- `AccessibilityStatement.tsx:424–562` contains 14 occurrences of `publishDate ? d(publishDate) : '2024-01-01'` across locale-specific replacement maps. The placeholder keys vary per locale: `{<publiceringsdatum>}` (sv), `{<publish date>}` (en), `{<publiseringsdatum>}` (no), `{<publiseringsdato>}` (alt-no), `{<offentliggørelsesdato>}` (da), `{<veröffentlichungsdatum>}` (de), `{<date_publication>}` (fr), `{<fecha_publicacion>}` (es), `{<julkaisupäivä>}` (fi), `{<publicatiedatum>}` (nl), `{<data_pubblicazione>}` (it), `{<data_publicacao>}` (pt), `{<data_publikacji>}` (pl).
+- `AccessibilityStatement.tsx` contains **13** occurrences of `publishDate ? d(publishDate) : '2024-01-01'` across locale-specific replacement maps (lines 424, 425, 487, 493, 498, 503, 511, 520, 528, 538, 546, 554, 562). The placeholder keys vary per locale: `{<publiceringsdatum>}` (sv, line 424), `{<publish date>}` (en, line 425), `{<publiseringsdatum>}` (no-alt, line 487), `{<publiseringsdato>}` (no, line 493), `{<offentliggørelsesdato>}` (da, line 498), `{<veröffentlichungsdatum>}` (de, line 503), `{<date_publication>}` (fr, line 511), `{<fecha_publicacion>}` (es, line 520), `{<julkaisupäivä>}` (fi, line 528), `{<publicatiedatum>}` (nl, line 538), `{<data_pubblicazione>}` (it, line 546), `{<data_publicacao>}` (pt, line 554), `{<data_publikacji>}` (pl, line 562). That is 13 slots — not 14 as the ROADMAP draft said.
 - `AccessibilityStatement.test.tsx:26` uses `publishDate: new Date('2024-01-15')` as the test fixture publishDate (different value, NOT the bug — leave it alone).
 - `d()` is the locale-aware date formatter; the placeholder substitutes the entire string the formatter would produce, so the placeholder MUST replace the `d(publishDate)` call result, not be wrapped inside it.
 
@@ -42,9 +44,9 @@ Goal is local — change `AccessibilityStatement.tsx` source + test additions, n
 ## Decisions
 
 ### Placeholder text — English everywhere
-Use the literal string `[YOUR PUBLISH DATE]` in **all 14 locale slots** — no translation. Rationale: matches ROADMAP phrasing exactly, harder to miss in code review, signals "configuration error" clearly across all consumers, and a translation slip could make the placeholder look like real content.
+Use the literal string `[YOUR PUBLISH DATE]` in **all 13 locale slots** — no translation. Rationale: matches ROADMAP phrasing exactly, harder to miss in code review, signals "configuration error" clearly across all consumers, and a translation slip could make the placeholder look like real content.
 
-**Implementation note:** every `publishDate ? d(publishDate) : '2024-01-01'` becomes `publishDate ? d(publishDate) : '[YOUR PUBLISH DATE]'`. The 14 sites are mechanical search-replace; verify with grep that 0 `'2024-01-01'` literals remain.
+**Implementation note:** every `publishDate ? d(publishDate) : '2024-01-01'` becomes `publishDate ? d(publishDate) : '[YOUR PUBLISH DATE]'`. The 13 sites are mechanical search-replace; verify with grep that 0 `'2024-01-01'` literals remain.
 
 ### Test placement — new sibling file `AccessibilityStatement.regression.test.tsx`
 Both regression-guard tests (STMT-02 + STMT-03) live in a new file at `packages/components/src/AccessibilityStatement/AccessibilityStatement.regression.test.tsx`. Rationale: keeps the 131-test main file focused on behavior; future regression guards get a clear home; matches Phase 22's "one test file per concern" pattern.
@@ -76,7 +78,7 @@ The existing test fixture at line 26 (`publishDate: new Date('2024-01-15')`) is 
 
 ## Success Criteria (from ROADMAP)
 
-1. All 14 locale entries use `'[YOUR PUBLISH DATE]'` instead of `'2024-01-01'` — verified by grep
+1. All 13 locale `publishDate` fallback expressions use `'[YOUR PUBLISH DATE]'` instead of `'2024-01-01'` — verified by grep
 2. STMT-02 regression test asserts no literal `2024-01-01` in `packages/components/src/**/*.{ts,tsx}` (excluding test fixtures that legitimately use other 2024-XX-XX dates)
 3. STMT-03 regression test renders `<AccessibilityStatement country="US" />` and asserts zero literal `{<national_law>}` placeholders in output
 

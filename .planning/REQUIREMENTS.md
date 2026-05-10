@@ -141,7 +141,7 @@ Requirements for v0.6 Components Quality. Each maps to roadmap phases (22–26).
 
 ### AccessibilityStatement Hygiene
 
-- [ ] **STMT-01**: All 14 locale `'2024-01-01'` `publishDate` fallbacks replaced with empty string + `[YOUR PUBLISH DATE]` placeholder pattern in `AccessibilityStatement.tsx`
+- [ ] **STMT-01**: All 13 `'2024-01-01'` `publishDate` fallbacks (across 13 locale replacement slots) replaced with `[YOUR PUBLISH DATE]` placeholder in `AccessibilityStatement.tsx` (count verified via grep at plan time; original draft said "14 locales" — manual-count slip)
 - [ ] **STMT-02**: Regression-guard test asserts no literal `2024-01-01` appears anywhere in component source
 - [ ] **STMT-03**: Regression-guard test asserts `country='US'` never produces empty `{<national_law>}` placeholder (covers the live US bug already fixed in commit 859f301)
 
