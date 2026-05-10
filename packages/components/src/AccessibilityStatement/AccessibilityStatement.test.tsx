@@ -494,3 +494,58 @@ describe('AccessibilityStatement national compliance - AU enforcement body', () 
         expect(container.innerHTML).toContain(law!.fullName);
     });
 });
+
+describe('AccessibilityStatement US national_law placeholder (generic en template)', () => {
+    // Regression: country='US' in the generic en template previously called
+    // getNationalLawByFramework('EAA'|'WAD', 'US') which returns null, leaving an
+    // empty {<national_law>} render. Fixed by adding a US-aware branch that mirrors
+    // the engine's statement-generator.ts.
+
+    it('US public sector resolves to ADA Title II + Section 508', () => {
+        const { container } = render(
+            <AccessibilityStatement
+                {...defaultProps}
+                locale="en"
+                country="US"
+                sector="public"
+            />
+        );
+        const html = container.innerHTML;
+        // Public-sector US should reference ADA Title II AND Section 508
+        expect(html).toMatch(/Americans with Disabilities Act.*Title II/i);
+        expect(html).toContain('Section 508');
+        // No empty placeholder leakage
+        expect(html).not.toMatch(PLACEHOLDER_PATTERN);
+    });
+
+    it('US private sector resolves to ADA Title III + HHS Section 504', () => {
+        const { container } = render(
+            <AccessibilityStatement
+                {...defaultProps}
+                locale="en"
+                country="US"
+                sector="private"
+            />
+        );
+        const html = container.innerHTML;
+        // Private-sector US should reference ADA Title III AND HHS Section 504 (REHAB)
+        expect(html).toMatch(/Americans with Disabilities Act.*Title III/i);
+        expect(html).toMatch(/Section 504|Rehabilitation Act/i);
+        expect(html).not.toMatch(PLACEHOLDER_PATTERN);
+    });
+
+    it('US locale=en does not leave an empty national_law substitution (previously broken)', () => {
+        const { container } = render(
+            <AccessibilityStatement
+                {...defaultProps}
+                locale="en"
+                country="US"
+                sector="public"
+            />
+        );
+        const html = container.innerHTML;
+        // Pre-fix output rendered "complies with  ()" with empty law name.
+        expect(html).not.toMatch(/complies with\s*\(\s*\)/);
+        expect(html).not.toMatch(/complies with\s*\.\s/);
+    });
+});
