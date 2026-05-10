@@ -1,22 +1,22 @@
 // @vitest-environment jsdom
+/**
+ * WCAG SCs covered:
+ * - 2.1.2 No Keyboard Trap — Tab cycles focusable elements within the
+ *   dialog and Escape exits (focus trap is bounded by the dialog).
+ * - 2.4.3 Focus Order — APG dialog focus moves into the dialog on open
+ *   and restores to the opener on close.
+ * - 4.1.2 Name, Role, Value — role="dialog" / "alertdialog",
+ *   aria-modal="true", aria-labelledby, aria-describedby.
+ *
+ * The HTMLDialogElement.showModal/close polyfill is centralised in
+ * src/_test/setup.ts (Plan 22-01). The duplicate inline setup hook that
+ * used to live here was removed in Plan 22-08 once the central polyfill
+ * was proven via TC-04 (Modal.test.tsx).
+ */
 import { useState } from 'react';
 import { render, fireEvent, cleanup } from '@testing-library/react';
-import { describe, it, expect, beforeAll, afterEach } from 'vitest';
+import { describe, it, expect, afterEach } from 'vitest';
 import { Dialog } from './Dialog';
-
-// jsdom does not implement HTMLDialogElement.showModal/close.
-// Polyfill enough behaviour to drive Dialog's effects.
-beforeAll(() => {
-    if (!HTMLDialogElement.prototype.showModal) {
-        HTMLDialogElement.prototype.showModal = function () {
-            (this as HTMLDialogElement).setAttribute('open', '');
-        };
-        HTMLDialogElement.prototype.close = function () {
-            (this as HTMLDialogElement).removeAttribute('open');
-            this.dispatchEvent(new Event('close'));
-        };
-    }
-});
 
 const Harness = ({ initialOpen = true, ...rest }: { initialOpen?: boolean } & Partial<React.ComponentProps<typeof Dialog>>) => {
     const [open, setOpen] = useState(initialOpen);

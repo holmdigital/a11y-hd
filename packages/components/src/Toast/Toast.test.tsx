@@ -1,4 +1,10 @@
 // @vitest-environment jsdom
+/**
+ * WCAG SCs covered:
+ * - 4.1.3 Status Messages — toast announcement via aria-live polite/assertive
+ * - 2.2.1 Timing Adjustable — auto-dismiss timing and pause-on-hover
+ * - 4.1.2 Name, Role, Value — role="status"/"alert", correct aria attributes
+ */
 import { render, fireEvent, cleanup, act } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { ToastProvider, useToast } from './Toast';

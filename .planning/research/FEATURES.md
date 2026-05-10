@@ -1,233 +1,261 @@
-# Feature Research
+# Feature Landscape: Component Test Coverage Scope
 
-**Domain:** Australian jurisdiction support for accessibility compliance tooling
-**Researched:** 2026-03-27
-**Confidence:** HIGH (AHRC, DTA, WAI/W3C official sources verified; AS EN 301 549 confirmed via Standards Australia)
+**Domain:** Test-suite design for a prescriptive React accessibility component library
+**Researched:** 2026-05-10
+**Milestone:** v0.6 Components Quality
+**Scope:** 22 untested components in `@holmdigital/components`
+**Confidence:** HIGH (evidence: existing Dialog.test.tsx and Select.test.tsx in repo establish the canonical pattern; WAI-ARIA APG patterns are W3C-stable; vitest+@testing-library stack already in use)
 
----
-
-## Scope of This Research
-
-This milestone adds Australia (AU) as a fully supported jurisdiction to an existing multi-jurisdiction accessibility compliance monorepo. The existing system already handles:
-
-- EU jurisdictions (EN 301 549, WAD, EAA) across 9 countries
-- UK (Equality Act + PSBAR), US (ADA + Section 508), Canada (ACA)
-- TLD-based country detection, sector-aware enforcement selection
-- Accessibility statement generation in 12 locales
-
-The features below are evaluated against **what AU jurisdiction support requires** specifically — not what is already built.
+> **Note:** This file replaces stale v0.4 (Australia jurisdiction) research from 2026-03-27. The Australian feasibility content was archived in `SUMMARY.md` of that milestone and remains accessible via git history.
 
 ---
 
-## Australian Regulatory Landscape (Research Findings)
+## Executive Summary
 
-### Primary Legal Framework
+The existing `Dialog.test.tsx` and `Select.test.tsx` files have already locked in the project's testing philosophy — and that philosophy is **uncommonly opinionated for a React component library**:
 
-**Disability Discrimination Act 1992 (DDA)** — the foundational law. Applies to all sectors (public and private). No specific WCAG version mandated in the legislation itself; WCAG compliance is the established standard of care via AHRC advisory notes and 2025 guidelines.
+- Tests assert **WAI-ARIA Authoring Practices Guide (APG) keyboard contracts**, not just rendering
+- Tests assert **ID uniqueness across multi-instance mounts** (catches hardcoded IDs that break a11y when component used twice)
+- Tests assert **focus restoration** (catches the most common a11y regression)
+- Tests assert **event propagation boundaries** (Escape doesn't double-fire to ancestors)
+- Tests use **roles and ARIA attributes as selectors**, never CSS classes or `data-testid` on internal nodes
 
-**2025 AHRC Guidelines (April 2025)** — updated guidance affirming WCAG 2.2 Level AA as the minimum standard, replacing the 2014 advisory notes which referenced WCAG 2.0. Extended scope to SaaS platforms, AI tools, IoT devices, mobile apps, CAPTCHAs, two-factor authentication, and QR codes.
-
-**Digital Transformation Agency (DTA) — Digital Experience Policy** — effective 1 January 2025 for new government services, 1 July 2025 for existing services. Mandatory for federal government departments and agencies only. Contains four sub-standards: Digital Service Standard, Digital Inclusion Standard, Digital Access Standard, Digital Performance Standard.
-
-**AS EN 301 549:2024** — voluntary standard (not legislated federally) that identically adopts EN 301 549:2021. Used in ICT procurement by NSW, Victoria, Queensland state governments. Aligns with WCAG 2.2 AA.
-
-### Enforcement Body
-
-**Australian Human Rights Commission (AHRC)** — receives and investigates DDA complaints. Conciliation is the primary mechanism; unresolved complaints escalate to the **Federal Court of Australia**. Maximum penalty: AUD 100,000.
-
-DTA enforces the Digital Experience Policy for government agencies only (via compliance reporting, not court action).
-
-### Sector Scope
-
-**DDA applies to both public and private sectors.** This is a key difference from EU WAD/EAA split:
-- EU: WAD = public sector, EAA = private sector (two distinct enforcement regimes)
-- AU: DDA covers both; AHRC is the single enforcement body for both sectors
-- DTA's Digital Experience Policy = government only (not private sector)
-
-### State/Territory Variations
-
-- **Victoria**: WCAG 2.1 AA mandatory for all Victorian government digital services (internal and external)
-- **NSW**: References AS EN 301 549 in ICT procurement
-- **Queensland**: Agency policies reiterate WCAG 2.1 AA baseline
-- All states/territories have accessibility commitments; no state-level equivalent of DDA (DDA is federal)
+This is the bar. Every new component test file must clear it. This document defines the taxonomy, per-component scope, and rollout priority.
 
 ---
 
-## Feature Landscape
+## Test Category Taxonomy
 
-### Table Stakes (Users Expect These)
+### Tier 1: Table Stakes (every component, ~3-5 tests)
 
-Features an AU compliance tool must have. Missing = product is not usable for AU market.
+These exist solely so a missing test file is obvious. They catch nothing that a halfway-decent type system wouldn't, but their absence signals neglect.
 
-| Feature | Why Expected | Complexity | Notes |
-|---------|--------------|------------|-------|
-| DDA (Disability Discrimination Act 1992) as mapped law | AU users expect DDA to appear as the legal basis in scan reports, just as DOS-lagen appears for SE users | LOW | Add to national-laws.json; framework key is `DDA` (not WAD/EAA) |
-| AHRC as enforcement body | AU users expect the Australian Human Rights Commission to be named as enforcer, not a European body | LOW | Add `AU` entry to ENFORCEMENT_BODIES and ENFORCEMENT_BODIES_DETAILED |
-| en-au locale statement template | Compliance statements must reference DDA, not WAD/EU Directive 2016/2102. Legal prose must be AU-appropriate. | MEDIUM | New JSON template for engine; new inline template for component; mirrors en-gb/en-us/en-ca pattern |
-| .au and .com.au TLD detection | Sites on .com.au are clearly Australian; scanner must auto-detect country without requiring explicit --country flag | LOW | Extend TLD map; `.com.au` is a second-level TLD and needs special handling (not just last segment) |
-| WCAG 2.2 AA as the stated standard in AU output | 2025 AHRC guidelines affirm WCAG 2.2 AA. Citing WCAG 2.0 or 2.1 in AU statements is outdated. | LOW | Template prose must specify WCAG 2.2 AA (or parameterized WCAG version field) |
-| en-au UI chrome (component badges, labels, footer) | Component renders jurisdiction-specific chrome (law name, enforcement body) per locale; en-au must be wired in | LOW | Add en-au entries to locale-chrome.ts and relevant locale maps |
-| Single enforcement body for all sectors (no WAD/EAA split) | DDA applies to public and private sectors equally — no sector-specific enforcement body switch for AU | LOW | `getEnforcementBody('AU', sector)` should return AHRC regardless of sector param |
+| Category | What It Asserts | Example |
+|----------|----------------|---------|
+| **Renders without crashing** | Component mounts with minimal valid props | `render(<Button>Click</Button>)` returns without throwing |
+| **Forwards ref** | `ref` lands on the public root element | `expect(ref.current).toBeInstanceOf(HTMLButtonElement)` |
+| **Forwards `className`** | User-supplied className is composed, not replaced | Class list contains both library default AND user class |
+| **Forwards arbitrary HTML props** | `data-*`, `aria-*`, `id` reach the DOM | `data-testid="x"` survives to rendered output |
+| **Honors `disabled` / equivalent state prop** | Disabled component does not fire `onClick`/`onChange` and exposes correct ARIA |  |
 
-### Differentiators (Competitive Advantage)
+**Anti-pattern warning:** Do NOT add a "matches snapshot" test. See Anti-Features.
 
-Features that set the product apart in the AU market. Not required by law, but provide meaningful value.
+### Tier 2: Differentiators — The Reason This Library Exists (every component, ~5-15 tests)
 
-| Feature | Value Proposition | Complexity | Notes |
-|---------|-------------------|------------|-------|
-| AS EN 301 549 procurement reference in AU reports | State governments (NSW, Victoria, QLD) use AS EN 301 549 for ICT procurement; flagging this in reports helps procurement officers | MEDIUM | Add AS EN 301 549 as a secondary standard reference for AU, noting it is voluntary but procurement-relevant; maps to same WCAG 2.2 AA content as EU EN 301 549 |
-| DTA Digital Experience Policy annotation for .gov.au domains | Federal government agencies face mandatory DTA compliance from 2025; annotating government scans with DTA policy reference adds actionable context competitors do not provide | MEDIUM | Detect .gov.au TLD as government sector; append DTA Digital Experience Policy note to government scan output. Requires special .gov.au TLD handling. |
-| WCAG 2.2 AA call-out (vs 2.1) in AU context | 2025 AHRC guidelines updated from 2.0 to 2.2 AA; tools still citing 2.0 create compliance risk for users | LOW | In en-au template prose, explicitly state "WCAG 2.2 Level AA as recommended by the AHRC (April 2025 guidelines)" |
-| AHRC complaint pathway guidance in statement | Unlike EU (formal enforcement body decisions), AU enforcement is complaint-driven via AHRC conciliation; statements should reference how users can lodge accessibility complaints with the AHRC | LOW | Add AHRC complaints URL (humanrights.gov.au) to en-au statement template feedback/contact section |
-| State government procurement note (AS EN 301 549) | For NSW/Victoria/QLD government clients, noting AS EN 301 549:2024 adoption strengthens the procurement case for accessibility tooling investment | LOW | Conditional annotation in AU government reports; no new data structure needed |
+This is where a regulatory-compliance library earns its name. A generic React library test suite skips most of these.
 
-### Anti-Features (Commonly Requested, Often Problematic)
+| Category | What It Asserts | Why It Matters For This Library |
+|----------|----------------|-------|
+| **axe-core scan passes** | `vitest-axe` (or `jest-axe`) reports zero violations on rendered output | Self-evident for a library that maps WCAG to law. If our own components fail axe, the entire value proposition collapses. |
+| **ARIA role correctness** | Component renders the role required by its APG pattern (`button`, `dialog`, `combobox`, `tree`, `tablist`, etc.) | Wrong role = wrong screen-reader announcement = WCAG 4.1.2 failure. |
+| **ARIA state attributes** | `aria-expanded`, `aria-selected`, `aria-checked`, `aria-pressed`, `aria-current`, `aria-invalid` flip with state | Static-correct ARIA isn't enough; state must reflect reality (WCAG 4.1.2). |
+| **ARIA relationship attributes** | `aria-labelledby`, `aria-describedby`, `aria-controls`, `aria-owns`, `aria-activedescendant` resolve to real elements | Dangling IDREFs are the #1 axe-core "serious" violation in custom widgets. |
+| **ID uniqueness across instances** | Mount the component twice; assert all generated IDs differ AND each resolves to exactly one element | Already enforced in `Dialog.test.tsx` lines 49-71. Catches hardcoded `id="dialog-title"` regressions. |
+| **Keyboard interaction matrix** | Every key in the APG pattern fires the correct action (Enter, Space, Arrow keys, Home, End, Esc, Tab, Shift+Tab, type-ahead) | WCAG 2.1.1 Keyboard. Mouse-only widgets fail. |
+| **Focus management** | Focus moves to expected element on open/close/expand/select; restoration on close | WCAG 2.4.3 Focus Order, 2.4.7 Focus Visible. |
+| **Focus trap (modal/dialog)** | Tab/Shift+Tab cycles within container; does not escape | Specific to Modal, Dialog. WCAG 2.1.2 No Keyboard Trap inverse — modal MUST trap. |
+| **Escape closes overlay AND stops propagation** | Inner Escape does not bubble to ancestor handlers | Already enforced in `Select.test.tsx` lines 78-91. Prevents double-close cascades. |
+| **Screen-reader announcement (live region)** | Status/error changes route through `LiveRegion` with correct `aria-live` politeness | WCAG 4.1.3 Status Messages. The whole reason `LiveRegion` exists. |
+| **Form-association correctness** | Input components emit a `<label>` with `htmlFor` matching the input `id`; `aria-describedby` points at error/help text | WCAG 1.3.1, 3.3.2. |
+| **Error state contract** | `aria-invalid="true"` set on the input; error text rendered in/linked via `aria-describedby`; not announced as label | WCAG 3.3.1 Error Identification. |
+| **Required state contract** | `aria-required="true"` AND visible required indicator — not asterisk-only | WCAG 3.3.2 Labels or Instructions. |
+| **Reduced motion** | If component animates, animation respects `prefers-reduced-motion` | WCAG 2.3.3 Animation from Interactions. |
+| **Touch target size hint** | Interactive elements meet 24x24 CSS px minimum (assert via getBoundingClientRect or rendered styles) | WCAG 2.5.8 Target Size (Minimum) — 2.2 AA. |
 
-Features to explicitly NOT build for AU jurisdiction support.
+### Tier 3: Pattern-Specific — APG Conformance Per Widget Type
 
-| Feature | Why Requested | Why Problematic | Alternative |
-|---------|---------------|-----------------|-------------|
-| State/territory-level enforcement body switching | AU has 8 states/territories; users may expect Victoria vs NSW to route to different bodies | There is no state-level DDA equivalent. All DDA complaints go to AHRC regardless of state. Building state routing would be legally incorrect and confusing. | Use AHRC as the single AU enforcement body for all states. Add a note that state governments have their own accessibility policies but DDA enforcement remains federal. |
-| WAD/EAA sector split for AU | The existing EU sector logic (WAD = public, EAA = private) is a natural template for AU | DDA has no equivalent split. Applying WAD/EAA framing to AU would misrepresent the legal structure and produce incorrect compliance statements. | `getEnforcementBody('AU', sector)` returns AHRC regardless of sector. DTA is government-only and is not a complaints enforcement body. |
-| Mobile app scanning for AU compliance | AHRC 2025 guidelines extend DDA to mobile apps | Mobile app scanning requires a fundamentally different scanner architecture (native app inspection vs web page scanning). This is an architectural expansion, not a jurisdiction addition. | Note in en-au statement that WCAG 2.2 AA guidance applies to mobile apps under 2025 AHRC guidelines, but mobile scanning is out of scope for this milestone. |
-| Hardcoded WCAG version in AU template | Lock template to "WCAG 2.2 AA" to match current AHRC guidance | WCAG versions evolve; EN 301 549 v4.1.1 (expected 2026) will update to WCAG 2.2 AA in EN 301 549 context. Hardcoding creates a maintenance burden. | Use a parameterized WCAG version field consistent with how other templates handle it, defaulting to "2.2 Level AA" for en-au. |
-| Separate "DTA compliance" scan mode | DTA Digital Experience Policy is sometimes treated as a distinct compliance regime | DTA policy mandates WCAG 2.2 AA — the same standard as DDA. A separate mode would duplicate effort with no technical difference. | Annotate DTA policy in .gov.au output without creating a separate scan pipeline. |
+These are the WAI-ARIA Authoring Practices Guide patterns. Each complex widget MUST be tested against its published pattern.
 
----
+#### Combobox (APG: Combobox with Listbox Popup)
 
-## Feature Dependencies
+Reference: `https://www.w3.org/WAI/ARIA/apg/patterns/combobox/`
 
-```
-AU-LAWS-1: Add DDA to national-laws.json in @holmdigital/standards
-    └──required-by──> AU-ENFORCEMENT-1: Add AHRC to ENFORCEMENT_BODIES (needs Country type to include 'AU')
-    └──required-by──> AU-TEMPLATE-1: en-au engine JSON statement template (references DDA law name)
-    └──required-by──> AU-COMPONENT-1: en-au component inline template (references DDA law name)
+**Required keyboard tests:**
+- Down Arrow when collapsed → opens listbox, focus visually on first option (or selected)
+- Down/Up Arrow when expanded → moves visual focus through options (uses `aria-activedescendant` pattern, not actual DOM focus)
+- Enter → selects option, closes listbox, returns focus to combobox input
+- Escape → if listbox open, close and keep input value; if closed, clear input
+- Home/End → first/last option (when listbox open)
+- Printable characters → filter listbox (autocomplete) OR type-ahead (manual selection)
+- Alt+Down → open listbox without moving focus
+- Alt+Up → close listbox
 
-AU-TLD-1: Extend TLD detection map with .au and .com.au
-    └──independent (reads Country type, does not need new law data)
-    └──note: .com.au is a second-level TLD — requires substring match, not simple last-segment split
+**Required ARIA tests:**
+- Input has `role="combobox"`, `aria-expanded`, `aria-controls={listboxId}`, `aria-autocomplete` (`list`/`both`/`none`)
+- Listbox has `role="listbox"` with `aria-label` or `aria-labelledby`
+- Each option has `role="option"`, `aria-selected="true|false"`
+- `aria-activedescendant` on input = id of visually focused option
 
-AU-ENFORCEMENT-1: AHRC in ENFORCEMENT_BODIES_DETAILED
-    └──required-by──> AU-TEMPLATE-1 (template references enforcement body name)
-    └──required-by──> AU-COMPONENT-1 (component chrome uses enforcement body name)
-    └──requires──> AU-LAWS-1 (Country type must include 'AU' before map entry is valid)
+#### DatePicker (APG: Date Picker Dialog pattern)
 
-AU-SECTOR-1: Sector-aware enforcement wiring for AU (no WAD/EAA split)
-    └──requires──> AU-ENFORCEMENT-1
-    └──note: getEnforcementBody('AU', sector) must return AHRC for both 'public' and 'private'
+Reference: `https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/` + grid pattern
 
-AU-TEMPLATE-1: en-au engine JSON statement template
-    └──requires──> AU-LAWS-1, AU-ENFORCEMENT-1
-    └──parallel-with──> AU-COMPONENT-1 (both reference same law/enforcement data)
+**Required keyboard tests (in calendar grid):**
+- Arrow keys → move one day in grid direction
+- Home/End → first/last day of week
+- PageUp/PageDown → previous/next month
+- Shift+PageUp/PageDown → previous/next year
+- Enter/Space → select date, close
+- Escape → close without selecting
 
-AU-COMPONENT-1: en-au component inline template + UI chrome
-    └──requires──> AU-LAWS-1, AU-ENFORCEMENT-1
-    └──parallel-with──> AU-TEMPLATE-1
+**Required ARIA tests:**
+- Calendar uses `role="grid"`, `aria-labelledby` pointing to "Month YYYY" heading
+- Day cells use `role="gridcell"` with `aria-selected`, `aria-current="date"` for today
+- Month/year navigation buttons have accessible names (`aria-label="Previous month"`)
 
-AU-CHROME-1: en-au locale-chrome.ts entries (badges, labels, footer)
-    └──requires──> AU-COMPONENT-1 (or simultaneous — same file edit)
+#### MultiSelect (APG: Listbox, multi-select)
 
-AU-TESTS-1: Test coverage for all AU additions
-    └──requires──> AU-LAWS-1, AU-ENFORCEMENT-1, AU-TLD-1, AU-TEMPLATE-1, AU-COMPONENT-1, AU-SECTOR-1
+Reference: `https://www.w3.org/WAI/ARIA/apg/patterns/listbox/`
 
-Build order constraint:
-    @holmdigital/standards (AU-LAWS-1, AU-ENFORCEMENT-1) must build before
-    @holmdigital/components (AU-COMPONENT-1, AU-CHROME-1) must build before
-    @holmdigital/engine (AU-TEMPLATE-1, AU-TLD-1, AU-SECTOR-1)
-```
+**Required keyboard tests:**
+- Space → toggle selection of focused option (does NOT move focus)
+- Shift+Down/Up → extend selection
+- Ctrl+A → select all (if supported)
+- Selected count announced via live region after selection change
 
-### Dependency Notes
+**Required ARIA tests:**
+- `role="listbox"` with `aria-multiselectable="true"`
+- Each option has `aria-selected="true|false"` (NOT `aria-checked`)
 
-- **AU-LAWS-1 is the root dependency.** Country type must include 'AU' before enforcement body maps, TLD maps, or template wiring can reference it without TypeScript errors.
-- **.com.au TLD requires non-trivial detection.** The existing pattern splits on the last segment of the hostname. `.com.au` has two suffix segments; detection logic must check for `.com.au` before falling back to `.au` split.
-- **AU-SECTOR-1 is deliberately a no-op for sector switching.** The sector param is accepted but both values resolve to AHRC. This is correct behavior, not an omission.
-- **DTA annotation (differentiator) depends on .gov.au TLD detection**, which is a special case of AU-TLD-1. Can be implemented in the same TLD extension pass.
+#### DataTable (APG: Grid pattern, or static table)
 
----
+Reference: `https://www.w3.org/WAI/ARIA/apg/patterns/grid/` (interactive) or HTML `<table>` (static)
 
-## MVP Definition
+**Required tests:**
+- If sortable: `aria-sort="ascending|descending|none"` on `<th>`, toggles on click AND on Enter/Space when th has `tabindex="0"`
+- If selectable rows: `aria-selected` on `<tr>`, keyboard via row navigation
+- Caption or `aria-label` describes table purpose
+- Column headers have `scope="col"`, row headers `scope="row"`
+- If interactive grid: full two-dimensional Arrow key navigation, Home/End for row, Ctrl+Home/End for grid, PageUp/PageDown for paging
 
-### Launch With (v0.5 — this milestone)
+#### TreeView (APG: Tree)
 
-Minimum features needed to call AU a "fully supported jurisdiction" in the same sense as UK, US, CA, and EU countries.
+Reference: `https://www.w3.org/WAI/ARIA/apg/patterns/treeview/`
 
-- [x] AU-LAWS-1 — DDA + DTA in national-laws.json. Without this, no AU-specific legal reference exists.
-- [x] AU-ENFORCEMENT-1 — AHRC in ENFORCEMENT_BODIES and ENFORCEMENT_BODIES_DETAILED. Without this, enforcement body output is wrong.
-- [x] AU-TLD-1 — .au and .com.au TLD detection. Without this, AU sites fall through to EU fallback.
-- [x] AU-TEMPLATE-1 — en-au engine JSON statement template. Without this, engine generates a legally incorrect statement.
-- [x] AU-COMPONENT-1 — en-au component inline template. Without this, component renders wrong jurisdiction data.
-- [x] AU-CHROME-1 — en-au locale-chrome entries. Without this, badges/labels reference wrong law/body.
-- [x] AU-SECTOR-1 — Sector wiring that routes both public and private to AHRC.
-- [x] AU-TESTS-1 — Tests covering all new law data, TLD detection, enforcement routing, and template generation.
+**Required keyboard tests:**
+- Down/Up Arrow → next/previous visible node (skipping collapsed children)
+- Right Arrow → if collapsed, expand; if expanded, move to first child; if leaf, no-op
+- Left Arrow → if expanded, collapse; if collapsed/leaf, move to parent
+- Home/End → first/last visible node in tree
+- Enter → activate node (if it has activation behaviour)
+- Type-ahead → focus next node whose name starts with typed string
+- Asterisk (`*`) → expand all sibling nodes at current level
 
-### Add After Validation (v0.5.x or v0.6)
+**Required ARIA tests:**
+- Container has `role="tree"`
+- Each node has `role="treeitem"` with `aria-expanded` (only on parent nodes), `aria-selected`, `aria-level`, `aria-setsize`, `aria-posinset`
+- Child group wrapped in `role="group"`
+- Only ONE `treeitem` has `tabindex="0"` at any time (roving tabindex)
 
-- [ ] DTA Digital Experience Policy annotation for .gov.au domains — adds government-sector differentiation; trigger: government agency customers request it
-- [ ] AS EN 301 549 procurement note in AU reports — adds value for state government procurement; trigger: NSW/VIC/QLD government clients
-- [ ] AHRC complaint pathway URL in statement contact section — adds actionable guidance; trigger: user testing feedback
+#### Accordion / Tabs (APG patterns)
 
-### Future Consideration (v1.0+)
+Reference: `https://www.w3.org/WAI/ARIA/apg/patterns/accordion/` and `/tabs/`
 
-- [ ] State-level government policy annotations (Victoria WCAG 2.1 AA mandate, NSW AS EN 301 549 procurement) — requires state detection beyond TLD (no state-specific TLDs exist); needs explicit metadata
-- [ ] Mobile app compliance notes (AHRC 2025 scope expansion) — requires architectural work beyond this tool's web scanning scope
-- [ ] WCAG 2.2 AA vs 2.1 AA delta highlighting for AU — useful as AHRC updates from 2.0 to 2.2 baseline; needs per-criterion version tagging
-
----
-
-## Feature Prioritization Matrix
-
-| Feature | User Value | Implementation Cost | Priority |
-|---------|------------|---------------------|----------|
-| DDA in national-laws.json | HIGH | LOW | P1 |
-| AHRC enforcement body | HIGH | LOW | P1 |
-| .au / .com.au TLD detection | HIGH | LOW (with .com.au caveat) | P1 |
-| en-au engine JSON template | HIGH | MEDIUM | P1 |
-| en-au component inline template | HIGH | MEDIUM | P1 |
-| en-au locale-chrome entries | HIGH | LOW | P1 |
-| AU sector wiring (no split) | HIGH | LOW | P1 |
-| Tests for all AU additions | HIGH | MEDIUM | P1 |
-| DTA .gov.au annotation | MEDIUM | LOW | P2 |
-| AS EN 301 549 procurement note | MEDIUM | LOW | P2 |
-| AHRC complaint URL in statement | MEDIUM | LOW | P2 |
-| State-level policy annotations | LOW | HIGH | P3 |
-| Mobile app compliance notes | LOW | HIGH | P3 |
-
-**Priority key:**
-- P1: Must have for v0.5 launch (AU jurisdiction is unusable without these)
-- P2: Should have; add in v0.5.x when P1 is stable
-- P3: Defer; requires architecture work or external research beyond this milestone
+- **Tabs:** roving tabindex, Arrow keys move between tabs, Home/End jump, automatic vs manual activation pattern (Enter/Space for manual)
+- **Accordion:** Each header is a `<button>` with `aria-expanded`, `aria-controls`. Optional roving down/up between headers.
 
 ---
 
-## Competitor Feature Analysis
+## Per-Component Test Scope Matrix
 
-| Feature | AccessibilityCheck.au (AU-local tool) | Siteimprove / Deque (global tools) | Our Approach |
-|---------|---------------------------------------|------------------------------------|--------------|
-| DDA law reference in reports | Yes — primary differentiator for AU tool | DDA listed as a supported standard | Named in legal context of each failing criterion |
-| AHRC enforcement body reference | Unclear from public docs | Not jurisdiction-specific in report output | Explicit per-country enforcement body in statement and report |
-| Sector-aware enforcement | No evidence of sector switching | No AU-specific sector logic found | AU gets AHRC for both sectors; EU retains WAD/EAA split |
-| .com.au TLD auto-detection | N/A (AU-only tool, assumes AU context) | Not applicable (manual country selection) | Automatic via TLD map; .com.au needs two-segment check |
-| WCAG version in AU context | WCAG 2.2 AA (matches 2025 AHRC guidance) | WCAG 2.2 AA | WCAG 2.2 AA explicitly in en-au template prose |
-| Accessibility statement generation | Yes | Enterprise tier only | Included — en-au template with DDA + AHRC references |
-| AS EN 301 549 reference for AU | Not found | Not AU-specific | P2 differentiator for procurement context |
+Legend: TS = Table Stakes | DIFF = Differentiator categories from Tier 2 | APG = Pattern-specific from Tier 3
+
+| Component | TS | axe | Roles | ARIA state | ARIA refs | ID-uniq | Keyboard | Focus mgmt | Form-assoc | Live region | APG pattern | Est. test count |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| **Button** | yes | yes | yes | aria-pressed, aria-disabled, aria-busy | aria-describedby (loading) | — | Enter, Space | — | — | — | Button | 8-10 |
+| **FormField** | yes | yes | yes | aria-invalid, aria-required | label htmlFor, aria-describedby | yes | — | — | error to live | — | Form labelling | 12-15 |
+| **Modal** | yes | yes | dialog, alertdialog | aria-modal | aria-labelledby, aria-describedby | yes | Tab cycle, Esc | trap + restore | — | — | Dialog (Modal) | 12-15 |
+| **Checkbox** | yes | yes | checkbox | aria-checked (incl. mixed) | label, aria-describedby | yes | Space | — | yes | — | Checkbox | 10-12 |
+| **RadioGroup** | yes | yes | radiogroup, radio | aria-checked | aria-labelledby (group), label per radio | yes | Arrow keys (roving), Tab into group | roving tabindex | yes | — | Radio Group | 12-14 |
+| **Combobox** | yes | yes | combobox, listbox, option | aria-expanded, aria-selected, aria-autocomplete | aria-controls, aria-activedescendant | yes | Full APG matrix | combobox-listbox dance | yes | optional | Combobox | 18-22 |
+| **DatePicker** | yes | yes | dialog, grid, gridcell | aria-selected, aria-current | aria-labelledby month | yes | Arrow, Home/End, PgUp/Dn, Shift+PgUp/Dn | trap in popup | yes | month change | Date Picker Dialog | 18-22 |
+| **MultiSelect** | yes | yes | listbox, option | aria-multiselectable, aria-selected | aria-activedescendant | yes | Space toggle, Shift+Arrow extend | — | yes | selection count | Listbox (multi) | 14-18 |
+| **DataTable** | yes | yes | table or grid, columnheader, rowheader | aria-sort, aria-selected | aria-describedby caption | — | Sort via Enter/Space; if grid: 2D nav | — | — | sort change | Grid / Table | 14-18 |
+| **Pagination** | yes | yes | navigation | aria-current="page" | aria-label="Pagination" | — | Enter on page link | — | — | page change | Navigation landmark | 8-10 |
+| **Card** | yes | yes | article or region (if labelled) | — | aria-labelledby (heading) | — | if interactive: Enter/Space | — | — | — | — | 5-7 |
+| **TreeView** | yes | yes | tree, treeitem, group | aria-expanded, aria-selected, aria-level, aria-setsize, aria-posinset | — | yes | Full APG tree matrix | roving tabindex | — | — | Tree View | 18-22 |
+| **ProgressBar** | yes | yes | progressbar | aria-valuenow, aria-valuemin, aria-valuemax, aria-valuetext | aria-labelledby | — | — | — | yes (if status) | — | Meter / Progress | 6-8 |
+| **Skeleton** | yes | yes | — (presentational) | aria-busy on parent, aria-hidden on skeleton | — | — | — | — | optional | reduced-motion | — | 4-6 |
+| **HelpText** | yes | yes | — | — | id targeted by aria-describedby | yes | — | — | — | — | — | 4-6 |
+| **Accordion** | yes | yes | button (header), region (panel) | aria-expanded | aria-controls | yes | Enter, Space, optional Arrow | — | — | — | Accordion | 10-14 |
+| **Tabs** | yes | yes | tablist, tab, tabpanel | aria-selected, aria-controls | aria-labelledby (panel) | yes | Arrow, Home/End, manual vs auto | roving tabindex | — | — | Tabs | 14-18 |
+| **Heading** | yes | yes | heading (h1-h6) | aria-level if non-native | — | — | — | — | — | — | Heading semantics | 5-7 |
+| **ErrorSummary** | yes | yes | alert or region | tabindex=-1 receives focus | aria-labelledby title; each link to field id | — | Enter on link to focus field | focus on mount | — | yes on mount | Error Summary (GOV.UK pattern) | 10-12 |
+| **SkipLink** | yes | yes | link | — | href targets existing id | — | Tab to visible; Enter to jump | scroll/focus target | — | — | Bypass Blocks WCAG 2.4.1 | 6-8 |
+| **Switch** | yes | yes | switch | aria-checked | label | yes | Space, optional Enter | — | yes | — | Switch | 8-10 |
+| **Breadcrumbs** | yes | yes | navigation | aria-current="page" on last | aria-label="Breadcrumb" | — | — | — | — | — | Breadcrumb | 6-8 |
+| **NavigationMenu** | yes | yes | navigation, menubar/menu, menuitem | aria-expanded, aria-haspopup | aria-controls submenu | yes | Arrow horizontal/vertical, Esc, type-ahead | roving tabindex | — | — | Menubar / Disclosure Nav | 16-20 |
+
+**Estimated total new tests: ~250-300 across 22 components.**
+
+---
+
+## Priority Recommendation: Tackle These 7 First
+
+Rationale weights: (a) form-critical (used in every accessibility statement form), (b) most-mounted (appears in nearly every page built with the library), (c) highest regression-prone (complex state), (d) currently broken/risky (CONCERNS.md flags), (e) blocks downstream component testing (e.g. FormField wraps Checkbox, RadioGroup, etc.).
+
+| # | Component | Rationale | Why First |
+|---|-----------|-----------|-----------|
+| 1 | **Button** | (b) Most-mounted by far. Foundation primitive. Loading/disabled states regress quietly. | Lowest LOC-to-coverage ratio. Quick win, builds momentum, validates the test pattern works on simple primitives. |
+| 2 | **FormField** | (a) (e) Wraps every form input. Owns the label-input-error-help-text id linkage that drives 40% of axe failures in form-heavy apps. | Without FormField tests, all input-component tests sit on quicksand. WCAG 1.3.1, 3.3.1, 3.3.2 all flow through here. |
+| 3 | **Modal** | (b) (c) (d) Full focus-trap + restore + Esc-stop-propagation. CONCERNS.md classifies modal regressions as the #1 a11y bug class. Distinct from existing Dialog (different API surface). | Focus-trap regressions ship silently. Modal is the highest-stakes "looks fine, screen-reader trapped" component. |
+| 4 | **Checkbox** | (a) (c) Tri-state (`mixed`) is commonly broken. Form-critical. | Tri-state checkbox is a known footgun. Required for "select all" patterns in MultiSelect/DataTable downstream. |
+| 5 | **RadioGroup** | (a) (c) Roving tabindex + Arrow navigation is the most-frequently-broken APG pattern in the wild. | Required for sector selection (public/private) in AccessibilityStatement consumer flows. Sets the roving-tabindex test pattern reused by Tabs/TreeView/NavigationMenu. |
+| 6 | **ErrorSummary** | (a) (d) GOV.UK-pattern component, focus-on-mount + link-to-field semantics. Existing field has known fragility (it relies on consumer-supplied IDs matching). | Used at the top of every form to surface errors. Failure mode = inaccessible error reporting, which IS the WCAG 3.3.1 failure the library promises to prevent. Self-undermining if broken. |
+| 7 | **Tabs** | (b) (c) Roving tabindex + manual-vs-automatic activation is APG's classic "developers get this wrong" pattern. | Establishes the Tier-3 APG-pattern test template that Combobox/TreeView/NavigationMenu inherit. Better to nail the pattern on Tabs (simpler) before tackling Combobox (hardest). |
+
+**Deferred to Phase 2 (after the seven above):** Combobox, DatePicker, MultiSelect, DataTable, TreeView, NavigationMenu — the five complex APG widgets. Group them together so the same engineer/session builds APG-pattern muscle memory.
+
+**Deferred to Phase 3 (lowest ROI, can ship without):** Card, Skeleton, HelpText, Heading, ProgressBar, Pagination, Breadcrumbs, SkipLink, Switch, Accordion — simpler primitives whose failure modes are visible (rendering wrong) rather than silent (accessibility broken).
+
+---
+
+## Anti-Features — Patterns to Explicitly NOT Test
+
+These are testing practices that look like coverage but actively harm the suite. The existing Dialog/Select tests already avoid all of them — codify the discipline.
+
+| Anti-Pattern | Why Avoid | What To Do Instead |
+|--------------|-----------|--------------------|
+| **Snapshot tests on rendered HTML** | Snapshots break on every styling tweak; reviewers blanket-update them; the snapshot becomes write-only. They assert nothing meaningful about behaviour. | Assert specific roles, ARIA attributes, and structural relationships. If you can't write the assertion, you don't know what the test is checking. |
+| **Selecting by CSS class** (`.querySelector('.hd-btn-primary')`) | Couples tests to internal styling. Refactoring class names becomes a multi-day exercise. | Use `getByRole`, `getByLabelText`, `getByText`. CSS classes are an implementation detail. |
+| **Testing internal React state** (`wrapper.state('isOpen')`) | Couples tests to component internals. Cannot survive refactor to hooks or compound components. The user never observes state directly. | Test observable outputs: rendered DOM, ARIA attributes, callback invocations. If `isOpen` is true, `role="dialog"` should be in the DOM — assert that. |
+| **Testing internal hook return values** | Same as above — implementation detail. | Render the hook through a component and test the rendered output. |
+| **Brittle `data-testid` on every leaf element** | Encourages testing structure rather than behaviour. Leaks test-only attributes to production HTML. | Use `data-testid` ONLY on test-harness wrappers (see Dialog.test.tsx `data-testid="opener"`), never on library components themselves. |
+| **Asserting className strings exactly** (`expect(el.className).toBe('hd-btn hd-btn-primary')`) | Order-dependent, breaks when Tailwind/cva adds utilities. | Assert class membership: `expect(el.classList.contains('hd-btn-primary')).toBe(true)`. Or skip — class names are not user-observable behaviour. |
+| **`waitFor` without a clear assertion target** | Hides race conditions, leads to flaky tests with arbitrary timeouts. | Use `findBy*` queries (built-in async wait) or `waitFor(() => expect(...).toBe(...))` with a specific assertion. |
+| **Mocking the component under test** | Tautological — you're testing the mock. | If the component has a hard-to-test dependency, refactor to inject it. Mock the dependency, not the subject. |
+| **`fireEvent.click` on non-button elements without keyboard equivalent test** | A test that passes with `fireEvent.click` on a `<div>` proves the component fails WCAG 2.1.1 (Keyboard). The test gives false confidence. | Always pair click tests with Enter/Space keydown tests. If only click works, the component is broken — fix the component, don't accept the gap. |
+| **One mega-test with 20 assertions** | When it fails, you have no idea which assertion broke. | One behaviour per `it()`. Test names form readable specification. |
+| **Testing what React already tests** (e.g. "calls useState") | Wastes lines, tests the framework not your code. | Test what your component contributes on top of React. |
+| **Testing CSS computed styles for visual appearance** | jsdom does not implement layout. Computed styles are unreliable. Visual regressions belong in Playwright/Chromatic, not unit tests. | Reserve visual checks for E2E. Unit tests assert semantic structure and behaviour. |
+
+---
+
+## Pattern Library: Three Reusable Test Helpers To Build First
+
+Before writing 22 component test files, extract these three helpers. They appear in every Tier-2 differentiator and would otherwise be copy-pasted 22 times.
+
+### 1. `expectNoAxeViolations(container)`
+Wraps `vitest-axe` (or `axe-core/react`) call. Configures the rule set to match what the engine itself uses (`wcag2a`, `wcag2aa`, `wcag21aa`, `wcag22aa`). Single import for every test file.
+
+### 2. `expectUniqueIds(container, selector)`
+Mirrors the pattern from `Dialog.test.tsx` lines 49-71 — mount twice, assert all generated IDs differ AND each resolves to exactly one element. Currently inlined; extract once.
+
+### 3. `expectKeyboardSequence(element, keys, expectations)`
+Drives a keyboard sequence with `fireEvent.keyDown` and runs an assertion after each key. Removes the boilerplate from APG keyboard-matrix tests, which are otherwise the most repetitive code in the suite.
+
+These three helpers also become the project's testing "documentation" — anyone reading `Button.test.tsx` sees `expectNoAxeViolations`, `expectUniqueIds`, and immediately understands the test grammar.
 
 ---
 
 ## Sources
 
-- [AHRC — Standards and Guidelines on Digital Accessibility](https://humanrights.gov.au/our-work/disability-rights/chapter-3-standards-and-guidelines-digital-accessibility) — HIGH confidence, official body
-- [W3C WAI — Australia Policy](https://www.w3.org/WAI/policies/australia/) — HIGH confidence, authoritative policy index
-- [DTA — Accessibility and Digital Service Standard](https://www.dta.gov.au/blogs/accessibility-and-digital-service-standard) — HIGH confidence, official government
-- [digital.gov.au — Digital Service Standard](https://www.digital.gov.au/policy/digital-experience/digital-service-standard) — HIGH confidence, official
-- [Deque — Three major accessibility updates in Australia in 2026](https://www.deque.com/blog/accessibility-updates-in-australia-in-2026/) — MEDIUM confidence, specialist analysis
-- [Deque — The 2025 AHRC accessibility guidelines: What's new and why it matters](https://www.deque.com/blog/the-2025-ahrc-accessibility-guidelines-whats-new-and-why-it-matters/) — MEDIUM confidence
-- [Intopia — EN 301 549: What it means for Australia](https://intopia.digital/articles/en-301-549-australia/) — MEDIUM confidence, AU accessibility specialists
-- [Standards Australia — AS EN 301 549:2024](https://store.standards.org.au/product/AS-EN-301-549-2024) — HIGH confidence, official standards body
-- [iconagency.com.au — Australian Government website accessibility in 2025](https://iconagency.com.au/news/2025-10-21-australian-government-website-accessibility-2025-dss-wcag-22-and-multilingual) — MEDIUM confidence
-- [OZeWAI — Three major accessibility updates in Australia](https://ozewai.org/blog/standards/three-major-accessibility-updates-in-australia/) — MEDIUM confidence, AU accessibility community
-- [vic.gov.au — Digital accessibility requirements](https://www.vic.gov.au/digital-accessibility-requirements) — HIGH confidence, official state government
+- **Existing test patterns (canonical for this project):**
+  - `packages/components/src/Dialog/Dialog.test.tsx` — establishes ID-uniqueness, focus-restoration, initialFocusRef patterns
+  - `packages/components/src/Select/Select.test.tsx` — establishes APG keyboard matrix, aria-activedescendant, Escape-stops-propagation patterns
+- **WAI-ARIA Authoring Practices Guide (W3C):** `https://www.w3.org/WAI/ARIA/apg/patterns/` — authoritative for every Tier-3 pattern reference. APG is actively maintained by W3C ARIA WG.
+- **WCAG 2.2 Success Criteria (W3C Recommendation):** `https://www.w3.org/TR/WCAG22/` — referenced criteria (1.3.1, 2.1.1, 2.1.2, 2.4.1, 2.4.3, 2.4.7, 2.5.8, 3.3.1, 3.3.2, 4.1.2, 4.1.3) drive Tier-2 categories.
+- **CONCERNS.md "Test Coverage Gaps":** `D:\a11y-hd-project\.planning\codebase\CONCERNS.md` lines 328-352 — confirms the 22-component gap and assigns High priority.
+- **PROJECT.md milestone scope:** `D:\a11y-hd-project\.planning\PROJECT.md` lines 103-119 — confirms Button, FormField, Modal, Checkbox, RadioGroup as the milestone's named priorities, validating five of the seven items in the priority list.
 
----
-
-*Feature research for: Australian jurisdiction support (v0.5 milestone)*
-*Researched: 2026-03-27*
+**Confidence:** HIGH on Tier 1 and Tier 2 categories (directly evidenced in repo). HIGH on APG patterns (W3C-stable). HIGH on priority list (4 of 7 explicitly named in PROJECT.md, remaining 3 derived from observed CONCERNS.md risk weighting). MEDIUM on per-component test counts (estimates based on category counts × component complexity; actual counts will vary ±30%).

@@ -78,3 +78,14 @@ extract_strings.py
 translate_nl.py
 *.py
 .planning/
+
+# Local scratch / scan output / encoding round-trips (never commit)
+output*.json
+output*.txt
+releases*.json
+releases*.txt
+changelog_*.md
+changelog_v*.md
+*_utf8.*
+REVIEW-*.md
+brief-*.md

@@ -1,6 +1,7 @@
 {
     "name": "@holmdigital/components",
     "author": "Holm Digital AB",
+    "license": "MIT",
     "version": "2.4.0",
     "private": false,
     "publishConfig": {
@@ -15,6 +16,9 @@
     "main": "./dist/index.js",
     "module": "./dist/index.mjs",
     "types": "./dist/index.d.ts",
+    "sideEffects": [
+        "**/*.css"
+    ],
     "exports": {
         ".": {
             "types": "./dist/index.d.ts",
@@ -112,18 +116,48 @@
         "./LiveRegion": {
             "types": "./dist/LiveRegion/LiveRegion.d.ts",
             "import": "./dist/LiveRegion/LiveRegion.mjs"
-        }
+        },
+        "./Tabs": {
+            "types": "./dist/Tabs/Tabs.d.ts",
+            "import": "./dist/Tabs/Tabs.mjs"
+        },
+        "./Tabs.css": "./dist/Tabs/Tabs.css",
+        "./Accordion": {
+            "types": "./dist/Accordion/Accordion.d.ts",
+            "import": "./dist/Accordion/Accordion.mjs"
+        },
+        "./Accordion.css": "./dist/Accordion/Accordion.css",
+        "./ProgressBar": {
+            "types": "./dist/ProgressBar/ProgressBar.d.ts",
+            "import": "./dist/ProgressBar/ProgressBar.mjs"
+        },
+        "./Skeleton": {
+            "types": "./dist/Skeleton/Skeleton.d.ts",
+            "import": "./dist/Skeleton/Skeleton.mjs"
+        },
+        "./HelpText": {
+            "types": "./dist/HelpText/HelpText.d.ts",
+            "import": "./dist/HelpText/HelpText.mjs"
+        },
+        "./Breadcrumbs": {
+            "types": "./dist/Breadcrumbs/Breadcrumbs.d.ts",
+            "import": "./dist/Breadcrumbs/Breadcrumbs.mjs"
+        },
+        "./Breadcrumbs.css": "./dist/Breadcrumbs/Breadcrumbs.css"
     },
     "files": [
         "dist",
-        "README.md"
+        "README.md",
+        "LICENSE"
     ],
     "scripts": {
-        "build": "tsup src/index.ts src/Button/Button.tsx src/FormField/FormField.tsx src/Dialog/Dialog.tsx src/Modal/Modal.tsx src/SkipLink/SkipLink.tsx src/NavigationMenu/NavigationMenu.tsx src/Checkbox/Checkbox.tsx src/RadioGroup/RadioGroup.tsx src/Select/Select.tsx src/Switch/Switch.tsx src/Toast/Toast.tsx src/Tooltip/Tooltip.tsx src/Heading/Heading.tsx src/AccessibilityStatement/AccessibilityStatement.tsx src/ErrorSummary/ErrorSummary.tsx src/Combobox/Combobox.tsx src/DatePicker/DatePicker.tsx src/MultiSelect/MultiSelect.tsx src/DataTable/DataTable.tsx src/Pagination/Pagination.tsx src/Card/Card.tsx src/TreeView/TreeView.tsx src/LiveRegion/LiveRegion.tsx --format cjs,esm --dts --clean --external react --external @holmdigital/standards",
-        "dev": "tsup src/index.ts src/Button/Button.tsx src/FormField/FormField.tsx src/Dialog/Dialog.tsx src/Modal/Modal.tsx src/SkipLink/SkipLink.tsx src/NavigationMenu/NavigationMenu.tsx src/Checkbox/Checkbox.tsx src/RadioGroup/RadioGroup.tsx src/Select/Select.tsx src/Switch/Switch.tsx src/Toast/Toast.tsx src/Tooltip/Tooltip.tsx src/Heading/Heading.tsx src/AccessibilityStatement/AccessibilityStatement.tsx src/ErrorSummary/ErrorSummary.tsx src/Combobox/Combobox.tsx src/DatePicker/DatePicker.tsx src/MultiSelect/MultiSelect.tsx src/DataTable/DataTable.tsx src/Pagination/Pagination.tsx src/Card/Card.tsx src/TreeView/TreeView.tsx src/LiveRegion/LiveRegion.tsx --format cjs,esm --dts --watch --external react --external @holmdigital/standards",
+        "build": "tsup",
+        "dev": "tsup --watch",
         "lint": "eslint src --ext .ts,.tsx",
+        "check:no-tailwind-leak": "node scripts/check-no-tailwind-leak.mjs",
         "test": "vitest",
-        "test:ci": "vitest run",
+        "test:ci": "vitest run && npm run test:wcag-headers",
+        "test:wcag-headers": "node scripts/check-wcag-headers.mjs",
         "storybook": "storybook dev -p 6006",
         "build-storybook": "storybook build"
     },
@@ -143,9 +177,14 @@
         "react-dom": ">=18.0.0"
     },
     "devDependencies": {
+        "@chialab/vitest-axe": "^0.19.1",
+        "@testing-library/jest-dom": "^6.9.1",
         "@testing-library/react": "^16.3.2",
+        "@testing-library/user-event": "^14.6.1",
         "@types/react": "^18.2.0 || ^19.0.0",
         "@types/react-dom": "^18.2.0 || ^19.0.0",
+        "axe-core": "^4.11.4",
+        "eslint-plugin-testing-library": "^7.16.2",
         "jsdom": "^28.0.0",
         "react": "^18.2.0",
         "react-dom": "^18.2.0",

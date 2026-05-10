@@ -61,7 +61,8 @@ var rules_en_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -131,7 +132,8 @@ var rules_en_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -202,7 +204,8 @@ var rules_en_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -290,7 +293,8 @@ var rules_en_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -360,7 +364,8 @@ var rules_en_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -429,7 +434,8 @@ var rules_en_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -498,7 +504,8 @@ var rules_en_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -566,7 +573,8 @@ var rules_en_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -632,7 +640,8 @@ var rules_en_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -697,7 +706,8 @@ var rules_en_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -764,7 +774,8 @@ var rules_en_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -832,7 +843,8 @@ var rules_en_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -898,7 +910,8 @@ var rules_en_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -963,7 +976,8 @@ var rules_en_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -1029,7 +1043,8 @@ var rules_en_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -1094,7 +1109,8 @@ var rules_en_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -1158,7 +1174,8 @@ var rules_en_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -1224,7 +1241,8 @@ var rules_en_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -1291,7 +1309,8 @@ var rules_en_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -1357,7 +1376,8 @@ var rules_en_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -1425,7 +1445,8 @@ var rules_en_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -1493,7 +1514,8 @@ var rules_en_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -1560,7 +1582,8 @@ var rules_en_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -1626,7 +1649,8 @@ var rules_en_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -1692,7 +1716,8 @@ var rules_en_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -1760,7 +1785,8 @@ var rules_en_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -1825,7 +1851,8 @@ var rules_en_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -1889,7 +1916,8 @@ var rules_en_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -1955,7 +1983,8 @@ var rules_en_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -2022,7 +2051,8 @@ var rules_en_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -2087,7 +2117,8 @@ var rules_en_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -2153,7 +2184,8 @@ var rules_en_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -2219,7 +2251,8 @@ var rules_en_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -2284,7 +2317,8 @@ var rules_en_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -2351,7 +2385,8 @@ var rules_en_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -2417,7 +2452,8 @@ var rules_en_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -2492,7 +2528,8 @@ var rules_en_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -2566,7 +2603,8 @@ var rules_en_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -2630,7 +2668,8 @@ var rules_en_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -2693,7 +2732,8 @@ var rules_en_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -2755,7 +2795,8 @@ var rules_en_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -2817,7 +2858,8 @@ var rules_en_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -2879,7 +2921,8 @@ var rules_en_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -2941,7 +2984,8 @@ var rules_en_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -3004,7 +3048,8 @@ var rules_en_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -3066,7 +3111,8 @@ var rules_en_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -3148,7 +3194,8 @@ var rules_sv_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -3218,7 +3265,8 @@ var rules_sv_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -3289,7 +3337,8 @@ var rules_sv_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -3377,7 +3426,8 @@ var rules_sv_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -3447,7 +3497,8 @@ var rules_sv_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -3516,7 +3567,8 @@ var rules_sv_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -3585,7 +3637,8 @@ var rules_sv_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -3653,7 +3706,8 @@ var rules_sv_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -3719,7 +3773,8 @@ var rules_sv_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -3784,7 +3839,8 @@ var rules_sv_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -3851,7 +3907,8 @@ var rules_sv_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -3919,7 +3976,8 @@ var rules_sv_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -3985,7 +4043,8 @@ var rules_sv_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -4050,7 +4109,8 @@ var rules_sv_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -4116,7 +4176,8 @@ var rules_sv_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -4181,7 +4242,8 @@ var rules_sv_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -4245,7 +4307,8 @@ var rules_sv_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -4311,7 +4374,8 @@ var rules_sv_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -4378,7 +4442,8 @@ var rules_sv_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -4444,7 +4509,8 @@ var rules_sv_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -4512,7 +4578,8 @@ var rules_sv_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -4580,7 +4647,8 @@ var rules_sv_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -4647,7 +4715,8 @@ var rules_sv_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -4713,7 +4782,8 @@ var rules_sv_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -4779,7 +4849,8 @@ var rules_sv_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -4847,7 +4918,8 @@ var rules_sv_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -4912,7 +4984,8 @@ var rules_sv_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -4976,7 +5049,8 @@ var rules_sv_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -5042,7 +5116,8 @@ var rules_sv_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -5109,7 +5184,8 @@ var rules_sv_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -5174,7 +5250,8 @@ var rules_sv_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -5240,7 +5317,8 @@ var rules_sv_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -5306,7 +5384,8 @@ var rules_sv_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -5371,7 +5450,8 @@ var rules_sv_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -5438,7 +5518,8 @@ var rules_sv_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -5504,7 +5585,8 @@ var rules_sv_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -5579,7 +5661,8 @@ var rules_sv_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -5653,7 +5736,8 @@ var rules_sv_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -5717,7 +5801,8 @@ var rules_sv_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -5780,7 +5865,8 @@ var rules_sv_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -5842,7 +5928,8 @@ var rules_sv_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -5904,7 +5991,8 @@ var rules_sv_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -5966,7 +6054,8 @@ var rules_sv_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -6028,7 +6117,8 @@ var rules_sv_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -6091,7 +6181,8 @@ var rules_sv_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -6153,7 +6244,8 @@ var rules_sv_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -6235,7 +6327,8 @@ var rules_de_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -6305,7 +6398,8 @@ var rules_de_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -6376,7 +6470,8 @@ var rules_de_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -6464,7 +6559,8 @@ var rules_de_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -6534,7 +6630,8 @@ var rules_de_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -6603,7 +6700,8 @@ var rules_de_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -6672,7 +6770,8 @@ var rules_de_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -6740,7 +6839,8 @@ var rules_de_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -6806,7 +6906,8 @@ var rules_de_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -6871,7 +6972,8 @@ var rules_de_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -6938,7 +7040,8 @@ var rules_de_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -7006,7 +7109,8 @@ var rules_de_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -7072,7 +7176,8 @@ var rules_de_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -7137,7 +7242,8 @@ var rules_de_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -7203,7 +7309,8 @@ var rules_de_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -7268,7 +7375,8 @@ var rules_de_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -7332,7 +7440,8 @@ var rules_de_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -7398,7 +7507,8 @@ var rules_de_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -7465,7 +7575,8 @@ var rules_de_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -7531,7 +7642,8 @@ var rules_de_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -7599,7 +7711,8 @@ var rules_de_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -7666,7 +7779,8 @@ var rules_de_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -7733,7 +7847,8 @@ var rules_de_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -7799,7 +7914,8 @@ var rules_de_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -7865,7 +7981,8 @@ var rules_de_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -7933,7 +8050,8 @@ var rules_de_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -7998,7 +8116,8 @@ var rules_de_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -8062,7 +8181,8 @@ var rules_de_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -8128,7 +8248,8 @@ var rules_de_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -8195,7 +8316,8 @@ var rules_de_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -8260,7 +8382,8 @@ var rules_de_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -8326,7 +8449,8 @@ var rules_de_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -8392,7 +8516,8 @@ var rules_de_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -8457,7 +8582,8 @@ var rules_de_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -8524,7 +8650,8 @@ var rules_de_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -8590,7 +8717,8 @@ var rules_de_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -8665,7 +8793,8 @@ var rules_de_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -8739,7 +8868,8 @@ var rules_de_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -8803,7 +8933,8 @@ var rules_de_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -8866,7 +8997,8 @@ var rules_de_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -8928,7 +9060,8 @@ var rules_de_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -8990,7 +9123,8 @@ var rules_de_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -9052,7 +9186,8 @@ var rules_de_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -9114,7 +9249,8 @@ var rules_de_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -9177,7 +9313,8 @@ var rules_de_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -9239,7 +9376,8 @@ var rules_de_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -9321,7 +9459,8 @@ var rules_fr_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -9391,7 +9530,8 @@ var rules_fr_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -9462,7 +9602,8 @@ var rules_fr_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -9549,7 +9690,8 @@ var rules_fr_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -9618,7 +9760,8 @@ var rules_fr_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -9687,7 +9830,8 @@ var rules_fr_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -9756,7 +9900,8 @@ var rules_fr_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -9824,7 +9969,8 @@ var rules_fr_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -9890,7 +10036,8 @@ var rules_fr_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -9955,7 +10102,8 @@ var rules_fr_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -10022,7 +10170,8 @@ var rules_fr_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -10090,7 +10239,8 @@ var rules_fr_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -10155,7 +10305,8 @@ var rules_fr_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -10220,7 +10371,8 @@ var rules_fr_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -10286,7 +10438,8 @@ var rules_fr_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -10351,7 +10504,8 @@ var rules_fr_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -10415,7 +10569,8 @@ var rules_fr_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -10481,7 +10636,8 @@ var rules_fr_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -10548,7 +10704,8 @@ var rules_fr_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -10614,7 +10771,8 @@ var rules_fr_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -10682,7 +10840,8 @@ var rules_fr_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -10750,7 +10909,8 @@ var rules_fr_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -10817,7 +10977,8 @@ var rules_fr_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -10883,7 +11044,8 @@ var rules_fr_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -10949,7 +11111,8 @@ var rules_fr_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -11017,7 +11180,8 @@ var rules_fr_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -11082,7 +11246,8 @@ var rules_fr_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -11146,7 +11311,8 @@ var rules_fr_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -11212,7 +11378,8 @@ var rules_fr_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -11279,7 +11446,8 @@ var rules_fr_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -11345,7 +11513,8 @@ var rules_fr_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -11411,7 +11580,8 @@ var rules_fr_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -11477,7 +11647,8 @@ var rules_fr_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -11542,7 +11713,8 @@ var rules_fr_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -11610,7 +11782,8 @@ var rules_fr_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -11676,7 +11849,8 @@ var rules_fr_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -11751,7 +11925,8 @@ var rules_fr_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -11825,7 +12000,8 @@ var rules_fr_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -11889,7 +12065,8 @@ var rules_fr_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -11952,7 +12129,8 @@ var rules_fr_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -12014,7 +12192,8 @@ var rules_fr_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -12076,7 +12255,8 @@ var rules_fr_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -12138,7 +12318,8 @@ var rules_fr_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -12200,7 +12381,8 @@ var rules_fr_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -12263,7 +12445,8 @@ var rules_fr_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -12325,7 +12508,8 @@ var rules_fr_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -12407,7 +12591,8 @@ var rules_es_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -12477,7 +12662,8 @@ var rules_es_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -12547,7 +12733,8 @@ var rules_es_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -12635,7 +12822,8 @@ var rules_es_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -12705,7 +12893,8 @@ var rules_es_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -12774,7 +12963,8 @@ var rules_es_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -12843,7 +13033,8 @@ var rules_es_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -12911,7 +13102,8 @@ var rules_es_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -12977,7 +13169,8 @@ var rules_es_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -13042,7 +13235,8 @@ var rules_es_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -13109,7 +13303,8 @@ var rules_es_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -13177,7 +13372,8 @@ var rules_es_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -13243,7 +13439,8 @@ var rules_es_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -13308,7 +13505,8 @@ var rules_es_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -13374,7 +13572,8 @@ var rules_es_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -13439,7 +13638,8 @@ var rules_es_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -13503,7 +13703,8 @@ var rules_es_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -13569,7 +13770,8 @@ var rules_es_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -13636,7 +13838,8 @@ var rules_es_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -13702,7 +13905,8 @@ var rules_es_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -13770,7 +13974,8 @@ var rules_es_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -13838,7 +14043,8 @@ var rules_es_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -13905,7 +14111,8 @@ var rules_es_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -13971,7 +14178,8 @@ var rules_es_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -14037,7 +14245,8 @@ var rules_es_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -14105,7 +14314,8 @@ var rules_es_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -14170,7 +14380,8 @@ var rules_es_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -14234,7 +14445,8 @@ var rules_es_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -14300,7 +14512,8 @@ var rules_es_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -14367,7 +14580,8 @@ var rules_es_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -14432,7 +14646,8 @@ var rules_es_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -14498,7 +14713,8 @@ var rules_es_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -14564,7 +14780,8 @@ var rules_es_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -14629,7 +14846,8 @@ var rules_es_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -14696,7 +14914,8 @@ var rules_es_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -14762,7 +14981,8 @@ var rules_es_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -14837,7 +15057,8 @@ var rules_es_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -14911,7 +15132,8 @@ var rules_es_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -14975,7 +15197,8 @@ var rules_es_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -15038,7 +15261,8 @@ var rules_es_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -15100,7 +15324,8 @@ var rules_es_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -15162,7 +15387,8 @@ var rules_es_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -15224,7 +15450,8 @@ var rules_es_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -15286,7 +15513,8 @@ var rules_es_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -15349,7 +15577,8 @@ var rules_es_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -15411,7 +15640,8 @@ var rules_es_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -15493,7 +15723,8 @@ var rules_nl_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -15563,7 +15794,8 @@ var rules_nl_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -15634,7 +15866,8 @@ var rules_nl_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -15722,7 +15955,8 @@ var rules_nl_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -15792,7 +16026,8 @@ var rules_nl_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -15861,7 +16096,8 @@ var rules_nl_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -15930,7 +16166,8 @@ var rules_nl_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -15998,7 +16235,8 @@ var rules_nl_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -16064,7 +16302,8 @@ var rules_nl_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -16129,7 +16368,8 @@ var rules_nl_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -16196,7 +16436,8 @@ var rules_nl_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -16264,7 +16505,8 @@ var rules_nl_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -16330,7 +16572,8 @@ var rules_nl_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -16395,7 +16638,8 @@ var rules_nl_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -16461,7 +16705,8 @@ var rules_nl_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -16526,7 +16771,8 @@ var rules_nl_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -16590,7 +16836,8 @@ var rules_nl_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -16656,7 +16903,8 @@ var rules_nl_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -16723,7 +16971,8 @@ var rules_nl_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -16789,7 +17038,8 @@ var rules_nl_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -16857,7 +17107,8 @@ var rules_nl_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -16925,7 +17176,8 @@ var rules_nl_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -16992,7 +17244,8 @@ var rules_nl_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -17058,7 +17311,8 @@ var rules_nl_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -17124,7 +17378,8 @@ var rules_nl_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -17192,7 +17447,8 @@ var rules_nl_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -17257,7 +17513,8 @@ var rules_nl_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -17321,7 +17578,8 @@ var rules_nl_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -17387,7 +17645,8 @@ var rules_nl_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -17454,7 +17713,8 @@ var rules_nl_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -17519,7 +17779,8 @@ var rules_nl_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -17585,7 +17846,8 @@ var rules_nl_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -17651,7 +17913,8 @@ var rules_nl_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -17716,7 +17979,8 @@ var rules_nl_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -17783,7 +18047,8 @@ var rules_nl_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -17849,7 +18114,8 @@ var rules_nl_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -17924,7 +18190,8 @@ var rules_nl_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -17998,7 +18265,8 @@ var rules_nl_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -18062,7 +18330,8 @@ var rules_nl_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -18125,7 +18394,8 @@ var rules_nl_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -18187,7 +18457,8 @@ var rules_nl_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -18249,7 +18520,8 @@ var rules_nl_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -18311,7 +18583,8 @@ var rules_nl_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -18373,7 +18646,8 @@ var rules_nl_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -18436,7 +18710,8 @@ var rules_nl_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -18498,7 +18773,8 @@ var rules_nl_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -18580,7 +18856,8 @@ var rules_no_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -18650,7 +18927,8 @@ var rules_no_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -18721,7 +18999,8 @@ var rules_no_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -18809,7 +19088,8 @@ var rules_no_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -18879,7 +19159,8 @@ var rules_no_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -18948,7 +19229,8 @@ var rules_no_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -19017,7 +19299,8 @@ var rules_no_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -19085,7 +19368,8 @@ var rules_no_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -19151,7 +19435,8 @@ var rules_no_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -19216,7 +19501,8 @@ var rules_no_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -19283,7 +19569,8 @@ var rules_no_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -19351,7 +19638,8 @@ var rules_no_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -19417,7 +19705,8 @@ var rules_no_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -19482,7 +19771,8 @@ var rules_no_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -19548,7 +19838,8 @@ var rules_no_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -19613,7 +19904,8 @@ var rules_no_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -19677,7 +19969,8 @@ var rules_no_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -19743,7 +20036,8 @@ var rules_no_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -19810,7 +20104,8 @@ var rules_no_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -19876,7 +20171,8 @@ var rules_no_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -19944,7 +20240,8 @@ var rules_no_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -20012,7 +20309,8 @@ var rules_no_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -20079,7 +20377,8 @@ var rules_no_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -20145,7 +20444,8 @@ var rules_no_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -20211,7 +20511,8 @@ var rules_no_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -20279,7 +20580,8 @@ var rules_no_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -20344,7 +20646,8 @@ var rules_no_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -20408,7 +20711,8 @@ var rules_no_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -20474,7 +20778,8 @@ var rules_no_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -20541,7 +20846,8 @@ var rules_no_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -20606,7 +20912,8 @@ var rules_no_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -20672,7 +20979,8 @@ var rules_no_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -20738,7 +21046,8 @@ var rules_no_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -20803,7 +21112,8 @@ var rules_no_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -20870,7 +21180,8 @@ var rules_no_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -20936,7 +21247,8 @@ var rules_no_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -21011,7 +21323,8 @@ var rules_no_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -21085,7 +21398,8 @@ var rules_no_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -21149,7 +21463,8 @@ var rules_no_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -21212,7 +21527,8 @@ var rules_no_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -21274,7 +21590,8 @@ var rules_no_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -21336,7 +21653,8 @@ var rules_no_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -21398,7 +21716,8 @@ var rules_no_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -21460,7 +21779,8 @@ var rules_no_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -21523,7 +21843,8 @@ var rules_no_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -21585,7 +21906,8 @@ var rules_no_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -21667,7 +21989,8 @@ var rules_fi_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -21737,7 +22060,8 @@ var rules_fi_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -21808,7 +22132,8 @@ var rules_fi_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -21896,7 +22221,8 @@ var rules_fi_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -21966,7 +22292,8 @@ var rules_fi_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -22035,7 +22362,8 @@ var rules_fi_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -22104,7 +22432,8 @@ var rules_fi_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -22172,7 +22501,8 @@ var rules_fi_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -22238,7 +22568,8 @@ var rules_fi_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -22303,7 +22634,8 @@ var rules_fi_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -22370,7 +22702,8 @@ var rules_fi_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -22438,7 +22771,8 @@ var rules_fi_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -22504,7 +22838,8 @@ var rules_fi_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -22569,7 +22904,8 @@ var rules_fi_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -22635,7 +22971,8 @@ var rules_fi_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -22700,7 +23037,8 @@ var rules_fi_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -22764,7 +23102,8 @@ var rules_fi_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -22830,7 +23169,8 @@ var rules_fi_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -22897,7 +23237,8 @@ var rules_fi_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -22963,7 +23304,8 @@ var rules_fi_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -23031,7 +23373,8 @@ var rules_fi_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -23099,7 +23442,8 @@ var rules_fi_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -23166,7 +23510,8 @@ var rules_fi_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -23232,7 +23577,8 @@ var rules_fi_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -23298,7 +23644,8 @@ var rules_fi_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -23366,7 +23713,8 @@ var rules_fi_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -23431,7 +23779,8 @@ var rules_fi_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -23495,7 +23844,8 @@ var rules_fi_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -23561,7 +23911,8 @@ var rules_fi_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -23628,7 +23979,8 @@ var rules_fi_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -23693,7 +24045,8 @@ var rules_fi_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -23759,7 +24112,8 @@ var rules_fi_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -23825,7 +24179,8 @@ var rules_fi_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -23890,7 +24245,8 @@ var rules_fi_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -23957,7 +24313,8 @@ var rules_fi_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -24023,7 +24380,8 @@ var rules_fi_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -24098,7 +24456,8 @@ var rules_fi_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -24172,7 +24531,8 @@ var rules_fi_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -24236,7 +24596,8 @@ var rules_fi_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -24299,7 +24660,8 @@ var rules_fi_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -24361,7 +24723,8 @@ var rules_fi_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -24423,7 +24786,8 @@ var rules_fi_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -24485,7 +24849,8 @@ var rules_fi_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -24547,7 +24912,8 @@ var rules_fi_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -24610,7 +24976,8 @@ var rules_fi_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -24672,7 +25039,8 @@ var rules_fi_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -24754,7 +25122,8 @@ var rules_da_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -24824,7 +25193,8 @@ var rules_da_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -24895,7 +25265,8 @@ var rules_da_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -24983,7 +25354,8 @@ var rules_da_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -25053,7 +25425,8 @@ var rules_da_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -25122,7 +25495,8 @@ var rules_da_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -25191,7 +25565,8 @@ var rules_da_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -25259,7 +25634,8 @@ var rules_da_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -25325,7 +25701,8 @@ var rules_da_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -25390,7 +25767,8 @@ var rules_da_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -25457,7 +25835,8 @@ var rules_da_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -25525,7 +25904,8 @@ var rules_da_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -25591,7 +25971,8 @@ var rules_da_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -25656,7 +26037,8 @@ var rules_da_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -25722,7 +26104,8 @@ var rules_da_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -25787,7 +26170,8 @@ var rules_da_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -25851,7 +26235,8 @@ var rules_da_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -25917,7 +26302,8 @@ var rules_da_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -25984,7 +26370,8 @@ var rules_da_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -26050,7 +26437,8 @@ var rules_da_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -26118,7 +26506,8 @@ var rules_da_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -26186,7 +26575,8 @@ var rules_da_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -26253,7 +26643,8 @@ var rules_da_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -26319,7 +26710,8 @@ var rules_da_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -26385,7 +26777,8 @@ var rules_da_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -26453,7 +26846,8 @@ var rules_da_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -26518,7 +26912,8 @@ var rules_da_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -26582,7 +26977,8 @@ var rules_da_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -26648,7 +27044,8 @@ var rules_da_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -26715,7 +27112,8 @@ var rules_da_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -26780,7 +27178,8 @@ var rules_da_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -26846,7 +27245,8 @@ var rules_da_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -26912,7 +27312,8 @@ var rules_da_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -26977,7 +27378,8 @@ var rules_da_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -27044,7 +27446,8 @@ var rules_da_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -27110,7 +27513,8 @@ var rules_da_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -27185,7 +27589,8 @@ var rules_da_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -27259,7 +27664,8 @@ var rules_da_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -27323,7 +27729,8 @@ var rules_da_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -27386,7 +27793,8 @@ var rules_da_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -27448,7 +27856,8 @@ var rules_da_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -27510,7 +27919,8 @@ var rules_da_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -27572,7 +27982,8 @@ var rules_da_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -27634,7 +28045,8 @@ var rules_da_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -27697,7 +28109,8 @@ var rules_da_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -27759,7 +28172,8 @@ var rules_da_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -27841,7 +28255,8 @@ var rules_en_gb_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -27911,7 +28326,8 @@ var rules_en_gb_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -27982,7 +28398,8 @@ var rules_en_gb_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -28070,7 +28487,8 @@ var rules_en_gb_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -28140,7 +28558,8 @@ var rules_en_gb_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -28209,7 +28628,8 @@ var rules_en_gb_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -28278,7 +28698,8 @@ var rules_en_gb_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -28346,7 +28767,8 @@ var rules_en_gb_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -28412,7 +28834,8 @@ var rules_en_gb_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -28477,7 +28900,8 @@ var rules_en_gb_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -28544,7 +28968,8 @@ var rules_en_gb_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -28612,7 +29037,8 @@ var rules_en_gb_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -28678,7 +29104,8 @@ var rules_en_gb_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -28743,7 +29170,8 @@ var rules_en_gb_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -28809,7 +29237,8 @@ var rules_en_gb_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -28874,7 +29303,8 @@ var rules_en_gb_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -28938,7 +29368,8 @@ var rules_en_gb_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -29004,7 +29435,8 @@ var rules_en_gb_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -29071,7 +29503,8 @@ var rules_en_gb_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -29137,7 +29570,8 @@ var rules_en_gb_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -29205,7 +29639,8 @@ var rules_en_gb_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -29273,7 +29708,8 @@ var rules_en_gb_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -29340,7 +29776,8 @@ var rules_en_gb_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -29406,7 +29843,8 @@ var rules_en_gb_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -29472,7 +29910,8 @@ var rules_en_gb_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -29540,7 +29979,8 @@ var rules_en_gb_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -29605,7 +30045,8 @@ var rules_en_gb_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -29669,7 +30110,8 @@ var rules_en_gb_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -29735,7 +30177,8 @@ var rules_en_gb_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -29802,7 +30245,8 @@ var rules_en_gb_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -29867,7 +30311,8 @@ var rules_en_gb_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -29933,7 +30378,8 @@ var rules_en_gb_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -29999,7 +30445,8 @@ var rules_en_gb_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -30064,7 +30511,8 @@ var rules_en_gb_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -30131,7 +30579,8 @@ var rules_en_gb_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -30197,7 +30646,8 @@ var rules_en_gb_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -30265,7 +30715,8 @@ var rules_en_gb_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -30332,7 +30783,8 @@ var rules_en_gb_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -30396,7 +30848,8 @@ var rules_en_gb_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -30459,7 +30912,8 @@ var rules_en_gb_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -30521,7 +30975,8 @@ var rules_en_gb_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -30583,7 +31038,8 @@ var rules_en_gb_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -30645,7 +31101,8 @@ var rules_en_gb_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -30707,7 +31164,8 @@ var rules_en_gb_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -30770,7 +31228,8 @@ var rules_en_gb_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -30832,7 +31291,8 @@ var rules_en_gb_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -30914,7 +31374,8 @@ var rules_en_us_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -30984,7 +31445,8 @@ var rules_en_us_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -31055,7 +31517,8 @@ var rules_en_us_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -31143,7 +31606,8 @@ var rules_en_us_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -31213,7 +31677,8 @@ var rules_en_us_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -31282,7 +31747,8 @@ var rules_en_us_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -31351,7 +31817,8 @@ var rules_en_us_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -31419,7 +31886,8 @@ var rules_en_us_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -31485,7 +31953,8 @@ var rules_en_us_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -31550,7 +32019,8 @@ var rules_en_us_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -31617,7 +32087,8 @@ var rules_en_us_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -31685,7 +32156,8 @@ var rules_en_us_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -31751,7 +32223,8 @@ var rules_en_us_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -31816,7 +32289,8 @@ var rules_en_us_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -31882,7 +32356,8 @@ var rules_en_us_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -31947,7 +32422,8 @@ var rules_en_us_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -32011,7 +32487,8 @@ var rules_en_us_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -32077,7 +32554,8 @@ var rules_en_us_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -32144,7 +32622,8 @@ var rules_en_us_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -32210,7 +32689,8 @@ var rules_en_us_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -32278,7 +32758,8 @@ var rules_en_us_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -32346,7 +32827,8 @@ var rules_en_us_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -32413,7 +32895,8 @@ var rules_en_us_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -32479,7 +32962,8 @@ var rules_en_us_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -32545,7 +33029,8 @@ var rules_en_us_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -32613,7 +33098,8 @@ var rules_en_us_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -32678,7 +33164,8 @@ var rules_en_us_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -32742,7 +33229,8 @@ var rules_en_us_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -32808,7 +33296,8 @@ var rules_en_us_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -32875,7 +33364,8 @@ var rules_en_us_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -32940,7 +33430,8 @@ var rules_en_us_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -33006,7 +33497,8 @@ var rules_en_us_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -33072,7 +33564,8 @@ var rules_en_us_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -33137,7 +33630,8 @@ var rules_en_us_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -33204,7 +33698,8 @@ var rules_en_us_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -33270,7 +33765,8 @@ var rules_en_us_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -33338,7 +33834,8 @@ var rules_en_us_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -33405,7 +33902,8 @@ var rules_en_us_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -33469,7 +33967,8 @@ var rules_en_us_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -33532,7 +34031,8 @@ var rules_en_us_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -33594,7 +34094,8 @@ var rules_en_us_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -33656,7 +34157,8 @@ var rules_en_us_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -33718,7 +34220,8 @@ var rules_en_us_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -33780,7 +34283,8 @@ var rules_en_us_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -33843,7 +34347,8 @@ var rules_en_us_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -33905,7 +34410,8 @@ var rules_en_us_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -33987,7 +34493,8 @@ var rules_en_ca_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -34057,7 +34564,8 @@ var rules_en_ca_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -34128,7 +34636,8 @@ var rules_en_ca_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -34216,7 +34725,8 @@ var rules_en_ca_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -34286,7 +34796,8 @@ var rules_en_ca_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -34355,7 +34866,8 @@ var rules_en_ca_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -34424,7 +34936,8 @@ var rules_en_ca_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -34492,7 +35005,8 @@ var rules_en_ca_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -34558,7 +35072,8 @@ var rules_en_ca_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -34623,7 +35138,8 @@ var rules_en_ca_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -34690,7 +35206,8 @@ var rules_en_ca_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -34758,7 +35275,8 @@ var rules_en_ca_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -34824,7 +35342,8 @@ var rules_en_ca_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -34889,7 +35408,8 @@ var rules_en_ca_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -34955,7 +35475,8 @@ var rules_en_ca_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -35020,7 +35541,8 @@ var rules_en_ca_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -35084,7 +35606,8 @@ var rules_en_ca_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -35150,7 +35673,8 @@ var rules_en_ca_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -35217,7 +35741,8 @@ var rules_en_ca_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -35283,7 +35808,8 @@ var rules_en_ca_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -35351,7 +35877,8 @@ var rules_en_ca_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -35419,7 +35946,8 @@ var rules_en_ca_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -35486,7 +36014,8 @@ var rules_en_ca_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -35552,7 +36081,8 @@ var rules_en_ca_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -35618,7 +36148,8 @@ var rules_en_ca_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -35686,7 +36217,8 @@ var rules_en_ca_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -35751,7 +36283,8 @@ var rules_en_ca_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -35815,7 +36348,8 @@ var rules_en_ca_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -35881,7 +36415,8 @@ var rules_en_ca_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -35948,7 +36483,8 @@ var rules_en_ca_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -36013,7 +36549,8 @@ var rules_en_ca_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -36079,7 +36616,8 @@ var rules_en_ca_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -36145,7 +36683,8 @@ var rules_en_ca_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -36210,7 +36749,8 @@ var rules_en_ca_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -36277,7 +36817,8 @@ var rules_en_ca_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -36343,7 +36884,8 @@ var rules_en_ca_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -36411,7 +36953,8 @@ var rules_en_ca_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -36478,7 +37021,8 @@ var rules_en_ca_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -36542,7 +37086,8 @@ var rules_en_ca_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -36605,7 +37150,8 @@ var rules_en_ca_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -36667,7 +37213,8 @@ var rules_en_ca_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -36729,7 +37276,8 @@ var rules_en_ca_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -36791,7 +37339,8 @@ var rules_en_ca_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -36853,7 +37402,8 @@ var rules_en_ca_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -36916,7 +37466,8 @@ var rules_en_ca_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -36978,7 +37529,8 @@ var rules_en_ca_default = [
       appliesTo: [
         "WAD",
         "EAA",
-        "ADA"
+        "ADA",
+        "REHAB"
       ],
       sectors: [
         "public",
@@ -37253,6 +37805,42 @@ var frameworks_default = {
         "education",
         "transportation"
       ]
+    },
+    REHAB: {
+      id: "Rehab-1973",
+      name: "Rehabilitation Act of 1973 (Section 504)",
+      fullName: "Section 504 of the Rehabilitation Act of 1973 (29 U.S.C. \xA7 794)",
+      scope: "both",
+      eurLexUrl: "https://www.hhs.gov/civil-rights/for-individuals/disability/section-504-rehabilitation-act/index.html",
+      adoptionDate: "1973-09-26",
+      transpositionDeadline: "1977-06-03",
+      wcagVersion: "2.1",
+      wcagLevel: "AA",
+      technicalStandard: "WCAG 2.1 Level A and AA (45 C.F.R. \xA7 84.85, HHS Final Rule 89 FR 40066, effective 2026-05-11 for entities with 15+ employees)",
+      serviceScopes: [
+        "federal-financial-assistance-recipients",
+        "healthcare",
+        "research",
+        "social-services"
+      ]
+    },
+    DDA: {
+      id: "DDA-1992",
+      name: "Disability Discrimination Act 1992 (Australia)",
+      fullName: "Disability Discrimination Act 1992 (Cth) \u2014 Section 24",
+      scope: "both",
+      eurLexUrl: "https://www.legislation.gov.au/C2004A04426/latest/text",
+      adoptionDate: "1992-10-22",
+      transpositionDeadline: "1993-03-01",
+      wcagVersion: "2.1",
+      wcagLevel: "AA",
+      technicalStandard: "WCAG 2.1 Level AA (Digital Service Standard \u2014 voluntary benchmark; AHRC enforces via complaint mechanism)",
+      serviceScopes: [
+        "public-services",
+        "commercial-goods-services",
+        "education",
+        "employment"
+      ]
     }
   }
 };
@@ -37444,8 +38032,18 @@ var national_laws_default = {
           maxAmount: 1e7,
           currency: "SEK"
         },
-        inForce: false,
-        effectiveDate: "2025-06-28"
+        inForce: true,
+        effectiveDate: "2025-06-28",
+        exemptions: {
+          microbusiness: {
+            employeeThreshold: 10,
+            revenueThreshold: 2e6,
+            revenueCurrency: "EUR",
+            appliesTo: "services",
+            description: "Microenterprises providing services are exempt from accessibility requirements: organisations with fewer than 10 employees AND annual turnover or balance sheet at or below 2 million EUR. Both conditions must be met cumulatively. Microenterprises providing products are NOT exempt but qualify for relaxed obligations under EAA Annex IV.",
+            legalBasis: "Directive (EU) 2019/882 Article 4(5); microenterprise definition per Commission Recommendation 2003/361/EC"
+          }
+        }
       }
     ],
     FI: [
@@ -37501,8 +38099,18 @@ var national_laws_default = {
           maxAmount: 0,
           currency: "EUR"
         },
-        inForce: false,
-        effectiveDate: "2025-06-28"
+        inForce: true,
+        effectiveDate: "2025-06-28",
+        exemptions: {
+          microbusiness: {
+            employeeThreshold: 10,
+            revenueThreshold: 2e6,
+            revenueCurrency: "EUR",
+            appliesTo: "services",
+            description: "Microenterprises providing services are exempt from accessibility requirements: organisations with fewer than 10 employees AND annual turnover or balance sheet at or below 2 million EUR. Both conditions must be met cumulatively. Microenterprises providing products are NOT exempt but qualify for relaxed obligations under EAA Annex IV.",
+            legalBasis: "Directive (EU) 2019/882 Article 4(5); microenterprise definition per Commission Recommendation 2003/361/EC"
+          }
+        }
       }
     ],
     NO: [
@@ -37601,8 +38209,18 @@ var national_laws_default = {
           maxAmount: 5e5,
           currency: "EUR"
         },
-        inForce: false,
-        effectiveDate: "2025-06-28"
+        inForce: true,
+        effectiveDate: "2025-06-28",
+        exemptions: {
+          microbusiness: {
+            employeeThreshold: 10,
+            revenueThreshold: 2e6,
+            revenueCurrency: "EUR",
+            appliesTo: "services",
+            description: "Microenterprises providing services are exempt from accessibility requirements: organisations with fewer than 10 employees AND annual turnover or balance sheet at or below 2 million EUR. Both conditions must be met cumulatively. Microenterprises providing products are NOT exempt but qualify for relaxed obligations under EAA Annex IV.",
+            legalBasis: "Directive (EU) 2019/882 Article 4(5); microenterprise definition per Commission Recommendation 2003/361/EC"
+          }
+        }
       }
     ],
     FR: [
@@ -37733,8 +38351,18 @@ var national_laws_default = {
           maxAmount: 9e5,
           currency: "EUR"
         },
-        inForce: false,
-        effectiveDate: "2025-06-28"
+        inForce: true,
+        effectiveDate: "2025-06-28",
+        exemptions: {
+          microbusiness: {
+            employeeThreshold: 10,
+            revenueThreshold: 2e6,
+            revenueCurrency: "EUR",
+            appliesTo: "services",
+            description: "Microenterprises providing services are exempt from accessibility requirements: organisations with fewer than 10 employees AND annual turnover or balance sheet at or below 2 million EUR. Both conditions must be met cumulatively. Microenterprises providing products are NOT exempt but qualify for relaxed obligations under EAA Annex IV.",
+            legalBasis: "Directive (EU) 2019/882 Article 4(5); microenterprise definition per Commission Recommendation 2003/361/EC"
+          }
+        }
       }
     ],
     GB: [
@@ -37869,9 +38497,9 @@ var national_laws_default = {
           currency: "USD",
           example: "Loss of Medicare/Medicaid funding is the primary financial risk for healthcare organizations. Private Section 504 lawsuits have resulted in settlements and injunctions requiring full WCAG compliance with monitoring periods."
         },
-        inForce: false,
-        effectiveDate: "2026-05-11",
-        note: "Applies to private organizations \u2014 including hospitals, physician practices, federally qualified health centers, long-term care facilities, health plans, and research institutions \u2014 that receive federal financial assistance from the U.S. Department of Health and Human Services (HHS), directly or indirectly. HHS administers over 100 programs, making the scope extensive. Medicare Part B reimbursements are considered federal financial assistance triggering Section 504 obligations. Five content exemptions exist: archived content, pre-existing conventional documents, individualized password-protected documents, pre-existing social media posts, and third-party content not controlled by the recipient. Does NOT cover federal agencies (see us-508) or state/local governments (see us-ada-title-ii). Rule published 89 FR 40066 (May 9, 2024); general Section 504 obligations effective July 8, 2024; WCAG technical standards enforcement begins at compliance deadlines.",
+        inForce: true,
+        effectiveDate: "2024-07-08",
+        note: "Applies to private organizations \u2014 including hospitals, physician practices, federally qualified health centers, long-term care facilities, health plans, and research institutions \u2014 that receive federal financial assistance from the U.S. Department of Health and Human Services (HHS), directly or indirectly. HHS administers over 100 programs, making the scope extensive. Medicare Part B reimbursements are considered federal financial assistance triggering Section 504 obligations. Five content exemptions exist: archived content, pre-existing conventional documents, individualized password-protected documents, pre-existing social media posts, and third-party content not controlled by the recipient. Does NOT cover federal agencies (see us-508) or state/local governments (see us-ada-title-ii). Rule published 89 FR 40066 (May 9, 2024); general Section 504 obligations and Final Rule effective July 8, 2024; WCAG 2.1 AA technical benchmark enforcement begins 2026-05-11 (15+ employees) / 2027-05-10 (<15 employees) \u2014 see complianceDeadlines.",
         complianceDeadlines: {
           largeEntity: {
             employeeThreshold: 15,
@@ -38004,7 +38632,17 @@ var national_laws_default = {
           currency: "EUR"
         },
         inForce: true,
-        effectiveDate: "2025-06-28"
+        effectiveDate: "2025-06-28",
+        exemptions: {
+          microbusiness: {
+            employeeThreshold: 10,
+            revenueThreshold: 2e6,
+            revenueCurrency: "EUR",
+            appliesTo: "services",
+            description: "Microenterprises providing services are exempt from accessibility requirements: organisations with fewer than 10 employees AND annual turnover or balance sheet at or below 2 million EUR. Both conditions must be met cumulatively. Microenterprises providing products are NOT exempt but qualify for relaxed obligations under EAA Annex IV.",
+            legalBasis: "Directive (EU) 2019/882 Article 4(5); microenterprise definition per Commission Recommendation 2003/361/EC"
+          }
+        }
       }
     ],
     PT: [
@@ -38050,7 +38688,17 @@ var national_laws_default = {
           currency: "EUR"
         },
         inForce: true,
-        effectiveDate: "2025-06-28"
+        effectiveDate: "2025-06-28",
+        exemptions: {
+          microbusiness: {
+            employeeThreshold: 10,
+            revenueThreshold: 2e6,
+            revenueCurrency: "EUR",
+            appliesTo: "services",
+            description: "Microenterprises providing services are exempt from accessibility requirements: organisations with fewer than 10 employees AND annual turnover or balance sheet at or below 2 million EUR. Both conditions must be met cumulatively. Microenterprises providing products are NOT exempt but qualify for relaxed obligations under EAA Annex IV.",
+            legalBasis: "Directive (EU) 2019/882 Article 4(5); microenterprise definition per Commission Recommendation 2003/361/EC"
+          }
+        }
       }
     ],
     PL: [
@@ -38096,7 +38744,17 @@ var national_laws_default = {
           currency: "PLN"
         },
         inForce: true,
-        effectiveDate: "2025-06-28"
+        effectiveDate: "2025-06-28",
+        exemptions: {
+          microbusiness: {
+            employeeThreshold: 10,
+            revenueThreshold: 2e6,
+            revenueCurrency: "EUR",
+            appliesTo: "services",
+            description: "Microenterprises providing services are exempt from accessibility requirements: organisations with fewer than 10 employees AND annual turnover or balance sheet at or below 2 million EUR. Both conditions must be met cumulatively. Microenterprises providing products are NOT exempt but qualify for relaxed obligations under EAA Annex IV.",
+            legalBasis: "Directive (EU) 2019/882 Article 4(5); microenterprise definition per Commission Recommendation 2003/361/EC"
+          }
+        }
       }
     ]
   }

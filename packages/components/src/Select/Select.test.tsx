@@ -1,4 +1,10 @@
 // @vitest-environment jsdom
+/**
+ * WCAG SCs covered:
+ * - 2.1.1 Keyboard — APG listbox keyboard contract (arrows, Home/End, type-ahead)
+ * - 2.4.3 Focus Order — focus stays on trigger; activedescendant pattern
+ * - 4.1.2 Name, Role, Value — role="listbox", aria-expanded, aria-activedescendant
+ */
 import { useState } from 'react';
 import { render, fireEvent, cleanup } from '@testing-library/react';
 import { describe, it, expect, afterEach } from 'vitest';

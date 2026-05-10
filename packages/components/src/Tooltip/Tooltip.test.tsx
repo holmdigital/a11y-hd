@@ -1,4 +1,10 @@
 // @vitest-environment jsdom
+/**
+ * WCAG SCs covered:
+ * - 1.4.13 Content on Hover or Focus — dismissible, hoverable, persistent
+ * - 2.1.1 Keyboard — Escape dismisses without moving focus
+ * - 4.1.2 Name, Role, Value — role="tooltip", aria-describedby wiring
+ */
 import { render, fireEvent, act, cleanup } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { Tooltip, TooltipTrigger, TooltipContent } from './Tooltip';

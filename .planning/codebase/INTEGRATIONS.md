@@ -1,49 +1,41 @@
 # External Integrations
 
-**Analysis Date:** 2026-02-26
+**Analysis Date:** 2026-05-10
 
 ## APIs & External Services
 
-**HolmDigital Cloud API:**
-- Purpose: Upload scan results to HolmDigital's cloud dashboard for monitoring/tracking
-- Client: `packages/engine/src/cli/cloud-client.ts`
-- Endpoint: `POST {cloudUrl}/api/v1/ingest` (default: `https://cloud.holmdigital.se/api/v1/ingest`)
-- Auth: API key via `x-api-key` header
-- Config: `--api-key <key>` and `--cloud-url <url>` CLI flags, or via cosmiconfig (`apiKey`, `cloudUrl`)
-- Payload format: `CloudPayload` interface (snake_case fields: `compliance_score`, `total_violations`, etc.)
-- Error handling: Specific messages for 401 (auth failed), 403 (access denied), network errors
-- Optional: Only triggered when `--api-key` is provided
+**Accessibility scanning libraries (treated as integrations because they are the engine's domain backbone):**
+- **axe-core** ^4.11.1 — Deque's WCAG rules engine, evaluated inside the headless page
+  - SDK/Client: `axe-core` (npm)
+  - Imported in: `packages/engine/src/core/regulatory-scanner.ts`
+  - Auth: none
+- **html-validate** 10.4.0 (pinned) — Static HTML conformance checks
+  - SDK/Client: `html-validate` (npm)
+  - Imported in: `packages/engine/src/core/html-validator.ts`
+  - Auth: none
+- **Puppeteer** 23.10.4 (pinned) — Headless Chromium driver for live page scanning
+  - SDK/Client: `puppeteer` (npm) — bundles a matched Chromium build
+  - Imported in: `packages/engine/src/core/regulatory-scanner.ts`
+  - Auth: none; downloads browser at install time
 
-**shields.io:**
-- Purpose: Generate compliance badge images
-- Client: `packages/engine/src/reporting/badge-generator.ts`
-- URL pattern: `https://img.shields.io/badge/HolmDigital_Engine-100%25-00703C?style=flat-square`
-- Only generates badge for perfect score (100/100)
-- No auth required (public service)
+**HolmDigital Cloud (optional outbound):**
+- HolmDigital Cloud Ingest API — Receives scan results when `--api-key` is provided
+  - SDK/Client: native `fetch` (`packages/engine/src/cli/cloud-client.ts`)
+  - Endpoint: `${cloudUrl}/api/v1/ingest` (default `https://cloud.holmdigital.se`, configurable per `packages/engine/src/cli/index.ts:87`)
+  - Auth: `--api-key` CLI flag / `HD_A11Y_API_KEY` env var → sent as `x-api-key` header
+  - Override: `--cloud-url` CLI flag or `cloudUrl` config field
 
-**Google Fonts:**
-- Purpose: Load Inter font family for HTML/PDF reports
-- Used in: `packages/engine/src/reporting/html-template.ts`
-- URL: `https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap`
-- No auth required
+**No LLM / AI provider integrations:**
+- No OpenAI, Anthropic, Google, or other generative-AI SDKs are present in any package's dependency tree
 
 ## Data Storage
 
 **Databases:**
-- None. All regulatory data is stored as static JSON files in `packages/standards/data/`
-- Rule data: 13 locale-specific files (`rules.en.json`, `rules.sv.json`, `rules.de.json`, `rules.fr.json`, `rules.es.json`, `rules.nl.json`, `rules.no.json`, `rules.fi.json`, `rules.da.json`, `rules.en-gb.json`, `rules.en-us.json`, `rules.en-ca.json`)
-- Legal frameworks: `packages/standards/data/legal/frameworks.json`
-- National laws: `packages/standards/data/legal/national-laws.json`
-- Nordic authorities: `packages/standards/data/legal/nordic-authorities.json`
-- Statement tools: `packages/standards/data/legal/statement-tools.json`
-- ICT manual checks: `packages/standards/data/ict-manual-checks.json`
-- Schema validation: `packages/standards/schema/convergence-schema.json` (JSON Schema Draft-07)
+- None — the project is stateless. Regulatory data ships as static JSON in `packages/standards/data/`
 
 **File Storage:**
-- Local filesystem only
-- PDF reports written via `--pdf <path>` CLI flag
-- Statement documents written via `--statement <path>` CLI flag
-- JUnit XML reports written via `--junit <path>` CLI flag
+- Local filesystem only — scan reports written to caller-provided paths (HTML, PDF, JSON, JUnit, badge SVG)
+- PDF generation: `packages/engine/src/reporting/pdf-generator.ts` (uses Puppeteer's `page.pdf()`, no external service)
 
 **Caching:**
 - None
@@ -51,142 +43,91 @@
 ## Authentication & Identity
 
 **Auth Provider:**
-- No user authentication system
-- Cloud integration uses a simple API key (`--api-key` flag)
-- API key is sent as `x-api-key` HTTP header to the cloud endpoint
+- None for end-users
+- `@holmdigital/engine` CLI → HolmDigital Cloud uses simple API key (`x-api-key` header)
+- No OAuth, no session management
 
 ## Monitoring & Observability
 
 **Error Tracking:**
-- None (no Sentry, Bugsnag, etc.)
+- None (no Sentry, Rollbar, Datadog, etc. in dependencies)
 
 **Logs:**
-- `console.log` / `console.error` for CLI output
-- Silent mode (`--json` flag) suppresses non-JSON output via `this.log()` wrapper in `packages/engine/src/core/regulatory-scanner.ts`
-- `console.warn` for fallback language warnings
+- Console output via `chalk` and `ora` for CLI feedback (`packages/engine/src/cli/index.ts`)
+- GitHub Actions step output for CI (`packages/engine/src/reporting/github-actions.ts` writes `::error` annotations)
 
 ## CI/CD & Deployment
 
 **Hosting:**
-- npm registry (public packages published with provenance)
-- GitHub (source code)
-- Repository: `https://github.com/holmdigital/a11y-hd`
+- npm registry (`https://registry.npmjs.org/`) — primary publish target for all three public packages
+- GitHub Pages — for `holmdigital-wiki` (deployed via `.github/workflows/deploy-wiki.yml`)
 
 **CI Pipeline:**
-- GitHub Actions
-- `.github/workflows/release.yml` - Main release pipeline
-  - Triggers: Push to `master` branch
-  - Steps: Checkout > Node.js 20 setup > npm ci > Build (standards > components > engine) > Changesets version PR > OIDC diagnostic > Publish to npm
-  - Publishing: Uses OIDC Trusted Publishing (`id-token: write` permission), publishes each package individually with `--provenance`
-  - Concurrency: One workflow per ref
-- `.github/workflows/release-wiki.yml` - Wiki release pipeline
-  - Triggers: Tags matching `holmdigital-wiki@*`
-  - Steps: Build wiki > Create zip artifact > GitHub Release
+- GitHub Actions, three workflows under `.github/workflows/`:
 
-**NPM Publishing Strategy:**
-- Packages are published individually (not via `changeset publish`)
-- Each package checked against npm registry before publishing (skip if version already exists)
-- Order: standards > components > engine
-- Uses `--provenance --access public --registry https://registry.npmjs.org/ --no-workspaces`
+  **`release.yml`** (push to `master`):
+  - `actions/checkout@v4`
+  - `actions/setup-node@v4` (Node 20, npm cache)
+  - `npm ci`, then ordered builds: standards → components → engine
+  - `changesets/action@v1` — Opens / updates the "Version Packages" PR
+  - **npm publish via OIDC Trusted Publishing** (`id-token: write` permission) — no `NPM_TOKEN` required; explicitly deletes any `.npmrc` to avoid token leakage
+  - Per-package guard: skips `npm publish` if version already exists on npm
+  - `repository_dispatch` to `holmdigital/holmdigital-website` and `holmdigital/accessibility-wiki` after engine publish (uses `DISPATCH_TOKEN` secret)
 
-## GitHub Actions Integration
+  **`release-wiki.yml`** (tag push `holmdigital-wiki@*`):
+  - Builds `holmdigital-wiki` workspace, zips `dist/`, creates a GitHub Release via `softprops/action-gh-release@v1`
 
-**Annotations:**
-- `packages/engine/src/reporting/github-actions.ts`
-- When running in CI mode (`--ci`), generates GitHub Actions workflow commands for inline annotations
-- Maps engine severity to GitHub annotation levels: `critical` -> `error`, others -> `warning`
-- Format: `::warning title=[ruleId] wcagCriteria::message (Target: selector)`
+  **`deploy-wiki.yml`** (push to `main`):
+  - Builds wiki, serves locally via `http-server`, runs `npx hd-a11y-scan ... --ci --lang en` against the build (dogfooding the engine), then deploys via `actions/configure-pages@v5` + `actions/upload-pages-artifact@v3` + `actions/deploy-pages@v4`
 
-**CI/CD Exit Codes:**
-- `--ci` flag causes `process.exit(1)` when critical violations are found
-- `--threshold <level>` controls what severity triggers failure (`critical`, `high`, `medium`, `low`)
+**Release tooling:**
+- **Changesets** — `.changeset/config.json` configures `baseBranch: master`, `access: public`, `updateInternalDependencies: patch`, default `@changesets/cli/changelog` changelog generator
+- Root script: `npm run release` → `changeset publish --provenance`
+- Engine publish uses `--provenance --access public` for npm package provenance attestations
 
-## Browser Integration (Puppeteer)
+## Environment Configuration
 
-**Chromium:**
-- Auto-downloaded by Puppeteer at install time
-- Launched headless with `--no-sandbox`, `--disable-setuid-sandbox`, `--disable-blink-features=AutomationControlled`
-- Custom user agent set to mimic Chrome 120 on Windows
-- Optional: `--invalid-https-cert` flag adds `--ignore-certificate-errors`, `--allow-insecure-localhost`
-- Navigation: 60s timeout, 3 retries with 2s delay
-- Network idle: 500ms idle time, 10s timeout, concurrency 2
+**Required env vars (runtime):**
+- None for library consumers
+- CLI optional: `HD_A11Y_API_KEY` (cloud ingest)
 
-**axe-core In-Browser:**
-- axe-core source is injected into the page via `page.evaluate(axeCore.source)`
-- Runs as `window.axe.run(document, { iframes: false })`
-- Results are enriched with regulatory context from `@holmdigital/standards`
+**Required env vars (CI):**
+- `GITHUB_TOKEN` — Provided by Actions automatically
+- `DISPATCH_TOKEN` — PAT secret for cross-repo `repository_dispatch` calls in `release.yml`
+- npm publish credentials: **not used** — replaced by OIDC Trusted Publishing (`id-token: write`)
 
-## Internationalization (i18n)
-
-**CLI Translations:**
-- 9 locale files: `packages/engine/src/locales/{en,sv,de,fr,es,fi,dk,no,nl}.json`
-- Fallback chain: requested language -> English
-- Set via `--lang <code>` CLI flag or cosmiconfig
-
-**Standards Database Translations:**
-- 13 locale variants of rules data in `packages/standards/data/`
-- Supported languages: en, sv, de, fr, es, nl, no, fi, da, en-gb, en-us, en-ca
-- Aliases: `nb` -> no (Norwegian Bokmal), `dk` -> da (Danish)
-
-**Statement Templates:**
-- 9 template files: `packages/engine/src/reporting/templates/{en,sv,de,fr,es,fi,no,da,nl}.json`
-- Template substitution system with placeholders like `{<webbplats>}`, `{<e-postadress>}`
-- Conditional sections via `[ ... ]` syntax
-- Choice blocks via `{ A / B / C }` syntax (full/partial/non-compliant)
+**Secrets location:**
+- GitHub Actions repository secrets only
+- No `.env` files committed; no secrets in source
 
 ## Webhooks & Callbacks
 
 **Incoming:**
-- None
+- None — no server component in this monorepo
 
 **Outgoing:**
-- Cloud result upload (`POST /api/v1/ingest`) - only when `--api-key` provided
+- HolmDigital Cloud Ingest (`POST ${cloudUrl}/api/v1/ingest`) from CLI when `--api-key` set
+- GitHub `repository_dispatch` events to `holmdigital/holmdigital-website` and `holmdigital/accessibility-wiki` from `release.yml` (engine release notifier)
 
-## Configuration Discovery (cosmiconfig)
+## Internal (workspace) integrations
 
-**Module name:** `a11y`
+These are first-party packages but cross-package boundaries inside this monorepo:
 
-**Supported config files (searched in order by cosmiconfig):**
-- `.a11yrc`
-- `.a11yrc.json`
-- `.a11yrc.yaml`
-- `.a11yrc.yml`
-- `.a11yrc.js`
-- `.a11yrc.cjs`
-- `a11y.config.js`
-- `a11y.config.cjs`
-- `package.json` (under `"a11y"` key)
+- `@holmdigital/engine` → `@holmdigital/standards` (regulatory mapping; required, workspace `*`)
+- `@holmdigital/engine` → `@holmdigital/components` (HTML report rendering; `^2.3.0`)
+- `@holmdigital/components` → `@holmdigital/standards` (country/framework metadata for `AccessibilityStatement`; `^2.3.0`)
+- Build order is enforced in root `package.json`'s `build` script and in `release.yml` (standards → components → engine)
 
-**Supported config options:**
-- `lang` - Language code (en, sv, de, fr, es, nl, no, fi, da, etc.)
-- `ci` - Enable CI mode
-- `generateTests` - Generate pseudo-automation test scripts
-- `json` - JSON output mode
-- `junit` - JUnit XML output path
-- `pdf` - PDF report output path
-- `statement` - Accessibility statement output path
-- `format` - Statement format (html, md)
-- `viewport` - Viewport config (string preset or `{width, height}` object)
-- `threshold` - Severity threshold (critical, high, medium, low)
-- `apiKey` - HolmDigital Cloud API key
-- `cloudUrl` - Cloud API URL (default: `https://cloud.holmdigital.se`)
-- `invalidHttpsCert` - Allow invalid HTTPS certificates
-- `email`, `phone`, `org`, `responseTime`, `country`, `publishDate` - Statement metadata
+## Notable absent integrations
 
-**Merge priority:** CLI flags > Config file > Defaults
-
-## Environment Variables
-
-**Required env vars:**
-- None strictly required for basic operation
-
-**CI-specific secrets (GitHub Actions):**
-- `GITHUB_TOKEN` - Used by Changesets action and npm OIDC publishing
-- NPM auth handled via OIDC Trusted Publishing (no `NPM_TOKEN` needed)
-
-**Optional runtime:**
-- Cloud API key passed via `--api-key` CLI flag (not env var)
+- No analytics (PostHog, Segment, GA, etc.)
+- No payment / billing SDKs (Stripe, Paddle, etc.)
+- No email providers
+- No queue / message bus
+- No feature flag service
+- No cloud SDKs (AWS, GCP, Azure)
+- No LLM/AI provider SDKs
 
 ---
 
-*Integration audit: 2026-02-26*
+*Integration audit: 2026-05-10*

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useId, useRef } from 'react';
 
 export interface ErrorSummaryProps {
     /**
@@ -43,6 +43,10 @@ export const ErrorSummary: React.FC<ErrorSummaryProps> = ({
     className = ''
 }) => {
     const headingRef = useRef<HTMLHeadingElement>(null);
+    // useId() is SSR-safe and prevents duplicate-id collisions when two
+    // ErrorSummary instances render on the same page (aria-labelledby
+    // resolution would otherwise resolve to the wrong heading).
+    const titleId = useId();
 
     useEffect(() => {
         if (focusOnMount && errors.length > 0 && headingRef.current) {
@@ -89,11 +93,11 @@ export const ErrorSummary: React.FC<ErrorSummaryProps> = ({
         <div
             className={`a11y-error-summary ${className}`}
             role="alert"
-            aria-labelledby="error-summary-title"
+            aria-labelledby={titleId}
             style={styles.container}
         >
             <h2
-                id="error-summary-title"
+                id={titleId}
                 ref={headingRef}
                 tabIndex={-1}
                 style={styles.heading}
