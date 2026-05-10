@@ -165,7 +165,11 @@ Plans:
   3. `:focus-visible` styling is preserved via the co-located `.css` file (NOT via JS `onFocus`/`onBlur` event handlers — that approach is rejected because it cannot distinguish keyboard from mouse focus and would break WCAG 2.4.7) and a smoke test in each component's test file asserts the focus-visible style hook is present
   4. A regression-guard test in `src/index.test.ts` (or equivalent) greps `dist/**/*.{js,mjs}` for Tailwind utility patterns (`\b(flex|text-slate|bg-white|hover:|focus:|focus-visible:|ring-)\b` inside `className=`) and fails the build if any leak through
   5. `className` on each migrated component remains a passthrough only — all visual/layout class strings are removed; consumer-supplied `className` and `style` merge with inline defaults so theming overrides work
-**Plans**: TBD
+**Plans**:
+- [x] 23-01-PLAN.md — Wave 1 build infra: tsup.config.ts migration + sideEffects + 3 CSS subpath exports + STY-05 guard script (NESTED CSS layout) — Complete 2026-05-10
+- [ ] 23-02-PLAN.md — Wave 2: Tabs migration (depends on 23-01)
+- [ ] 23-03-PLAN.md — Wave 2: Accordion migration (depends on 23-01)
+- [ ] 23-04-PLAN.md — Wave 2: Breadcrumbs migration + wire guard into test:ci (depends on 23-01..03)
 **UI hint**: yes
 
 ### Phase 24: Complex APG Widget Test Coverage

@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v0.6
 milestone_name: Components Quality
 status: executing
-stopped_at: "Phase 22 Wave 5 complete (Plans 06+07+08 — TC-03 FormField, TC-04 Modal+Dialog cleanup, TC-05 Checkbox, TC-06 RadioGroup). Wave 6: Plan 22-09 (ErrorSummary + Tabs) pending. Tabs needs a real keyDown handler in component source for roving-tabindex per Plan 22-06 SUMMARY note."
-last_updated: "2026-05-10T19:59:28.227Z"
-last_activity: 2026-05-10 -- Phase 23 execution started
+stopped_at: "Phase 23 Wave 1 complete (Plan 23-01 — tsup.config.ts migration + STY-05 guard + 3 CSS subpath exports, NESTED layout). Wave 2: Plans 23-02/03/04 (Tabs/Accordion/Breadcrumbs migrations) ready to run in parallel."
+last_updated: "2026-05-10T20:06:00Z"
+last_activity: 2026-05-10 -- Phase 23 Plan 01 complete
 progress:
   total_phases: 9
   completed_phases: 3
   total_plans: 15
-  completed_plans: 11
-  percent: 73
+  completed_plans: 12
+  percent: 80
 ---
 
 # Project State
@@ -26,9 +26,9 @@ See: .planning/PROJECT.md (updated 2026-05-10)
 ## Current Position
 
 Phase: 23 (styling-unification) — EXECUTING
-Plan: 1 of 4
-Status: Executing Phase 23
-Last activity: 2026-05-10 -- Phase 23 execution started
+Plan: 2 of 4 (Wave 2 ready — 23-02/03/04 parallel)
+Status: Executing Phase 23 (Plan 23-01 complete)
+Last activity: 2026-05-10 -- Phase 23 Plan 01 complete
 
 ## Performance Metrics
 
@@ -92,6 +92,14 @@ Last activity: 2026-05-10 -- Phase 23 execution started
 
 - None. Two implementation notes captured in the plan SUMMARY: (a) Escape path is verified via `dialog.close()` rather than `fireEvent.keyDown` because jsdom does not translate Escape into the native `cancel→close` sequence on `<dialog>`; (b) the standalone close-button click test was trimmed (Dialog concern, already covered by Dialog.test.tsx) to keep `it()` count within the D-02 budget of 16. Modal landed with 16 tests, Dialog.test.tsx lost the redundant inline `HTMLDialogElement.showModal/close` polyfill — the central one in `_test/setup.ts` is now the only source of truth. Full suite: 232 tests / 14 files green.
 
+### Plan 23-01 decisions + deviations (logged 2026-05-10)
+
+- **CSS layout decision: NESTED** (`dist/<Name>/<Name>.css`) — empirically detected by smoke probe. Load-bearing for Wave 2 plans. Recorded in 23-01-SUMMARY.md.
+- 3 CSS subpath exports added upfront (`./Tabs.css`, `./Accordion.css`, `./Breadcrumbs.css`) — eliminates Wave 2 parallel-write conflict on `package.json` exports map.
+- `check-no-tailwind-leak` script created but **NOT yet wired into test:ci** — bootstrap-deferred to Plan 23-04 once 23-02/03/04 each drive their dir's match count to 0.
+- Engine TS2724 build failure on `AccessibilityStatementProps` is **pre-existing at f2b5fd1** (downstream of LiveRegion DTS error) — verified by checkout; NOT a Plan 23-01 regression. Per plan context, do not auto-fix.
+- vitest 4.x dropped `--reporter=basic`; default reporter used instead — same 19/294 result.
+
 ### Blockers/Concerns
 
 - Component dist rebuild needed before npm publish (carryover from v0.3 — addressed by Phase 26)
@@ -101,6 +109,6 @@ Last activity: 2026-05-10 -- Phase 23 execution started
 
 ## Session Continuity
 
-Last session: 2026-05-10T19:25:00Z
-Stopped at: Phase 22 Wave 5 complete (Plans 06+07+08 — TC-03 FormField, TC-04 Modal+Dialog cleanup, TC-05 Checkbox, TC-06 RadioGroup). Wave 6: Plan 22-09 (ErrorSummary + Tabs) pending. Tabs needs a real keyDown handler in component source for roving-tabindex per Plan 22-06 SUMMARY note.
-Resume: `/gsd-execute-plan 22-09`
+Last session: 2026-05-10T20:06:00Z
+Stopped at: Phase 23 Wave 1 complete (Plan 23-01 — build infra + STY-05 guard, NESTED CSS layout). Wave 2 ready: Plans 23-02 (Tabs), 23-03 (Accordion), 23-04 (Breadcrumbs) can run in parallel.
+Resume: `/gsd-execute-phase 23` (Wave 2)
