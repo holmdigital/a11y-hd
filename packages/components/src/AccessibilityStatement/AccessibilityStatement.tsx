@@ -421,8 +421,8 @@ export const AccessibilityStatement: React.FC<AccessibilityStatementProps> = ({
         '{<assessment date>}': assessmentDate ? d(assessmentDate) : d(lastReviewDate),
         '{<uppdateringsdatum>}': d(lastReviewDate),
         '{<update date>}': d(lastReviewDate),
-        '{<publiceringsdatum>}': publishDate ? d(publishDate) : '2024-01-01', // Default to a realistic value if unknown
-        '{<publish date>}': publishDate ? d(publishDate) : '2024-01-01',
+        '{<publiceringsdatum>}': publishDate ? d(publishDate) : '[YOUR PUBLISH DATE]',
+        '{<publish date>}': publishDate ? d(publishDate) : '[YOUR PUBLISH DATE]',
         '{<metod>}': evaluationMethod || 'Automated Scan',
         '{<method>}': evaluationMethod || 'Automated Scan',
         '{<extern aktör>}': generatorTool?.name || 'HolmDigital Engine',
@@ -484,23 +484,23 @@ export const AccessibilityStatement: React.FC<AccessibilityStatementProps> = ({
     replacements['{<organisasjon>}'] = organizationName;
     replacements['{<svartid>}'] = responseTime || '';
     replacements['{<vurderingsdato>}'] = assessmentDate ? d(assessmentDate) : d(lastReviewDate);
-    replacements['{<publiseringsdatum>}'] = publishDate ? d(publishDate) : '2024-01-01';
+    replacements['{<publiseringsdatum>}'] = publishDate ? d(publishDate) : '[YOUR PUBLISH DATE]';
     replacements['{<ekstern aktor>}'] = generatorTool?.name || 'HolmDigital Engine';
     // NO placeholder bug fixes (4 missing mappings)
     replacements['{<e-postadresse>}'] = contactEmail;
     replacements['{<oppdateringsdato>}'] = d(lastReviewDate);
     replacements['{<metode>}'] = evaluationMethod || 'Automated Scan';
-    replacements['{<publiseringsdato>}'] = publishDate ? d(publishDate) : '2024-01-01';
+    replacements['{<publiseringsdato>}'] = publishDate ? d(publishDate) : '[YOUR PUBLISH DATE]';
 
     // DA-specific mappings
     replacements['{<e-mailadresse>}'] = contactEmail;
     replacements['{<ekstern aktør>}'] = generatorTool?.name || 'HolmDigital Engine';
-    replacements['{<offentliggørelsesdato>}'] = publishDate ? d(publishDate) : '2024-01-01';
+    replacements['{<offentliggørelsesdato>}'] = publishDate ? d(publishDate) : '[YOUR PUBLISH DATE]';
     replacements['{<opdateringsdato>}'] = d(lastReviewDate);
 
     // DE-specific mappings
     replacements['{<bewertungsdatum>}'] = assessmentDate ? d(assessmentDate) : d(lastReviewDate);
-    replacements['{<veröffentlichungsdatum>}'] = publishDate ? d(publishDate) : '2024-01-01';
+    replacements['{<veröffentlichungsdatum>}'] = publishDate ? d(publishDate) : '[YOUR PUBLISH DATE]';
     replacements['{<aktualisierungsdatum>}'] = d(lastReviewDate);
     replacements['{<methode>}'] = evaluationMethod || 'Automated Scan';
     replacements['{<externer Dritter>}'] = generatorTool?.name || 'HolmDigital Engine';
@@ -508,7 +508,7 @@ export const AccessibilityStatement: React.FC<AccessibilityStatementProps> = ({
 
     // FR-specific mappings
     replacements['{<date_evaluation>}'] = assessmentDate ? d(assessmentDate) : d(lastReviewDate);
-    replacements['{<date_publication>}'] = publishDate ? d(publishDate) : '2024-01-01';
+    replacements['{<date_publication>}'] = publishDate ? d(publishDate) : '[YOUR PUBLISH DATE]';
     replacements['{<date_mise_a_jour>}'] = d(lastReviewDate);
     replacements['{<méthode>}'] = evaluationMethod || 'Automated Scan';
     replacements['{<tiers externe>}'] = generatorTool?.name || 'HolmDigital Engine';
@@ -517,7 +517,7 @@ export const AccessibilityStatement: React.FC<AccessibilityStatementProps> = ({
 
     // ES-specific mappings
     replacements['{<fecha_evaluacion>}'] = assessmentDate ? d(assessmentDate) : d(lastReviewDate);
-    replacements['{<fecha_publicacion>}'] = publishDate ? d(publishDate) : '2024-01-01';
+    replacements['{<fecha_publicacion>}'] = publishDate ? d(publishDate) : '[YOUR PUBLISH DATE]';
     replacements['{<fecha_actualizacion>}'] = d(lastReviewDate);
     replacements['{<metodo>}'] = evaluationMethod || 'Automated Scan';
     replacements['{<tercero externo>}'] = generatorTool?.name || 'HolmDigital Engine';
@@ -525,7 +525,7 @@ export const AccessibilityStatement: React.FC<AccessibilityStatementProps> = ({
 
     // FI-specific mappings
     replacements['{<arviointipäivä>}'] = assessmentDate ? d(assessmentDate) : d(lastReviewDate);
-    replacements['{<julkaisupäivä>}'] = publishDate ? d(publishDate) : '2024-01-01';
+    replacements['{<julkaisupäivä>}'] = publishDate ? d(publishDate) : '[YOUR PUBLISH DATE]';
     replacements['{<päivityspäivä>}'] = d(lastReviewDate);
     replacements['{<metodi>}'] = evaluationMethod || 'Automated Scan';
     replacements['{<ulkoinen taho>}'] = generatorTool?.name || 'HolmDigital Engine';
@@ -535,7 +535,7 @@ export const AccessibilityStatement: React.FC<AccessibilityStatementProps> = ({
 
     // NL-specific mappings
     replacements['{<beoordelingsdatum>}'] = assessmentDate ? d(assessmentDate) : d(lastReviewDate);
-    replacements['{<publicatiedatum>}'] = publishDate ? d(publishDate) : '2024-01-01';
+    replacements['{<publicatiedatum>}'] = publishDate ? d(publishDate) : '[YOUR PUBLISH DATE]';
     replacements['{<updatedatum>}'] = d(lastReviewDate);
     replacements['{<externe partij>}'] = generatorTool?.name || 'HolmDigital Engine';
     replacements['{<gebreken>}'] = issuesContent;
@@ -543,7 +543,7 @@ export const AccessibilityStatement: React.FC<AccessibilityStatementProps> = ({
 
     // IT-specific mappings
     replacements['{<data_valutazione>}'] = assessmentDate ? d(assessmentDate) : d(lastReviewDate);
-    replacements['{<data_pubblicazione>}'] = publishDate ? d(publishDate) : '2024-01-01';
+    replacements['{<data_pubblicazione>}'] = publishDate ? d(publishDate) : '[YOUR PUBLISH DATE]';
     replacements['{<data_aggiornamento>}'] = d(lastReviewDate);
     replacements['{<metodo_it>}'] = evaluationMethod || 'Automated Scan';
     replacements['{<terza parte>}'] = generatorTool?.name || 'HolmDigital Engine';
@@ -551,7 +551,7 @@ export const AccessibilityStatement: React.FC<AccessibilityStatementProps> = ({
 
     // PT-specific mappings
     replacements['{<data_avaliacao>}'] = assessmentDate ? d(assessmentDate) : d(lastReviewDate);
-    replacements['{<data_publicacao>}'] = publishDate ? d(publishDate) : '2024-01-01';
+    replacements['{<data_publicacao>}'] = publishDate ? d(publishDate) : '[YOUR PUBLISH DATE]';
     replacements['{<data_atualizacao>}'] = d(lastReviewDate);
     replacements['{<metodo_pt>}'] = evaluationMethod || 'Automated Scan';
     replacements['{<terceiro externo>}'] = generatorTool?.name || 'HolmDigital Engine';
@@ -559,7 +559,7 @@ export const AccessibilityStatement: React.FC<AccessibilityStatementProps> = ({
 
     // PL-specific mappings
     replacements['{<data_oceny>}'] = assessmentDate ? d(assessmentDate) : d(lastReviewDate);
-    replacements['{<data_publikacji>}'] = publishDate ? d(publishDate) : '2024-01-01';
+    replacements['{<data_publikacji>}'] = publishDate ? d(publishDate) : '[YOUR PUBLISH DATE]';
     replacements['{<data_aktualizacji>}'] = d(lastReviewDate);
     replacements['{<metoda_pl>}'] = evaluationMethod || 'Automated Scan';
     replacements['{<podmiot zewnętrzny>}'] = generatorTool?.name || 'HolmDigital Engine';
