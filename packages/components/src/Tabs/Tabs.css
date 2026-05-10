@@ -1,0 +1,113 @@
+/*
+ * Tabs.css — co-located structural + theming styles for the Tabs component.
+ *
+ * Plan 23-02 (Phase 23 Styling Unification). Replaces the Tailwind utility
+ * `className=` strings that previously lived in Tabs.tsx with semantic
+ * BEM-style class hooks. State variants are attribute-driven so the React
+ * code does NOT need to compute conditional class strings:
+ *   - active tab    → [aria-selected="true"]        (already set by TabTrigger)
+ *   - orientation   → [data-orientation="vertical"] (set by Tabs/TabsList/TabTrigger)
+ *
+ * Theming API (CSS custom properties — override at :root or component scope):
+ *   --hd-tabs-divider-color   default #e2e8f0                Border between list and panels
+ *   --hd-tabs-inactive-color  default #64748b                Inactive trigger text
+ *   --hd-tabs-hover-color     default #334155                Trigger hover text
+ *   --hd-tabs-hover-bg        default #f8fafc                Trigger hover background
+ *   --hd-tabs-focus-ring      default #3b82f6                :focus-visible outline color
+ *   --hd-tabs-active-color    default #1d4ed8                Active trigger text
+ *   --hd-tabs-active-border   default #1d4ed8                Active trigger underline/border
+ *   --hd-tabs-active-bg       default rgba(29, 78, 216, 0.05) Active trigger background tint
+ *
+ * Defaults live inline via var(--prop, default) so the component renders
+ * correctly without any consumer-side overrides (post-research decision A1).
+ */
+
+/* ---------------------------------------------------------------- Root ---- */
+.hd-tabs {
+    display: flex;
+    flex-direction: column;
+}
+
+.hd-tabs[data-orientation="vertical"] {
+    flex-direction: column;
+    gap: 1rem;
+}
+
+@media (min-width: 768px) {
+    .hd-tabs[data-orientation="vertical"] {
+        flex-direction: row;
+    }
+}
+
+/* ---------------------------------------------------------------- List ---- */
+.hd-tabs__list {
+    display: flex;
+    flex-direction: row;
+    border-bottom: 1px solid var(--hd-tabs-divider-color, #e2e8f0);
+}
+
+.hd-tabs__list[data-orientation="vertical"] {
+    flex-direction: column;
+    border-bottom: 0;
+    border-right: 1px solid var(--hd-tabs-divider-color, #e2e8f0);
+}
+
+/* ------------------------------------------------------------- Trigger ---- */
+.hd-tabs__trigger {
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--hd-tabs-inactive-color, #64748b);
+    background: transparent;
+    border: 0;
+    border-bottom: 2px solid transparent;
+    cursor: pointer;
+    transition: color 150ms, background-color 150ms, border-color 150ms;
+}
+
+.hd-tabs__trigger[data-orientation="vertical"] {
+    border-bottom: 0;
+    border-right: 2px solid transparent;
+    text-align: left;
+}
+
+.hd-tabs__trigger:hover {
+    color: var(--hd-tabs-hover-color, #334155);
+    background-color: var(--hd-tabs-hover-bg, #f8fafc);
+}
+
+.hd-tabs__trigger:focus {
+    outline: none;
+}
+
+.hd-tabs__trigger:focus-visible {
+    outline: 2px solid var(--hd-tabs-focus-ring, #3b82f6);
+    outline-offset: 2px;
+}
+
+/*
+ * Active state — attribute-selector hook (DO NOT replace with a modifier
+ * class). The TabTrigger component already sets aria-selected={isActive};
+ * styling off that attribute avoids duplicating state in className.
+ * Smoke test in Tabs.test.tsx asserts this selector is present.
+ */
+.hd-tabs__trigger[aria-selected="true"] {
+    color: var(--hd-tabs-active-color, #1d4ed8);
+    border-color: var(--hd-tabs-active-border, #1d4ed8);
+    background-color: var(--hd-tabs-active-bg, rgba(29, 78, 216, 0.05));
+}
+
+/* ------------------------------------------------------------- Content ---- */
+.hd-tabs__content {
+    padding: 1rem 0;
+    border-radius: 0.375rem;
+}
+
+.hd-tabs__content:focus {
+    outline: none;
+}
+
+.hd-tabs__content:focus-visible {
+    outline: 2px solid var(--hd-tabs-focus-ring, #3b82f6);
+    outline-offset: 2px;
+}
