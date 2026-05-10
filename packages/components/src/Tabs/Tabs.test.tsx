@@ -9,6 +9,8 @@
  *   Enter/Space activates the focused tab.
  * - 2.4.3 Focus Order — only the active tab is in the page Tab order
  *   (tabIndex=0); inactive tabs are tabIndex=-1 (roving tabindex).
+ * - 2.4.7 Focus Visible — Tabs.css declares :focus-visible outline rules
+ *   on .hd-tabs__trigger and .hd-tabs__content (smoke test below).
  * - 4.1.2 Name, Role, Value — aria-selected reflects active state;
  *   aria-controls / aria-labelledby ids resolve to real elements.
  *
@@ -17,6 +19,10 @@
  * pattern + automatic-vs-manual split + Home/End assertions are the
  * reusable bits.
  */
+import { readFileSync } from 'node:fs';
+import { dirname, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
+
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, it, expect, vi } from 'vitest';
@@ -255,5 +261,24 @@ describe('Tier 2: A11y Differentiators', () => {
         // CLAUDE.md context: Tabs.tsx uses React useId() for stable baseId.
         // This catches a regression to Math.random or a hard-coded id.
         expectUniqueIds(container);
+    });
+});
+
+describe('Tabs.css style hooks (STY-03 + STY-04 smoke)', () => {
+    // ESM-safe path resolution per Plan 23-02 directive (NOT __dirname).
+    const here = dirname(fileURLToPath(import.meta.url));
+    const cssPath = resolve(here, 'Tabs.css');
+    const css = readFileSync(cssPath, 'utf8');
+
+    it('declares a :focus-visible rule (STY-04 / WCAG 2.4.7)', () => {
+        expect(css).toMatch(/:focus-visible\s*\{/);
+    });
+
+    it('exposes CSS custom-property theming surface via var() defaults (STY-03)', () => {
+        expect(css).toMatch(/var\(--hd-tabs-/);
+    });
+
+    it('targets the active-tab via [aria-selected="true"] attribute selector (regression guard)', () => {
+        expect(css).toMatch(/\[aria-selected=["']true["']\]/);
     });
 });

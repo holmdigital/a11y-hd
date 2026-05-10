@@ -1,4 +1,27 @@
 import React, { createContext, useContext, useState, useRef, useId, ReactNode, KeyboardEvent } from 'react';
+import './Tabs.css';
+
+/**
+ * Tabs — accessible tabbed interface (APG roving-tabindex pattern).
+ *
+ * Theming (CSS custom properties; override at :root or component scope):
+ *   --hd-tabs-divider-color   (default: #e2e8f0)                  List/border-side color
+ *   --hd-tabs-inactive-color  (default: #64748b)                  Inactive trigger text
+ *   --hd-tabs-hover-color     (default: #334155)                  Trigger hover text
+ *   --hd-tabs-hover-bg        (default: #f8fafc)                  Trigger hover background
+ *   --hd-tabs-focus-ring      (default: #3b82f6)                  :focus-visible outline color
+ *   --hd-tabs-active-color    (default: #1d4ed8)                  Active trigger text
+ *   --hd-tabs-active-border   (default: #1d4ed8)                  Active trigger border
+ *   --hd-tabs-active-bg       (default: rgba(29, 78, 216, 0.05))  Active trigger background
+ *
+ * State variants are attribute-driven, not className-driven:
+ *   - active tab    via [aria-selected="true"]
+ *   - orientation   via [data-orientation="vertical"]
+ *
+ * CSS file is imported as a side effect from this module. Consumer bundlers
+ * must honor the package.json `"sideEffects": ["**\/*.css"]` declaration.
+ * Explicit fallback: `import '@holmdigital/components/Tabs.css';`.
+ */
 
 // --- Context ---
 interface TabsContextType {
@@ -50,7 +73,10 @@ export const Tabs = ({
 
     return (
         <TabsContext.Provider value={{ activeTab, setActiveTab, orientation, activationMode, baseId }}>
-            <div className={`flex ${orientation === 'vertical' ? 'flex-col md:flex-row gap-4' : 'flex-col'} ${className || ''}`}>
+            <div
+                data-orientation={orientation}
+                className={`hd-tabs${className ? ' ' + className : ''}`}
+            >
                 {children}
             </div>
         </TabsContext.Provider>
@@ -114,7 +140,8 @@ export const TabsList = ({ children, className, ariaLabel }: TabsListProps) => {
             role="tablist"
             aria-orientation={context.orientation}
             aria-label={ariaLabel}
-            className={`flex ${context.orientation === 'vertical' ? 'flex-col border-r border-slate-200' : 'border-b border-slate-200'} ${className || ''}`}
+            data-orientation={context.orientation}
+            className={`hd-tabs__list${className ? ' ' + className : ''}`}
             onKeyDown={handleKeyDown}
             tabIndex={-1} // The list itself shouldn't be focusable, only tabs
         >
@@ -144,15 +171,8 @@ export const TabTrigger = ({ value, children, className, ...props }: TabTriggerP
             aria-controls={contentId}
             tabIndex={isActive ? 0 : -1}
             onClick={() => context.setActiveTab(value)}
-            className={`
-                px-4 py-2 text-sm font-medium transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500
-                ${context.orientation === 'horizontal' ? 'border-b-2' : 'border-r-2 text-left'}
-                ${isActive
-                    ? `border-primary-500 text-primary-600 bg-primary-50/50`
-                    : `border-transparent text-slate-500 hover:text-slate-700 hover:bg-slate-50`
-                }
-                ${className || ''}
-            `}
+            data-orientation={context.orientation}
+            className={`hd-tabs__trigger${className ? ' ' + className : ''}`}
             {...props}
         >
             {children}
@@ -182,7 +202,7 @@ export const TabsContent = ({ value, children, className }: TabsContentProps) =>
             role="tabpanel"
             aria-labelledby={triggerId}
             tabIndex={0}
-            className={`py-4 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 rounded-md ${className || ''}`}
+            className={`hd-tabs__content${className ? ' ' + className : ''}`}
         >
             {children}
         </div>
