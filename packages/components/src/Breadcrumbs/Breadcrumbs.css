@@ -1,0 +1,78 @@
+/*
+ * Breadcrumbs.css — co-located styles for the Breadcrumbs component.
+ *
+ * Theming surface (CSS custom properties; override at :root or any ancestor scope):
+ *   --hd-breadcrumbs-current-color       (default: #0f172a)   Current-page text colour
+ *   --hd-breadcrumbs-link-color          (default: #64748b)   Resting link colour
+ *   --hd-breadcrumbs-link-hover-color    (default: #334155)   Link hover colour
+ *   --hd-breadcrumbs-focus-ring          (default: #3b82f6)   :focus-visible outline
+ *   --hd-breadcrumbs-separator-color     (default: #94a3b8)   Separator icon colour
+ *
+ * Current-page styling is keyed off `aria-current="page"` (set automatically by the
+ * component on the last item). DO NOT introduce an `--current` modifier class — the
+ * ARIA attribute is the single source of truth and is asserted by a smoke test.
+ *
+ * Phase 23 — STY-01/03/04/05/06. WCAG 2.4.7 (Focus Visible).
+ */
+
+.hd-breadcrumbs {
+    display: block;
+}
+
+.hd-breadcrumbs__list {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.hd-breadcrumbs__item {
+    display: flex;
+    align-items: center;
+}
+
+.hd-breadcrumbs__item[aria-current="page"] {
+    color: var(--hd-breadcrumbs-current-color, #0f172a);
+    font-weight: 600;
+}
+
+.hd-breadcrumbs__item--link {
+    color: var(--hd-breadcrumbs-link-color, #64748b);
+    transition: color 150ms;
+}
+
+.hd-breadcrumbs__item--link:hover {
+    color: var(--hd-breadcrumbs-link-hover-color, #334155);
+}
+
+.hd-breadcrumbs__link {
+    color: inherit;
+    text-decoration: none;
+    border-radius: 0.125rem;
+}
+
+.hd-breadcrumbs__link:hover {
+    text-decoration: underline;
+}
+
+.hd-breadcrumbs__link:focus {
+    outline: none;
+}
+
+.hd-breadcrumbs__link:focus-visible {
+    outline: 2px solid var(--hd-breadcrumbs-focus-ring, #3b82f6);
+    outline-offset: 2px;
+}
+
+.hd-breadcrumbs__separator-item {
+    display: flex;
+    align-items: center;
+    user-select: none;
+}
+
+.hd-breadcrumbs__separator {
+    color: var(--hd-breadcrumbs-separator-color, #94a3b8);
+    margin: 0 0.5rem;
+}
