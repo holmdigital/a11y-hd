@@ -113,6 +113,30 @@
         "./LiveRegion": {
             "types": "./dist/LiveRegion/LiveRegion.d.ts",
             "import": "./dist/LiveRegion/LiveRegion.mjs"
+        },
+        "./Tabs": {
+            "types": "./dist/Tabs/Tabs.d.ts",
+            "import": "./dist/Tabs/Tabs.mjs"
+        },
+        "./Accordion": {
+            "types": "./dist/Accordion/Accordion.d.ts",
+            "import": "./dist/Accordion/Accordion.mjs"
+        },
+        "./ProgressBar": {
+            "types": "./dist/ProgressBar/ProgressBar.d.ts",
+            "import": "./dist/ProgressBar/ProgressBar.mjs"
+        },
+        "./Skeleton": {
+            "types": "./dist/Skeleton/Skeleton.d.ts",
+            "import": "./dist/Skeleton/Skeleton.mjs"
+        },
+        "./HelpText": {
+            "types": "./dist/HelpText/HelpText.d.ts",
+            "import": "./dist/HelpText/HelpText.mjs"
+        },
+        "./Breadcrumbs": {
+            "types": "./dist/Breadcrumbs/Breadcrumbs.d.ts",
+            "import": "./dist/Breadcrumbs/Breadcrumbs.mjs"
         }
     },
     "files": [
@@ -121,8 +145,8 @@
         "LICENSE"
     ],
     "scripts": {
-        "build": "tsup src/index.ts src/Button/Button.tsx src/FormField/FormField.tsx src/Dialog/Dialog.tsx src/Modal/Modal.tsx src/SkipLink/SkipLink.tsx src/NavigationMenu/NavigationMenu.tsx src/Checkbox/Checkbox.tsx src/RadioGroup/RadioGroup.tsx src/Select/Select.tsx src/Switch/Switch.tsx src/Toast/Toast.tsx src/Tooltip/Tooltip.tsx src/Heading/Heading.tsx src/AccessibilityStatement/AccessibilityStatement.tsx src/ErrorSummary/ErrorSummary.tsx src/Combobox/Combobox.tsx src/DatePicker/DatePicker.tsx src/MultiSelect/MultiSelect.tsx src/DataTable/DataTable.tsx src/Pagination/Pagination.tsx src/Card/Card.tsx src/TreeView/TreeView.tsx src/LiveRegion/LiveRegion.tsx --format cjs,esm --dts --clean --external react --external @holmdigital/standards",
-        "dev": "tsup src/index.ts src/Button/Button.tsx src/FormField/FormField.tsx src/Dialog/Dialog.tsx src/Modal/Modal.tsx src/SkipLink/SkipLink.tsx src/NavigationMenu/NavigationMenu.tsx src/Checkbox/Checkbox.tsx src/RadioGroup/RadioGroup.tsx src/Select/Select.tsx src/Switch/Switch.tsx src/Toast/Toast.tsx src/Tooltip/Tooltip.tsx src/Heading/Heading.tsx src/AccessibilityStatement/AccessibilityStatement.tsx src/ErrorSummary/ErrorSummary.tsx src/Combobox/Combobox.tsx src/DatePicker/DatePicker.tsx src/MultiSelect/MultiSelect.tsx src/DataTable/DataTable.tsx src/Pagination/Pagination.tsx src/Card/Card.tsx src/TreeView/TreeView.tsx src/LiveRegion/LiveRegion.tsx --format cjs,esm --dts --watch --external react --external @holmdigital/standards",
+        "build": "tsup src/index.ts src/Button/Button.tsx src/FormField/FormField.tsx src/Dialog/Dialog.tsx src/Modal/Modal.tsx src/SkipLink/SkipLink.tsx src/NavigationMenu/NavigationMenu.tsx src/Checkbox/Checkbox.tsx src/RadioGroup/RadioGroup.tsx src/Select/Select.tsx src/Switch/Switch.tsx src/Toast/Toast.tsx src/Tooltip/Tooltip.tsx src/Heading/Heading.tsx src/AccessibilityStatement/AccessibilityStatement.tsx src/ErrorSummary/ErrorSummary.tsx src/Combobox/Combobox.tsx src/DatePicker/DatePicker.tsx src/MultiSelect/MultiSelect.tsx src/DataTable/DataTable.tsx src/Pagination/Pagination.tsx src/Card/Card.tsx src/TreeView/TreeView.tsx src/LiveRegion/LiveRegion.tsx src/Tabs/Tabs.tsx src/Accordion/Accordion.tsx src/ProgressBar/ProgressBar.tsx src/Skeleton/Skeleton.tsx src/HelpText/HelpText.tsx src/Breadcrumbs/Breadcrumbs.tsx --format cjs,esm --dts --clean --external react --external @holmdigital/standards",
+        "dev": "tsup src/index.ts src/Button/Button.tsx src/FormField/FormField.tsx src/Dialog/Dialog.tsx src/Modal/Modal.tsx src/SkipLink/SkipLink.tsx src/NavigationMenu/NavigationMenu.tsx src/Checkbox/Checkbox.tsx src/RadioGroup/RadioGroup.tsx src/Select/Select.tsx src/Switch/Switch.tsx src/Toast/Toast.tsx src/Tooltip/Tooltip.tsx src/Heading/Heading.tsx src/AccessibilityStatement/AccessibilityStatement.tsx src/ErrorSummary/ErrorSummary.tsx src/Combobox/Combobox.tsx src/DatePicker/DatePicker.tsx src/MultiSelect/MultiSelect.tsx src/DataTable/DataTable.tsx src/Pagination/Pagination.tsx src/Card/Card.tsx src/TreeView/TreeView.tsx src/LiveRegion/LiveRegion.tsx src/Tabs/Tabs.tsx src/Accordion/Accordion.tsx src/ProgressBar/ProgressBar.tsx src/Skeleton/Skeleton.tsx src/HelpText/HelpText.tsx src/Breadcrumbs/Breadcrumbs.tsx --format cjs,esm --dts --watch --external react --external @holmdigital/standards",
         "lint": "eslint src --ext .ts,.tsx",
         "test": "vitest",
         "test:ci": "vitest run",
