@@ -219,6 +219,7 @@ export function generateReportHTML(result: ScanResult, sector: 'public' | 'priva
             <div class="meta">
                 <div>${t('report.scan_target', { url: result.url })}</div>
                 <div>${t('report.generated', { date: formatDate(result.timestamp) })}</div>
+                ${sector ? `<div style="margin-top: 0.25rem; font-size: 0.75rem; font-weight: 600; color: ${sector === 'private' ? '#7c3aed' : '#1d4ed8'};">${sector === 'private' ? 'Private sector (EAA)' : 'Public sector (WAD)'}</div>` : ''}
                 ${generateBadgeUrl(result.score) ? `<div style="margin-top: 0.5rem;"><img src="${generateBadgeUrl(result.score)}" alt="Accessibility Status: 100% Compliant" /></div>` : ''}
             </div>
         </div>
