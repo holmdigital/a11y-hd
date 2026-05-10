@@ -1,0 +1,79 @@
+/*
+ * Accordion — co-located styles (Phase 23 Styling Unification, Plan 23-03).
+ *
+ * Theming surface (override these CSS custom properties at :root or component scope):
+ *   --hd-accordion-border             (default: #e2e8f0)  item border
+ *   --hd-accordion-trigger-color      (default: #0f172a)  trigger text colour
+ *   --hd-accordion-trigger-bg         (default: #ffffff)  trigger background
+ *   --hd-accordion-hover-bg           (default: #f8fafc)  trigger hover background
+ *   --hd-accordion-focus-ring         (default: #3b82f6)  :focus-visible outline colour
+ *   --hd-accordion-chevron-color      (default: #64748b)  chevron icon colour
+ *   --hd-accordion-content-color      (default: #475569)  content text colour
+ *   --hd-accordion-content-bg         (default: #ffffff)  content background
+ *   --hd-accordion-content-border     (default: #f1f5f9)  content top-border
+ *
+ * Visibility hook: AccordionContent carries BOTH the native `hidden` HTML attribute
+ * (assistive-tech / ARIA semantics) AND `data-state="open"|"closed"` (CSS styling
+ * hook). The `[data-state="closed"] { display: none }` rule below controls visual
+ * presence per RESEARCH.md Section 7 A2.
+ */
+
+.hd-accordion {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.hd-accordion__item {
+    border: 1px solid var(--hd-accordion-border, #e2e8f0);
+    border-radius: 0.5rem;
+    overflow: hidden;
+}
+
+.hd-accordion__trigger {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.75rem 1rem;
+    text-align: left;
+    font-weight: 500;
+    color: var(--hd-accordion-trigger-color, #0f172a);
+    background-color: var(--hd-accordion-trigger-bg, #ffffff);
+    border: 0;
+    cursor: pointer;
+    transition: background-color 150ms;
+}
+
+.hd-accordion__trigger:hover {
+    background-color: var(--hd-accordion-hover-bg, #f8fafc);
+}
+
+.hd-accordion__trigger:focus {
+    outline: none;
+}
+
+.hd-accordion__trigger:focus-visible {
+    outline: 2px solid var(--hd-accordion-focus-ring, #3b82f6);
+    outline-offset: -2px;
+}
+
+.hd-accordion__chevron {
+    height: 1rem;
+    width: 1rem;
+    color: var(--hd-accordion-chevron-color, #64748b);
+    transition: transform 200ms ease;
+}
+
+.hd-accordion__content {
+    padding: 0.75rem 1rem;
+    background-color: var(--hd-accordion-content-bg, #ffffff);
+    color: var(--hd-accordion-content-color, #475569);
+    border-top: 1px solid var(--hd-accordion-content-border, #f1f5f9);
+    font-size: 0.875rem;
+    line-height: 1.625;
+}
+
+.hd-accordion__content[data-state="closed"] {
+    display: none;
+}
