@@ -1,4 +1,10 @@
 // @vitest-environment jsdom
+/**
+ * WCAG SCs covered:
+ * - 2.1.1 Keyboard — Escape closes, Tab cycles focusable elements
+ * - 2.4.3 Focus Order — APG dialog focus trap and restoration
+ * - 4.1.2 Name, Role, Value — role="dialog", aria-modal, aria-labelledby
+ */
 import { useState } from 'react';
 import { render, fireEvent, cleanup } from '@testing-library/react';
 import { describe, it, expect, beforeAll, afterEach } from 'vitest';

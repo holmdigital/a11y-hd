@@ -1,4 +1,10 @@
 // @vitest-environment jsdom
+/**
+ * WCAG SCs covered:
+ * - 3.1.1 Language of Page — locale-correct prose per supported country
+ * - 3.1.2 Language of Parts — jurisdiction-specific legislation references
+ * - 4.1.2 Name, Role, Value — semantic structure of the rendered statement
+ */
 import { render } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
 import { AccessibilityStatement } from './AccessibilityStatement';
