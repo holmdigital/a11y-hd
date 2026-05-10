@@ -85,23 +85,23 @@ describe('Tier 2: A11y Differentiators', () => {
     });
 
     it('the live region exists in the DOM at first mount (PITFALLS §3.2: regions added later may not announce)', () => {
-        const { container } = render(<ErrorSummary errors={ONE_ERROR} />);
-        // The container with role="alert" must be present from the very
+        render(<ErrorSummary errors={ONE_ERROR} />);
+        // The element with role="alert" must be present from the very
         // first render — not appended after a state change. Some screen
         // readers do not announce regions inserted post-mount.
-        const region = container.querySelector('[role="alert"]');
-        expect(region).not.toBeNull();
+        // ErrorSummary uses role="alert" — getByRole('alert') finds it.
+        expect(screen.getByRole('alert')).toBeInTheDocument();
     });
 
     it('updating the `errors` prop causes the live region content to update (announcement-on-update template)', () => {
-        const { rerender, container } = render(<ErrorSummary errors={ONE_ERROR} />);
-        const region = container.querySelector('[role="alert"]') as HTMLElement;
+        const { rerender } = render(<ErrorSummary errors={ONE_ERROR} />);
+        const region = screen.getByRole('alert');
         expect(region.textContent).toMatch(/email is required/i);
         expect(region.textContent).not.toMatch(/password/i);
 
         rerender(<ErrorSummary errors={TWO_ERRORS} />);
 
-        const updated = container.querySelector('[role="alert"]') as HTMLElement;
+        const updated = screen.getByRole('alert');
         expect(updated.textContent).toMatch(/email is required/i);
         expect(updated.textContent).toMatch(/password must be at least 8 characters/i);
     });
