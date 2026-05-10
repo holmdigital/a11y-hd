@@ -3,6 +3,7 @@ import {
     getStatementToolsByCountry,
     getEnforcementBody,
     getNationalLawByFramework,
+    getNationalLaws,
     type Country
 } from '@holmdigital/standards';
 import { BADGE_LABELS, UPDATED_LABEL, FOOTER_TEXT } from './locale-chrome';
