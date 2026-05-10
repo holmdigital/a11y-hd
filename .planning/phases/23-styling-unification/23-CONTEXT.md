@@ -103,6 +103,7 @@ Layout/spacing values (padding, margin, gap, line-height) stay hardcoded in the 
 **Implementation note:**
 - The exact list of custom properties per component is part of the planner's job — the planner reads the current Tailwind values and decides which become tokens vs hardcoded. Brand-state surface is the boundary, not a fixed list.
 - Document the full custom-property API for each component in JSDoc at the top of the component file so consumers have a discoverable theming reference.
+- **Defaults live in the `.css` file via `var()` syntax**, NOT as literal inline `style={{}}` props (clarified post-research, A1). Example: `color: var(--hd-tabs-active-color, #1d4ed8);` inside a `.css` rule. This preserves `:hover`/`:focus-visible` interactivity — inline-style defaults would always beat CSS rules via specificity and silently break STY-04 / WCAG 2.4.7.
 
 ### D-03 — Plan shape: 4 plans (3 component migrations in parallel after infrastructure)
 
@@ -142,10 +143,14 @@ Per STY-04's locked decision (rejecting JS event-handler `:focus-visible` workar
 
 ### D-05 — STY-05 regression guard implementation
 Implement as a Node script `packages/components/scripts/check-no-tailwind-leak.mjs` chained into `test:ci` (mirror the Phase 22 `check-wcag-headers.mjs` pattern). The script:
-- Recursively reads `packages/components/dist/**/*.{js,mjs}`
-- Greps for Tailwind utility patterns inside `className:` or `className="..."` JSX-compiled output: `\b(flex|grid|text-slate|bg-white|bg-slate|hover:|focus:|focus-visible:|ring-|rounded-|border-slate|border-primary|space-y-|gap-|px-|py-|mx-|my-|leading-|font-)\b`
+- Recursively reads ONLY the migrated component build outputs: `packages/components/dist/Tabs/**/*.{js,mjs}`, `dist/Accordion/**/*.{js,mjs}`, `dist/Breadcrumbs/**/*.{js,mjs}` (clarified post-research, A3 — NOT tree-wide)
+- Greps for Tailwind utility patterns INSIDE `className:` or `className="..."` JSX-compiled output (NOT free-text matches — researcher empirically verified that tree-wide unscoped grep produced 901 false matches against current dist due to substring collisions with `font-family`, `grid-template`, `data-gap-id`, etc.). Recommended pattern shape: scope match to characters between `className:` or `className="` and the closing quote/brace.
 - Exits non-zero with a clear offender list if any pattern matches
-- Exits 0 if dist is clean
+- Exits 0 if the 3 component dirs are clean
+
+**Scope rationale:** other components (NavigationMenu, RadioGroup, Toast, Dialog, Modal, Select, etc.) still use Tailwind utility classes — STY-07 defers their migration to v0.7. A tree-wide guard would fail BOTH before Phase 23 (preventing the guard from ever being introduced) AND after Phase 23 (because non-Phase-23 components still leak). Scoping to the 3 migrated dirs lets the guard ship now and start enforcing on the components Phase 23 actually owns.
+
+**Future-proofing:** when STY-07 eventually migrates the remaining 26 components, the guard script's allow-list of dirs is extended (or removed entirely once dist is fully Tailwind-free).
 
 **Why a script not a vitest test:** the guard reads `dist/`, which only exists after `npm run build`. Wiring it as a vitest test would require building before testing in every CI run; a separate script makes the build→guard ordering explicit and matches Phase 22's pattern.
 
