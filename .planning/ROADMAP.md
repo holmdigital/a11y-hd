@@ -87,8 +87,8 @@ See: `.planning/milestones/v0.6-ROADMAP.md` for full details
 
 **Milestone Goal:** Finish the source-side APG implementation work that Phase 24 pinned with tests — close the 4 keyboard-handler gaps (DatePicker/MultiSelect/DataTable/NavigationMenu) and 3 live-region gaps surfaced by Phase 24, add Tier 1+2 test coverage for the remaining 8 components, and chain lint + typecheck into the verify pipeline. v0.6 pinned the contracts; v0.7 ships them.
 
-- [ ] **Phase 27: APG Live Regions** - Combobox results-count, DatePicker selected-date, MultiSelect selection-count live-region announcements (TC-09-LIVE, TC-10-LIVE, TC-11-LIVE); shared `LiveRegion` integration pattern across 3 widgets
-- [ ] **Phase 28: DatePicker APG Dialog-Grid Keyboard** - Replace/augment native `<input type="date">` with `role="grid"` calendar UI + Arrow/Home/End/PageUp/PageDown/Shift variants; DatePicker.test.tsx no-throw stubs converted to real assertions (TC-10-IMPL)
+- [ ] **Phase 27: APG Live Regions** - Combobox results-count + MultiSelect selection-count live-region announcements (TC-09-LIVE, TC-11-LIVE); shared `_i18n/live-region-strings.ts` localized per `locale` prop. TC-10-LIVE moved to Phase 28 (paired with calendar UI).
+- [ ] **Phase 28: DatePicker APG Dialog-Grid Keyboard + Live Region** - Replace/augment native `<input type="date">` with `role="grid"` calendar UI + Arrow/Home/End/PageUp/PageDown/Shift variants; calendar `onSelect` triggers selected-date live-region announcement (TC-10-IMPL + TC-10-LIVE)
 - [ ] **Phase 29: MultiSelect APG Listbox-Multi** - `aria-multiselectable="true"`, Space-toggle without focus move, Shift+Arrow extends selection, dynamic `aria-selected`; MultiSelect.test.tsx stubs converted (TC-11-IMPL)
 - [ ] **Phase 30: DataTable APG Grid Cell-Wise Keyboard** - Right/Left/Down/Up cell navigation, Home/End row-bounds, PageUp/PageDown row-paging, Ctrl+Home/End table-bounds; DataTable.test.tsx stubs converted (TC-12-IMPL)
 - [ ] **Phase 31: NavigationMenu Disclosure → Menubar** - APG Menubar contract: Arrow horizontal/vertical, Home/End, Enter activates leaf, type-ahead, single tabindex="0" roving. **Backwards-compat decision in discuss-phase** (opt-in prop vs new default); NavigationMenu.test.tsx Disclosure tests replaced/augmented (TC-14-IMPL)
@@ -152,7 +152,7 @@ Plans:
 ### Phase 27: APG Live Regions
 **Goal**: Combobox (TC-09-LIVE), DatePicker (TC-10-LIVE), and MultiSelect (TC-11-LIVE) each render a `LiveRegion` (or `aria-live="polite"` element) that announces the most consequential state change to assistive tech: results count on Combobox query change, selected-date on DatePicker commit, selection count on MultiSelect chip add/remove. The three Phase 24 test files are extended with live-region assertions, completing the relevant ROADMAP success-criterion bullets deferred from v0.6.
 **Depends on**: Phase 26 (v0.6 complete)
-**Requirements**: TC-09-LIVE, TC-10-LIVE, TC-11-LIVE
+**Requirements**: TC-09-LIVE, TC-11-LIVE (TC-10-LIVE moved to Phase 28)
 **Success Criteria** (what must be TRUE):
   1. Combobox renders a status live-region that updates to "{N} results" (or equivalent) when the filtered options list changes; Combobox.test.tsx asserts the region content updates via `waitFor`
   2. DatePicker renders a status live-region that announces the selected date in the component's `locale` when a date is committed; DatePicker.test.tsx asserts the region content
@@ -162,8 +162,8 @@ Plans:
 
 ### Phase 28: DatePicker APG Dialog-Grid Keyboard
 **Goal**: DatePicker replaces (or augments) its current native `<input type="date">` with a `role="grid"` calendar dialog UI that satisfies the W3C APG dialog-grid pattern — day cells with `aria-selected` and `aria-current="date"` for today, plus the full keyboard matrix (Arrow day-by-day, Home/End week-bounds, PageUp/PageDown month, Shift+PageUp/PageDown year, Enter/Space select, Escape close). DatePicker.test.tsx no-throw stubs convert to real focus/state assertions.
-**Depends on**: Phase 27 (DatePicker live-region pairs cleanly with calendar UI rollout)
-**Requirements**: TC-10-IMPL
+**Depends on**: Phase 26 (independent of Phase 27 after TC-10-LIVE moved here)
+**Requirements**: TC-10-IMPL, TC-10-LIVE
 **Success Criteria** (what must be TRUE):
   1. DatePicker renders a `role="grid"` calendar when expanded; day cells use `role="gridcell"` with `aria-selected` reflecting selection state and `aria-current="date"` on today's cell
   2. Keyboard navigation: Arrow moves day-by-day; Home/End jump to week bounds; PageUp/PageDown jump month; Shift+PageUp/PageDown jump year; Enter/Space commit selection; Escape closes the dialog without selecting (returns focus to trigger)

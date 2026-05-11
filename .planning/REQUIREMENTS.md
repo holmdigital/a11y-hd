@@ -296,7 +296,7 @@ Updated during roadmap creation.
 | Requirement | Phase | Status |
 |-------------|-------|--------|
 | TC-09-LIVE | Phase 27 | Pending |
-| TC-10-LIVE | Phase 27 | Pending |
+| TC-10-LIVE | Phase 28 | Pending (paired with TC-10-IMPL calendar UI) |
 | TC-11-LIVE | Phase 27 | Pending |
 | TC-10-IMPL | Phase 28 | Pending |
 | TC-11-IMPL | Phase 29 | Pending |
