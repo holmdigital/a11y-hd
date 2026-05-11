@@ -26,6 +26,31 @@ For a full list of all 29 accessible components, including practical code exampl
 npm install @holmdigital/components
 ```
 
+## Optional dependencies
+
+`@holmdigital/components` declares `lucide-react` as an **optional** peer dependency. The four components that use Lucide icons — `Checkbox`, `HelpText`, `Select`, `Toast` — gracefully fall back to Unicode text glyphs when `lucide-react` is not installed in the consumer application.
+
+| Component | Lucide icon | Fallback glyph |
+|-----------|-------------|----------------|
+| `Checkbox` | `Check` | `✓` |
+| `HelpText` (info) | `Info` | `ℹ` |
+| `HelpText` (error) | `AlertCircle` | `⚠` |
+| `Select` (chevron) | `ChevronDown` | `▾` |
+| `Select` (selected) | `Check` | `✓` |
+| `Toast` (close) | `X` | `✕` |
+| `Toast` (info) | `Info` | `ℹ` |
+| `Toast` (success) | `CheckCircle` | `✓` |
+| `Toast` (warning) | `AlertTriangle` | `⚠` |
+| `Toast` (error) | `AlertCircle` | `⛔` |
+
+To enable Lucide icons in your application, install `lucide-react` alongside this package:
+
+```bash
+npm install @holmdigital/components lucide-react
+```
+
+The fallback glyphs are decorative (`aria-hidden="true"`). Semantic meaning is conveyed by the surrounding element's role, label, or text content — screen readers see the same announcement regardless of which icon variant renders.
+
 ## Usage
 
 ```tsx
