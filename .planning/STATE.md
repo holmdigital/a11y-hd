@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v0.7
 milestone_name: APG Completion
-status: executing
+status: verifying
 stopped_at: Phase 26 Plan 01 complete — keystone fixes landed. Components DTS build green end-to-end; standards/dist untracked.
-last_updated: "2026-05-11T13:54:05.196Z"
-last_activity: 2026-05-11 -- Phase 27 execution started
+last_updated: "2026-05-11T14:05:56.118Z"
+last_activity: 2026-05-11
 progress:
   total_phases: 11
-  completed_phases: 1
+  completed_phases: 2
   total_plans: 2
-  completed_plans: 1
-  percent: 50
+  completed_plans: 2
+  percent: 100
 ---
 
 # Project State
@@ -28,8 +28,8 @@ See: .planning/PROJECT.md (updated 2026-05-11)
 Milestone: v0.7 APG Completion — PLANNING
 Phase: 27 (apg-live-regions) — EXECUTING
 Plan: 1 of 1
-Status: Executing Phase 27
-Last activity: 2026-05-11 -- Phase 27 execution started
+Status: Phase complete — ready for verification
+Last activity: 2026-05-11
 
 ## Performance Metrics
 
@@ -62,6 +62,7 @@ Last activity: 2026-05-11 -- Phase 27 execution started
 - SSR consumer audit (Phase 22 task) confirms whether engine is the only SSR consumer
 - Test stack: `@chialab/vitest-axe` (NOT chaance/vitest-axe — dead since 2021), `@testing-library/user-event` v14, `@testing-library/jest-dom` v6, `eslint-plugin-testing-library`
 - jsdom stays (do NOT switch to happy-dom — breaks vitest-axe via `Node.prototype.isConnected`)
+- [Phase ?]: Phase 27-01: added additive optional locale?: string prop to Combobox + MultiSelect; non-breaking. Real-timer + findByText test pattern chosen over fake-timers (user-event v14 deadlock in vitest 4.x).
 
 ### Pending Todos
 
@@ -117,6 +118,6 @@ Last activity: 2026-05-11 -- Phase 27 execution started
 
 ## Session Continuity
 
-Last session: 2026-05-11T06:15:00Z
+Last session: 2026-05-11T14:05:34.787Z
 Stopped at: Phase 26 Plan 01 complete — keystone fixes landed. Components DTS build green end-to-end; standards/dist untracked.
 Resume: `/gsd-execute-phase 26` (Wave 2 — plans 02/03/04 in parallel)

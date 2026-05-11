@@ -187,9 +187,9 @@ Requirements for v0.7 APG Completion. Each maps to roadmap phases (27–33).
 
 ### APG Live Region Implementation
 
-- [ ] **TC-09-LIVE**: Combobox renders a `<LiveRegion role="status">` (or equivalent `aria-live="polite"` element) that announces filtered-options count when the query changes. Combobox.test.tsx extended with live-region assertion.
+- [x] **TC-09-LIVE**: Combobox renders a `<LiveRegion role="status">` (or equivalent `aria-live="polite"` element) that announces filtered-options count when the query changes. Combobox.test.tsx extended with live-region assertion.
 - [ ] **TC-10-LIVE**: DatePicker announces selected-date string via live-region when a date is committed. DatePicker.test.tsx extended.
-- [ ] **TC-11-LIVE**: MultiSelect announces selection-count when chips are added/removed. MultiSelect.test.tsx extended.
+- [x] **TC-11-LIVE**: MultiSelect announces selection-count when chips are added/removed. MultiSelect.test.tsx extended.
 
 ### APG Keyboard Implementation
 
@@ -295,9 +295,9 @@ Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| TC-09-LIVE | Phase 27 | Pending |
+| TC-09-LIVE | Phase 27 | Complete |
 | TC-10-LIVE | Phase 28 | Pending (paired with TC-10-IMPL calendar UI) |
-| TC-11-LIVE | Phase 27 | Pending |
+| TC-11-LIVE | Phase 27 | Complete |
 | TC-10-IMPL | Phase 28 | Pending |
 | TC-11-IMPL | Phase 29 | Pending |
 | TC-12-IMPL | Phase 30 | Pending |

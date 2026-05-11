@@ -87,7 +87,7 @@ See: `.planning/milestones/v0.6-ROADMAP.md` for full details
 
 **Milestone Goal:** Finish the source-side APG implementation work that Phase 24 pinned with tests — close the 4 keyboard-handler gaps (DatePicker/MultiSelect/DataTable/NavigationMenu) and 3 live-region gaps surfaced by Phase 24, add Tier 1+2 test coverage for the remaining 8 components, and chain lint + typecheck into the verify pipeline. v0.6 pinned the contracts; v0.7 ships them.
 
-- [ ] **Phase 27: APG Live Regions** - Combobox results-count + MultiSelect selection-count live-region announcements (TC-09-LIVE, TC-11-LIVE); shared `_i18n/live-region-strings.ts` localized per `locale` prop. TC-10-LIVE moved to Phase 28 (paired with calendar UI).
+- [x] **Phase 27: APG Live Regions** - Combobox results-count + MultiSelect selection-count live-region announcements (TC-09-LIVE, TC-11-LIVE); shared `_i18n/live-region-strings.ts` localized per `locale` prop. TC-10-LIVE moved to Phase 28 (paired with calendar UI). (completed 2026-05-11)
 - [ ] **Phase 28: DatePicker APG Dialog-Grid Keyboard + Live Region** - Replace/augment native `<input type="date">` with `role="grid"` calendar UI + Arrow/Home/End/PageUp/PageDown/Shift variants; calendar `onSelect` triggers selected-date live-region announcement (TC-10-IMPL + TC-10-LIVE)
 - [ ] **Phase 29: MultiSelect APG Listbox-Multi** - `aria-multiselectable="true"`, Space-toggle without focus move, Shift+Arrow extends selection, dynamic `aria-selected`; MultiSelect.test.tsx stubs converted (TC-11-IMPL)
 - [ ] **Phase 30: DataTable APG Grid Cell-Wise Keyboard** - Right/Left/Down/Up cell navigation, Home/End row-bounds, PageUp/PageDown row-paging, Ctrl+Home/End table-bounds; DataTable.test.tsx stubs converted (TC-12-IMPL)
@@ -282,7 +282,7 @@ Plans:
 | 24. Complex APG Widget Test Coverage | v0.6 | 6/6 | Complete | 2026-05-11 |
 | 25. AccessibilityStatement publishDate Fix + Regression Guards | v0.6 | 1/1 | Complete | 2026-05-10 |
 | 26. Publish Hygiene | v0.6 | 5/5 | Complete | 2026-05-11 |
-| 27. APG Live Regions | v0.7 | 0/0 | Not started | - |
+| 27. APG Live Regions | v0.7 | 1/1 | Complete   | 2026-05-11 |
 | 28. DatePicker APG Dialog-Grid Keyboard | v0.7 | 0/0 | Not started | - |
 | 29. MultiSelect APG Listbox-Multi Completeness | v0.7 | 0/0 | Not started | - |
 | 30. DataTable APG Grid Cell-Wise Keyboard | v0.7 | 0/0 | Not started | - |
