@@ -8,6 +8,7 @@
 - ✅ **v0.4 Locale Expansion + EAA Sector** — Phases 14-17 (shipped 2026-03-07)
 - ✅ **v0.5 Australia Jurisdiction** — Phases 18-21 (shipped 2026-03-29)
 - ✅ **v0.6 Components Quality** — Phases 22-26 (shipped 2026-05-11)
+- 🚧 **v0.7 APG Completion** — Phases 27-33 (in progress)
 
 ## Phases
 
@@ -82,6 +83,18 @@ See: `.planning/milestones/v0.6-ROADMAP.md` for full details
 
 </details>
 
+### v0.7 APG Completion (In Progress)
+
+**Milestone Goal:** Finish the source-side APG implementation work that Phase 24 pinned with tests — close the 4 keyboard-handler gaps (DatePicker/MultiSelect/DataTable/NavigationMenu) and 3 live-region gaps surfaced by Phase 24, add Tier 1+2 test coverage for the remaining 8 components, and chain lint + typecheck into the verify pipeline. v0.6 pinned the contracts; v0.7 ships them.
+
+- [ ] **Phase 27: APG Live Regions** - Combobox results-count, DatePicker selected-date, MultiSelect selection-count live-region announcements (TC-09-LIVE, TC-10-LIVE, TC-11-LIVE); shared `LiveRegion` integration pattern across 3 widgets
+- [ ] **Phase 28: DatePicker APG Dialog-Grid Keyboard** - Replace/augment native `<input type="date">` with `role="grid"` calendar UI + Arrow/Home/End/PageUp/PageDown/Shift variants; DatePicker.test.tsx no-throw stubs converted to real assertions (TC-10-IMPL)
+- [ ] **Phase 29: MultiSelect APG Listbox-Multi** - `aria-multiselectable="true"`, Space-toggle without focus move, Shift+Arrow extends selection, dynamic `aria-selected`; MultiSelect.test.tsx stubs converted (TC-11-IMPL)
+- [ ] **Phase 30: DataTable APG Grid Cell-Wise Keyboard** - Right/Left/Down/Up cell navigation, Home/End row-bounds, PageUp/PageDown row-paging, Ctrl+Home/End table-bounds; DataTable.test.tsx stubs converted (TC-12-IMPL)
+- [ ] **Phase 31: NavigationMenu Disclosure → Menubar** - APG Menubar contract: Arrow horizontal/vertical, Home/End, Enter activates leaf, type-ahead, single tabindex="0" roving. **Backwards-compat decision in discuss-phase** (opt-in prop vs new default); NavigationMenu.test.tsx Disclosure tests replaced/augmented (TC-14-IMPL)
+- [ ] **Phase 32: TC-15 Remaining Component Test Coverage** - Tier 1+2 suites for Card, Skeleton, Heading, ProgressBar, Pagination, SkipLink, Switch, Tooltip (TC-15)
+- [ ] **Phase 33: Lint + Typecheck Verify Gates** - Add `lint` (eslint) + `typecheck` (tsc --noEmit) to `verify` chain in all 3 packages (PUB-09)
+
 ## Phase Details
 
 ### Phase 18: AU Standards Foundation
@@ -135,6 +148,83 @@ Plans:
 **Plans**: 1 plan
 Plans:
 - [ ] 21-01-PLAN.md — Close 7 auto-sync and coverage gaps across standards, engine, and component test files + full regression
+
+### Phase 27: APG Live Regions
+**Goal**: Combobox (TC-09-LIVE), DatePicker (TC-10-LIVE), and MultiSelect (TC-11-LIVE) each render a `LiveRegion` (or `aria-live="polite"` element) that announces the most consequential state change to assistive tech: results count on Combobox query change, selected-date on DatePicker commit, selection count on MultiSelect chip add/remove. The three Phase 24 test files are extended with live-region assertions, completing the relevant ROADMAP success-criterion bullets deferred from v0.6.
+**Depends on**: Phase 26 (v0.6 complete)
+**Requirements**: TC-09-LIVE, TC-10-LIVE, TC-11-LIVE
+**Success Criteria** (what must be TRUE):
+  1. Combobox renders a status live-region that updates to "{N} results" (or equivalent) when the filtered options list changes; Combobox.test.tsx asserts the region content updates via `waitFor`
+  2. DatePicker renders a status live-region that announces the selected date in the component's `locale` when a date is committed; DatePicker.test.tsx asserts the region content
+  3. MultiSelect renders a status live-region that announces "{N} selected" when chips are added or removed; MultiSelect.test.tsx asserts the region content
+  4. All three implementations use the existing `LiveRegion` component (Phase 22 deps) — no duplicate live-region scaffolding
+  5. 28-test-files / 453-tests baseline preserved; each plan adds ~2-3 new tests to existing files
+
+### Phase 28: DatePicker APG Dialog-Grid Keyboard
+**Goal**: DatePicker replaces (or augments) its current native `<input type="date">` with a `role="grid"` calendar dialog UI that satisfies the W3C APG dialog-grid pattern — day cells with `aria-selected` and `aria-current="date"` for today, plus the full keyboard matrix (Arrow day-by-day, Home/End week-bounds, PageUp/PageDown month, Shift+PageUp/PageDown year, Enter/Space select, Escape close). DatePicker.test.tsx no-throw stubs convert to real focus/state assertions.
+**Depends on**: Phase 27 (DatePicker live-region pairs cleanly with calendar UI rollout)
+**Requirements**: TC-10-IMPL
+**Success Criteria** (what must be TRUE):
+  1. DatePicker renders a `role="grid"` calendar when expanded; day cells use `role="gridcell"` with `aria-selected` reflecting selection state and `aria-current="date"` on today's cell
+  2. Keyboard navigation: Arrow moves day-by-day; Home/End jump to week bounds; PageUp/PageDown jump month; Shift+PageUp/PageDown jump year; Enter/Space commit selection; Escape closes the dialog without selecting (returns focus to trigger)
+  3. DatePicker.test.tsx no-throw stubs from Phase 24 are converted to real focus and `aria-selected`/`aria-current` assertions
+  4. Existing prop interface unchanged (no breaking changes to consumers)
+  5. axe-clean smoke under jsdom
+
+### Phase 29: MultiSelect APG Listbox-Multi Completeness
+**Goal**: MultiSelect satisfies the full W3C APG listbox-multi contract — `aria-multiselectable="true"` on the listbox, Space toggles option selection without moving focus (currently types a literal space), Shift+Arrow extends selection from current focus, `aria-selected` is dynamic (currently hardcoded `false`). MultiSelect.test.tsx no-throw stubs convert to real assertions.
+**Depends on**: Phase 27 (MultiSelect live-region pairs with selection-state correctness)
+**Requirements**: TC-11-IMPL
+**Success Criteria** (what must be TRUE):
+  1. The listbox carries `aria-multiselectable="true"`; options carry dynamic `aria-selected` reflecting current selection state
+  2. Space on a focused option toggles its selection without moving focus to the next option; the option's `aria-selected` flips correctly
+  3. Shift+ArrowDown / Shift+ArrowUp extends selection range from the anchor focus to the new focus position
+  4. MultiSelect.test.tsx no-throw stubs from Phase 24 are converted to real selection-state assertions; existing 22 tests preserved
+  5. Existing prop interface unchanged
+
+### Phase 30: DataTable APG Grid Cell-Wise Keyboard
+**Goal**: DataTable adds cell-wise Arrow keyboard navigation to satisfy the W3C APG grid contract — Right/Left/Down/Up move between cells, Home/End jump to row bounds, PageUp/PageDown jump pages (or a configurable row-count if pagination isn't built-in), Ctrl+Home/End jump to table bounds. Existing sortable-header contract (`scope="col"`, `aria-sort`, native Enter/Space on `<button>` headers) stays as-is. DataTable.test.tsx cell-arrow no-throw stubs convert to real focus assertions.
+**Depends on**: Phase 26 (independent of Phases 27-29)
+**Requirements**: TC-12-IMPL
+**Success Criteria** (what must be TRUE):
+  1. Arrow keys move focus between `gridcell` elements per the APG grid pattern; focus is managed via single tabindex="0" on the active cell, tabindex="-1" on inactive cells (roving)
+  2. Home / End jump to first / last cell in the current row; PageUp / PageDown jump up/down by N rows (default 10 or configurable); Ctrl+Home / Ctrl+End jump to table corners
+  3. DataTable.test.tsx cell-arrow no-throw stubs from Phase 24 are converted to real focus assertions; sortable-header tests still pass unchanged
+  4. Existing prop interface unchanged
+  5. axe-clean smoke under jsdom
+
+### Phase 31: NavigationMenu Disclosure → Menubar
+**Goal**: NavigationMenu upgrades from its current APG Disclosure pattern to the W3C APG Menubar pattern — Arrow horizontal/vertical, Home/End first/last, Enter activates leaf, type-ahead, single `tabindex="0"` roving. NavigationMenu.test.tsx Disclosure tests are replaced (or augmented under an opt-in prop) with the Menubar contract. **Backwards-compat decision in discuss-phase:** opt-in via new `pattern="menubar" | "disclosure"` prop (preserves current behavior for v0.6 consumers), or new default with migration note in CHANGELOG. Discuss decides.
+**Depends on**: Phase 26 (independent of Phases 27-30)
+**Requirements**: TC-14-IMPL
+**Success Criteria** (what must be TRUE):
+  1. NavigationMenu satisfies the APG Menubar keyboard contract: Right/Left along menubar, Down opens submenu and focuses first item, Up/Down within submenu, Right enters nested submenu or moves to next menubar item, Left collapses submenu or moves to previous menubar item, Home/End jump to bounds, Enter activates leaf, Escape closes submenu, type-ahead (single character) jumps to first matching item
+  2. Single `tabindex="0"` rove implemented; ARIA: `role="menubar"`, items `role="menuitem"`, submenus `role="menu"`, triggers `aria-haspopup="menu"` + `aria-expanded`
+  3. Backwards-compat strategy chosen in discuss-phase is implemented (opt-in prop OR new default + migration note); existing Disclosure consumers documented as supported (if opt-in) or migrated (if new default)
+  4. NavigationMenu.test.tsx Phase-24 Disclosure tests either preserved under opt-in OR replaced with Menubar tests; Escape focus-parity race resolved
+  5. axe-clean smoke
+
+### Phase 32: TC-15 Remaining Component Test Coverage
+**Goal**: Tier 1+2 test suites for the 8 remaining components without coverage — Card, Skeleton, Heading, ProgressBar, Pagination, SkipLink, Switch, Tooltip. Brings total components-with-tests from 19 → 27 (full coverage of the public API). Each test file follows the Phase 22 template-setter pattern.
+**Depends on**: Phase 26 (independent of Phases 27-31)
+**Requirements**: TC-15
+**Success Criteria** (what must be TRUE):
+  1. 8 new `*.test.tsx` files exist next to their components in `packages/components/src/<Component>/`
+  2. Each test file: WCAG-SC JSDoc marker, ~5-15 `it()` blocks (component complexity dependent), Tier 1 (render + props + className passthrough) + Tier 2 (where applicable: Switch keyboard toggle, Pagination keyboard, SkipLink focus, Tooltip aria-describedby wire-up, ProgressBar aria-valuenow/min/max, Heading semantic-level prop, Card composition, Skeleton aria-busy)
+  3. D-02a clean across all 8 files; each includes at least one `expectNoAxeViolations` smoke
+  4. Test-file count: 28 → 36; test count grows by ~50-100 tests depending on per-widget complexity
+  5. `test:wcag-headers` count: 24 → 32
+
+### Phase 33: Lint + Typecheck Verify Gates
+**Goal**: All 3 packages (`@holmdigital/standards`, `@holmdigital/components`, `@holmdigital/engine`) chain `lint` (eslint) and `typecheck` (tsc --noEmit) into the `verify` pipeline. New chain: `build && lint && typecheck && check:exports && check:types && test:ci`. Each package gets a `typecheck` script if it doesn't already have one. Closes the v0.6 publish-gating effort by adding the last two automated quality gates.
+**Depends on**: Phases 27-32 (runs last so all preceding source changes pass the new gates)
+**Requirements**: PUB-09
+**Success Criteria** (what must be TRUE):
+  1. All 3 packages have `"typecheck": "tsc --noEmit"` script (creating if missing); `tsconfig.json` exists or extends a root config
+  2. `verify` script in each package chains `build && lint && typecheck && check:exports && check:types && test:ci` in that order
+  3. `npm run verify -w @holmdigital/<each>` exits 0 for all 3 packages after Phases 27-32 land
+  4. Pre-existing engine TS2724 (puppeteer types) — if it surfaces as a verify failure, this phase either fixes it inline or documents an explicit `--skipLibCheck` justification
+  5. `prepublishOnly` continues to chain `verify`; `npm publish` fails if lint or typecheck fails
 
 ### DRAFT: Engine Redesign — Detektion + Scoring + Kommunikation (ej planlagd)
 
@@ -192,3 +282,10 @@ Plans:
 | 24. Complex APG Widget Test Coverage | v0.6 | 6/6 | Complete | 2026-05-11 |
 | 25. AccessibilityStatement publishDate Fix + Regression Guards | v0.6 | 1/1 | Complete | 2026-05-10 |
 | 26. Publish Hygiene | v0.6 | 5/5 | Complete | 2026-05-11 |
+| 27. APG Live Regions | v0.7 | 0/0 | Not started | - |
+| 28. DatePicker APG Dialog-Grid Keyboard | v0.7 | 0/0 | Not started | - |
+| 29. MultiSelect APG Listbox-Multi Completeness | v0.7 | 0/0 | Not started | - |
+| 30. DataTable APG Grid Cell-Wise Keyboard | v0.7 | 0/0 | Not started | - |
+| 31. NavigationMenu Disclosure → Menubar | v0.7 | 0/0 | Not started | - |
+| 32. TC-15 Remaining Component Test Coverage | v0.7 | 0/0 | Not started | - |
+| 33. Lint + Typecheck Verify Gates | v0.7 | 0/0 | Not started | - |

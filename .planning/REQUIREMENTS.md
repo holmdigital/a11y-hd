@@ -173,6 +173,59 @@ Phase 24's test files for the 6 complex APG widgets pinned the existing implemen
 - **TC-12-IMPL**: DataTable APG grid cell-wise keyboard handler — Right/Left/Down/Up cell navigation, Home/End row, PageUp/PageDown row paging, Ctrl+Home/End table bounds. Existing sortable-header contract (`scope="col"`, `aria-sort`, native Enter/Space on `<button>` headers) stays as-is.
 - **TC-14-IMPL**: NavigationMenu APG Menubar upgrade — currently APG Disclosure pattern per source self-documentation. Upgrade adds Arrow horizontal/vertical along menubar, Home/End first/last, Enter activates leaf, type-ahead.
 
+## v0.7 Requirements
+
+Requirements for v0.7 APG Completion. Each maps to roadmap phases (27–33).
+
+**Milestone theme:** finish the source-side APG implementation work that Phase 24 pinned with tests, close test coverage for the remaining 8 components, and add lint/typecheck gates to the verify chain. v0.6 pinned the contracts; v0.7 ships them.
+
+**Locked decisions:**
+- Source changes to Combobox/DatePicker/MultiSelect/DataTable/NavigationMenu add new behavior but MUST preserve existing prop interfaces (no breaking changes)
+- Phase 24 test files act as the contract spec — extending them with assertions for the newly-implemented behaviors is the natural shape of each plan
+- TC-15 components (Card, Skeleton, Heading, ProgressBar, Pagination, SkipLink, Switch, Tooltip) get Tier 1+2 test suites using the Phase 22 conventions
+- Lint runs via existing `eslint src --ext .ts,.tsx` in each package's `lint` script; v0.7 adds `tsc --noEmit` and chains both into `verify`
+
+### APG Live Region Implementation
+
+- [ ] **TC-09-LIVE**: Combobox renders a `<LiveRegion role="status">` (or equivalent `aria-live="polite"` element) that announces filtered-options count when the query changes. Combobox.test.tsx extended with live-region assertion.
+- [ ] **TC-10-LIVE**: DatePicker announces selected-date string via live-region when a date is committed. DatePicker.test.tsx extended.
+- [ ] **TC-11-LIVE**: MultiSelect announces selection-count when chips are added/removed. MultiSelect.test.tsx extended.
+
+### APG Keyboard Implementation
+
+- [ ] **TC-10-IMPL**: DatePicker APG dialog-grid keyboard handler. Replace (or augment) the native `<input type="date">` with a `role="grid"` calendar UI. Day cells use `role="gridcell"` with `aria-selected` and `aria-current="date"` for today. Keyboard: Arrow (day-by-day), Home/End (week start/end), PageUp/PageDown (month), Shift+PageUp/Shift+PageDown (year), Enter/Space (select), Escape (close without selecting). DatePicker.test.tsx no-throw stubs converted to real assertions.
+- [ ] **TC-11-IMPL**: MultiSelect APG listbox-multi completeness. Add `aria-multiselectable="true"` to listbox; make Space toggle option selection without moving focus (currently types literal space); add Shift+Arrow to extend selection from current focus; make `aria-selected` dynamic (currently hardcoded `false`). MultiSelect.test.tsx no-throw stubs converted to real assertions.
+- [ ] **TC-12-IMPL**: DataTable APG grid cell-wise keyboard handler. Add Right/Left/Down/Up cell navigation, Home/End row-bounds, PageUp/PageDown row-paging, Ctrl+Home/End table-bounds. Existing sortable-header contract (`scope="col"`, `aria-sort`, native Enter/Space on `<button>` headers) stays as-is. DataTable.test.tsx cell-arrow no-throw stubs converted to real assertions.
+- [ ] **TC-14-IMPL**: NavigationMenu APG Menubar upgrade. Source currently self-documents as APG Disclosure (each top-level item independently toggles its submenu). Upgrade to Menubar: Arrow horizontal/vertical along menubar, Home/End first/last item, Enter activates leaf, type-ahead, single tabindex="0" roving. NavigationMenu.test.tsx Disclosure tests replaced/augmented with Menubar contract. **Backwards-compat decision in discuss-phase:** consumer-visible behavior changes (Tab order, keyboard nav). Either ship as opt-in via prop (`pattern="menubar" | "disclosure"`) or as the new default with migration note.
+
+### Test Coverage — Remaining Components
+
+- [ ] **TC-15**: Test coverage for 8 remaining components. Tier 1+2 suites for Card, Skeleton, Heading, ProgressBar, Pagination, SkipLink, Switch, Tooltip. Each test file: WCAG-SC JSDoc marker, D-02a clean, ~5-15 `it()` blocks. Mirror Button.test.tsx template-setter.
+
+### Publish Hygiene
+
+- [ ] **PUB-09**: `lint` (eslint) and `typecheck` (tsc --noEmit) chained into the `verify` pipeline in all 3 packages (`@holmdigital/standards`, `@holmdigital/components`, `@holmdigital/engine`). New chain: `npm run build && npm run lint && npm run typecheck && npm run check:exports && npm run check:types && npm run test:ci`. Existing `lint` scripts kept; add missing `typecheck` script per package.
+
+## Future Requirements (deferred to v0.8+)
+
+- **STY-07**: Audit remaining 26 components for inline-style consistency (variant/state object pattern)
+- **PUB-07**: Real-browser axe-core run for layout-dependent rules
+- **PUB-08**: Automated visual regression (Chromatic / Playwright Component Testing) — still blocked on Storybook esbuild upstream patch
+- **WCAG-22-AUDIT**: Audit existing axe rules + test suite against WCAG 2.2 deltas (2.4.11 Focus Not Obscured, 2.4.13 Focus Appearance, 2.5.7 Dragging Movements, 2.5.8 Target Size). Decide which to enforce; many are layout-dependent and need real-browser runs.
+- **DRY-RUN-FIX**: Investigate `npm publish --dry-run` + attw stdio quirk surfaced in Phase 26-05 (attw exit-3 under npm's `prepublishOnly` stdio mode even though direct `npm run verify` succeeds)
+- **ENGINE-REDESIGN**: Engine scoring redesign per `.planning/milestones/v2.0-scoring-redesign-DRAFT.md` (dual-pass axe, missing violations, multi-viewport, trelagersmodell, WCAG mapping) — too large for any single patch milestone; tagged as v2.0 major
+
+## Out of Scope (v0.7)
+
+| Feature | Reason |
+|---|---|
+| Engine package redesign | Major version (v2.0); separate DRAFT in milestones/ |
+| STY-07 (inline-style audit for 26 components) | Larger than fits a single milestone with APG completion; deferred to v0.8 |
+| WCAG 2.2 audit | Many WCAG 2.2 SCs are layout-dependent; needs real-browser runs (PUB-07) which is also deferred. Tackle together in a future milestone. |
+| Storybook upgrade | Still blocked on upstream esbuild patch |
+| New component additions | Quality-on-existing focus continues |
+| AccessibilityStatement refactor | Continues from v0.6 — 131 prose tests + STMT-02/03 guards cover the risk |
+
 ## Out of Scope (v0.6)
 
 | Feature | Reason |
@@ -214,21 +267,21 @@ Updated during roadmap creation.
 | TC-12 | Phase 24 (24-04) | Complete — test scope; TC-12-IMPL deferred to v0.7 |
 | TC-13 | Phase 24 (24-05) | Complete (full APG-required; APG-OPTIONAL omitted per D-07) |
 | TC-14 | Phase 24 (24-06) | Complete — test scope as Disclosure per D-06; TC-14-IMPL Menubar upgrade deferred to v0.7 |
-| STY-01 | Phase 23 | Pending |
-| STY-02 | Phase 23 | Pending |
-| STY-03 | Phase 23 | Pending |
-| STY-04 | Phase 23 | Pending |
-| STY-05 | Phase 23 | Pending |
-| STY-06 | Phase 23 | Pending |
-| STMT-01 | Phase 25 | Pending |
-| STMT-02 | Phase 25 | Pending |
-| STMT-03 | Phase 25 | Pending |
-| PUB-01 | Phase 26 | Pending |
-| PUB-02 | Phase 26 | Pending |
-| PUB-03 | Phase 26 | Pending |
-| PUB-04 | Phase 26 | Pending |
-| PUB-05 | Phase 26 | Pending |
-| PUB-06 | Phase 26 | Pending |
+| STY-01 | Phase 23 (23-02) | Complete (2026-05-10) |
+| STY-02 | Phase 23 (23-01) | Complete (2026-05-10) |
+| STY-03 | Phase 23 (23-02..04) | Complete (2026-05-10) |
+| STY-04 | Phase 23 (23-02..04) | Complete (2026-05-10) |
+| STY-05 | Phase 23 (23-01 + 23-04) | Complete (2026-05-10) |
+| STY-06 | Phase 23 (23-02..04) | Complete (2026-05-10) |
+| STMT-01 | Phase 25 (25-01) | Complete (2026-05-10) |
+| STMT-02 | Phase 25 (25-01) | Complete (2026-05-10) |
+| STMT-03 | Phase 25 (25-01) | Complete (2026-05-10) |
+| PUB-01 | Phase 26 (26-05) | Complete (2026-05-11) |
+| PUB-02 | Phase 26 (26-05) | Complete (2026-05-11) |
+| PUB-03 | Phase 26 (26-01) | Complete (2026-05-11) |
+| PUB-04 | Phase 26 (26-03 + 26-05) | Complete (2026-05-11) |
+| PUB-05 | Phase 26 (26-02) | Complete (2026-05-11) |
+| PUB-06 | Phase 26 (26-04) | Complete (2026-05-11) |
 
 **Coverage:**
 - v0.6 requirements: 32 total
@@ -237,4 +290,26 @@ Updated during roadmap creation.
 
 ---
 *Requirements defined: 2026-03-27 (v0.5)*
+
+**v0.7 traceability:**
+
+| Requirement | Phase | Status |
+|-------------|-------|--------|
+| TC-09-LIVE | Phase 27 | Pending |
+| TC-10-LIVE | Phase 27 | Pending |
+| TC-11-LIVE | Phase 27 | Pending |
+| TC-10-IMPL | Phase 28 | Pending |
+| TC-11-IMPL | Phase 29 | Pending |
+| TC-12-IMPL | Phase 30 | Pending |
+| TC-14-IMPL | Phase 31 | Pending |
+| TC-15 | Phase 32 | Pending |
+| PUB-09 | Phase 33 | Pending |
+
+**v0.7 coverage:**
+- v0.7 requirements: 9 total
+- Mapped to phases: 9
+- Unmapped: 0 ✓
+
 *Last updated: 2026-05-10 — v0.6 roadmap created, all 32 requirements mapped to Phases 22–26*
+
+*Last updated: 2026-05-11 — v0.6 milestone archived, v0.7 milestone (APG Completion) initiated with 9 new requirements mapped to Phases 27-33*

@@ -100,9 +100,29 @@ The type system and tests must catch bugs before users do — no `as any` escape
 | Auto-syncing test pattern for enforcement body/law expectations | Tests call standards functions directly — never need manual updates when law data changes | ✓ Good |
 | IT (Italian) country added to Country type but template deferred | IT falls back to English; Italian locale work is its own milestone scope | ✓ Good |
 
-## Current State
+## Current Milestone: v0.7 APG Completion (In Progress)
 
-**Last shipped milestone:** v0.6 Components Quality (2026-05-11) — Phases 22-26 across 25 plans
+**Started:** 2026-05-11
+**Phases:** 27-33 (7 phases planned)
+**Theme:** Finish the source-side APG implementation work that Phase 24 pinned with tests. v0.6 pinned the contracts; v0.7 ships them.
+
+**Target features:**
+- APG keyboard handlers: DatePicker dialog-grid (TC-10-IMPL), MultiSelect listbox-multi (TC-11-IMPL), DataTable grid cell-nav (TC-12-IMPL), NavigationMenu Disclosure→Menubar (TC-14-IMPL)
+- Live-region announcements for Combobox/DatePicker/MultiSelect (TC-09-LIVE, TC-10-LIVE, TC-11-LIVE)
+- Tier 1+2 test coverage for 8 remaining components: Card, Skeleton, Heading, ProgressBar, Pagination, SkipLink, Switch, Tooltip (TC-15)
+- Lint + typecheck added to `verify` chain in all 3 packages (PUB-09)
+
+**Out of scope (deliberately):**
+- STY-07 inline-style consistency audit for 26 components (v0.8)
+- WCAG 2.2 audit (paired with PUB-07 real-browser axe in a future milestone)
+- PUB-07 real-browser axe (deferred)
+- PUB-08 visual regression (still blocked on Storybook esbuild upstream)
+- Engine redesign (v2.0 major, separate DRAFT)
+- AccessibilityStatement refactor (v0.6 STMT guards cover the risk)
+
+**Phase numbering:** continues from v0.6 (last phase = 26) → v0.7 starts at Phase 27
+
+## Last Shipped Milestone: v0.6 Components Quality (2026-05-11) — Phases 22-26 across 25 plans
 
 **Achievements:**
 - Reusable test infrastructure: `@chialab/vitest-axe` + `@testing-library/user-event` + 7 jsdom polyfills + 3 helpers (`expectNoAxeViolations`, `expectUniqueIds`, `expectKeyboardSequence`) + `TESTING-CONVENTIONS.md` codifying Tier 1/2/3 grammar
