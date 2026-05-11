@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v0.6
 milestone_name: Components Quality
-status: executing
-stopped_at: "Phase 23 Wave 1 complete (Plan 23-01 — build infra + STY-05 guard, NESTED CSS layout). Wave 2 ready: Plans 23-02 (Tabs), 23-03 (Accordion), 23-04 (Breadcrumbs) can run in parallel."
-last_updated: "2026-05-11T04:09:49.266Z"
-last_activity: 2026-05-11 -- Phase 26 execution started
+status: completed
+stopped_at: Phase 26 Plan 01 complete — keystone fixes landed. Components DTS build green end-to-end; standards/dist untracked.
+last_updated: "2026-05-11T08:17:17.090Z"
+last_activity: 2026-05-11 -- Phase 26 marked complete
 progress:
   total_phases: 9
-  completed_phases: 4
+  completed_phases: 5
   total_plans: 26
-  completed_plans: 20
-  percent: 77
+  completed_plans: 25
+  percent: 56
 ---
 
 # Project State
@@ -25,10 +25,10 @@ See: .planning/PROJECT.md (updated 2026-05-10)
 
 ## Current Position
 
-Phase: 26 (publish-hygiene) — EXECUTING
-Plan: 1 of 5
-Status: Executing Phase 26
-Last activity: 2026-05-11 -- Phase 26 execution started
+Phase: 26 — COMPLETE
+Plan: 2 of 5 (Plan 26-01 complete)
+Status: Phase 26 complete
+Last activity: 2026-05-11 -- Phase 26 marked complete
 
 ## Performance Metrics
 
@@ -65,7 +65,7 @@ Last activity: 2026-05-11 -- Phase 26 execution started
 ### Pending Todos
 
 - Confirm SSR audit result during Phase 22 execution and update PROJECT.md
-- Address pre-existing TS2503 in `packages/components/src/LiveRegion/LiveRegion.tsx:37` (deferred from 22-01 — see `.planning/phases/22-test-infra-and-first-7-components/deferred-items.md`); fold into 22-09 or Phase 26.
+- ~~Address pre-existing TS2503 in `packages/components/src/LiveRegion/LiveRegion.tsx:37`~~ — **RESOLVED 2026-05-11 by Phase 26 Plan 01 (D-01)**
 
 ### Plan 22-01 deviations (logged 2026-05-10)
 
@@ -92,6 +92,13 @@ Last activity: 2026-05-11 -- Phase 26 execution started
 
 - None. Two implementation notes captured in the plan SUMMARY: (a) Escape path is verified via `dialog.close()` rather than `fireEvent.keyDown` because jsdom does not translate Escape into the native `cancel→close` sequence on `<dialog>`; (b) the standalone close-button click test was trimmed (Dialog concern, already covered by Dialog.test.tsx) to keep `it()` count within the D-02 budget of 16. Modal landed with 16 tests, Dialog.test.tsx lost the redundant inline `HTMLDialogElement.showModal/close` polyfill — the central one in `_test/setup.ts` is now the only source of truth. Full suite: 232 tests / 14 files green.
 
+### Plan 26-01 decisions + deviations (logged 2026-05-11)
+
+- **D-01 resolved:** Single-line type swap at `LiveRegion.tsx:37` — `useRef<NodeJS.Timeout>()` → `useRef<ReturnType<typeof setTimeout>>()`. No `@types/node` added; tsup DTS build now succeeds end-to-end (CJS 650ms, ESM 652ms, **DTS 20584ms** — all green). 27 test files / 439 tests stay green.
+- **PUB-03 part 1 resolved:** `git rm --cached -r packages/standards/dist/` removed 4 tracked dist files (index.{js,mjs,d.ts,d.mts}); working-tree copies preserved. `.gitignore` now carries both `dist/` (recursive) and explicit `packages/*/dist/` lines per ROADMAP success criterion #2.
+- Phase 22 deferred-items entry moved to `## Resolved` section with `Resolved by Phase 26 Plan 01 (D-01) on 2026-05-11` back-reference.
+- No deviations — plan executed verbatim. Phase 26 Wave 2 (plans 02/03/04) now unblocked.
+
 ### Plan 23-01 decisions + deviations (logged 2026-05-10)
 
 - **CSS layout decision: NESTED** (`dist/<Name>/<Name>.css`) — empirically detected by smoke probe. Load-bearing for Wave 2 plans. Recorded in 23-01-SUMMARY.md.
@@ -109,6 +116,6 @@ Last activity: 2026-05-11 -- Phase 26 execution started
 
 ## Session Continuity
 
-Last session: 2026-05-10T20:06:00Z
-Stopped at: Phase 23 Wave 1 complete (Plan 23-01 — build infra + STY-05 guard, NESTED CSS layout). Wave 2 ready: Plans 23-02 (Tabs), 23-03 (Accordion), 23-04 (Breadcrumbs) can run in parallel.
-Resume: `/gsd-execute-phase 23` (Wave 2)
+Last session: 2026-05-11T06:15:00Z
+Stopped at: Phase 26 Plan 01 complete — keystone fixes landed. Components DTS build green end-to-end; standards/dist untracked.
+Resume: `/gsd-execute-phase 26` (Wave 2 — plans 02/03/04 in parallel)
