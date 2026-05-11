@@ -16,9 +16,14 @@
  * false) so future refactors can't silently swap it back to onChange.
  */
 import { useEffect, useRef } from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, it, expect, vi } from 'vitest';
+
+// File-scoped lucide-react stub (PUB-06 Strategy A): forces the glyph-fallback
+// code path. Harmless to pre-existing tests because none of them assert on a
+// rendered lucide SVG.
+vi.mock('lucide-react', () => ({}));
 
 import { Checkbox } from './Checkbox';
 import { expectNoAxeViolations, expectUniqueIds } from '../_test/helpers';
@@ -170,5 +175,27 @@ describe('Tier 2: A11y Differentiators', () => {
             </>,
         );
         expectUniqueIds(container);
+    });
+});
+
+describe('lucide-react fallback (PUB-06)', () => {
+    // WCAG 1.1.1 Non-text Content, 1.3.1 Info and Relationships.
+    // Fallback retains aria-hidden=true on glyph wrapper so meaning is
+    // conveyed by the parent (label + checkbox role), not the glyph itself.
+
+    it('renders the ✓ glyph fallback when lucide-react is absent', async () => {
+        render(<Checkbox label="Stub" checked onChange={() => {}} />);
+        await waitFor(() => {
+            expect(screen.getByTestId('checkbox-fallback-glyph')).toBeInTheDocument();
+        });
+        expect(screen.getByTestId('checkbox-fallback-glyph')).toHaveTextContent('✓');
+    });
+
+    it('fallback glyph carries aria-hidden="true" so AT relies on the label', async () => {
+        render(<Checkbox label="Aria hidden" checked onChange={() => {}} />);
+        await waitFor(() => {
+            expect(screen.getByTestId('checkbox-fallback-glyph')).toBeInTheDocument();
+        });
+        expect(screen.getByTestId('checkbox-fallback-glyph')).toHaveAttribute('aria-hidden', 'true');
     });
 });

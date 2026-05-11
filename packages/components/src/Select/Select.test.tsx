@@ -6,8 +6,14 @@
  * - 4.1.2 Name, Role, Value — role="listbox", aria-expanded, aria-activedescendant
  */
 import { useState } from 'react';
-import { render, fireEvent, cleanup } from '@testing-library/react';
-import { describe, it, expect, afterEach } from 'vitest';
+import { render, fireEvent, cleanup, waitFor, screen } from '@testing-library/react';
+import { describe, it, expect, afterEach, vi } from 'vitest';
+
+// File-scoped lucide-react stub (PUB-06 Strategy A): forces the glyph-fallback
+// code path. Pre-existing Select tests assert on roles/listbox structure, not
+// rendered lucide SVGs, so this is harmless.
+vi.mock('lucide-react', () => ({}));
+
 import { Select, SelectTrigger, SelectContent, SelectItem } from './Select';
 
 const FRUITS = ['Apple', 'Banana', 'Cherry', 'Date', 'Elderberry'];
@@ -94,5 +100,41 @@ describe('Select — APG Listbox keyboard contract', () => {
         fireEvent.keyDown(trigger, { key: 'Escape' });
         expect(queryByRole('listbox')).toBeNull();
         expect(ancestorEscape).toBe(0);
+    });
+});
+
+describe('lucide-react fallback (PUB-06)', () => {
+    afterEach(() => cleanup());
+    // WCAG 1.1.1 Non-text Content, 1.3.1 Info and Relationships.
+    // Glyph fallbacks remain aria-hidden so listbox/option roles convey meaning.
+
+    it('renders the ▾ chevron glyph fallback on the trigger when lucide-react is absent', async () => {
+        render(<Harness />);
+        await waitFor(() => {
+            expect(screen.getByTestId('select-chevron-fallback-glyph')).toBeInTheDocument();
+        });
+        expect(screen.getByTestId('select-chevron-fallback-glyph')).toHaveTextContent('▾');
+        expect(screen.getByTestId('select-chevron-fallback-glyph')).toHaveAttribute('aria-hidden', 'true');
+    });
+
+    it('renders the ✓ glyph fallback on the selected option when listbox is open', async () => {
+        const Preselected = () => {
+            const [value, setValue] = useState('Banana');
+            return (
+                <Select value={value} onChange={setValue}>
+                    <SelectTrigger>{value}</SelectTrigger>
+                    <SelectContent>
+                        {FRUITS.map(f => <SelectItem key={f} value={f}>{f}</SelectItem>)}
+                    </SelectContent>
+                </Select>
+            );
+        };
+        render(<Preselected />);
+        const trigger = screen.getByRole('button');
+        fireEvent.keyDown(trigger, { key: 'ArrowDown' });
+        await waitFor(() => {
+            expect(screen.getByTestId('select-check-fallback-glyph')).toBeInTheDocument();
+        });
+        expect(screen.getByTestId('select-check-fallback-glyph')).toHaveTextContent('✓');
     });
 });

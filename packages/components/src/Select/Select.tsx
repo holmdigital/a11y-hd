@@ -1,5 +1,81 @@
 import React, { useState, useRef, useEffect, useId, createContext, useContext } from 'react';
-import { ChevronDown, Check } from 'lucide-react';
+
+// --- lucide-react optional peer dependency (PUB-06) ----------------------
+type LucideIconLike = React.ComponentType<{
+    className?: string;
+    size?: number | string;
+    strokeWidth?: number;
+    'aria-hidden'?: boolean | string;
+}>;
+
+const lucideCache: Record<string, LucideIconLike | null> = {};
+let importAttempted = false;
+let importPromise: Promise<Record<string, LucideIconLike | null>> | null = null;
+
+function loadLucide(): Promise<Record<string, LucideIconLike | null>> {
+    if (importAttempted) return Promise.resolve(lucideCache);
+    if (importPromise) return importPromise;
+    importPromise = import('lucide-react')
+        .then((m) => {
+            const mod = m as Record<string, unknown>;
+            lucideCache.ChevronDown = (mod.ChevronDown ?? null) as LucideIconLike | null;
+            lucideCache.Check = (mod.Check ?? null) as LucideIconLike | null;
+            importAttempted = true;
+            return lucideCache;
+        })
+        .catch(() => {
+            importAttempted = true;
+            return lucideCache;
+        });
+    return importPromise;
+}
+
+function useLucideIcon(name: string): LucideIconLike | null {
+    const [Icon, setIcon] = useState<LucideIconLike | null>(lucideCache[name] ?? null);
+    useEffect(() => {
+        if (importAttempted) {
+            setIcon(lucideCache[name] ?? null);
+            return;
+        }
+        let mounted = true;
+        loadLucide().then(() => {
+            if (mounted) setIcon(lucideCache[name] ?? null);
+        });
+        return () => {
+            mounted = false;
+        };
+    }, [name]);
+    return Icon;
+}
+
+const ChevronDownIconOrGlyph = () => {
+    const Icon = useLucideIcon('ChevronDown');
+    if (Icon) return <Icon className="w-4 h-4 ml-2 opacity-50" aria-hidden="true" />;
+    return (
+        <span
+            className="ml-2 opacity-50 hd-select-chevron-fallback-glyph"
+            data-testid="select-chevron-fallback-glyph"
+            aria-hidden="true"
+        >
+            ▾
+        </span>
+    );
+};
+
+const CheckIconOrGlyph = () => {
+    const Icon = useLucideIcon('Check');
+    if (Icon) return <Icon className="w-4 h-4 text-slate-900" aria-hidden="true" />;
+    return (
+        <span
+            className="hd-select-check-fallback-glyph text-slate-900"
+            data-testid="select-check-fallback-glyph"
+            aria-hidden="true"
+        >
+            ✓
+        </span>
+    );
+};
+// -------------------------------------------------------------------------
 
 interface SelectContextType {
     value: string;
@@ -188,7 +264,7 @@ export const SelectTrigger = ({ children, className = '', placeholder = 'Select.
             <span className={context.value ? "text-slate-900" : "text-slate-500"}>
                 {children || placeholder}
             </span>
-            <ChevronDown className="w-4 h-4 ml-2 opacity-50" aria-hidden="true" />
+            <ChevronDownIconOrGlyph />
         </button>
     );
 };
@@ -245,7 +321,7 @@ export const SelectItem = ({ value, children, __index }: SelectItemInternalProps
                 } ${isSelected ? 'bg-slate-50 text-slate-900 font-medium' : 'text-slate-700'}`}
         >
             {children}
-            {isSelected && <Check className="w-4 h-4 text-slate-900" aria-hidden="true" />}
+            {isSelected && <CheckIconOrGlyph />}
         </div>
     );
 };

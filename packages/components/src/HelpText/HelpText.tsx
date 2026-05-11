@@ -1,5 +1,53 @@
-import React from 'react';
-import { Info, AlertCircle } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+
+// --- lucide-react optional peer dependency (PUB-06) ----------------------
+type LucideIconLike = React.ComponentType<{
+    className?: string;
+    size?: number | string;
+    strokeWidth?: number;
+    'aria-hidden'?: boolean | string;
+}>;
+
+const lucideCache: Record<string, LucideIconLike | null> = {};
+let importAttempted = false;
+let importPromise: Promise<Record<string, LucideIconLike | null>> | null = null;
+
+function loadLucide(): Promise<Record<string, LucideIconLike | null>> {
+    if (importAttempted) return Promise.resolve(lucideCache);
+    if (importPromise) return importPromise;
+    importPromise = import('lucide-react')
+        .then((m) => {
+            const mod = m as Record<string, unknown>;
+            lucideCache.Info = (mod.Info ?? null) as LucideIconLike | null;
+            lucideCache.AlertCircle = (mod.AlertCircle ?? null) as LucideIconLike | null;
+            importAttempted = true;
+            return lucideCache;
+        })
+        .catch(() => {
+            importAttempted = true;
+            return lucideCache;
+        });
+    return importPromise;
+}
+
+function useLucideIcon(name: string): LucideIconLike | null {
+    const [Icon, setIcon] = useState<LucideIconLike | null>(lucideCache[name] ?? null);
+    useEffect(() => {
+        if (importAttempted) {
+            setIcon(lucideCache[name] ?? null);
+            return;
+        }
+        let mounted = true;
+        loadLucide().then(() => {
+            if (mounted) setIcon(lucideCache[name] ?? null);
+        });
+        return () => {
+            mounted = false;
+        };
+    }, [name]);
+    return Icon;
+}
+// -------------------------------------------------------------------------
 
 export interface HelpTextProps {
     /**
@@ -24,9 +72,37 @@ export interface HelpTextProps {
     className?: string;
 }
 
+const InfoIconOrGlyph = () => {
+    const Icon = useLucideIcon('Info');
+    if (Icon) return <Icon size={14} aria-hidden="true" />;
+    return (
+        <span
+            className="hd-helptext-info-fallback-glyph"
+            data-testid="helptext-info-fallback-glyph"
+            aria-hidden="true"
+        >
+            ℹ
+        </span>
+    );
+};
+
+const AlertCircleIconOrGlyph = () => {
+    const Icon = useLucideIcon('AlertCircle');
+    if (Icon) return <Icon size={14} aria-hidden="true" />;
+    return (
+        <span
+            className="hd-helptext-error-fallback-glyph"
+            data-testid="helptext-error-fallback-glyph"
+            aria-hidden="true"
+        >
+            ⚠
+        </span>
+    );
+};
+
 /**
  * HelpText
- * 
+ *
  * Provides additional context, instructions, or error messages for form fields.
  * ALWAYS reference this component's `id` in the `aria-describedby` attribute of the input.
  */
@@ -56,8 +132,8 @@ export const HelpText: React.FC<HelpTextProps> = ({
 
     const Icon = () => {
         if (!showIcon) return null;
-        if (variant === 'error') return <AlertCircle size={14} />;
-        if (variant === 'default') return <Info size={14} />;
+        if (variant === 'error') return <AlertCircleIconOrGlyph />;
+        if (variant === 'default') return <InfoIconOrGlyph />;
         return null;
     };
 
@@ -66,8 +142,6 @@ export const HelpText: React.FC<HelpTextProps> = ({
             id={id}
             className={`hd-help-text ${className}`}
             style={style}
-        // role="alert" if error? No, typically simpler to let the input manage validity. 
-        // If dynamic error, user might make it live regin, but HelpText itself is static description usually.
         >
             <Icon />
             <span>{children}</span>

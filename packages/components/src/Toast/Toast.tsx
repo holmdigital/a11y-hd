@@ -1,5 +1,115 @@
 import React, { createContext, useContext, useState, useEffect, useRef, useCallback } from 'react';
-import { X, Info, CheckCircle, AlertTriangle, AlertCircle } from 'lucide-react';
+
+// --- lucide-react optional peer dependency (PUB-06) ----------------------
+type LucideIconLike = React.ComponentType<{
+    className?: string;
+    size?: number | string;
+    strokeWidth?: number;
+    'aria-hidden'?: boolean | string;
+}>;
+
+const lucideCache: Record<string, LucideIconLike | null> = {};
+let importAttempted = false;
+let importPromise: Promise<Record<string, LucideIconLike | null>> | null = null;
+
+function loadLucide(): Promise<Record<string, LucideIconLike | null>> {
+    if (importAttempted) return Promise.resolve(lucideCache);
+    if (importPromise) return importPromise;
+    importPromise = import('lucide-react')
+        .then((m) => {
+            const mod = m as Record<string, unknown>;
+            lucideCache.X = (mod.X ?? null) as LucideIconLike | null;
+            lucideCache.Info = (mod.Info ?? null) as LucideIconLike | null;
+            lucideCache.CheckCircle = (mod.CheckCircle ?? null) as LucideIconLike | null;
+            lucideCache.AlertTriangle = (mod.AlertTriangle ?? null) as LucideIconLike | null;
+            lucideCache.AlertCircle = (mod.AlertCircle ?? null) as LucideIconLike | null;
+            importAttempted = true;
+            return lucideCache;
+        })
+        .catch(() => {
+            importAttempted = true;
+            return lucideCache;
+        });
+    return importPromise;
+}
+
+function useLucideIcon(name: string): LucideIconLike | null {
+    const [Icon, setIcon] = useState<LucideIconLike | null>(lucideCache[name] ?? null);
+    useEffect(() => {
+        if (importAttempted) {
+            setIcon(lucideCache[name] ?? null);
+            return;
+        }
+        let mounted = true;
+        loadLucide().then(() => {
+            if (mounted) setIcon(lucideCache[name] ?? null);
+        });
+        return () => {
+            mounted = false;
+        };
+    }, [name]);
+    return Icon;
+}
+
+const VARIANT_ICON_INFO: Record<
+    'info' | 'success' | 'warning' | 'error',
+    { name: string; className: string; glyph: string; testId: string }
+> = {
+    info: {
+        name: 'Info',
+        className: 'w-5 h-5 text-blue-500',
+        glyph: 'ℹ',
+        testId: 'toast-info-fallback-glyph',
+    },
+    success: {
+        name: 'CheckCircle',
+        className: 'w-5 h-5 text-green-500',
+        glyph: '✓',
+        testId: 'toast-success-fallback-glyph',
+    },
+    warning: {
+        name: 'AlertTriangle',
+        className: 'w-5 h-5 text-amber-500',
+        glyph: '⚠',
+        testId: 'toast-warning-fallback-glyph',
+    },
+    error: {
+        name: 'AlertCircle',
+        className: 'w-5 h-5 text-red-500',
+        glyph: '⛔',
+        testId: 'toast-error-fallback-glyph',
+    },
+};
+
+const VariantIconOrGlyph = ({ variant }: { variant: 'info' | 'success' | 'warning' | 'error' }) => {
+    const info = VARIANT_ICON_INFO[variant];
+    const Icon = useLucideIcon(info.name);
+    if (Icon) return <Icon className={info.className} aria-hidden="true" />;
+    return (
+        <span
+            className={`${info.className} hd-toast-fallback-glyph inline-flex items-center justify-center`}
+            data-testid={info.testId}
+            aria-hidden="true"
+        >
+            {info.glyph}
+        </span>
+    );
+};
+
+const CloseIconOrGlyph = () => {
+    const Icon = useLucideIcon('X');
+    if (Icon) return <Icon className="w-4 h-4" aria-hidden="true" />;
+    return (
+        <span
+            className="w-4 h-4 inline-flex items-center justify-center hd-toast-close-fallback-glyph"
+            data-testid="toast-close-fallback-glyph"
+            aria-hidden="true"
+        >
+            ✕
+        </span>
+    );
+};
+// -------------------------------------------------------------------------
 
 export type ToastType = 'info' | 'success' | 'warning' | 'error';
 
@@ -112,13 +222,6 @@ const ToastItem = ({ toast, onRemove }: { toast: Toast; onRemove: (id: string) =
         return () => clearTimeout(timer);
     }, [id, effectiveDuration, paused, onRemove]);
 
-    const icons = {
-        info: <Info className="w-5 h-5 text-blue-500" aria-hidden="true" />,
-        success: <CheckCircle className="w-5 h-5 text-green-500" aria-hidden="true" />,
-        warning: <AlertTriangle className="w-5 h-5 text-amber-500" aria-hidden="true" />,
-        error: <AlertCircle className="w-5 h-5 text-red-500" aria-hidden="true" />,
-    };
-
     const bgColors = {
         info: 'bg-white border-blue-100',
         success: 'bg-white border-green-100',
@@ -141,7 +244,7 @@ const ToastItem = ({ toast, onRemove }: { toast: Toast; onRemove: (id: string) =
                 ${bgColors[type]}
             `}
         >
-            {icons[type]}
+            <VariantIconOrGlyph variant={type} />
             <div className="flex-1">
                 <h4 className="text-sm font-medium text-slate-900">{toast.title}</h4>
                 {toast.description && (
@@ -163,7 +266,7 @@ const ToastItem = ({ toast, onRemove }: { toast: Toast; onRemove: (id: string) =
                 className="text-slate-400 hover:text-slate-900 transition-colors"
                 aria-label="Close"
             >
-                <X className="w-4 h-4" aria-hidden="true" />
+                <CloseIconOrGlyph />
             </button>
         </div>
     );
