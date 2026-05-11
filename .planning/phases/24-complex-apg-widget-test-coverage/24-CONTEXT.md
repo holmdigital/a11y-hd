@@ -47,8 +47,12 @@ This phase is **test-only scope**. Source-implementation gaps in DataTable and D
 - **MultiSelect** (293 LOC, 9 ARIA hits, uses LiveRegion): expected to satisfy `role="listbox"` + `aria-multiselectable="true"`, options with `aria-selected` (NOT `aria-checked`), Space toggles without focus move, Shift+Arrow extends selection, removable chips keyboard-operable, live-region count
 - **TreeView** (285 LOC, 18 ARIA hits): expected to satisfy APG tree — Arrow expand/collapse/navigate, Asterisk expand siblings, type-ahead, single `tabindex="0"` roving
 - **NavigationMenu** (177 LOC, 5 ARIA hits, has `handleKeyDown` + `handleTriggerKeyDown`): expected to satisfy APG menubar — Arrow horizontal/vertical, Home/End, Enter activates, Escape closes submenu
-- **DataTable** (182 LOC, 1 ARIA hit, NO `onKeyDown`, no live region): **STUB for APG grid keyboard**. Source lacks cell-wise Arrow navigation, Home/End row, PageUp/PageDown paging, `aria-sort` toggle via Enter/Space. Tests will assert what's there (probably static table semantics + `scope="col"`/`scope="row"` if present) + keystrokes-do-not-throw for the missing keyboard contract. Gap documented for v0.7.
-- **DatePicker** (121 LOC, 1 ARIA hit, NO `onKeyDown`, uses LiveRegion): **STUB for APG dialog-grid keyboard**. Source lacks `role="grid"` calendar, `gridcell` day cells with `aria-selected`/`aria-current="date"`, Arrow/Home/End/PageUp/PageDown/Shift+PageUp/Shift+PageDown navigation. Tests will assert what's there + no-throw for the missing keyboard contract. Gap documented for v0.7.
+- **DataTable** (182 LOC): **PARTIAL-STUB for APG grid keyboard**. Source HAS `scope="col"`, `aria-sort` on sortable headers, button-wrapped sortable headers with native Enter/Space activation. Source LACKS cell-wise Arrow navigation, Home/End row, PageUp/PageDown paging, Ctrl+Home/End table bounds. Tests assert what source HAS + no-throw for cell-arrow nav. Gap documented for v0.7.
+- **DatePicker** (121 LOC, NO `onKeyDown`, does NOT use LiveRegion despite earlier scouting): **STUB for APG dialog-grid keyboard**. Source lacks `role="grid"` calendar, `gridcell` day cells with `aria-selected`/`aria-current="date"`, Arrow/Home/End/PageUp/PageDown/Shift+PageUp/Shift+PageDown navigation, and live-region selected-date announcement. Tests will assert what's there + no-throw for the missing keyboard contract. Gaps documented for v0.7.
+- **Combobox** (353 LOC, has `onKeyDown`, does NOT actually render `<LiveRegion>` despite earlier scouting — researcher confirmed via source read 2026-05-11): Substantive keyboard handler. Tests assert APG combobox-with-listbox-popup contract for what source implements; live-region absence documented for v0.7.
+- **MultiSelect** (293 LOC): **PARTIAL-STUB**. Source HAS `role="listbox"`, options with `role="option"`, some keyboard handling. Source LACKS `aria-multiselectable="true"`, Space-toggle (Space currently types literal space), Shift+Arrow extend, live region; `aria-selected` is hardcoded `false`. Tests assert what's there + no-throw for the missing APG behaviors. Gaps documented for v0.7.
+- **NavigationMenu** (177 LOC, has onKeyDown): source self-documents as APG **Disclosure** pattern (file JSDoc line 26), NOT APG Menubar despite the ROADMAP TC-14 wording. Tests assert the Disclosure pattern source ships. Menubar upgrade (Arrow horizontal/vertical, Home/End, Enter activates leaf, type-ahead) deferred to v0.7 via TC-14-IMPL backlog.
+- **TreeView** (285 LOC, 18 ARIA hits): near-full APG tree. Implements Arrow expand/collapse/navigate, Home/End, single `tabindex="0"` roving. Lacks typeahead and asterisk-expand — both APG-OPTIONAL — omitted silently from tests per user decision (no backlog item).
 
 **Existing test surface:** None of the 6 components have existing test files. Phase 24 starts from zero for all six.
 
@@ -56,16 +60,21 @@ This phase is **test-only scope**. Source-implementation gaps in DataTable and D
 
 ## Decisions
 
-### D-01 — Stub-component strategy: Phase 22 RadioGroup pattern
+### D-01 — Stub-component strategy: Phase 22 RadioGroup pattern (revised 2026-05-11 after researcher source-read)
 
-For DataTable (TC-12) and DatePicker (TC-10), the source doesn't implement the full APG keyboard contract that the ROADMAP success criteria assert. Apply the Phase 22 RadioGroup pattern (documented in `22-06-SUMMARY.md`):
+**Applies to 4 widgets, not 2.** Source-reading at plan time confirmed that DataTable, DatePicker, MultiSelect, and NavigationMenu all have partial-stub status for some portion of their APG contracts. Apply the Phase 22 RadioGroup pattern (documented in `22-06-SUMMARY.md`):
 
 1. Tests assert the contract the source DOES implement (static ARIA, semantic structure, axe-clean, props/event passthrough)
 2. For missing APG keyboard behaviors, tests assert **keystrokes-do-not-throw** only — verify that pressing Arrow/Home/End/PageUp/PageDown/Enter/Space/Escape does NOT raise an exception, but do NOT assert focus movement or aria-state changes that the source doesn't drive
 3. Each test file carries a JSDoc `Implementation note` block at the top documenting which APG behaviors are stubbed-out vs fully tested, and notes that DataTable and DatePicker APG-keyboard implementation work is deferred to v0.7
-4. Two NEW v0.7 backlog items added to `.planning/REQUIREMENTS.md` "Deferred / Out of Scope" section:
-   - **TC-12-IMPL**: DataTable APG grid keyboard handler (cell-wise Arrow navigation, Home/End row, PageUp/PageDown, `aria-sort` toggle)
-   - **TC-10-IMPL**: DatePicker APG dialog-grid keyboard handler (`role="grid"`, Arrow/Home/End/PageUp/PageDown/Shift+PageUp/Shift+PageDown navigation, Escape close)
+4. SIX NEW v0.7 backlog items added to `.planning/REQUIREMENTS.md` "Deferred / Out of Scope" section (expanded from 2 after researcher source-read 2026-05-11):
+   - **TC-12-IMPL**: DataTable APG grid cell-wise keyboard handler (Right/Left/Down/Up cell navigation, Home/End row, PageUp/PageDown, Ctrl+Home/End table bounds). NOTE: source already has `scope="col"`, `aria-sort`, and native Enter/Space on sortable headers — only cell-arrow nav is the gap.
+   - **TC-10-IMPL**: DatePicker APG dialog-grid keyboard handler (`role="grid"`, day-cell navigation, Arrow/Home/End/PageUp/PageDown/Shift+PageUp/Shift+PageDown, Escape close)
+   - **TC-11-IMPL**: MultiSelect APG listbox-multi completeness (`aria-multiselectable="true"`, Space-toggle without focus move, Shift+Arrow extends selection, dynamic `aria-selected`)
+   - **TC-14-IMPL**: NavigationMenu APG Menubar upgrade (currently APG Disclosure; upgrade to Arrow horizontal/vertical, Home/End, Enter activates leaf, type-ahead)
+   - **TC-09-LIVE**: Combobox live-region for results count
+   - **TC-10-LIVE**: DatePicker live-region for selected-date announcement
+   - **TC-11-LIVE**: MultiSelect live-region for selection count
 
 **Rationale:** keeps Phase 24 scope as "Test Coverage" (its actual name). Pinning the existing contract NOW prevents silent regressions in the keyboard work that will land in v0.7. Adding two backlog items (not loose TODOs) keeps the gaps visible.
 
@@ -100,14 +109,29 @@ Each test file uses the Phase 22 template-setter structure:
 
 Test count budget per file: ~10-20 `it()` blocks (less than Phase 22's Tabs which has 19). Stub components (DataTable, DatePicker) will be on the lower end (~8-12 tests) because Tier-2 keyboard tests collapse to no-throw asserts.
 
-### D-05 — Live-region testing pattern
+### D-05 — Live-region testing pattern (REVISED 2026-05-11)
 
-For Combobox (TC-09), DatePicker (TC-10), MultiSelect (TC-11) — each has a `LiveRegion` already in source. Tests assert:
-1. Region exists with `role="status"` or `aria-live="polite"` (whichever the source uses; check `LiveRegion.tsx`)
-2. Region content updates when the relevant state changes (e.g., results count on Combobox filter, selection count on MultiSelect, selected-date string on DatePicker)
+**Researcher source-read found that Combobox, DatePicker, and MultiSelect do NOT actually render `<LiveRegion>` despite earlier scouting.** TC-09/10/11 live-region success criteria are unimplementable against current source.
+
+**Resolution:** test files do NOT assert live-region announcements. The live-region implementation gap is documented as three v0.7 backlog items (TC-09-LIVE, TC-10-LIVE, TC-11-LIVE) per D-01. Each test file's JSDoc Implementation note explicitly records that the live-region success-criterion bullet is deferred and references the backlog item.
+
+**If future v0.7 work lands live regions:** the testing pattern would be:
+1. Region exists with `role="status"` or `aria-live="polite"` (whichever LiveRegion ships with — read `LiveRegion.tsx` at that time)
+2. Region content updates when state changes (results count on Combobox filter, selection count on MultiSelect, selected-date on DatePicker)
 3. Use `waitFor(() => expect(region).toHaveTextContent(...))` for async-update cases
+4. Assert content presence, NOT announcement timing (jsdom doesn't replicate browser announcement queueing)
 
-Implementation note for the planner: check `LiveRegion.tsx` for its actual ARIA pattern before writing assertions. The pre-existing TS2503 in `LiveRegion.tsx:37` is deferred (see `.planning/phases/22-test-infra-and-first-7-components/deferred-items.md`) — does NOT block testing because the runtime behavior works (only the DTS build step fails on it).
+Pre-existing TS2503 in `LiveRegion.tsx:37` is deferred (see Phase 22 `deferred-items.md`) — does NOT block testing (runtime behavior works; only DTS build step fails on it).
+
+### D-06 — NavigationMenu is APG Disclosure, not Menubar (NEW 2026-05-11)
+
+ROADMAP TC-14 wording assumes APG Menubar pattern, but NavigationMenu source self-documents (file JSDoc line 26) as APG **Disclosure** pattern: each top-level item has a button trigger that toggles its submenu independently, Escape closes the open submenu, click-outside closes. No Arrow-key navigation along the menubar; submenus are independent.
+
+**Resolution:** TC-14 tests assert the Disclosure pattern source ships, NOT the Menubar contract. Test file's WCAG-SC marker uses Disclosure-relevant SCs (2.1.1 Keyboard, 2.4.3 Focus Order, 4.1.2 Name Role Value — NOT 2.4.7 Focus Visible-specific menubar requirements). The Menubar upgrade is deferred to v0.7 via TC-14-IMPL backlog.
+
+### D-07 — TreeView APG-OPTIONAL behaviors omitted (NEW 2026-05-11)
+
+TreeView source is near-full APG-compliant. The two missing behaviors — typeahead (character-key jumps to first matching item) and asterisk-expand (`*` expands all sibling nodes) — are both APG-OPTIONAL. Per user decision, tests OMIT these silently: no test asserts them, no no-throw stub, no backlog item. Test file focuses on the required APG tree contract.
 
 ## Deferred Ideas
 
