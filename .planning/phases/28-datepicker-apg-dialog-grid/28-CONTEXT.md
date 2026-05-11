@@ -153,7 +153,7 @@ Plans 28-01..03 are strictly sequential — each builds on the previous. No para
 - **Plan 28-02:** Restore Phase 24 stubs as real assertions (~10-12 tests converted) + ~5 new tests for month/year-nav buttons, bounds, focus-return-to-trigger, focus-trap-on-Tab. Net: ~+15-17 tests (counting restorations as net-positive since the stub form was less-strict).
 - **Plan 28-03:** 3 live-region tests. Net: +3 tests.
 
-**Expected final baseline:** 28 test files / 459 tests → 28 files / ~475-485 tests (no new test files; existing DatePicker.test.tsx extended throughout).
+**Expected final baseline:** 28 test files / 459 tests → **29 files / ~475-485 tests** (acknowledged exception: `date-utils.test.ts` is a NEW pure-logic unit-test file for the 8 date helpers in 28-01; this is a documented D-05 exception, NOT a new component test file. WCAG-SC marker not required on pure-logic test files). DatePicker.test.tsx extended throughout the 3 plans.
 
 ### D-06 — Translation expansion in `_i18n/live-region-strings.ts`
 

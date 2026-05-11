@@ -168,8 +168,14 @@ Plans:
   1. DatePicker renders a `role="grid"` calendar when expanded; day cells use `role="gridcell"` with `aria-selected` reflecting selection state and `aria-current="date"` on today's cell
   2. Keyboard navigation: Arrow moves day-by-day; Home/End jump to week bounds; PageUp/PageDown jump month; Shift+PageUp/PageDown jump year; Enter/Space commit selection; Escape closes the dialog without selecting (returns focus to trigger)
   3. DatePicker.test.tsx no-throw stubs from Phase 24 are converted to real focus and `aria-selected`/`aria-current` assertions
-  4. Existing prop interface unchanged (no breaking changes to consumers)
-  5. axe-clean smoke under jsdom
+  4. **`value` prop type changes from `string` to `Date`** — accepted breaking change per Phase 28 CONTEXT D-01 (verified non-coupled via Phase 22 SSR audit; CHANGELOG migration note shipped). All other consumer-facing props (label/description/error/className) preserved; new optional props added (minDate/maxDate/locale/placeholder); `forwardRef` and `extends React.InputHTMLAttributes` removed (no underlying input element)
+  5. `LiveRegion` announces "Selected: {localized date}" on commit; localized per `locale` prop; no-mount-announce via `hasInteracted` ref (TC-10-LIVE)
+  6. axe-clean smoke under jsdom
+**Plans**: 3 plans
+Plans:
+- [ ] 28-01-PLAN.md — Date math + i18n + base calendar render (no keyboard yet)
+- [ ] 28-02-PLAN.md — APG keyboard handler + focus trap + Phase 24 stub conversion
+- [ ] 28-03-PLAN.md — Live-region announcement (TC-10-LIVE) + WCAG 4.1.3 marker
 
 ### Phase 29: MultiSelect APG Listbox-Multi Completeness
 **Goal**: MultiSelect satisfies the full W3C APG listbox-multi contract — `aria-multiselectable="true"` on the listbox, Space toggles option selection without moving focus (currently types a literal space), Shift+Arrow extends selection from current focus, `aria-selected` is dynamic (currently hardcoded `false`). MultiSelect.test.tsx no-throw stubs convert to real assertions.
@@ -283,7 +289,7 @@ Plans:
 | 25. AccessibilityStatement publishDate Fix + Regression Guards | v0.6 | 1/1 | Complete | 2026-05-10 |
 | 26. Publish Hygiene | v0.6 | 5/5 | Complete | 2026-05-11 |
 | 27. APG Live Regions | v0.7 | 1/1 | Complete   | 2026-05-11 |
-| 28. DatePicker APG Dialog-Grid Keyboard | v0.7 | 0/0 | Not started | - |
+| 28. DatePicker APG Dialog-Grid Keyboard | v0.7 | 0/3 | Planned | - |
 | 29. MultiSelect APG Listbox-Multi Completeness | v0.7 | 0/0 | Not started | - |
 | 30. DataTable APG Grid Cell-Wise Keyboard | v0.7 | 0/0 | Not started | - |
 | 31. NavigationMenu Disclosure → Menubar | v0.7 | 0/0 | Not started | - |
