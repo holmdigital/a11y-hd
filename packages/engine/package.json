@@ -23,7 +23,11 @@
             "import": "./dist/index.mjs",
             "require": "./dist/index.js"
         },
-        "./cli": "./dist/cli/index.js"
+        "./cli": {
+            "types": "./dist/cli/index.d.ts",
+            "import": "./dist/cli/index.mjs",
+            "require": "./dist/cli/index.js"
+        }
     },
     "files": [
         "dist",
