@@ -35,6 +35,7 @@ export default defineConfig({
         '!src/_hooks/**',
         '!src/_i18n/**',
         '!src/AccessibilityStatement/locale-*.{ts,tsx}',
+        '!src/DatePicker/date-utils.ts',
     ],
     format: ['cjs', 'esm'],
     dts: true,
