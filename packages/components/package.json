@@ -27,121 +27,150 @@
         },
         "./Button": {
             "types": "./dist/Button/Button.d.ts",
-            "import": "./dist/Button/Button.mjs"
+            "import": "./dist/Button/Button.mjs",
+            "require": "./dist/Button/Button.js"
         },
         "./FormField": {
             "types": "./dist/FormField/FormField.d.ts",
-            "import": "./dist/FormField/FormField.mjs"
+            "import": "./dist/FormField/FormField.mjs",
+            "require": "./dist/FormField/FormField.js"
         },
         "./Dialog": {
             "types": "./dist/Dialog/Dialog.d.ts",
-            "import": "./dist/Dialog/Dialog.mjs"
+            "import": "./dist/Dialog/Dialog.mjs",
+            "require": "./dist/Dialog/Dialog.js"
         },
         "./Modal": {
             "types": "./dist/Modal/Modal.d.ts",
-            "import": "./dist/Modal/Modal.mjs"
+            "import": "./dist/Modal/Modal.mjs",
+            "require": "./dist/Modal/Modal.js"
         },
         "./SkipLink": {
             "types": "./dist/SkipLink/SkipLink.d.ts",
-            "import": "./dist/SkipLink/SkipLink.mjs"
+            "import": "./dist/SkipLink/SkipLink.mjs",
+            "require": "./dist/SkipLink/SkipLink.js"
         },
         "./NavigationMenu": {
             "types": "./dist/NavigationMenu/NavigationMenu.d.ts",
-            "import": "./dist/NavigationMenu/NavigationMenu.mjs"
+            "import": "./dist/NavigationMenu/NavigationMenu.mjs",
+            "require": "./dist/NavigationMenu/NavigationMenu.js"
         },
         "./Checkbox": {
             "types": "./dist/Checkbox/Checkbox.d.ts",
-            "import": "./dist/Checkbox/Checkbox.mjs"
+            "import": "./dist/Checkbox/Checkbox.mjs",
+            "require": "./dist/Checkbox/Checkbox.js"
         },
         "./RadioGroup": {
             "types": "./dist/RadioGroup/RadioGroup.d.ts",
-            "import": "./dist/RadioGroup/RadioGroup.mjs"
+            "import": "./dist/RadioGroup/RadioGroup.mjs",
+            "require": "./dist/RadioGroup/RadioGroup.js"
         },
         "./Select": {
             "types": "./dist/Select/Select.d.ts",
-            "import": "./dist/Select/Select.mjs"
+            "import": "./dist/Select/Select.mjs",
+            "require": "./dist/Select/Select.js"
         },
         "./Switch": {
             "types": "./dist/Switch/Switch.d.ts",
-            "import": "./dist/Switch/Switch.mjs"
+            "import": "./dist/Switch/Switch.mjs",
+            "require": "./dist/Switch/Switch.js"
         },
         "./Toast": {
             "types": "./dist/Toast/Toast.d.ts",
-            "import": "./dist/Toast/Toast.mjs"
+            "import": "./dist/Toast/Toast.mjs",
+            "require": "./dist/Toast/Toast.js"
         },
         "./Tooltip": {
             "types": "./dist/Tooltip/Tooltip.d.ts",
-            "import": "./dist/Tooltip/Tooltip.mjs"
+            "import": "./dist/Tooltip/Tooltip.mjs",
+            "require": "./dist/Tooltip/Tooltip.js"
         },
         "./Heading": {
             "types": "./dist/Heading/Heading.d.ts",
-            "import": "./dist/Heading/Heading.mjs"
+            "import": "./dist/Heading/Heading.mjs",
+            "require": "./dist/Heading/Heading.js"
         },
         "./AccessibilityStatement": {
             "types": "./dist/AccessibilityStatement/AccessibilityStatement.d.ts",
-            "import": "./dist/AccessibilityStatement/AccessibilityStatement.mjs"
+            "import": "./dist/AccessibilityStatement/AccessibilityStatement.mjs",
+            "require": "./dist/AccessibilityStatement/AccessibilityStatement.js"
         },
         "./ErrorSummary": {
             "types": "./dist/ErrorSummary/ErrorSummary.d.ts",
-            "import": "./dist/ErrorSummary/ErrorSummary.mjs"
+            "import": "./dist/ErrorSummary/ErrorSummary.mjs",
+            "require": "./dist/ErrorSummary/ErrorSummary.js"
         },
         "./Combobox": {
             "types": "./dist/Combobox/Combobox.d.ts",
-            "import": "./dist/Combobox/Combobox.mjs"
+            "import": "./dist/Combobox/Combobox.mjs",
+            "require": "./dist/Combobox/Combobox.js"
         },
         "./DatePicker": {
             "types": "./dist/DatePicker/DatePicker.d.ts",
-            "import": "./dist/DatePicker/DatePicker.mjs"
+            "import": "./dist/DatePicker/DatePicker.mjs",
+            "require": "./dist/DatePicker/DatePicker.js"
         },
         "./MultiSelect": {
             "types": "./dist/MultiSelect/MultiSelect.d.ts",
-            "import": "./dist/MultiSelect/MultiSelect.mjs"
+            "import": "./dist/MultiSelect/MultiSelect.mjs",
+            "require": "./dist/MultiSelect/MultiSelect.js"
         },
         "./DataTable": {
             "types": "./dist/DataTable/DataTable.d.ts",
-            "import": "./dist/DataTable/DataTable.mjs"
+            "import": "./dist/DataTable/DataTable.mjs",
+            "require": "./dist/DataTable/DataTable.js"
         },
         "./Pagination": {
             "types": "./dist/Pagination/Pagination.d.ts",
-            "import": "./dist/Pagination/Pagination.mjs"
+            "import": "./dist/Pagination/Pagination.mjs",
+            "require": "./dist/Pagination/Pagination.js"
         },
         "./Card": {
             "types": "./dist/Card/Card.d.ts",
-            "import": "./dist/Card/Card.mjs"
+            "import": "./dist/Card/Card.mjs",
+            "require": "./dist/Card/Card.js"
         },
         "./TreeView": {
             "types": "./dist/TreeView/TreeView.d.ts",
-            "import": "./dist/TreeView/TreeView.mjs"
+            "import": "./dist/TreeView/TreeView.mjs",
+            "require": "./dist/TreeView/TreeView.js"
         },
         "./LiveRegion": {
             "types": "./dist/LiveRegion/LiveRegion.d.ts",
-            "import": "./dist/LiveRegion/LiveRegion.mjs"
+            "import": "./dist/LiveRegion/LiveRegion.mjs",
+            "require": "./dist/LiveRegion/LiveRegion.js"
         },
         "./Tabs": {
             "types": "./dist/Tabs/Tabs.d.ts",
-            "import": "./dist/Tabs/Tabs.mjs"
+            "import": "./dist/Tabs/Tabs.mjs",
+            "require": "./dist/Tabs/Tabs.js"
         },
         "./Tabs.css": "./dist/Tabs/Tabs.css",
         "./Accordion": {
             "types": "./dist/Accordion/Accordion.d.ts",
-            "import": "./dist/Accordion/Accordion.mjs"
+            "import": "./dist/Accordion/Accordion.mjs",
+            "require": "./dist/Accordion/Accordion.js"
         },
         "./Accordion.css": "./dist/Accordion/Accordion.css",
         "./ProgressBar": {
             "types": "./dist/ProgressBar/ProgressBar.d.ts",
-            "import": "./dist/ProgressBar/ProgressBar.mjs"
+            "import": "./dist/ProgressBar/ProgressBar.mjs",
+            "require": "./dist/ProgressBar/ProgressBar.js"
         },
         "./Skeleton": {
             "types": "./dist/Skeleton/Skeleton.d.ts",
-            "import": "./dist/Skeleton/Skeleton.mjs"
+            "import": "./dist/Skeleton/Skeleton.mjs",
+            "require": "./dist/Skeleton/Skeleton.js"
         },
         "./HelpText": {
             "types": "./dist/HelpText/HelpText.d.ts",
-            "import": "./dist/HelpText/HelpText.mjs"
+            "import": "./dist/HelpText/HelpText.mjs",
+            "require": "./dist/HelpText/HelpText.js"
         },
         "./Breadcrumbs": {
             "types": "./dist/Breadcrumbs/Breadcrumbs.d.ts",
-            "import": "./dist/Breadcrumbs/Breadcrumbs.mjs"
+            "import": "./dist/Breadcrumbs/Breadcrumbs.mjs",
+            "require": "./dist/Breadcrumbs/Breadcrumbs.js"
         },
         "./Breadcrumbs.css": "./dist/Breadcrumbs/Breadcrumbs.css"
     },
