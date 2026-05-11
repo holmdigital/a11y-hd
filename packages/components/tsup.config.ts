@@ -21,10 +21,11 @@ import { defineConfig } from 'tsup';
 
 export default defineConfig({
     // Glob entries auto-discover new components and exclude tests/stories per PUB-05.
-    // Underscore-prefixed dirs (_hooks, _test) are internal helpers — they should be
-    // bundled into the components that import them, not emitted as standalone entries.
-    // locale-chrome.ts inside AccessibilityStatement is a co-located helper for the
-    // same reason: it must remain inlined, not split out as a public subpath.
+    // Underscore-prefixed dirs (_hooks, _test, _i18n) are internal helpers — they
+    // should be bundled into the components that import them, not emitted as
+    // standalone entries. locale-chrome.ts inside AccessibilityStatement is a
+    // co-located helper for the same reason: it must remain inlined, not split out
+    // as a public subpath.
     entry: [
         'src/index.ts',
         'src/*/*.{ts,tsx}',
@@ -32,6 +33,7 @@ export default defineConfig({
         '!src/**/*.stories.{ts,tsx}',
         '!src/_test/**',
         '!src/_hooks/**',
+        '!src/_i18n/**',
         '!src/AccessibilityStatement/locale-*.{ts,tsx}',
     ],
     format: ['cjs', 'esm'],
