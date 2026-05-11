@@ -155,8 +155,9 @@
         "dev": "tsup --watch",
         "lint": "eslint src --ext .ts,.tsx",
         "check:no-tailwind-leak": "node scripts/check-no-tailwind-leak.mjs",
+        "check:no-test-leak": "node scripts/check-no-test-leak.mjs",
         "test": "vitest",
-        "test:ci": "vitest run && npm run test:wcag-headers && npm run check:no-tailwind-leak",
+        "test:ci": "vitest run && npm run test:wcag-headers && npm run check:no-tailwind-leak && npm run check:no-test-leak",
         "test:wcag-headers": "node scripts/check-wcag-headers.mjs",
         "storybook": "storybook dev -p 6006",
         "build-storybook": "storybook build"
