@@ -34,7 +34,7 @@ export const LiveRegion: React.FC<LiveRegionProps> = ({
     clearAfter
 }) => {
     const [announcement, setAnnouncement] = useState<string>('');
-    const timeoutRef = useRef<NodeJS.Timeout>();
+    const timeoutRef = useRef<ReturnType<typeof setTimeout>>();
 
     useEffect(() => {
         if (message) {
