@@ -9,6 +9,8 @@ import {
     clampDate,
 } from './date-utils';
 import { useFocusTrap } from '../_hooks/useFocusTrap';
+import { LiveRegion } from '../LiveRegion/LiveRegion';
+import { getDateAnnouncement } from '../_i18n/live-region-strings';
 
 export interface DatePickerProps {
     /** Label for the date picker — wired to the trigger button via aria-labelledby */
@@ -45,6 +47,9 @@ export interface DatePickerProps {
  * - Plan 28-02: APG keyboard handler + roving tabindex + focus trap + commit logic
  *   (WCAG 2.1.1 Keyboard, 2.4.3 Focus Order, 2.4.7 Focus Visible via :focus-visible in CSS)
  * - Plan 28-03: live-region announcement on commit (TC-10-LIVE, WCAG 4.1.3)
+ *   — `<LiveRegion>` mounted as last child of outer wrapper; `announcement`
+ *   state updated in commitDate + cell onClick via getDateAnnouncement(locale, date).
+ *   Phase 27 D-04 `hasInteracted` ref kept for cross-widget consistency.
  *
  * APG keyboard matrix implemented here:
  * | Key                  | Action                                              |
@@ -96,6 +101,13 @@ export function DatePicker({
 
     // Map from date.getTime() → cell button element, for imperative focus.
     const focusCellRefs = useRef<Map<number, HTMLButtonElement>>(new Map());
+
+    // Plan 28-03 (TC-10-LIVE): live-region announcement state + no-mount-announce gate.
+    // `<LiveRegion>` internally guards against empty `message`, so initial mount
+    // does NOT announce. `hasInteracted` is kept per Phase 27 D-04 pattern for
+    // cross-widget consistency and to future-proof complex announcement paths.
+    const [announcement, setAnnouncement] = useState<string>('');
+    const hasInteracted = useRef(false);
 
     // When the dialog opens, initialise focusedDate and advance cursor to match.
     useEffect(() => {
@@ -196,6 +208,8 @@ export function DatePicker({
         const clamped = clampDate(date, minDate, maxDate);
         if (!isSameDay(clamped, date)) return; // out-of-bounds — no-op
         onChange?.(clamped);
+        hasInteracted.current = true;
+        setAnnouncement(getDateAnnouncement(locale, clamped));
         setIsOpen(false);
         triggerRef.current?.focus();
     };
@@ -382,6 +396,8 @@ export function DatePicker({
                                                 if (isDisabled) return;
                                                 setFocusedDate(d);
                                                 onChange?.(d);
+                                                hasInteracted.current = true;
+                                                setAnnouncement(getDateAnnouncement(locale, d));
                                                 setIsOpen(false);
                                                 triggerRef.current?.focus();
                                             }}
@@ -395,6 +411,7 @@ export function DatePicker({
                     </div>
                 </div>
             )}
+            <LiveRegion message={announcement} ariaLive="polite" />
         </div>
     );
 }
