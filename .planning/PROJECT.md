@@ -100,23 +100,38 @@ The type system and tests must catch bugs before users do — no `as any` escape
 | Auto-syncing test pattern for enforcement body/law expectations | Tests call standards functions directly — never need manual updates when law data changes | ✓ Good |
 | IT (Italian) country added to Country type but template deferred | IT falls back to English; Italian locale work is its own milestone scope | ✓ Good |
 
-## Current Milestone: v0.6 Components Quality
+## Current State
 
-**Goal:** Lift `@holmdigital/components` from "ships and renders" to "production-grade prescriptive UI library" — resolve the styling-strategy ambiguity (Tailwind vs inline-style), close test coverage gaps on the most critical untested components, and remove stale data-hygiene defaults that leak into customer output.
+**Last shipped milestone:** v0.6 Components Quality (2026-05-11) — Phases 22-26 across 25 plans
 
-**Target features:**
-- Styling strategy resolution (Tailwind components → inline-style OR documented hard peer dep)
-- Test coverage for top-priority untested components (Button, FormField, Modal, Checkbox, RadioGroup at minimum)
-- AccessibilityStatement publishDate fallback fix (`'2024-01-01'` → empty + `[YOUR PUBLISH DATE]` placeholder, 14 locales)
-- Component pre-publish hygiene (gate dist-rebuild requirement)
+**Achievements:**
+- Reusable test infrastructure: `@chialab/vitest-axe` + `@testing-library/user-event` + 7 jsdom polyfills + 3 helpers (`expectNoAxeViolations`, `expectUniqueIds`, `expectKeyboardSequence`) + `TESTING-CONVENTIONS.md` codifying Tier 1/2/3 grammar
+- 7 → 28 test files (165 → 453 tests). 19 components covered (was 1).
+- WAI-ARIA APG keyboard contracts pinned for Combobox, DatePicker, MultiSelect, DataTable, TreeView, NavigationMenu (Disclosure pattern) — 4 widgets partial-stub per RadioGroup pattern with v0.7 implementation backlog
+- Tabs, Accordion, Breadcrumbs migrated from Tailwind utility classes to inline-style + co-located `.css` file pattern (CSS custom properties for theming; `:focus-visible` preserved per WCAG 2.4.7)
+- 3 CI guards landed: `test:wcag-headers` (Phase 22), `check-no-tailwind-leak` (Phase 23 — scoped to 3 migrated dirs), `check-no-test-leak` (Phase 26)
+- AccessibilityStatement `'2024-01-01'` publishDate fallback replaced with `[YOUR PUBLISH DATE]` placeholder across 13 locale slots; 2 regression guards added
+- 3 packages now gated by unified `verify` pipeline (publint --strict + attw --pack . + build + tests) via `prepublishOnly`; subpath `require` closed (29 components); committed `dist/` drift eliminated
+- `lucide-react` moved from hard dependency to optional peerDep with text-glyph fallbacks in 4 consumer components (Checkbox, HelpText, Select, Toast)
+- LiveRegion TS2503 (deferred since Phase 22-01) resolved in Phase 26-01 — DTS build now succeeds end-to-end
 
-**Out of scope (deliberately):**
-- AccessibilityStatement refactor — 131 tests cover it, low ROI
-- Engine and Standards work — separate packages, future milestones
-- Storybook — dev-only, blocked on upstream esbuild patch
-- New component additions
+**Phase numbering:** continues from v0.6 (last phase = 26) → v0.7 starts at Phase 27.
 
-**Phase numbering:** continues from v0.5 (last phase = 21) → v0.6 starts at Phase 22
+See `.planning/milestones/v0.6-ROADMAP.md` and `.planning/milestones/v0.6-REQUIREMENTS.md` for full archived details.
+
+## Next Milestone Goals
+
+**v0.7 backlog (12 items inherited from v0.6 deferrals):**
+- TC-09-LIVE, TC-10-LIVE, TC-11-LIVE — live-region announcements for Combobox/DatePicker/MultiSelect
+- TC-10-IMPL — DatePicker APG dialog-grid keyboard handler (`role="grid"` + Arrow/Home/End/PageUp/PageDown/Shift variants)
+- TC-11-IMPL — MultiSelect APG listbox-multi completeness (`aria-multiselectable`, Space-toggle, Shift+Arrow, dynamic `aria-selected`)
+- TC-12-IMPL — DataTable APG grid cell-wise keyboard handler
+- TC-14-IMPL — NavigationMenu APG Menubar upgrade (currently APG Disclosure pattern)
+- TC-15 — test coverage for remaining 8 components (Card, Skeleton, Heading, ProgressBar, Pagination, SkipLink, Switch, Tooltip)
+- STY-07 — inline-style consistency audit for the other 26 components
+- PUB-07 — real-browser axe-core run for layout-dependent rules
+- PUB-08 — automated visual regression (blocked on Storybook esbuild upstream patch)
+- Tooling: investigate `npm publish --dry-run` + attw stdio quirk surfaced in Phase 26-05
 
 ## Evolution
 
