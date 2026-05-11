@@ -156,10 +156,22 @@ Requirements for v0.6 Components Quality. Each maps to roadmap phases (22–26).
 
 ## Future Requirements (added in v0.6 planning)
 
-- **TC-15**: Card, Skeleton, HelpText, Heading, ProgressBar, Pagination, SkipLink, Switch, Accordion test coverage (deferred to v0.7+ — failure modes are visible rather than silent)
+- **TC-15**: Card, Skeleton, HelpText, Heading, ProgressBar, Pagination, SkipLink, Switch test coverage (deferred to v0.7+ — failure modes are visible rather than silent)
 - **STY-07**: Audit remaining 26 components for inline-style consistency (variant/state object pattern)
 - **PUB-07**: Real-browser axe-core run for layout-dependent rules (deferred to v0.7+)
 - **PUB-08**: Automated visual regression (Chromatic / Playwright Component Testing) — blocked on Storybook esbuild upstream patch
+
+### v0.7 backlog items added during Phase 24 execution (2026-05-11, after researcher source-read)
+
+Phase 24's test files for the 6 complex APG widgets pinned the existing implementation contracts. The following items defer the source-side implementation work that closes the remaining APG / live-region gaps. Test scope for TC-09..14 is COMPLETE; only the source implementation work remains.
+
+- **TC-09-LIVE**: Combobox live-region for results count — render `<LiveRegion role="status">` that announces filtered options count when query changes. Test scope: extend Combobox.test.tsx with live-region assertions.
+- **TC-10-IMPL**: DatePicker APG dialog-grid keyboard handler — `role="grid"` calendar, day cells `gridcell` with `aria-selected` + `aria-current="date"`, Arrow/Home/End/PageUp/PageDown/Shift+PageUp/Shift+PageDown navigation, Escape closes without selecting. Current source uses native `<input type="date">`.
+- **TC-10-LIVE**: DatePicker live-region for selected-date announcement.
+- **TC-11-IMPL**: MultiSelect APG listbox-multi completeness — `aria-multiselectable="true"` on listbox, Space-toggle without focus move (currently Space types literal space), Shift+Arrow extends selection, dynamic `aria-selected` (currently hardcoded `false`).
+- **TC-11-LIVE**: MultiSelect live-region for selection count.
+- **TC-12-IMPL**: DataTable APG grid cell-wise keyboard handler — Right/Left/Down/Up cell navigation, Home/End row, PageUp/PageDown row paging, Ctrl+Home/End table bounds. Existing sortable-header contract (`scope="col"`, `aria-sort`, native Enter/Space on `<button>` headers) stays as-is.
+- **TC-14-IMPL**: NavigationMenu APG Menubar upgrade — currently APG Disclosure pattern per source self-documentation. Upgrade adds Arrow horizontal/vertical along menubar, Home/End first/last, Enter activates leaf, type-ahead.
 
 ## Out of Scope (v0.6)
 
@@ -196,12 +208,12 @@ Updated during roadmap creation.
 | TC-06 | Phase 22 (22-06) | Complete (2026-05-10) |
 | TC-07 | Phase 22 | Pending |
 | TC-08 | Phase 22 | Pending |
-| TC-09 | Phase 24 | Pending |
-| TC-10 | Phase 24 | Pending |
-| TC-11 | Phase 24 | Pending |
-| TC-12 | Phase 24 | Pending |
-| TC-13 | Phase 24 | Pending |
-| TC-14 | Phase 24 | Pending |
+| TC-09 | Phase 24 (24-01) | Complete — test scope; TC-09-LIVE deferred to v0.7 |
+| TC-10 | Phase 24 (24-02) | Complete — test scope; TC-10-IMPL + TC-10-LIVE deferred to v0.7 |
+| TC-11 | Phase 24 (24-03) | Complete — test scope; TC-11-IMPL + TC-11-LIVE deferred to v0.7 |
+| TC-12 | Phase 24 (24-04) | Complete — test scope; TC-12-IMPL deferred to v0.7 |
+| TC-13 | Phase 24 (24-05) | Complete (full APG-required; APG-OPTIONAL omitted per D-07) |
+| TC-14 | Phase 24 (24-06) | Complete — test scope as Disclosure per D-06; TC-14-IMPL Menubar upgrade deferred to v0.7 |
 | STY-01 | Phase 23 | Pending |
 | STY-02 | Phase 23 | Pending |
 | STY-03 | Phase 23 | Pending |
