@@ -19,14 +19,24 @@
     },
     "exports": {
         ".": {
-            "types": "./dist/index.d.ts",
-            "import": "./dist/index.mjs",
-            "require": "./dist/index.js"
+            "import": {
+                "types": "./dist/index.d.mts",
+                "default": "./dist/index.mjs"
+            },
+            "require": {
+                "types": "./dist/index.d.ts",
+                "default": "./dist/index.js"
+            }
         },
         "./cli": {
-            "types": "./dist/cli/index.d.ts",
-            "import": "./dist/cli/index.mjs",
-            "require": "./dist/cli/index.js"
+            "import": {
+                "types": "./dist/cli/index.d.mts",
+                "default": "./dist/cli/index.mjs"
+            },
+            "require": {
+                "types": "./dist/cli/index.d.ts",
+                "default": "./dist/cli/index.js"
+            }
         }
     },
     "files": [
@@ -40,7 +50,10 @@
         "test:ci": "vitest run",
         "test:integration": "vitest run --config vitest.integration.config.ts",
         "lint": "eslint src",
-        "prepublishOnly": "npm run build"
+        "prepublishOnly": "npm run verify",
+        "check:exports": "publint --strict",
+        "check:types": "attw --pack . --ignore-rules no-resolution",
+        "verify": "npm run build && npm run check:exports && npm run check:types && npm run test:ci"
     },
     "keywords": [
         "accessibility",

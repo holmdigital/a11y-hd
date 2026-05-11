@@ -16,9 +16,14 @@
     "types": "./dist/index.d.ts",
     "exports": {
         ".": {
-            "types": "./dist/index.d.ts",
-            "import": "./dist/index.mjs",
-            "require": "./dist/index.js"
+            "import": {
+                "types": "./dist/index.d.mts",
+                "default": "./dist/index.mjs"
+            },
+            "require": {
+                "types": "./dist/index.d.ts",
+                "default": "./dist/index.js"
+            }
         },
         "./data/*": "./data/*",
         "./schema/*": "./schema/*"
@@ -36,7 +41,11 @@
         "test:ci": "vitest run",
         "lint": "eslint src",
         "validate-schema": "node scripts/validate-schema.js",
-        "validate-data": "node scripts/validate-data.js"
+        "validate-data": "node scripts/validate-data.js",
+        "check:exports": "publint --strict",
+        "check:types": "attw --pack . --ignore-rules no-resolution",
+        "verify": "npm run build && npm run check:exports && npm run check:types && npm run test:ci",
+        "prepublishOnly": "npm run verify"
     },
     "keywords": [
         "accessibility",
