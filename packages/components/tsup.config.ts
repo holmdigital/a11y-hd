@@ -8,49 +8,36 @@ import { defineConfig } from 'tsup';
  * declaratively. Per-component CSS extraction (no `injectStyle`) is required
  * for the styling-unification work — each component ships a sibling .css
  * file alongside its .js/.mjs/.d.ts artifacts.
+ *
+ * Phase 26 (PUB-05): replaced the hand-maintained 30-item `components` array
+ * with a glob entry list. New components dropped into `src/<Name>/<Name>.tsx`
+ * are picked up automatically; `*.test.*`, `*.stories.*`, and `_test/`
+ * artifacts are excluded via `!`-prefix negation. Per Phase 26 researcher
+ * §5, the `!`-prefix form is the safer choice over extglob `!(...)`
+ * because globby/tsup support it universally across versions. Also added
+ * `lucide-react` to `external` so its source is never inlined into a
+ * component bundle (forward-compat with Plan 26-04's optional-peer move).
  */
 
-const components = [
-    'Button',
-    'FormField',
-    'Dialog',
-    'Modal',
-    'SkipLink',
-    'NavigationMenu',
-    'Checkbox',
-    'RadioGroup',
-    'Select',
-    'Switch',
-    'Toast',
-    'Tooltip',
-    'Heading',
-    'AccessibilityStatement',
-    'ErrorSummary',
-    'Combobox',
-    'DatePicker',
-    'MultiSelect',
-    'DataTable',
-    'Pagination',
-    'Card',
-    'TreeView',
-    'LiveRegion',
-    'Tabs',
-    'Accordion',
-    'ProgressBar',
-    'Skeleton',
-    'HelpText',
-    'Breadcrumbs',
-];
-
 export default defineConfig({
+    // Glob entries auto-discover new components and exclude tests/stories per PUB-05.
+    // Underscore-prefixed dirs (_hooks, _test) are internal helpers — they should be
+    // bundled into the components that import them, not emitted as standalone entries.
+    // locale-chrome.ts inside AccessibilityStatement is a co-located helper for the
+    // same reason: it must remain inlined, not split out as a public subpath.
     entry: [
         'src/index.ts',
-        ...components.map((c) => `src/${c}/${c}.tsx`),
+        'src/*/*.{ts,tsx}',
+        '!src/**/*.test.{ts,tsx}',
+        '!src/**/*.stories.{ts,tsx}',
+        '!src/_test/**',
+        '!src/_hooks/**',
+        '!src/AccessibilityStatement/locale-*.{ts,tsx}',
     ],
     format: ['cjs', 'esm'],
     dts: true,
     clean: true,
-    external: ['react', 'react-dom', '@holmdigital/standards'],
+    external: ['react', 'react-dom', '@holmdigital/standards', 'lucide-react'],
     // Explicit guard against future tsup default flips. CSS extraction
     // (separate sibling files) is required by Phase 23 styling unification.
     injectStyle: false,
