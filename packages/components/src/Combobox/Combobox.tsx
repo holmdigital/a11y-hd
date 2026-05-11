@@ -1,4 +1,6 @@
 import React, { useState, useRef, useEffect, KeyboardEvent, useId } from 'react';
+import { LiveRegion } from '../LiveRegion/LiveRegion';
+import { getAnnouncement } from '../_i18n/live-region-strings';
 
 export interface ComboboxOption {
     value: string;
@@ -45,12 +47,21 @@ export interface ComboboxProps {
      * Additional class names
      */
     className?: string;
+
+    /**
+     * BCP-47 locale code for live-region announcement text.
+     * Defaults to 'en'. Unknown locales fall back to English.
+     * Phase 27 (TC-09-LIVE): added for APG live-region localization.
+     */
+    locale?: string;
 }
 
 /**
  * Accessible Combobox (Autocomplete) Component
  * Implements WAI-ARIA 1.2 Combobox with Listbox Popup pattern.
  * Supports filtering, keyboard navigation, and screen reader announcements.
+ *
+ * @wcag 1.3.1 Info and Relationships, 2.1.1 Keyboard, 2.4.3 Focus Order, 4.1.2 Name Role Value, 4.1.3 Status Messages
  */
 export const Combobox: React.FC<ComboboxProps> = ({
     label,
@@ -60,7 +71,8 @@ export const Combobox: React.FC<ComboboxProps> = ({
     onChange,
     value,
     placeholder = 'Type to search...',
-    className = ''
+    className = '',
+    locale = 'en'
 }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [inputValue, setInputValue] = useState('');
@@ -80,6 +92,22 @@ export const Combobox: React.FC<ComboboxProps> = ({
     const filteredOptions = options.filter(option =>
         option.label.toLowerCase().includes(inputValue.toLowerCase())
     );
+
+    // Live-region announcement for filtered-results count (TC-09-LIVE).
+    // D-04: hasInteracted ref suppresses the initial-mount announcement.
+    // D-03: 300ms debounce so rapid typing does not flood the screen reader.
+    const [announcement, setAnnouncement] = useState('');
+    const hasInteracted = useRef(false);
+
+    useEffect(() => {
+        if (!hasInteracted.current) return;
+        const timer = setTimeout(() => {
+            setAnnouncement(
+                getAnnouncement('combobox.results', locale, filteredOptions.length)
+            );
+        }, 300);
+        return () => clearTimeout(timer);
+    }, [filteredOptions.length, locale]);
 
     // Sync input value with selected prop when it changes externally
     useEffect(() => {
@@ -114,6 +142,7 @@ export const Combobox: React.FC<ComboboxProps> = ({
     }, [value, options]);
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        hasInteracted.current = true;
         setInputValue(e.target.value);
         setIsOpen(true);
         setFocusedIndex(-1);
@@ -348,6 +377,8 @@ export const Combobox: React.FC<ComboboxProps> = ({
                     )}
                 </ul>
             )}
+
+            <LiveRegion message={announcement} ariaLive="polite" />
         </div>
     );
 };

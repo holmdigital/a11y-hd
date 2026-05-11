@@ -16,12 +16,16 @@
  *   aria-activedescendant, aria-haspopup="listbox", aria-autocomplete="list",
  *   aria-invalid (with error), role="listbox" on the popup, role="option"
  *   on each item, aria-selected on the chosen option.
+ * - 4.1.3 Status Messages — debounced LiveRegion announces filtered-results
+ *   count after user input (TC-09-LIVE). 300ms debounce keeps screen reader
+ *   chatter manageable during rapid typing; initial mount is suppressed via
+ *   the `hasInteracted` ref so an empty announcement never reads.
  *
  * Implementation notes:
- * - Live region (aria-live for filtered-results count) is NOT rendered by
- *   the source. Coverage for that behavior is deferred to v0.7 backlog item
- *   TC-09-LIVE (see .planning ROADMAP / Phase 24 decisions D-01, D-05).
- *   Do NOT add aria-live assertions here — they would test an absent feature.
+ * - Live region (aria-live for filtered-results count) was added in Phase 27
+ *   (TC-09-LIVE). See the `describe('live-region (TC-09-LIVE)', ...)` block
+ *   below for the three behavioral tests (silent mount, debounced announce,
+ *   English fallback for unknown locales).
  * - ArrowUp-when-closed wraps to the LAST option (source diverges from
  *   strict APG which would land on first). The wrap branch at
  *   Combobox.tsx:145-149 fires because focusedIndex starts at -1, which is
@@ -310,5 +314,56 @@ describe('Tier 2: A11y Differentiators', () => {
             </>,
         );
         expectUniqueIds(container);
+    });
+});
+
+describe('live-region (TC-09-LIVE)', () => {
+    const opts = [
+        { value: 'a', label: 'Apple' },
+        { value: 'b', label: 'Banana' },
+        { value: 'c', label: 'Avocado' },
+    ];
+
+    it('does not announce on initial mount', () => {
+        render(<Combobox label="Fruit" options={opts} onChange={() => {}} />);
+        // The LiveRegion node exists but its message is empty because
+        // hasInteracted=false suppresses the first effect run.
+        // Assert the EXACT pluralized announcement text is not present.
+        // (DO NOT use /result/i — that regex collides with Combobox's own
+        // "No results found" listbox empty-state literal at Combobox.tsx:346.)
+        expect(screen.queryByText('3 results')).not.toBeInTheDocument();
+        expect(screen.queryByText('No results')).not.toBeInTheDocument();
+    });
+
+    it('announces filtered-results count after 300ms debounce when user types', async () => {
+        // Real timers + findByText(timeout: 1000) chosen over fake-timers
+        // wiring: user-event v14's internal setTimeout (delay between
+        // keystrokes) deadlocks under vi.useFakeTimers() even with
+        // advanceTimers wired up — observed 5s timeout in vitest 4.x. Real
+        // timers + findByText (internally waitFor-based) tolerates the 300ms
+        // debounce reliably. CI cost: ~0.4s per test.
+        const user = userEvent.setup();
+        render(<Combobox label="Fruit" options={opts} onChange={() => {}} />);
+
+        const input = screen.getByRole('combobox');
+        // Type 'Av' → only Avocado matches → 1 result.
+        // (Plan's original 'A' would match Apple+Banana+Avocado all 3 — Banana
+        // contains 'a'. Adjusted to 'Av' for an unambiguous filtered count.)
+        await user.type(input, 'Av');
+
+        // Use exact-string match ('2 results') to avoid collision with
+        // Combobox's own "No results found" listbox empty-state literal
+        // at Combobox.tsx:346.
+        expect(await screen.findByText('1 result', {}, { timeout: 1000 })).toBeInTheDocument();
+    });
+
+    it('falls back to English for unknown locale', async () => {
+        const user = userEvent.setup();
+        render(<Combobox label="Fruit" options={opts} onChange={() => {}} locale="xx" />);
+
+        const input = screen.getByRole('combobox');
+        await user.type(input, 'Av');
+
+        expect(await screen.findByText('1 result', {}, { timeout: 1000 })).toBeInTheDocument();
     });
 });
