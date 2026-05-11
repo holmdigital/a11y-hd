@@ -15,10 +15,13 @@
  * - 2.4.7 Focus Visible — `:focus-visible` rules are in DatePicker.css
  *   (Phase 23 STY-04 pattern); enforced structurally (tabIndex=0 on the
  *   roving cell, tabIndex=-1 on all others).
+ * - 4.1.3 Status Messages — committed date is announced via <LiveRegion>
+ *   + getDateAnnouncement(locale, date); no mount announce per Phase 27 D-04
+ *   pattern; Escape / arrow-nav / nav-buttons do NOT announce.
  *
  * Phase 28 Plan 01 — base render.
  * Phase 28 Plan 02 — keyboard + focus trap; skipped Tier 1 + Tier 2 restored here.
- * Phase 28 Plan 03 — live-region (4.1.3 added then).
+ * Phase 28 Plan 03 — live-region (TC-10-LIVE) wired; 4.1.3 claimed here.
  *
  * Dropped tests from Phase 24 native-input baseline (documented):
  *   - "forwards ref to <input>" — ref target removed when native input was
@@ -30,7 +33,7 @@
  * D-02a gate: 0 querySelector / configureAxe / toMatchSnapshot — only
  * screen.getByRole, within(...), attribute filters, toHaveFocus().
  */
-import { render, screen, within } from '@testing-library/react';
+import { render, screen, within, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, it, expect, vi } from 'vitest';
 
@@ -451,5 +454,103 @@ describe('base render (Plan 28-01)', () => {
         expect(describedBy).not.toBeNull();
         const descEl = screen.getByText(/use the calendar to pick/i);
         expect(describedBy!.split(/\s+/)).toContain(descEl.id);
+    });
+});
+
+// ---------------------------------------------------------------------------
+// Live region (Plan 28-03 — TC-10-LIVE)
+// WCAG 4.1.3 Status Messages — committed date announced via getDateAnnouncement.
+// ---------------------------------------------------------------------------
+describe('Live region (Plan 28-03 — TC-10-LIVE)', () => {
+    it('no announcement on initial mount (hasInteracted=false; LiveRegion mounted but message empty)', () => {
+        render(<DatePicker label="Birthday" />);
+        // Initial mount: no "Selected: ..." text should be visible anywhere.
+        // The English prefix is "Selected: "; non-English prefixes also covered
+        // since the default locale is 'en' and we render no value.
+        expect(screen.queryByText(/^Selected:/i)).toBeNull();
+        expect(screen.queryByText(/^Valt:/i)).toBeNull();
+    });
+
+    it('announces selected date after click commit (English default locale)', async () => {
+        const user = userEvent.setup();
+        render(<DatePicker label="Birthday" value={new Date(2026, 2, 14)} />);
+        const trigger = screen.getByRole('button', { name: /birthday/i });
+        await user.click(trigger);
+
+        // Click the cell with text "20" (in-month, not disabled).
+        const dialog = screen.getByRole('dialog');
+        const cells = within(dialog).getAllByRole('gridcell');
+        const cell20 = cells.find(
+            (c) => c.textContent === '20' && c.getAttribute('data-in-month') === 'true'
+        );
+        expect(cell20).toBeDefined();
+        await user.click(cell20!);
+
+        // After commit, live-region content should announce the selected date in English.
+        // English long-form for March 20 2026 contains "March" and "2026".
+        await waitFor(() => {
+            expect(screen.getByText(/^Selected:.*March.*2026/i)).toBeInTheDocument();
+        });
+    });
+
+    it("locale fallback: unknown locale 'xx' uses English 'Selected:' prefix", async () => {
+        const user = userEvent.setup();
+        render(<DatePicker label="Birthday" locale="xx" value={new Date(2026, 2, 14)} />);
+        const trigger = screen.getByRole('button', { name: /birthday/i });
+        await user.click(trigger);
+
+        // Click any in-month cell.
+        const dialog = screen.getByRole('dialog');
+        const cells = within(dialog).getAllByRole('gridcell');
+        const cell10 = cells.find(
+            (c) => c.textContent === '10' && c.getAttribute('data-in-month') === 'true'
+        );
+        expect(cell10).toBeDefined();
+        await user.click(cell10!);
+
+        // Unknown locale falls back to English prefix "Selected:".
+        await waitFor(() => {
+            expect(screen.getByText(/^Selected:/i)).toBeInTheDocument();
+        });
+    });
+
+    it("Swedish locale uses 'Valt:' prefix on commit", async () => {
+        const user = userEvent.setup();
+        render(<DatePicker label="Birthday" locale="sv" value={new Date(2026, 2, 14)} />);
+        const trigger = screen.getByRole('button', { name: /birthday/i });
+        await user.click(trigger);
+
+        const dialog = screen.getByRole('dialog');
+        const cells = within(dialog).getAllByRole('gridcell');
+        const cell10 = cells.find(
+            (c) => c.textContent === '10' && c.getAttribute('data-in-month') === 'true'
+        );
+        expect(cell10).toBeDefined();
+        await user.click(cell10!);
+
+        await waitFor(() => {
+            expect(screen.getByText(/^Valt:/i)).toBeInTheDocument();
+        });
+    });
+
+    it('Escape does NOT trigger an announcement (commit-path only)', async () => {
+        const user = userEvent.setup();
+        render(<DatePicker label="Birthday" value={new Date(2026, 2, 15)} />);
+        const trigger = screen.getByRole('button', { name: /birthday/i });
+        await user.click(trigger);
+
+        // Focus a cell and press Escape (no commit).
+        const cell15 = within(screen.getByRole('dialog'))
+            .getAllByRole('gridcell')
+            .find((c) => c.textContent === '15' && c.getAttribute('data-in-month') === 'true');
+        expect(cell15).toBeDefined();
+        cell15!.focus();
+        await user.keyboard('{Escape}');
+
+        // Dialog should be closed.
+        expect(screen.queryByRole('dialog')).toBeNull();
+        // No "Selected: ..." announcement should be visible.
+        expect(screen.queryByText(/^Selected:/i)).toBeNull();
+        expect(screen.queryByText(/^Valt:/i)).toBeNull();
     });
 });
