@@ -200,6 +200,7 @@
                 "default": "./dist/DatePicker/DatePicker.js"
             }
         },
+        "./DatePicker.css": "./dist/DatePicker/DatePicker.css",
         "./MultiSelect": {
             "import": {
                 "types": "./dist/MultiSelect/MultiSelect.d.mts",

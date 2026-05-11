@@ -1,5 +1,42 @@
 # @holmdigital/components
 
+## @holmdigital/components — Unreleased (v0.7 Phase 28)
+
+### BREAKING
+
+- **`DatePicker` `value` prop type changed: `string` → `Date`.**
+  The previous implementation rendered a native `<input type="date">` and inherited
+  `value: string | number | readonly string[]` from `React.InputHTMLAttributes`.
+  Phase 28 replaces the native input with a custom W3C APG dialog-grid calendar
+  and the public surface is now strongly typed: `value?: Date`, `onChange?: (date: Date) => void`.
+
+  Migration:
+  ```diff
+  - <DatePicker label="Birthday" value="2026-03-14" onChange={e => setVal(e.target.value)} />
+  + <DatePicker label="Birthday" value={new Date('2026-03-14')} onChange={d => setVal(d)} />
+  ```
+
+  Other prop changes:
+  - Removed `extends React.InputHTMLAttributes<HTMLInputElement>` (the native input is gone).
+    Arbitrary HTML attrs (`name`, `min`, `max`, `data-*`) no longer pass through.
+  - Added: `minDate?: Date`, `maxDate?: Date`, `locale?: string` (default `'en'`), `placeholder?: string`.
+  - `forwardRef` removed (ref target — the native input — is gone). v0.8 will reintroduce
+    a typed `triggerRef` prop if consumer demand surfaces.
+
+### Added
+
+- APG dialog-grid calendar UI: `role="grid"` cell grid, `aria-current="date"` on today,
+  `aria-selected="true"` on the selected cell, `aria-disabled="true"` on cells outside
+  `minDate`/`maxDate` bounds.
+- Co-located `DatePicker.css` (custom-property theming surface: `--hd-datepicker-today-bg`,
+  `--hd-datepicker-selected-bg`, `--hd-datepicker-focus-ring`, etc.).
+- Side-effect CSS subpath: `import '@holmdigital/components/DatePicker.css'`.
+
+### Notes
+
+- Plan 28-02 will add APG keyboard navigation (Arrow / Home / End / PageUp / PageDown / Shift+Page*).
+- Plan 28-03 will add live-region announcement on commit (TC-10-LIVE).
+
 ## 2.3.0
 
 ### Minor Changes

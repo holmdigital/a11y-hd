@@ -173,7 +173,7 @@ Plans:
   6. axe-clean smoke under jsdom
 **Plans**: 3 plans
 Plans:
-- [ ] 28-01-PLAN.md — Date math + i18n + base calendar render (no keyboard yet)
+- [x] 28-01-PLAN.md — Date math + i18n + base calendar render (no keyboard yet)
 - [ ] 28-02-PLAN.md — APG keyboard handler + focus trap + Phase 24 stub conversion
 - [ ] 28-03-PLAN.md — Live-region announcement (TC-10-LIVE) + WCAG 4.1.3 marker
 
@@ -289,7 +289,7 @@ Plans:
 | 25. AccessibilityStatement publishDate Fix + Regression Guards | v0.6 | 1/1 | Complete | 2026-05-10 |
 | 26. Publish Hygiene | v0.6 | 5/5 | Complete | 2026-05-11 |
 | 27. APG Live Regions | v0.7 | 1/1 | Complete   | 2026-05-11 |
-| 28. DatePicker APG Dialog-Grid Keyboard | v0.7 | 0/3 | Planned | - |
+| 28. DatePicker APG Dialog-Grid Keyboard | v0.7 | 1/3 | In Progress|  |
 | 29. MultiSelect APG Listbox-Multi Completeness | v0.7 | 0/0 | Not started | - |
 | 30. DataTable APG Grid Cell-Wise Keyboard | v0.7 | 0/0 | Not started | - |
 | 31. NavigationMenu Disclosure → Menubar | v0.7 | 0/0 | Not started | - |

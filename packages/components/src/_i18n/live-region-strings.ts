@@ -6,6 +6,11 @@
  * languages (Polish, Czech, Russian) get accurate translations but the
  * branching stays simple — `Intl.PluralRules` migration deferred to v0.8.
  *
+ * Phase 28 (TC-10-LIVE): adds `datepicker.selected` (3rd key) and a sibling
+ * `getDateAnnouncement(locale, date)` helper. Non-English `Selected:`
+ * prefixes are DRAFT translations needing native-speaker review per
+ * Phase 27 precedent.
+ *
  * Internal utility — `_i18n/` is excluded from tsup build entries
  * (see tsup.config.ts). Consumers should NOT import directly; this module
  * is bundled into Combobox/MultiSelect when those components are imported.
@@ -18,7 +23,7 @@ export type LiveRegionLocale =
     | 'de' | 'fr' | 'es' | 'nl' | 'it' | 'pt'
     | 'da' | 'no' | 'fi' | 'pl';
 
-export type LiveRegionKey = 'combobox.results' | 'multiselect.selected';
+export type LiveRegionKey = 'combobox.results' | 'multiselect.selected' | 'datepicker.selected';
 
 type AnnouncementFn = (count: number) => string;
 
@@ -89,6 +94,40 @@ export const LIVE_REGION_STRINGS = {
     'multiselect.selected': MULTISELECT_SELECTED,
 } as const;
 
+// ---------------------------------------------------------------------------
+// datepicker.selected — Phase 28 TC-10-LIVE
+//
+// Distinct shape from the count-based AnnouncementTable above: this table
+// holds the localised "Selected: " PREFIX. The localised long-form date
+// itself is composed at call time via `Intl.DateTimeFormat(locale, { dateStyle: 'long' })`
+// inside getDateAnnouncement, so the prefix table holds plain strings, not
+// functions. Per D-06, do NOT shoehorn into AnnouncementTable — cleaner types
+// via a dedicated table + dedicated helper.
+//
+// All 11 non-English strings (sv/de/fr/es/nl/it/pt/da/no/fi/pl) ship as
+// DRAFT translations needing native-speaker review (Phase 27 precedent).
+// Swedish å/ä/ö, German ü, French é must be preserved verbatim (MEMORY).
+// ---------------------------------------------------------------------------
+
+const DATEPICKER_SELECTED_PREFIX: Record<LiveRegionLocale, string> = {
+    en: 'Selected: ',
+    'en-gb': 'Selected: ',
+    'en-us': 'Selected: ',
+    'en-ca': 'Selected: ',
+    'en-au': 'Selected: ',
+    sv: 'Valt: ',
+    de: 'Ausgewählt: ',
+    fr: 'Sélectionné : ', // French space-before-colon per D-06
+    es: 'Seleccionado: ',
+    nl: 'Geselecteerd: ',
+    it: 'Selezionato: ',
+    pt: 'Selecionado: ',
+    da: 'Valgt: ',
+    no: 'Valgt: ',
+    fi: 'Valittu: ',
+    pl: 'Wybrano: ',
+};
+
 /**
  * Resolve an announcement string for the given key, locale, and count.
  * Falls back to English for unknown locales (mirrors AccessibilityStatement
@@ -101,7 +140,35 @@ export function getAnnouncement(
 ): string {
     const canonical: LiveRegionLocale =
         (locale && LOCALE_ALIASES[locale]) ?? 'en';
-    const table = LIVE_REGION_STRINGS[key];
+    // Only count-based tables are reachable through this overload.
+    const table = LIVE_REGION_STRINGS[key as 'combobox.results' | 'multiselect.selected'];
     const fn = table[canonical] ?? table.en;
     return fn(count);
+}
+
+/**
+ * Compose a localised "Selected: {long date}" string for the DatePicker
+ * live-region announcement (TC-10-LIVE).
+ *
+ * Falls back to English when locale is unknown (mirrors getAnnouncement).
+ * Accepts BCP-47 aliases (`nb` → no, `dk` → da) via LOCALE_ALIASES.
+ *
+ * Inlines its own Intl.DateTimeFormat call rather than depending on the
+ * DatePicker's date-utils module — `_i18n/` is the foundation layer and
+ * importing from a component subdir would invert the dependency arrow.
+ */
+export function getDateAnnouncement(
+    locale: string | undefined,
+    date: Date
+): string {
+    const canonical: LiveRegionLocale =
+        (locale && LOCALE_ALIASES[locale]) ?? 'en';
+    const prefix = DATEPICKER_SELECTED_PREFIX[canonical] ?? DATEPICKER_SELECTED_PREFIX.en;
+    let formatted: string;
+    try {
+        formatted = new Intl.DateTimeFormat(canonical, { dateStyle: 'long' }).format(date);
+    } catch {
+        formatted = new Intl.DateTimeFormat('en', { dateStyle: 'long' }).format(date);
+    }
+    return `${prefix}${formatted}`;
 }
