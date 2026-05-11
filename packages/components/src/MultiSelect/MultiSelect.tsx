@@ -1,4 +1,6 @@
-import React, { useState, useRef, KeyboardEvent, useId } from 'react';
+import React, { useState, useRef, useEffect, KeyboardEvent, useId } from 'react';
+import { LiveRegion } from '../LiveRegion/LiveRegion';
+import { getAnnouncement } from '../_i18n/live-region-strings';
 
 export interface MultiSelectOption {
     value: string;
@@ -14,18 +16,26 @@ export interface MultiSelectProps {
     onChange: (selected: string[]) => void;
     placeholder?: string;
     className?: string;
+    /**
+     * BCP-47 locale code for live-region announcement text.
+     * Defaults to 'en'. Unknown locales fall back to English.
+     * Phase 27 (TC-11-LIVE): added for APG live-region localization.
+     */
+    locale?: string;
 }
 
 /**
  * Accessible MultiSelect Component
- * 
+ *
  * Allows selecting multiple items from a list.
  * Selected items are displayed as removable tokens (chips).
- * 
+ *
  * Accessibility Features:
  * - Keyboard navigation for tokens (Left/Right to navigate, Backspace/Delete to remove)
  * - Combobox pattern for adding new items
  * - Screen reader announcements for additions and removals
+ *
+ * @wcag 1.3.1 Info and Relationships, 2.1.1 Keyboard, 2.4.3 Focus Order, 4.1.2 Name Role Value, 4.1.3 Status Messages
  */
 export const MultiSelect: React.FC<MultiSelectProps> = ({
     label,
@@ -35,7 +45,8 @@ export const MultiSelect: React.FC<MultiSelectProps> = ({
     selected,
     onChange,
     placeholder = 'Select items...',
-    className = ''
+    className = '',
+    locale = 'en'
 }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [inputValue, setInputValue] = useState('');
@@ -57,7 +68,21 @@ export const MultiSelect: React.FC<MultiSelectProps> = ({
         option.label.toLowerCase().includes(inputValue.toLowerCase())
     );
 
+    // Live-region announcement for selection count (TC-11-LIVE).
+    // D-04: hasInteracted ref suppresses the initial-mount announcement.
+    // D-03: NO debounce — selections are user-paced (one click/keystroke each).
+    const [announcement, setAnnouncement] = useState('');
+    const hasInteracted = useRef(false);
+
+    useEffect(() => {
+        if (!hasInteracted.current) return;
+        setAnnouncement(
+            getAnnouncement('multiselect.selected', locale, selected.length)
+        );
+    }, [selected.length, locale]);
+
     const handleSelect = (value: string) => {
+        hasInteracted.current = true;
         onChange([...selected, value]);
         setInputValue('');
         setIsOpen(false);
@@ -66,6 +91,7 @@ export const MultiSelect: React.FC<MultiSelectProps> = ({
     };
 
     const handleRemove = (value: string) => {
+        hasInteracted.current = true;
         onChange(selected.filter(v => v !== value));
         inputRef.current?.focus();
     };
@@ -288,6 +314,8 @@ export const MultiSelect: React.FC<MultiSelectProps> = ({
                     ))}
                 </ul>
             )}
+
+            <LiveRegion message={announcement} ariaLive="polite" />
         </div>
     );
 };

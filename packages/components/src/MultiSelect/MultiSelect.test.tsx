@@ -32,8 +32,8 @@
  *       toggle the focused option (without moving focus). Backlog: TC-11-IMPL.
  *     - Shift+ArrowDown / Shift+ArrowUp does NOT extend selection — there is
  *       no modifier branch in the keyDown handler. Backlog: TC-11-IMPL.
- *     - No <LiveRegion> / aria-live region announces selection or removal
- *       count to screen readers. Backlog: TC-11-LIVE.
+ *     - <LiveRegion> / aria-live region was added in Phase 27 (TC-11-LIVE).
+ *       See `describe('live-region (TC-11-LIVE)', ...)` block at the bottom.
  *
  *   Tier-2 below covers what the source DOES implement; the parametrised
  *   APG-gap row asserts the listed keystrokes do not throw (no-throw stubs
@@ -47,8 +47,13 @@
  *   warrant a stub assertion that would have to be rewritten when the
  *   feature lands.
  *
- *   4.1.3 Status Messages is NOT covered here — no live region exists.
+ * - 4.1.3 Status Messages — Phase 27 (TC-11-LIVE) added a LiveRegion that
+ *   announces the current selection count after each toggle/remove. Tests in
+ *   `describe('live-region (TC-11-LIVE)', ...)` cover: silent initial mount,
+ *   announce-on-toggle, announce-on-chip-removal (stateful Wrapper for
+ *   controlled-state chip removal flow).
  */
+import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, it, expect, vi } from 'vitest';
@@ -431,5 +436,83 @@ describe('Tier 2: A11y Differentiators', () => {
         // useId() guarantees per-instance prefix; assertion proves nothing
         // collides on `${id}-listbox` / `${id}-label` / `${id}-option-N`.
         expectUniqueIds(container);
+    });
+});
+
+describe('live-region (TC-11-LIVE)', () => {
+    const opts = [
+        { value: 'a', label: 'Apple' },
+        { value: 'b', label: 'Banana' },
+        { value: 'c', label: 'Cherry' },
+    ];
+
+    it('does not announce on initial mount', () => {
+        render(
+            <MultiSelect
+                label="Fruits"
+                options={opts}
+                selected={[]}
+                onChange={() => {}}
+            />,
+        );
+        // hasInteracted=false → useEffect early-returns → announcement stays ''.
+        expect(screen.queryByText(/item selected/i)).not.toBeInTheDocument();
+        expect(screen.queryByText(/items selected/i)).not.toBeInTheDocument();
+        expect(screen.queryByText(/no items/i)).not.toBeInTheDocument();
+    });
+
+    it('announces selection count when user toggles an option', async () => {
+        // MultiSelect is controlled — wrap to drive state via onChange so the
+        // visible `selected.length` actually changes after the click.
+        function Wrapper() {
+            const [sel, setSel] = React.useState<string[]>([]);
+            return (
+                <MultiSelect
+                    label="Fruits"
+                    options={opts}
+                    selected={sel}
+                    onChange={setSel}
+                />
+            );
+        }
+        const user = userEvent.setup();
+        render(<Wrapper />);
+
+        // No separate trigger button — input is role=combobox and opens via
+        // onFocus/click (see "Tier 2 → clicking an option in the listbox"
+        // pattern lines 164-180 of this file).
+        const input = screen.getByRole('combobox');
+        await user.click(input);
+        await user.click(screen.getByRole('option', { name: /apple/i }));
+
+        // No debounce → announcement available immediately after re-render.
+        expect(await screen.findByText('1 item selected')).toBeInTheDocument();
+    });
+
+    it('announces lower count when a chip is removed', async () => {
+        // MultiSelect is fully CONTROLLED — no `defaultSelected` exists.
+        // Wrap in a stateful container so the test can drive `selected` via onChange.
+        function Wrapper() {
+            const [sel, setSel] = React.useState<string[]>(['a', 'b']);
+            return (
+                <MultiSelect
+                    label="Fruits"
+                    options={opts}
+                    selected={sel}
+                    onChange={setSel}
+                />
+            );
+        }
+        const user = userEvent.setup();
+        render(<Wrapper />);
+
+        // Initial mount has selected=['a','b'] but hasInteracted=false so
+        // nothing has announced yet (D-04). Click the Remove Apple chip
+        // button → handleRemove flips hasInteracted=true and shrinks selected
+        // to ['b'] via onChange → Wrapper re-renders with the new length.
+        const removeApple = screen.getByRole('button', { name: /remove apple/i });
+        await user.click(removeApple);
+
+        expect(await screen.findByText('1 item selected')).toBeInTheDocument();
     });
 });
