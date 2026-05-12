@@ -65,7 +65,7 @@ const COLUMNS: Column<Row>[] = [
 describe('Tier 1: Table Stakes', () => {
     it('mounts a <table> with the supplied caption as its accessible name', () => {
         render(<DataTable data={DATA} columns={COLUMNS} caption="Users" />);
-        const table = screen.getByRole('table', { name: /users/i });
+        const table = screen.getByRole('grid', { name: /users/i });
         expect(table).toBeInTheDocument();
     });
 
@@ -94,7 +94,7 @@ describe('Tier 1: Table Stakes', () => {
         ];
         render(<DataTable data={[DATA[0]]} columns={cols} caption="Users" />);
         // Default String() path
-        expect(screen.getByRole('cell', { name: 'Charlie' })).toBeInTheDocument();
+        expect(screen.getByRole('gridcell', { name: 'Charlie' })).toBeInTheDocument();
         // Custom render path
         expect(screen.getByTestId('age-cell')).toHaveTextContent('30 yrs');
     });
@@ -103,7 +103,7 @@ describe('Tier 1: Table Stakes', () => {
         const { container } = render(
             <DataTable data={DATA} columns={COLUMNS} caption="Users" className="consumer-class" />,
         );
-        const table = screen.getByRole('table', { name: /users/i });
+        const table = screen.getByRole('grid', { name: /users/i });
         // className lives on the outer wrapper, not the <table>.
         expect(table.className).not.toContain('consumer-class');
         // The outer wrapper is the firstElementChild of the render container.
