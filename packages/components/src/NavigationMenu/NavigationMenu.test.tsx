@@ -609,6 +609,25 @@ describe('Tier 2: A11y Differentiators (APG Menubar per Phase 31)', () => {
         expect(event.defaultPrevented).toBe(false);
     });
 
+    it('axe-clean for default (disclosure) render with MENUBAR_ITEMS', async () => {
+        const { container } = render(<NavigationMenu items={MENUBAR_ITEMS} />);
+        await expectNoAxeViolations(container);
+    });
+
+    it('axe-clean for pattern="menubar" closed render', async () => {
+        const { container } = render(<NavigationMenu items={MENUBAR_ITEMS} pattern="menubar" />);
+        await expectNoAxeViolations(container);
+    });
+
+    it('axe-clean for pattern="menubar" with one submenu open', async () => {
+        const user = userEvent.setup();
+        const { container } = render(<NavigationMenu items={MENUBAR_ITEMS} pattern="menubar" />);
+        const fileTrigger = screen.getByRole('menuitem', { name: /file/i });
+        fileTrigger.focus();
+        await user.keyboard('{ArrowDown}');
+        await expectNoAxeViolations(container);
+    });
+
     it('Arrow / Home / End / type-ahead never trigger an <a> click on any leaf (D-07)', async () => {
         const user = userEvent.setup();
         const helpClickSpy = vi.fn();

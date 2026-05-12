@@ -1,5 +1,30 @@
 # @holmdigital/components
 
+## 2.5.0 — 2026-05-12
+
+### Added
+
+- **NavigationMenu APG Menubar opt-in (TC-14-IMPL, Phase 31)**
+  - New optional prop `pattern?: 'disclosure' | 'menubar'` on `NavigationMenuProps`. Default `'disclosure'` preserves v0.6 byte-for-byte.
+  - `pattern="menubar"` enables the full W3C APG Menubar contract:
+    - `role="menubar"` / `role="menuitem"` / `role="menu"` / `role="none"` chain
+    - Single-`tabindex="0"` roving across top-level items
+    - Arrow horizontal/vertical (clamped at first/last), Home/End
+    - ArrowDown opens submenu + focuses first; ArrowUp opens + focuses last
+    - Inside open submenu: ArrowUp/Down (clamped), ArrowLeft closes + refocuses trigger, ArrowRight crosses to next menubar parent's submenu
+    - Escape closes submenu + refocuses trigger + `stopPropagation` (Phase 24 Dialog-ancestor safety)
+    - Enter/Space on trigger opens submenu; on leaf `<a>` preserves native activation (D-04)
+    - Type-ahead first-character match with 500 ms buffer timeout (D-02); locale-naive `.toLowerCase()` (D-08); scope-aware (buffer resets on menubar↔submenu boundary)
+    - WCAG 2.1.1 / 2.4.3 / 4.1.2 claimed in source JSDoc
+  - Test surface 20 → 43 tests; new Tier 2 Menubar block is D-02a-clean (zero `fireEvent` / `querySelector` / `configureAxe` / `toMatchSnapshot`). Whole-file `fireEvent` count preserved at pre-phase baseline 23 (legacy Disclosure block byte-equivalent).
+- **No breaking changes** — `NavigationMenuProps` adds only `pattern`; `NavItem` byte-identical.
+
+### Deferred
+
+- Default flip to `pattern="menubar"` — future major (3.0.0).
+- Locale-aware type-ahead (`toLocaleLowerCase('sv-SE')`).
+- Submenu wrap-around.
+
 ## 2.4.0 — 2026-05-12
 
 ### Added
