@@ -65,7 +65,7 @@
 import { useRef } from 'react';
 import { render, screen, waitFor, fireEvent } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 
 import { NavigationMenu, type NavItem } from './NavigationMenu';
 import { expectNoAxeViolations, expectUniqueIds } from '../_test/helpers';
@@ -331,5 +331,299 @@ describe('Tier 2: A11y Differentiators (APG Disclosure Navigation per D-06)', ()
             </>,
         );
         expectUniqueIds(container);
+    });
+});
+
+// =====================================================================================
+// Phase 31 v0.7 — APG Menubar opt-in (pattern="menubar")
+// =====================================================================================
+
+const MENUBAR_ITEMS: NavItem[] = [
+    {
+        label: 'File',
+        children: [
+            { label: 'New', href: '/file/new' },
+            { label: 'Open', href: '/file/open' },
+            { label: 'Save', href: '/file/save' },
+        ],
+    },
+    {
+        label: 'Edit',
+        children: [
+            { label: 'Cut', href: '/edit/cut' },
+            { label: 'Copy', href: '/edit/copy' },
+            { label: 'Paste', href: '/edit/paste' },
+        ],
+    },
+    { label: 'Help', href: '/help' },
+];
+
+describe('Tier 2: A11y Differentiators (APG Menubar per Phase 31)', () => {
+    it('initial mount: first menubar item has tabindex=0, others tabindex=-1', () => {
+        render(<NavigationMenu items={MENUBAR_ITEMS} pattern="menubar" />);
+        const file = screen.getByRole('menuitem', { name: /file/i });
+        const edit = screen.getByRole('menuitem', { name: /edit/i });
+        const help = screen.getByRole('menuitem', { name: /help/i });
+        expect(file).toHaveAttribute('tabindex', '0');
+        expect(edit).toHaveAttribute('tabindex', '-1');
+        expect(help).toHaveAttribute('tabindex', '-1');
+    });
+
+    it('ArrowRight moves focus from File to Edit (roving flips)', async () => {
+        const user = userEvent.setup();
+        render(<NavigationMenu items={MENUBAR_ITEMS} pattern="menubar" />);
+        const file = screen.getByRole('menuitem', { name: /file/i });
+        file.focus();
+        await user.keyboard('{ArrowRight}');
+        const edit = screen.getByRole('menuitem', { name: /edit/i });
+        expect(edit).toHaveFocus();
+        expect(edit).toHaveAttribute('tabindex', '0');
+        expect(file).toHaveAttribute('tabindex', '-1');
+    });
+
+    it('ArrowLeft moves focus from Edit to File', async () => {
+        const user = userEvent.setup();
+        render(<NavigationMenu items={MENUBAR_ITEMS} pattern="menubar" />);
+        const file = screen.getByRole('menuitem', { name: /file/i });
+        file.focus();
+        await user.keyboard('{ArrowRight}');
+        const edit = screen.getByRole('menuitem', { name: /edit/i });
+        expect(edit).toHaveFocus();
+        await user.keyboard('{ArrowLeft}');
+        expect(file).toHaveFocus();
+    });
+
+    it('ArrowRight at last item (Help) is clamped', async () => {
+        const user = userEvent.setup();
+        render(<NavigationMenu items={MENUBAR_ITEMS} pattern="menubar" />);
+        const file = screen.getByRole('menuitem', { name: /file/i });
+        file.focus();
+        await user.keyboard('{ArrowRight}{ArrowRight}');
+        const help = screen.getByRole('menuitem', { name: /help/i });
+        expect(help).toHaveFocus();
+        await user.keyboard('{ArrowRight}');
+        expect(help).toHaveFocus();
+        expect(help).toHaveAttribute('tabindex', '0');
+    });
+
+    it('ArrowLeft at first item (File) is clamped', async () => {
+        const user = userEvent.setup();
+        render(<NavigationMenu items={MENUBAR_ITEMS} pattern="menubar" />);
+        const file = screen.getByRole('menuitem', { name: /file/i });
+        file.focus();
+        await user.keyboard('{ArrowLeft}');
+        expect(file).toHaveFocus();
+        expect(file).toHaveAttribute('tabindex', '0');
+    });
+
+    it('End moves focus to last menubar item (Help)', async () => {
+        const user = userEvent.setup();
+        render(<NavigationMenu items={MENUBAR_ITEMS} pattern="menubar" />);
+        const file = screen.getByRole('menuitem', { name: /file/i });
+        file.focus();
+        await user.keyboard('{End}');
+        const help = screen.getByRole('menuitem', { name: /help/i });
+        expect(help).toHaveFocus();
+    });
+
+    it('Home moves focus to first menubar item (File)', async () => {
+        const user = userEvent.setup();
+        render(<NavigationMenu items={MENUBAR_ITEMS} pattern="menubar" />);
+        const file = screen.getByRole('menuitem', { name: /file/i });
+        file.focus();
+        await user.keyboard('{End}');
+        await user.keyboard('{Home}');
+        expect(file).toHaveFocus();
+    });
+
+    it('ArrowDown on File trigger opens submenu and focuses first item (New)', async () => {
+        const user = userEvent.setup();
+        render(<NavigationMenu items={MENUBAR_ITEMS} pattern="menubar" />);
+        const file = screen.getByRole('menuitem', { name: /file/i });
+        file.focus();
+        await user.keyboard('{ArrowDown}');
+        expect(screen.getByRole('menu')).toBeInTheDocument();
+        const newItem = screen.getByRole('menuitem', { name: /^new$/i });
+        expect(newItem).toHaveFocus();
+        expect(file).toHaveAttribute('aria-expanded', 'true');
+    });
+
+    it('ArrowUp on File trigger opens submenu and focuses LAST item (Save)', async () => {
+        const user = userEvent.setup();
+        render(<NavigationMenu items={MENUBAR_ITEMS} pattern="menubar" />);
+        const file = screen.getByRole('menuitem', { name: /file/i });
+        file.focus();
+        await user.keyboard('{ArrowUp}');
+        const save = screen.getByRole('menuitem', { name: /save/i });
+        expect(save).toHaveFocus();
+        expect(file).toHaveAttribute('aria-expanded', 'true');
+    });
+
+    it('ArrowDown on Help leaf is a no-op (no submenu opens, focus stays)', async () => {
+        const user = userEvent.setup();
+        render(<NavigationMenu items={MENUBAR_ITEMS} pattern="menubar" />);
+        const file = screen.getByRole('menuitem', { name: /file/i });
+        file.focus();
+        // Roving-navigate to Help so activeKey === 'menubar:2'
+        await user.keyboard('{End}');
+        const help = screen.getByRole('menuitem', { name: /help/i });
+        expect(help).toHaveFocus();
+        await user.keyboard('{ArrowDown}');
+        expect(screen.queryByRole('menu')).toBeNull();
+        expect(help).toHaveFocus();
+    });
+
+    it('ArrowDown inside submenu moves to next; clamped at last', async () => {
+        const user = userEvent.setup();
+        render(<NavigationMenu items={MENUBAR_ITEMS} pattern="menubar" />);
+        const file = screen.getByRole('menuitem', { name: /file/i });
+        file.focus();
+        await user.keyboard('{ArrowDown}'); // open + focus New
+        await user.keyboard('{ArrowDown}'); // → Open
+        expect(screen.getByRole('menuitem', { name: /open/i })).toHaveFocus();
+        await user.keyboard('{ArrowDown}'); // → Save
+        const save = screen.getByRole('menuitem', { name: /save/i });
+        expect(save).toHaveFocus();
+        await user.keyboard('{ArrowDown}'); // clamp at Save
+        expect(save).toHaveFocus();
+    });
+
+    it('ArrowUp inside submenu moves to previous; clamped at first', async () => {
+        const user = userEvent.setup();
+        render(<NavigationMenu items={MENUBAR_ITEMS} pattern="menubar" />);
+        const file = screen.getByRole('menuitem', { name: /file/i });
+        file.focus();
+        await user.keyboard('{ArrowUp}'); // open + focus Save (last)
+        await user.keyboard('{ArrowUp}'); // → Open
+        expect(screen.getByRole('menuitem', { name: /open/i })).toHaveFocus();
+        await user.keyboard('{ArrowUp}'); // → New
+        const newItem = screen.getByRole('menuitem', { name: /^new$/i });
+        expect(newItem).toHaveFocus();
+        await user.keyboard('{ArrowUp}'); // clamp at New
+        expect(newItem).toHaveFocus();
+    });
+
+    it('ArrowLeft inside submenu closes it and refocuses trigger', async () => {
+        const user = userEvent.setup();
+        render(<NavigationMenu items={MENUBAR_ITEMS} pattern="menubar" />);
+        const file = screen.getByRole('menuitem', { name: /file/i });
+        file.focus();
+        await user.keyboard('{ArrowDown}'); // open File submenu
+        expect(screen.getByRole('menu')).toBeInTheDocument();
+        await user.keyboard('{ArrowLeft}');
+        expect(screen.queryByRole('menu')).toBeNull();
+        expect(file).toHaveFocus();
+        expect(file).toHaveAttribute('aria-expanded', 'false');
+    });
+
+    it('ArrowRight from File submenu closes it, opens Edit submenu, focuses first (Cut)', async () => {
+        const user = userEvent.setup();
+        render(<NavigationMenu items={MENUBAR_ITEMS} pattern="menubar" />);
+        const file = screen.getByRole('menuitem', { name: /file/i });
+        file.focus();
+        await user.keyboard('{ArrowDown}'); // open File submenu, focus New
+        await user.keyboard('{ArrowRight}'); // D-06 cross-submenu
+        const cut = screen.getByRole('menuitem', { name: /cut/i });
+        expect(cut).toHaveFocus();
+        expect(file).toHaveAttribute('aria-expanded', 'false');
+        const edit = screen.getByRole('menuitem', { name: /edit/i });
+        expect(edit).toHaveAttribute('aria-expanded', 'true');
+    });
+
+    it('Escape inside submenu closes it, refocuses trigger, stops propagation', async () => {
+        const user = userEvent.setup();
+        const ancestorSpy = vi.fn();
+        render(
+            <div onKeyDown={ancestorSpy}>
+                <NavigationMenu items={MENUBAR_ITEMS} pattern="menubar" />
+            </div>,
+        );
+        const file = screen.getByRole('menuitem', { name: /file/i });
+        file.focus();
+        await user.keyboard('{ArrowDown}'); // open submenu
+        const callsBefore = ancestorSpy.mock.calls.length;
+        await user.keyboard('{Escape}');
+        expect(screen.queryByRole('menu')).toBeNull();
+        expect(file).toHaveFocus();
+        // No Escape event reached the ancestor (stopPropagation effective)
+        const escapeCalls = ancestorSpy.mock.calls
+            .slice(callsBefore)
+            .filter((args) => (args[0] as React.KeyboardEvent).key === 'Escape');
+        expect(escapeCalls).toHaveLength(0);
+    });
+
+    it('type-ahead single char "e" moves focus from File to Edit', async () => {
+        const user = userEvent.setup();
+        render(<NavigationMenu items={MENUBAR_ITEMS} pattern="menubar" />);
+        const file = screen.getByRole('menuitem', { name: /file/i });
+        file.focus();
+        await user.keyboard('e');
+        const edit = screen.getByRole('menuitem', { name: /edit/i });
+        expect(edit).toHaveFocus();
+    });
+
+    it('type-ahead multi-char "he" matches Help', async () => {
+        const user = userEvent.setup();
+        render(<NavigationMenu items={MENUBAR_ITEMS} pattern="menubar" />);
+        const file = screen.getByRole('menuitem', { name: /file/i });
+        file.focus();
+        await user.keyboard('he');
+        const help = screen.getByRole('menuitem', { name: /help/i });
+        expect(help).toHaveFocus();
+    });
+
+    it('type-ahead buffer resets after 500 ms (timeout literal verified)', async () => {
+        // Verifies the 500 ms reset semantically without fake timers (userEvent + fake-timers
+        // interaction is brittle in vitest 4). Instead, we sequence two characters that should
+        // each match independently when the buffer has been cleared between presses; the source
+        // grep for `setTimeout(..., 500)` is the literal-value gate (verified in Task 31-01-03).
+        const user = userEvent.setup();
+        render(<NavigationMenu items={MENUBAR_ITEMS} pattern="menubar" />);
+        const file = screen.getByRole('menuitem', { name: /file/i });
+        file.focus();
+        await user.keyboard('e'); // → Edit
+        const edit = screen.getByRole('menuitem', { name: /edit/i });
+        expect(edit).toHaveFocus();
+        // Wait for the 500 ms reset (real timers).
+        await new Promise<void>((resolve) => setTimeout(resolve, 600));
+        await user.keyboard('h'); // buffer reset → Help
+        const help = screen.getByRole('menuitem', { name: /help/i });
+        expect(help).toHaveFocus();
+    });
+
+    it('Enter on Help leaf does not preventDefault — native <a> activation preserved', async () => {
+        const user = userEvent.setup();
+        render(<NavigationMenu items={MENUBAR_ITEMS} pattern="menubar" />);
+        const helpLeaf = screen.getByRole('menuitem', { name: /help/i });
+        // D-04 PRECONDITIONS — leaf MUST be a literal <a> with href BEFORE we press Enter.
+        expect(helpLeaf.tagName).toBe('A');
+        expect(helpLeaf).toHaveAttribute('href', '/help');
+        // Roving-navigate to Help so activeKey === 'menubar:2' and the handler's switch sees a leaf.
+        const file = screen.getByRole('menuitem', { name: /file/i });
+        file.focus();
+        await user.keyboard('{End}');
+        expect(helpLeaf).toHaveFocus();
+        // Dispatch a real Enter KeyboardEvent and assert handler did NOT preventDefault (D-04).
+        const event = new KeyboardEvent('keydown', { key: 'Enter', bubbles: true, cancelable: true });
+        helpLeaf.dispatchEvent(event);
+        expect(event.defaultPrevented).toBe(false);
+    });
+
+    it('Arrow / Home / End / type-ahead never trigger an <a> click on any leaf (D-07)', async () => {
+        const user = userEvent.setup();
+        const helpClickSpy = vi.fn();
+        // Spy on Help leaf's click by patching the rendered <a> after mount.
+        render(<NavigationMenu items={MENUBAR_ITEMS} pattern="menubar" />);
+        const help = screen.getByRole('menuitem', { name: /help/i });
+        help.addEventListener('click', helpClickSpy);
+        const file = screen.getByRole('menuitem', { name: /file/i });
+        file.focus();
+        await user.keyboard('{ArrowRight}');
+        await user.keyboard('{ArrowLeft}');
+        await user.keyboard('{Home}');
+        await user.keyboard('{End}');
+        // Type-ahead lands on Help (leaf) — moving focus only, MUST NOT click.
+        await user.keyboard('he');
+        expect(helpClickSpy).not.toHaveBeenCalled();
     });
 });
