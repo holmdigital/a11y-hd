@@ -1,5 +1,30 @@
 # @holmdigital/components
 
+## 2.6.0 — 2026-05-12
+
+### Added — Test coverage (TC-15, Phase 32)
+
+- **Tier 1 + Tier 2 test suites for the 7 remaining uncovered components**:
+  - Card, Skeleton, Heading, SkipLink, ProgressBar, Switch, Pagination
+  - Each new `*.test.tsx` follows the Phase 22 template-setter shape:
+    - `// @vitest-environment jsdom` first line
+    - `WCAG SCs covered:` JSDoc header
+    - `describe('Tier 1: Table Stakes', …)` + `describe('Tier 2: …', …)`
+    - ≥ 1 `expectNoAxeViolations` smoke per file
+    - D-02a anti-pattern grep gate clean (zero `querySelector` / `configureAxe` / `toMatchSnapshot` / `fireEvent` in the new files)
+- **Tooltip.test.tsx audited** and augmented in place: appended Tier 1 + Tier 2 blocks + axe smoke. Legacy SC 1.4.13 hover/escape/aria-describedby suite preserved under a documented D-02a waiver (fake-timer + user-event v14 + vitest 4 deadlock; race-condition surface is the tighter constraint).
+- **Test-file count: 22 → 29** colocated component `*.test.tsx` (+7 new files). `check-wcag-headers.mjs` enumerates all test files (including `_hooks/useFocusTrap.test.tsx` and the AccessibilityStatement regression file) carrying the marker.
+
+### ROADMAP arithmetic reconciliation
+
+- Success criterion #4 stated "28 → 36" test files; actual baseline was 22 (excluding `_test/` helpers, `index.test.ts`, `date-utils.test.ts`, `*.regression.test.tsx`, and `useFocusTrap.test.tsx`); actual target is 29. ROADMAP updated.
+- Success criterion #5 stated `test:wcag-headers` "24 → 32"; actual baseline 22, target 29. ROADMAP updated.
+- Success criterion #1 stated "8 new test files"; actual: 7 new + 1 augmented (Tooltip already existed).
+
+### Not changed
+
+- No source modifications. Public API byte-equivalent to 2.5.0. MINOR bump per project precedent (Phase 22/24/30/31): every test-coverage milestone in this codebase ships as MINOR even when source is untouched, so that downstream consumers see an honest release-train tick.
+
 ## 2.5.0 — 2026-05-12
 
 ### Added
