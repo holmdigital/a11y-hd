@@ -2,42 +2,26 @@
 /**
  * WCAG SCs covered:
  * - 1.3.1 Info and Relationships — native <table> + <caption>, scope="col" on
- *   every <th>, role=columnheader exposed by the table semantics.
- * - 2.1.1 Keyboard — sortable headers are real <button>s, so Enter + Space
- *   activate them natively (paired keyboard per D-02a). Cell-arrow APG
- *   navigation is not implemented in source; covered by a no-throw stub
- *   (see Implementation note below).
- * - 4.1.2 Name, Role, Value — role=table from <table>, role=columnheader from
- *   <th>, role=button on sortable headers, aria-sort cycling
- *   undefined→ascending→descending, aria-hidden on the sort-indicator glyph.
+ *   every <th>, role="grid" / role="row" / role="columnheader" /
+ *   role="gridcell" overlay.
+ * - 2.1.1 Keyboard — full APG grid keyboard matrix: Arrow (L/R/U/D) for
+ *   cell-wise navigation, Home/End for row bounds, Ctrl+Home/Ctrl+End for
+ *   table corners, PageUp/PageDown for 10-row paging. Enter/Space on a
+ *   focused sortable <th> delegates to the sort handler (D-03). Sortable
+ *   headers also expose real <button>s so Enter/Space activate them
+ *   natively when the inner button is tabbed to.
+ * - 4.1.2 Name, Role, Value — role=grid, role=columnheader (aria-sort
+ *   cycling undefined→ascending→descending), role=gridcell, role=button on
+ *   sortable headers, aria-hidden on the sort-indicator glyph.
  *
  * NOT covered here (intentional, source has no implementation):
  * - 4.1.3 Status Messages — no live region announces sort changes.
- * - 2.4.3 Focus Order — cells are non-focusable <td>; no roving tabindex.
  *
- * Implementation note (TC-12-IMPL backlog, deferred to v0.7):
- *   - APG grid cell-arrow keyboard navigation (ArrowLeft/Right/Up/Down between
- *     cells, Home/End for row bounds, Ctrl+Home/End for table bounds,
- *     PageUp/PageDown) is NOT implemented in source — cells are non-focusable
- *     <td> with no onKeyDown handler.
- *   - The Tier-2 cell-arrow tests below use the `fireEvent.keyDown` escape
- *     hatch (RESEARCH §5) because userEvent.keyboard requires a focusable
- *     target and a bare <td> cannot receive focus.
- *   - APG grid roles (`role="grid"`, `role="gridcell"`, `role="row"`) are NOT
- *     applied — source uses native table semantics, which is acceptable for a
- *     static table but is a gap relative to the full APG data-grid pattern.
- *   - `scope="row"` is NOT applied to first-column cells — source has no
- *     row-header support. This gap is OUTSIDE TC-12-IMPL scope and is tracked
- *     separately.
- *   - The sortable-header contract (aria-sort cycling + native Enter/Space on
- *     a real <button>) IS the strongest implemented APG surface and is tested
- *     for real here so a future refactor cannot silently regress it.
- *
- * Template note: mirrors Button.test.tsx Tier-1 shape; Tier-2 adds the
- * partial-stub strategy per D-01 for surface DataTable does not yet
- * implement (cell-arrow nav).
+ * Phase 30 (v0.7) shipped the full APG grid keyboard contract — the Phase 24
+ * no-throw stubs at L219-250 are replaced by real focus assertions in the
+ * "Tier 2: APG Grid Cell-Wise Keyboard Navigation" describe block below.
  */
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, it, expect } from 'vitest';
 
@@ -61,6 +45,14 @@ const COLUMNS: Column<Row>[] = [
     { header: 'Age', accessor: 'age', sortable: true },
     { header: 'Email', accessor: 'email', sortable: false },
 ];
+
+// 15-row fixture for PageUp/PageDown tests — the default DATA has only 3 rows
+// which is too few to exercise the 10-row PAGE_SIZE jump.
+const LARGE_DATA: Row[] = Array.from({ length: 15 }, (_, i) => ({
+    name: `User${i.toString().padStart(2, '0')}`,
+    age: 20 + i,
+    email: `u${i}@x.com`,
+}));
 
 describe('Tier 1: Table Stakes', () => {
     it('mounts a <table> with the supplied caption as its accessible name', () => {
@@ -211,44 +203,6 @@ describe('Tier 2: A11y Differentiators', () => {
         expect(nameHeader).toHaveAttribute('aria-sort', 'ascending');
     });
 
-    // RESEARCH §5 escape hatch: <td> is not focusable so userEvent.keyboard
-    // cannot dispatch to it. We use fireEvent.keyDown to prove the source does
-    // not throw on APG-grid cell-arrow keystrokes — this is a no-throw STUB
-    // (per D-01), not real keyboard coverage. Flips to userEvent + focus
-    // assertions when TC-12-IMPL ships roving tabindex on cells in v0.7.
-    it.each([
-        ['ArrowDown'],
-        ['ArrowUp'],
-        ['ArrowRight'],
-        ['ArrowLeft'],
-        ['Home'],
-        ['End'],
-        ['PageUp'],
-        ['PageDown'],
-    ])(
-        'no-throw stub: %s on a cell does not throw (TC-12-IMPL gap — non-focusable <td>)',
-        (key) => {
-            render(<DataTable data={DATA} columns={COLUMNS} caption="Users" />);
-            const firstCell = screen.getAllByRole('cell')[0];
-            // fireEvent escape hatch — see comment block above.
-            expect(() => fireEvent.keyDown(firstCell, { key })).not.toThrow();
-            expect(screen.getByRole('table', { name: /users/i })).toBeInTheDocument();
-        },
-    );
-
-    it('no-throw stub: Ctrl+Home and Ctrl+End on a cell do not throw (TC-12-IMPL gap)', () => {
-        render(<DataTable data={DATA} columns={COLUMNS} caption="Users" />);
-        const firstCell = screen.getAllByRole('cell')[0];
-        // fireEvent escape hatch (RESEARCH §5) — <td> is non-focusable.
-        expect(() =>
-            fireEvent.keyDown(firstCell, { key: 'Home', ctrlKey: true }),
-        ).not.toThrow();
-        expect(() =>
-            fireEvent.keyDown(firstCell, { key: 'End', ctrlKey: true }),
-        ).not.toThrow();
-        expect(screen.getByRole('table', { name: /users/i })).toBeInTheDocument();
-    });
-
     it('sort indicator glyph is hidden from AT (button accessible name omits ▲/▼/↕)', async () => {
         const user = userEvent.setup();
         render(<DataTable data={DATA} columns={COLUMNS} caption="Users" />);
@@ -277,5 +231,240 @@ describe('Tier 2: A11y Differentiators', () => {
         );
         await user.click(screen.getByRole('button', { name: /name/i }));
         await expectNoAxeViolations(container);
+    });
+});
+
+describe('Tier 2: APG Grid Cell-Wise Keyboard Navigation', () => {
+    it('ArrowRight from header col 0 moves focus to header col 1 (roving tabindex flips)', async () => {
+        const user = userEvent.setup();
+        render(<DataTable data={DATA} columns={COLUMNS} caption="Users" />);
+        const nameHeader = screen.getByRole('columnheader', { name: /name/i });
+        expect(nameHeader).toHaveAttribute('tabindex', '0');
+        nameHeader.focus();
+        expect(nameHeader).toHaveFocus();
+
+        await user.keyboard('{ArrowRight}');
+
+        const ageHeader = screen.getByRole('columnheader', { name: /age/i });
+        expect(ageHeader).toHaveFocus();
+        expect(ageHeader).toHaveAttribute('tabindex', '0');
+        expect(nameHeader).toHaveAttribute('tabindex', '-1');
+    });
+
+    it('ArrowLeft from header col 1 moves focus to header col 0', async () => {
+        const user = userEvent.setup();
+        render(<DataTable data={DATA} columns={COLUMNS} caption="Users" />);
+        const ageHeader = screen.getByRole('columnheader', { name: /age/i });
+        ageHeader.click();
+        ageHeader.focus();
+
+        await user.keyboard('{ArrowLeft}');
+
+        const nameHeader = screen.getByRole('columnheader', { name: /name/i });
+        expect(nameHeader).toHaveFocus();
+        expect(nameHeader).toHaveAttribute('tabindex', '0');
+    });
+
+    it('ArrowDown from header col 0 moves focus to data row 0 col 0 (Charlie cell)', async () => {
+        const user = userEvent.setup();
+        render(<DataTable data={DATA} columns={COLUMNS} caption="Users" />);
+        const nameHeader = screen.getByRole('columnheader', { name: /name/i });
+        nameHeader.focus();
+
+        await user.keyboard('{ArrowDown}');
+
+        const charlieCell = screen.getByRole('gridcell', { name: 'Charlie' });
+        expect(charlieCell).toHaveFocus();
+        expect(charlieCell).toHaveAttribute('tabindex', '0');
+    });
+
+    it('ArrowUp from data row 0 col 0 moves focus back to header col 0', async () => {
+        const user = userEvent.setup();
+        render(<DataTable data={DATA} columns={COLUMNS} caption="Users" />);
+        const charlieCell = screen.getByRole('gridcell', { name: 'Charlie' });
+        charlieCell.click();
+        charlieCell.focus();
+
+        await user.keyboard('{ArrowUp}');
+
+        const nameHeader = screen.getByRole('columnheader', { name: /name/i });
+        expect(nameHeader).toHaveFocus();
+    });
+
+    it('ArrowRight at last col is clamped (no focus change)', async () => {
+        const user = userEvent.setup();
+        render(<DataTable data={DATA} columns={COLUMNS} caption="Users" />);
+        const emailHeader = screen.getByRole('columnheader', { name: /email/i });
+        emailHeader.click();
+        emailHeader.focus();
+
+        await user.keyboard('{ArrowRight}');
+
+        expect(emailHeader).toHaveFocus();
+        expect(emailHeader).toHaveAttribute('tabindex', '0');
+    });
+
+    it('ArrowLeft at col 0 is clamped', async () => {
+        const user = userEvent.setup();
+        render(<DataTable data={DATA} columns={COLUMNS} caption="Users" />);
+        const nameHeader = screen.getByRole('columnheader', { name: /name/i });
+        nameHeader.focus();
+
+        await user.keyboard('{ArrowLeft}');
+
+        expect(nameHeader).toHaveFocus();
+        expect(nameHeader).toHaveAttribute('tabindex', '0');
+    });
+
+    it('ArrowDown at last data row is clamped', async () => {
+        const user = userEvent.setup();
+        render(<DataTable data={DATA} columns={COLUMNS} caption="Users" />);
+        const lastCell = screen.getByRole('gridcell', { name: 'b@x.com' });
+        lastCell.click();
+        lastCell.focus();
+
+        await user.keyboard('{ArrowDown}');
+
+        expect(lastCell).toHaveFocus();
+    });
+
+    it('ArrowUp at header row is clamped', async () => {
+        const user = userEvent.setup();
+        render(<DataTable data={DATA} columns={COLUMNS} caption="Users" />);
+        const nameHeader = screen.getByRole('columnheader', { name: /name/i });
+        nameHeader.focus();
+
+        await user.keyboard('{ArrowUp}');
+
+        expect(nameHeader).toHaveFocus();
+    });
+
+    it('Home moves focus to col 0 of current row', async () => {
+        const user = userEvent.setup();
+        render(<DataTable data={DATA} columns={COLUMNS} caption="Users" />);
+        const emailHeader = screen.getByRole('columnheader', { name: /email/i });
+        emailHeader.click();
+        emailHeader.focus();
+
+        await user.keyboard('{Home}');
+
+        const nameHeader = screen.getByRole('columnheader', { name: /name/i });
+        expect(nameHeader).toHaveFocus();
+    });
+
+    it('End moves focus to last col of current row', async () => {
+        const user = userEvent.setup();
+        render(<DataTable data={DATA} columns={COLUMNS} caption="Users" />);
+        const nameHeader = screen.getByRole('columnheader', { name: /name/i });
+        nameHeader.focus();
+
+        await user.keyboard('{End}');
+
+        const emailHeader = screen.getByRole('columnheader', { name: /email/i });
+        expect(emailHeader).toHaveFocus();
+    });
+
+    it('Ctrl+Home from anywhere moves focus to header col 0', async () => {
+        const user = userEvent.setup();
+        render(<DataTable data={DATA} columns={COLUMNS} caption="Users" />);
+        const lastCell = screen.getByRole('gridcell', { name: 'b@x.com' });
+        lastCell.click();
+        lastCell.focus();
+
+        await user.keyboard('{Control>}{Home}{/Control}');
+
+        const nameHeader = screen.getByRole('columnheader', { name: /name/i });
+        expect(nameHeader).toHaveFocus();
+    });
+
+    it('Ctrl+End from anywhere moves focus to last data row last col', async () => {
+        const user = userEvent.setup();
+        render(<DataTable data={DATA} columns={COLUMNS} caption="Users" />);
+        const nameHeader = screen.getByRole('columnheader', { name: /name/i });
+        nameHeader.focus();
+
+        await user.keyboard('{Control>}{End}{/Control}');
+
+        // DATA[2].email = 'b@x.com' is the last data row last col cell.
+        const target = screen.getByRole('gridcell', { name: 'b@x.com' });
+        expect(target).toHaveFocus();
+    });
+
+    it('PageDown from header (row=-1) jumps to data row 9 (min(-1+10, lastDataRow=14))', async () => {
+        const user = userEvent.setup();
+        render(<DataTable data={LARGE_DATA} columns={COLUMNS} caption="Users" />);
+        const nameHeader = screen.getByRole('columnheader', { name: /name/i });
+        nameHeader.focus();
+
+        await user.keyboard('{PageDown}');
+
+        // Header row = -1, so PageDown lands at min(-1 + PAGE_SIZE=10, 14) = 9.
+        const target = screen.getByRole('gridcell', { name: 'User09' });
+        expect(target).toHaveFocus();
+    });
+
+    it('PageUp from data row 14 jumps to data row 4 (max(14-10, -1))', async () => {
+        const user = userEvent.setup();
+        render(<DataTable data={LARGE_DATA} columns={COLUMNS} caption="Users" />);
+        const user14 = screen.getByRole('gridcell', { name: 'User14' });
+        user14.click();
+        user14.focus();
+
+        await user.keyboard('{PageUp}');
+
+        const target = screen.getByRole('gridcell', { name: 'User04' });
+        expect(target).toHaveFocus();
+    });
+
+    it('Enter on a focused sortable <th> triggers sort (D-03 delegation via handleSort)', async () => {
+        const user = userEvent.setup();
+        render(<DataTable data={DATA} columns={COLUMNS} caption="Users" />);
+        const nameHeader = screen.getByRole('columnheader', { name: /name/i });
+        nameHeader.focus();
+        expect(nameHeader).not.toHaveAttribute('aria-sort');
+
+        await user.keyboard('{Enter}');
+        expect(nameHeader).toHaveAttribute('aria-sort', 'ascending');
+
+        await user.keyboard(' ');
+        expect(nameHeader).toHaveAttribute('aria-sort', 'descending');
+    });
+
+    it('clicking a data cell moves the roving anchor to that cell', async () => {
+        const user = userEvent.setup();
+        render(<DataTable data={DATA} columns={COLUMNS} caption="Users" />);
+        const nameHeader = screen.getByRole('columnheader', { name: /name/i });
+        expect(nameHeader).toHaveAttribute('tabindex', '0');
+
+        const aliceCell = screen.getByRole('gridcell', { name: 'Alice' });
+        await user.click(aliceCell);
+
+        expect(aliceCell).toHaveAttribute('tabindex', '0');
+        expect(nameHeader).toHaveAttribute('tabindex', '-1');
+    });
+
+    it('Arrow / Home / End / PageUp / PageDown / Ctrl+Home / Ctrl+End NEVER trigger sort (D-07)', async () => {
+        const user = userEvent.setup();
+        render(<DataTable data={DATA} columns={COLUMNS} caption="Users" />);
+        const nameHeader = screen.getByRole('columnheader', { name: /name/i });
+        nameHeader.focus();
+
+        const keys = [
+            '{ArrowRight}',
+            '{ArrowLeft}',
+            '{ArrowDown}',
+            '{ArrowUp}',
+            '{Home}',
+            '{End}',
+            '{PageDown}',
+            '{PageUp}',
+            '{Control>}{Home}{/Control}',
+            '{Control>}{End}{/Control}',
+        ];
+        for (const k of keys) {
+            await user.keyboard(k);
+            // Name header must never gain aria-sort from these focus-only keys.
+            expect(nameHeader).not.toHaveAttribute('aria-sort');
+        }
     });
 });
