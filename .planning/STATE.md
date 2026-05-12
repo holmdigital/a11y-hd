@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v0.7
 milestone_name: APG Completion
 status: executing
-stopped_at: Phase 32 planned — TC-15 component test coverage. 8 plans across 3 waves (Wave 1 parallel Card/Skeleton/Heading/SkipLink; Wave 2 parallel ProgressBar/Switch/Pagination; Wave 3 Tooltip audit+verify+bump). MINOR 2.5.0→2.6.0. ROADMAP arithmetic reconciled (22 → 29 test files; Tooltip pre-existed).
-last_updated: "2026-05-12T08:10:00.000Z"
+stopped_at: Phase 32 COMPLETE — TC-15 closed. 8 plans across 3 waves shipped (Wave 1 Card/Skeleton/Heading/SkipLink; Wave 2 ProgressBar/Switch/Pagination; Wave 3 Tooltip audit + 2.5.0→2.6.0 bump + CHANGELOG). 29 colocated component test files (was 22) carrying Tier 1+2+axe smoke + WCAG SC header; 36 vitest files / 634 tests green; full verify exit 0. Tooltip legacy SC 1.4.13 block preserved under documented D-02a waiver (fake-timer + user-event v14 + vitest 4 deadlock per Plan 27-01).
+last_updated: "2026-05-12T08:50:00.000Z"
 last_activity: 2026-05-12
 progress:
   total_phases: 11
@@ -125,6 +125,7 @@ Last activity: 2026-05-11
 
 ## Session Continuity
 
-Last session: 2026-05-12T08:10:00.000Z
-Stopped at: Phase 31 COMPLETE — NavigationMenu APG Menubar opt-in shipped. TC-14-IMPL closed. 3 tasks across 3 internal waves; 43 NavigationMenu tests (20+20+3) all green; `npm run verify -w @holmdigital/components` exit 0; @holmdigital/components 2.4.0→2.5.0 (additive MINOR). Q2 axe `role="none"` contingency did NOT trigger (D-05 unchanged). Three deviations logged in 31-01-SUMMARY.md (Rule 3 — jsdom Enter-on-`<a>` activation, userEvent v14+vitest 4 fake-timer brittleness, ArrowDown-on-leaf focus drift) — all auto-fixed without scope creep.
-Resume: next phase per ROADMAP v0.7
+Last session: 2026-05-12T08:50:00.000Z
+Stopped at: Phase 32 COMPLETE — TC-15 closed. 8 plans / 3 waves; 29 colocated component test files (was 22); 106 new tests; @holmdigital/components 2.5.0→2.6.0 (MINOR per Phase 22/24/30/31 precedent); full verify exit 0 (36 files / 634 tests; wcag-headers ok 31 files; no-tailwind-leak / no-test-leak ok). Tooltip.test.tsx audited and augmented in place under documented D-02a waiver (legacy SC 1.4.13 fireEvent block byte-equivalent; cites Plan 27-01 fake-timer + user-event v14 + vitest 4 deadlock). ROADMAP arithmetic reconciled in 32-08-SUMMARY (target 28→36 was 22→29; #1's "8 new files" was 7 new + 1 augmented). Process improvement: Wave 1 Card+Heading bundled into one commit (`43cf5ad`) because parallel agents didn't pathspec-scope; Wave 2 added `git commit -- <pathspec>` and committed cleanly — recommend universal adoption.
+Resume: Phase 33 (lint + typecheck gates) per ROADMAP v0.7
+completed_phases_v07: [27, 28, 29, 30, 31, 32]
