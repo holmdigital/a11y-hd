@@ -60,7 +60,8 @@ describe('i18n', () => {
         });
 
         it('should return key if not found', () => {
-            const result = t('nonexistent.key' as any);
+            // @ts-expect-error — intentionally passing a key outside the union to assert fallback behavior
+            const result = t('nonexistent.key');
             expect(result).toBe('nonexistent.key');
         });
 

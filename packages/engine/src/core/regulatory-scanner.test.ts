@@ -61,7 +61,8 @@ describe('enrichResults', () => {
     // enrichResults is private; bracket notation avoids production code changes (TEST-01 constraint)
     const scanner = new RegulatoryScanner({ url: 'https://test.example.com' });
     const enrichResults = (input: AxeScanOutput) =>
-        (scanner as any)['enrichResults'](input) as Promise<import('@holmdigital/standards').EnrichedReport[]>;
+        (scanner as unknown as { enrichResults: (i: AxeScanOutput) => Promise<import('@holmdigital/standards').EnrichedReport[]> })
+            .enrichResults(input);
 
     it('produces EnrichedReport with failingNodes and legalContext for matched rule', async () => {
         const reports = await enrichResults(mockAxeOutput);

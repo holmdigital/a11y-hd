@@ -152,7 +152,7 @@ export class RegulatoryScanner {
                     timeout: 10000,
                     concurrency: 2
                 });
-            } catch (e) {
+            } catch {
                 this.log('Network busy, proceeding with scan anyway...');
             }
 

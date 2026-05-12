@@ -55,7 +55,7 @@ describe('cloud-client', () => {
                             }
                         ]
                     }
-                ] as any,
+                ] as unknown as ScanResult['reports'],
                 stats: {
                     critical: 0,
                     high: 1,

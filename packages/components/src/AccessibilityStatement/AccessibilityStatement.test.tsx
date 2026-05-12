@@ -8,7 +8,7 @@
 import { render } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
 import { AccessibilityStatement } from './AccessibilityStatement';
-import { getEnforcementBody, getNationalLawByFramework } from '@holmdigital/standards';
+import { getEnforcementBody, getNationalLawByFramework, type Country } from '@holmdigital/standards';
 
 const defaultProps = {
     country: 'SE' as const,
@@ -301,7 +301,7 @@ describe('AccessibilityStatement nb alias chrome', () => {
     });
 });
 
-const EU_LOCALE_COUNTRY_MAP: Array<{ locale: string; country: string }> = [
+const EU_LOCALE_COUNTRY_MAP: Array<{ locale: string; country: Country }> = [
     { locale: 'sv', country: 'SE' },
     { locale: 'no', country: 'NO' },
     { locale: 'da', country: 'DK' },
@@ -319,11 +319,11 @@ describe('AccessibilityStatement national compliance - enforcement body', () => 
                 <AccessibilityStatement
                     {...defaultProps}
                     locale={locale}
-                    country={country as any}
+                    country={country}
                     sector="public"
                 />
             );
-            const expectedBody = getEnforcementBody(country as any, 'public');
+            const expectedBody = getEnforcementBody(country, 'public');
             expect(container.innerHTML).toContain(expectedBody);
         });
     });
@@ -336,11 +336,11 @@ describe('AccessibilityStatement national compliance - national law', () => {
                 <AccessibilityStatement
                     {...defaultProps}
                     locale={locale}
-                    country={country as any}
+                    country={country}
                     sector="public"
                 />
             );
-            const law = getNationalLawByFramework('WAD', country as any);
+            const law = getNationalLawByFramework('WAD', country);
             expect(law).not.toBeNull();
             expect(container.innerHTML).toContain(law!.fullName);
         });
@@ -349,7 +349,7 @@ describe('AccessibilityStatement national compliance - national law', () => {
 
 // --- New locale tests for it/pt/pl ---
 
-const NEW_LOCALE_COUNTRY_MAP: Array<{ locale: string; country: string }> = [
+const NEW_LOCALE_COUNTRY_MAP: Array<{ locale: string; country: Country }> = [
     { locale: 'it', country: 'IT' },
     { locale: 'pt', country: 'PT' },
     { locale: 'pl', country: 'PL' },
@@ -364,7 +364,7 @@ describe('AccessibilityStatement placeholder leakage - new locales (it/pt/pl)', 
                 <AccessibilityStatement
                     {...defaultProps}
                     locale={locale}
-                    country={country as any}
+                    country={country}
                     sector="public"
                 />
             );
@@ -380,11 +380,11 @@ describe('AccessibilityStatement national compliance - enforcement body (it/pt/p
                 <AccessibilityStatement
                     {...defaultProps}
                     locale={locale}
-                    country={country as any}
+                    country={country}
                     sector="public"
                 />
             );
-            const expectedBody = getEnforcementBody(country as any, 'public');
+            const expectedBody = getEnforcementBody(country, 'public');
             expect(container.innerHTML).toContain(expectedBody);
         });
     });
@@ -397,11 +397,11 @@ describe('AccessibilityStatement national compliance - national law (it/pt/pl)',
                 <AccessibilityStatement
                     {...defaultProps}
                     locale={locale}
-                    country={country as any}
+                    country={country}
                     sector="public"
                 />
             );
-            const law = getNationalLawByFramework('WAD', country as any);
+            const law = getNationalLawByFramework('WAD', country);
             expect(law).not.toBeNull();
             expect(container.innerHTML).toContain(law!.fullName);
         });
@@ -431,7 +431,7 @@ describe('AccessibilityStatement chrome localization - new locales (it/pt/pl)', 
         it(`renders ${locale} locale with correct badge text for full compliance`, () => {
             const country = locale === 'it' ? 'IT' : locale === 'pt' ? 'PT' : 'PL';
             const { container } = render(
-                <AccessibilityStatement {...defaultProps} locale={locale} country={country as any} complianceLevel="full" />
+                <AccessibilityStatement {...defaultProps} locale={locale} country={country} complianceLevel="full" />
             );
             expect(container.innerHTML).toContain(expectedBadge);
         });
@@ -441,7 +441,7 @@ describe('AccessibilityStatement chrome localization - new locales (it/pt/pl)', 
         it(`renders ${locale} locale with correct "Updated:" label`, () => {
             const country = locale === 'it' ? 'IT' : locale === 'pt' ? 'PT' : 'PL';
             const { container } = render(
-                <AccessibilityStatement {...defaultProps} locale={locale} country={country as any} />
+                <AccessibilityStatement {...defaultProps} locale={locale} country={country} />
             );
             expect(container.innerHTML).toContain(expectedLabel);
         });
@@ -451,7 +451,7 @@ describe('AccessibilityStatement chrome localization - new locales (it/pt/pl)', 
         it(`renders ${locale} locale with correct footer text`, () => {
             const country = locale === 'it' ? 'IT' : locale === 'pt' ? 'PT' : 'PL';
             const { container } = render(
-                <AccessibilityStatement {...defaultProps} locale={locale} country={country as any} />
+                <AccessibilityStatement {...defaultProps} locale={locale} country={country} />
             );
             expect(container.innerHTML).toContain(expectedFooter);
         });
@@ -478,11 +478,11 @@ describe('AccessibilityStatement national compliance - AU enforcement body', () 
             <AccessibilityStatement
                 {...defaultProps}
                 locale="en-au"
-                country={'AU' as any}
+                country="AU"
                 sector="public"
             />
         );
-        const expectedBody = getEnforcementBody('AU' as any, 'public');
+        const expectedBody = getEnforcementBody('AU', 'public');
         expect(container.innerHTML).toContain(expectedBody);
     });
 
@@ -491,11 +491,11 @@ describe('AccessibilityStatement national compliance - AU enforcement body', () 
             <AccessibilityStatement
                 {...defaultProps}
                 locale="en-au"
-                country={'AU' as any}
+                country="AU"
                 sector="public"
             />
         );
-        const law = getNationalLawByFramework('DDA' as any, 'AU' as any);
+        const law = getNationalLawByFramework('DDA', 'AU');
         expect(law).not.toBeNull();
         expect(container.innerHTML).toContain(law!.fullName);
     });

@@ -41,7 +41,7 @@ class MockIntersectionObserver {
         return [];
     }
 }
-(globalThis as any).IntersectionObserver = MockIntersectionObserver;
+Reflect.set(globalThis, 'IntersectionObserver', MockIntersectionObserver);
 
 // 2. ResizeObserver — same contract.
 class MockResizeObserver {
@@ -49,7 +49,7 @@ class MockResizeObserver {
     unobserve() {}
     disconnect() {}
 }
-(globalThis as any).ResizeObserver = MockResizeObserver;
+Reflect.set(globalThis, 'ResizeObserver', MockResizeObserver);
 
 // 3. matchMedia — false-by-default so prefers-reduced-motion logic short-circuits to "no preference".
 if (typeof window !== 'undefined' && !window.matchMedia) {
@@ -93,13 +93,13 @@ if (typeof HTMLDialogElement !== 'undefined') {
 
 // 6. Element.animate — return a stub Animation-like object.
 if (typeof Element !== 'undefined' && !Element.prototype.animate) {
-    (Element.prototype as any).animate = () => ({
+    Reflect.set(Element.prototype, 'animate', () => ({
         finished: Promise.resolve(),
         cancel: () => {},
         finish: () => {},
         play: () => {},
         pause: () => {},
-    });
+    }));
 }
 
 // 7. scrollIntoView — no-op.

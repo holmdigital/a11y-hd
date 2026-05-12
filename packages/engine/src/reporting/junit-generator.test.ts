@@ -62,7 +62,7 @@ describe('junit-generator', () => {
                     failingNodes: [
                         { target: 'img', html: '<img src="bad.jpg">', failureSummary: 'Fix it' }
                     ]
-                } as any
+                } as unknown as ScanResult['reports'][number]
             ],
             stats: { ...mockResult.stats, total: 1, critical: 1, passed: 0 }
         };

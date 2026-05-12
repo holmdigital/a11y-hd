@@ -179,7 +179,7 @@ export async function generateStatementContent(
                 const logoBuffer = await fs.readFile(p);
                 logoUrl = `data:image/jpeg;base64,${logoBuffer.toString('base64')}`;
                 break;
-            } catch (e) {
+            } catch {
                 // Ignore and try next
             }
         }
