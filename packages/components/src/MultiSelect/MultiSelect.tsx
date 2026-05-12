@@ -294,6 +294,7 @@ export const MultiSelect: React.FC<MultiSelectProps> = ({
                     id={listboxId}
                     role="listbox"
                     aria-label={label}
+                    aria-multiselectable="true"
                     style={styles.listbox}
                 >
                     {availableOptions.map((option, index) => (
@@ -301,7 +302,7 @@ export const MultiSelect: React.FC<MultiSelectProps> = ({
                             key={option.value}
                             id={`${id}-option-${index}`}
                             role="option"
-                            aria-selected={false}
+                            aria-selected={selected.includes(option.value)}
                             onClick={() => handleSelect(option.value)}
                             onMouseEnter={() => setFocusedIndex(index)}
                             style={{
