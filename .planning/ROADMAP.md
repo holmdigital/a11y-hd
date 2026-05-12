@@ -90,7 +90,7 @@ See: `.planning/milestones/v0.6-ROADMAP.md` for full details
 - [x] **Phase 27: APG Live Regions** - Combobox results-count + MultiSelect selection-count live-region announcements (TC-09-LIVE, TC-11-LIVE); shared `_i18n/live-region-strings.ts` localized per `locale` prop. TC-10-LIVE moved to Phase 28 (paired with calendar UI). (completed 2026-05-11)
 - [x] **Phase 28: DatePicker APG Dialog-Grid Keyboard + Live Region** - Replace/augment native `<input type="date">` with `role="grid"` calendar UI + Arrow/Home/End/PageUp/PageDown/Shift variants; calendar `onSelect` triggers selected-date live-region announcement (TC-10-IMPL + TC-10-LIVE) (completed 2026-05-11)
 - [x] **Phase 29: MultiSelect APG Listbox-Multi** - `aria-multiselectable="true"`, Space-toggle without focus move, Shift+Arrow extends selection, dynamic `aria-selected`; MultiSelect.test.tsx stubs converted (TC-11-IMPL) (completed 2026-05-12)
-- [ ] **Phase 30: DataTable APG Grid Cell-Wise Keyboard** - Right/Left/Down/Up cell navigation, Home/End row-bounds, PageUp/PageDown row-paging, Ctrl+Home/End table-bounds; DataTable.test.tsx stubs converted (TC-12-IMPL)
+- [x] **Phase 30: DataTable APG Grid Cell-Wise Keyboard** - Right/Left/Down/Up cell navigation, Home/End row-bounds, PageUp/PageDown row-paging, Ctrl+Home/End table-bounds; DataTable.test.tsx stubs converted (TC-12-IMPL) (completed 2026-05-12)
 - [ ] **Phase 31: NavigationMenu Disclosure → Menubar** - APG Menubar contract: Arrow horizontal/vertical, Home/End, Enter activates leaf, type-ahead, single tabindex="0" roving. **Backwards-compat decision in discuss-phase** (opt-in prop vs new default); NavigationMenu.test.tsx Disclosure tests replaced/augmented (TC-14-IMPL)
 - [ ] **Phase 32: TC-15 Remaining Component Test Coverage** - Tier 1+2 suites for Card, Skeleton, Heading, ProgressBar, Pagination, SkipLink, Switch, Tooltip (TC-15)
 - [ ] **Phase 33: Lint + Typecheck Verify Gates** - Add `lint` (eslint) + `typecheck` (tsc --noEmit) to `verify` chain in all 3 packages (PUB-09)
@@ -207,7 +207,7 @@ Plans:
 **Plans:** 1 plan
 
 Plans:
-- [ ] 30-01-PLAN.md — Add APG grid roles + roving tabindex + parent-grid onKeyDown (Arrow/Home/End/Ctrl+Home/End/PageUp/PageDown/Enter delegation) + @wcag JSDoc to DataTable.tsx; migrate Tier 1 role queries; convert 9 no-throw stubs to ~17 real focus assertions; full verify (TC-12-IMPL)
+- [x] 30-01-PLAN.md — Add APG grid roles + roving tabindex + parent-grid onKeyDown (Arrow/Home/End/Ctrl+Home/End/PageUp/PageDown/Enter delegation) + @wcag JSDoc to DataTable.tsx; migrate Tier 1 role queries; convert 9 no-throw stubs to ~17 real focus assertions; full verify (TC-12-IMPL)
 
 ### Phase 31: NavigationMenu Disclosure → Menubar
 **Goal**: NavigationMenu upgrades from its current APG Disclosure pattern to the W3C APG Menubar pattern — Arrow horizontal/vertical, Home/End first/last, Enter activates leaf, type-ahead, single `tabindex="0"` roving. NavigationMenu.test.tsx Disclosure tests are replaced (or augmented under an opt-in prop) with the Menubar contract. **Backwards-compat decision in discuss-phase:** opt-in via new `pattern="menubar" | "disclosure"` prop (preserves current behavior for v0.6 consumers), or new default with migration note in CHANGELOG. Discuss decides.

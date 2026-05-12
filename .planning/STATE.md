@@ -119,5 +119,5 @@ Last activity: 2026-05-11
 ## Session Continuity
 
 Last session: 2026-05-12T00:00:00.000Z
-Stopped at: Phase 29 complete — MultiSelect APG listbox-multi (aria-multiselectable, dynamic aria-selected, Space-toggle, Shift+Arrow extend from anchor). 29 files / 498 tests green. TC-11-IMPL closed.
-Resume: next phase or `/gsd-progress` to advance
+Stopped at: Phase 30 complete — DataTable APG Grid Cell-Wise Keyboard (role=grid/row/columnheader/gridcell, roving tabindex, full APG keyboard matrix: Arrow/Home/End/Ctrl+Home/Ctrl+End/PageUp/PageDown, Enter+Space delegation on sortable headers, PAGE_SIZE=10). 29 files / 506 tests green. TC-12-IMPL closed. @holmdigital/components 2.3.0 → 2.4.0.
+Resume: Phase 31 (NavigationMenu Disclosure → Menubar) or `/gsd-progress` to advance
