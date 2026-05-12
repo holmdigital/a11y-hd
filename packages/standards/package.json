@@ -40,11 +40,12 @@
         "test": "vitest",
         "test:ci": "vitest run",
         "lint": "eslint src",
+        "typecheck": "tsc --noEmit",
         "validate-schema": "node scripts/validate-schema.js",
         "validate-data": "node scripts/validate-data.js",
         "check:exports": "publint --strict",
         "check:types": "attw --pack . --ignore-rules no-resolution",
-        "verify": "npm run build && npm run check:exports && npm run check:types && npm run test:ci",
+        "verify": "npm run build && npm run lint && npm run typecheck && npm run check:exports && npm run check:types && npm run test:ci",
         "prepublishOnly": "npm run verify"
     },
     "keywords": [
