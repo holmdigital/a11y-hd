@@ -204,7 +204,7 @@ Requirements for v0.7 APG Completion. Each maps to roadmap phases (27–33).
 
 ### Publish Hygiene
 
-- [ ] **PUB-09**: `lint` (eslint) and `typecheck` (tsc --noEmit) chained into the `verify` pipeline in all 3 packages (`@holmdigital/standards`, `@holmdigital/components`, `@holmdigital/engine`). New chain: `npm run build && npm run lint && npm run typecheck && npm run check:exports && npm run check:types && npm run test:ci`. Existing `lint` scripts kept; add missing `typecheck` script per package.
+- [x] **PUB-09**: `lint` (eslint) and `typecheck` (tsc --noEmit) chained into the `verify` pipeline in all 3 packages (`@holmdigital/standards`, `@holmdigital/components`, `@holmdigital/engine`). New chain: `npm run build && npm run lint && npm run typecheck && npm run check:exports && npm run check:types && npm run test:ci`. Existing `lint` scripts kept; add missing `typecheck` script per package.
 
 ## Future Requirements (deferred to v0.8+)
 
@@ -303,7 +303,7 @@ Updated during roadmap creation.
 | TC-12-IMPL | Phase 30 | Pending |
 | TC-14-IMPL | Phase 31 | Pending |
 | TC-15 | Phase 32 | Pending |
-| PUB-09 | Phase 33 | Pending |
+| PUB-09 | Phase 33 | Complete (2026-05-12) |
 
 **v0.7 coverage:**
 - v0.7 requirements: 9 total

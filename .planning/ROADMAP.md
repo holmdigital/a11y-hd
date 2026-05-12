@@ -93,7 +93,7 @@ See: `.planning/milestones/v0.6-ROADMAP.md` for full details
 - [x] **Phase 30: DataTable APG Grid Cell-Wise Keyboard** - Right/Left/Down/Up cell navigation, Home/End row-bounds, PageUp/PageDown row-paging, Ctrl+Home/End table-bounds; DataTable.test.tsx stubs converted (TC-12-IMPL) (completed 2026-05-12)
 - [x] **Phase 31: NavigationMenu Disclosure → Menubar** - APG Menubar contract: Arrow horizontal/vertical, Home/End, Enter activates leaf, type-ahead, single tabindex="0" roving. NavigationMenu opt-in `pattern="menubar"` prop (default disclosure preserves v0.6 byte-equivalence); 43 tests; components 2.4.0 → 2.5.0 (TC-14-IMPL) (completed 2026-05-12)
 - [x] **Phase 32: TC-15 Remaining Component Test Coverage** - Tier 1+2 suites for Card, Skeleton, Heading, ProgressBar, Pagination, SkipLink, Switch; Tooltip audited and augmented in place under D-02a waiver. 22 → 29 colocated test files; +106 new tests; components 2.5.0 → 2.6.0 (TC-15) (completed 2026-05-12)
-- [ ] **Phase 33: Lint + Typecheck Verify Gates** - Add `lint` (eslint) + `typecheck` (tsc --noEmit) to `verify` chain in all 3 packages (PUB-09)
+- [x] **Phase 33: Lint + Typecheck Verify Gates** - Add `lint` (eslint) + `typecheck` (tsc --noEmit) to `verify` chain in all 3 packages (PUB-09) (completed 2026-05-12)
 
 ## Phase Details
 
@@ -255,6 +255,15 @@ Plans:
   4. Pre-existing engine TS2724 (puppeteer types) — if it surfaces as a verify failure, this phase either fixes it inline or documents an explicit `--skipLibCheck` justification
   5. `prepublishOnly` continues to chain `verify`; `npm publish` fails if lint or typecheck fails
 
+**Plans:** 4 plans
+Plans:
+- [x] 33-01-PLAN.md — Standards verify-chain wire-up (typecheck script + lint/typecheck gate in verify)
+- [x] 33-02-PLAN.md — Engine verify-chain wire-up + 2 lint-error fixes (`__ENGINE_VERSION__` global + `@ts-ignore` → `@ts-expect-error`)
+- [x] 33-03-PLAN.md — Components verify-chain wire-up + 27 tsc-error fixes across 5 categories + 5 absorbed lint errors (React TS-namespace imports + eslint-plugin-react-hooks)
+- [x] 33-04-PLAN.md — Sequential verify proof + PATCH bumps (standards 2.5.1→2.5.2 / components 2.6.0→2.6.1 / engine 2.5.2→2.5.3) + CHANGELOGs
+
+**Completed:** 2026-05-12
+
 ### DRAFT: Engine Redesign — Detektion + Scoring + Kommunikation (ej planlagd)
 
 **Draft:** `.planning/milestones/v2.0-scoring-redesign-DRAFT.md`
@@ -317,4 +326,4 @@ Plans:
 | 30. DataTable APG Grid Cell-Wise Keyboard | v0.7 | 0/1 | In progress | - |
 | 31. NavigationMenu Disclosure → Menubar | v0.7 | 0/0 | Not started | - |
 | 32. TC-15 Remaining Component Test Coverage | v0.7 | 0/0 | Not started | - |
-| 33. Lint + Typecheck Verify Gates | v0.7 | 0/0 | Not started | - |
+| 33. Lint + Typecheck Verify Gates | v0.7 | 4/4 | Complete | 2026-05-12 |

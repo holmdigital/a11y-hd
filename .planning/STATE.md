@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v0.7
 milestone_name: APG Completion
 status: executing
-stopped_at: Phase 33 planned — Lint+Typecheck Verify Gates (PUB-09). 4 plans (Wave 1: 33-01 standards wire-up, 33-02 engine fix 2 lint-errors+wire-up, 33-03 components fix 27 TS-errors+@types/node@^22.10.2 devDep+wire-up; Wave 2: 33-04 final verify+PATCH bumps standards 2.5.1→2.5.2, components 2.6.0→2.6.1, engine 2.5.2→2.5.3+CHANGELOG). Route A1 locked (devDep over tsconfig types-array).
-last_updated: "2026-05-12T08:50:00.000Z"
+stopped_at: Phase 33 COMPLETE — PUB-09 closed. 4 plans across 2 waves shipped (Wave 1 standards/engine/components verify wire-up + lint/typecheck fixes; Wave 2 sequential verify + 3-package PATCH bumps standards 2.5.1→2.5.2 / components 2.6.0→2.6.1 / engine 2.5.2→2.5.3 + CHANGELOG). All 3 packages now gate publish on lint + typecheck. v0.7 publish-gating effort complete.
+last_updated: "2026-05-12T11:35:00.000Z"
 last_activity: 2026-05-12
 progress:
   total_phases: 11
-  completed_phases: 3
-  total_plans: 5
-  completed_plans: 5
+  completed_phases: 7
+  total_plans: 9
+  completed_plans: 9
   percent: 100
 ---
 
@@ -108,6 +108,15 @@ Last activity: 2026-05-11
 - **Three runtime deviations auto-fixed (Rule 3):** (a) D-04 Enter activation test uses `dispatchEvent` + `defaultPrevented` instead of click-spy because jsdom doesn't synthesise `<a>` activation on Enter; (b) fake-timer test replaced with real-timer 600 ms wait because userEvent v14 + vitest 4 fake-timer integration hangs; (c) ArrowDown-on-leaf test pre-navigates via `{End}` so `activeKeyRef.current` reads the right key. PRECONDITION assertions (`tagName === 'A'`, `toHaveAttribute('href', '/help')`) retained — they're the D-04 element-type proofs.
 - **Patterns established for Phase 32+:** parseMenubarKey discriminated-union keying generalises to N-depth tree (`tree:0:2:1` style); two-sibling-component dispatch on a `pattern` prop is a proven non-breaking refactor shape.
 
+### Plan 33-04 decisions + deviations (logged 2026-05-12)
+
+- **PUB-09 closed.** All 3 packages now gate publish on lint + typecheck. Three sequential `npm run verify` runs exit 0: standards (61 tests), components (634 tests / 36 files), engine (123 tests / 6 files). `prepublishOnly` byte-equivalent to pre-phase (literal `npm run verify`).
+- **PATCH-bump rationale (vs Phase 32 MINOR precedent):** Phase 32 added test files (artifacts ship in source tree). Phase 33 changes scripts + dev-side fixes only — no public API surface, no source artifacts shipped. PATCH-honest.
+- **Engine baseline note:** plan brief mentioned 2.5.1 → 2.5.2 but `packages/engine/package.json` was already at 2.5.2 (Section 504 routing shipped per CLAUDE.md inline notes — see ef3d381 in CHANGELOG). 33-04 stacks a fresh 2.5.2 → 2.5.3 PATCH bump for the lint cleanup. v0.7 ship notes corrected accordingly.
+- **No TS2724 / `--skipLibCheck` carry-over from 33-02** — engine `tsc --noEmit` exits 0 cleanly. No flag added.
+- **No unexpected category from 33-03** — the 5 planned tsc-error categories executed cleanly. 33-03 expanded Cat C scope (2 → 8 files) and absorbed 5 dormant lint errors, but did not introduce a 6th category.
+- **Commits (3):** `6584b93` (chore(standards): 2.5.1 → 2.5.2 + CHANGELOG), `7b719c3` (chore(components): 2.6.0 → 2.6.1 + CHANGELOG), `b1a8e80` (chore(engine): 2.5.2 → 2.5.3 + CHANGELOG).
+
 ### Plan 33-03 decisions + deviations (logged 2026-05-12)
 
 - **Verify chain wired for components.** typecheck script added; `verify` now chains build → lint → typecheck → check:exports → check:types → test:ci. `prepublishOnly` unchanged. End-to-end `npm run verify -w @holmdigital/components` exits 0 (36 test files / 634 tests passing).
@@ -135,7 +144,7 @@ Last activity: 2026-05-11
 
 ## Session Continuity
 
-Last session: 2026-05-12T11:30:00.000Z
-Stopped at: Phase 33 Plan 03 COMPLETE — components verify chain gated on lint + typecheck. 27 pre-existing tsc errors resolved across 5 categories + 5 absorbed lint errors (4× React TS-namespace imports + eslint-plugin-react-hooks install w/ narrow exhaustive-deps registration). 6 commits (`b9e3ed1`, `afe3727`, `14400e8`, `1cb9f99`, `4a01fc8`, `958b74b`). Cat C expanded 2→8 files (template-setter pattern). tsconfig types += "node" as minimal-A2 overlay on Route A1 devDep install. `npm run verify -w @holmdigital/components` exits 0 end-to-end (36 files / 634 tests). 18 pre-existing react-hooks/react-compiler violations deferred to dedicated v0.7 audit plan.
-Resume: Phase 33 Plan 04 — final-wave global verify + PATCH bumps (standards 2.5.1→2.5.2, components 2.6.0→2.6.1, engine 2.5.2→2.5.3 + CHANGELOG)
-completed_phases_v07: [27, 28, 29, 30, 31, 32]
+Last session: 2026-05-12T11:35:00.000Z
+Stopped at: Phase 33 COMPLETE — PUB-09 closed. Plan 33-04 ran three sequential `npm run verify` proofs (standards 61 tests, components 634 tests / 36 files, engine 123 tests / 6 files — all exit 0) and shipped 3 PATCH bumps with CHANGELOG entries (standards 2.5.1→2.5.2 `6584b93`, components 2.6.0→2.6.1 `7b719c3`, engine 2.5.2→2.5.3 `b1a8e80`). All 3 packages now gate publish on lint + typecheck via extended `verify` chain. `prepublishOnly` byte-equivalent to pre-phase. v0.7 publish-gating effort complete. Awaiting checkpoint:human-verify approval before marking SUMMARY signed off.
+Resume: Phase 33 Plan 04 Task 4 (checkpoint:human-verify) — user runs the 6-step verification (sequential verify + npm publish --dry-run × 3 + version inspection + CHANGELOG visual + git log + Swedish-char encoding scan) and signals "approved" to close PUB-09.
+completed_phases_v07: [27, 28, 29, 30, 31, 32, 33]
