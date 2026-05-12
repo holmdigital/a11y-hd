@@ -26,6 +26,7 @@ interface AxeScanOutput {
     passes: Array<{ id: string }>;
 }
 
+/* global __ENGINE_VERSION__ */
 export function getEngineVersion(): string {
     return __ENGINE_VERSION__;
 }
@@ -182,7 +183,7 @@ export class RegulatoryScanner {
                     return { violations: [], passes: [] }; // Fail gracefully
                 }
 
-                // @ts-ignore
+                // @ts-expect-error window.axe is injected by axe-core script tag at runtime; not part of lib.dom
                 return await window.axe.run(document, {
                     iframes: false, // Inaktivera iframe-scanning för att undvika kraschar på tunga annons-sajter
                     // Vi tar bort runOnly tillfälligt för att se ALLA fel
