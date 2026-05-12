@@ -119,5 +119,5 @@ Last activity: 2026-05-11
 ## Session Continuity
 
 Last session: 2026-05-12T00:00:00.000Z
-Stopped at: Phase 31 context captured — NavigationMenu Disclosure → Menubar. 8 decisions locked (D-01 opt-in `pattern` prop default disclosure → 2.5.0 MINOR; D-02 multi-char type-ahead 500 ms; D-03 drop hover in menubar; D-04 leaf = native `<a role="menuitem">`; D-05 full ARIA role chain; D-06 clamped keyboard contract; D-07 D-02a-clean new tests; D-08 case-insensitive locale-naive type-ahead).
-Resume: `/gsd-plan-phase 31` for RESEARCH.md + 31-01-PLAN.md
+Stopped at: Phase 31 planned — 31-RESEARCH.md + 31-01-PLAN.md written. Plan-checker REVISE→APPROVED: tasks 01+02 merged (tsconfig.base.json `noUnusedLocals: true` — Phase 30 trap recurrence avoided), pre-phase fireEvent baseline=23 locked as invariant, D-04 leaf-`<a>` element-type gate added, D-08 toLowerCase grep gate added, axe role="none" Q2 contingency now HALTS instead of silently mutating D-05. 3 tasks total across 3 internal waves.
+Resume: `/gsd-execute-phase 31` to ship NavigationMenu menubar opt-in (target @holmdigital/components 2.5.0)
