@@ -1,5 +1,11 @@
 # @holmdigital/standards
 
+## 2.5.3
+
+### Patch Changes
+
+- c75ea8a: PUB-09 (Phase 33): `verify` script now chains `lint` (eslint) and `typecheck` (tsc --noEmit) before `check:exports` / `check:types` / `test:ci`. `prepublishOnly` unchanged — `npm publish` now fails if lint or typecheck reports errors. No source changes.
+
 ## 2.5.2
 
 ### Patch Changes
