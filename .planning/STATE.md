@@ -108,6 +108,16 @@ Last activity: 2026-05-11
 - **Three runtime deviations auto-fixed (Rule 3):** (a) D-04 Enter activation test uses `dispatchEvent` + `defaultPrevented` instead of click-spy because jsdom doesn't synthesise `<a>` activation on Enter; (b) fake-timer test replaced with real-timer 600 ms wait because userEvent v14 + vitest 4 fake-timer integration hangs; (c) ArrowDown-on-leaf test pre-navigates via `{End}` so `activeKeyRef.current` reads the right key. PRECONDITION assertions (`tagName === 'A'`, `toHaveAttribute('href', '/help')`) retained — they're the D-04 element-type proofs.
 - **Patterns established for Phase 32+:** parseMenubarKey discriminated-union keying generalises to N-depth tree (`tree:0:2:1` style); two-sibling-component dispatch on a `pattern` prop is a proven non-breaking refactor shape.
 
+### Plan 33-03 decisions + deviations (logged 2026-05-12)
+
+- **Verify chain wired for components.** typecheck script added; `verify` now chains build → lint → typecheck → check:exports → check:types → test:ci. `prepublishOnly` unchanged. End-to-end `npm run verify -w @holmdigital/components` exits 0 (36 test files / 634 tests passing).
+- **Cat C expansion 2 → 8 files (Rule 1).** Plan listed only RadioGroup + SkipLink; preflight grep surfaced the same Phase 22 template-setter `ref.current = node` pattern in Button, Checkbox, FormField, Heading + helper. All 8 fixed with `(ref as MutableRefObject<HTML*Element | null>).current = node` cast (semantics-preserving, supports future ref.current reads).
+- **tsconfig types array gained "node" entry (Rule 4 minimal-A2 overlay).** Route A1 (devDep install) was locked at plan time, but preflight tsc showed `__dirname`/node globals still unresolved after install. Added `"node"` to `tsconfig.json` `compilerOptions.types`. Route A1 INTENT preserved — devDep is the source of truth; types array just makes TS pick it up.
+- **5 pre-existing lint errors absorbed (Phase 33 scope clarification).** Once verify ran lint, 5 dormant errors surfaced: 4 × `'React' is not defined` (DatePicker.tsx source + Dialog/Modal/NavigationMenu tests) + 1 × `rule react-hooks/exhaustive-deps not found` (DatePicker.tsx:124 inline-disable). Per Phase 33's mission ("verify exit 0 with lint + typecheck wired in"), these belong to PUB-09 scope by definition. Fixed: type-only `import type React from 'react'` in all 4 files (zero runtime impact).
+- **eslint-plugin-react-hooks installed at monorepo root + narrowly registered.** Plugin 7.1.1 added to root devDeps; ONLY `react-hooks/exhaustive-deps` rule registered. Full `recommended` set surfaces 18 pre-existing react-compiler violations (setState-in-effect, components-during-render) out of Phase 33 scope — deferred to v0.7 backlog as dedicated react-hooks audit plan.
+- **Breadcrumbs unused React import removed (Rule 3 blocker).**
+- **Commits (6):** `b9e3ed1` (Cat C 8-file ref fix + Cat D), `afe3727` (Cat B matcher aug + Cat E narrowing), `14400e8` (Cat A @types/node + verify chain), `1cb9f99` (Breadcrumbs cleanup), `4a01fc8` (4× TS-namespace React imports), `958b74b` (react-hooks plugin install + narrow registration).
+
 ### Plan 23-01 decisions + deviations (logged 2026-05-10)
 
 - **CSS layout decision: NESTED** (`dist/<Name>/<Name>.css`) — empirically detected by smoke probe. Load-bearing for Wave 2 plans. Recorded in 23-01-SUMMARY.md.
@@ -125,7 +135,7 @@ Last activity: 2026-05-11
 
 ## Session Continuity
 
-Last session: 2026-05-12T08:50:00.000Z
-Stopped at: Phase 32 COMPLETE — TC-15 closed. 8 plans / 3 waves; 29 colocated component test files (was 22); 106 new tests; @holmdigital/components 2.5.0→2.6.0 (MINOR per Phase 22/24/30/31 precedent); full verify exit 0 (36 files / 634 tests; wcag-headers ok 31 files; no-tailwind-leak / no-test-leak ok). Tooltip.test.tsx audited and augmented in place under documented D-02a waiver (legacy SC 1.4.13 fireEvent block byte-equivalent; cites Plan 27-01 fake-timer + user-event v14 + vitest 4 deadlock). ROADMAP arithmetic reconciled in 32-08-SUMMARY (target 28→36 was 22→29; #1's "8 new files" was 7 new + 1 augmented). Process improvement: Wave 1 Card+Heading bundled into one commit (`43cf5ad`) because parallel agents didn't pathspec-scope; Wave 2 added `git commit -- <pathspec>` and committed cleanly — recommend universal adoption.
-Resume: Phase 33 (lint + typecheck gates) per ROADMAP v0.7
+Last session: 2026-05-12T11:30:00.000Z
+Stopped at: Phase 33 Plan 03 COMPLETE — components verify chain gated on lint + typecheck. 27 pre-existing tsc errors resolved across 5 categories + 5 absorbed lint errors (4× React TS-namespace imports + eslint-plugin-react-hooks install w/ narrow exhaustive-deps registration). 6 commits (`b9e3ed1`, `afe3727`, `14400e8`, `1cb9f99`, `4a01fc8`, `958b74b`). Cat C expanded 2→8 files (template-setter pattern). tsconfig types += "node" as minimal-A2 overlay on Route A1 devDep install. `npm run verify -w @holmdigital/components` exits 0 end-to-end (36 files / 634 tests). 18 pre-existing react-hooks/react-compiler violations deferred to dedicated v0.7 audit plan.
+Resume: Phase 33 Plan 04 — final-wave global verify + PATCH bumps (standards 2.5.1→2.5.2, components 2.6.0→2.6.1, engine 2.5.2→2.5.3 + CHANGELOG)
 completed_phases_v07: [27, 28, 29, 30, 31, 32]
