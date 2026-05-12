@@ -334,6 +334,7 @@
         "build": "tsup",
         "dev": "tsup --watch",
         "lint": "eslint src --ext .ts,.tsx",
+        "typecheck": "tsc --noEmit",
         "check:no-tailwind-leak": "node scripts/check-no-tailwind-leak.mjs",
         "check:no-test-leak": "node scripts/check-no-test-leak.mjs",
         "test": "vitest",
@@ -343,7 +344,7 @@
         "build-storybook": "storybook build",
         "check:exports": "publint --strict",
         "check:types": "attw --pack . --ignore-rules no-resolution",
-        "verify": "npm run build && npm run check:exports && npm run check:types && npm run test:ci",
+        "verify": "npm run build && npm run lint && npm run typecheck && npm run check:exports && npm run check:types && npm run test:ci",
         "prepublishOnly": "npm run verify"
     },
     "keywords": [
@@ -372,6 +373,7 @@
         "@testing-library/jest-dom": "^6.9.1",
         "@testing-library/react": "^16.3.2",
         "@testing-library/user-event": "^14.6.1",
+        "@types/node": "^22.10.2",
         "@types/react": "^18.2.0 || ^19.0.0",
         "@types/react-dom": "^18.2.0 || ^19.0.0",
         "axe-core": "^4.11.4",
