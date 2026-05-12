@@ -50,10 +50,11 @@
         "test:ci": "vitest run",
         "test:integration": "vitest run --config vitest.integration.config.ts",
         "lint": "eslint src",
+        "typecheck": "tsc --noEmit",
         "prepublishOnly": "npm run verify",
         "check:exports": "publint --strict",
         "check:types": "attw --pack . --ignore-rules no-resolution",
-        "verify": "npm run build && npm run check:exports && npm run check:types && npm run test:ci"
+        "verify": "npm run build && npm run lint && npm run typecheck && npm run check:exports && npm run check:types && npm run test:ci"
     },
     "keywords": [
         "accessibility",
