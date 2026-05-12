@@ -118,6 +118,6 @@ Last activity: 2026-05-11
 
 ## Session Continuity
 
-Last session: 2026-05-11T20:00:00.000Z
-Stopped at: Phase 28 complete — DatePicker APG dialog+grid + locale-aware live region. 29 files / 494 tests green. TC-10-IMPL + TC-10-LIVE closed.
+Last session: 2026-05-12T00:00:00.000Z
+Stopped at: Phase 29 complete — MultiSelect APG listbox-multi (aria-multiselectable, dynamic aria-selected, Space-toggle, Shift+Arrow extend from anchor). 29 files / 498 tests green. TC-11-IMPL closed.
 Resume: next phase or `/gsd-progress` to advance

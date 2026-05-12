@@ -88,8 +88,8 @@ See: `.planning/milestones/v0.6-ROADMAP.md` for full details
 **Milestone Goal:** Finish the source-side APG implementation work that Phase 24 pinned with tests — close the 4 keyboard-handler gaps (DatePicker/MultiSelect/DataTable/NavigationMenu) and 3 live-region gaps surfaced by Phase 24, add Tier 1+2 test coverage for the remaining 8 components, and chain lint + typecheck into the verify pipeline. v0.6 pinned the contracts; v0.7 ships them.
 
 - [x] **Phase 27: APG Live Regions** - Combobox results-count + MultiSelect selection-count live-region announcements (TC-09-LIVE, TC-11-LIVE); shared `_i18n/live-region-strings.ts` localized per `locale` prop. TC-10-LIVE moved to Phase 28 (paired with calendar UI). (completed 2026-05-11)
-- [ ] **Phase 28: DatePicker APG Dialog-Grid Keyboard + Live Region** - Replace/augment native `<input type="date">` with `role="grid"` calendar UI + Arrow/Home/End/PageUp/PageDown/Shift variants; calendar `onSelect` triggers selected-date live-region announcement (TC-10-IMPL + TC-10-LIVE)
-- [ ] **Phase 29: MultiSelect APG Listbox-Multi** - `aria-multiselectable="true"`, Space-toggle without focus move, Shift+Arrow extends selection, dynamic `aria-selected`; MultiSelect.test.tsx stubs converted (TC-11-IMPL)
+- [x] **Phase 28: DatePicker APG Dialog-Grid Keyboard + Live Region** - Replace/augment native `<input type="date">` with `role="grid"` calendar UI + Arrow/Home/End/PageUp/PageDown/Shift variants; calendar `onSelect` triggers selected-date live-region announcement (TC-10-IMPL + TC-10-LIVE) (completed 2026-05-11)
+- [x] **Phase 29: MultiSelect APG Listbox-Multi** - `aria-multiselectable="true"`, Space-toggle without focus move, Shift+Arrow extends selection, dynamic `aria-selected`; MultiSelect.test.tsx stubs converted (TC-11-IMPL) (completed 2026-05-12)
 - [ ] **Phase 30: DataTable APG Grid Cell-Wise Keyboard** - Right/Left/Down/Up cell navigation, Home/End row-bounds, PageUp/PageDown row-paging, Ctrl+Home/End table-bounds; DataTable.test.tsx stubs converted (TC-12-IMPL)
 - [ ] **Phase 31: NavigationMenu Disclosure → Menubar** - APG Menubar contract: Arrow horizontal/vertical, Home/End, Enter activates leaf, type-ahead, single tabindex="0" roving. **Backwards-compat decision in discuss-phase** (opt-in prop vs new default); NavigationMenu.test.tsx Disclosure tests replaced/augmented (TC-14-IMPL)
 - [ ] **Phase 32: TC-15 Remaining Component Test Coverage** - Tier 1+2 suites for Card, Skeleton, Heading, ProgressBar, Pagination, SkipLink, Switch, Tooltip (TC-15)
@@ -175,7 +175,7 @@ Plans:
 Plans:
 - [x] 28-01-PLAN.md — Date math + i18n + base calendar render (no keyboard yet)
 - [x] 28-02-PLAN.md — APG keyboard handler + focus trap + Phase 24 stub conversion
-- [ ] 28-03-PLAN.md — Live-region announcement (TC-10-LIVE) + WCAG 4.1.3 marker
+- [x] 28-03-PLAN.md — Live-region announcement (TC-10-LIVE) + WCAG 4.1.3 marker
 
 ### Phase 29: MultiSelect APG Listbox-Multi Completeness
 **Goal**: MultiSelect satisfies the full W3C APG listbox-multi contract — `aria-multiselectable="true"` on the listbox, Space toggles option selection without moving focus (currently types a literal space), Shift+Arrow extends selection from current focus, `aria-selected` is dynamic (currently hardcoded `false`). MultiSelect.test.tsx no-throw stubs convert to real assertions.
@@ -187,6 +187,11 @@ Plans:
   3. Shift+ArrowDown / Shift+ArrowUp extends selection range from the anchor focus to the new focus position
   4. MultiSelect.test.tsx no-throw stubs from Phase 24 are converted to real selection-state assertions; existing 22 tests preserved
   5. Existing prop interface unchanged
+
+**Plans:** 1 plan
+
+Plans:
+- [x] 29-01-PLAN.md — ARIA semantics (aria-multiselectable + dynamic aria-selected) + Space toggle + Shift+Arrow extend from anchor + stub conversion (TC-11-IMPL) (completed 2026-05-12)
 
 ### Phase 30: DataTable APG Grid Cell-Wise Keyboard
 **Goal**: DataTable adds cell-wise Arrow keyboard navigation to satisfy the W3C APG grid contract — Right/Left/Down/Up move between cells, Home/End jump to row bounds, PageUp/PageDown jump pages (or a configurable row-count if pagination isn't built-in), Ctrl+Home/End jump to table bounds. Existing sortable-header contract (`scope="col"`, `aria-sort`, native Enter/Space on `<button>` headers) stays as-is. DataTable.test.tsx cell-arrow no-throw stubs convert to real focus assertions.
@@ -289,8 +294,8 @@ Plans:
 | 25. AccessibilityStatement publishDate Fix + Regression Guards | v0.6 | 1/1 | Complete | 2026-05-10 |
 | 26. Publish Hygiene | v0.6 | 5/5 | Complete | 2026-05-11 |
 | 27. APG Live Regions | v0.7 | 1/1 | Complete   | 2026-05-11 |
-| 28. DatePicker APG Dialog-Grid Keyboard | v0.7 | 2/3 | In Progress|  |
-| 29. MultiSelect APG Listbox-Multi Completeness | v0.7 | 0/0 | Not started | - |
+| 28. DatePicker APG Dialog-Grid Keyboard | v0.7 | 3/3 | Complete   | 2026-05-11 |
+| 29. MultiSelect APG Listbox-Multi Completeness | v0.7 | 1/1 | Complete   | 2026-05-12 |
 | 30. DataTable APG Grid Cell-Wise Keyboard | v0.7 | 0/0 | Not started | - |
 | 31. NavigationMenu Disclosure → Menubar | v0.7 | 0/0 | Not started | - |
 | 32. TC-15 Remaining Component Test Coverage | v0.7 | 0/0 | Not started | - |
