@@ -5,9 +5,10 @@
  * - 2.1.1 Keyboard — Escape dismisses without moving focus
  * - 4.1.2 Name, Role, Value — role="tooltip", aria-describedby wiring
  */
-import { render, fireEvent, act, cleanup } from '@testing-library/react';
+import { render, screen, fireEvent, act, cleanup } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { Tooltip, TooltipTrigger, TooltipContent } from './Tooltip';
+import { expectNoAxeViolations } from '../_test/helpers';
 
 const renderTooltip = () => render(
     <Tooltip>
@@ -161,5 +162,102 @@ describe('Tooltip — WCAG 2.1 SC 1.4.13 (Content on Hover or Focus)', () => {
             advance(200);
             expect(trigger.getAttribute('aria-describedby')).toBeNull();
         });
+    });
+});
+
+/**
+ * Implementation note: D-02a waiver for the legacy SC 1.4.13 block above.
+ * The existing tests use fireEvent because the contract under test
+ * (Escape-doesn't-poison-dismissed-flag, hover-bridge cancel, reopen-after-blur)
+ * is timing-sensitive and the fake-timers + @testing-library/user-event v14 + vitest 4 combo
+ * deadlocks (see STATE.md Plan 27-01 deviations). The NEW Tier 1 + Tier 2 blocks
+ * below are D-02a-clean (no fireEvent / querySelector / configureAxe / toMatchSnapshot)
+ * and satisfy the Phase 22 template-setter contract for TC-15.
+ */
+describe('Tier 1: Table Stakes', () => {
+    afterEach(() => { cleanup(); });
+
+    it('mounts and renders the trigger child', () => {
+        render(
+            <Tooltip>
+                <TooltipTrigger>
+                    <button type="button">Open settings</button>
+                </TooltipTrigger>
+                <TooltipContent>Settings tooltip</TooltipContent>
+            </Tooltip>
+        );
+        expect(screen.getByRole('button', { name: /open settings/i })).toBeInTheDocument();
+    });
+
+    it('does not render the tooltip content before interaction', () => {
+        render(
+            <Tooltip>
+                <TooltipTrigger>
+                    <button type="button">Open settings</button>
+                </TooltipTrigger>
+                <TooltipContent>Settings tooltip</TooltipContent>
+            </Tooltip>
+        );
+        expect(screen.queryByRole('tooltip')).toBeNull();
+    });
+
+    it('TooltipContent renders the provided text when open', () => {
+        render(
+            <Tooltip>
+                <TooltipTrigger>
+                    <button type="button">Open settings</button>
+                </TooltipTrigger>
+                <TooltipContent>Settings tooltip</TooltipContent>
+            </Tooltip>
+        );
+        const trigger = screen.getByRole('button', { name: /open settings/i });
+        act(() => { trigger.focus(); });
+        expect(screen.getByRole('tooltip')).toHaveTextContent(/settings tooltip/i);
+    });
+
+    it('passes className through to TooltipContent when open', () => {
+        render(
+            <Tooltip>
+                <TooltipTrigger>
+                    <button type="button">Open settings</button>
+                </TooltipTrigger>
+                <TooltipContent className="custom-tt-class">Settings tooltip</TooltipContent>
+            </Tooltip>
+        );
+        const trigger = screen.getByRole('button', { name: /open settings/i });
+        act(() => { trigger.focus(); });
+        expect(screen.getByRole('tooltip').className).toContain('custom-tt-class');
+    });
+});
+
+describe('Tier 2: A11y Differentiators (role=tooltip + axe smoke)', () => {
+    afterEach(() => { cleanup(); });
+
+    it('exposes role="tooltip" when open', () => {
+        render(
+            <Tooltip>
+                <TooltipTrigger>
+                    <button type="button">Open settings</button>
+                </TooltipTrigger>
+                <TooltipContent>Settings tooltip</TooltipContent>
+            </Tooltip>
+        );
+        const trigger = screen.getByRole('button', { name: /open settings/i });
+        act(() => { trigger.focus(); });
+        expect(screen.getByRole('tooltip')).toBeInTheDocument();
+    });
+
+    it('axe-clean for trigger with open tooltip', async () => {
+        const { container } = render(
+            <Tooltip>
+                <TooltipTrigger>
+                    <button type="button">Open settings</button>
+                </TooltipTrigger>
+                <TooltipContent>Settings tooltip</TooltipContent>
+            </Tooltip>
+        );
+        const trigger = screen.getByRole('button', { name: /open settings/i });
+        act(() => { trigger.focus(); });
+        await expectNoAxeViolations(container);
     });
 });
