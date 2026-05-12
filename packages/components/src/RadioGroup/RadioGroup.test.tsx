@@ -24,7 +24,7 @@
  *   "the keystroke does not throw and the onChange contract is intact" —
  *   jsdom does not simulate the browser's native radio arrow behaviour.
  */
-import { useRef } from 'react';
+import { useRef, type MutableRefObject } from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, it, expect, vi } from 'vitest';
@@ -62,7 +62,7 @@ describe('Tier 1: Table Stakes', () => {
                     name="fruit"
                     options={OPTIONS}
                     ref={(node) => {
-                        ref.current = node;
+                        (ref as MutableRefObject<HTMLDivElement | null>).current = node;
                         captured = node;
                     }}
                 />

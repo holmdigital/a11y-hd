@@ -25,7 +25,6 @@ describe('expectKeyboardSequence', () => {
     });
 
     it('throws on step with empty key (failure-mode)', async () => {
-        // @ts-expect-error — testing runtime guard
         await expect(expectKeyboardSequence([{ key: '' }])).rejects.toThrow(/empty\/invalid key/);
     });
 

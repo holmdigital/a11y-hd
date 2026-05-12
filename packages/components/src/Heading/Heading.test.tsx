@@ -17,7 +17,7 @@
  * the level→tag contract so any future JSX-Tag refactor that re-triggers
  * TS2590 (or silently renders the wrong tag) fails loudly here first.
  */
-import { useRef } from 'react';
+import { useRef, type MutableRefObject } from 'react';
 import { render, screen } from '@testing-library/react';
 import { describe, it, expect } from 'vitest';
 
@@ -40,7 +40,7 @@ describe('Tier 1: Table Stakes', () => {
                 <Heading
                     level={2}
                     ref={(node) => {
-                        ref.current = node;
+                        (ref as MutableRefObject<HTMLHeadingElement | null>).current = node;
                         captured = node;
                     }}
                 >

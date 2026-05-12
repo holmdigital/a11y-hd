@@ -15,7 +15,7 @@
  * tests below assert the callback fires with the boolean value (true then
  * false) so future refactors can't silently swap it back to onChange.
  */
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, type MutableRefObject } from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, it, expect, vi } from 'vitest';
@@ -42,7 +42,7 @@ describe('Tier 1: Table Stakes', () => {
                 <Checkbox
                     label="Subscribe"
                     ref={(node) => {
-                        ref.current = node;
+                        (ref as MutableRefObject<HTMLInputElement | null>).current = node;
                         captured = node;
                     }}
                 />

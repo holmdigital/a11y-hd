@@ -15,7 +15,7 @@
  * Template note: mirrors the Phase 22 template-setter shape (Button.test.tsx).
  * Swedish characters å/ä/ö are preserved verbatim per CLAUDE.md user memory.
  */
-import { useRef } from 'react';
+import { useRef, type MutableRefObject } from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, it, expect } from 'vitest';
@@ -46,7 +46,7 @@ describe('Tier 1: Table Stakes', () => {
             return (
                 <SkipLink
                     ref={(node) => {
-                        ref.current = node;
+                        (ref as MutableRefObject<HTMLAnchorElement | null>).current = node;
                         captured = node;
                     }}
                 />

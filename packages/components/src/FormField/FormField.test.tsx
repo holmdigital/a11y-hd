@@ -18,7 +18,7 @@
  * in the wiring leaves the attribute looking valid while assistive tech
  * announces nothing.
  */
-import { useRef } from 'react';
+import { useRef, type MutableRefObject } from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, it, expect } from 'vitest';
@@ -41,7 +41,7 @@ describe('Tier 1: Table Stakes', () => {
                 <FormField
                     label="Email"
                     ref={(node) => {
-                        ref.current = node;
+                        (ref as MutableRefObject<HTMLInputElement | null>).current = node;
                         captured = node;
                     }}
                 />

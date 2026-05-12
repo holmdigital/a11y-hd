@@ -15,7 +15,7 @@
  * suites (Plans 22-06..09 mirror it). Keep the structure copyable: header
  * first, two top-level Tier describes, helper-driven assertions, AAA pattern.
  */
-import { useRef } from 'react';
+import { useRef, type MutableRefObject } from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, it, expect, vi } from 'vitest';
@@ -36,7 +36,7 @@ describe('Tier 1: Table Stakes', () => {
             return (
                 <Button
                     ref={(node) => {
-                        ref.current = node;
+                        (ref as MutableRefObject<HTMLButtonElement | null>).current = node;
                         captured = node;
                     }}
                 >
