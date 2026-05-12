@@ -1,5 +1,27 @@
 # @holmdigital/components
 
+## 2.4.0 — 2026-05-12
+
+### Added
+
+- **DataTable APG Grid Cell-Wise Keyboard Navigation (TC-12-IMPL, Phase 30)**
+  - `<table role="grid">` + `<tr role="row">` + `<th role="columnheader">` + `<td role="gridcell">` overlay on the existing native table semantics.
+  - Full APG grid keyboard matrix:
+    - Arrow Left/Right/Up/Down — cell-wise navigation (clamped at row/col bounds; header row at `row = -1`)
+    - Home / End — first / last column of the current row
+    - Ctrl+Home / Ctrl+End — table corners (first `<th>` / last `<td>`)
+    - PageUp / PageDown — 10-row paging (`PAGE_SIZE = 10`, module-scope const)
+  - Single-`tabindex="0"` roving anchor across header + data rows; click on any cell moves the anchor.
+  - Enter / Space on a focused sortable `<th>` delegates to the existing `handleSort` (direct call, not inner-`<button>.click()`).
+  - Arrow / Home / End / PageUp / PageDown / Ctrl+Home / Ctrl+End **never** trigger sort (focus-only — D-07).
+  - WCAG 2.1.1 Keyboard claimed in source JSDoc; axe-clean smoke passes on default and sorted renders.
+- DataTable test surface expanded from 17 to 33 tests; Phase 24 no-throw stubs converted to real focus assertions with `toHaveFocus()` + `tabindex` checks. D-02a anti-pattern gate clean (zero `querySelector` / `configureAxe` / `toMatchSnapshot` / `fireEvent`).
+
+### Unchanged (no breaking changes)
+
+- `DataTableProps` interface body byte-identical — no new prop added (`PAGE_SIZE` is a module-scope const).
+- Sortable-header contract (`scope="col"`, `aria-sort` cycling undefined→ascending→descending, inner `<button>` with hidden glyph) preserved byte-equivalent.
+
 ## @holmdigital/components — Unreleased (v0.7 Phase 28)
 
 ### BREAKING
