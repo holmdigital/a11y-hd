@@ -1,5 +1,16 @@
 # @holmdigital/engine
 
+## 2.5.3
+
+### Patch Changes
+
+- PUB-09 (Phase 33): `verify` script now chains `lint` (eslint) and `typecheck` (tsc --noEmit) before `check:exports` / `check:types` / `test:ci`. `prepublishOnly` unchanged — `npm publish` now fails if lint or typecheck reports errors.
+- Resolved 2 pre-existing lint errors in `src/core/regulatory-scanner.ts`:
+  - Declared `__ENGINE_VERSION__` as an ESLint readonly global via source-level `/* global __ENGINE_VERSION__ */` comment (chosen over `package.json#eslintConfig` because the repo uses flat config `eslint.config.mjs` which does NOT read legacy `eslintConfig`; the type was already declared via `src/globals.d.ts`).
+  - Swapped `// @ts-ignore` for `// @ts-expect-error` with rationale comment (per `@typescript-eslint/ban-ts-comment` rule defaults). The directive remains needed — `window.axe` is injected by the axe-core script tag at runtime and is not part of `lib.dom`.
+- TS2724 / `--skipLibCheck` contingency NOT triggered: `tsc --noEmit` exits 0 cleanly under puppeteer 23.10.4 + TypeScript 5.7.2. No skipLibCheck flag applied.
+- No source-behavior changes. Public API byte-equivalent to 2.5.2.
+
 ## 2.5.2
 
 ### Patch Changes
