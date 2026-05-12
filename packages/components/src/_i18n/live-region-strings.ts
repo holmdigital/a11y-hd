@@ -139,7 +139,7 @@ export function getAnnouncement(
     count: number
 ): string {
     const canonical: LiveRegionLocale =
-        (locale && LOCALE_ALIASES[locale]) ?? 'en';
+        (locale ? LOCALE_ALIASES[locale] : undefined) ?? 'en';
     // Only count-based tables are reachable through this overload.
     const table = LIVE_REGION_STRINGS[key as 'combobox.results' | 'multiselect.selected'];
     const fn = table[canonical] ?? table.en;
@@ -162,7 +162,7 @@ export function getDateAnnouncement(
     date: Date
 ): string {
     const canonical: LiveRegionLocale =
-        (locale && LOCALE_ALIASES[locale]) ?? 'en';
+        (locale ? LOCALE_ALIASES[locale] : undefined) ?? 'en';
     const prefix = DATEPICKER_SELECTED_PREFIX[canonical] ?? DATEPICKER_SELECTED_PREFIX.en;
     let formatted: string;
     try {

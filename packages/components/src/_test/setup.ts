@@ -15,6 +15,19 @@ import * as jestDomMatchers from '@testing-library/jest-dom/matchers';
 // The "./matchers" subpath only carries types, no runtime — see node_modules/@chialab/vitest-axe/package.json.
 import axeMatchers from '@chialab/vitest-axe';
 
+// Type augmentation: @chialab/vitest-axe adds `toHaveNoViolations` at runtime
+// but does not augment vitest's Assertion interface. Declare it here so
+// src/_test/axe.ts's `expect(results).toHaveNoViolations()` type-checks.
+declare module 'vitest' {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    interface Assertion<T = any> {
+        toHaveNoViolations(): T;
+    }
+    interface AsymmetricMatchersContaining {
+        toHaveNoViolations(): unknown;
+    }
+}
+
 expect.extend({ ...jestDomMatchers, ...axeMatchers });
 
 afterEach(() => cleanup());
