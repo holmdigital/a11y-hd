@@ -14,7 +14,6 @@ import { render, screen } from '@testing-library/react';
 import { readFileSync } from 'node:fs';
 import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import React from 'react';
 import { Breadcrumbs, BreadcrumbItem } from './Breadcrumbs';
 
 const __filename = fileURLToPath(import.meta.url);
