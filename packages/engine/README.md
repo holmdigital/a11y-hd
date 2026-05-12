@@ -111,9 +111,9 @@ npx hd-a11y-scan https://hospital.example.com --country US --sector private --st
   "url": "https://example.com",
   "timestamp": "2026-01-13T17:05:11.749Z",
   "metadata": {
-    "engineVersion": "2.1.5",
+    "engineVersion": "2.5.3",
     "axeCoreVersion": "4.11.1",
-    "standardsVersion": "1.2.3",
+    "standardsVersion": "2.5.2",
     "scanDuration": 2891,
     "pageTitle": "Example Domain",
     "pageLanguage": "en"

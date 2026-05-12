@@ -32,10 +32,15 @@ jobs:
       - uses: actions/setup-node@v4
         with: { node-version: 20, cache: 'npm' }
       - run: npm ci
-      - name: Lint All
-        run: npm run lint --workspaces
-      - name: Test All
-        run: npm run test --workspaces --if-present
+      - name: Verify All Packages
+        # `verify` runs the same chain as `prepublishOnly`:
+        # build && lint && typecheck && check:exports && check:types && test:ci.
+        # This single gate replaces separate lint/test steps and guarantees that
+        # CI matches what `npm publish` will run (Phase 33 / PUB-09).
+        run: |
+          npm run verify -w @holmdigital/standards
+          npm run verify -w @holmdigital/components
+          npm run verify -w @holmdigital/engine
 
   # 2. LEGAL COMPLIANCE SCAN
   compliance-scan:

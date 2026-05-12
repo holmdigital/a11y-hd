@@ -87,8 +87,8 @@ Code without documentation is technical debt.
 - **Bug Fixes**: Should include a reproduction case in the PR description.
 
 ### Code Style
-- **TypeScript**: Strict mode enabled. No `any`.
-- **Linting**: Run `npm run lint` before committing.
+- **TypeScript**: Strict mode enabled. No `any` — use `Reflect.set` for global mock writes, `as unknown as T` for partial-fixture widening in tests, `// @ts-expect-error` for intentionally-invalid inputs to negative-path tests.
+- **Verify gate**: Run `npm run verify -w @holmdigital/<pkg>` before committing. This runs the full `prepublishOnly` chain: `build && lint && typecheck && check:exports && check:types && test:ci`. All 3 packages are currently lint-clean at zero warnings — keep them that way. `npm publish` will fail if lint or typecheck reports errors.
 - **Tests**: 100% coverage for compliance logic.
 
 ### Versioning & Releases (Important!) 🚨
