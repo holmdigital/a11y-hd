@@ -230,6 +230,19 @@ Plans:
   3. D-02a clean across all 8 files; each includes at least one `expectNoAxeViolations` smoke
   4. Test-file count: 28 → 36; test count grows by ~50-100 tests depending on per-widget complexity
   5. `test:wcag-headers` count: 24 → 32
+  (actual baseline 22 → target 29 — reconciled during planning, see 32-08 SUMMARY)
+
+**Plans:** 8 plans
+
+Plans:
+- [ ] 32-01-PLAN.md — Card Tier 1+2 tests (TC-15)
+- [ ] 32-02-PLAN.md — Skeleton Tier 1+2 tests (TC-15)
+- [ ] 32-03-PLAN.md — Heading Tier 1+2 tests (TC-15, source untouched per TS2590 guard)
+- [ ] 32-04-PLAN.md — SkipLink Tier 1+2 tests (TC-15, Swedish copy preserved)
+- [ ] 32-05-PLAN.md — ProgressBar Tier 1+2 tests (TC-15)
+- [ ] 32-06-PLAN.md — Switch Tier 1+2 tests (TC-15, APG Space/Enter toggle)
+- [ ] 32-07-PLAN.md — Pagination Tier 1+2 tests (TC-15, no arrow-roving per RadioGroup precedent)
+- [ ] 32-08-PLAN.md — Tooltip audit/augment + verify + 2.5.0→2.6.0 + CHANGELOG (TC-15 close)
 
 ### Phase 33: Lint + Typecheck Verify Gates
 **Goal**: All 3 packages (`@holmdigital/standards`, `@holmdigital/components`, `@holmdigital/engine`) chain `lint` (eslint) and `typecheck` (tsc --noEmit) into the `verify` pipeline. New chain: `build && lint && typecheck && check:exports && check:types && test:ci`. Each package gets a `typecheck` script if it doesn't already have one. Closes the v0.6 publish-gating effort by adding the last two automated quality gates.

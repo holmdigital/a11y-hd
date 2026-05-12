@@ -3,7 +3,7 @@ gsd_state_version: 1.0
 milestone: v0.7
 milestone_name: APG Completion
 status: executing
-stopped_at: Phase 31 complete — NavigationMenu APG Menubar opt-in. TC-14-IMPL closed. @holmdigital/components 2.4.0→2.5.0.
+stopped_at: Phase 32 planned — TC-15 component test coverage. 8 plans across 3 waves (Wave 1 parallel Card/Skeleton/Heading/SkipLink; Wave 2 parallel ProgressBar/Switch/Pagination; Wave 3 Tooltip audit+verify+bump). MINOR 2.5.0→2.6.0. ROADMAP arithmetic reconciled (22 → 29 test files; Tooltip pre-existed).
 last_updated: "2026-05-12T08:10:00.000Z"
 last_activity: 2026-05-12
 progress:
