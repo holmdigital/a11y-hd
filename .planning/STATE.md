@@ -119,5 +119,5 @@ Last activity: 2026-05-11
 ## Session Continuity
 
 Last session: 2026-05-12T00:00:00.000Z
-Stopped at: Phase 30 complete — DataTable APG Grid Cell-Wise Keyboard (role=grid/row/columnheader/gridcell, roving tabindex, full APG keyboard matrix: Arrow/Home/End/Ctrl+Home/Ctrl+End/PageUp/PageDown, Enter+Space delegation on sortable headers, PAGE_SIZE=10). 29 files / 506 tests green. TC-12-IMPL closed. @holmdigital/components 2.3.0 → 2.4.0.
-Resume: Phase 31 (NavigationMenu Disclosure → Menubar) or `/gsd-progress` to advance
+Stopped at: Phase 31 context captured — NavigationMenu Disclosure → Menubar. 8 decisions locked (D-01 opt-in `pattern` prop default disclosure → 2.5.0 MINOR; D-02 multi-char type-ahead 500 ms; D-03 drop hover in menubar; D-04 leaf = native `<a role="menuitem">`; D-05 full ARIA role chain; D-06 clamped keyboard contract; D-07 D-02a-clean new tests; D-08 case-insensitive locale-naive type-ahead).
+Resume: `/gsd-plan-phase 31` for RESEARCH.md + 31-01-PLAN.md
