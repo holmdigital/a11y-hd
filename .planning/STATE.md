@@ -3,9 +3,9 @@ gsd_state_version: 1.0
 milestone: v0.7
 milestone_name: APG Completion
 status: executing
-stopped_at: Phase 28 complete — DatePicker APG dialog+grid + locale-aware live region. TC-10-IMPL + TC-10-LIVE closed.
-last_updated: "2026-05-11T20:00:00.000Z"
-last_activity: 2026-05-11
+stopped_at: Phase 31 complete — NavigationMenu APG Menubar opt-in. TC-14-IMPL closed. @holmdigital/components 2.4.0→2.5.0.
+last_updated: "2026-05-12T08:10:00.000Z"
+last_activity: 2026-05-12
 progress:
   total_phases: 11
   completed_phases: 3
@@ -101,6 +101,13 @@ Last activity: 2026-05-11
 - Phase 22 deferred-items entry moved to `## Resolved` section with `Resolved by Phase 26 Plan 01 (D-01) on 2026-05-11` back-reference.
 - No deviations — plan executed verbatim. Phase 26 Wave 2 (plans 02/03/04) now unblocked.
 
+### Plan 31-01 decisions + deviations (logged 2026-05-12)
+
+- **TC-14-IMPL closed.** NavigationMenu gains opt-in `pattern?: 'disclosure' | 'menubar'` (default disclosure preserves v0.6 byte-equivalence). MenubarRenderer ships full APG Menubar keyboard contract: roving tabindex + Map<string,HTMLElement> cellRefs + useLayoutEffect imperative focus + hasUserMovedRef mount-guard + parseMenubarKey module-scope helper.
+- **Q2 axe `role="none"` contingency NOT triggered** — axe-core 4.x clean on `<li role="none">` inside `<ul role="menubar">`. D-05 ships unchanged.
+- **Three runtime deviations auto-fixed (Rule 3):** (a) D-04 Enter activation test uses `dispatchEvent` + `defaultPrevented` instead of click-spy because jsdom doesn't synthesise `<a>` activation on Enter; (b) fake-timer test replaced with real-timer 600 ms wait because userEvent v14 + vitest 4 fake-timer integration hangs; (c) ArrowDown-on-leaf test pre-navigates via `{End}` so `activeKeyRef.current` reads the right key. PRECONDITION assertions (`tagName === 'A'`, `toHaveAttribute('href', '/help')`) retained — they're the D-04 element-type proofs.
+- **Patterns established for Phase 32+:** parseMenubarKey discriminated-union keying generalises to N-depth tree (`tree:0:2:1` style); two-sibling-component dispatch on a `pattern` prop is a proven non-breaking refactor shape.
+
 ### Plan 23-01 decisions + deviations (logged 2026-05-10)
 
 - **CSS layout decision: NESTED** (`dist/<Name>/<Name>.css`) — empirically detected by smoke probe. Load-bearing for Wave 2 plans. Recorded in 23-01-SUMMARY.md.
@@ -118,6 +125,6 @@ Last activity: 2026-05-11
 
 ## Session Continuity
 
-Last session: 2026-05-12T00:00:00.000Z
-Stopped at: Phase 31 planned — 31-RESEARCH.md + 31-01-PLAN.md written. Plan-checker REVISE→APPROVED: tasks 01+02 merged (tsconfig.base.json `noUnusedLocals: true` — Phase 30 trap recurrence avoided), pre-phase fireEvent baseline=23 locked as invariant, D-04 leaf-`<a>` element-type gate added, D-08 toLowerCase grep gate added, axe role="none" Q2 contingency now HALTS instead of silently mutating D-05. 3 tasks total across 3 internal waves.
-Resume: `/gsd-execute-phase 31` to ship NavigationMenu menubar opt-in (target @holmdigital/components 2.5.0)
+Last session: 2026-05-12T08:10:00.000Z
+Stopped at: Phase 31 COMPLETE — NavigationMenu APG Menubar opt-in shipped. TC-14-IMPL closed. 3 tasks across 3 internal waves; 43 NavigationMenu tests (20+20+3) all green; `npm run verify -w @holmdigital/components` exit 0; @holmdigital/components 2.4.0→2.5.0 (additive MINOR). Q2 axe `role="none"` contingency did NOT trigger (D-05 unchanged). Three deviations logged in 31-01-SUMMARY.md (Rule 3 — jsdom Enter-on-`<a>` activation, userEvent v14+vitest 4 fake-timer brittleness, ArrowDown-on-leaf focus drift) — all auto-fixed without scope creep.
+Resume: next phase per ROADMAP v0.7
