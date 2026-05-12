@@ -1,5 +1,23 @@
 # @holmdigital/components
 
+## 2.6.1 — 2026-05-12
+
+### Changed — Publish hygiene (PUB-09, Phase 33)
+
+- `verify` script now chains `lint` (eslint) and `typecheck` (tsc --noEmit) before `check:exports` / `check:types` / `test:ci`. `prepublishOnly` unchanged — `npm publish` now fails if lint or typecheck reports errors.
+- Added `@types/node@^22.10.2` to devDependencies (matches engine + standards monorepo pin). Dev-side only — does not affect published runtime bundle.
+- Resolved 27 pre-existing `tsc --noEmit` errors across 5 categories (all dev-side; public API byte-equivalent to 2.6.0):
+  1. Node.js types — `@types/node` resolution for `node:fs` / `node:path` / `node:url` / `__dirname` in test files (Route A1: devDependency install + minimal `tsconfig.json` `types: ["node"]` overlay so TS picks it up)
+  2. vitest-axe matcher type augmentation — `declare module 'vitest'` for `toHaveNoViolations` in `src/_test/setup.ts`
+  3. Read-only `ref.current` assignment in Phase-22 template-setter pattern — `MutableRefObject` cast applied across 8 files (Button, Checkbox, FormField, Heading, RadioGroup, SkipLink test files + `_test/helpers/expectKeyboardSequence` helper site); expanded from the 2 files originally planned after preflight grep surfaced the same pattern repo-wide
+  4. Removed unused `@ts-expect-error` directive in `expectKeyboardSequence.test.ts`
+  5. Narrowed `LiveRegionLocale` resolution in `_i18n/live-region-strings.ts` at the two locale-fallback sites (`getAnnouncement` + `getDateAnnouncement`)
+- Resolved 5 pre-existing lint errors absorbed into PUB-09 scope (dormant on master because lint wasn't part of any gate pre-Phase-33):
+  - 4 × `'React' is not defined` (no-undef) in DatePicker.tsx source + Dialog/Modal/NavigationMenu test files → added `import type React from 'react'` (TS-only namespace import, zero runtime impact)
+  - 1 × `Rule react-hooks/exhaustive-deps not found` at DatePicker.tsx:124 inline-disable comment → installed `eslint-plugin-react-hooks@7.1.1` at monorepo root devDeps and narrowly registered ONLY the `exhaustive-deps` rule (full `react-hooks/recommended` set surfaces 18 pre-existing react-compiler violations deferred to a dedicated v0.7 audit plan)
+  - Plus 1 × unused React import removed in Breadcrumbs.test.tsx
+- No public exports changed. No test behavior changed. No `as any` casts introduced.
+
 ## 2.6.0 — 2026-05-12
 
 ### Added — Test coverage (TC-15, Phase 32)
