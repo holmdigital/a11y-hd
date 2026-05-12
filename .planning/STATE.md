@@ -3,7 +3,7 @@ gsd_state_version: 1.0
 milestone: v0.7
 milestone_name: APG Completion
 status: executing
-stopped_at: Phase 32 COMPLETE — TC-15 closed. 8 plans across 3 waves shipped (Wave 1 Card/Skeleton/Heading/SkipLink; Wave 2 ProgressBar/Switch/Pagination; Wave 3 Tooltip audit + 2.5.0→2.6.0 bump + CHANGELOG). 29 colocated component test files (was 22) carrying Tier 1+2+axe smoke + WCAG SC header; 36 vitest files / 634 tests green; full verify exit 0. Tooltip legacy SC 1.4.13 block preserved under documented D-02a waiver (fake-timer + user-event v14 + vitest 4 deadlock per Plan 27-01).
+stopped_at: Phase 33 planned — Lint+Typecheck Verify Gates (PUB-09). 4 plans (Wave 1: 33-01 standards wire-up, 33-02 engine fix 2 lint-errors+wire-up, 33-03 components fix 27 TS-errors+@types/node@^22.10.2 devDep+wire-up; Wave 2: 33-04 final verify+PATCH bumps standards 2.5.1→2.5.2, components 2.6.0→2.6.1, engine 2.5.2→2.5.3+CHANGELOG). Route A1 locked (devDep over tsconfig types-array).
 last_updated: "2026-05-12T08:50:00.000Z"
 last_activity: 2026-05-12
 progress:
