@@ -19,7 +19,8 @@
  * — className composition, ref forwarding, prop passthrough — and
  * (2) the integration-level dialog contract Modal inherits from Dialog.
  */
-import { useRef, useState } from 'react';
+import type React from 'react';
+import { useRef, useState, type MutableRefObject } from 'react';
 import { render, fireEvent, screen, cleanup } from '@testing-library/react';
 import { describe, it, expect, vi, afterEach } from 'vitest';
 
@@ -87,7 +88,7 @@ describe('Tier 1: Table Stakes', () => {
             return (
                 <Modal
                     ref={(node) => {
-                        ref.current = node;
+                        (ref as MutableRefObject<HTMLDialogElement | null>).current = node;
                         captured = node;
                     }}
                     isOpen={true}

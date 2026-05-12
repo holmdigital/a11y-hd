@@ -13,6 +13,7 @@
  * used to live here was removed in Plan 22-08 once the central polyfill
  * was proven via TC-04 (Modal.test.tsx).
  */
+import type React from 'react';
 import { useState } from 'react';
 import { render, fireEvent, cleanup } from '@testing-library/react';
 import { describe, it, expect, afterEach } from 'vitest';

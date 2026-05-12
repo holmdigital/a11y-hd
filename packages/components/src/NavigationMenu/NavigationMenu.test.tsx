@@ -62,7 +62,8 @@
  * appear in this file: no direct DOM probing via raw selector queries,
  * no per-test axe configuration override, no snapshot matchers.
  */
-import { useRef } from 'react';
+import type React from 'react';
+import { useRef, type MutableRefObject } from 'react';
 import { render, screen, waitFor, fireEvent } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, it, expect, vi } from 'vitest';
@@ -127,7 +128,7 @@ describe('Tier 1: Table Stakes', () => {
                 <NavigationMenu
                     items={ITEMS}
                     ref={(node) => {
-                        ref.current = node;
+                        (ref as MutableRefObject<HTMLElement | null>).current = node;
                         captured = node;
                     }}
                 />

@@ -1,3 +1,4 @@
+import type React from 'react';
 import { useId, useState, useRef, useMemo, useEffect, useLayoutEffect } from 'react';
 import './DatePicker.css';
 import {
