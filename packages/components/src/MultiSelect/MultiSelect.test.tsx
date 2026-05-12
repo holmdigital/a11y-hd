@@ -18,27 +18,9 @@
  *   listbox, aria-activedescendant moves on Arrow keys, chip remove button
  *   aria-label="Remove {label}".
  *
- * Implementation note (deferred to v0.7 backlog):
- *   APG listbox-multi gaps NOT implemented in MultiSelect.tsx today:
- *     - Space on the focused input has NO toggle handler — it inserts a
- *       literal space character into the input. APG specifies Space should
- *       toggle the focused option (without moving focus). Backlog: TC-11-IMPL.
- *     - Shift+ArrowDown / Shift+ArrowUp does NOT extend selection — there is
- *       no modifier branch in the keyDown handler. Backlog: TC-11-IMPL.
- *     - <LiveRegion> / aria-live region was added in Phase 27 (TC-11-LIVE).
- *       See `describe('live-region (TC-11-LIVE)', ...)` block at the bottom.
- *
- *   Tier-2 below covers what the source DOES implement; the parametrised
- *   APG-gap row asserts the listed keystrokes do not throw (no-throw stubs
- *   per D-01 partial-stub strategy). When TC-11-IMPL lands the no-throw
- *   row will be replaced with real assertions.
- *
- *   Chip-navigation via ArrowLeft from the input (MultiSelect.tsx lines
- *   104-112) is a comment-only placeholder in the source — silently omitted
- *   from this test file (no no-throw row, no backlog reference) per the
- *   planner's discretion call: source-acknowledged TODO comments do not
- *   warrant a stub assertion that would have to be rewritten when the
- *   feature lands.
+ * Phase 29 (TC-11-IMPL) closed all APG listbox-multi gaps previously documented
+ * here as no-throw stubs: aria-multiselectable, dynamic aria-selected, Space-toggle,
+ * and Shift+Arrow range-extend now have real assertions in this file.
  *
  * - 4.1.3 Status Messages — Phase 27 (TC-11-LIVE) added a LiveRegion that
  *   announces the current selection count after each toggle/remove. Tests in
@@ -352,35 +334,139 @@ describe('Tier 2: A11y Differentiators', () => {
         expect(onChange).toHaveBeenCalledWith([]);
     });
 
-    it.each([
-        // APG specifies Space toggles the focused option WITHOUT moving focus
-        // (TC-11-IMPL). Source has no Space branch — it inserts a literal
-        // space character into the input. No-throw stub per D-01.
-        { name: 'Space (APG: toggle option; source: inserts literal space)', key: ' ' },
-        // APG specifies Shift+ArrowDown/Up extends contiguous selection
-        // (TC-11-IMPL). Source has no Shift branch — Shift is ignored, the
-        // un-modified Arrow branch runs. No-throw stub.
-        { name: 'Shift+ArrowDown (APG: extend selection; source: plain ArrowDown)', key: '{Shift>}{ArrowDown}{/Shift}' },
-        { name: 'Shift+ArrowUp (APG: extend selection; source: plain ArrowUp)', key: '{Shift>}{ArrowUp}{/Shift}' },
-    ])(
-        'APG-gap keystroke does not throw on the focused input — $name (deferred to TC-11-IMPL)',
-        async ({ key }) => {
-            const user = userEvent.setup();
-            render(
+    it('Space on a focused option toggles selection without moving focus AND announces new count (TC-11-IMPL)', async () => {
+        const onChange = vi.fn();
+        const user = userEvent.setup();
+        function Wrapper() {
+            const [sel, setSel] = React.useState<string[]>([]);
+            return (
                 <MultiSelect
                     label="Pick fruits"
                     options={OPTIONS}
-                    selected={[]}
-                    onChange={() => {}}
-                />,
+                    selected={sel}
+                    onChange={(next) => { onChange(next); setSel(next); }}
+                />
             );
-            const input = screen.getByRole('combobox');
-            await user.click(input);
-            await user.keyboard(key);
-            // Component still mounted and input still reachable.
-            expect(screen.getByRole('combobox')).toBeInTheDocument();
-        },
-    );
+        }
+        render(<Wrapper />);
+        const input = screen.getByRole('combobox');
+        await user.click(input);                // opens listbox
+        await user.keyboard('{ArrowDown}');     // focusedIndex=0 (Apple), anchor=0
+        await user.keyboard(' ');               // Space-toggle
+        expect(onChange).toHaveBeenCalledWith(['a']);
+        // D-02: do NOT move focus.
+        expect(input).toHaveFocus();
+        // aria-activedescendant pointer unchanged after Space (focusedIndex preserved).
+        expect(input.getAttribute('aria-activedescendant')).toMatch(/option-0$/);
+        // Phase 27 live-region announcement fires (Pitfall 2 regression guard).
+        expect(await screen.findByText('1 item selected')).toBeInTheDocument();
+    });
+
+    it('Shift+ArrowDown extends selection from anchor to current focus (TC-11-IMPL)', async () => {
+        const onChange = vi.fn();
+        const user = userEvent.setup();
+        const OPTS_4 = [
+            { value: 'a', label: 'Apple' },
+            { value: 'b', label: 'Banana' },
+            { value: 'c', label: 'Cherry' },
+            { value: 'd', label: 'Date' },
+        ];
+        render(
+            <MultiSelect
+                label="Pick fruits"
+                options={OPTS_4}
+                selected={[]}
+                onChange={onChange}
+            />,
+        );
+        const input = screen.getByRole('combobox');
+        await user.click(input);
+        await user.keyboard('{ArrowDown}');                 // focus=0, anchor=0
+        await user.keyboard('{ArrowDown}');                 // focus=1, anchor=1
+        await user.keyboard('{Shift>}{ArrowDown}{/Shift}'); // focus=2, extend [1..2] => ['b','c']
+        expect(onChange).toHaveBeenLastCalledWith(['b', 'c']);
+        await user.keyboard('{Shift>}{ArrowDown}{/Shift}'); // focus=3, extend [1..3] => ['b','c','d']
+        expect(onChange).toHaveBeenLastCalledWith(['b', 'c', 'd']);
+    });
+
+    it('Shift+ArrowUp extends selection from anchor toward focus (TC-11-IMPL)', async () => {
+        const onChange = vi.fn();
+        const user = userEvent.setup();
+        const OPTS_4 = [
+            { value: 'a', label: 'Apple' },
+            { value: 'b', label: 'Banana' },
+            { value: 'c', label: 'Cherry' },
+            { value: 'd', label: 'Date' },
+        ];
+        render(
+            <MultiSelect
+                label="Pick fruits"
+                options={OPTS_4}
+                selected={[]}
+                onChange={onChange}
+            />,
+        );
+        const input = screen.getByRole('combobox');
+        await user.click(input);
+        await user.keyboard('{ArrowDown}');                 // focus=0, anchor=0
+        await user.keyboard('{ArrowDown}');                 // focus=1, anchor=1
+        await user.keyboard('{ArrowDown}');                 // focus=2, anchor=2
+        await user.keyboard('{Shift>}{ArrowUp}{/Shift}');   // focus=1, extend [1..2] => ['b','c']
+        expect(onChange).toHaveBeenLastCalledWith(['b', 'c']);
+    });
+
+    it('plain Arrow resets anchor; subsequent Shift+Arrow extends from NEW anchor (TC-11-IMPL)', async () => {
+        const onChange = vi.fn();
+        const user = userEvent.setup();
+        function Wrapper() {
+            const [sel, setSel] = React.useState<string[]>([]);
+            return (
+                <MultiSelect
+                    label="Pick"
+                    options={[
+                        { value: 'a', label: 'Apple' },
+                        { value: 'b', label: 'Banana' },
+                        { value: 'c', label: 'Cherry' },
+                        { value: 'd', label: 'Date' },
+                    ]}
+                    selected={sel}
+                    onChange={(next) => { onChange(next); setSel(next); }}
+                />
+            );
+        }
+        render(<Wrapper />);
+        const input = screen.getByRole('combobox');
+        await user.click(input);
+        await user.keyboard('{ArrowDown}');                 // focus=0 anchor=0
+        await user.keyboard('{Shift>}{ArrowDown}{/Shift}'); // focus=1, extend [0..1] => ['a','b']
+        expect(onChange).toHaveBeenLastCalledWith(['a', 'b']);
+        // availableOptions now = [Cherry, Date] (Apple+Banana filtered out).
+        // focusedIndex post-render is still 1 numerically, anchor=0. Plain Arrow resets anchor.
+        await user.keyboard('{ArrowDown}');                 // wraps in shrunken list; focus moves, anchor RESETS to new focus
+        await user.keyboard('{Shift>}{ArrowDown}{/Shift}'); // extend from NEW anchor onward
+        // Selection accumulates — should include the new range merged with previous ['a','b'].
+        // The exact final array depends on the filter-shifted indices, but it MUST contain all four values.
+        const lastCallArg = onChange.mock.calls[onChange.mock.calls.length - 1][0];
+        expect(lastCallArg).toEqual(expect.arrayContaining(['a', 'b', 'c', 'd']));
+    });
+
+    it('Space falls through to literal-space typing when listbox is closed (D-02 gate)', async () => {
+        const user = userEvent.setup();
+        render(
+            <MultiSelect
+                label="Pick fruits"
+                options={OPTIONS}
+                selected={[]}
+                onChange={() => {}}
+            />,
+        );
+        const input = screen.getByRole('combobox') as HTMLInputElement;
+        await user.click(input);
+        await user.keyboard('{Escape}');     // closes the listbox (isOpen=false)
+        expect(input).toHaveAttribute('aria-expanded', 'false');
+        await user.keyboard('a b');          // 'a', space, 'b' — space falls through per D-02 gate
+        expect(input.value).toBe('a b');
+    });
 
     it('listbox carries aria-multiselectable="true" (TC-11-IMPL)', async () => {
         const user = userEvent.setup();

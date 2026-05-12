@@ -56,6 +56,11 @@ export const MultiSelect: React.FC<MultiSelectProps> = ({
     const inputRef = useRef<HTMLInputElement>(null);
     const containerRef = useRef<HTMLDivElement>(null);
 
+    // APG listbox-multi anchor (TC-11-IMPL, Phase 29 D-01):
+    // Tracks the "starting point" for Shift+Arrow range-extend. Reset on every
+    // non-Shift Arrow / click / typeahead.
+    const anchorIndex = useRef<number>(-1);
+
 
     const id = useId();
     const listboxId = `${id}-listbox`;
@@ -96,23 +101,78 @@ export const MultiSelect: React.FC<MultiSelectProps> = ({
         inputRef.current?.focus();
     };
 
+    // APG Space-toggle path (TC-11-IMPL, Phase 29 D-02):
+    // Toggles `value` in selected[] without closing the listbox, clearing the
+    // input, or moving focus. MUST set hasInteracted.current = true so the
+    // Phase 27 (TC-11-LIVE) live-region announcement fires on Space-toggle.
+    const toggleOption = (value: string) => {
+        hasInteracted.current = true;
+        if (selected.includes(value)) {
+            onChange(selected.filter(v => v !== value));
+        } else {
+            onChange([...selected, value]);
+        }
+        // Intentionally NOT: setInputValue(''), setIsOpen(false), setFocusedIndex(-1),
+        // inputRef.current?.focus(). APG: Space toggles without moving focus.
+    };
+
+    // APG Shift+Arrow range-extend (TC-11-IMPL, Phase 29 D-01, Assumption A1):
+    // Extend-only semantics — union range [min(anchor,focus)..max(anchor,focus)]
+    // with the existing selected[]. Never deselects on direction reverse.
+    const extendSelectionToFocus = (newFocus: number) => {
+        const anchor = anchorIndex.current;
+        if (anchor < 0) return;
+        const lo = Math.min(anchor, newFocus);
+        const hi = Math.max(anchor, newFocus);
+        const range = availableOptions.slice(lo, hi + 1).map(o => o.value);
+        const next = Array.from(new Set([...selected, ...range]));
+        hasInteracted.current = true;
+        onChange(next);
+    };
+
     const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
         if (activeTokenIndex !== -1) {
             handleTokenNavigation(e);
             return;
         }
 
+        // Note (Pitfall 3): availableOptions filters out already-selected options
+        // (line 66-69). After a Space-toggle, the toggled option visually disappears
+        // from the popup; the next visible-index then shifts. This is inherited
+        // behavior — Phase 29 accepts it (CONTEXT.md D-02, RESEARCH.md Pitfall 3).
         switch (e.key) {
-            case 'ArrowDown':
+            case 'ArrowDown': {
                 e.preventDefault();
                 setIsOpen(true);
-                setFocusedIndex(prev => prev < availableOptions.length - 1 ? prev + 1 : 0);
+                const next = focusedIndex < availableOptions.length - 1 ? focusedIndex + 1 : 0;
+                setFocusedIndex(next);
+                if (e.shiftKey) {
+                    extendSelectionToFocus(next);
+                    // anchor unchanged on Shift+Arrow
+                } else {
+                    anchorIndex.current = next;
+                }
                 break;
-            case 'ArrowUp':
+            }
+            case 'ArrowUp': {
                 e.preventDefault();
                 setIsOpen(true);
-                setFocusedIndex(prev => prev > 0 ? prev - 1 : availableOptions.length - 1);
+                const next = focusedIndex > 0 ? focusedIndex - 1 : availableOptions.length - 1;
+                setFocusedIndex(next);
+                if (e.shiftKey) {
+                    extendSelectionToFocus(next);
+                } else {
+                    anchorIndex.current = next;
+                }
                 break;
+            }
+            case ' ':
+                if (isOpen && focusedIndex >= 0) {
+                    e.preventDefault();
+                    toggleOption(availableOptions[focusedIndex].value);
+                    return; // listbox stays open, focusedIndex unchanged, input keeps focus
+                }
+                break; // fall through — input handles space normally (D-02)
             case 'Enter':
                 e.preventDefault();
                 if (isOpen && focusedIndex >= 0) {
@@ -303,8 +363,8 @@ export const MultiSelect: React.FC<MultiSelectProps> = ({
                             id={`${id}-option-${index}`}
                             role="option"
                             aria-selected={selected.includes(option.value)}
-                            onClick={() => handleSelect(option.value)}
-                            onMouseEnter={() => setFocusedIndex(index)}
+                            onClick={() => { anchorIndex.current = index; handleSelect(option.value); }}
+                            onMouseEnter={() => { setFocusedIndex(index); anchorIndex.current = index; }}
                             style={{
                                 ...styles.option,
                                 ...(focusedIndex === index ? styles.activeOption : {})
