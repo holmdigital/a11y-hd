@@ -5,6 +5,8 @@
 ![TypeScript](https://img.shields.io/badge/TypeScript-Ready-blue)
 [![Downloads](https://img.shields.io/npm/dm/@holmdigital/engine.svg)](https://www.npmjs.com/package/@holmdigital/engine)
 
+> Full documentation and live scanner: [holmdigital.se/wcag-verktyg/engine](https://holmdigital.se/wcag-verktyg/engine)
+
 > Regulatory accessibility test engine with Virtual DOM, Shadow DOM support, and built-in legal compliance reporting.
 
 ## Why this package?

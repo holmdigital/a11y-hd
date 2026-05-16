@@ -5,6 +5,8 @@
 ![TypeScript](https://img.shields.io/badge/TypeScript-Ready-blue)
 [![Downloads](https://img.shields.io/npm/dm/@holmdigital/components.svg)](https://www.npmjs.com/package/@holmdigital/components)
 
+> Full documentation: [holmdigital.se/wcag-verktyg/components](https://holmdigital.se/wcag-verktyg/components)
+
 > Prescriptive, accessible React components for regulatory compliance.
 
 ## Why this package?

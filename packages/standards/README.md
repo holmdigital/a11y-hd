@@ -5,6 +5,8 @@
 ![TypeScript](https://img.shields.io/badge/TypeScript-Ready-blue)
 [![Downloads](https://img.shields.io/npm/dm/@holmdigital/standards.svg)](https://www.npmjs.com/package/@holmdigital/standards)
 
+> Full documentation: [holmdigital.se/wcag-verktyg/standards](https://holmdigital.se/wcag-verktyg/standards)
+
 > Machine-readable regulatory database for WCAG, EN 301 549, DOS-lagen, EU Legal Frameworks (WAD/EAA), Australian DDA, U.S. ADA (Title II / Title III / Section 508), and U.S. HHS Section 504 (Rehabilitation Act, healthcare/HHS-funded private sector).
 
 ## Why this package?

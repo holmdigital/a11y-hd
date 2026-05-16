@@ -48,6 +48,14 @@ Stay ahead of enforcement deadlines and compliance requirements.
 *   **[EU Legal Framework (WAD & EAA)](./docs/guides/eu-legal-framework.md)** - Understanding the impact of current and upcoming regulations.
 *   **[Nordic Regulatory Authorities](./docs/guides/nordic-authorities.md)** - Details on Digg (SE), Traficom (FI), and others.
 
+## Landing pages
+
+Full documentation and user guides are available at:
+
+- [Engine](https://holmdigital.se/wcag-verktyg/engine): hd-a11y-scan CLI for accessibility testing
+- [Standards](https://holmdigital.se/wcag-verktyg/standards): WCAG and EAA rules as an npm package
+- [Components](https://holmdigital.se/wcag-verktyg/components): accessible React components
+
 ## 📦 Packages
 
 This monorepo contains three core NPM packages and a documentation wiki:
