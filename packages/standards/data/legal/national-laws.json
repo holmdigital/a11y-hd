@@ -530,17 +530,17 @@
                 },
                 "inForce": true,
                 "effectiveDate": "2024-07-08",
-                "note": "Applies to private organizations — including hospitals, physician practices, federally qualified health centers, long-term care facilities, health plans, and research institutions — that receive federal financial assistance from the U.S. Department of Health and Human Services (HHS), directly or indirectly. HHS administers over 100 programs, making the scope extensive. Medicare Part B reimbursements are considered federal financial assistance triggering Section 504 obligations. Five content exemptions exist: archived content, pre-existing conventional documents, individualized password-protected documents, pre-existing social media posts, and third-party content not controlled by the recipient. Does NOT cover federal agencies (see us-508) or state/local governments (see us-ada-title-ii). Rule published 89 FR 40066 (May 9, 2024); general Section 504 obligations and Final Rule effective July 8, 2024; WCAG 2.1 AA technical benchmark enforcement begins 2026-05-11 (15+ employees) / 2027-05-10 (<15 employees) — see complianceDeadlines.",
+                "note": "Applies to private organizations — including hospitals, physician practices, federally qualified health centers, long-term care facilities, health plans, and research institutions — that receive federal financial assistance from the U.S. Department of Health and Human Services (HHS), directly or indirectly. HHS administers over 100 programs, making the scope extensive. Medicare Part B reimbursements are considered federal financial assistance triggering Section 504 obligations. Five content exemptions exist: archived content, pre-existing conventional documents, individualized password-protected documents, pre-existing social media posts, and third-party content not controlled by the recipient. Does NOT cover federal agencies (see us-508) or state/local governments (see us-ada-title-ii). Rule published 89 FR 40066 (May 9, 2024); general Section 504 obligations and Final Rule effective July 8, 2024; WCAG 2.1 AA technical benchmark enforcement begins 2027-05-11 (15+ employees) / 2028-05-10 (<15 employees) — see complianceDeadlines. Compliance deadlines were extended by one year via HHS Interim Final Rule (2026-09266), published in the Federal Register on May 11, 2026, with a 60-day public comment window closing July 6, 2026 (docket HHS-OCR-2026-0004). Technical standards (WCAG 2.1 AA) and scope are unchanged.",
                 "complianceDeadlines": {
                     "largeEntity": {
                         "employeeThreshold": 15,
-                        "deadline": "2026-05-11",
-                        "description": "Recipients of HHS federal financial assistance with 15 or more employees must conform web content and mobile apps to WCAG 2.1 Level A and AA (45 C.F.R. § 84.85)."
+                        "deadline": "2027-05-11",
+                        "description": "Recipients of HHS federal financial assistance with 15 or more employees must conform web content and mobile apps to WCAG 2.1 Level A and AA (45 C.F.R. § 84.85). Deadline extended from 2026-05-11 by HHS Interim Final Rule published 2026-05-11 (Federal Register doc 2026-09266)."
                     },
                     "smallEntity": {
                         "employeeThreshold": 14,
-                        "deadline": "2027-05-10",
-                        "description": "Recipients of HHS federal financial assistance with fewer than 15 employees must conform web content and mobile apps to WCAG 2.1 Level A and AA (45 C.F.R. § 84.85)."
+                        "deadline": "2028-05-10",
+                        "description": "Recipients of HHS federal financial assistance with fewer than 15 employees must conform web content and mobile apps to WCAG 2.1 Level A and AA (45 C.F.R. § 84.85). Deadline extended from 2027-05-10 by HHS Interim Final Rule published 2026-05-11 (Federal Register doc 2026-09266)."
                     }
                 }
             }

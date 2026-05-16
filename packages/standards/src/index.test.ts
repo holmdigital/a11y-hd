@@ -386,8 +386,9 @@ describe('National Laws — US HHS Section 504', () => {
         const law = getNationalLaws('US').find(l => l.id === 'us-hhs-section-504');
         const large = law?.complianceDeadlines?.largeEntity;
         const small = law?.complianceDeadlines?.smallEntity;
-        expect(large?.deadline).toBe('2026-05-11');
-        expect(small?.deadline).toBe('2027-05-10');
+        // Deadlines extended +1y by HHS IFR 2026-09266 (published 2026-05-11)
+        expect(large?.deadline).toBe('2027-05-11');
+        expect(small?.deadline).toBe('2028-05-10');
         // Narrow on the discriminant before reading employeeThreshold
         expect(large && 'employeeThreshold' in large ? large.employeeThreshold : undefined).toBe(15);
         expect(small && 'employeeThreshold' in small ? small.employeeThreshold : undefined).toBe(14);
