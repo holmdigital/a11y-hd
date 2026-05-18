@@ -1,0 +1,23 @@
+name: Notify on Release
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send ntfy notification
+        run: |
+          HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" \
+            -H "Authorization: Bearer ${{ secrets.KARIN_NTFY_TOKEN }}" \
+            -H "Title: Ny release: ${{ github.event.release.tag_name }}" \
+            -d "Version ${{ github.event.release.tag_name }} publicerad pa npm. Kontrollera att holmdigital.se visar senaste versionen." \
+            https://notify.holmdigital.se/vi)
+          echo "ntfy HTTP status: $HTTP_STATUS"
+          if [ "$HTTP_STATUS" != "200" ]; then
+            echo "ERROR: ntfy notification failed with status $HTTP_STATUS"
+            exit 1
+          fi
+          echo "ntfy notification sent successfully"
