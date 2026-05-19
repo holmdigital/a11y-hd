@@ -89,7 +89,7 @@
         "puppeteer": "23.10.4",
         "react": "^18.3.1 || ^19.0.0",
         "react-dom": "^18.3.1 || ^19.0.0",
-        "ws": "^8.18.0"
+        "ws": "^8.20.1"
     },
     "devDependencies": {
         "@types/cosmiconfig": "^5.0.3",
