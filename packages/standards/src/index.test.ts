@@ -378,8 +378,11 @@ describe('National Laws — US HHS Section 504', () => {
         expect(law).toBeDefined();
         expect(law?.euFramework).toBe('REHAB');
         expect(law?.scope).toBe('private');
-        expect(law?.inForce).toBe(true);
-        expect(law?.effectiveDate).toBe('2024-07-08');
+        // effectiveDate reflects the WCAG benchmark in-force date for the large-entity tier
+        // (HHS IFR 2026-09266 extended this from 2026-05-11 to 2027-05-11); inForce flips
+        // to true on that date — drift-guard test validates the relationship.
+        expect(law?.inForce).toBe(false);
+        expect(law?.effectiveDate).toBe('2027-05-11');
     });
 
     it('should have tiered compliance deadlines for HHS Section 504', () => {
