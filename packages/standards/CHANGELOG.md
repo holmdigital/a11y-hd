@@ -1,5 +1,12 @@
 # @holmdigital/standards
 
+## 2.5.6
+
+### Patch Changes
+
+- 9b7fbca: HHS Section 504: extend WCAG 2.1 AA compliance deadlines by one year per HHS Interim Final Rule (Federal Register doc 2026-09266, published 2026-05-11, docket HHS-OCR-2026-0004). Large entity (15+ employees) deadline 2026-05-11 → 2027-05-11; small entity (<15 employees) deadline 2027-05-10 → 2028-05-10. Technical standard (WCAG 2.1 AA), scope, sanctions, and `effectiveDate` (2024-07-08) unchanged. Updates `data/legal/national-laws.json` entry `us-hhs-section-504`.
+- 49a6bec: HHS Section 504: realign `effectiveDate` and `inForce` to reflect the WCAG benchmark enforcement trigger, not the underlying rule's 2024 effective date. Per HHS Interim Final Rule 2026-09266 (published 2026-05-11), the WCAG 2.1 AA compliance benchmark for large entities (15+ employees) starts 2027-05-11. `us-hhs-section-504` now publishes `effectiveDate: "2027-05-11"` and `inForce: false` — the `inForce` flag will flip to true automatically when the drift-guard validates `effectiveDate <= today` on 2027-05-11. Note field expanded to document the field-semantic choice. Compliance deadlines and all other metadata unchanged.
+
 ## 2.5.4
 
 ### Patch Changes
