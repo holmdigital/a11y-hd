@@ -337,6 +337,50 @@
                 },
                 "inForce": true,
                 "effectiveDate": "2020-09-23"
+            },
+            {
+                "id": "ie-eaa",
+                "law": "S.I. No. 636/2023",
+                "fullName": "European Union (Accessibility Requirements of Products and Services) Regulations 2023 (S.I. No. 636 of 2023)",
+                "euFramework": "EAA",
+                "scope": "private",
+                "lawUrl": "https://www.irishstatutebook.ie/eli/2023/si/636/made/en/print",
+                "enforcement": {
+                    "authority": "ie-ccpc",
+                    "authorityName": "Competition and Consumer Protection Commission (CCPC)",
+                    "responsibility": "Market surveillance authority for products under the Irish EAA Regulations. Sector-specific regulators enforce service requirements.",
+                    "website": "https://www.ccpc.ie"
+                },
+                "sectorAuthorities": [
+                    {
+                        "authority": "Central Bank of Ireland",
+                        "responsibility": "Financial services (consumer banking, payment services, electronic money, MiFID). Consumer Protection Code 2025 (in force 24 March 2026) incorporates accessibility obligations and cross-references S.I. No. 636/2023."
+                    },
+                    {
+                        "authority": "ComReg",
+                        "responsibility": "Electronic communications services."
+                    }
+                ],
+                "sanctions": {
+                    "type": "Criminal fine / Imprisonment",
+                    "description": "Summary conviction: fine up to EUR5,000 (Class A fine) or up to 6 months' imprisonment. On indictment: fine up to EUR60,000 or up to 18 months' imprisonment. Corporate liability extends to directors, managers, secretaries and officers.",
+                    "minAmount": 0,
+                    "maxAmount": 60000,
+                    "currency": "EUR"
+                },
+                "inForce": true,
+                "effectiveDate": "2025-06-28",
+                "exemptions": {
+                    "microbusiness": {
+                        "employeeThreshold": 10,
+                        "revenueThreshold": 2000000,
+                        "revenueCurrency": "EUR",
+                        "appliesTo": "services",
+                        "description": "Microenterprises providing services are exempt from accessibility requirements: organisations with fewer than 10 employees AND annual turnover or balance sheet at or below 2 million EUR. Both conditions must be met cumulatively. Microenterprises providing products are NOT exempt but qualify for relaxed obligations under EAA Annex IV.",
+                        "legalBasis": "Directive (EU) 2019/882 Article 4(5); microenterprise definition per Commission Recommendation 2003/361/EC"
+                    }
+                },
+                "note": "Ireland transposed the EAA via S.I. No. 636 of 2023, in force 28 June 2025. The CCPC is the primary market surveillance authority for products. Service enforcement is sector-specific: Central Bank of Ireland (financial services), ComReg (electronic communications). The Central Bank's Consumer Protection Code 2025 (in force 24 March 2026) incorporates specific accessibility obligations for regulated financial firms and directly references S.I. No. 636/2023."
             }
         ],
         "NL": [
@@ -468,17 +512,17 @@
                 },
                 "inForce": true,
                 "effectiveDate": "2024-04-24",
-                "note": "Final rule (28 CFR Part 35, 89 FR 31320): web content and mobile apps of state/local governments must conform to WCAG 2.1 Level AA. Compliance deadlines per 28 CFR § 35.200(b): entities serving 50,000+ population by 2026-04-24 (two years from publication); entities serving under 50,000 population (and special district governments) by 2027-04-24 (three years from publication).",
+                "note": "Final rule (28 CFR Part 35, 89 FR 31320): web content and mobile apps of state/local governments must conform to WCAG 2.1 Level AA. Original compliance deadlines extended by DOJ Interim Final Rule (published 2026-04-20): entities serving 50,000+ population now by 2027-04-26; entities serving under 50,000 population (and special district governments) now by 2028-04-26. Comment period open until 2026-06-22. Technical standard (WCAG 2.1 AA) unchanged.",
                 "complianceDeadlines": {
                     "largeEntity": {
                         "populationThreshold": 50000,
-                        "deadline": "2026-04-24",
-                        "description": "State/local governments serving populations of 50,000 or more (28 CFR § 35.200(b)(1))"
+                        "deadline": "2027-04-26",
+                        "description": "State/local governments serving populations of 50,000 or more (28 CFR § 35.200(b)(1)). Deadline extended from 2026-04-24 by DOJ Interim Final Rule published 2026-04-20 (Federal Register)."
                     },
                     "smallEntity": {
                         "populationThreshold": 49999,
-                        "deadline": "2027-04-24",
-                        "description": "State/local governments serving populations under 50,000, and special district governments (28 CFR § 35.200(b)(2))"
+                        "deadline": "2028-04-26",
+                        "description": "State/local governments serving populations under 50,000, and special district governments (28 CFR § 35.200(b)(2)). Deadline extended from 2027-04-24 by DOJ Interim Final Rule published 2026-04-20 (Federal Register)."
                     }
                 }
             },
@@ -656,10 +700,10 @@
                     "website": "https://www.agcom.it"
                 },
                 "sanctions": {
-                    "type": "Administrative",
-                    "description": "Administrative sanctions for non-compliance.",
-                    "minAmount": 0,
-                    "maxAmount": 0,
+                    "type": "Sanzione amministrativa (PMI)",
+                    "description": "Administrative sanctions for non-compliance with EAA requirements. For SMEs (fewer than 250 employees and turnover up to 50 million EUR or balance sheet up to 43 million EUR): per-violation fines of 2,500–40,000 EUR per breach. Amounts scale with severity, duration, and recurrence. Enforcement coordinated between AgID (guidelines and monitoring) and AGCOM (market surveillance).",
+                    "minAmount": 2500,
+                    "maxAmount": 40000,
                     "currency": "EUR"
                 },
                 "inForce": true,
@@ -673,7 +717,8 @@
                         "description": "Microenterprises providing services are exempt from accessibility requirements: organisations with fewer than 10 employees AND annual turnover or balance sheet at or below 2 million EUR. Both conditions must be met cumulatively. Microenterprises providing products are NOT exempt but qualify for relaxed obligations under EAA Annex IV.",
                         "legalBasis": "Directive (EU) 2019/882 Article 4(5); microenterprise definition per Commission Recommendation 2003/361/EC"
                     }
-                }
+                },
+                "note": "AgID adopted Delibera n. 38/2026 (4 March 2026); guidelines published in Gazzetta Ufficiale and in force from 24 March 2026. Establishes Linee Guida sull'accessibilità dei servizi digitali under D.Lgs. 82/2024 (EAA transposition). These guidelines shift the compliance perspective from individual web pages to entire digital services (service-level accessibility approach). New structured checklists published for: (1) websites and web applications, (2) documents and office files, (3) mobile applications — all based on EN 301 549 V3.2.1 and WCAG 2.1 Level AA. Mandatory for operators in: e-commerce, banking and financial services, transport, electronic communications, audiovisual media services, e-books. Guideline source: https://www.agid.gov.it/sites/agid/files/2026-03/Linee_Guida_accessibilit%C3%A0_dei_servizi_(EAA).pdf"
             }
         ],
         "PT": [

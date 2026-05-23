@@ -73,7 +73,7 @@
             "transpositionDeadline": "1977-06-03",
             "wcagVersion": "2.1",
             "wcagLevel": "AA",
-            "technicalStandard": "WCAG 2.1 Level A and AA (45 C.F.R. § 84.85, HHS Final Rule 89 FR 40066, effective 2026-05-11 for entities with 15+ employees)",
+            "technicalStandard": "WCAG 2.1 Level A and AA (45 C.F.R. § 84.85, HHS Final Rule 89 FR 40066, effective 2027-05-11 for entities with 15+ employees — deadline extended by HHS Interim Final Rule 2026-09266)",
             "serviceScopes": [
                 "federal-financial-assistance-recipients",
                 "healthcare",

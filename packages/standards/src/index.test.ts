@@ -324,11 +324,11 @@ describe('National Laws — US (ADA)', () => {
     it('should have compliance deadlines on Title II per 28 CFR § 35.200(b)', () => {
         const titleII = getNationalLaws('US').find(l => l.id === 'us-ada-title-ii');
         const large = titleII?.complianceDeadlines?.largeEntity;
-        expect(large?.deadline).toBe('2026-04-24');
+        // Deadlines extended +1y by DOJ Interim Final Rule (published 2026-04-20)
+        expect(large?.deadline).toBe('2027-04-26');
         // Narrow on the discriminant before reading populationThreshold
         expect(large && 'populationThreshold' in large ? large.populationThreshold : undefined).toBe(50000);
-        // Small entity deadline is three years from final rule publication (2024-04-24), not four.
-        expect(titleII?.complianceDeadlines?.smallEntity?.deadline).toBe('2027-04-24');
+        expect(titleII?.complianceDeadlines?.smallEntity?.deadline).toBe('2028-04-26');
     });
 
     it('should have inForce match effectiveDate <= today for all US laws', () => {
