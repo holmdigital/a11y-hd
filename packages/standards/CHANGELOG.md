@@ -1,5 +1,48 @@
 # @holmdigital/standards
 
+## 2.6.0
+
+### Minor Changes
+
+- 884f142: **Canada federal ACA + France RGAA authority correction** (Juno 2026-06-05 lagbevakning):
+  1. **New: Accessible Canada Act (`ca-aca`)** — Adds the Canadian federal accessibility framework that was missing entirely. Previously only `ca-aoda` (Ontario provincial) was encoded. Canadian users now resolve the federal layer via `getNationalLawByFramework('ACA', 'CA')`.
+     - Law: Accessible Canada Act (S.C. 2019, c. 10) + Accessible Canada Regulations (SOR/2021-241), ICT amendments in force **2025-12-05**
+     - Technical standard: **CAN/ASC-EN 301 549:2024** (WCAG 2.1 Level AA)
+     - Primary authority: Accessibility Commissioner (Canadian Human Rights Commission)
+     - Sector authorities: CRTC (broadcasting + telecom), Canadian Transportation Agency (federally-regulated transport)
+     - Compliance deadlines: federal public sector **2027-12-05**, federally-regulated private sector **2028-12-05**
+     - Sanctions: up to **250 000 CAD per violation** via administrative monetary penalties (ACA Part 6)
+     - Scope: `both` (covers both federal public and federally-regulated private)
+  2. **New `LegalFramework` value: `'ACA'`** — added to the union type and registered in `frameworks.json`. `getLegalFramework('ACA')` now returns metadata. This is the MINOR-bump driver (new type union member).
+  3. **Schema updated** — `national-laws-schema.json` `euFramework` enum extended with `"ACA"`.
+  4. **Fix: France RGAA authority** — `fr-rgaa.enforcement.authorityName` corrected from `'Arcom'` to `'DINUM (Direction interministérielle du numérique)'`. DINUM is the current supervisory authority for RGAA 4.1.2; Arcom only takes over when RGAA 5 publishes (expected late 2026). Previous Arcom designation pre-empted a not-yet-effective transition. `ENFORCEMENT_BODIES.FR` and `ENFORCEMENT_BODIES_DETAILED.FR.wad` updated to match. A new `note` on the `fr-rgaa` entry documents the upcoming RGAA 5 transition (WCAG 2.2 + mobile + documents + Arcom authority).
+  5. **Regression tests added** — `getEnforcementBody('FR')` must NOT return Arcom; `fr-rgaa.enforcement.authorityName` must contain DINUM. CA federal layer is asserted with explicit deadlines and `ACA` framework resolution.
+
+  **Items intentionally NOT changed this release** (per Juno's 2026-06-05 spec, deferred for separate triggers):
+  - SE: DIGG + PTS → Digitaliseringsmyndigheten (effective 2027-01-01) — wait for autumn 2026 proposition.
+  - EU: EN 301 549 V4.1.x — do not switch until OJEU citation, not just ETSI publication.
+
+  **Sources verified:** Canadian Human Rights Commission, Government of Canada accessible-canada regulations summary, numerique.gouv.fr, DesignGouv RGAA 5 article.
+
+### Patch Changes
+
+- cd1c749: **Italy EAA data correction** — fixes four substantive errors in `it-eaa` discovered during compliance review:
+  1. **Law number corrected**: `D.Lgs. 82/2024` → **`D.Lgs. 82/2022`** (Decreto Legislativo 27 May 2022, n. 82 — the actual Italian EAA transposition decree). Previous year was wrong.
+  2. **Enforcement authority corrected**: `AGCOM` → **`AgID`**. Per D.Lgs. 82/2022 art. 21, AgID supervises EAA-covered digital services (websites, e-commerce, banking, transport, electronic communications, e-books). AGCOM only handles audiovisual media services (D.Lgs. 208/2021 art. 31). The previous AGCOM designation made `getEnforcementBody('IT', 'private')` return the wrong authority for ~99% of EAA service use cases — including every site `hd-a11y-scan --country IT --sector private` would normally target.
+  3. **Sector authority split documented**: new `sectorAuthorities` array makes the three-authority split explicit:
+     - **MIMIT** (Ministero delle Imprese e del Made in Italy) — products
+     - **AgID** — digital services (primary)
+     - **AGCOM** — audiovisual media services only
+  4. **Sanctions corrected**: previous range `2,500–40,000 EUR` mixed values from two distinct sanction categories. Corrected to **`5,000–40,000 EUR`** (substantive violation per accessibility requirements). The 2,500–30,000 EUR range (non-cooperation / failure to comply with AgID orders) is now documented in `sanctions.description` rather than blended into the primary range.
+  5. **Pre-istruttoria phase documented**: description now reflects AgID's actual enforcement procedure — notification → response window → remediation period → sanctions only on persistent non-compliance. This shifts the messaging from "you risk fines" to "have a response routine ready" (the operative obligation).
+  6. **Delibera 84/2026 referenced**: in addition to existing Delibera 38/2026 (Linee Guida, 4 March 2026), `note` now references **Delibera 84/2026** (15 May 2026 — Regolamento sulle procedure di accertamento delle violazioni e applicazione delle sanzioni), which is where the pre-istruttoria procedure is codified.
+  7. **Complaint mechanism origin clarified**: `note` makes explicit that the complaint mechanism is NOT new in 2026 — it was established by Legge n. 4/2004 (Legge Stanca) and D.Lgs. 82/2022. The 2026 Delibere systematise the review procedure.
+  8. **`ENFORCEMENT_BODIES_DETAILED.IT.eaa`** in `src/index.ts` updated to `Agency for Digital Italy (AgID)` (was AGCOM). Regression test added to assert this never returns AGCOM for `IT` private sector.
+
+  **Impact:** Any consumer calling `getEnforcementBody('IT', 'private')` or generating Italian AccessibilityStatements has been receiving incorrect authority data since the IT entry was added. Upgrade strongly recommended.
+
+  **Sources verified:** UserWay, AccessiWay, Federprivacy, dirittobancario, fiscoetasse, eye-able, redazionefiscale, agendadigitale.eu, AgID official PDF.
+
 ## 2.5.7
 
 ### Patch Changes

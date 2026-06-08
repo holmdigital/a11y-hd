@@ -1,6 +1,6 @@
 {
     "name": "@holmdigital/standards",
-    "version": "2.5.7",
+    "version": "2.6.0",
     "private": false,
     "publishConfig": {
         "access": "public"
