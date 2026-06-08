@@ -211,12 +211,17 @@ describe('Enforcement Bodies', () => {
 
         it('should return EAA body for private sector', () => {
             expect(getEnforcementBody('SE', 'private')).toBe(ENFORCEMENT_BODIES_DETAILED.SE.eaa);
-            expect(getEnforcementBody('IT', 'private')).toBe('Communications Regulatory Authority (AGCOM)');
+            // IT: AgID supervises digital services per art. 21 D.Lgs. 82/2022.
+            // AGCOM only covers audiovisual media services under D.Lgs. 208/2021 art. 31.
+            expect(getEnforcementBody('IT', 'private')).toBe('Agency for Digital Italy (AgID)');
         });
 
         it('should work for Italy', () => {
             expect(getEnforcementBody('IT')).toBe('Agency for Digital Italy (AgID)');
-            expect(getEnforcementBody('IT', 'private')).toBe('Communications Regulatory Authority (AGCOM)');
+            // Regression guard: must NOT return AGCOM for general digital services.
+            // AGCOM only covers audiovisual media services (D.Lgs. 208/2021 art. 31).
+            expect(getEnforcementBody('IT', 'private')).toBe('Agency for Digital Italy (AgID)');
+            expect(getEnforcementBody('IT', 'private')).not.toBe('Communications Regulatory Authority (AGCOM)');
         });
 
         it('should work for Portugal', () => {
@@ -252,7 +257,7 @@ describe('National Laws — IT, PT, PL', () => {
 
     it('should have correct law identifiers', () => {
         expect(getNationalLawByFramework('WAD', 'IT')?.law).toBe('Legge 4/2004');
-        expect(getNationalLawByFramework('EAA', 'IT')?.law).toBe('D.Lgs. 82/2024');
+        expect(getNationalLawByFramework('EAA', 'IT')?.law).toBe('D.Lgs. 82/2022');
         expect(getNationalLawByFramework('WAD', 'PT')?.law).toBe('DL 83/2018');
         expect(getNationalLawByFramework('EAA', 'PT')?.law).toBe('DL 101-D/2023');
         expect(getNationalLawByFramework('WAD', 'PL')?.law).toBe('Ustawa o dostępności cyfrowej');

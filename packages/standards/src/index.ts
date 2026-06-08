@@ -53,7 +53,7 @@ export const ENFORCEMENT_BODIES_DETAILED: Record<Country, { wad: string; eaa: st
     FR: { wad: 'Interministerial Directorate for Digital Affairs (DINUM)', eaa: 'Regulatory Authority for Audiovisual and Digital Communication (Arcom)' },
     ES: { wad: 'Ministry for Digital Transformation and the Civil Service (MPTFP)', eaa: 'Ministry of Consumer Affairs (Ministerio de Consumo)' },
     IE: { wad: 'National Disability Authority (NDA)', eaa: 'Competition and Consumer Protection Commission (CCPC)' },
-    IT: { wad: 'Agency for Digital Italy (AgID)', eaa: 'Communications Regulatory Authority (AGCOM)' },
+    IT: { wad: 'Agency for Digital Italy (AgID)', eaa: 'Agency for Digital Italy (AgID)' },
     PT: { wad: 'Administrative Modernization Agency (AMA)', eaa: 'Directorate-General for Consumer Affairs (DGAC)' },
     PL: { wad: 'Ministry of Digitization (Ministerstwo Cyfryzacji)', eaa: 'Office of Competition and Consumer Protection (UOKiK)' },
     GB: { wad: 'Equality and Human Rights Commission (EHRC)', eaa: 'Equality and Human Rights Commission (EHRC)' },

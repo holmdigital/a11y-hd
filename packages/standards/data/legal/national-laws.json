@@ -689,20 +689,31 @@
             },
             {
                 "id": "it-eaa",
-                "law": "D.Lgs. 82/2024",
-                "fullName": "Decreto Legislativo 27 maggio 2024, n. 82 — Attuazione della Direttiva (UE) 2019/882",
+                "law": "D.Lgs. 82/2022",
+                "fullName": "Decreto Legislativo 27 maggio 2022, n. 82 — Recepimento della Direttiva (UE) 2019/882 (European Accessibility Act)",
                 "euFramework": "EAA",
                 "scope": "private",
+                "lawUrl": "https://www.normattiva.it/uri-res/N2Ls?urn:nir:stato:decreto.legislativo:2022-05-27;82",
                 "enforcement": {
-                    "authority": "it-agcom",
-                    "authorityName": "Communications Regulatory Authority (AGCOM)",
-                    "responsibility": "Market surveillance authority for EAA compliance in Italy.",
-                    "website": "https://www.agcom.it"
+                    "authority": "it-agid",
+                    "authorityName": "Agency for Digital Italy (AgID)",
+                    "responsibility": "Supervisory authority for EAA-covered digital services in Italy (art. 21 D.Lgs. 82/2022). AgID handles services oversight, complaints, and sanctions. Sector split per D.Lgs. 82/2022 + D.Lgs. 208/2021: MIMIT supervises products; AGCOM supervises audiovisual media services only. AgID operates a pre-istruttoria phase (codified in Delibera n. 84/2026, 15 May 2026): on complaint or finding, AgID notifies the provider, requests a written response, and sets a remediation window before opening sanctioning proceedings. Sanctions are reserved for persistent non-compliance — the operative obligation for organisations is to have a documented response routine ready, not to assume immediate fines.",
+                    "website": "https://www.agid.gov.it"
                 },
+                "sectorAuthorities": [
+                    {
+                        "authority": "MIMIT",
+                        "responsibility": "Ministero delle Imprese e del Made in Italy — market surveillance for EAA-covered products (per D.Lgs. 82/2022). Does NOT supervise digital services."
+                    },
+                    {
+                        "authority": "AGCOM",
+                        "responsibility": "Communications Regulatory Authority — surveillance and sanctioning only for audiovisual media services under art. 31 D.Lgs. 208/2021. Does NOT cover general digital services / e-commerce / banking / transport — those fall under AgID."
+                    }
+                ],
                 "sanctions": {
-                    "type": "Sanzione amministrativa (PMI)",
-                    "description": "Administrative sanctions for non-compliance with EAA requirements. For SMEs (fewer than 250 employees and turnover up to 50 million EUR or balance sheet up to 43 million EUR): per-violation fines of 2,500–40,000 EUR per breach. Amounts scale with severity, duration, and recurrence. Enforcement coordinated between AgID (guidelines and monitoring) and AGCOM (market surveillance).",
-                    "minAmount": 2500,
+                    "type": "Sanzione amministrativa",
+                    "description": "Two distinct sanction ranges under D.Lgs. 82/2022: (1) substantive violation (non-compliance with accessibility requirements): 5,000–40,000 EUR per breach — this is the primary range exposed in minAmount/maxAmount; (2) non-cooperation / failure to comply with AgID orders during the pre-istruttoria phase: 2,500–30,000 EUR. Amounts within each range scale with severity, duration, and recurrence. AgID applies sanctions only after the pre-istruttoria response window has expired without remediation. Microenterprises providing services (under 10 employees AND ≤2M EUR turnover) are exempt — see exemptions.microbusiness.",
+                    "minAmount": 5000,
                     "maxAmount": 40000,
                     "currency": "EUR"
                 },
@@ -718,7 +729,7 @@
                         "legalBasis": "Directive (EU) 2019/882 Article 4(5); microenterprise definition per Commission Recommendation 2003/361/EC"
                     }
                 },
-                "note": "AgID adopted Delibera n. 38/2026 (4 March 2026); guidelines published in Gazzetta Ufficiale and in force from 24 March 2026. Establishes Linee Guida sull'accessibilità dei servizi digitali under D.Lgs. 82/2024 (EAA transposition). These guidelines shift the compliance perspective from individual web pages to entire digital services (service-level accessibility approach). New structured checklists published for: (1) websites and web applications, (2) documents and office files, (3) mobile applications — all based on EN 301 549 V3.2.1 and WCAG 2.1 Level AA. Mandatory for operators in: e-commerce, banking and financial services, transport, electronic communications, audiovisual media services, e-books. Guideline source: https://www.agid.gov.it/sites/agid/files/2026-03/Linee_Guida_accessibilit%C3%A0_dei_servizi_(EAA).pdf"
+                "note": "Italy transposed the EAA via D.Lgs. 27 May 2022, n. 82 (in force 28 June 2025). Authority split: AgID supervises digital services (websites, e-commerce, banking, transport, electronic communications, e-books) under art. 21; MIMIT supervises products; AGCOM supervises only audiovisual media services under art. 31 D.Lgs. 208/2021. The complaint mechanism (any party can file a non-compliance report via AgID's portal) is NOT new — it was established by Legge n. 4/2004 (Legge Stanca) and D.Lgs. 82/2022. Two 2026 AgID acts further the framework: (1) Delibera n. 38/2026 (4 March 2026, in force 24 March 2026 via Gazzetta Ufficiale) — Linee Guida sull'accessibilità dei servizi digitali, structured checklists for websites/web apps, documents/office files, and mobile apps, based on EN 301 549 V3.2.1 + WCAG 2.1 AA; shifts the compliance perspective from individual web pages to entire digital services. (2) Delibera n. 84/2026 (15 May 2026, GU 23 May 2026) — Regolamento sulle procedure di accertamento delle violazioni e applicazione delle sanzioni; codifies the pre-istruttoria phase (notification → response window → remediation period → sanctioning proceedings only on persistent non-compliance). Mandatory for operators in: e-commerce, banking and financial services, transport, electronic communications, audiovisual media services, e-books. Guideline source: https://www.agid.gov.it/sites/agid/files/2026-03/Linee_Guida_accessibilit%C3%A0_dei_servizi_(EAA).pdf"
             }
         ],
         "PT": [
