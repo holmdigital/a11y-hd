@@ -38,7 +38,7 @@
                 "id": { "type": "string", "pattern": "^[a-z][a-z0-9-]*$" },
                 "law": { "type": "string", "minLength": 1 },
                 "fullName": { "type": "string", "minLength": 1 },
-                "euFramework": { "enum": ["WAD", "EAA", "DDA", "ADA", "REHAB"] },
+                "euFramework": { "enum": ["WAD", "EAA", "DDA", "ADA", "REHAB", "ACA"] },
                 "scope": { "enum": ["public", "private", "both"] },
                 "lawUrl": { "type": "string", "pattern": "^https?://" },
                 "enforcement": { "$ref": "#/definitions/Enforcement" },

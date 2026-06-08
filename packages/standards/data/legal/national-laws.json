@@ -258,15 +258,15 @@
             {
                 "id": "fr-rgaa",
                 "law": "RGAA",
-                "fullName": "Référentiel Général d'Amélioration de l'Accessibilité",
+                "fullName": "Référentiel Général d'Amélioration de l'Accessibilité (RGAA 4.1.2)",
                 "euFramework": "WAD",
                 "scope": "public",
                 "lawUrl": "https://www.legifrance.gouv.fr/loda/article_lc/LEGIARTI000037387342/",
                 "enforcement": {
-                    "authority": "fr-arcom",
-                    "authorityName": "Arcom",
-                    "responsibility": "Autorité de régulation de la communication audiovisuelle et numérique.",
-                    "website": "https://www.arcom.fr"
+                    "authority": "fr-dinum",
+                    "authorityName": "DINUM (Direction interministérielle du numérique)",
+                    "responsibility": "Interministerial Digital Directorate — current supervisory authority for RGAA 4.1.2 compliance across French public sector digital services. Issues guidelines (référentiel), monitors declarations of accessibility, and coordinates the audit framework. Note: RGAA 5 (expected publication late 2026) will transfer this role to Arcom and introduce WCAG 2.2, mobile-app scope, and document requirements.",
+                    "website": "https://www.numerique.gouv.fr"
                 },
                 "sectorAuthorities": [
                     {
@@ -286,7 +286,8 @@
                     "currency": "EUR"
                 },
                 "inForce": true,
-                "effectiveDate": "2019-09-23"
+                "effectiveDate": "2019-09-23",
+                "note": "Current authoritative version is RGAA 4.1.2 with DINUM as the supervisory authority for the French public sector. RGAA 5 is planned for publication late 2026 and will transfer the supervisory role from DINUM to Arcom and upgrade the technical baseline to WCAG 2.2 with explicit mobile-application and document-accessibility requirements. Existing declarations under RGAA 4.1.2 remain valid for 18 months after RGAA 5's publication (capped at 3 years from the declaration date). Until RGAA 5 is published, DINUM remains the correct authority — do not pre-emptively switch to Arcom."
             }
         ],
         "ES": [
@@ -612,6 +613,52 @@
                 },
                 "inForce": true,
                 "effectiveDate": "2005-06-13"
+            },
+            {
+                "id": "ca-aca",
+                "law": "Accessible Canada Act",
+                "fullName": "Accessible Canada Act (S.C. 2019, c. 10) — Accessible Canada Regulations (SOR/2021-241), ICT amendments registered and in force 2025-12-05",
+                "euFramework": "ACA",
+                "scope": "both",
+                "lawUrl": "https://laws-lois.justice.gc.ca/eng/acts/A-0.6/",
+                "enforcement": {
+                    "authority": "ca-chrc",
+                    "authorityName": "Accessibility Commissioner (Canadian Human Rights Commission)",
+                    "responsibility": "Primary enforcement authority for the Accessible Canada Act. Receives complaints, conducts compliance investigations, issues compliance orders, and may impose administrative monetary penalties up to 250,000 CAD per violation. Annual progress reports were due 2026-06-01 from regulated entities.",
+                    "website": "https://www.chrc-ccdp.gc.ca/"
+                },
+                "sectorAuthorities": [
+                    {
+                        "authority": "CRTC",
+                        "responsibility": "Canadian Radio-television and Telecommunications Commission — accessibility enforcement for broadcasting undertakings, telecommunications service providers, and Canadian-operated digital platforms regulated under the Broadcasting Act and Telecommunications Act."
+                    },
+                    {
+                        "authority": "Canadian Transportation Agency (CTA)",
+                        "responsibility": "Accessibility enforcement for federally-regulated transportation service providers."
+                    }
+                ],
+                "sanctions": {
+                    "type": "Administrative Monetary Penalty",
+                    "description": "Accessibility Commissioner may impose administrative monetary penalties (AMPs) up to 250,000 CAD per violation under the Accessible Canada Act (Part 6). AMP amounts scale with severity, history of non-compliance, and the size/resources of the regulated entity. Persistent non-compliance can also trigger compliance orders, prosecution, and reputational sanctions via the public registry.",
+                    "minAmount": 0,
+                    "maxAmount": 250000,
+                    "currency": "CAD"
+                },
+                "inForce": true,
+                "effectiveDate": "2025-12-05",
+                "complianceDeadlines": {
+                    "largeEntity": {
+                        "populationThreshold": 0,
+                        "deadline": "2027-12-05",
+                        "description": "Federal public sector ICT accessibility compliance deadline per Accessible Canada Regulations ICT amendments (in force 2025-12-05). Applies to Government of Canada departments and federal Crown corporations."
+                    },
+                    "smallEntity": {
+                        "populationThreshold": 0,
+                        "deadline": "2028-12-05",
+                        "description": "Federally-regulated private sector ICT accessibility compliance deadline (broadcasting, telecom, federally-regulated banks and transport providers). Three years from the ICT amendments' in-force date."
+                    }
+                },
+                "note": "The Accessible Canada Act (ACA) is the federal accessibility statute, complementary to but distinct from provincial laws like AODA (Ontario), AMA (Manitoba), and similar. The Accessible Canada Regulations (SOR/2021-241) were amended to add specific ICT/digital accessibility requirements; the ICT amendments were registered and came into force 2025-12-05. The technical standard is CAN/ASC-EN 301 549:2024, the Canadian adoption of the EN 301 549 family (WCAG 2.1 Level AA baseline). Tiered enforcement: the Accessibility Commissioner at CHRC has primary jurisdiction; sector-specific enforcement is split with CRTC (broadcasting + telecom) and the Canadian Transportation Agency (federally-regulated transport). For US-style federal-vs-state context: this is the Canadian federal layer, complementary to provincial AODA-style laws. Annual progress reports were due from regulated entities by 2026-06-01 (passed). Sources: https://www.chrc-ccdp.gc.ca/organizations/accessible-canada-act-responsibilities/accessibility-deadlines and https://www.canada.ca/en/employment-social-development/programs/accessible-canada/regulations-summary-act.html"
             }
         ],
         "AU": [

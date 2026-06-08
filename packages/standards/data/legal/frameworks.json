@@ -98,6 +98,26 @@
                 "education",
                 "employment"
             ]
+        },
+        "ACA": {
+            "id": "ACA-2019",
+            "name": "Accessible Canada Act (Canada — federal)",
+            "fullName": "Accessible Canada Act (S.C. 2019, c. 10) — Accessible Canada Regulations (SOR/2021-241) with ICT amendments in force 2025-12-05",
+            "scope": "both",
+            "eurLexUrl": "https://laws-lois.justice.gc.ca/eng/acts/A-0.6/",
+            "adoptionDate": "2019-06-21",
+            "transpositionDeadline": "2025-12-05",
+            "wcagVersion": "2.1",
+            "wcagLevel": "AA",
+            "technicalStandard": "CAN/ASC-EN 301 549:2024 (Canadian adoption of EN 301 549 V3, WCAG 2.1 Level AA); applied via the ICT amendments to the Accessible Canada Regulations (in force 2025-12-05). Federal public sector compliance by 2027-12-05; federally-regulated private sector by 2028-12-05.",
+            "serviceScopes": [
+                "federal-public-sector",
+                "federally-regulated-private-sector",
+                "broadcasting",
+                "telecommunications",
+                "transportation",
+                "banking"
+            ]
         }
     }
 }

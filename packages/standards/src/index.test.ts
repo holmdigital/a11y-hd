@@ -298,6 +298,44 @@ describe('National Laws — AU', () => {
     });
 });
 
+describe('National Laws — CA (federal ACA)', () => {
+    it('should expose ca-aca as a CA law alongside ca-aoda', () => {
+        const caLaws = getNationalLaws('CA');
+        const acaLaw = caLaws.find(l => l.id === 'ca-aca');
+        const aodaLaw = caLaws.find(l => l.id === 'ca-aoda');
+        expect(acaLaw).toBeDefined();
+        expect(aodaLaw).toBeDefined();
+        expect(acaLaw?.euFramework).toBe('ACA');
+        expect(acaLaw?.scope).toBe('both');
+        expect(acaLaw?.inForce).toBe(true);
+        expect(acaLaw?.effectiveDate).toBe('2025-12-05');
+    });
+
+    it('should have tiered compliance deadlines for ACA ICT amendments', () => {
+        const acaLaw = getNationalLawByFramework('ACA', 'CA');
+        // ICT amendments in force 2025-12-05; federal public sector 2027-12-05, federally-regulated private 2028-12-05.
+        expect(acaLaw?.complianceDeadlines?.largeEntity?.deadline).toBe('2027-12-05');
+        expect(acaLaw?.complianceDeadlines?.smallEntity?.deadline).toBe('2028-12-05');
+    });
+
+    it('should resolve ACA framework via getNationalLawByFramework', () => {
+        const law = getNationalLawByFramework('ACA', 'CA');
+        expect(law).not.toBeNull();
+        expect(law?.id).toBe('ca-aca');
+    });
+});
+
+describe('National Laws — FR (RGAA authority)', () => {
+    // Regression guard: DINUM is the current supervisory authority for RGAA 4.1.2.
+    // RGAA 5 (expected late 2026) will transfer this role to Arcom. Until OJEU
+    // citation / RGAA 5 publication, DO NOT pre-emptively switch authority to Arcom.
+    it('should list DINUM (not Arcom) as fr-rgaa authority', () => {
+        const law = getNationalLawByFramework('WAD', 'FR');
+        expect(law?.enforcement.authorityName).toContain('DINUM');
+        expect(law?.enforcement.authorityName).not.toContain('Arcom');
+    });
+});
+
 describe('National Laws — US (ADA)', () => {
     it('should return 4 laws for US', () => {
         const usLaws = getNationalLaws('US');
