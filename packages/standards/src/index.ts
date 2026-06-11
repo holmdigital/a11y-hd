@@ -87,6 +87,8 @@ import type {
     EAAImpact,
     Remediation,
     Testability,
+    PlainLanguageCopy,
+    BusinessImpactLevel,
     // EU Legal Framework types
     LegalFramework,
     Sector,
@@ -114,6 +116,8 @@ export type {
     EAAImpact,
     Remediation,
     Testability,
+    PlainLanguageCopy,
+    BusinessImpactLevel,
     // EU Legal Framework types
     LegalFramework,
     Sector,
@@ -275,6 +279,10 @@ export function generateRegulatoryReport(ruleId: string, lang: string = 'en'): R
     const rule = getConvergenceRule(ruleId, lang);
     if (!rule) return null;
 
+    // D-03: EN fallback — if the language rule lacks plainLanguage, fetch from EN
+    const plainLanguage = rule.plainLanguage
+        ?? (lang !== 'en' ? getConvergenceRule(ruleId, 'en')?.plainLanguage : undefined);
+
     return {
         ruleId: rule.ruleId,
         wcagCriteria: rule.wcagCriteria,
@@ -285,6 +293,7 @@ export function generateRegulatoryReport(ruleId: string, lang: string = 'en'): R
         remediation: rule.remediation,
         holmdigitalInsight: rule.holmdigitalInsight,
         testability: rule.testability,
+        plainLanguage,
     };
 }
 
