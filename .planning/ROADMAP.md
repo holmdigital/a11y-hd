@@ -288,6 +288,29 @@ Plans:
 - Fas 7: Dokumentation & Artikel
 - Fas 8: Test & Regression
 
+### Phase 34: Klarspråksrapport (opt-in plain-language report)
+
+**Goal:** `hd-a11y-scan <url> --plain` (alias för `--audience plain`, default `developer` — inget befintligt beteende ändras) ger en klarspråksrapport för icke-tekniska mottagare i terminal och PDF. Texterna bor i standards (engelska nycklar, lokaliserade värden), hämtas i `generateRegulatoryReport` via den befintliga `getConvergenceRule`-uppslagningen (EN uppslagning — ingen ny locale-laddare, ingen andra uppslagning vid utskrift), och flödar till terminal/`--json`/`--pdf` på samma gång.
+**Requirements**: PLAIN-01 (typ + datafält i standards), PLAIN-02 (enrichment-koppling), PLAIN-03 (terminalrenderare), PLAIN-04 (CLI-flaggor `--audience`/`--plain`), PLAIN-05 (PDF-läge via `audience`-arg i `generateReportHTML`), PLAIN-06 (8 svenska texter i `rules.sv.json` mot semantiska id: `alt-text`, `color-contrast`, `form-labels`, `link-purpose`, `name-role-value`, `keyboard-accessible`, `heading-order`, `language-of-page`)
+**Depends on:** Phase 33
+**Plans:** 0 plans
+
+**Underlag:** `daniel-engine-klarsprak-2026-06-05.md` (auktoritativ ram, Karins beslut), `klarsprak-cli-implementation.md` (bygg enligt denna — text i standards, engelska nycklar), `klarsprakslager-engine.md` (innehåll: 8 färdiga texter + tonregler + rapportöppning; dess svensk-nycklade datatyp skrotas). De två sistnämnda säger emot varandra med flit — läses ihop via förslaget.
+
+**Tekniska avgöranden (verifierade mot kod):**
+- `generateRegulatoryReport` plockar explicita fält (spreadar inte) — `plainLanguage` kopieras där (`packages/standards/src/index.ts:274`), då flödar den genom `{...report}`-spreaden i engines `enrichResults` utan engine-ändringar för dataflödet
+- `getPlainLanguageCopy`-helpern + `RULES_BY_LANG` ur CLI-dokumentet SKROTAS (förslaget förbjuder andra uppslagning) — renderaren läser `report.plainLanguage` direkt
+- CLI-dokumentets exempel `"ruleId": "image-alt"` är fel — semantiskt id är `alt-text`
+- Fallback-rapporter (omappade regler) får `plainLanguage: undefined` → degraderar till `remediation.description` precis som spec kräver
+- `impactLevel` sätts för hand på köpkritiska regler (`form-labels` = stoppar-kop); övriga härleds från `diggRisk` (critical→stoppar-kop, high→hindrar, medium→forsamrar, low→putsning)
+- Tonregler: du-tilltal, ingen oförklarad fackterm, aldrig skuldbeläggande, affärsnytta före teknik, konkret nästa steg, inga tankstreck. Inga uppfunna procentsatser.
+- Öppen designfråga till planning: renderarens chrome-strängar ("Vad som händer:" etc.) — hårdkodad svenska (som CLI-dokumentets exempel) eller via engines i18n så `--plain --lang en` inte blir halvsvensk
+- Encoding-vakt: källdokumenten är mojibake-skadade (Ã¶→ö) — texterna måste återskapas med korrekta å/ä/ö och verifieras före commit
+- Leverans: testskanning av johancask.com med `--plain --pdf` för Karins granskning; minor-release av standards + engine via changesets efter godkännande (Version Packages-PR-mergen är godkännandegrinden)
+
+Plans:
+- [ ] TBD (run /gsd-plan-phase 34 to break down)
+
 ---
 
 ## Progress

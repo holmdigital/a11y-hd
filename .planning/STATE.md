@@ -64,6 +64,10 @@ Last activity: 2026-05-11
 - jsdom stays (do NOT switch to happy-dom — breaks vitest-axe via `Node.prototype.isConnected`)
 - [Phase ?]: Phase 27-01: added additive optional locale?: string prop to Combobox + MultiSelect; non-breaking. Real-timer + findByText test pattern chosen over fake-timers (user-event v14 deadlock in vitest 4.x).
 
+### Roadmap Evolution
+
+- Phase 34 added (2026-06-11): Klarspråksrapport — opt-in plain-language report via `--plain`/`--audience plain`. Source docs from Karins team (Meja+Ebba underlag, Amanda sammanställning) live in the phase directory. Build per klarsprak-cli-implementation.md (text in standards, English keys); 8 texts + tone rules from klarsprakslager-engine.md are the content; its Swedish-keyed type is scrapped. Key verified facts in ROADMAP Phase 34 block: copy plainLanguage in generateRegulatoryReport (single lookup), CLI doc's image-alt example is wrong (semantic id alt-text), source files on disk are clean UTF-8.
+
 ### Pending Todos
 
 - Confirm SSR audit result during Phase 22 execution and update PROJECT.md
