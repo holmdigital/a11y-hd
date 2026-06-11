@@ -58,6 +58,12 @@ Opt-in klarspråksläge för icke-tekniska mottagare: `hd-a11y-scan <url> --plai
 - **D-11: `plainLanguage` ligger ALLTID i `EnrichedReport`/`--json`-utdata** (additivt optional fält), oavsett `--audience`. Bakåtkompatibelt; JSON-konsumenter kan bygga egna klarspråksvyer.
 - **D-12: Flaggprioritet `json > light > plain`.** Plain-grenen placeras före dashboard-fallbacken (sista `else`) i CLI:ts utskriftskedja, per underlagets grenplacering. `--plain --json` ger JSON (med plainLanguage-datan), `--plain --light` ger light.
 
+### Granskningstillägg (KarinsTeam-kontextgranskning 2026-06-11)
+- **D-13: Snapshot-test som låser developer-PDF:en.** D-08 lovar byte-för-byte oförändrad utvecklar-PDF men ingen D-10-vakt bevisar det. Snapshot-test på `generateReportHTML(result, sector)` UTAN tredje argument läggs till — regressionen skulle annars smyga in exakt där `audience`-paramen införs.
+- **D-14: Chrome-nycklarna i alla 9 locale-filer som EN samtidig uppgift.** `LocaleData = typeof en` gör att `check:types` (körs i `prepublishOnly`) failar i samma sekund en.json får nya nycklar utan att övriga 8 filer fått samma. Typkedjan är fasens sköraste steg — inte å/ä/ö.
+- **D-15: Explicit typutökning av BÅDA befintliga typerna.** Utöver nya `PlainLanguageCopy` måste `ConvergenceRule` OCH `RegulatoryReport` båda få det optionella `plainLanguage`-fältet, annars kompilerar inte enrichment. Trivialt i kod, lätt att missa i plan.
+- **D-16: Säkrad versionskälla för PDF-sidfoten.** Sidfotens verktygsversion (D-08) måste verifierat läsa rätt package.json i monorepot (engine har build-time `__ENGINE_VERSION__` via tsup define) — annars blir fotnoten missvisande.
+
 ### Claude's Discretion
 - Exakta i18n-nyckelnamn och struktur i locale-filerna
 - Intern struktur i `plain-report.ts` (IMPACT-tabellens utformning etc.)
@@ -81,6 +87,9 @@ Opt-in klarspråksläge för icke-tekniska mottagare: `hd-a11y-scan <url> --plai
 
 ### Innehållskälla (texterna)
 - `.planning/phases/34-klarsprak-plain-language-report/klarsprakslager-engine.md` — de 8 färdiga texterna (innehåll som ska in i rules.sv.json), tonreglerna (fingerprint), allvarlighetsnivåerna per text (D-04), rapportöppningen (minus sifferspannet, D-07), badge-klartextmappningen (Stoppar köp / Hindrar kunder / Försämrar upplevelsen / Värt att putsa). Dess svensk-nycklade `PlainCopy`-datatyp är SKROTAD.
+
+### Kontextgranskning (verifiering + exekveringstillägg)
+- `.planning/phases/34-klarsprak-plain-language-report/daniel-engine-klarsprak-kontextgranskning-2026-06-11.md` — KarinsTeams granskning: ALLA tekniska påståenden i denna CONTEXT verifierade mot koden (synkad 2026-06-11); D-04-tabellen bekräftad mot faktiska diggRisk-värden; fyra exekveringstillägg (D-13–D-16) som INTE ändrar besluten
 
 ### Roadmap
 - `.planning/ROADMAP.md` — Phase 34-sektionen, särskilt "Tekniska avgöranden (verifierade mot kod)"
