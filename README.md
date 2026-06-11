@@ -1,109 +1,107 @@
-# Holm Digital Regulatory-Compliant Accessibility Ecosystem
+# Holm Digital Accessibility Ecosystem
 
-A professional accessibility ecosystem bridging the gap between technical code validation (**WCAG 2.x**) and legal compliance (EN 301 549, DOS Act).
-> **Note:** We strictly adhere to **WCAG 2.1 & 2.2** standards to ensure stability and full alignment with current EU/Global legal requirements (EAA, Section 508).
+> WCAG and EN 301 549 accessibility testing that maps every failure to national law and the right enforcement body, across 17 jurisdictions.
 
-## 🎯 Value Proposition
+[![npm version](https://img.shields.io/npm/v/@holmdigital/engine.svg)](https://www.npmjs.com/package/@holmdigital/engine)
+[![npm downloads](https://img.shields.io/npm/dt/@holmdigital/engine.svg)](https://www.npmjs.com/package/@holmdigital/engine)
+[![license](https://img.shields.io/npm/l/@holmdigital/engine.svg)](./LICENSE)
+[![types](https://img.shields.io/npm/types/@holmdigital/standards.svg)](https://www.npmjs.com/package/@holmdigital/standards)
 
-- **Multi-Language Regulatory Mapping**: Automatically maps WCAG failures to EN 301 549 and national laws across **13 languages** and **16 countries** (17 jurisdictions including EU):
-    - 🇸🇪 **DOS-lagen** (Sweden)
-    - 🇫🇮 **Laki digitaalisten palvelujen saavutettavuudesta** (Finland)
-    - 🇳🇴 **Forskrift om universell utforming av IKT** (Norway)
-    - 🇩🇰 **Lov om tilgængelighed** (Denmark)
-    - 🇳🇱 **Digitoegankelijk** (Netherlands)
-    - 🇩🇪 **BITV 2.0** (Germany)
-    - 🇫🇷 **RGAA** (France)
-    - 🇪🇸 **UNE 139803** (Spain)
-    - 🇮🇹 **Legge Stanca** (Italy)
-    - 🇵🇹 **DL 83/2018** (Portugal)
-    - 🇵🇱 **Ustawa o dostępności cyfrowej** (Poland)
-    - 🇬🇧 **PSBAR** (UK) / 🇮🇪 **S.I. No. 358/2020** (Ireland)
-    - 🇺🇸 **Section 508** (federal, GSA) / **ADA Title II** (state+local, DOJ) / **ADA Title III** (private sector, DOJ) / **HHS Section 504** (HHS-funded healthcare/research, OCR) — *ADA Title II deadline 2026-04-24 (50k+ pop), HHS Section 504 WCAG benchmark from 2026-05-11 (15+ employees)*
-    - 🇨🇦 **AODA** (Ontario) / **ACA** (Canada federal)
-    - 🇦🇺 **DDA 1992** (Australia — covers both public and private sectors)
-- **Sector-Aware Compliance**: Distinguishes between public sector (WAD / ADA Title II) and private sector (EAA / DDA / ADA Title III / HHS Section 504), routing to the correct enforcement body and national law via `--sector public|private`. Encodes EAA microbusiness exemption metadata (<10 employees AND ≤2M EUR turnover, services only) on all 7 EAA private-sector entries.
-- **Risk Assessment**: Classifies every violation based on regulatory enforcement practices (e.g., DIGG, uutilsynet, Logius).
-- **Professional CI/CD Reporting**: Enhanced JUnit XML reports with full metadata, success counts, and detailed failure snippets for seamless integration with modern DevOps dashboards.
-- **Template-Driven Statements**: Generates modern, glassmorphism-styled accessibility statements using professionalized JSON templates for deep localization.
+Most scanners (axe, Pa11y, Lighthouse) tell you **what** is broken. This ecosystem also tells you **which law** you are breaking and **who enforces it**: it maps each WCAG 2.1/2.2 failure to EN 301 549 and the relevant national accessibility law, and routes it to the correct enforcement body, for both public sector (WAD) and private sector (EAA) sites. Open source, MIT licensed, ~11k+ downloads across the package family.
 
-## 📚 Documentation & Guides
+## Quick start (10 seconds, no install)
 
-Comprehensive resources to help you master the ecosystem, from legal compliance to advanced technical integration.
+```bash
+# Scan any URL and get a regulation-mapped report in your terminal:
+npx hd-a11y-scan https://example.com --country SE --sector public
+```
 
-### 📖 Reference Catalogs
-Detailed API and property references for each package.
-*   **[Engine Reference](./docs/reference/engine.md)** - CLI flags, configuration schema, and programmatic API.
-*   **[Component Library](./docs/reference/components.md)** - Visual catalog of 29+ accessible React components with props.
-*   **[Standards Database](./docs/reference/standards.md)** - Mapping table for WCAG vs EN 301 549 vs National Laws.
+Add a PDF report, a JUnit file for CI, or a ready-to-publish accessibility statement:
 
-### 🛠️ Developer Resources
-Practical guides for building and deploying accessible applications.
-*   **[Developer Cookbooks](./docs/guides/developer-cookbooks.md)** - Step-by-step recipes for common accessibility patterns.
-*   **[CI/CD Integration Guide](./docs/guides/ci-cd-integration.md)** - How to run the engine in GitHub, GitLab, and Azure DevOps.
-*   **[Internal CI/CD Strategy](./docs/architecture/ci-cd-strategy.md)** - Monorepo architecture and automated release pipelines.
-*   **[Accessibility Statement Tutorial](./docs/guides/accessibility-statement.md)** - How to generate and customize V2 legal statements.
+```bash
+npx hd-a11y-scan https://example.com \
+  --country SE --sector private \
+  --pdf report.pdf --junit report.xml --statement statement.html
+```
 
-### ⚖️ Legal & Regulatory
-Stay ahead of enforcement deadlines and compliance requirements.
-*   **[EU Legal Framework (WAD & EAA)](./docs/guides/eu-legal-framework.md)** - Understanding the impact of current and upcoming regulations.
-*   **[Nordic Regulatory Authorities](./docs/guides/nordic-authorities.md)** - Details on Digg (SE), Traficom (FI), and others.
+That is the whole loop: point it at a URL, get back violations, the regulation each one maps to, the enforcing authority, and publishable artifacts.
 
-## Landing pages
+<!-- TODO: add a real screenshot of the terminal output or a generated PDF/statement.
+     Drop the image at docs/assets/scan-demo.png and uncomment the line below. -->
+<!-- ![hd-a11y-scan example output](docs/assets/scan-demo.png) -->
 
-Full documentation and user guides are available at:
+## What you get
 
-- [Engine](https://holmdigital.se/wcag-verktyg/engine): hd-a11y-scan CLI for accessibility testing
-- [Standards](https://holmdigital.se/wcag-verktyg/standards): WCAG and EAA rules as an npm package
-- [Components](https://holmdigital.se/wcag-verktyg/components): accessible React components
+- **Regulatory mapping, not just findings.** Every WCAG failure is mapped to EN 301 549 and national law across 12 languages and 16 countries plus the EU (17 jurisdictions). See the full list below.
+- **Sector-aware routing.** Distinguishes public sector (WAD / ADA Title II) from private sector (EAA / DDA / ADA Title III / HHS Section 504) via `--sector public|private`, and routes to the correct enforcement body and national law. Encodes the EAA microbusiness exemption (<10 employees AND ≤2M EUR turnover, services only) on all 7 EAA private-sector entries.
+- **Risk assessment** based on real enforcement practice (Digg, Uutilsynet, Logius, and others).
+- **CI/CD-grade reporting.** JUnit XML with full metadata, success counts, and failure snippets for DevOps dashboards.
+- **Publishable statements.** Generates modern, localized accessibility statements from typed JSON templates.
 
-## 📦 Packages
+<details>
+<summary><strong>All 17 jurisdictions covered</strong></summary>
 
-This monorepo contains three core NPM packages and a documentation wiki:
+- 🇸🇪 **DOS-lagen** (Sweden)
+- 🇫🇮 **Laki digitaalisten palvelujen saavutettavuudesta** (Finland)
+- 🇳🇴 **Forskrift om universell utforming av IKT** (Norway)
+- 🇩🇰 **Lov om tilgængelighed** (Denmark)
+- 🇳🇱 **Digitoegankelijk** (Netherlands)
+- 🇩🇪 **BITV 2.0** (Germany)
+- 🇫🇷 **RGAA** (France)
+- 🇪🇸 **UNE 139803** (Spain)
+- 🇮🇹 **Legge Stanca** (Italy)
+- 🇵🇹 **DL 83/2018** (Portugal)
+- 🇵🇱 **Ustawa o dostępności cyfrowej** (Poland)
+- 🇬🇧 **PSBAR** (UK) / 🇮🇪 **S.I. No. 358/2020** (Ireland)
+- 🇺🇸 **Section 508** (federal, GSA) / **ADA Title II** (state+local, DOJ) / **ADA Title III** (private, DOJ) / **HHS Section 504** (HHS-funded healthcare/research, OCR). ADA Title II deadline 2027-04-26 for 50k+ population (extended by DOJ Interim Final Rule 2026-04-20), HHS Section 504 WCAG benchmark from 2027-05-11 for 15+ employees (extended by HHS IFR 2026-09266).
+- 🇨🇦 **AODA** (Ontario) / **ACA** (Canada federal)
+- 🇦🇺 **DDA 1992** (Australia, public and private sectors)
 
-### 1. [@holmdigital/engine](./packages/engine)
-Regulatory test engine with Virtual DOM architecture for Shadow DOM and SPA support. Now with internationalization (i18n), **Premium V2 Accessibility Statement** generation, and automatic badge support.
+</details>
+
+## Packages
+
+This monorepo ships three NPM packages plus a documentation wiki.
+
+### [@holmdigital/engine](./packages/engine)
+Regulatory test engine with virtual-DOM analysis for Shadow DOM and SPA support, i18n, premium V2 accessibility-statement generation, and automatic badge support.
 
 ```bash
 npm install @holmdigital/engine
 ```
 
-**CLI:**
+CLI:
 ```bash
 npx hd-a11y-scan <url> [options]
 ```
 
-**Options:**
-- `--lang <code>` - Language code (`en`, `sv`, `no`, `fi`, `da`, `de`, `fr`, `es`, `nl`, `it`, `pt`, `pl`, `en-gb`, `en-us`, `en-ca`, `en-au`)
-- `--threshold <level>` - Severity threshold (`critical`, `high`, `medium`, `low`). Default: `high`
-- `--ci` - Run in CI mode (exit code 1 on critical failures)
-- `--json` - Output results as JSON
-- `--pdf <path>` - Generate a PDF report
-- `--statement <path>` - Generate an accessibility statement (Premium V2 HTML)
-- `--format <type>` - Output format for statement (`html`, `md`). Default: `html`
-- `--junit <path>` - Generate JUnit XML report for CI dashboards
-- `--country <code>` - Country code for enforcement body (e.g., `SE`, `NO`, `DE`, `IT`, `PT`, `PL`, `AU`)
-- `--sector <type>` - Sector type: `public` (WAD) or `private` (EAA). Default: `public`
-- `--org <name>` - Organization name for statement metadata
-- `--email <email>` - Contact email for statement metadata
-- `--phone <number>` - Contact phone for statement metadata
-- `--response-time <val>` - Normal response time for statement metadata
-- `--publish-date <date>` - Website publish date (YYYY-MM-DD) for statement metadata
-- `--viewport <size>` - Set viewport size (e.g., "mobile", "tablet", "desktop", "1024x768")
-- `--generate-tests` - Generate pseudo-code automation scripts for verification
-- `--invalid-https-cert` - Allow scanning sites with invalid/self-signed certs ⚠️
-- `--api-key <key>` - Upload results to HolmDigital Cloud Dashboard
-- `--cloud-url <url>` - Custom Cloud API Endpoint (default: cloud.holmdigital.se)
+Options:
+- `--lang <code>` : language (`en`, `sv`, `no`, `fi`, `da`, `de`, `fr`, `es`, `nl`, `it`, `pt`, `pl`, `en-gb`, `en-us`, `en-ca`, `en-au`)
+- `--threshold <level>` : severity threshold (`critical`, `high`, `medium`, `low`). Default: `high`
+- `--ci` : CI mode (exit code 1 on failures at or above threshold)
+- `--json` : output results as JSON
+- `--pdf <path>` : generate a PDF report
+- `--statement <path>` : generate an accessibility statement (Premium V2 HTML)
+- `--format <type>` : statement format (`html`, `md`). Default: `html`
+- `--junit <path>` : generate JUnit XML for CI dashboards
+- `--country <code>` : country for enforcement body (e.g. `SE`, `NO`, `DE`, `IT`, `PT`, `PL`, `AU`)
+- `--sector <type>` : `public` (WAD) or `private` (EAA). Default: `public`
+- `--org <name>` / `--email <email>` / `--phone <number>` : statement metadata
+- `--response-time <val>` / `--publish-date <date>` : statement metadata
+- `--viewport <size>` : viewport (`mobile`, `tablet`, `desktop`, or `1024x768`)
+- `--generate-tests` : emit pseudo-code automation scripts for verification
+- `--invalid-https-cert` : allow self-signed certs ⚠️ (trusted environments only)
+- `--api-key <key>` / `--cloud-url <url>` : upload to HolmDigital Cloud Dashboard
 
-> **⚠️ Security:** `--invalid-https-cert` should only be used in trusted environments. *(Contributed by [@FerdiStro](https://github.com/FerdiStro))*
+> ⚠️ `--invalid-https-cert` should only be used in trusted environments. *(Contributed by [@FerdiStro](https://github.com/FerdiStro))*
 
-### 2. [@holmdigital/components](./packages/components)
-29 accessible React components with built-in regulatory compliance. Includes a 12-locale `AccessibilityStatement` component for generating legal statements in EN, SV, NO, FI, DA, NL, DE, FR, ES, IT, PT, PL (with aliases for NB/DK and EN-GB/EN-US/EN-CA/EN-AU fallbacks).
+### [@holmdigital/components](./packages/components)
+29 accessible React components with built-in regulatory compliance, including a 12-locale `AccessibilityStatement` component (EN, SV, NO, FI, DA, NL, DE, FR, ES, IT, PT, PL, with NB/DK and EN-GB/US/CA/AU aliases).
 
 ```bash
 npm install @holmdigital/components
 ```
 
-**Usage — accessible primitives:**
 ```tsx
 import { Heading, Button, FormField, ErrorSummary, AccessibilityStatement } from '@holmdigital/components';
 
@@ -126,64 +124,38 @@ import { Heading, Button, FormField, ErrorSummary, AccessibilityStatement } from
 />
 ```
 
-> **Gotcha:** `Checkbox` fires both `onChange` (native) and `onCheckedChange(checked)`. `Select` uses a custom compound pattern (`SelectTrigger`/`SelectContent`/`SelectItem`) — no Radix UI dependency. See [docs/reference/components.md](./docs/reference/components.md) for full component catalog.
+> Gotcha: `Checkbox` fires both `onChange` (native) and `onCheckedChange(checked)`. `Select` uses a custom compound pattern (`SelectTrigger`/`SelectContent`/`SelectItem`), no Radix dependency. Full catalog: [docs/reference/components.md](./docs/reference/components.md).
 
-### 3. [@holmdigital/standards](./packages/standards)
-Machine-readable regulatory database: 46 WCAG convergence rules, 12 rule-locale files, national-law metadata for 16 countries + EU (17 jurisdictions), and fully typed exports (`EnrichedReport`, `FailingNode`, `LegalContext`).
+### [@holmdigital/standards](./packages/standards)
+Machine-readable regulatory database: 46 WCAG convergence rules, 12 rule-locale files, national-law metadata for 16 countries plus the EU (17 jurisdictions), and fully typed exports (`EnrichedReport`, `FailingNode`, `LegalContext`).
 
 ```bash
 npm install @holmdigital/standards
 ```
 
-**API — WCAG → EN 301 549 → national law mapping:**
 ```typescript
-import { getEN301549Mapping, getNationalLawByFramework } from '@holmdigital/standards';
+import { getEN301549Mapping, getNationalLawByFramework, getEnforcementBody } from '@holmdigital/standards';
 
-// Get WCAG → EN 301 549 → Swedish legal context
-const mapping = getEN301549Mapping('1.4.3', 'sv');
+// WCAG → EN 301 549 → Swedish legal context
+getEN301549Mapping('1.4.3', 'sv');
 // { wcagCriteria: "1.4.3", en301549Criteria: "9.1.4.3", dosLagenReference: "Lag 2018:1937 §7..." }
 
-// Resolve national law by sector (WAD = public, EAA = private, DDA = Australia)
-const law = getNationalLawByFramework('EAA', 'DE');
+// National law by sector (WAD = public, EAA = private, DDA = Australia)
+getNationalLawByFramework('EAA', 'DE');
 // { fullName: "Barrierefreiheitsstärkungsgesetz", law: "BFSG", ... }
-```
 
-**API — enforcement authorities:**
-```typescript
-import {
-  getEnforcementBody,
-  ENFORCEMENT_BODIES,
-  ENFORCEMENT_BODIES_DETAILED
-} from '@holmdigital/standards';
-
-// Sector-aware lookup (public → WAD body, private → EAA body)
+// Sector-aware enforcement lookup
 getEnforcementBody('SE', 'public');   // → "Agency for Digital Government (Digg)"
 getEnforcementBody('SE', 'private');  // → "Swedish Post and Telecom Authority (PTS)"
-getEnforcementBody('AU', 'public');   // → "Australian Human Rights Commission (AHRC)"
-
-// Raw record for all 17 jurisdictions (16 countries + EU)
-ENFORCEMENT_BODIES.IT;                // → "Agency for Digital Italy (AgID)"
-ENFORCEMENT_BODIES_DETAILED.IT.eaa;   // → "Communications Regulatory Authority (AGCOM)"
 ```
 
-**API — runtime stats & EAA deadline rules:**
-```typescript
-import { getDatabaseStats, getEAADeadlineRules } from '@holmdigital/standards';
+> Full API (national laws, sanctions, Nordic authorities, statement tools): [packages/standards/README.md](./packages/standards/README.md).
 
-const stats = getDatabaseStats();
-// { totalRules: 46, totalICTChecks: ..., rulesByLevel: { A, AA, AAA } }
+## CI/CD integration
 
-const eaaUrgent = getEAADeadlineRules();
-// Rules that became mandatory under the European Accessibility Act (June 2025)
-```
+The engine returns exit code `1` when it finds violations at or above your `--threshold`, so it fails builds cleanly.
 
-> For the full API reference (national laws, sanctions, Nordic authorities, statement tools), see [packages/standards/README.md](./packages/standards/README.md) and [docs/reference/standards.md](./docs/reference/standards.md).
-
-## 🤖 CI/CD Integration
-
-The engine is designed to run in CI/CD pipelines (GitHub Actions, GitLab CI, etc.). It returns exit code `1` if critical violations are found.
-
-### 1. GitHub Actions
+### GitHub Actions
 ```yaml
 name: Accessibility Scan
 on: [push, pull_request]
@@ -193,20 +165,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      
-      - name: Start Server
+      - name: Start server
         run: npm run dev &
         env:
-            CI: true
-
-      - name: Wait for Server
+          CI: true
+      - name: Wait for server
         run: npx wait-on http://localhost:3000
-
-      - name: Run Scan
+      - name: Run scan
         run: npx hd-a11y-scan http://localhost:3000 --ci --lang en --sector public --junit report.xml --pdf report.pdf
-        # Use --sector private for e-commerce, fintech, and other private sector sites (applies EAA instead of WAD)
-
-      - name: Upload Artifacts
+        # Use --sector private for e-commerce, fintech, and other private-sector sites (EAA instead of WAD)
+      - name: Upload artifacts
         if: always()
         uses: actions/upload-artifact@v4
         with:
@@ -214,7 +182,7 @@ jobs:
           path: report.*
 ```
 
-### 2. GitLab CI
+### GitLab CI
 ```yaml
 a11y-check:
   image: node:20
@@ -232,74 +200,70 @@ a11y-check:
       junit: report.xml
 ```
 
-### 3. Azure DevOps
+### Azure DevOps
 ```yaml
 trigger:
-- main
-
+  - main
 pool:
   vmImage: 'ubuntu-latest'
-
 steps:
-- script: |
-    npm install
-    npm run dev &
-    npx wait-on http://localhost:3000
-    npx hd-a11y-scan http://localhost:3000 --ci --junit report.xml
-  displayName: 'Run Accessibility Scan'
-
-- task: PublishTestResults@2
-  condition: succeededOrFailed()
-  inputs:
-    testResultsFormat: 'JUnit'
-    testResultsFiles: 'report.xml'
+  - script: |
+      npm install
+      npm run dev &
+      npx wait-on http://localhost:3000
+      npx hd-a11y-scan http://localhost:3000 --ci --junit report.xml
+    displayName: 'Run Accessibility Scan'
+  - task: PublishTestResults@2
+    condition: succeededOrFailed()
+    inputs:
+      testResultsFormat: 'JUnit'
+      testResultsFiles: 'report.xml'
 ```
 
-### 🛑 Build Breaking Logic
-The engine returns exit code `1` only when it finds violations that meet your `--threshold`.
+Threshold behaviour: `--threshold critical` fails only on critical issues, `--threshold high` (default) fails on critical and high, `--threshold low` fails on everything.
 
-- `--threshold critical` = Fails only on critical issues (e.g., missing alt text).
-- `--threshold high` (default) = Fails on critical + high issues.
-- `--threshold low` = Fails on everything (zero tolerance).
+## Documentation
 
+Full English documentation lives on the wiki, with in-repo reference catalogs for each package.
 
-## 🚀 Quick Start
+- **Wiki:** https://wiki.holmdigital.se
+- **Engine reference:** [docs/reference/engine.md](./docs/reference/engine.md) (CLI flags, config schema, programmatic API)
+- **Component catalog:** [docs/reference/components.md](./docs/reference/components.md) (29+ components with props)
+- **Standards database:** [docs/reference/standards.md](./docs/reference/standards.md) (WCAG vs EN 301 549 vs national law)
+- **CI/CD guide:** [docs/guides/ci-cd-integration.md](./docs/guides/ci-cd-integration.md)
+- **EU legal framework (WAD & EAA):** [docs/guides/eu-legal-framework.md](./docs/guides/eu-legal-framework.md)
+- **Accessibility statement tutorial:** [docs/guides/accessibility-statement.md](./docs/guides/accessibility-statement.md)
 
-### Installation
+## Local development
 
 ```bash
-# Clone repo
 git clone git@github.com:holmdigital/a11y-hd.git
 cd a11y-hd
-
-# Install dependencies
 npm install
-
-# Build all packages
-npm run build
+npm run build   # build all packages
 ```
 
-## 🏗️ Architecture
+## Architecture
 
-@holmdigital/a11y-monorepo/
+```
+a11y-hd/
 ├── packages/
-│   ├── engine/          # Test engine (Puppeteer/Axe) with i18n & Cloud Support
-│   ├── components/      # React components (Heading, Button, etc.)
-│   └── standards/       # Regulatory database (12 locales incl. Nordic)
-└── package.json         # Monorepo root
+│   ├── engine/        # Test engine: headless-browser rendering + virtual-DOM analysis, i18n, cloud support
+│   ├── components/    # Accessible React components (Heading, Button, FormField, ...)
+│   └── standards/     # Machine-readable regulatory database (17 jurisdictions, 12 rule-locale files)
+└── package.json       # Monorepo root
+```
 
-## 🤝 Contributing
+## Contributing
 
-We welcome contributions! Please see [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines.
+Contributions are welcome. See [CONTRIBUTING.md](./CONTRIBUTING.md).
 
-## 📄 License
+## License
 
-**MIT License** - See [LICENSE](./LICENSE) for details.
+MIT. See [LICENSE](./LICENSE). Copyright (c) 2026 Holm Digital AB.
 
-Copyright (c) 2026 Holm Digital AB
+## Links
 
-## 🔗 Links
-
-- [Holm Digital AB](https://holmdigital.se)
-- [GitHub](https://github.com/holmdigital/a11y-hd)
-- [NPM](https://www.npmjs.com/org/holmdigital)
+- Docs (wiki): https://wiki.holmdigital.se
+- npm org: https://www.npmjs.com/org/holmdigital
+- Company (Swedish): https://holmdigital.se

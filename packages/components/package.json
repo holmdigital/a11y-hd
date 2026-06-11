@@ -7,7 +7,8 @@
     "publishConfig": {
         "access": "public"
     },
-    "description": "Prescriptive, accessible React components for regulatory compliance",
+    "description": "Accessible, regulation-ready React components with a built-in 12-locale accessibility-statement generator.",
+    "homepage": "https://wiki.holmdigital.se",
     "repository": {
         "type": "git",
         "url": "git+https://github.com/holmdigital/a11y-hd.git",
@@ -353,10 +354,13 @@
         "accessibility",
         "a11y",
         "wcag",
+        "en-301-549",
+        "eaa",
         "design-system",
         "ui-kit",
         "accessible-components",
-        "wcag-compliant"
+        "wcag-compliant",
+        "accessibility-statement"
     ],
     "peerDependencies": {
         "react": ">=18.0.0",

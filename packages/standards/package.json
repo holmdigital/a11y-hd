@@ -5,7 +5,8 @@
     "publishConfig": {
         "access": "public"
     },
-    "description": "Machine-readable regulatory database for WCAG, EN 301 549 and the DOS Act",
+    "description": "Machine-readable regulatory database mapping WCAG to EN 301 549 and national accessibility law across 17 jurisdictions, with enforcement-body lookups.",
+    "homepage": "https://wiki.holmdigital.se",
     "repository": {
         "type": "git",
         "url": "git+https://github.com/holmdigital/a11y-hd.git",
@@ -52,7 +53,9 @@
         "accessibility",
         "a11y",
         "wcag",
+        "en-301-549",
         "en301549",
+        "eaa",
         "dos-lagen",
         "standards",
         "regulatory",

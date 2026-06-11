@@ -5,7 +5,8 @@
     "publishConfig": {
         "access": "public"
     },
-    "description": "Regulatory accessibility test engine with Virtual DOM and Shadow DOM support",
+    "description": "WCAG and EN 301 549 accessibility test engine that maps failures to national law and enforcement bodies across 17 jurisdictions. CLI and CI reporting.",
+    "homepage": "https://wiki.holmdigital.se",
     "repository": {
         "type": "git",
         "url": "git+https://github.com/holmdigital/a11y-hd.git",
@@ -60,14 +61,17 @@
         "accessibility",
         "a11y",
         "wcag",
+        "en-301-549",
         "en301549",
+        "eaa",
+        "accessibility-testing",
+        "cli",
         "compliance",
         "automation",
         "testing",
         "regulatory",
         "html-validate",
         "axe-core",
-        "ead",
         "european-accessibility-act",
         "holmdigital",
         "section508",

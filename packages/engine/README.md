@@ -26,7 +26,7 @@ For a comprehensive guide on CLI flags, CI/CD integration, and configuration fil
 - **Regulatory Mapping**: Maps technical failures to EU laws (EN 301 549, EAA), international laws (Australian DDA), and **U.S. ADA (Title II state/local, Title III private sector) + Section 508 (federal agencies) + HHS Section 504 (HHS-funded healthcare/research)**.
 - **Sector-Aware US Routing**: `--country US --sector public` references **ADA Title II + Section 508** (DOJ enforcement); `--sector private` references **ADA Title III + HHS Section 504** (DOJ + HHS OCR enforcement) — covering both general public-accommodations exposure and HHS-funded healthcare obligations in a single statement.
 - **HTML Structure Validation**: Built-in `html-validate` checks to prevent false positives/negatives.
-- **Internationalization (i18n)**:
+- **Internationalization (i18n)**: 12 languages total; locale file counts differ by subsystem (9 CLI output files, 16 statement templates including English variants).
   - **CLI output**: 9 locale files (`en`, `sv`, `no`, `fi`, `da`, `de`, `fr`, `es`, `nl`) + 4 English aliases (`en-gb`, `en-us`, `en-ca`, `en-au`) that fall back to `en`.
   - **Statement templates**: 16 locale files — adds `it`, `pt`, `pl`, and separate templates for each English variant (`en-gb`, `en-us`, `en-ca`, `en-au`).
 - **Template-Driven Accessibility Statements**: Generates modern, glassmorphism-styled statements using externalized JSON templates for each language, allowing for professional legal phrasing and deep customization.
