@@ -34,5 +34,23 @@
         "prescriptive_fix": "💡 Preskriptiv Lösning",
         "use": "Använd",
         "footer": "Genererad av @holmdigital/engine v{version} • Standarder: WCAG 2.1 AA, EN 301 549, DOS-lagen"
+    },
+    "plain": {
+        "what_happens": "Vad som händer:",
+        "who_is_affected": "Vem det drabbar:",
+        "business_impact": "Vad det kostar:",
+        "how_to_fix": "Så fixar du:",
+        "badge_stoppar_kop": "Stoppar köp",
+        "badge_hindrar": "Hindrar kunder",
+        "badge_forsamrar": "Försämrar upplevelsen",
+        "badge_putsning": "Värt att putsa",
+        "intro_framing": "Det betyder inte att du gjort något fel. De flesta som bygger en webbplats får aldrig veta att tillgänglighet ens är en sak. Nu vet du. Här är vad som är värt att börja med, sorterat efter vad som kostar dig mest kunder.",
+        "sorted_by": "Sorterat efter affärspåverkan",
+        "intro_found": "Hittade {count} {unit}",
+        "intro_unit_singular": "hinder",
+        "intro_unit_plural": "hinder",
+        "closing": "Börja uppifrån. Punkterna högst upp kostar dig mest kunder.",
+        "empty_state": "Vi hittade inga hinder den här gången.",
+        "report_title": "Tillgänglighetsrapport för {url}"
     }
 }
