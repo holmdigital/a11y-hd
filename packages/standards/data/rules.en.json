@@ -70,6 +70,14 @@
                 "telecommunications"
             ],
             "eaaDeadline": "2025-06-28"
+        },
+        "plainLanguage": {
+            "headline": "Button text is too faint against the background",
+            "whatHappens": "The text on buttons and links does not have enough contrast against the background for everyone to read it.",
+            "whoIsAffected": "Customers with low vision, older users, and anyone shopping on a phone in bright sunlight.",
+            "businessImpact": "If your customer cannot clearly see Add to cart, they will not click it. Weak contrast on the buy button is costly.",
+            "howToFix": "Darken the text or lighten the background until the contrast is sufficient. We specify exactly which colours need adjusting.",
+            "impactLevel": "forsamrar"
         }
     },
     {
@@ -141,6 +149,14 @@
                 "telecommunications"
             ],
             "eaaDeadline": "2025-06-28"
+        },
+        "plainLanguage": {
+            "headline": "The site cannot be used without a mouse",
+            "whatHappens": "Parts of the site cannot be reached using only the keyboard, and there is no visible indication of where you are when moving through the page.",
+            "whoIsAffected": "People who do not use a mouse for various reasons, and anyone who prefers the keyboard for fast shopping.",
+            "businessImpact": "If a menu or button cannot be reached by keyboard, that customer is simply locked out.",
+            "howToFix": "Make sure everything clickable can be reached with the Tab key, and that focus is clearly visible at all times.",
+            "impactLevel": "hindrar"
         }
     },
     {
@@ -213,6 +229,14 @@
                 "telecommunications"
             ],
             "eaaDeadline": "2025-06-28"
+        },
+        "plainLanguage": {
+            "headline": "Product images have no description",
+            "whatHappens": "The images on the site have no text description in the code. A visitor using a screen reader hears only the word image, not what the image shows.",
+            "whoIsAffected": "Customers with visual impairments, and also Google, which reads image descriptions to understand what you sell.",
+            "businessImpact": "Products without descriptions become invisible to both screen readers and search engines. You lose customers and search ranking at the same time.",
+            "howToFix": "Add a short description to each product image, for example Knitted wool sweater in grey. It takes a few seconds per image.",
+            "impactLevel": "hindrar"
         }
     },
     {
@@ -287,6 +311,14 @@
                 "telecommunications"
             ],
             "eaaDeadline": "2025-06-28"
+        },
+        "plainLanguage": {
+            "headline": "Checkout fields are missing clear labels",
+            "whatHappens": "The input fields in the checkout have no connected label. A grey hint text may appear inside the field, but it disappears as soon as someone starts typing.",
+            "whoIsAffected": "Anyone using a screen reader, and customers interrupted mid-checkout who lose track of where they were.",
+            "businessImpact": "The checkout is where the money is. Every barrier here leads to abandoned carts.",
+            "howToFix": "Add a visible label above each field, for example Postcode, that stays visible at all times.",
+            "impactLevel": "stoppar-kop"
         }
     },
     {
@@ -1576,6 +1608,14 @@
                 "telecommunications"
             ],
             "eaaDeadline": "2025-06-28"
+        },
+        "plainLanguage": {
+            "headline": "Links that only say read more",
+            "whatHappens": "Several links have no descriptive text and just say read more or click here.",
+            "whoIsAffected": "Anyone navigating by links using a keyboard or screen reader gets a list of read more, read more, read more without knowing where they lead.",
+            "businessImpact": "Confused visitors do not click. Search engines also favour links that describe what they lead to.",
+            "howToFix": "Replace read more with what the link actually leads to, for example View the full winter collection.",
+            "impactLevel": "forsamrar"
         }
     },
     {
@@ -1845,6 +1885,14 @@
                 "telecommunications"
             ],
             "eaaDeadline": "2025-06-28"
+        },
+        "plainLanguage": {
+            "headline": "The page does not declare its language",
+            "whatHappens": "The code does not specify what language the page is written in.",
+            "whoIsAffected": "A screen reader then reads the text using the wrong pronunciation, which becomes incomprehensible.",
+            "businessImpact": "Your customer cannot understand what is read aloud and gives up.",
+            "howToFix": "Add a single line to the code that declares the language. One line, and it applies to the whole site.",
+            "impactLevel": "putsning"
         }
     },
     {
@@ -2516,6 +2564,14 @@
                 "telecommunications"
             ],
             "eaaDeadline": "2025-06-28"
+        },
+        "plainLanguage": {
+            "headline": "Icon buttons have no name",
+            "whatHappens": "Buttons that are shown only as an icon, such as the shopping cart or search, have no name in the code.",
+            "whoIsAffected": "A screen reader announces button without saying what it does. Your customer is afraid to press it.",
+            "businessImpact": "If the cart button has no name, your customer does not know how to get to checkout.",
+            "howToFix": "Give each icon button a name in the code, for example Open shopping cart. It is not visible on screen but will be read aloud.",
+            "impactLevel": "hindrar"
         }
     },
     {
@@ -2777,6 +2833,14 @@
                 "telecommunications"
             ],
             "eaaDeadline": "2025-06-28"
+        },
+        "plainLanguage": {
+            "headline": "Headings do not follow a logical order",
+            "whatHappens": "The headings on the page do not follow a logical sequence in the code, so the page structure cannot be read.",
+            "whoIsAffected": "Screen reader users navigate via headings, much like a table of contents. Without a clear order it becomes confusing.",
+            "businessImpact": "A hard-to-navigate page means your customer cannot find the product and leaves.",
+            "howToFix": "Build headings in order, with one main heading and sub-headings beneath it, just like in a document.",
+            "impactLevel": "putsning"
         }
     },
     {

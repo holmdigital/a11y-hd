@@ -70,6 +70,14 @@
                 "telecommunications"
             ],
             "eaaDeadline": "2025-06-28"
+        },
+        "plainLanguage": {
+            "headline": "Knapptexten är för svag mot bakgrunden",
+            "whatHappens": "Texten på knappar och länkar har för låg kontrast mot bakgrunden för att alla ska kunna läsa den.",
+            "whoIsAffected": "Personer med nedsatt syn, äldre, och alla som handlar på mobilen i solljus.",
+            "businessImpact": "Om din kund inte ser Lägg i varukorg tydligt så klickar hen inte. Svag kontrast på just köpknappen är dyrt.",
+            "howToFix": "Gör texten mörkare eller bakgrunden ljusare tills kontrasten räcker. Vi anger exakt vilka färger som behöver justeras.",
+            "impactLevel": "forsamrar"
         }
     },
     {
@@ -141,6 +149,14 @@
                 "telecommunications"
             ],
             "eaaDeadline": "2025-06-28"
+        },
+        "plainLanguage": {
+            "headline": "Sajten går inte att använda utan mus",
+            "whatHappens": "Delar av sajten går inte att nå med bara tangentbordet, och det syns inte var man befinner sig när man hoppar runt.",
+            "whoIsAffected": "Personer som av olika skäl inte använder mus, och alla som föredrar tangentbord för att handla snabbt.",
+            "businessImpact": "Om en meny eller knapp inte går att nå med tangentbord så är den stängd för den kunden, helt enkelt.",
+            "howToFix": "Se till att allt klickbart går att nå med tab-tangenten, och att det syns tydligt var fokus ligger.",
+            "impactLevel": "hindrar"
         }
     },
     {
@@ -213,6 +229,14 @@
                 "telecommunications"
             ],
             "eaaDeadline": "2025-06-28"
+        },
+        "plainLanguage": {
+            "headline": "Produktbilderna saknar beskrivning",
+            "whatHappens": "Bilderna på sajten har ingen textbeskrivning i koden. En besökare med skärmläsare hör bara ordet bild, inte vad bilden visar.",
+            "whoIsAffected": "Kunder med synnedsättning, men också Google, som läser bildtexten för att förstå vad du säljer.",
+            "businessImpact": "Produkter utan beskrivning blir osynliga både för skärmläsare och sökmotorer. Du tappar kunder och ranking på samma gång.",
+            "howToFix": "Lägg en kort beskrivning på varje produktbild, till exempel Stickad ylletröja i grått. Det tar några sekunder per bild.",
+            "impactLevel": "hindrar"
         }
     },
     {
@@ -287,6 +311,14 @@
                 "telecommunications"
             ],
             "eaaDeadline": "2025-06-28"
+        },
+        "plainLanguage": {
+            "headline": "Fälten i kassan saknar tydliga etiketter",
+            "whatHappens": "Inmatningsfälten i kassan har ingen kopplad etikett. Det syns kanske en grå text i fältet, men den försvinner så fort man börjar skriva.",
+            "whoIsAffected": "Alla som använder skärmläsare, och den som blir avbruten mitt i ifyllningen och tappar bort var hen var.",
+            "businessImpact": "Kassan är där pengarna finns. Varje hinder här ger övergivna varukorgar.",
+            "howToFix": "Sätt en synlig etikett ovanför varje fält, till exempel Postnummer, som ligger kvar hela tiden.",
+            "impactLevel": "stoppar-kop"
         }
     },
     {
@@ -1576,6 +1608,14 @@
                 "telecommunications"
             ],
             "eaaDeadline": "2025-06-28"
+        },
+        "plainLanguage": {
+            "headline": "Länkar som bara säger läs mer",
+            "whatHappens": "Flera länkar saknar beskrivande text och säger bara läs mer eller klicka här.",
+            "whoIsAffected": "Den som hoppar mellan länkar med tangentbord eller skärmläsare får en lista med läs mer, läs mer, läs mer utan att veta vart de leder.",
+            "businessImpact": "Förvirrade besökare klickar inte. Google premierar dessutom länkar som beskriver vad de leder till.",
+            "howToFix": "Byt läs mer mot vad länken faktiskt leder till, till exempel Se hela vinterkollektionen.",
+            "impactLevel": "forsamrar"
         }
     },
     {
@@ -1845,6 +1885,14 @@
                 "telecommunications"
             ],
             "eaaDeadline": "2025-06-28"
+        },
+        "plainLanguage": {
+            "headline": "Sidan säger inte vilket språk den är på",
+            "whatHappens": "Koden talar inte om att sidan är på svenska.",
+            "whoIsAffected": "En skärmläsare läser då upp svensk text med engelskt uttal, vilket blir obegripligt.",
+            "businessImpact": "Kunden förstår inte vad som läses upp och ger upp.",
+            "howToFix": "Lägg till en rad i koden som anger svenska som språk. En enda rad, och den gäller hela sajten.",
+            "impactLevel": "putsning"
         }
     },
     {
@@ -2516,6 +2564,14 @@
                 "telecommunications"
             ],
             "eaaDeadline": "2025-06-28"
+        },
+        "plainLanguage": {
+            "headline": "Ikonknappar utan namn",
+            "whatHappens": "Knappar som bara visas som en ikon, till exempel varukorgen eller sök, har inget namn i koden.",
+            "whoIsAffected": "En skärmläsare läser upp knapp utan att säga vad den gör. Kunden vågar inte trycka.",
+            "businessImpact": "Om varukorgsknappen är namnlös vet kunden inte hur hen tar sig till kassan.",
+            "howToFix": "Ge varje ikonknapp ett namn i koden, till exempel Öppna varukorgen. Det syns inte visuellt men läses upp.",
+            "impactLevel": "hindrar"
         }
     },
     {
@@ -2777,6 +2833,14 @@
                 "telecommunications"
             ],
             "eaaDeadline": "2025-06-28"
+        },
+        "plainLanguage": {
+            "headline": "Rubrikerna hänger inte ihop",
+            "whatHappens": "Rubrikerna på sidan följer ingen ordning i koden, så sidans struktur går inte att läsa av.",
+            "whoIsAffected": "Skärmläsaranvändare navigerar via rubriker, ungefär som via en innehållsförteckning. Utan ordning blir det en enda röra.",
+            "businessImpact": "En svårnavigerad sida betyder att kunden inte hittar produkten och lämnar.",
+            "howToFix": "Bygg rubrikerna i ordning, en huvudrubrik och underrubriker under den, precis som i ett dokument.",
+            "impactLevel": "putsning"
         }
     },
     {
