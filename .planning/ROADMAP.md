@@ -332,7 +332,7 @@ Plans:
 **Goal:** `hd-a11y-scan <url> --plain` (alias för `--audience plain`, default `developer` — inget befintligt beteende ändras) ger en klarspråksrapport för icke-tekniska mottagare i terminal och PDF. Texterna bor i standards (engelska nycklar, lokaliserade värden), hämtas i `generateRegulatoryReport` via den befintliga `getConvergenceRule`-uppslagningen (EN uppslagning — ingen ny locale-laddare, ingen andra uppslagning vid utskrift), och flödar till terminal/`--json`/`--pdf` på samma gång.
 **Requirements**: PLAIN-01 (typ + datafält i standards), PLAIN-02 (enrichment-koppling), PLAIN-03 (terminalrenderare), PLAIN-04 (CLI-flaggor `--audience`/`--plain`), PLAIN-05 (PDF-läge via `audience`-arg i `generateReportHTML`), PLAIN-06 (8 svenska texter i `rules.sv.json` mot semantiska id: `alt-text`, `color-contrast`, `form-labels`, `link-purpose`, `name-role-value`, `keyboard-accessible`, `heading-order`, `language-of-page`)
 **Depends on:** Phase 33
-**Plans:** 5 plans
+**Plans:** 2/5 plans executed
 
 **Underlag:** `daniel-engine-klarsprak-2026-06-05.md` (auktoritativ ram, Karins beslut), `klarsprak-cli-implementation.md` (bygg enligt denna — text i standards, engelska nycklar), `klarsprakslager-engine.md` (innehåll: 8 färdiga texter + tonregler + rapportöppning; dess svensk-nycklade datatyp skrotas). De två sistnämnda säger emot varandra med flit — läses ihop via förslaget.
 
@@ -351,8 +351,8 @@ Plans:
 Plans:
 **Wave 1**
 
-- [ ] 34-01-PLAN.md — Standards types (PlainLanguageCopy + BusinessImpactLevel) + 8 sv/en texts + D-10 data guards [wave 1]
-- [ ] 34-03-PLAN.md — Engine i18n: plain.* chrome in all 9 locale files (en/sv real, 7 deferred English) [wave 1]
+- [x] 34-01-PLAN.md — Standards types (PlainLanguageCopy + BusinessImpactLevel) + 8 sv/en texts + D-10 data guards [wave 1]
+- [x] 34-03-PLAN.md — Engine i18n: plain.* chrome in all 9 locale files (en/sv real, 7 deferred English) [wave 1]
 
 **Wave 2** *(blocked on Wave 1 completion)*
 
