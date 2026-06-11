@@ -472,7 +472,7 @@ describe('plainLanguage encoding guard (D-10.1)', () => {
 
     it('sv: no mojibake in any plainLanguage text', () => {
         for (const id of PLAIN_IDS) {
-            const rule = (rulesSv as any[]).find((r: {ruleId: string}) => r.ruleId === id);
+            const rule = (rulesSv as ConvergenceRule[]).find((r: {ruleId: string}) => r.ruleId === id);
             const pl = rule?.plainLanguage;
             if (!pl) continue;
             for (const [field, val] of Object.entries(pl)) {
@@ -496,7 +496,7 @@ describe('plainLanguage tone lint (D-10.2 — no dashes, no percent)', () => {
 
     for (const [lang, rules] of [['sv', rulesSv], ['en', rulesEn]] as const) {
         it(`${lang}: no em/en dashes or percent signs in any plainLanguage field`, () => {
-            for (const rule of rules as any[]) {
+            for (const rule of rules as ConvergenceRule[]) {
                 if (!rule.plainLanguage) continue;
                 for (const [field, val] of Object.entries(rule.plainLanguage)) {
                     if (typeof val !== 'string') continue;
@@ -520,8 +520,8 @@ describe('plainLanguage sv/en parity (D-10.3)', () => {
 
     it('same 8 ruleIds have plainLanguage in both sv and en', () => {
         for (const id of PLAIN_IDS) {
-            const sv = (rulesSv as any[]).find((r: {ruleId: string}) => r.ruleId === id);
-            const en = (rulesEn as any[]).find((r: {ruleId: string}) => r.ruleId === id);
+            const sv = (rulesSv as ConvergenceRule[]).find((r: {ruleId: string}) => r.ruleId === id);
+            const en = (rulesEn as ConvergenceRule[]).find((r: {ruleId: string}) => r.ruleId === id);
             expect(sv?.plainLanguage, `sv missing plainLanguage for ${id}`).toBeDefined();
             expect(en?.plainLanguage, `en missing plainLanguage for ${id}`).toBeDefined();
             expect(sv?.plainLanguage?.impactLevel, `impactLevel mismatch for ${id}`)
@@ -565,7 +565,7 @@ describe('plainLanguage sv/en parity (D-10.3)', () => {
 
 ---
 
-## Open Questions
+## Open Questions (RESOLVED — alla tre delegerade till D-09 Karin-grinden via plan 34-05 Task 4)
 
 1. **Exact wording of English texts (D-09)**
    - What we know: Tonregler apply to English too (you-address, business-first, no dashes, no invented stats)

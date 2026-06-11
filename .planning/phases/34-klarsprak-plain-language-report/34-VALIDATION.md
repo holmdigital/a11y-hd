@@ -1,8 +1,8 @@
 ---
 phase: 34
 slug: klarsprak-plain-language-report
-status: draft
-nyquist_compliant: false
+status: ready
+nyquist_compliant: true
 wave_0_complete: false
 created: 2026-06-11
 ---
@@ -36,21 +36,20 @@ created: 2026-06-11
 
 ## Per-Task Verification Map
 
-> Task IDs assigned at planning. Requirement-level rows below; planner maps each to task IDs.
-
 | Task ID | Plan | Wave | Requirement | Threat Ref | Secure Behavior | Test Type | Automated Command | File Exists | Status |
 |---------|------|------|-------------|------------|-----------------|-----------|-------------------|-------------|--------|
-| TBD | TBD | TBD | PLAIN-01 (typ + fält) | — | N/A | type-check | `npm run typecheck -w @holmdigital/standards` | ✅ (tsc covers) | ⬜ pending |
-| TBD | TBD | TBD | PLAIN-02 (enrichment sv) | — | N/A | unit | `npm run test:ci -w @holmdigital/standards` | ❌ W0 (index.test.ts gap) | ⬜ pending |
-| TBD | TBD | TBD | PLAIN-02 (D-03 EN-fallback för de/fr/...) | — | N/A | unit | `npm run test:ci -w @holmdigital/standards` | ❌ W0 (index.test.ts gap) | ⬜ pending |
-| TBD | TBD | TBD | PLAIN-03 (sortering per impactLevel-rank) | — | N/A | unit | `npm run test:ci -w @holmdigital/engine` | ❌ W0 (plain-report.test.ts saknas) | ⬜ pending |
-| TBD | TBD | TBD | PLAIN-03 (fallback till remediation.description) | — | N/A | unit | `npm run test:ci -w @holmdigital/engine` | ❌ W0 (plain-report.test.ts) | ⬜ pending |
-| TBD | TBD | TBD | PLAIN-03 (tom-state vid 0 reports) | — | N/A | unit | `npm run test:ci -w @holmdigital/engine` | ❌ W0 (plain-report.test.ts) | ⬜ pending |
-| TBD | TBD | TBD | PLAIN-06 / D-10.1 (encoding-vakt: inga Ã, korrekta å/ä/ö) | — | N/A | unit | `npm run test:ci -w @holmdigital/standards` | ❌ W0 (index.test.ts gap) | ⬜ pending |
-| TBD | TBD | TBD | PLAIN-06 / D-10.2 (ton-lint: inga —/–/% i sv+en) | — | N/A | unit | `npm run test:ci -w @holmdigital/standards` | ❌ W0 (index.test.ts gap) | ⬜ pending |
-| TBD | TBD | TBD | PLAIN-06 / D-10.3 (sv/en-paritet: samma 8 id + identiska impactLevel) | — | N/A | unit | `npm run test:ci -w @holmdigital/standards` | ❌ W0 (index.test.ts gap) | ⬜ pending |
-| TBD | TBD | TBD | PLAIN-04 (flaggor `--audience`/`--plain`) | — | N/A | manual | `npx hd-a11y-scan https://johancask.com --plain` | Manual (D-09 Karin-grind) | ⬜ pending |
-| TBD | TBD | TBD | PLAIN-05 (klarspråks-PDF utan score/WCAG-tabeller) | — | N/A | manual | `npx hd-a11y-scan https://johancask.com --plain --pdf karin.pdf` | Manual (D-09 Karin-grind) | ⬜ pending |
+| 34-01-01 | 01 | 1 | PLAIN-01 (typ + fält, D-15 båda typerna) | — | N/A | type-check | `npm run typecheck -w @holmdigital/standards` | ✅ (tsc covers) | ⬜ pending |
+| 34-01-01 | 01 | 1 | PLAIN-06 / D-10.1–.3 (vakter, RED-stubbar) | — | N/A | unit | `npm run test:ci -w @holmdigital/standards` | ❌ W0 (skapas i tasken) | ⬜ pending |
+| 34-01-02 | 01 | 1 | PLAIN-06 / D-10.1–.3 (8 sv + 8 en texter → GREEN) | — | N/A | unit | `npm run test:ci -w @holmdigital/standards` | ❌ W0 (34-01-01) | ⬜ pending |
+| 34-02-01 | 02 | 2 | PLAIN-02 (enrichment sv + D-03 EN-fallback + D-11) | — | N/A | unit | `npm run test:ci -w @holmdigital/standards` | ❌ W0 (index.test.ts-utökning) | ⬜ pending |
+| 34-03-01 | 03 | 1 | D-01/D-14 (chrome-nycklar i alla 9 locale-filer, atomiskt) | T-34-11 | Ingen partiell locale-uppdatering | type-check | `npm run typecheck -w @holmdigital/engine` | ✅ (tsc covers) | ⬜ pending |
+| 34-04-01 | 04 | 2 | D-13 (snapshot-baseline developer-PDF, 2-args) | T-34-12 | Byte-för-byte-lås före audience-param | unit | `npm run test:ci -w @holmdigital/engine` | ❌ W0 (html-template.test.ts skapas) | ⬜ pending |
+| 34-04-02 | 04 | 2 | PLAIN-03 / D-10.4 (renderartester: sortering, badges, fallback, tom-state — RED) | — | N/A | unit | `npm run test:ci -w @holmdigital/engine` | ❌ W0 (plain-report.test.ts skapas) | ⬜ pending |
+| 34-04-03 | 04 | 2 | PLAIN-03 (renderaren → GREEN; D-05 ingen score) | — | N/A | unit | `npm run test:ci -w @holmdigital/engine` | ❌ W0 (34-04-02) | ⬜ pending |
+| 34-05-01 | 05 | 3 | PLAIN-04 / D-12 (flaggor + grenordning json > light > plain) | — | N/A | type-check | `npm run typecheck -w @holmdigital/engine` | ✅ (tsc covers) | ⬜ pending |
+| 34-05-02 | 05 | 3 | PLAIN-05 / D-08, D-13, D-16 (plain-PDF + snapshot grön + versionskälla) | T-34-13 | result.url HTML-escapas; snapshot orörd | unit | `npm run test:ci -w @holmdigital/engine` | ❌ W0 (34-04-01) | ⬜ pending |
+| 34-05-03 | 05 | 3 | Changesets (standards 2.7.0 minor, engine 2.6.0 minor) | — | N/A | CLI | `npx changeset status` | ✅ | ⬜ pending |
+| 34-05-04 | 05 | 3 | PLAIN-04 + PLAIN-05 (D-09 Karin-grind, manuell) | — | N/A | manual | `npx hd-a11y-scan https://johancask.com --plain` + `--plain --pdf karin.pdf` | Manual checkpoint | ⬜ pending |
 
 *Status: ⬜ pending · ✅ green · ❌ red · ⚠️ flaky*
 
@@ -76,11 +75,12 @@ created: 2026-06-11
 
 ## Validation Sign-Off
 
-- [ ] All tasks have `<automated>` verify or Wave 0 dependencies
-- [ ] Sampling continuity: no 3 consecutive tasks without automated verify
-- [ ] Wave 0 covers all MISSING references
-- [ ] No watch-mode flags
-- [ ] Feedback latency < 120s
-- [ ] `nyquist_compliant: true` set in frontmatter
+- [x] All tasks have `<automated>` verify or Wave 0 dependencies (verifierat av plan-checker, Dimension 8a)
+- [x] Sampling continuity: no 3 consecutive tasks without automated verify (Dimension 8c)
+- [x] Wave 0 covers all MISSING references (index.test.ts-utökningar i 34-01/34-02; plain-report.test.ts i 34-04; html-template.test.ts i 34-04)
+- [x] No watch-mode flags
+- [x] Feedback latency < 120s (typecheck/test:ci, ~30–60 s per paket)
+- [x] `nyquist_compliant: true` set in frontmatter
 
-**Approval:** pending
+**Approval:** approved 2026-06-11 (plan-checker VERIFICATION PASSED, 0 blockers)
+*`wave_0_complete` förblir `false` tills exekveringen skapat testfilerna — flippas av execute-phase.*

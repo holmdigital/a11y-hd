@@ -98,62 +98,80 @@ See: `.planning/milestones/v0.6-ROADMAP.md` for full details
 ## Phase Details
 
 ### Phase 18: AU Standards Foundation
+
 **Goal**: The standards package contains all AU type entries and data required for downstream packages to compile — `'DDA'` in `LegalFramework`, `'AU'` in `Country`, DDA and DTA law records in `national-laws.json`, and AHRC in both enforcement body maps — committed atomically so the TypeScript build never breaks mid-update.
 **Depends on**: Phase 17 (v0.4 complete)
 **Requirements**: STD-01, STD-02, STD-03, STD-04
 **Success Criteria** (what must be TRUE):
+
   1. `LegalFramework` type includes `'DDA'` as a valid value alongside `'WAD'` and `'EAA'`
   2. `Country` type includes `'AU'` and the build fails if any `Record<Country, ...>` map is missing the `'AU'` key
   3. `national-laws.json` has an `au-dda` entry (scope both, enforcer AHRC) and an `au-dta` entry (scope public, enforcer DTA)
   4. `ENFORCEMENT_BODIES['AU']` and `ENFORCEMENT_BODIES_DETAILED['AU']` are present with both `wad` and `eaa` fields pointing to AHRC
   5. `getEnforcementBody('AU', 'private')` returns AHRC (not DTA) — DDA applies to both sectors under one body
+
 **Plans**: 1 plan
 Plans:
+
 - [x] 18-01-PLAN.md — Extend types, add AU enforcement bodies, national law entries, and tests
 
 ### Phase 19: AU Component Locale
+
 **Goal**: The `AccessibilityStatement` React component renders a legally accurate Australian statement for `locale="en-au"` — referencing DDA 1992 and AHRC, using complaint-based enforcement framing (not mandatory statement framing), and displaying correct AU-specific badge labels and footer text.
 **Depends on**: Phase 18
 **Requirements**: CMP-01, CMP-02
 **Success Criteria** (what must be TRUE):
+
   1. `TEMPLATES['en-au']` exists in `AccessibilityStatement.tsx` and references DDA legislation and AHRC (no EU Web Accessibility Directive references)
   2. `locale-chrome.ts` contains `en-au` entries for `BADGE_LABELS`, `UPDATED_LABEL`, and `FOOTER_TEXT`
   3. Rendering `<AccessibilityStatement locale="en-au" />` produces HTML with DDA and AHRC text and zero placeholder leakage (`{<` must not appear in output)
+
 **Plans**: 1 plan
 Plans:
+
 - [x] 19-01-PLAN.md — Add en-au template, locale routing, national_law DDA fallback, locale-chrome entries, and tests
 
 ### Phase 20: AU Engine Integration
+
 **Goal**: The engine automatically detects Australian domains via `.au` and `.com.au` TLD matching, routes them to the `en-au` locale, and generates a legally accurate accessibility statement referencing DDA 1992, AHRC, and WCAG 2.2 AA — with correct evaluationMethod and statusMap entries for the en-au locale.
 **Depends on**: Phase 19
 **Requirements**: ENG-01, ENG-02, ENG-03
 **Success Criteria** (what must be TRUE):
+
   1. `TLD_MAP` maps `'au'` to `'AU'` and the existing `hostname.split('.').pop()` parser correctly routes `.au`, `.com.au`, and `.gov.au` domains to country `AU`
   2. `en-au.json` statement template exists in `packages/engine/src/reporting/templates/` with DDA-specific prose, voluntary framing, and AHRC complaint pathway — no "disproportionate burden" or mandatory statement language from EU/UK templates
   3. Engine locale maps (`evaluationMethod`, `statusMap`, locale routing) include `en-au` entries
   4. The risk-level display label for `en-au` reads "Risk level" (not "DIGG Risk") in CLI output
+
 **Plans**: 1 plan
 Plans:
+
 - [x] 20-01-PLAN.md — Create en-au.json template, wire TLD detection, locale maps, DDA substitution, and i18n routing
 
 ### Phase 21: AU Test Coverage
+
 **Goal**: The test suite verifies all AU additions end-to-end — enforcement body routing, national law retrieval, TLD detection, statement template placeholder exhaustiveness, and component rendering — using the auto-syncing pattern so tests call standards functions directly and do not hardcode law or enforcement body names.
 **Depends on**: Phase 20
 **Requirements**: TST-01, TST-02, TST-03
 **Success Criteria** (what must be TRUE):
+
   1. Tests assert `getEnforcementBody('AU')` and `getEnforcementBody('AU', 'private')` both return AHRC using the auto-syncing pattern (no hardcoded strings)
   2. Tests assert `getNationalLawByFramework('DDA', 'AU')` returns a non-null result with correct `.law` and `.fullName` fields
   3. en-au engine template placeholder exhaustiveness tests confirm every `{<placeholder>}` is substituted and no placeholder leakage occurs in generated output
   4. Component tests confirm `<AccessibilityStatement locale="en-au" />` renders AU-specific content and all 225 pre-existing tests continue to pass
+
 **Plans**: 1 plan
 Plans:
+
 - [ ] 21-01-PLAN.md — Close 7 auto-sync and coverage gaps across standards, engine, and component test files + full regression
 
 ### Phase 27: APG Live Regions
+
 **Goal**: Combobox (TC-09-LIVE), DatePicker (TC-10-LIVE), and MultiSelect (TC-11-LIVE) each render a `LiveRegion` (or `aria-live="polite"` element) that announces the most consequential state change to assistive tech: results count on Combobox query change, selected-date on DatePicker commit, selection count on MultiSelect chip add/remove. The three Phase 24 test files are extended with live-region assertions, completing the relevant ROADMAP success-criterion bullets deferred from v0.6.
 **Depends on**: Phase 26 (v0.6 complete)
 **Requirements**: TC-09-LIVE, TC-11-LIVE (TC-10-LIVE moved to Phase 28)
 **Success Criteria** (what must be TRUE):
+
   1. Combobox renders a status live-region that updates to "{N} results" (or equivalent) when the filtered options list changes; Combobox.test.tsx asserts the region content updates via `waitFor`
   2. DatePicker renders a status live-region that announces the selected date in the component's `locale` when a date is committed; DatePicker.test.tsx asserts the region content
   3. MultiSelect renders a status live-region that announces "{N} selected" when chips are added or removed; MultiSelect.test.tsx asserts the region content
@@ -161,27 +179,33 @@ Plans:
   5. 28-test-files / 453-tests baseline preserved; each plan adds ~2-3 new tests to existing files
 
 ### Phase 28: DatePicker APG Dialog-Grid Keyboard
+
 **Goal**: DatePicker replaces (or augments) its current native `<input type="date">` with a `role="grid"` calendar dialog UI that satisfies the W3C APG dialog-grid pattern — day cells with `aria-selected` and `aria-current="date"` for today, plus the full keyboard matrix (Arrow day-by-day, Home/End week-bounds, PageUp/PageDown month, Shift+PageUp/PageDown year, Enter/Space select, Escape close). DatePicker.test.tsx no-throw stubs convert to real focus/state assertions.
 **Depends on**: Phase 26 (independent of Phase 27 after TC-10-LIVE moved here)
 **Requirements**: TC-10-IMPL, TC-10-LIVE
 **Success Criteria** (what must be TRUE):
+
   1. DatePicker renders a `role="grid"` calendar when expanded; day cells use `role="gridcell"` with `aria-selected` reflecting selection state and `aria-current="date"` on today's cell
   2. Keyboard navigation: Arrow moves day-by-day; Home/End jump to week bounds; PageUp/PageDown jump month; Shift+PageUp/PageDown jump year; Enter/Space commit selection; Escape closes the dialog without selecting (returns focus to trigger)
   3. DatePicker.test.tsx no-throw stubs from Phase 24 are converted to real focus and `aria-selected`/`aria-current` assertions
   4. **`value` prop type changes from `string` to `Date`** — accepted breaking change per Phase 28 CONTEXT D-01 (verified non-coupled via Phase 22 SSR audit; CHANGELOG migration note shipped). All other consumer-facing props (label/description/error/className) preserved; new optional props added (minDate/maxDate/locale/placeholder); `forwardRef` and `extends React.InputHTMLAttributes` removed (no underlying input element)
   5. `LiveRegion` announces "Selected: {localized date}" on commit; localized per `locale` prop; no-mount-announce via `hasInteracted` ref (TC-10-LIVE)
   6. axe-clean smoke under jsdom
+
 **Plans**: 3 plans
 Plans:
+
 - [x] 28-01-PLAN.md — Date math + i18n + base calendar render (no keyboard yet)
 - [x] 28-02-PLAN.md — APG keyboard handler + focus trap + Phase 24 stub conversion
 - [x] 28-03-PLAN.md — Live-region announcement (TC-10-LIVE) + WCAG 4.1.3 marker
 
 ### Phase 29: MultiSelect APG Listbox-Multi Completeness
+
 **Goal**: MultiSelect satisfies the full W3C APG listbox-multi contract — `aria-multiselectable="true"` on the listbox, Space toggles option selection without moving focus (currently types a literal space), Shift+Arrow extends selection from current focus, `aria-selected` is dynamic (currently hardcoded `false`). MultiSelect.test.tsx no-throw stubs convert to real assertions.
 **Depends on**: Phase 27 (MultiSelect live-region pairs with selection-state correctness)
 **Requirements**: TC-11-IMPL
 **Success Criteria** (what must be TRUE):
+
   1. The listbox carries `aria-multiselectable="true"`; options carry dynamic `aria-selected` reflecting current selection state
   2. Space on a focused option toggles its selection without moving focus to the next option; the option's `aria-selected` flips correctly
   3. Shift+ArrowDown / Shift+ArrowUp extends selection range from the anchor focus to the new focus position
@@ -191,13 +215,16 @@ Plans:
 **Plans:** 1 plan
 
 Plans:
+
 - [x] 29-01-PLAN.md — ARIA semantics (aria-multiselectable + dynamic aria-selected) + Space toggle + Shift+Arrow extend from anchor + stub conversion (TC-11-IMPL) (completed 2026-05-12)
 
 ### Phase 30: DataTable APG Grid Cell-Wise Keyboard
+
 **Goal**: DataTable adds cell-wise Arrow keyboard navigation to satisfy the W3C APG grid contract — Right/Left/Down/Up move between cells, Home/End jump to row bounds, PageUp/PageDown jump pages (or a configurable row-count if pagination isn't built-in), Ctrl+Home/End jump to table bounds. Existing sortable-header contract (`scope="col"`, `aria-sort`, native Enter/Space on `<button>` headers) stays as-is. DataTable.test.tsx cell-arrow no-throw stubs convert to real focus assertions.
 **Depends on**: Phase 26 (independent of Phases 27-29)
 **Requirements**: TC-12-IMPL
 **Success Criteria** (what must be TRUE):
+
   1. Arrow keys move focus between `gridcell` elements per the APG grid pattern; focus is managed via single tabindex="0" on the active cell, tabindex="-1" on inactive cells (roving)
   2. Home / End jump to first / last cell in the current row; PageUp / PageDown jump up/down by N rows (default 10 or configurable); Ctrl+Home / Ctrl+End jump to table corners
   3. DataTable.test.tsx cell-arrow no-throw stubs from Phase 24 are converted to real focus assertions; sortable-header tests still pass unchanged
@@ -207,13 +234,16 @@ Plans:
 **Plans:** 1 plan
 
 Plans:
+
 - [x] 30-01-PLAN.md — Add APG grid roles + roving tabindex + parent-grid onKeyDown (Arrow/Home/End/Ctrl+Home/End/PageUp/PageDown/Enter delegation) + @wcag JSDoc to DataTable.tsx; migrate Tier 1 role queries; convert 9 no-throw stubs to ~17 real focus assertions; full verify (TC-12-IMPL)
 
 ### Phase 31: NavigationMenu Disclosure → Menubar
+
 **Goal**: NavigationMenu upgrades from its current APG Disclosure pattern to the W3C APG Menubar pattern — Arrow horizontal/vertical, Home/End first/last, Enter activates leaf, type-ahead, single `tabindex="0"` roving. NavigationMenu.test.tsx Disclosure tests are replaced (or augmented under an opt-in prop) with the Menubar contract. **Backwards-compat decision in discuss-phase:** opt-in via new `pattern="menubar" | "disclosure"` prop (preserves current behavior for v0.6 consumers), or new default with migration note in CHANGELOG. Discuss decides.
 **Depends on**: Phase 26 (independent of Phases 27-30)
 **Requirements**: TC-14-IMPL
 **Success Criteria** (what must be TRUE):
+
   1. NavigationMenu satisfies the APG Menubar keyboard contract: Right/Left along menubar, Down opens submenu and focuses first item, Up/Down within submenu, Right enters nested submenu or moves to next menubar item, Left collapses submenu or moves to previous menubar item, Home/End jump to bounds, Enter activates leaf, Escape closes submenu, type-ahead (single character) jumps to first matching item
   2. Single `tabindex="0"` rove implemented; ARIA: `role="menubar"`, items `role="menuitem"`, submenus `role="menu"`, triggers `aria-haspopup="menu"` + `aria-expanded`
   3. Backwards-compat strategy chosen in discuss-phase is implemented (opt-in prop OR new default + migration note); existing Disclosure consumers documented as supported (if opt-in) or migrated (if new default)
@@ -221,10 +251,12 @@ Plans:
   5. axe-clean smoke
 
 ### Phase 32: TC-15 Remaining Component Test Coverage
+
 **Goal**: Tier 1+2 test suites for the 8 remaining components without coverage — Card, Skeleton, Heading, ProgressBar, Pagination, SkipLink, Switch, Tooltip. Brings total components-with-tests from 19 → 27 (full coverage of the public API). Each test file follows the Phase 22 template-setter pattern.
 **Depends on**: Phase 26 (independent of Phases 27-31)
 **Requirements**: TC-15
 **Success Criteria** (what must be TRUE):
+
   1. 8 new `*.test.tsx` files exist next to their components in `packages/components/src/<Component>/`
   2. Each test file: WCAG-SC JSDoc marker, ~5-15 `it()` blocks (component complexity dependent), Tier 1 (render + props + className passthrough) + Tier 2 (where applicable: Switch keyboard toggle, Pagination keyboard, SkipLink focus, Tooltip aria-describedby wire-up, ProgressBar aria-valuenow/min/max, Heading semantic-level prop, Card composition, Skeleton aria-busy)
   3. D-02a clean across all 8 files; each includes at least one `expectNoAxeViolations` smoke
@@ -235,6 +267,7 @@ Plans:
 **Plans:** 8 plans
 
 Plans:
+
 - [ ] 32-01-PLAN.md — Card Tier 1+2 tests (TC-15)
 - [ ] 32-02-PLAN.md — Skeleton Tier 1+2 tests (TC-15)
 - [ ] 32-03-PLAN.md — Heading Tier 1+2 tests (TC-15, source untouched per TS2590 guard)
@@ -245,10 +278,12 @@ Plans:
 - [ ] 32-08-PLAN.md — Tooltip audit/augment + verify + 2.5.0→2.6.0 + CHANGELOG (TC-15 close)
 
 ### Phase 33: Lint + Typecheck Verify Gates
+
 **Goal**: All 3 packages (`@holmdigital/standards`, `@holmdigital/components`, `@holmdigital/engine`) chain `lint` (eslint) and `typecheck` (tsc --noEmit) into the `verify` pipeline. New chain: `build && lint && typecheck && check:exports && check:types && test:ci`. Each package gets a `typecheck` script if it doesn't already have one. Closes the v0.6 publish-gating effort by adding the last two automated quality gates.
 **Depends on**: Phases 27-32 (runs last so all preceding source changes pass the new gates)
 **Requirements**: PUB-09
 **Success Criteria** (what must be TRUE):
+
   1. All 3 packages have `"typecheck": "tsc --noEmit"` script (creating if missing); `tsconfig.json` exists or extends a root config
   2. `verify` script in each package chains `build && lint && typecheck && check:exports && check:types && test:ci` in that order
   3. `npm run verify -w @holmdigital/<each>` exits 0 for all 3 packages after Phases 27-32 land
@@ -257,6 +292,7 @@ Plans:
 
 **Plans:** 4 plans
 Plans:
+
 - [x] 33-01-PLAN.md — Standards verify-chain wire-up (typecheck script + lint/typecheck gate in verify)
 - [x] 33-02-PLAN.md — Engine verify-chain wire-up + 2 lint-error fixes (`__ENGINE_VERSION__` global + `@ts-ignore` → `@ts-expect-error`)
 - [x] 33-03-PLAN.md — Components verify-chain wire-up + 27 tsc-error fixes across 5 categories + 5 absorbed lint errors (React TS-namespace imports + eslint-plugin-react-hooks)
@@ -274,15 +310,18 @@ Plans:
 **Prioritetsordning: Fixa → Förbättra → Kommunicera**
 
 **P0 — Fixa detektion:**
+
 - Fas 0: Dual-pass axe-scanning (pre + post networkIdle) — fångar kontrast i cookie-banners
 - Fas 1: Saknade violations (aria-required-children, nested-interactive, button-name)
 - Fas 2: Multi-viewport scanning (desktop + mobil)
 
 **P1 — Förbättra scoring:**
+
 - Fas 3: Violation dedup per rule-ID
 - Fas 4: Trelagersmodell (complianceScore + riskIndicator + testCoverage) + html-validate i score
 
 **P2 — Kommunicera styrka:**
+
 - Fas 5: WCAG Coverage Mapping
 - Fas 6: CLI & Report Output med förklaring
 - Fas 7: Dokumentation & Artikel
@@ -293,11 +332,12 @@ Plans:
 **Goal:** `hd-a11y-scan <url> --plain` (alias för `--audience plain`, default `developer` — inget befintligt beteende ändras) ger en klarspråksrapport för icke-tekniska mottagare i terminal och PDF. Texterna bor i standards (engelska nycklar, lokaliserade värden), hämtas i `generateRegulatoryReport` via den befintliga `getConvergenceRule`-uppslagningen (EN uppslagning — ingen ny locale-laddare, ingen andra uppslagning vid utskrift), och flödar till terminal/`--json`/`--pdf` på samma gång.
 **Requirements**: PLAIN-01 (typ + datafält i standards), PLAIN-02 (enrichment-koppling), PLAIN-03 (terminalrenderare), PLAIN-04 (CLI-flaggor `--audience`/`--plain`), PLAIN-05 (PDF-läge via `audience`-arg i `generateReportHTML`), PLAIN-06 (8 svenska texter i `rules.sv.json` mot semantiska id: `alt-text`, `color-contrast`, `form-labels`, `link-purpose`, `name-role-value`, `keyboard-accessible`, `heading-order`, `language-of-page`)
 **Depends on:** Phase 33
-**Plans:** 0 plans
+**Plans:** 5 plans
 
 **Underlag:** `daniel-engine-klarsprak-2026-06-05.md` (auktoritativ ram, Karins beslut), `klarsprak-cli-implementation.md` (bygg enligt denna — text i standards, engelska nycklar), `klarsprakslager-engine.md` (innehåll: 8 färdiga texter + tonregler + rapportöppning; dess svensk-nycklade datatyp skrotas). De två sistnämnda säger emot varandra med flit — läses ihop via förslaget.
 
 **Tekniska avgöranden (verifierade mot kod):**
+
 - `generateRegulatoryReport` plockar explicita fält (spreadar inte) — `plainLanguage` kopieras där (`packages/standards/src/index.ts:274`), då flödar den genom `{...report}`-spreaden i engines `enrichResults` utan engine-ändringar för dataflödet
 - `getPlainLanguageCopy`-helpern + `RULES_BY_LANG` ur CLI-dokumentet SKROTAS (förslaget förbjuder andra uppslagning) — renderaren läser `report.plainLanguage` direkt
 - CLI-dokumentets exempel `"ruleId": "image-alt"` är fel — semantiskt id är `alt-text`
@@ -309,7 +349,19 @@ Plans:
 - Leverans: testskanning av johancask.com med `--plain --pdf` för Karins granskning; minor-release av standards + engine via changesets efter godkännande (Version Packages-PR-mergen är godkännandegrinden)
 
 Plans:
-- [ ] TBD (run /gsd-plan-phase 34 to break down)
+**Wave 1**
+
+- [ ] 34-01-PLAN.md — Standards types (PlainLanguageCopy + BusinessImpactLevel) + 8 sv/en texts + D-10 data guards [wave 1]
+- [ ] 34-03-PLAN.md — Engine i18n: plain.* chrome in all 9 locale files (en/sv real, 7 deferred English) [wave 1]
+
+**Wave 2** *(blocked on Wave 1 completion)*
+
+- [ ] 34-02-PLAN.md — Enrichment: generateRegulatoryReport explicit plainLanguage copy + D-03 EN fallback [wave 2]
+- [ ] 34-04-PLAN.md — Terminal renderer plain-report.ts + D-10.4 structure tests (sort/badge/fallback/empty) [wave 2]
+
+**Wave 3** *(blocked on Wave 2 completion)*
+
+- [ ] 34-05-PLAN.md — CLI flags --plain/--audience + plain PDF + 2 changesets + D-09 Karin gate [wave 3]
 
 ---
 
