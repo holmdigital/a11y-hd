@@ -26,9 +26,7 @@ npx hd-a11y-scan https://example.com \
 
 That is the whole loop: point it at a URL, get back violations, the regulation each one maps to, the enforcing authority, and publishable artifacts.
 
-<!-- TODO: add a real screenshot of the terminal output or a generated PDF/statement.
-     Drop the image at docs/assets/scan-demo.png and uncomment the line below. -->
-<!-- ![hd-a11y-scan example output](docs/assets/scan-demo.png) -->
+![hd-a11y-scan terminal output: compliance score, category breakdown, legal risk, and violations mapped to WCAG and EN 301 549](docs/assets/scan-demo.png)
 
 ## What you get
 
