@@ -5,6 +5,7 @@
 export type WCAGLevel = 'A' | 'AA' | 'AAA';
 export type WCAGVersion = '2.0' | '2.1' | '2.2';
 export type DiggRisk = 'low' | 'medium' | 'high' | 'critical';
+export type BusinessImpactLevel = 'stoppar-kop' | 'hindrar' | 'forsamrar' | 'putsning';
 export type EAAImpact = 'none' | 'low' | 'medium' | 'high' | 'critical';
 export type TestComplexity = 'simple' | 'moderate' | 'complex';
 
@@ -34,6 +35,8 @@ export interface ConvergenceRule {
     tags: string[];
     // EU Legal Framework context (optional for backward compatibility)
     legalContext?: LegalContext;
+    // Plain-language copy for non-technical recipients (klarspråksläge)
+    plainLanguage?: PlainLanguageCopy;
 }
 
 /**
@@ -123,6 +126,19 @@ export interface ComponentRecommendation {
 }
 
 /**
+ * Plain-language copy for non-technical recipients (klarspråksläge)
+ * All text fields must be free of em/en dashes and percent signs (D-10.2).
+ */
+export interface PlainLanguageCopy {
+    headline: string;
+    whatHappens: string;
+    whoIsAffected: string;
+    businessImpact: string;
+    howToFix: string;
+    impactLevel: BusinessImpactLevel;
+}
+
+/**
  * Regulatory Report
  * Rapport som kombinerar tekniska fel med regulatorisk kontext
  */
@@ -136,6 +152,8 @@ export interface RegulatoryReport {
     remediation: Remediation;
     holmdigitalInsight: HolmDigitalInsight;
     testability: Testability;
+    // Plain-language copy for non-technical recipients (klarspråksläge)
+    plainLanguage?: PlainLanguageCopy;
 }
 
 /**

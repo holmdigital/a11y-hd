@@ -26,8 +26,11 @@ import {
     // National laws
     getNationalLawByFramework,
     getNationalLaws,
+    generateRegulatoryReport,
 } from './index';
-import type { Country } from './types';
+import type { Country, ConvergenceRule } from './types';
+import rulesSv from '../data/rules.sv.json';
+import rulesEn from '../data/rules.en.json';
 
 describe('Standards Package', () => {
     it('should export convergence rules', () => {
@@ -518,15 +521,93 @@ describe('National Laws — schema validation', () => {
         const data = JSON.parse(readFileSync(dataPath, 'utf-8'));
         const schema = JSON.parse(readFileSync(schemaPath, 'utf-8'));
 
-        const ajv = new Ajv({ allErrors: true, strict: false });
+        const ajv = new Ajv({ allErrors: true });
         const validate = ajv.compile(schema);
         const valid = validate(data);
 
         if (!valid) {
             // Surface every violation so authors see all issues at once
-            const summary = (validate.errors ?? []).map(e => `${e.instancePath || '<root>'} ${e.message}`).join('\n');
+            const summary = (validate.errors ?? []).map(e => `${e.dataPath || '<root>'} ${e.message}`).join('\n');
             throw new Error(`national-laws.json failed schema validation:\n${summary}`);
         }
         expect(valid).toBe(true);
+    });
+});
+
+describe('plainLanguage encoding guard (D-10.1)', () => {
+    const MOJIBAKE = /Ã/;
+    const PLAIN_IDS = [
+        'alt-text', 'color-contrast', 'form-labels', 'link-purpose',
+        'name-role-value', 'keyboard-accessible', 'heading-order', 'language-of-page'
+    ] as const;
+
+    it('sv: no mojibake in any plainLanguage text field', () => {
+        for (const id of PLAIN_IDS) {
+            const rule = (rulesSv as ConvergenceRule[]).find(r => r.ruleId === id);
+            const pl = rule?.plainLanguage;
+            if (!pl) continue;
+            for (const [field, val] of Object.entries(pl)) {
+                if (typeof val === 'string') {
+                    expect(MOJIBAKE.test(val), `${id}.${field} has mojibake`).toBe(false);
+                }
+            }
+        }
+    });
+});
+
+describe('plainLanguage tone lint (D-10.2)', () => {
+    const DASH = /[—–]/;
+    const PERCENT = /%/;
+
+    for (const [lang, rules] of [['sv', rulesSv], ['en', rulesEn]] as const) {
+        it(`${lang}: no em/en dashes or percent signs in any plainLanguage field`, () => {
+            for (const rule of rules as ConvergenceRule[]) {
+                if (!rule.plainLanguage) continue;
+                for (const [field, val] of Object.entries(rule.plainLanguage)) {
+                    if (typeof val !== 'string') continue;
+                    expect(DASH.test(val), `${rule.ruleId}.${field} (${lang}) has dash`).toBe(false);
+                    expect(PERCENT.test(val), `${rule.ruleId}.${field} (${lang}) has percent`).toBe(false);
+                }
+            }
+        });
+    }
+});
+
+describe('plainLanguage sv/en parity (D-10.3)', () => {
+    const PLAIN_IDS = [
+        'alt-text', 'color-contrast', 'form-labels', 'link-purpose',
+        'name-role-value', 'keyboard-accessible', 'heading-order', 'language-of-page'
+    ] as const;
+
+    it('same 8 ruleIds have plainLanguage in both sv and en', () => {
+        for (const id of PLAIN_IDS) {
+            const sv = (rulesSv as ConvergenceRule[]).find(r => r.ruleId === id);
+            const en = (rulesEn as ConvergenceRule[]).find(r => r.ruleId === id);
+            expect(sv?.plainLanguage, `sv missing plainLanguage for ${id}`).toBeDefined();
+            expect(en?.plainLanguage, `en missing plainLanguage for ${id}`).toBeDefined();
+            expect(sv?.plainLanguage?.impactLevel, `impactLevel mismatch for ${id}`)
+                .toBe(en?.plainLanguage?.impactLevel);
+        }
+    });
+});
+
+describe('generateRegulatoryReport plainLanguage enrichment (PLAIN-02)', () => {
+    it('returns plainLanguage for sv when texts exist', () => {
+        const report = generateRegulatoryReport('form-labels', 'sv');
+        expect(report?.plainLanguage).toBeDefined();
+        expect(report?.plainLanguage?.impactLevel).toBe('stoppar-kop');
+    });
+
+    it('returns EN plainLanguage as fallback for unsupported lang (D-03)', () => {
+        const report = generateRegulatoryReport('form-labels', 'de');
+        expect(report?.plainLanguage).toBeDefined();
+        // de has no plainLanguage -> falls back to EN
+        expect(report?.plainLanguage?.impactLevel).toBe('stoppar-kop');
+    });
+
+    it('returns undefined plainLanguage for a rule with no text in any lang', () => {
+        // Any rule not in the 8-rule set with no plainLanguage
+        const report = generateRegulatoryReport('focus-order', 'en');
+        expect(report?.plainLanguage).toBeUndefined();
     });
 });
