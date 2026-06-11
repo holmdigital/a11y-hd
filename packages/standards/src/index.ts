@@ -84,9 +84,11 @@ import type {
     EnrichedReport,
     WCAGLevel,
     DiggRisk,
+    BusinessImpactLevel,
     EAAImpact,
     Remediation,
     Testability,
+    PlainLanguageCopy,
     // EU Legal Framework types
     LegalFramework,
     Sector,
@@ -111,9 +113,11 @@ export type {
     EnrichedReport,
     WCAGLevel,
     DiggRisk,
+    BusinessImpactLevel,
     EAAImpact,
     Remediation,
     Testability,
+    PlainLanguageCopy,
     // EU Legal Framework types
     LegalFramework,
     Sector,
