@@ -166,11 +166,20 @@ describe('generateReportHTML plain template (D-08/D-16)', () => {
         const html = generateReportHTML(EMPTY_RESULT, 'public', 'plain');
         // Navy band color removed entirely
         expect(html).not.toContain('#082f49');
-        // Typographic brand mark + localized tagline present
-        expect(html).toContain('brand__mark');
+        // Localized tagline present under the logo
         expect(html).toContain('brand__tagline');
         // Accent color for the top line stays the wiki blue
         expect(html).toContain('#0369a1');
+    });
+
+    it('plain header embeds the real HolmDigital logo as a data URI (Task I)', () => {
+        const html = generateReportHTML(EMPTY_RESULT, 'public', 'plain');
+        // Self-contained embedded logo — no network fetch at generation time
+        expect(html).toContain('data:image/jpeg;base64,');
+        expect(html).toContain('alt="Holm Digital logotyp"');
+        // CSS-drawn monogram + stacked-text treatment removed
+        expect(html).not.toContain('brand__monogram');
+        expect(html).not.toContain('brand__mark');
     });
 
     it('plain footer is position:fixed so it repeats on every printed page (Task H2)', () => {

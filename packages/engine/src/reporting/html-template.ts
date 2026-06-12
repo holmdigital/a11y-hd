@@ -1,4 +1,6 @@
 
+import { readFileSync } from 'node:fs';
+import { join } from 'node:path';
 import { ScanResult, getEngineVersion } from '../core/regulatory-scanner';
 import { generateBadgeUrl } from './badge-generator';
 import { t, getCurrentLang } from '../i18n';
@@ -374,6 +376,38 @@ function plainLevelOf(report: EnrichedReport): BusinessImpactLevel {
 }
 
 /**
+ * Lazily-loaded HolmDigital logo as a base64 data URI (Task I).
+ * Keeps the PDF self-contained and offline — no network fetch at
+ * generation time. Resolved relative to the module, mirroring the
+ * statement-generator template resolution: the dist bundles see
+ * assets/ alongside them (copy-assets.mjs copies src/assets to
+ * dist/assets and dist/cli/assets); the src tree (dev/tests) sees
+ * ../assets/. Returns '' when the asset is missing so report
+ * generation never crashes over a logo.
+ */
+let cachedLogoDataUri: string | null = null;
+function getLogoDataUri(): string {
+    if (cachedLogoDataUri !== null) {
+        return cachedLogoDataUri;
+    }
+    const candidates = [
+        join(__dirname, 'assets', 'logo.jpg'),       // dist/ and dist/cli/ (copy-assets.mjs)
+        join(__dirname, '..', 'assets', 'logo.jpg'), // src tree (dev/tests)
+    ];
+    for (const candidate of candidates) {
+        try {
+            const buffer = readFileSync(candidate);
+            cachedLogoDataUri = `data:image/jpeg;base64,${buffer.toString('base64')}`;
+            return cachedLogoDataUri;
+        } catch {
+            // Asset not at this location — try the next candidate.
+        }
+    }
+    cachedLogoDataUri = '';
+    return cachedLogoDataUri;
+}
+
+/**
  * Generates a plain-language HTML document for non-technical recipients (D-08).
  * Mirrors the terminal renderer (plain-report.ts): opening + impact-sorted list
  * (5 fields + badge) + neutral closing + footer with URL/date/version (D-16).
@@ -382,6 +416,7 @@ function plainLevelOf(report: EnrichedReport): BusinessImpactLevel {
 function generatePlainReportHTML(result: ScanResult): string {
     const lang = getCurrentLang();
     const safeUrl = escapeHtml(result.url);
+    const logoDataUri = getLogoDataUri();
 
     const sortedReports = [...result.reports].sort((a, b) => {
         const aLevel = PLAIN_IMPACT_ORDER[plainLevelOf(a as EnrichedReport)] ?? 4;
@@ -455,9 +490,9 @@ ${sortedReports.map((rawReport) => {
       print-color-adjust: exact;
     }
 
-    /* ---- Page-1 header (Task H1): light wiki style — white band, top
-           accent line, dark typographic mark. In normal flow, so it
-           renders once at the top of page 1 and is NOT repeated. ---- */
+    /* ---- Page-1 header (Task H1/I): light wiki style — white band, top
+           accent line, real HolmDigital logo (embedded data URI). In
+           normal flow, so it renders once on page 1 and is NOT repeated. ---- */
     .report-header {
       background: #ffffff;
       border-top: 3px solid #0369a1;
@@ -473,32 +508,10 @@ ${sortedReports.map((rawReport) => {
       gap: 2rem;
       margin-bottom: 1.1rem;
     }
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 0.65rem;
-    }
-    .brand__monogram {
-      width: 38px;
-      height: 38px;
-      border-radius: 50%;
-      background: #0f172a;
-      color: #ffffff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.8rem;
-      font-weight: 700;
-      -webkit-print-color-adjust: exact;
-      print-color-adjust: exact;
-    }
-    .brand__mark {
-      font-size: 0.78rem;
-      font-weight: 700;
-      color: #0f172a;
-      letter-spacing: 0.16em;
-      line-height: 1.25;
-      text-transform: uppercase;
+    .brand__logo {
+      display: block;
+      width: 160px;
+      height: auto;
     }
     .brand__tagline {
       font-size: 0.6rem;
@@ -506,7 +519,7 @@ ${sortedReports.map((rawReport) => {
       letter-spacing: 0.14em;
       text-transform: uppercase;
       color: #64748b;
-      margin-top: 0.25rem;
+      margin-top: 0.35rem;
     }
     .report-header__meta {
       text-align: right;
@@ -662,11 +675,8 @@ ${sortedReports.map((rawReport) => {
   <header class="report-header">
     <div class="report-header__row">
       <div class="brand">
-        <div class="brand__monogram">HD</div>
-        <div>
-          <div class="brand__mark">HOLM<br>DIGITAL</div>
-          <div class="brand__tagline">${escapeHtml(t('plain.report_tagline'))}</div>
-        </div>
+        ${logoDataUri ? `<img class="brand__logo" src="${logoDataUri}" alt="Holm Digital logotyp">` : ''}
+        <div class="brand__tagline">${escapeHtml(t('plain.report_tagline'))}</div>
       </div>
       <div class="report-header__meta">
         ${formatDate(result.timestamp)}<br>v${getEngineVersion()}
