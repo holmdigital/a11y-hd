@@ -188,13 +188,13 @@ Requirements for v0.7 APG Completion. Each maps to roadmap phases (27–33).
 ### APG Live Region Implementation
 
 - [x] **TC-09-LIVE**: Combobox renders a `<LiveRegion role="status">` (or equivalent `aria-live="polite"` element) that announces filtered-options count when the query changes. Combobox.test.tsx extended with live-region assertion.
-- [ ] **TC-10-LIVE**: DatePicker announces selected-date string via live-region when a date is committed. DatePicker.test.tsx extended.
+- [x] **TC-10-LIVE**: DatePicker announces selected-date string via live-region when a date is committed. DatePicker.test.tsx extended.
 - [x] **TC-11-LIVE**: MultiSelect announces selection-count when chips are added/removed. MultiSelect.test.tsx extended.
 
 ### APG Keyboard Implementation
 
-- [ ] **TC-10-IMPL**: DatePicker APG dialog-grid keyboard handler. Replace (or augment) the native `<input type="date">` with a `role="grid"` calendar UI. Day cells use `role="gridcell"` with `aria-selected` and `aria-current="date"` for today. Keyboard: Arrow (day-by-day), Home/End (week start/end), PageUp/PageDown (month), Shift+PageUp/Shift+PageDown (year), Enter/Space (select), Escape (close without selecting). DatePicker.test.tsx no-throw stubs converted to real assertions.
-- [ ] **TC-11-IMPL**: MultiSelect APG listbox-multi completeness. Add `aria-multiselectable="true"` to listbox; make Space toggle option selection without moving focus (currently types literal space); add Shift+Arrow to extend selection from current focus; make `aria-selected` dynamic (currently hardcoded `false`). MultiSelect.test.tsx no-throw stubs converted to real assertions.
+- [x] **TC-10-IMPL**: DatePicker APG dialog-grid keyboard handler. Replace (or augment) the native `<input type="date">` with a `role="grid"` calendar UI. Day cells use `role="gridcell"` with `aria-selected` and `aria-current="date"` for today. Keyboard: Arrow (day-by-day), Home/End (week start/end), PageUp/PageDown (month), Shift+PageUp/Shift+PageDown (year), Enter/Space (select), Escape (close without selecting). DatePicker.test.tsx no-throw stubs converted to real assertions.
+- [x] **TC-11-IMPL**: MultiSelect APG listbox-multi completeness. Add `aria-multiselectable="true"` to listbox; make Space toggle option selection without moving focus (currently types literal space); add Shift+Arrow to extend selection from current focus; make `aria-selected` dynamic (currently hardcoded `false`). MultiSelect.test.tsx no-throw stubs converted to real assertions.
 - [ ] **TC-12-IMPL**: DataTable APG grid cell-wise keyboard handler. Add Right/Left/Down/Up cell navigation, Home/End row-bounds, PageUp/PageDown row-paging, Ctrl+Home/End table-bounds. Existing sortable-header contract (`scope="col"`, `aria-sort`, native Enter/Space on `<button>` headers) stays as-is. DataTable.test.tsx cell-arrow no-throw stubs converted to real assertions.
 - [ ] **TC-14-IMPL**: NavigationMenu APG Menubar upgrade. Source currently self-documents as APG Disclosure (each top-level item independently toggles its submenu). Upgrade to Menubar: Arrow horizontal/vertical along menubar, Home/End first/last item, Enter activates leaf, type-ahead, single tabindex="0" roving. NavigationMenu.test.tsx Disclosure tests replaced/augmented with Menubar contract. **Backwards-compat decision in discuss-phase:** consumer-visible behavior changes (Tab order, keyboard nav). Either ship as opt-in via prop (`pattern="menubar" | "disclosure"`) or as the new default with migration note.
 
@@ -296,14 +296,14 @@ Updated during roadmap creation.
 | Requirement | Phase | Status |
 |-------------|-------|--------|
 | TC-09-LIVE | Phase 27 | Complete |
-| TC-10-LIVE | Phase 28 | Pending (paired with TC-10-IMPL calendar UI) |
+| TC-10-LIVE | Phase 28 | Complete (2026-05-11, verified 28-VERIFICATION.md) |
 | TC-11-LIVE | Phase 27 | Complete |
-| TC-10-IMPL | Phase 28 | Pending |
-| TC-11-IMPL | Phase 29 | Pending |
-| TC-12-IMPL | Phase 30 | Pending |
-| TC-14-IMPL | Phase 31 | Pending |
-| TC-15 | Phase 32 | Pending |
-| PUB-09 | Phase 33 | Complete (2026-05-12) |
+| TC-10-IMPL | Phase 28 | Complete (2026-05-11, verified 28-VERIFICATION.md) |
+| TC-11-IMPL | Phase 29 | Complete (2026-05-12, verified 29 VERIFICATION.md) |
+| TC-12-IMPL | Phase 30 | Implemented (30-01-SUMMARY) — phase VERIFICATION.md missing, see v0.7-MILESTONE-AUDIT.md |
+| TC-14-IMPL | Phase 31 | Implemented (31-01-SUMMARY) — phase VERIFICATION.md missing, see v0.7-MILESTONE-AUDIT.md |
+| TC-15 | Phase 32 | Implemented (32-08-SUMMARY) — phase VERIFICATION.md missing, see v0.7-MILESTONE-AUDIT.md |
+| PUB-09 | Phase 33 | Complete (2026-05-12) — phase VERIFICATION.md missing, see v0.7-MILESTONE-AUDIT.md |
 
 **v0.7 coverage:**
 - v0.7 requirements: 9 total
