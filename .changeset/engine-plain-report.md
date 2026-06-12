@@ -26,7 +26,7 @@ Opt-in plain-language report for non-technical recipients — `--plain` / `--aud
 - `result.url` HTML-escaped before interpolation (T-34-08 mitigation)
 
 **i18n chrome:**
-- `plain.*` namespace (18 keys) in all 9 locale files (en/sv real translations; de/fr/es/nl/fi/dk/no English-valued pending native review)
+- `plain.*` namespace (19 keys) in all 9 locale files (en/sv real translations; de/fr/es/nl/fi/dk/no English-valued pending native review)
 - `plain.attribution` — discreet report attribution line rendered in terminal footer and plain PDF footer
 - `plain.fallback_framing` — framing line rendered before technical description for findings without plainLanguage copy
 
