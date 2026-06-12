@@ -1,5 +1,14 @@
 # @holmdigital/components
 
+## 2.7.5
+
+### Patch Changes
+
+- DataTable correctness and test determinism fixes (opus audit of 2.7.4 fixes):
+  - **WR-03 follow-up**: DataTable sort collation is now pinned to the Swedish (`sv`) locale. The 2.7.4 `localeCompare` call used `undefined` as the locale, causing å/ä/ö to collate incorrectly on non-`sv` hosts (e.g. en-US/de CI runners and end-user browsers). Pinning `'sv'` makes ordering deterministic and correct for the Swedish home market. A new discriminating test confirms that `Åsa` sorts before `Ängla` (Å < Ä in Swedish collation), the opposite of the old code-unit order.
+  - **De-flake**: The 2.7.4 regression tests for CR-01, CR-02, WR-01, and WR-03 performed synchronous DOM reads immediately after `await user.click()` / `rerender()`, producing a timing-sensitive 9-test failure signature under CPU load (reproduced by two opus auditors). All post-interaction assertions are now wrapped in `waitFor` for deterministic results.
+  - **WR-02 documentation**: Added a JSDoc note on `DataTableProps` clarifying that `column.render` cells with their own uncontrolled/stateful DOM are keyed positionally and their state may not follow the row after a sort. A stable `rowKey` prop to address this is planned for 2.8.0. No behavior change; no new props added.
+
 ## 2.7.4
 
 ### Patch Changes
@@ -10,7 +19,7 @@
   - **IN-01**: `data-state="focused"` is now gated on actual grid focus — the Name column header no longer shows `data-state="focused"` on initial mount before the grid receives focus.
   - **IN-02**: Replaced `useLayoutEffect` with an isomorphic wrapper (`useIsomorphicLayoutEffect`) to eliminate the SSR `useLayoutEffect` warning.
   - **IN-03**: Extracted `rovingCellProps` helper to deduplicate `tabIndex`, `data-state`, `ref`, and `onClick` props across `<th>` and `<td>` cells.
-  - **IN-04**: Space key now unconditionally calls `e.preventDefault()` inside grid cells and non-sortable headers to suppress page scroll.
+  - **IN-04**: Space key now calls `e.preventDefault()` inside focused grid cells and non-sortable headers (after the CR-01 target guard, so Space typed in consumer-rendered inputs is unaffected) to suppress page scroll.
   - **IN-05**: Sort changes are now announced via a `<LiveRegion>` with `clearAfter={1000}` (e.g. "Sorted by Name, ascending"), fixing WCAG 4.1.3 Status Messages.
   - **WR-03**: Sort comparator replaced with a null-safe, locale-aware `localeCompare` with `{sensitivity:'base', numeric:true}` — null values sort last, numeric strings sort naturally (User2 before User10), null accessor renders as empty string.
 
