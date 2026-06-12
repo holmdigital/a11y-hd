@@ -231,12 +231,12 @@ Plans:
   4. Existing prop interface unchanged
   5. axe-clean smoke under jsdom
 
-**Plans:** 2 plans (1 gap-closure)
+**Plans:** 2/2 plans complete
 
 Plans:
 
 - [x] 30-01-PLAN.md — Add APG grid roles + roving tabindex + parent-grid onKeyDown (Arrow/Home/End/Ctrl+Home/End/PageUp/PageDown/Enter delegation) + @wcag JSDoc to DataTable.tsx; migrate Tier 1 role queries; convert 9 no-throw stubs to ~17 real focus assertions; full verify (TC-12-IMPL)
-- [ ] 30-02-PLAN.md — Gap closure (UAT Test 1, major): inner sort <button> tabIndex={-1} so the APG grid is a single Tab stop; correct stale doc comments; supersede CONTEXT D-02/D-05; add userEvent.tab() + per-button tabindex regression tests; components 2.7.2 → 2.7.3
+- [x] 30-02-PLAN.md — Gap closure (UAT Test 1, major): inner sort <button> tabIndex={-1} so the APG grid is a single Tab stop; correct stale doc comments; supersede CONTEXT D-02/D-05; add userEvent.tab() + per-button tabindex regression tests; components 2.7.2 → 2.7.3
 
 ### Phase 31: NavigationMenu Disclosure → Menubar
 
@@ -399,7 +399,7 @@ Plans:
 | 27. APG Live Regions | v0.7 | 1/1 | Complete   | 2026-05-11 |
 | 28. DatePicker APG Dialog-Grid Keyboard | v0.7 | 3/3 | Complete   | 2026-05-11 |
 | 29. MultiSelect APG Listbox-Multi Completeness | v0.7 | 1/1 | Complete   | 2026-05-12 |
-| 30. DataTable APG Grid Cell-Wise Keyboard | v0.7 | 0/1 | In progress | - |
+| 30. DataTable APG Grid Cell-Wise Keyboard | v0.7 | 2/2 | Complete   | 2026-06-12 |
 | 31. NavigationMenu Disclosure → Menubar | v0.7 | 0/0 | Not started | - |
 | 32. TC-15 Remaining Component Test Coverage | v0.7 | 0/0 | Not started | - |
 | 33. Lint + Typecheck Verify Gates | v0.7 | 4/4 | Complete | 2026-05-12 |
