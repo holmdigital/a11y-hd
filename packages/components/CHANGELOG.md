@@ -1,5 +1,19 @@
 # @holmdigital/components
 
+## 2.7.4
+
+### Patch Changes
+
+- DataTable accessibility bug fixes (Phase 30 code-review findings CR-01, CR-02, IN-01, IN-02, IN-03, IN-04, IN-05, WR-01, WR-03):
+  - **CR-01 / WR-01**: Grid `onKeyDown` handler now ignores events that bubble up from interactive descendants (inputs, buttons, links) inside cells — clicks and keypresses on child widgets no longer hijack grid navigation or accidentally trigger sort on the wrong column.
+  - **CR-02**: Roving anchor is clamped immediately when `data` shrinks below the current anchor row/col, ensuring exactly one `tabindex=0` cell is always present.
+  - **IN-01**: `data-state="focused"` is now gated on actual grid focus — the Name column header no longer shows `data-state="focused"` on initial mount before the grid receives focus.
+  - **IN-02**: Replaced `useLayoutEffect` with an isomorphic wrapper (`useIsomorphicLayoutEffect`) to eliminate the SSR `useLayoutEffect` warning.
+  - **IN-03**: Extracted `rovingCellProps` helper to deduplicate `tabIndex`, `data-state`, `ref`, and `onClick` props across `<th>` and `<td>` cells.
+  - **IN-04**: Space key now unconditionally calls `e.preventDefault()` inside grid cells and non-sortable headers to suppress page scroll.
+  - **IN-05**: Sort changes are now announced via a `<LiveRegion>` with `clearAfter={1000}` (e.g. "Sorted by Name, ascending"), fixing WCAG 4.1.3 Status Messages.
+  - **WR-03**: Sort comparator replaced with a null-safe, locale-aware `localeCompare` with `{sensitivity:'base', numeric:true}` — null values sort last, numeric strings sort naturally (User2 before User10), null accessor renders as empty string.
+
 ## 2.7.3
 
 ### Patch Changes
