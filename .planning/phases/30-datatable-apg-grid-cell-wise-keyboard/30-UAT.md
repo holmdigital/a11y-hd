@@ -1,5 +1,5 @@
 ---
-status: complete
+status: diagnosed
 phase: 30-datatable-apg-grid-cell-wise-keyboard
 source: 30-01-SUMMARY.md
 started: 2026-06-12T08:21:22Z
@@ -67,7 +67,17 @@ blocked: 0
   reason: "User reported: name, city then leaves the grid — Tab visits both sortable headers (Name, City) before exiting, so the grid exposes multiple Tab stops"
   severity: major
   test: 1
-  root_cause: ""
-  artifacts: []
-  missing: []
-  debug_session: ""
+  root_cause: "Inner sort <button> in sortable headers rendered without tabIndex={-1} (DataTable.tsx ~L272-286) — native buttons are tab-focusable, so each sortable column adds a document Tab stop on top of the roving anchor. Specified (wrongly) by 30-CONTEXT.md D-02/D-05, which contradict the phase's own APG single-tab-stop contract. Test suite has zero userEvent.tab() coverage, so the violation was structurally undetectable."
+  artifacts:
+    - path: "packages/components/src/DataTable/DataTable.tsx"
+      issue: "sort <button> (~L272-286) missing tabIndex={-1}; doc comment (~L70-79) codifies the wrong tab-order contract"
+    - path: "packages/components/src/DataTable/DataTable.test.tsx"
+      issue: "no userEvent.tab() sequence coverage; no button-tabindex assertion; header comment (~L10-12) restates wrong contract"
+    - path: ".planning/phases/30-datatable-apg-grid-cell-wise-keyboard/30-CONTEXT.md"
+      issue: "D-02 (L57) and D-05 (L76) specify inner button stays tab-focusable — supersede"
+  missing:
+    - "Add tabIndex={-1} to the inner sort button (keyboard sorting already covered by D-03 Enter/Space delegation via roving cell — UAT Test 6 passed on that path)"
+    - "Update stale doc comments in DataTable.tsx and DataTable.test.tsx to the corrected single-tab-stop contract"
+    - "Supersede D-02/D-05 tab-order clauses in 30-CONTEXT.md"
+    - "Regression tests: every sort button has tabindex=-1; userEvent.tab() sequence test proving input → roving anchor → next Tab exits the grid"
+  debug_session: ".planning/debug/datatable-grid-multiple-tab-stops.md"
