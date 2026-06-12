@@ -196,7 +196,9 @@ No matches outside `packages/engine/src/`. No occurrences of `renderToString`, `
 
 ## Current State
 
+Phase 30 gap closure complete (2026-06-12) — DataTable APG grid single-tab-stop contract restored (TC-12-IMPL validated): plan 30-02 added `tabIndex={-1}` to the inner sort button (UAT Test 1, severity major, root cause was a wrong D-02/D-05 spec — superseded with dated notes), added `userEvent.tab()` regression coverage (the suite's structural blind spot), and shipped components 2.7.3 (patch). Verification passed 9/9; UAT and debug session resolved. 30-REVIEW.md carries 2 Critical + 4 Warning advisory findings in the pre-existing 30-01 grid layer (interactive cell-content hijack, stale roving anchor on data shrink) — candidates for a follow-up fix pass.
+
 Phase 34 complete (2026-06-12) — opt-in klarspråk plain-language report shipped: `hd-a11y-scan <url> --plain` renders a business-first report for non-technical recipients in terminal and PDF (wiki-branded, embedded logo, fixed per-page footer). PlainLanguageCopy data lives in @holmdigital/standards (10 rules, sv+en, sector-neutral tone), flows through generateRegulatoryReport with EN fallback, zero engine enrichment changes. Developer report byte-unchanged (D-13 snapshot, now TZ-independent per CR-01 fix). D-09 editorial gate approved by Daniel after 4 review rounds. Last phase of the roadmap — milestone ready for audit/completion. Pending: 2 minor changesets (standards 2.7.0, engine 2.6.0) for the next Version Packages PR; 6 advisory review warnings in 34-REVIEW.md (WR-01..06).
 
 ---
-*Last updated: 2026-06-12 — Phase 34 complete (klarspråksrapport, v0.8 feature)*
+*Last updated: 2026-06-12 — Phase 30 gap closure complete (DataTable single Tab stop, components 2.7.3)*
