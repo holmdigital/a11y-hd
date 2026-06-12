@@ -194,5 +194,9 @@ No matches outside `packages/engine/src/`. No occurrences of `renderToString`, `
 
 **Implication for Phase 23 styling unification:** This finding **confirms** the styling-strategy assumption (CONTEXT D-Styling). A CSS-file-per-component side-effect import (`import './Button.css'`) is SSR-safe in this codebase: the only SSR path is engine's `renderToStaticMarkup` call, which executes inside a Node process where bundler resolution of CSS side-effect imports is handled at engine build time, not at SSR time. Phase 23 may proceed with the file-per-component CSS strategy without further audit.
 
+## Current State
+
+Phase 34 complete (2026-06-12) — opt-in klarspråk plain-language report shipped: `hd-a11y-scan <url> --plain` renders a business-first report for non-technical recipients in terminal and PDF (wiki-branded, embedded logo, fixed per-page footer). PlainLanguageCopy data lives in @holmdigital/standards (10 rules, sv+en, sector-neutral tone), flows through generateRegulatoryReport with EN fallback, zero engine enrichment changes. Developer report byte-unchanged (D-13 snapshot, now TZ-independent per CR-01 fix). D-09 editorial gate approved by Daniel after 4 review rounds. Last phase of the roadmap — milestone ready for audit/completion. Pending: 2 minor changesets (standards 2.7.0, engine 2.6.0) for the next Version Packages PR; 6 advisory review warnings in 34-REVIEW.md (WR-01..06).
+
 ---
-*Last updated: 2026-05-10 — Phase 22 Wave 2 (v0.6 milestone, SSR consumer audit recorded TI-06)*
+*Last updated: 2026-06-12 — Phase 34 complete (klarspråksrapport, v0.8 feature)*
