@@ -231,11 +231,12 @@ Plans:
   4. Existing prop interface unchanged
   5. axe-clean smoke under jsdom
 
-**Plans:** 1 plan
+**Plans:** 2 plans (1 gap-closure)
 
 Plans:
 
 - [x] 30-01-PLAN.md — Add APG grid roles + roving tabindex + parent-grid onKeyDown (Arrow/Home/End/Ctrl+Home/End/PageUp/PageDown/Enter delegation) + @wcag JSDoc to DataTable.tsx; migrate Tier 1 role queries; convert 9 no-throw stubs to ~17 real focus assertions; full verify (TC-12-IMPL)
+- [ ] 30-02-PLAN.md — Gap closure (UAT Test 1, major): inner sort <button> tabIndex={-1} so the APG grid is a single Tab stop; correct stale doc comments; supersede CONTEXT D-02/D-05; add userEvent.tab() + per-button tabindex regression tests; components 2.7.2 → 2.7.3
 
 ### Phase 31: NavigationMenu Disclosure → Menubar
 
