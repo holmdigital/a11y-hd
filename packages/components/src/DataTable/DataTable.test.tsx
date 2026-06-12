@@ -7,9 +7,13 @@
  * - 2.1.1 Keyboard — full APG grid keyboard matrix: Arrow (L/R/U/D) for
  *   cell-wise navigation, Home/End for row bounds, Ctrl+Home/Ctrl+End for
  *   table corners, PageUp/PageDown for 10-row paging. Enter/Space on a
- *   focused sortable <th> delegates to the sort handler (D-03). Sortable
- *   headers also expose real <button>s so Enter/Space activate them
- *   natively when the inner button is tabbed to.
+ *   focused sortable <th> delegates to the sort handler (D-03). The
+ *   sortable-header inner <button> is tabIndex={-1} (NOT a document Tab
+ *   stop); keyboard sort is delegated through the focused roving header
+ *   cell (D-03), not by tabbing to the inner button. The new "Tier 2:
+ *   Single Tab Stop" describe block guards the single-tab-stop contract
+ *   (previously a test blind spot — no userEvent.tab() coverage existed
+ *   before this plan, which is why UAT Test 1 shipped with a violation).
  * - 4.1.2 Name, Role, Value — role=grid, role=columnheader (aria-sort
  *   cycling undefined→ascending→descending), role=gridcell, role=button on
  *   sortable headers, aria-hidden on the sort-indicator glyph.
@@ -466,5 +470,43 @@ describe('Tier 2: APG Grid Cell-Wise Keyboard Navigation', () => {
             // Name header must never gain aria-sort from these focus-only keys.
             expect(nameHeader).not.toHaveAttribute('aria-sort');
         }
+    });
+});
+
+describe('Tier 2: Single Tab Stop (roving tabindex — gap closure 30-02)', () => {
+    it('Test A: every sort button carries tabindex="-1" (structural guard)', () => {
+        render(<DataTable data={DATA} columns={COLUMNS} caption="Users" />);
+        // COLUMNS has Name (sortable) + Age (sortable) + Email (not sortable) → 2 sort buttons.
+        const sortButtons = screen.getAllByRole('button');
+        expect(sortButtons).toHaveLength(2);
+        sortButtons.forEach((btn) => {
+            expect(btn).toHaveAttribute('tabindex', '-1');
+        });
+    });
+
+    it('Test B: Tab sequence — input → roving grid anchor → exits grid (no sort-button stop)', async () => {
+        const user = userEvent.setup();
+        // Render: [input before] [DataTable] [button after] — mirrors the APG Grid Keyboard story fixture.
+        render(
+            <>
+                <input aria-label="before grid" />
+                <DataTable data={DATA} columns={COLUMNS} caption="Users" />
+                <button type="button">after grid</button>
+            </>,
+        );
+
+        // Start: focus the input before the grid.
+        const input = screen.getByRole('textbox');
+        input.focus();
+        expect(input).toHaveFocus();
+
+        // First Tab: focus must land on the grid roving anchor (Name columnheader, tabindex=0).
+        await user.tab();
+        expect(screen.getByRole('columnheader', { name: /name/i })).toHaveFocus();
+
+        // Second Tab: focus must EXIT the grid and land on the after-grid button.
+        // If any sort button is in the page Tab order, this would land there instead — regression caught.
+        await user.tab();
+        expect(screen.getByRole('button', { name: /after grid/i })).toHaveFocus();
     });
 });
