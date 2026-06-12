@@ -2,7 +2,7 @@
     "name": "@holmdigital/components",
     "author": "Holm Digital AB",
     "license": "MIT",
-    "version": "2.7.2",
+    "version": "2.7.3",
     "private": false,
     "publishConfig": {
         "access": "public"

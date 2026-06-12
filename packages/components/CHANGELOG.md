@@ -1,5 +1,11 @@
 # @holmdigital/components
 
+## 2.7.3
+
+### Patch Changes
+
+- DataTable APG grid now exposes a single Tab stop (the roving cell anchor) — the inner sort `<button>` in sortable headers was incorrectly tab-focusable, so each sortable column added an extra document Tab stop, breaking the APG single-tab-stop contract (WCAG 2.1.1 keyboard navigation). The button now carries `tabIndex={-1}`; keyboard sorting is unchanged (Enter/Space on a focused sortable header still sorts via the roving-cell delegation per D-03) and mouse sorting is unchanged. Closes Phase 30 UAT Test 1 regression.
+
 ## 2.7.2
 
 ### Patch Changes
