@@ -51,6 +51,8 @@
         "intro_unit_plural": "hinder",
         "closing": "Börja uppifrån. Punkterna högst upp kostar dig mest kunder.",
         "empty_state": "Vi hittade inga hinder den här gången.",
-        "report_title": "Tillgänglighetsrapport för {url}"
+        "report_title": "Tillgänglighetsrapport för {url}",
+        "attribution": "Rapporten genererades av HolmDigital Engine, en del av HolmDigitals ekosystem för tillgänglighet.",
+        "fallback_framing": "Tekniskt fynd. Be er utvecklare titta på detta:"
     }
 }

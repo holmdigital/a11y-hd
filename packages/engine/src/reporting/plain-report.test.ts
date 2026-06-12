@@ -157,7 +157,7 @@ describe('renderPlainReport (D-10.4)', () => {
         expect(output).toContain('Blocks purchases');
     });
 
-    it('fallback: report with no plainLanguage uses remediation.description without throwing', () => {
+    it('fallback: report with no plainLanguage renders framing line + description (Task C)', () => {
         const result: ScanResult = {
             ...BASE_RESULT,
             reports: [
@@ -179,8 +179,23 @@ describe('renderPlainReport (D-10.4)', () => {
             output = captureConsoleLog(() => renderPlainReport(result, 'en'));
         }).not.toThrow();
 
-        // Fallback remediation.description must appear in output
+        // Fallback framing must appear before the technical description
+        expect(output).toContain('Technical finding. Ask your developer to review this:');
+        // Technical description must follow
         expect(output).toContain('This is the fallback remediation text');
+    });
+
+    it('attribution line appears in terminal output after closing', () => {
+        const result: ScanResult = {
+            ...BASE_RESULT,
+            reports: [],
+        };
+
+        const output = captureConsoleLog(() => renderPlainReport(result, 'en'));
+
+        // t('plain.attribution') must appear
+        expect(output).toContain('HolmDigital Engine');
+        expect(output).toContain('HolmDigital accessibility ecosystem');
     });
 
     it('empty-state: result with 0 reports renders the t("plain.empty_state") string', () => {

@@ -77,6 +77,8 @@ export function renderPlainReport(result: ScanResult, lang: string = 'en'): void
 
     if (result.reports.length === 0) {
         console.log(t('plain.empty_state'));
+        console.log('');
+        console.log(t('plain.attribution'));
         return;
     }
 
@@ -114,8 +116,8 @@ export function renderPlainReport(result: ScanResult, lang: string = 'en'): void
             console.log(`   ${t('plain.business_impact')} ${pl.businessImpact}`);
             console.log(`   ${t('plain.how_to_fix')} ${pl.howToFix}`);
         } else {
-            // D-10.4 fallback: no plainLanguage → use remediation.description
-            console.log(`   ${report.remediation.description}`);
+            // Task C fallback: no plainLanguage → framing line + technical description
+            console.log(`   ${t('plain.fallback_framing')} ${report.remediation.description}`);
         }
 
         console.log('');
@@ -123,4 +125,6 @@ export function renderPlainReport(result: ScanResult, lang: string = 'en'): void
 
     // Closing chrome
     console.log(t('plain.closing'));
+    console.log('');
+    console.log(t('plain.attribution'));
 }
