@@ -145,7 +145,7 @@ Researcher / planner should treat the phase done-criteria as:
 4. `grep -c 'role="row"' packages/components/src/DataTable/DataTable.tsx` → 1 (or 2 — thead + tbody loops)
 5. `grep -c 'it.each' packages/components/src/DataTable/DataTable.test.tsx` → 0 (stub block removed)
 6. `grep -cE '(toHaveFocus|tabIndex)' packages/components/src/DataTable/DataTable.test.tsx` → ≥ 9 (one per converted stub)
-7. `grep -cE 'getByRole..button., \{ name: /(Name|Age|City)/' packages/components/src/DataTable/DataTable.test.tsx` → unchanged from pre-phase (sortable-header tests intact)
+7. `grep -cE 'getByRole..button., \{ name: /(Name|Age|Email)/' packages/components/src/DataTable/DataTable.test.tsx` → unchanged from pre-phase (sortable-header tests intact)
 8. `grep -c 'export interface DataTableProps' packages/components/src/DataTable/DataTable.tsx` → 1, body byte-identical (no new props per D-04)
 9. `npm run verify -w @holmdigital/components` → exit 0
 10. `@wcag` JSDoc list in DataTable.tsx includes `2.1.1 Keyboard` (must exist; add if missing)
