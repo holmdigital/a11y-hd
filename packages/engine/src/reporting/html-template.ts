@@ -433,6 +433,14 @@ ${sortedReports.map((rawReport) => {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>${t('plain.report_title', { url: safeUrl })}</title>
   <style>
+    /* ---- Per-page margins (Task G): every printed page, incl. 2+, gets
+           breathing room at top/bottom. An author-level @page rule overrides
+           the zero margins passed to Puppeteer's pdf() call, and it travels
+           with THIS document only — the developer PDF is unaffected. ---- */
+    @page {
+      margin: 14mm 12mm;
+    }
+
     /* ---- Reset & base ---- */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     body {
@@ -445,12 +453,13 @@ ${sortedReports.map((rawReport) => {
       print-color-adjust: exact;
     }
 
-    /* ---- Header band (wiki navy, full-width) ---- */
+    /* ---- Header band (wiki navy, letterhead-style within page margins) ---- */
     .report-header {
       background: #082f49;
       -webkit-print-color-adjust: exact;
       print-color-adjust: exact;
-      padding: 2rem 2.5rem 1.75rem;
+      border-radius: 10px;
+      padding: 1.75rem 2rem 1.5rem;
       display: flex;
       align-items: flex-start;
       justify-content: space-between;
@@ -485,11 +494,11 @@ ${sortedReports.map((rawReport) => {
       flex-shrink: 0;
     }
 
-    /* ---- Page body wrapper ---- */
+    /* ---- Page body wrapper: sides + bottom now come from @page margins ---- */
     .report-body {
       max-width: 840px;
       margin: 0 auto;
-      padding: 2rem 2.5rem 3rem;
+      padding: 1.75rem 0 0;
     }
 
     /* ---- Intro paragraph ---- */
@@ -514,14 +523,14 @@ ${sortedReports.map((rawReport) => {
       margin: 0;
     }
 
-    /* ---- Finding card ---- */
+    /* ---- Finding card: comfortable padding + inter-card air (Task G) ---- */
     .issue-item {
       background: #f8fafc;
       border: 1px solid #e2e8f0;
       border-left: 4px solid #0369a1;
       border-radius: 8px;
-      padding: 1.25rem 1.5rem;
-      margin-bottom: 1.25rem;
+      padding: 1.4rem 1.6rem;
+      margin-bottom: 1.6rem;
       break-inside: avoid;
       page-break-inside: avoid;
     }
