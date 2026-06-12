@@ -1,4 +1,6 @@
-import React, { useState, useMemo, useRef, useEffect, useLayoutEffect } from 'react';
+import React, { useState, useMemo, useRef, useEffect } from 'react';
+import { useIsomorphicLayoutEffect } from '../_hooks/useIsomorphicLayoutEffect';
+import { LiveRegion } from '../LiveRegion/LiveRegion';
 
 const PAGE_SIZE = 10;
 
@@ -100,12 +102,16 @@ export function DataTable<T>({
         direction: SortDirection;
     }>({ key: null, direction: 'ascending' });
 
+    const [sortAnnouncement, setSortAnnouncement] = useState('');
+
     const handleSort = (key: keyof T) => {
         let direction: SortDirection = 'ascending';
         if (sortConfig.key === key && sortConfig.direction === 'ascending') {
             direction = 'descending';
         }
         setSortConfig({ key, direction });
+        const label = columns.find(c => c.accessor === key)?.header ?? String(key);
+        setSortAnnouncement(`Sorted by ${label}, ${direction}`);
     };
 
     const sortedData = useMemo(() => {
@@ -114,14 +120,13 @@ export function DataTable<T>({
         return [...data].sort((a, b) => {
             const aValue = a[sortConfig.key!];
             const bValue = b[sortConfig.key!];
-
-            if (aValue < bValue) {
-                return sortConfig.direction === 'ascending' ? -1 : 1;
+            if (aValue == null) return bValue == null ? 0 : 1;
+            if (bValue == null) return -1;
+            const dir = sortConfig.direction === 'ascending' ? 1 : -1;
+            if (typeof aValue === 'number' && typeof bValue === 'number') {
+                return (aValue - bValue) * dir;
             }
-            if (aValue > bValue) {
-                return sortConfig.direction === 'ascending' ? 1 : -1;
-            }
-            return 0;
+            return String(aValue).localeCompare(String(bValue), undefined, { sensitivity: 'base', numeric: true }) * dir;
         });
     }, [data, sortConfig]);
 
@@ -130,21 +135,40 @@ export function DataTable<T>({
     useEffect(() => { activeCellRef.current = activeCell; }, [activeCell]);
     const cellRefs = useRef<Map<string, HTMLElement>>(new Map());
     const hasUserMovedRef = useRef(false);
+    const [gridHasFocus, setGridHasFocus] = useState(false);
 
     const lastDataRow = sortedData.length - 1;
     const lastCol = columns.length - 1;
 
-    const isActive = (row: number, col: number) =>
-        activeCell.row === row && activeCell.col === col;
+    const effectiveRow = data.length === 0 ? -1 : Math.min(activeCell.row, lastDataRow);
+    const effectiveCol = Math.max(0, Math.min(activeCell.col, lastCol));
 
-    useLayoutEffect(() => {
+    const isActive = (row: number, col: number) => effectiveRow === row && effectiveCol === col;
+
+    useIsomorphicLayoutEffect(() => {
         if (!hasUserMovedRef.current) return;
         const key = `${activeCell.row}:${activeCell.col}`;
         cellRefs.current.get(key)?.focus();
     }, [activeCell]);
 
+    // Snap-back: if data shrinks so that the anchor row/col is out of bounds, clamp it
+    useEffect(() => {
+        if (activeCell.row > lastDataRow || activeCell.col > lastCol) {
+            setActiveCell({
+                row: Math.max(-1, Math.min(activeCell.row, lastDataRow)),
+                col: Math.max(0, Math.min(activeCell.col, lastCol)),
+            });
+        }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [data.length, columns.length]);
+
     const onGridKeyDown = (e: React.KeyboardEvent<HTMLTableElement>) => {
-        const { row, col } = activeCellRef.current;
+        const target = e.target as HTMLElement;
+        if (!target.matches('[role="columnheader"],[role="gridcell"]')) return;
+
+        const { row: rawRow, col: rawCol } = activeCellRef.current;
+        const row = data.length === 0 ? -1 : Math.min(rawRow, lastDataRow);
+        const col = Math.max(0, Math.min(rawCol, lastCol));
         let next: { row: number; col: number } | null = null;
 
         switch (e.key) {
@@ -186,10 +210,11 @@ export function DataTable<T>({
                 // D-03: Enter/Space on a focused sortable <th> delegates via
                 // direct handleSort call (per RESEARCH finding #5 — NOT .click()).
                 // Non-sortable headers and all data cells: no-op (D-03 + future-reserved).
+                if (e.key === ' ' || e.key === 'Spacebar') e.preventDefault(); // always suppress page-scroll for Space
                 if (row === -1) {
                     const column = columns[col];
                     if (column && column.sortable) {
-                        e.preventDefault();
+                        if (e.key === 'Enter') e.preventDefault();
                         handleSort(column.accessor);
                     }
                 }
@@ -248,9 +273,32 @@ export function DataTable<T>({
         }
     };
 
+    const rovingCellProps = (row: number, col: number) => ({
+        tabIndex: isActive(row, col) ? 0 : -1,
+        'data-state': (gridHasFocus && isActive(row, col)) ? 'focused' as const : undefined,
+        ref: (node: HTMLElement | null) => {
+            const key = `${row}:${col}`;
+            if (node) cellRefs.current.set(key, node);
+            else cellRefs.current.delete(key);
+        },
+        onClick: (ev: React.MouseEvent<HTMLElement>) => {
+            const interactive = (ev.target as HTMLElement).closest('a,button,input,select,textarea,[contenteditable="true"]');
+            if (!interactive) hasUserMovedRef.current = true;
+            setActiveCell(prev =>
+                prev.row === row && prev.col === col ? prev : { row, col }
+            );
+        },
+    });
+
     return (
         <div className={className} style={{ overflowX: 'auto' }}>
-            <table role="grid" onKeyDown={onGridKeyDown} style={styles.table}>
+            <table
+                role="grid"
+                onKeyDown={onGridKeyDown}
+                onFocus={() => setGridHasFocus(true)}
+                onBlur={() => setGridHasFocus(false)}
+                style={styles.table}
+            >
                 <caption style={styles.caption}>{caption}</caption>
                 <thead>
                     <tr role="row">
@@ -264,17 +312,7 @@ export function DataTable<T>({
                                         ? sortConfig.direction
                                         : undefined
                                 }
-                                tabIndex={isActive(-1, index) ? 0 : -1}
-                                data-state={isActive(-1, index) ? 'focused' : undefined}
-                                ref={(node) => {
-                                    const key = `-1:${index}`;
-                                    if (node) cellRefs.current.set(key, node);
-                                    else cellRefs.current.delete(key);
-                                }}
-                                onClick={() => {
-                                    hasUserMovedRef.current = true;
-                                    setActiveCell({ row: -1, col: index });
-                                }}
+                                {...rovingCellProps(-1, index)}
                                 style={styles.th}
                             >
                                 {column.sortable ? (
@@ -307,28 +345,19 @@ export function DataTable<T>({
                                 <td
                                     key={colIndex}
                                     role="gridcell"
-                                    tabIndex={isActive(rowIndex, colIndex) ? 0 : -1}
-                                    data-state={isActive(rowIndex, colIndex) ? 'focused' : undefined}
-                                    ref={(node) => {
-                                        const key = `${rowIndex}:${colIndex}`;
-                                        if (node) cellRefs.current.set(key, node);
-                                        else cellRefs.current.delete(key);
-                                    }}
-                                    onClick={() => {
-                                        hasUserMovedRef.current = true;
-                                        setActiveCell({ row: rowIndex, col: colIndex });
-                                    }}
+                                    {...rovingCellProps(rowIndex, colIndex)}
                                     style={styles.td}
                                 >
                                     {column.render
                                         ? column.render(row)
-                                        : String(row[column.accessor])}
+                                        : row[column.accessor] == null ? '' : String(row[column.accessor])}
                                 </td>
                             ))}
                         </tr>
                     ))}
                 </tbody>
             </table>
+            <LiveRegion message={sortAnnouncement} clearAfter={1000} />
         </div>
     );
 }

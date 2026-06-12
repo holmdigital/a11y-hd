@@ -510,3 +510,150 @@ describe('Tier 2: Single Tab Stop (roving tabindex — gap closure 30-02)', () =
         expect(screen.getByRole('button', { name: /after grid/i })).toHaveFocus();
     });
 });
+
+describe('Tier 2: Code-Review Fix Regressions', () => {
+    it('CR-01: clicking an input inside a gridcell keeps focus on the input (not the <td>)', async () => {
+        const user = userEvent.setup();
+        const cols: Column<Row>[] = [
+            { header: 'Name', accessor: 'name', sortable: true },
+            { header: 'Age', accessor: 'age', render: (_r) => <input aria-label="cell-input" /> },
+            { header: 'Email', accessor: 'email' },
+        ];
+        render(<DataTable data={DATA} columns={cols} caption="Users" />);
+        // Move anchor to the Age data cell in row 0
+        const nameHeader = screen.getByRole('columnheader', { name: /name/i });
+        nameHeader.focus();
+        await user.keyboard('{ArrowDown}');  // row 0, col 0
+        await user.keyboard('{ArrowRight}'); // row 0, col 1
+        // Click the input inside the cell
+        const cellInput = screen.getAllByRole('textbox', { name: /cell-input/i })[0];
+        await user.click(cellInput);
+        expect(cellInput).toHaveFocus();
+        // Arrow keys must not steal focus from the input
+        await user.keyboard('{ArrowLeft}');
+        expect(cellInput).toHaveFocus();
+        // aria-sort must not have appeared anywhere
+        screen.getAllByRole('columnheader').forEach(h => expect(h).not.toHaveAttribute('aria-sort'));
+    });
+
+    it('WR-01: Enter on Age sort button sorts Age column (not Name) — discriminating variant', async () => {
+        const user = userEvent.setup();
+        render(<DataTable data={DATA} columns={COLUMNS} caption="Users" />);
+        const ageBtn = screen.getByRole('button', { name: /^Age$/ });
+        const ageHeader = screen.getByRole('columnheader', { name: /age/i });
+        const nameHeader = screen.getByRole('columnheader', { name: /name/i });
+        ageBtn.focus();
+        await user.keyboard('{Enter}');
+        expect(ageHeader).toHaveAttribute('aria-sort', 'ascending');
+        expect(nameHeader).not.toHaveAttribute('aria-sort');
+    });
+
+    it('CR-02: grid has exactly one tabindex=0 cell after data shrinks below anchor row', async () => {
+        const { rerender } = render(<DataTable data={LARGE_DATA} columns={COLUMNS} caption="Users" />);
+        // Move anchor to last row (row 14)
+        const user14 = screen.getByRole('gridcell', { name: 'User14' });
+        user14.click();
+        user14.focus();
+        // Shrink data to 3 rows — anchor row 14 no longer exists
+        rerender(<DataTable data={DATA} columns={COLUMNS} caption="Users" />);
+        // Exactly one cell must have tabindex=0
+        const allCells = [
+            ...screen.getAllByRole('columnheader'),
+            ...screen.getAllByRole('gridcell'),
+        ];
+        const tabZeroCells = allCells.filter(c => c.getAttribute('tabindex') === '0');
+        expect(tabZeroCells).toHaveLength(1);
+    });
+
+    it('IN-01a: Name columnheader has no data-state attribute on initial mount', () => {
+        render(<DataTable data={DATA} columns={COLUMNS} caption="Users" />);
+        expect(screen.getByRole('columnheader', { name: /name/i })).not.toHaveAttribute('data-state');
+    });
+
+    it('IN-01b: data-state="focused" appears when grid is focused and disappears after Tab-out', async () => {
+        const user = userEvent.setup();
+        render(
+            <>
+                <input aria-label="before" />
+                <DataTable data={DATA} columns={COLUMNS} caption="Users" />
+                <button type="button">after</button>
+            </>
+        );
+        const input = screen.getByRole('textbox');
+        input.focus();
+        await user.tab();
+        expect(screen.getByRole('columnheader', { name: /name/i })).toHaveAttribute('data-state', 'focused');
+        await user.tab();
+        expect(screen.getByRole('columnheader', { name: /name/i })).not.toHaveAttribute('data-state');
+    });
+
+    it('IN-03: clicking a columnheader moves roving anchor from gridcell to that columnheader', async () => {
+        const user = userEvent.setup();
+        render(<DataTable data={DATA} columns={COLUMNS} caption="Users" />);
+        const aliceCell = screen.getByRole('gridcell', { name: 'Alice' });
+        await user.click(aliceCell);
+        expect(aliceCell).toHaveAttribute('tabindex', '0');
+        const ageHeader = screen.getByRole('columnheader', { name: /age/i });
+        await user.click(ageHeader);
+        expect(ageHeader).toHaveAttribute('tabindex', '0');
+        expect(aliceCell).toHaveAttribute('tabindex', '-1');
+    });
+
+    it('IN-04: Space on non-sortable Email header suppresses scroll (header keeps focus, no aria-sort)', async () => {
+        const user = userEvent.setup();
+        render(<DataTable data={DATA} columns={COLUMNS} caption="Users" />);
+        const emailHeader = screen.getByRole('columnheader', { name: /email/i });
+        emailHeader.focus();
+        await user.keyboard(' ');
+        expect(emailHeader).toHaveFocus();
+        expect(emailHeader).not.toHaveAttribute('aria-sort');
+    });
+
+    it('IN-04: Space on a gridcell suppresses scroll (cell keeps focus)', async () => {
+        const user = userEvent.setup();
+        render(<DataTable data={DATA} columns={COLUMNS} caption="Users" />);
+        const charlieCell = screen.getByRole('gridcell', { name: 'Charlie' });
+        charlieCell.focus();
+        await user.keyboard(' ');
+        expect(charlieCell).toHaveFocus();
+    });
+
+    it('IN-05: sort live region announces ascending sort on first click', async () => {
+        const user = userEvent.setup();
+        render(<DataTable data={DATA} columns={COLUMNS} caption="Users" />);
+        await user.click(screen.getByRole('button', { name: /^Name$/ }));
+        expect(await screen.findByText(/sorted by name, ascending/i)).toBeInTheDocument();
+    });
+
+    it('IN-05: sort live region announces descending sort on second click', async () => {
+        const user = userEvent.setup();
+        render(<DataTable data={DATA} columns={COLUMNS} caption="Users" />);
+        await user.click(screen.getByRole('button', { name: /^Name$/ }));
+        await user.click(screen.getByRole('button', { name: /^Name$/ }));
+        expect(await screen.findByText(/sorted by name, descending/i)).toBeInTheDocument();
+    });
+
+    it('WR-03: null accessor value renders as empty string in gridcell', () => {
+        const nullRow = { name: null as unknown as string, age: 0, email: '' };
+        render(<DataTable data={[nullRow, DATA[0]]} columns={COLUMNS} caption="Users" />);
+        // The null cell should render as empty, not the string 'null'
+        const cells = screen.getAllByRole('gridcell');
+        const nameCells = cells.filter((_, i) => i % 3 === 0);
+        expect(nameCells[0]).not.toHaveTextContent('null');
+    });
+
+    it('WR-03: ascending sort by Name uses numeric-aware ordering (User2 before User10)', async () => {
+        const user = userEvent.setup();
+        const numericData: Row[] = [
+            { name: 'User10', age: 1, email: 'u10@x.com' },
+            { name: 'User2', age: 2, email: 'u2@x.com' },
+        ];
+        render(<DataTable data={numericData} columns={COLUMNS} caption="Users" />);
+        await user.click(screen.getByRole('button', { name: /^Name$/ }));
+        const rows = screen.getAllByRole('row');
+        // With numeric:true localeCompare, "User2" < "User10" (2 < 10 numerically).
+        // Without numeric sort, lexicographic order puts "User10" before "User2" ("1" < "2").
+        expect(rows[1]).toHaveTextContent('User2');
+        expect(rows[2]).toHaveTextContent('User10');
+    });
+});
