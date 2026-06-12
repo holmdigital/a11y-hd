@@ -27,6 +27,15 @@ export interface Column<T> {
     render?: (item: T) => React.ReactNode;
 }
 
+/**
+ * Props for the DataTable component.
+ *
+ * **Sorting and stateful cell content (WR-02):** Sorting reorders rows by their
+ * data values. Cells rendered via `column.render` that hold their own uncontrolled
+ * or stateful DOM (e.g. an uncontrolled `<input>`) are keyed positionally, so their
+ * internal state may not follow the row after a sort. A stable `rowKey` prop to
+ * address this is planned for a future minor (2.8.0).
+ */
 export interface DataTableProps<T> {
     /**
      * The data array to display
@@ -126,7 +135,7 @@ export function DataTable<T>({
             if (typeof aValue === 'number' && typeof bValue === 'number') {
                 return (aValue - bValue) * dir;
             }
-            return String(aValue).localeCompare(String(bValue), undefined, { sensitivity: 'base', numeric: true }) * dir;
+            return String(aValue).localeCompare(String(bValue), 'sv', { sensitivity: 'base', numeric: true }) * dir;
         });
     }, [data, sortConfig]);
 

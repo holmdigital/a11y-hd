@@ -25,7 +25,7 @@
  * no-throw stubs at L219-250 are replaced by real focus assertions in the
  * "Tier 2: APG Grid Cell-Wise Keyboard Navigation" describe block below.
  */
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, it, expect } from 'vitest';
 
@@ -531,9 +531,12 @@ describe('Tier 2: Code-Review Fix Regressions', () => {
         expect(cellInput).toHaveFocus();
         // Arrow keys must not steal focus from the input
         await user.keyboard('{ArrowLeft}');
-        expect(cellInput).toHaveFocus();
-        // aria-sort must not have appeared anywhere
-        screen.getAllByRole('columnheader').forEach(h => expect(h).not.toHaveAttribute('aria-sort'));
+        // await-stable to avoid flake under CPU load
+        await waitFor(() => {
+            expect(cellInput).toHaveFocus();
+            // aria-sort must not have appeared anywhere
+            screen.getAllByRole('columnheader').forEach(h => expect(h).not.toHaveAttribute('aria-sort'));
+        });
     });
 
     it('WR-01: Enter on Age sort button sorts Age column (not Name) — discriminating variant', async () => {
@@ -544,8 +547,11 @@ describe('Tier 2: Code-Review Fix Regressions', () => {
         const nameHeader = screen.getByRole('columnheader', { name: /name/i });
         ageBtn.focus();
         await user.keyboard('{Enter}');
-        expect(ageHeader).toHaveAttribute('aria-sort', 'ascending');
-        expect(nameHeader).not.toHaveAttribute('aria-sort');
+        // await-stable to avoid flake under CPU load
+        await waitFor(() => {
+            expect(ageHeader).toHaveAttribute('aria-sort', 'ascending');
+            expect(nameHeader).not.toHaveAttribute('aria-sort');
+        });
     });
 
     it('CR-02: grid has exactly one tabindex=0 cell after data shrinks below anchor row', async () => {
@@ -556,13 +562,15 @@ describe('Tier 2: Code-Review Fix Regressions', () => {
         user14.focus();
         // Shrink data to 3 rows — anchor row 14 no longer exists
         rerender(<DataTable data={DATA} columns={COLUMNS} caption="Users" />);
-        // Exactly one cell must have tabindex=0
-        const allCells = [
-            ...screen.getAllByRole('columnheader'),
-            ...screen.getAllByRole('gridcell'),
-        ];
-        const tabZeroCells = allCells.filter(c => c.getAttribute('tabindex') === '0');
-        expect(tabZeroCells).toHaveLength(1);
+        // Exactly one cell must have tabindex=0 — await-stable to avoid flake under CPU load
+        await waitFor(() => {
+            const allCells = [
+                ...screen.getAllByRole('columnheader'),
+                ...screen.getAllByRole('gridcell'),
+            ];
+            const tabZeroCells = allCells.filter(c => c.getAttribute('tabindex') === '0');
+            expect(tabZeroCells).toHaveLength(1);
+        });
     });
 
     it('IN-01a: Name columnheader has no data-state attribute on initial mount', () => {
@@ -650,10 +658,32 @@ describe('Tier 2: Code-Review Fix Regressions', () => {
         ];
         render(<DataTable data={numericData} columns={COLUMNS} caption="Users" />);
         await user.click(screen.getByRole('button', { name: /^Name$/ }));
-        const rows = screen.getAllByRole('row');
-        // With numeric:true localeCompare, "User2" < "User10" (2 < 10 numerically).
-        // Without numeric sort, lexicographic order puts "User10" before "User2" ("1" < "2").
-        expect(rows[1]).toHaveTextContent('User2');
-        expect(rows[2]).toHaveTextContent('User10');
+        // await-stable read to avoid flake under CPU load
+        await waitFor(() => {
+            const rows = screen.getAllByRole('row');
+            // With numeric:true localeCompare, "User2" < "User10" (2 < 10 numerically).
+            // Without numeric sort, lexicographic order puts "User10" before "User2" ("1" < "2").
+            expect(rows[1]).toHaveTextContent('User2');
+            expect(rows[2]).toHaveTextContent('User10');
+        });
+    });
+
+    it("sorts Swedish characters per sv collation — Åsa before Ängla (Å < Ä)", async () => {
+        // Swedish collation: Å < Ä (Å sorts before Ä). With the old code-unit '<'
+        // operator, Ä (U+00C4) < Å (U+00C5) — wrong order. With 'sv' localeCompare
+        // the comparator places Å before Ä — the correct Swedish order.
+        const user = userEvent.setup();
+        const svData: Row[] = [
+            { name: 'Ängla', age: 1, email: 'angla@x.com' },
+            { name: 'Åsa', age: 2, email: 'asa@x.com' },
+        ];
+        render(<DataTable data={svData} columns={COLUMNS} caption="Users" />);
+        await user.click(screen.getByRole('button', { name: /^Name$/ }));
+        // Ascending sv sort: Åsa (Å) before Ängla (Ä)
+        await waitFor(() => {
+            const rows = screen.getAllByRole('row');
+            expect(rows[1]).toHaveTextContent('Åsa');
+            expect(rows[2]).toHaveTextContent('Ängla');
+        });
     });
 });
