@@ -1,9 +1,9 @@
 ---
-status: diagnosed
+status: resolved
 phase: 30-datatable-apg-grid-cell-wise-keyboard
 source: 30-01-SUMMARY.md
 started: 2026-06-12T08:21:22Z
-updated: 2026-06-12T08:43:09Z
+updated: 2026-06-12T17:30:00Z
 ---
 
 ## Current Test
@@ -63,7 +63,8 @@ blocked: 0
 
 <!-- YAML format for plan-phase --gaps consumption -->
 - truth: "Tab into the grid is a single stop — focus lands on the Name header once, and the next Tab leaves the grid entirely (roving tabindex)"
-  status: failed
+  status: resolved
+  resolution: "Gap closure plan 30-02 (executed 2026-06-12): tabIndex={-1} added to inner sort button (DataTable.tsx), userEvent.tab() regression tests added, D-02/D-05 superseded in 30-CONTEXT.md, components 2.7.2 → 2.7.3. Verified passed 9/9 in 30-VERIFICATION.md."
   reason: "User reported: name, city then leaves the grid — Tab visits both sortable headers (Name, City) before exiting, so the grid exposes multiple Tab stops"
   severity: major
   test: 1

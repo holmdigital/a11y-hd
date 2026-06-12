@@ -1,8 +1,9 @@
 ---
-status: diagnosed
+status: resolved
 trigger: "UAT-001 (datatable-grid-multiple-tab-stops): Phase 30 APG grid must be a single Tab stop, but Tab visits Name header, then City header, then exits. Name and City are the two sortable columns; non-sortable Role was not visited."
 created: 2026-06-12T00:00:00Z
-updated: 2026-06-12T00:30:00Z
+updated: 2026-06-12T17:30:00Z
+resolved_by: "30-02 gap closure (tabIndex={-1} on sort button), verified passed in 30-VERIFICATION.md"
 ---
 
 ## Current Focus
