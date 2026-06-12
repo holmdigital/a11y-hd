@@ -2706,6 +2706,14 @@
                 "telecommunications"
             ],
             "eaaDeadline": "2025-06-28"
+        },
+        "plainLanguage": {
+            "headline": "The page has no clearly signposted main area",
+            "whatHappens": "The page is missing a single clearly marked main content area. Screen readers use these signposts, called landmarks, to let users jump straight to the content they need.",
+            "whoIsAffected": "Customers using screen readers or keyboard-only navigation, and anyone who finds it hard to skip past menus and headers to get to the content.",
+            "businessImpact": "Visitors who cannot navigate quickly give up and leave. A page without a main landmark costs you customers who rely on assistive technology.",
+            "howToFix": "Wrap the main content of the page in a single HTML main element. Your developer can fix this in minutes.",
+            "impactLevel": "forsamrar"
         }
     },
     {
@@ -3094,6 +3102,14 @@
                 "telecommunications"
             ],
             "eaaDeadline": "2025-06-28"
+        },
+        "plainLanguage": {
+            "headline": "Page content is not organised into signposted areas",
+            "whatHappens": "Parts of the page sit outside any signposted area. Screen readers divide a page into named regions such as header, navigation, main content, and footer, so users can jump directly to what they need.",
+            "whoIsAffected": "Customers using screen readers, keyboard navigation, or other assistive tools that rely on page structure to move around efficiently.",
+            "businessImpact": "When the page has no clear structure, screen reader users cannot skip to the product or checkout area. They navigate line by line and give up before completing a purchase.",
+            "howToFix": "Wrap all content in appropriate HTML elements such as header, nav, main, and footer. Your developer can restructure the page layout to meet this requirement.",
+            "impactLevel": "forsamrar"
         }
     },
     {

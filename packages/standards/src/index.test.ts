@@ -527,7 +527,7 @@ describe('National Laws — schema validation', () => {
 
         if (!valid) {
             // Surface every violation so authors see all issues at once
-            const summary = (validate.errors ?? []).map(e => `${e.dataPath || '<root>'} ${e.message}`).join('\n');
+            const summary = (validate.errors ?? []).map(e => `${e.instancePath || '<root>'} ${e.message}`).join('\n');
             throw new Error(`national-laws.json failed schema validation:\n${summary}`);
         }
         expect(valid).toBe(true);
@@ -538,7 +538,8 @@ describe('plainLanguage encoding guard (D-10.1)', () => {
     const MOJIBAKE = /Ã/;
     const PLAIN_IDS = [
         'alt-text', 'color-contrast', 'form-labels', 'link-purpose',
-        'name-role-value', 'keyboard-accessible', 'heading-order', 'language-of-page'
+        'name-role-value', 'keyboard-accessible', 'heading-order', 'language-of-page',
+        'landmark-one-main', 'region'
     ] as const;
 
     it('sv: no mojibake in any plainLanguage text field', () => {
@@ -576,10 +577,11 @@ describe('plainLanguage tone lint (D-10.2)', () => {
 describe('plainLanguage sv/en parity (D-10.3)', () => {
     const PLAIN_IDS = [
         'alt-text', 'color-contrast', 'form-labels', 'link-purpose',
-        'name-role-value', 'keyboard-accessible', 'heading-order', 'language-of-page'
+        'name-role-value', 'keyboard-accessible', 'heading-order', 'language-of-page',
+        'landmark-one-main', 'region'
     ] as const;
 
-    it('same 8 ruleIds have plainLanguage in both sv and en', () => {
+    it('same 10 ruleIds have plainLanguage in both sv and en', () => {
         for (const id of PLAIN_IDS) {
             const sv = (rulesSv as ConvergenceRule[]).find(r => r.ruleId === id);
             const en = (rulesEn as ConvergenceRule[]).find(r => r.ruleId === id);

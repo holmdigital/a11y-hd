@@ -2706,6 +2706,14 @@
                 "telecommunications"
             ],
             "eaaDeadline": "2025-06-28"
+        },
+        "plainLanguage": {
+            "headline": "Sidan saknar ett tydligt utmärkt huvudområde",
+            "whatHappens": "Sidan saknar ett tydligt utmärkt huvudinnehållsområde. Skärmläsare använder sådana utmärkningar, kallade landmärken, för att låta användare hoppa direkt till det innehåll de söker.",
+            "whoIsAffected": "Kunder som använder skärmläsare eller tangentbordsnavigering, och alla som har svårt att hoppa förbi menyer och sidhuvuden för att nå innehållet.",
+            "businessImpact": "Besökare som inte kan navigera snabbt ger upp och lämnar. En sida utan huvudlandmärke kostar dig kunder som förlitar sig på hjälpmedel.",
+            "howToFix": "Omslut sidans huvudinnehåll i ett enda HTML-element av typen main. Din utvecklare kan åtgärda det på några minuter.",
+            "impactLevel": "forsamrar"
         }
     },
     {
@@ -3094,6 +3102,14 @@
                 "telecommunications"
             ],
             "eaaDeadline": "2025-06-28"
+        },
+        "plainLanguage": {
+            "headline": "Sidans innehåll är inte organiserat i tydliga områden",
+            "whatHappens": "Delar av sidan ligger utanför alla utmärkta områden. Skärmläsare delar in en sida i namngivna regioner som sidhuvud, navigering, huvudinnehåll och sidfot, så att användare kan hoppa direkt till det de behöver.",
+            "whoIsAffected": "Kunder som använder skärmläsare, tangentbordsnavigering eller andra hjälpmedel som förlitar sig på sidstruktur för att navigera effektivt.",
+            "businessImpact": "När sidan saknar tydlig struktur kan skärmläsaranvändare inte hoppa till produkt- eller kassasidan. De navigerar rad för rad och ger upp innan de genomför ett köp.",
+            "howToFix": "Omslut allt innehåll i lämpliga HTML-element som header, nav, main och footer. Din utvecklare kan strukturera om sidlayouten för att uppfylla kravet.",
+            "impactLevel": "forsamrar"
         }
     },
     {
