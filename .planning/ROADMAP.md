@@ -399,7 +399,7 @@ Plans:
 | 27. APG Live Regions | v0.7 | 1/1 | Complete   | 2026-05-11 |
 | 28. DatePicker APG Dialog-Grid Keyboard | v0.7 | 3/3 | Complete   | 2026-05-11 |
 | 29. MultiSelect APG Listbox-Multi Completeness | v0.7 | 1/1 | Complete   | 2026-05-12 |
-| 30. DataTable APG Grid Cell-Wise Keyboard | v0.7 | 2/2 | Complete   | 2026-06-12 |
+| 30. DataTable APG Grid Cell-Wise Keyboard | v0.7 | 2/2 | Complete    | 2026-06-12 |
 | 31. NavigationMenu Disclosure → Menubar | v0.7 | 0/0 | Not started | - |
 | 32. TC-15 Remaining Component Test Coverage | v0.7 | 0/0 | Not started | - |
 | 33. Lint + Typecheck Verify Gates | v0.7 | 4/4 | Complete | 2026-05-12 |
