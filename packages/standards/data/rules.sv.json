@@ -74,8 +74,8 @@
         "plainLanguage": {
             "headline": "Knapptexten är för svag mot bakgrunden",
             "whatHappens": "Texten på knappar och länkar har för låg kontrast mot bakgrunden för att alla ska kunna läsa den.",
-            "whoIsAffected": "Personer med nedsatt syn, äldre, och alla som handlar på mobilen i solljus.",
-            "businessImpact": "Om din kund inte ser Lägg i varukorg tydligt så klickar hen inte. Svag kontrast på just köpknappen är dyrt.",
+            "whoIsAffected": "Personer med nedsatt syn, äldre, och alla som besöker sidan på mobilen i starkt solljus.",
+            "businessImpact": "Om din besökare inte ser sidans viktigaste knapp tydligt så klickar hen inte. Svag kontrast på viktiga knappar är dyrt.",
             "howToFix": "Gör texten mörkare eller bakgrunden ljusare tills kontrasten räcker. Vi anger exakt vilka färger som behöver justeras.",
             "impactLevel": "forsamrar"
         }
@@ -153,8 +153,8 @@
         "plainLanguage": {
             "headline": "Sajten går inte att använda utan mus",
             "whatHappens": "Delar av sajten går inte att nå med bara tangentbordet, och det syns inte var man befinner sig när man hoppar runt.",
-            "whoIsAffected": "Personer som av olika skäl inte använder mus, och alla som föredrar tangentbord för att handla snabbt.",
-            "businessImpact": "Om en meny eller knapp inte går att nå med tangentbord så är den stängd för den kunden, helt enkelt.",
+            "whoIsAffected": "Personer som av olika skäl inte använder mus, och alla som föredrar att navigera med tangentbord.",
+            "businessImpact": "Om en meny eller knapp inte går att nå med tangentbord så är den stängd för den besökaren, helt enkelt.",
             "howToFix": "Se till att allt klickbart går att nå med tab-tangenten, och att det syns tydligt var fokus ligger.",
             "impactLevel": "hindrar"
         }
@@ -231,11 +231,11 @@
             "eaaDeadline": "2025-06-28"
         },
         "plainLanguage": {
-            "headline": "Produktbilderna saknar beskrivning",
+            "headline": "Bilderna saknar beskrivning",
             "whatHappens": "Bilderna på sajten har ingen textbeskrivning i koden. En besökare med skärmläsare hör bara ordet bild, inte vad bilden visar.",
-            "whoIsAffected": "Kunder med synnedsättning, men också Google, som läser bildtexten för att förstå vad du säljer.",
-            "businessImpact": "Produkter utan beskrivning blir osynliga både för skärmläsare och sökmotorer. Du tappar kunder och ranking på samma gång.",
-            "howToFix": "Lägg en kort beskrivning på varje produktbild, till exempel Stickad ylletröja i grått. Det tar några sekunder per bild.",
+            "whoIsAffected": "Besökare med synnedsättning, men också Google, som läser bildbeskrivningar för att förstå vad sidan handlar om.",
+            "businessImpact": "Bilder utan beskrivning blir osynliga både för skärmläsare och sökmotorer. Du tappar besökare och ranking på samma gång.",
+            "howToFix": "Lägg en kort beskrivning på varje bild som förmedlar information, till exempel Stickad ylletröja i grått. Det tar några sekunder per bild.",
             "impactLevel": "hindrar"
         }
     },
@@ -313,10 +313,10 @@
             "eaaDeadline": "2025-06-28"
         },
         "plainLanguage": {
-            "headline": "Fälten i kassan saknar tydliga etiketter",
-            "whatHappens": "Inmatningsfälten i kassan har ingen kopplad etikett. Det syns kanske en grå text i fältet, men den försvinner så fort man börjar skriva.",
+            "headline": "Formulärfälten saknar tydliga etiketter",
+            "whatHappens": "Inmatningsfälten på sidan har ingen kopplad etikett. Det syns kanske en grå text i fältet, men den försvinner så fort man börjar skriva.",
             "whoIsAffected": "Alla som använder skärmläsare, och den som blir avbruten mitt i ifyllningen och tappar bort var hen var.",
-            "businessImpact": "Kassan är där pengarna finns. Varje hinder här ger övergivna varukorgar.",
+            "businessImpact": "Formulärfält utan etiketter hindrar besökare från att slutföra viktiga åtgärder. Varje hinder vid kritiska formulär kostar dig konverteringar.",
             "howToFix": "Sätt en synlig etikett ovanför varje fält, till exempel Postnummer, som ligger kvar hela tiden.",
             "impactLevel": "stoppar-kop"
         }
@@ -1614,7 +1614,7 @@
             "whatHappens": "Flera länkar saknar beskrivande text och säger bara läs mer eller klicka här.",
             "whoIsAffected": "Den som hoppar mellan länkar med tangentbord eller skärmläsare får en lista med läs mer, läs mer, läs mer utan att veta vart de leder.",
             "businessImpact": "Förvirrade besökare klickar inte. Google premierar dessutom länkar som beskriver vad de leder till.",
-            "howToFix": "Byt läs mer mot vad länken faktiskt leder till, till exempel Se hela vinterkollektionen.",
+            "howToFix": "Byt läs mer mot vad länken faktiskt leder till, till exempel Läs vår tillgänglighetsredogörelse.",
             "impactLevel": "forsamrar"
         }
     },
@@ -2710,8 +2710,8 @@
         "plainLanguage": {
             "headline": "Sidan saknar ett tydligt utmärkt huvudområde",
             "whatHappens": "Sidan saknar ett tydligt utmärkt huvudinnehållsområde. Skärmläsare använder sådana utmärkningar, kallade landmärken, för att låta användare hoppa direkt till det innehåll de söker.",
-            "whoIsAffected": "Kunder som använder skärmläsare eller tangentbordsnavigering, och alla som har svårt att hoppa förbi menyer och sidhuvuden för att nå innehållet.",
-            "businessImpact": "Besökare som inte kan navigera snabbt ger upp och lämnar. En sida utan huvudlandmärke kostar dig kunder som förlitar sig på hjälpmedel.",
+            "whoIsAffected": "Besökare som använder skärmläsare eller tangentbordsnavigering, och alla som har svårt att hoppa förbi menyer och sidhuvuden för att nå innehållet.",
+            "businessImpact": "Besökare som inte kan navigera snabbt ger upp och lämnar. En sida utan huvudlandmärke kostar dig besökare som förlitar sig på hjälpmedel.",
             "howToFix": "Omslut sidans huvudinnehåll i ett enda HTML-element av typen main. Din utvecklare kan åtgärda det på några minuter.",
             "impactLevel": "forsamrar"
         }
@@ -2846,7 +2846,7 @@
             "headline": "Rubrikerna hänger inte ihop",
             "whatHappens": "Rubrikerna på sidan följer ingen ordning i koden, så sidans struktur går inte att läsa av.",
             "whoIsAffected": "Skärmläsaranvändare navigerar via rubriker, ungefär som via en innehållsförteckning. Utan ordning blir det en enda röra.",
-            "businessImpact": "En svårnavigerad sida betyder att kunden inte hittar produkten och lämnar.",
+            "businessImpact": "En svårnavigerad sida betyder att besökaren inte hittar det de söker och lämnar.",
             "howToFix": "Bygg rubrikerna i ordning, en huvudrubrik och underrubriker under den, precis som i ett dokument.",
             "impactLevel": "putsning"
         }
@@ -3106,8 +3106,8 @@
         "plainLanguage": {
             "headline": "Sidans innehåll är inte organiserat i tydliga områden",
             "whatHappens": "Delar av sidan ligger utanför alla utmärkta områden. Skärmläsare delar in en sida i namngivna regioner som sidhuvud, navigering, huvudinnehåll och sidfot, så att användare kan hoppa direkt till det de behöver.",
-            "whoIsAffected": "Kunder som använder skärmläsare, tangentbordsnavigering eller andra hjälpmedel som förlitar sig på sidstruktur för att navigera effektivt.",
-            "businessImpact": "När sidan saknar tydlig struktur kan skärmläsaranvändare inte hoppa till produkt- eller kassasidan. De navigerar rad för rad och ger upp innan de genomför ett köp.",
+            "whoIsAffected": "Besökare som använder skärmläsare, tangentbordsnavigering eller andra hjälpmedel som förlitar sig på sidstruktur för att navigera effektivt.",
+            "businessImpact": "När sidan saknar tydlig struktur kan skärmläsaranvändare inte hoppa direkt till huvudinnehållet. De navigerar rad för rad och ger upp innan de slutfört det de kom för.",
             "howToFix": "Omslut allt innehåll i lämpliga HTML-element som header, nav, main och footer. Din utvecklare kan strukturera om sidlayouten för att uppfylla kravet.",
             "impactLevel": "forsamrar"
         }

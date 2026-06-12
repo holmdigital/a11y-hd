@@ -74,8 +74,8 @@
         "plainLanguage": {
             "headline": "Button text is too faint against the background",
             "whatHappens": "The text on buttons and links does not have enough contrast against the background for everyone to read it.",
-            "whoIsAffected": "Customers with low vision, older users, and anyone shopping on a phone in bright sunlight.",
-            "businessImpact": "If your customer cannot clearly see Add to cart, they will not click it. Weak contrast on the buy button is costly.",
+            "whoIsAffected": "Visitors with low vision, older users, and anyone visiting the site on a phone in bright sunlight.",
+            "businessImpact": "If your visitor cannot clearly read the most important button on the page, they will not click it. Weak contrast on key actions is costly.",
             "howToFix": "Darken the text or lighten the background until the contrast is sufficient. We specify exactly which colours need adjusting.",
             "impactLevel": "forsamrar"
         }
@@ -153,8 +153,8 @@
         "plainLanguage": {
             "headline": "The site cannot be used without a mouse",
             "whatHappens": "Parts of the site cannot be reached using only the keyboard, and there is no visible indication of where you are when moving through the page.",
-            "whoIsAffected": "People who do not use a mouse for various reasons, and anyone who prefers the keyboard for fast shopping.",
-            "businessImpact": "If a menu or button cannot be reached by keyboard, that customer is simply locked out.",
+            "whoIsAffected": "People who do not use a mouse for various reasons, and anyone who prefers navigating by keyboard.",
+            "businessImpact": "If a menu or button cannot be reached by keyboard, that visitor is simply locked out.",
             "howToFix": "Make sure everything clickable can be reached with the Tab key, and that focus is clearly visible at all times.",
             "impactLevel": "hindrar"
         }
@@ -231,11 +231,11 @@
             "eaaDeadline": "2025-06-28"
         },
         "plainLanguage": {
-            "headline": "Product images have no description",
+            "headline": "Images have no description",
             "whatHappens": "The images on the site have no text description in the code. A visitor using a screen reader hears only the word image, not what the image shows.",
-            "whoIsAffected": "Customers with visual impairments, and also Google, which reads image descriptions to understand what you sell.",
-            "businessImpact": "Products without descriptions become invisible to both screen readers and search engines. You lose customers and search ranking at the same time.",
-            "howToFix": "Add a short description to each product image, for example Knitted wool sweater in grey. It takes a few seconds per image.",
+            "whoIsAffected": "Visitors with visual impairments, and also Google, which reads image descriptions to understand what your page is about.",
+            "businessImpact": "Images without descriptions become invisible to both screen readers and search engines. You lose visitors and search ranking at the same time.",
+            "howToFix": "Add a short description to each image that conveys information, for example Knitted wool sweater in grey. It takes a few seconds per image.",
             "impactLevel": "hindrar"
         }
     },
@@ -313,10 +313,10 @@
             "eaaDeadline": "2025-06-28"
         },
         "plainLanguage": {
-            "headline": "Checkout fields are missing clear labels",
-            "whatHappens": "The input fields in the checkout have no connected label. A grey hint text may appear inside the field, but it disappears as soon as someone starts typing.",
-            "whoIsAffected": "Anyone using a screen reader, and customers interrupted mid-checkout who lose track of where they were.",
-            "businessImpact": "The checkout is where the money is. Every barrier here leads to abandoned carts.",
+            "headline": "Form fields are missing clear labels",
+            "whatHappens": "The input fields on the page have no connected label. A grey hint text may appear inside the field, but it disappears as soon as someone starts typing.",
+            "whoIsAffected": "Anyone using a screen reader, and visitors interrupted mid-form who lose track of where they were.",
+            "businessImpact": "Form fields without labels block visitors from completing key actions. Every barrier at critical forms costs you conversions.",
             "howToFix": "Add a visible label above each field, for example Postcode, that stays visible at all times.",
             "impactLevel": "stoppar-kop"
         }
@@ -1614,7 +1614,7 @@
             "whatHappens": "Several links have no descriptive text and just say read more or click here.",
             "whoIsAffected": "Anyone navigating by links using a keyboard or screen reader gets a list of read more, read more, read more without knowing where they lead.",
             "businessImpact": "Confused visitors do not click. Search engines also favour links that describe what they lead to.",
-            "howToFix": "Replace read more with what the link actually leads to, for example View the full winter collection.",
+            "howToFix": "Replace read more with what the link actually leads to, for example Read our accessibility statement.",
             "impactLevel": "forsamrar"
         }
     },
@@ -2710,8 +2710,8 @@
         "plainLanguage": {
             "headline": "The page has no clearly signposted main area",
             "whatHappens": "The page is missing a single clearly marked main content area. Screen readers use these signposts, called landmarks, to let users jump straight to the content they need.",
-            "whoIsAffected": "Customers using screen readers or keyboard-only navigation, and anyone who finds it hard to skip past menus and headers to get to the content.",
-            "businessImpact": "Visitors who cannot navigate quickly give up and leave. A page without a main landmark costs you customers who rely on assistive technology.",
+            "whoIsAffected": "Visitors using screen readers or keyboard-only navigation, and anyone who finds it hard to skip past menus and headers to get to the content.",
+            "businessImpact": "Visitors who cannot navigate quickly give up and leave. A page without a main landmark costs you visitors who rely on assistive technology.",
             "howToFix": "Wrap the main content of the page in a single HTML main element. Your developer can fix this in minutes.",
             "impactLevel": "forsamrar"
         }
@@ -2846,7 +2846,7 @@
             "headline": "Headings do not follow a logical order",
             "whatHappens": "The headings on the page do not follow a logical sequence in the code, so the page structure cannot be read.",
             "whoIsAffected": "Screen reader users navigate via headings, much like a table of contents. Without a clear order it becomes confusing.",
-            "businessImpact": "A hard-to-navigate page means your customer cannot find the product and leaves.",
+            "businessImpact": "A hard-to-navigate page means your visitor cannot find what they came for and leaves.",
             "howToFix": "Build headings in order, with one main heading and sub-headings beneath it, just like in a document.",
             "impactLevel": "putsning"
         }
@@ -3106,8 +3106,8 @@
         "plainLanguage": {
             "headline": "Page content is not organised into signposted areas",
             "whatHappens": "Parts of the page sit outside any signposted area. Screen readers divide a page into named regions such as header, navigation, main content, and footer, so users can jump directly to what they need.",
-            "whoIsAffected": "Customers using screen readers, keyboard navigation, or other assistive tools that rely on page structure to move around efficiently.",
-            "businessImpact": "When the page has no clear structure, screen reader users cannot skip to the product or checkout area. They navigate line by line and give up before completing a purchase.",
+            "whoIsAffected": "Visitors using screen readers, keyboard navigation, or other assistive tools that rely on page structure to move around efficiently.",
+            "businessImpact": "When the page has no clear structure, screen reader users cannot skip straight to the main content. They navigate line by line and give up before completing their task.",
             "howToFix": "Wrap all content in appropriate HTML elements such as header, nav, main, and footer. Your developer can restructure the page layout to meet this requirement.",
             "impactLevel": "forsamrar"
         }
