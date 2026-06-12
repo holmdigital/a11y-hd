@@ -2,6 +2,7 @@
 import { ScanResult, getEngineVersion } from '../core/regulatory-scanner';
 import { generateBadgeUrl } from './badge-generator';
 import { t, getCurrentLang } from '../i18n';
+import type { EnrichedReport, BusinessImpactLevel } from '@holmdigital/standards';
 
 /**
  * Maps lang codes to their correct Intl.DateTimeFormat locale codes.
@@ -24,22 +25,37 @@ const LOCALE_TO_INTL: Record<string, string> = {
     'en-ca': 'en-CA',
 };
 
-export function generateReportHTML(result: ScanResult, sector: 'public' | 'private' = 'public'): string {
+function formatDate(dateString: string): string {
+    const intlLocale = LOCALE_TO_INTL[getCurrentLang()] || 'en-US';
+    return new Date(dateString).toLocaleDateString(intlLocale, {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+    });
+}
+
+function escapeHtml(str: string): string {
+    return str
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
+}
+
+export function generateReportHTML(
+    result: ScanResult,
+    sector: 'public' | 'private' = 'public',
+    audience: 'developer' | 'plain' = 'developer'
+): string {
+    if (audience === 'plain') {
+        return generatePlainReportHTML(result);
+    }
+
     const criticalCount = result.stats.critical;
     const highCount = result.stats.high;
     const htmlErrorsCount = result.htmlValidation?.errors?.length ?? 0;
     const scoreColor = result.score > 90 ? '#16a34a' : result.score > 70 ? '#eab308' : '#dc2626';
-
-    const formatDate = (dateString: string) => {
-        const intlLocale = LOCALE_TO_INTL[getCurrentLang()] || 'en-US';
-        return new Date(dateString).toLocaleDateString(intlLocale, {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric',
-            hour: '2-digit',
-            minute: '2-digit'
-        });
-    };
 
     return `
     <!DOCTYPE html>
@@ -314,4 +330,160 @@ export function generateReportHTML(result: ScanResult, sector: 'public' | 'priva
     </body>
     </html>
     `;
+}
+
+/**
+ * Impact sort order for the plain report (mirrors plain-report.ts — D-08).
+ * Lower number = higher priority.
+ */
+const PLAIN_IMPACT_ORDER: Record<BusinessImpactLevel, number> = {
+    'stoppar-kop': 0,
+    'hindrar': 1,
+    'forsamrar': 2,
+    'putsning': 3,
+};
+
+/** Fallback derivation from DIGG risk (mirrors plain-report.ts — D-10.4). */
+const PLAIN_RISK_TO_IMPACT: Record<string, BusinessImpactLevel> = {
+    critical: 'stoppar-kop',
+    high: 'hindrar',
+    medium: 'forsamrar',
+    low: 'putsning',
+};
+
+/** Badge CSS class per impact level. */
+const PLAIN_BADGE_CLASS: Record<BusinessImpactLevel, string> = {
+    'stoppar-kop': 'badge-stoppar-kop',
+    'hindrar': 'badge-hindrar',
+    'forsamrar': 'badge-forsamrar',
+    'putsning': 'badge-putsning',
+};
+
+/** Badge i18n key per impact level. */
+const PLAIN_BADGE_KEY: Record<BusinessImpactLevel, 'plain.badge_stoppar_kop' | 'plain.badge_hindrar' | 'plain.badge_forsamrar' | 'plain.badge_putsning'> = {
+    'stoppar-kop': 'plain.badge_stoppar_kop',
+    'hindrar': 'plain.badge_hindrar',
+    'forsamrar': 'plain.badge_forsamrar',
+    'putsning': 'plain.badge_putsning',
+};
+
+function plainLevelOf(report: EnrichedReport): BusinessImpactLevel {
+    return report.plainLanguage?.impactLevel
+        ?? PLAIN_RISK_TO_IMPACT[report.holmdigitalInsight.diggRisk]
+        ?? 'putsning';
+}
+
+/**
+ * Generates a plain-language HTML document for non-technical recipients (D-08).
+ * Mirrors the terminal renderer (plain-report.ts): opening + impact-sorted list
+ * (5 fields + badge) + neutral closing + footer with URL/date/version (D-16).
+ * NO score, NO WCAG/DIGG tables, NO legal sections.
+ */
+function generatePlainReportHTML(result: ScanResult): string {
+    const lang = getCurrentLang();
+    const safeUrl = escapeHtml(result.url);
+
+    const sortedReports = [...result.reports].sort((a, b) => {
+        const aLevel = PLAIN_IMPACT_ORDER[plainLevelOf(a as EnrichedReport)] ?? 4;
+        const bLevel = PLAIN_IMPACT_ORDER[plainLevelOf(b as EnrichedReport)] ?? 4;
+        return aLevel - bLevel;
+    });
+
+    const count = sortedReports.length;
+    const unit = count === 1
+        ? t('plain.intro_unit_singular')
+        : t('plain.intro_unit_plural');
+
+    const itemsHtml = sortedReports.length === 0
+        ? `<p>${t('plain.empty_state')}</p>`
+        : `<ol class="issue-list">
+${sortedReports.map((rawReport) => {
+    const report = rawReport as EnrichedReport;
+    const level = plainLevelOf(report);
+    const badgeClass = PLAIN_BADGE_CLASS[level];
+    const badgeText = escapeHtml(t(PLAIN_BADGE_KEY[level]));
+    const pl = report.plainLanguage;
+
+    if (pl) {
+        return `  <li class="issue-item">
+    <span class="badge ${badgeClass}">${badgeText}</span>
+    <strong class="issue-id">${escapeHtml(report.ruleId)}</strong>
+    <dl class="issue-fields">
+      <dt>${t('plain.what_happens')}</dt><dd>${escapeHtml(pl.whatHappens)}</dd>
+      <dt>${t('plain.who_is_affected')}</dt><dd>${escapeHtml(pl.whoIsAffected)}</dd>
+      <dt>${t('plain.business_impact')}</dt><dd>${escapeHtml(pl.businessImpact)}</dd>
+      <dt>${t('plain.how_to_fix')}</dt><dd>${escapeHtml(pl.howToFix)}</dd>
+    </dl>
+  </li>`;
+    } else {
+        return `  <li class="issue-item">
+    <span class="badge ${badgeClass}">${badgeText}</span>
+    <strong class="issue-id">${escapeHtml(report.ruleId)}</strong>
+    <p class="issue-fallback">${escapeHtml(report.remediation.description)}</p>
+  </li>`;
+    }
+}).join('\n')}
+</ol>`;
+
+    return `<!DOCTYPE html>
+<html lang="${lang}">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>${t('plain.report_title', { url: safeUrl })}</title>
+  <style>
+    body {
+      font-family: 'Inter', Arial, sans-serif;
+      background: #ffffff;
+      color: #0f172a;
+      margin: 0;
+      padding: 40px;
+      max-width: 800px;
+      -webkit-print-color-adjust: exact;
+    }
+    h1 { font-size: 1.5rem; font-weight: 700; margin-bottom: 0.5rem; }
+    .intro { margin-bottom: 1.5rem; line-height: 1.6; }
+    .issue-list { padding-left: 1.5rem; }
+    .issue-item { margin-bottom: 2rem; }
+    .badge {
+      display: inline-block;
+      padding: 0.2rem 0.6rem;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      margin-bottom: 0.4rem;
+    }
+    .badge-stoppar-kop { background: #fef2f2; color: #dc2626; border: 1px solid #fecaca; }
+    .badge-hindrar { background: #fff1f1; color: #b91c1c; border: 1px solid #fca5a5; }
+    .badge-forsamrar { background: #fffbeb; color: #d97706; border: 1px solid #fde68a; }
+    .badge-putsning { background: #f8fafc; color: #475569; border: 1px solid #e2e8f0; }
+    .issue-id { display: block; font-size: 0.9rem; margin-bottom: 0.5rem; }
+    .issue-fields { margin: 0; }
+    .issue-fields dt { font-weight: 600; font-size: 0.85rem; color: #374151; margin-top: 0.4rem; }
+    .issue-fields dd { margin-left: 0; font-size: 0.9rem; color: #1f2937; }
+    .issue-fallback { font-size: 0.9rem; color: #1f2937; margin: 0.25rem 0 0; }
+    .closing { margin-top: 2rem; font-weight: 600; }
+    footer {
+      margin-top: 3rem;
+      padding-top: 1rem;
+      border-top: 1px solid #e5e7eb;
+      font-size: 0.75rem;
+      color: #9ca3af;
+    }
+  </style>
+</head>
+<body>
+  <h1>${t('plain.report_title', { url: safeUrl })}</h1>
+  <div class="intro">
+    <p>${t('plain.intro_framing')}</p>
+    <p>${t('plain.intro_found', { count, unit })}</p>
+  </div>
+  ${itemsHtml}
+  <p class="closing">${t('plain.closing')}</p>
+  <footer>
+    ${safeUrl} &bull; ${formatDate(result.timestamp)} &bull; v${getEngineVersion()}
+  </footer>
+</body>
+</html>`;
 }

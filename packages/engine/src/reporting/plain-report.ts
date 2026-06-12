@@ -32,7 +32,7 @@ const RISK_TO_IMPACT: Record<string, BusinessImpactLevel> = {
  * forsamrar   → yellow
  * putsning    → gray
  */
-const BADGE_CHALK: Record<BusinessImpactLevel, chalk.Chalk> = {
+const BADGE_CHALK: Record<BusinessImpactLevel, typeof chalk> = {
     'stoppar-kop': chalk.red.bold,
     'hindrar': chalk.red,
     'forsamrar': chalk.yellow,

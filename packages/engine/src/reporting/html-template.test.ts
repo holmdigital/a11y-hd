@@ -1,4 +1,6 @@
 import { describe, it, expect, beforeAll } from 'vitest';
+import { readFileSync } from 'fs';
+import { join } from 'path';
 import { generateReportHTML } from './html-template';
 import { ScanResult, getEngineVersion } from '../core/regulatory-scanner';
 import { setLanguage } from '../i18n';
@@ -93,5 +95,33 @@ describe('generateReportHTML developer baseline (D-13)', () => {
         const html = generateReportHTML(ONE_REPORT_RESULT, 'public');
         const normalized = html.replaceAll(getEngineVersion(), '__VERSION__');
         expect(normalized).toMatchSnapshot();
+    });
+});
+
+describe('generateReportHTML plain template (D-08/D-16)', () => {
+    beforeAll(() => {
+        setLanguage('en');
+    });
+
+    it('returns plain chrome and NOT the developer score block (D-08)', () => {
+        const html = generateReportHTML(EMPTY_RESULT, 'public', 'plain');
+        // Plain chrome must be present
+        expect(html).toContain('Accessibility report for https://example.com');
+        // Developer score block must NOT be present in the plain template
+        expect(html).not.toContain('summary-grid');
+        expect(html).not.toContain('Overall Score');
+    });
+
+    it('contains the engine package version in the plain footer (D-16)', () => {
+        const html = generateReportHTML(EMPTY_RESULT, 'public', 'plain');
+        // Read engine package.json version at test time (mirrors regulatory-scanner.test.ts:55 pattern)
+        const enginePkg = JSON.parse(
+            readFileSync(join(__dirname, '../../package.json'), 'utf-8')
+        ) as { version: string };
+        const engineVersion = enginePkg.version;
+        // Footer must contain the engine version string (proves D-16: not root or standards version)
+        expect(html).toContain(`v${engineVersion}`);
+        // Cross-check: matches getEngineVersion() which reads __ENGINE_VERSION__ at build time
+        expect(html).toContain(`v${getEngineVersion()}`);
     });
 });

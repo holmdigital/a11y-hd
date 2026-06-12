@@ -65,6 +65,8 @@ program
     .option('--sector <type>', 'Sector type: public (WAD) or private (EAA)', 'public')
     .option('--publish-date <date>', 'Publish date for the website (YYYY-MM-DD)')
     .option('--light', 'Light scan: fast score-only mode (skips HTML validation and detailed legal mapping)')
+    .option('--audience <mode>', 'Output audience: developer (default) or plain', 'developer')
+    .option('--plain', 'Alias for --audience plain (klarspråksläge for non-technical recipients)')
     .action(async (url: string, cliOptions) => {
         // 1. Load Config from file (.a11yrc, package.json, etc.)
         const explorer = cosmiconfig('a11y');
@@ -94,7 +96,11 @@ program
             country: cliOptions.country || fileConfig.country,
             sector: cliOptions.sector || fileConfig.sector || 'public',
             publishDate: cliOptions.publishDate || fileConfig.publishDate,
-            light: cliOptions.light ?? fileConfig.light ?? false
+            light: cliOptions.light ?? fileConfig.light ?? false,
+            plain: cliOptions.plain ?? fileConfig.plain ?? false,
+            audience: cliOptions.plain
+                ? 'plain'
+                : (cliOptions.audience || fileConfig.audience || 'developer'),
         } as ScannerOptions & {
             lang: string;
             ci: boolean;
@@ -117,6 +123,8 @@ program
             sector?: 'public' | 'private';
             publishDate?: string;
             light: boolean;
+            plain: boolean;
+            audience: 'developer' | 'plain';
         };
 
         setLanguage(options.lang);
@@ -171,7 +179,9 @@ program
             // PDF Generation
             if (options.pdf) {
                 if (spinner) spinner.start(t('cli.generating_pdf'));
-                const html = generateReportHTML(result, options.sector as 'public' | 'private');
+                const html = options.audience === 'plain'
+                    ? generateReportHTML(result, options.sector as 'public' | 'private', 'plain')
+                    : generateReportHTML(result, options.sector as 'public' | 'private');
                 await generatePDF(html, options.pdf);
                 if (spinner) spinner.succeed(t('cli.pdf_saved', { path: options.pdf }));
             }
@@ -237,6 +247,9 @@ program
                 }
 
                 console.log(chalk.gray(`\nScan: ${result.metadata.scanDuration}ms | ${result.metadata.engineVersion}`));
+            } else if (options.audience === 'plain') {
+                const { renderPlainReport } = await import('../reporting/plain-report');
+                renderPlainReport(result, options.lang);
             } else {
                 // --- CLI DASHBOARD IMPLEMENTATION ---
 
