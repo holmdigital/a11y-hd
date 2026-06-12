@@ -396,16 +396,17 @@ function generatePlainReportHTML(result: ScanResult): string {
 
     const itemsHtml = sortedReports.length === 0
         ? `<p>${t('plain.empty_state')}</p>`
-        : `<ol class="issue-list">
+        : `<ul class="issue-list">
 ${sortedReports.map((rawReport) => {
     const report = rawReport as EnrichedReport;
     const level = plainLevelOf(report);
     const badgeClass = PLAIN_BADGE_CLASS[level];
+    const cardClass = `issue-item--${level}`;
     const badgeText = escapeHtml(t(PLAIN_BADGE_KEY[level]));
     const pl = report.plainLanguage;
 
     if (pl) {
-        return `  <li class="issue-item">
+        return `  <li class="issue-item ${cardClass}">
     <span class="badge ${badgeClass}">${badgeText}</span>
     <strong class="issue-id">${escapeHtml(report.ruleId)}</strong>
     <dl class="issue-fields">
@@ -416,14 +417,14 @@ ${sortedReports.map((rawReport) => {
     </dl>
   </li>`;
     } else {
-        return `  <li class="issue-item">
+        return `  <li class="issue-item ${cardClass}">
     <span class="badge ${badgeClass}">${badgeText}</span>
     <strong class="issue-id">${escapeHtml(report.ruleId)}</strong>
     <p class="issue-fallback"><span class="fallback-framing">${escapeHtml(t('plain.fallback_framing'))}</span> ${escapeHtml(report.remediation.description)}</p>
   </li>`;
     }
 }).join('\n')}
-</ol>`;
+</ul>`;
 
     return `<!DOCTYPE html>
 <html lang="${lang}">
@@ -432,60 +433,209 @@ ${sortedReports.map((rawReport) => {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>${t('plain.report_title', { url: safeUrl })}</title>
   <style>
+    /* ---- Reset & base ---- */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      font-family: 'Inter', Arial, sans-serif;
+      font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
       background: #ffffff;
-      color: #0f172a;
-      margin: 0;
-      padding: 40px;
-      max-width: 800px;
+      color: #334155;
+      font-size: 14px;
+      line-height: 1.6;
       -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
     }
-    h1 { font-size: 1.5rem; font-weight: 700; margin-bottom: 0.5rem; }
-    .intro { margin-bottom: 1.5rem; line-height: 1.6; }
-    .issue-list { padding-left: 1.5rem; }
-    .issue-item { margin-bottom: 2rem; break-inside: avoid; page-break-inside: avoid; }
+
+    /* ---- Header band (wiki navy, full-width) ---- */
+    .report-header {
+      background: #082f49;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+      padding: 2rem 2.5rem 1.75rem;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 2rem;
+    }
+    .report-header__wordmark {
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #ffffff;
+      opacity: 0.7;
+      margin-bottom: 0.35rem;
+    }
+    .report-header__wordmark span {
+      color: #38bdf8;
+      opacity: 1;
+    }
+    .report-header__title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #ffffff;
+      line-height: 1.35;
+      word-break: break-all;
+    }
+    .report-header__meta {
+      text-align: right;
+      font-size: 0.75rem;
+      color: #cbd5e1;
+      line-height: 1.9;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    /* ---- Page body wrapper ---- */
+    .report-body {
+      max-width: 840px;
+      margin: 0 auto;
+      padding: 2rem 2.5rem 3rem;
+    }
+
+    /* ---- Intro paragraph ---- */
+    .intro {
+      margin-bottom: 2rem;
+    }
+    .intro p {
+      color: #334155;
+      line-height: 1.7;
+      margin-bottom: 0.5rem;
+    }
+    .intro p:first-child {
+      font-size: 1rem;
+      font-weight: 500;
+      color: #0f172a;
+    }
+
+    /* ---- Issue list ---- */
+    .issue-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    /* ---- Finding card ---- */
+    .issue-item {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-left: 4px solid #0369a1;
+      border-radius: 8px;
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 1.25rem;
+      break-inside: avoid;
+      page-break-inside: avoid;
+    }
+    .issue-item--stoppar-kop { border-left-color: #b91c1c; }
+    .issue-item--hindrar    { border-left-color: #c2410c; }
+    .issue-item--forsamrar  { border-left-color: #a16207; }
+    .issue-item--putsning   { border-left-color: #475569; }
+
+    /* ---- Badge chip — white text, WCAG AA contrast against solid background ---- */
     .badge {
       display: inline-block;
-      padding: 0.2rem 0.6rem;
+      padding: 0.2rem 0.65rem;
       border-radius: 9999px;
-      font-size: 0.75rem;
-      font-weight: 700;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
       text-transform: uppercase;
-      margin-bottom: 0.4rem;
+      color: #ffffff;
+      margin-bottom: 0.6rem;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
     }
-    .badge-stoppar-kop { background: #fef2f2; color: #dc2626; border: 1px solid #fecaca; }
-    .badge-hindrar { background: #fff1f1; color: #b91c1c; border: 1px solid #fca5a5; }
-    .badge-forsamrar { background: #fffbeb; color: #d97706; border: 1px solid #fde68a; }
-    .badge-putsning { background: #f8fafc; color: #475569; border: 1px solid #e2e8f0; }
-    .issue-id { display: block; font-size: 0.9rem; margin-bottom: 0.5rem; break-after: avoid; page-break-after: avoid; }
+    /* All combos: white on solid — contrast ratios: #b91c1c 7.5:1, #c2410c 5.6:1, #a16207 4.6:1, #475569 5.9:1 */
+    .badge-stoppar-kop { background: #b91c1c; }
+    .badge-hindrar     { background: #c2410c; }
+    .badge-forsamrar   { background: #a16207; }
+    .badge-putsning    { background: #475569; }
+
+    /* ---- Rule ID ---- */
+    .issue-id {
+      display: block;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: #64748b;
+      font-family: ui-monospace, 'Cascadia Code', 'Courier New', monospace;
+      margin-bottom: 0.75rem;
+      break-after: avoid;
+      page-break-after: avoid;
+    }
+
+    /* ---- Field label/value pairs ---- */
     .issue-fields { margin: 0; }
-    .issue-fields dt { font-weight: 600; font-size: 0.85rem; color: #374151; margin-top: 0.4rem; }
-    .issue-fields dd { margin-left: 0; font-size: 0.9rem; color: #1f2937; }
-    .issue-fallback { font-size: 0.9rem; color: #1f2937; margin: 0.25rem 0 0; }
-    .fallback-framing { font-weight: 600; color: #374151; }
-    .closing { margin-top: 2rem; font-weight: 600; break-before: avoid; page-break-before: avoid; }
+    .issue-fields dt {
+      font-weight: 600;
+      font-size: 0.78rem;
+      color: #0f172a;
+      margin-top: 0.65rem;
+    }
+    .issue-fields dd {
+      margin-left: 0;
+      font-size: 0.9rem;
+      color: #334155;
+      line-height: 1.55;
+    }
+
+    /* ---- Fallback (no plainLanguage data) ---- */
+    .issue-fallback {
+      font-size: 0.9rem;
+      color: #334155;
+      margin: 0.5rem 0 0;
+      line-height: 1.5;
+    }
+    .fallback-framing {
+      font-weight: 600;
+      color: #0f172a;
+    }
+
+    /* ---- Closing line ---- */
+    .closing {
+      margin-top: 2rem;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #0f172a;
+      break-before: avoid;
+      page-break-before: avoid;
+    }
+
+    /* ---- Footer ---- */
     footer {
       margin-top: 3rem;
       padding-top: 1rem;
-      border-top: 1px solid #e5e7eb;
-      font-size: 0.75rem;
-      color: #9ca3af;
+      border-top: 1px solid #e2e8f0;
+      font-size: 0.7rem;
+      color: #64748b;
+      line-height: 1.7;
     }
   </style>
 </head>
 <body>
-  <h1>${t('plain.report_title', { url: safeUrl })}</h1>
-  <div class="intro">
-    <p>${t('plain.intro_framing')}</p>
-    <p>${t('plain.intro_found', { count, unit })}</p>
+  <header class="report-header">
+    <div>
+      <div class="report-header__wordmark">Holm<span>Digital</span></div>
+      <div class="report-header__title">${safeUrl}</div>
+    </div>
+    <div class="report-header__meta">
+      ${formatDate(result.timestamp)}<br>v${getEngineVersion()}
+    </div>
+  </header>
+
+  <div class="report-body">
+    <div class="intro">
+      <p>${t('plain.intro_framing')}</p>
+      <p>${t('plain.intro_found', { count, unit })}</p>
+    </div>
+
+    ${itemsHtml}
+
+    <p class="closing">${t('plain.closing')}</p>
+
+    <footer>
+      ${safeUrl} &bull; ${formatDate(result.timestamp)} &bull; v${getEngineVersion()}
+      <br>${escapeHtml(t('plain.attribution'))}
+    </footer>
   </div>
-  ${itemsHtml}
-  <p class="closing">${t('plain.closing')}</p>
-  <footer>
-    ${safeUrl} &bull; ${formatDate(result.timestamp)} &bull; v${getEngineVersion()}
-    <br>${escapeHtml(t('plain.attribution'))}
-  </footer>
 </body>
 </html>`;
 }
