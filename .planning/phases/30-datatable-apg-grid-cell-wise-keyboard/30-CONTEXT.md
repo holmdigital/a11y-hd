@@ -56,6 +56,8 @@ DataTable upgrades from a sortable-header-only contract to the full W3C APG Grid
 - Initial mount: tabindex="0" on header row 0, col 0 (the first `<th>`).
 - Sortable header's inner `<button>` STAYS in the DOM unchanged — Phase 24's sort tests query it by accessible name. Inner `<button>` remains tab-focusable in document order (preserves current Tab-to-sort behavior).
 
+> **SUPERSEDED 2026-06-12 (gap closure 30-02):** The inner `<button>` now carries `tabIndex={-1}` and is NOT a document Tab stop. The original clause contradicted this phase's own APG single-tab-stop contract and W3C APG Grid (widgets inside cells get tabindex=-1, reachable via grid nav). Keyboard sort is unaffected — it goes through the roving cell via Enter/Space (D-03), which UAT Test 6 confirmed. Caught by UAT Test 1; root cause in .planning/debug/datatable-grid-multiple-tab-stops.md.
+
 ### D-03: Enter/Space on a focused sortable `<th>` — delegate
 - When focus is on a sortable `<th>` (via roving) and the user presses **Enter** or **Space**, the cell's `onKeyDown` calls the inner sort `<button>`'s `.click()` (or directly invokes the same `handleSort(column.accessor)` the click handler uses).
 - For non-sortable `<th>`: Enter/Space are no-ops on the cell itself.
@@ -74,6 +76,8 @@ DataTable upgrades from a sortable-header-only contract to the full W3C APG Grid
 
 ### D-05: Initial roving tabindex + return behavior
 - **Initial mount:** tabindex="0" on the FIRST cell in tab/row order = header row, col 0 (i.e., the first `<th>`). All other grid cells tabindex="-1". The inner `<button>` of a sortable header is left untouched (it has its own implicit tab order).
+
+> **SUPERSEDED 2026-06-12 (gap closure 30-02):** The inner `<button>` of a sortable header now carries `tabIndex={-1}` and is NOT left untouched in terms of tab order. It is explicitly removed from the page Tab sequence. The single Tab stop inside the grid is the roving anchor on `<th>`/`<td>`; keyboard sorting uses D-03 Enter/Space delegation through the focused roving cell (not by tabbing to the button). UAT Test 6 confirmed this path works; UAT Test 1 caught the violation; root cause in .planning/debug/datatable-grid-multiple-tab-stops.md.
 - **Tab-away / Tab-back:** the most recently focused cell's coordinates are tracked in a `useRef<{row, col}>` and that cell retains `tabindex="0"`. When the user Tabs back into the table, the browser focuses the cell with `tabindex="0"` (i.e., the last-focused cell). This is the standard APG roving pattern.
 - **Click on a cell:** moves the roving `tabindex="0"` to that cell (matches Phase 28 calendar's click→focus parity).
 - **Row coordinate convention:** header row = `row = -1` (or use a discriminated union `{kind: 'header', col} | {kind: 'data', row, col}`). Researcher/planner picks the cleaner representation — both work.
@@ -113,6 +117,8 @@ DataTable upgrades from a sortable-header-only contract to the full W3C APG Grid
 ### Patterns to mirror
 - **State for roving:** `const [activeCell, setActiveCell] = useState<{kind: 'header' | 'data', row?: number, col: number}>(...)` OR equivalent. A `useRef` shadow for in-handler reads (Phase 28 used `useRef` to avoid stale closures inside `onKeyDown`).
 - **Tab order:** the sortable `<button>` retains its position in document order. The grid's roving system uses tabindex on `<th>`/`<td>`. Users who Tab through the page hit cells AND sort buttons — that's intentional (APG grid + nested control).
+
+> **SUPERSEDED 2026-06-12 (gap closure 30-02):** Tab does NOT hit sort buttons anymore. The sort `<button>` now carries `tabIndex={-1}`, so only the single roving anchor (`<th>`/`<td>` with tabindex=0) is a Tab stop. Mouse click on the button still sorts; keyboard sort goes through the roving header cell via Enter/Space (D-03).
 - **Test conversion:** delete the `it.each([['ArrowDown'], ...])` block at L219-237 and the Ctrl+Home/End block at L239-250. Replace with `~10` individual `it()` blocks that `focus()` a specific cell then `await user.keyboard('{ArrowDown}')` and assert the next cell's `toHaveFocus()` + `tabindex="0"`.
 
 </code_context>

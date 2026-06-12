@@ -69,17 +69,25 @@ type SortDirection = 'ascending' | 'descending';
  *
  * Roving tabindex: the cell matching activeCell has tabindex=0; all others -1.
  * Click on a cell moves the roving anchor. Header row participates in roving
- * (D-02); sortable-header inner <button> stays in document tab order unchanged.
+ * (D-02); sortable-header inner <button> carries tabIndex={-1} and is NOT a
+ * document Tab stop — the grid is a single Tab stop (the roving anchor). The
+ * button is reachable via grid navigation + Enter/Space (D-03) and via mouse
+ * click; it is intentionally removed from the page Tab sequence per the W3C
+ * APG Grid pattern.
  *
  * @wcag
  * - 1.3.1 Info and Relationships — native <table> structure + role="grid" /
  *   role="row" / role="columnheader" / role="gridcell" overlay; scope="col"
  *   preserved on every <th>.
- * - 2.1.1 Keyboard — full APG grid keyboard matrix above; sortable-header
- *   inner <button> still receives native Enter/Space when tabbed to.
+ * - 2.1.1 Keyboard — full APG grid keyboard matrix above; keyboard sort is
+ *   delegated through the roving header cell via Enter/Space (D-03), not by
+ *   tabbing to the inner button; the inner button is tabIndex={-1} and is
+ *   not in the page Tab order.
  * - 4.1.2 Name, Role, Value — role=grid, role=columnheader (with aria-sort
  *   cycling), role=gridcell, role=button on sortable headers, aria-hidden on
  *   sort-indicator glyph.
+ *
+ * Single-tab-stop contract restored in the Phase 30 gap-closure pass — see 30-02-PLAN.md / 30-UAT.md Test 1.
  */
 export function DataTable<T>({
     data,
@@ -272,6 +280,7 @@ export function DataTable<T>({
                                 {column.sortable ? (
                                     <button
                                         type="button"
+                                        tabIndex={-1}
                                         onClick={() => handleSort(column.accessor)}
                                         style={styles.sortButton}
                                     >
