@@ -86,14 +86,20 @@ describe('generateReportHTML developer baseline (D-13)', () => {
     it('matches snapshot for empty result (two-arg call, no audience param)', () => {
         // D-13: two arguments only — no third argument
         const html = generateReportHTML(EMPTY_RESULT, 'public');
-        const normalized = html.replaceAll(getEngineVersion(), '__VERSION__');
+        const normalized = html
+            .replaceAll(getEngineVersion(), '__VERSION__')
+            // Generated-date renders in the host timezone — normalize so the
+            // snapshot passes on UTC CI runners as well as local CET (CR-01)
+            .replace(/Generated: [^<]+</g, 'Generated: __DATE__<');
         expect(normalized).toMatchSnapshot();
     });
 
     it('matches snapshot for result with one report (two-arg call, no audience param)', () => {
         // D-13: two arguments only — no third argument
         const html = generateReportHTML(ONE_REPORT_RESULT, 'public');
-        const normalized = html.replaceAll(getEngineVersion(), '__VERSION__');
+        const normalized = html
+            .replaceAll(getEngineVersion(), '__VERSION__')
+            .replace(/Generated: [^<]+</g, 'Generated: __DATE__<');
         expect(normalized).toMatchSnapshot();
     });
 });

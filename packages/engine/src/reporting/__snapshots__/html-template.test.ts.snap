@@ -178,7 +178,7 @@ exports[`generateReportHTML developer baseline (D-13) > matches snapshot for emp
             <div class="brand">@HolmDigital/<span>engine</span></div>
             <div class="meta">
                 <div>Scan Target: https://example.com</div>
-                <div>Generated: February 8, 2026 at 02:51 AM</div>
+                <div>Generated: __DATE__</div>
                 <div style="margin-top: 0.25rem; font-size: 0.75rem; font-weight: 600; color: #1d4ed8;">Public sector (WAD)</div>
                 <div style="margin-top: 0.5rem;"><img src="https://img.shields.io/badge/HolmDigital_Engine-100%25-00703C?style=flat-square" alt="Accessibility Status: 100% Compliant" /></div>
             </div>
@@ -399,7 +399,7 @@ exports[`generateReportHTML developer baseline (D-13) > matches snapshot for res
             <div class="brand">@HolmDigital/<span>engine</span></div>
             <div class="meta">
                 <div>Scan Target: https://example.com</div>
-                <div>Generated: February 8, 2026 at 02:51 AM</div>
+                <div>Generated: __DATE__</div>
                 <div style="margin-top: 0.25rem; font-size: 0.75rem; font-weight: 600; color: #1d4ed8;">Public sector (WAD)</div>
                 
             </div>
