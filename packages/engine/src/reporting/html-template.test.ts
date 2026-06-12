@@ -161,4 +161,26 @@ describe('generateReportHTML plain template (D-08/D-16)', () => {
         expect(html).toContain('break-inside: avoid');
         expect(html).toContain('page-break-inside: avoid');
     });
+
+    it('plain header is the light wiki style, not the navy band (Task H1)', () => {
+        const html = generateReportHTML(EMPTY_RESULT, 'public', 'plain');
+        // Navy band color removed entirely
+        expect(html).not.toContain('#082f49');
+        // Typographic brand mark + localized tagline present
+        expect(html).toContain('brand__mark');
+        expect(html).toContain('brand__tagline');
+        // Accent color for the top line stays the wiki blue
+        expect(html).toContain('#0369a1');
+    });
+
+    it('plain footer is position:fixed so it repeats on every printed page (Task H2)', () => {
+        const html = generateReportHTML(EMPTY_RESULT, 'public', 'plain');
+        // Fixed footer element + the print-repeat rule
+        expect(html).toContain('page-footer');
+        expect(html).toContain('position: fixed');
+        // Old in-flow footer removed: exactly one footer element in the document
+        expect(html.match(/<footer/g)).toHaveLength(1);
+        // Attribution still rides in the (now fixed) footer
+        expect(html).toContain('HolmDigital accessibility ecosystem');
+    });
 });

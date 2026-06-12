@@ -436,9 +436,11 @@ ${sortedReports.map((rawReport) => {
     /* ---- Per-page margins (Task G): every printed page, incl. 2+, gets
            breathing room at top/bottom. An author-level @page rule overrides
            the zero margins passed to Puppeteer's pdf() call, and it travels
-           with THIS document only — the developer PDF is unaffected. ---- */
+           with THIS document only — the developer PDF is unaffected.
+           Bottom margin enlarged (Task H2): reserves footer height + ~8mm
+           so flowing content never overlaps the fixed per-page footer. ---- */
     @page {
-      margin: 14mm 12mm;
+      margin: 14mm 12mm 22mm;
     }
 
     /* ---- Reset & base ---- */
@@ -453,45 +455,73 @@ ${sortedReports.map((rawReport) => {
       print-color-adjust: exact;
     }
 
-    /* ---- Header band (wiki navy, letterhead-style within page margins) ---- */
+    /* ---- Page-1 header (Task H1): light wiki style — white band, top
+           accent line, dark typographic mark. In normal flow, so it
+           renders once at the top of page 1 and is NOT repeated. ---- */
     .report-header {
-      background: #082f49;
+      background: #ffffff;
+      border-top: 3px solid #0369a1;
+      border-bottom: 1px solid #e2e8f0;
+      padding: 1.1rem 0 1.25rem;
       -webkit-print-color-adjust: exact;
       print-color-adjust: exact;
-      border-radius: 10px;
-      padding: 1.75rem 2rem 1.5rem;
+    }
+    .report-header__row {
       display: flex;
-      align-items: flex-start;
       justify-content: space-between;
+      align-items: flex-start;
       gap: 2rem;
+      margin-bottom: 1.1rem;
     }
-    .report-header__wordmark {
-      font-size: 0.65rem;
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+    }
+    .brand__monogram {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: #0f172a;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
       font-weight: 700;
-      letter-spacing: 0.18em;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+    .brand__mark {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: #0f172a;
+      letter-spacing: 0.16em;
+      line-height: 1.25;
       text-transform: uppercase;
-      color: #ffffff;
-      opacity: 0.7;
-      margin-bottom: 0.35rem;
     }
-    .report-header__wordmark span {
-      color: #38bdf8;
-      opacity: 1;
-    }
-    .report-header__title {
-      font-size: 1.25rem;
-      font-weight: 700;
-      color: #ffffff;
-      line-height: 1.35;
-      word-break: break-all;
+    .brand__tagline {
+      font-size: 0.6rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #64748b;
+      margin-top: 0.25rem;
     }
     .report-header__meta {
       text-align: right;
       font-size: 0.75rem;
-      color: #cbd5e1;
-      line-height: 1.9;
+      color: #64748b;
+      line-height: 1.8;
       white-space: nowrap;
       flex-shrink: 0;
+    }
+    .report-header__title {
+      font-size: 1.45rem;
+      font-weight: 700;
+      color: #0f172a;
+      line-height: 1.3;
+      word-break: break-all;
     }
 
     /* ---- Page body wrapper: sides + bottom now come from @page margins ---- */
@@ -608,26 +638,41 @@ ${sortedReports.map((rawReport) => {
       page-break-before: avoid;
     }
 
-    /* ---- Footer ---- */
-    footer {
-      margin-top: 3rem;
-      padding-top: 1rem;
+    /* ---- Fixed per-page footer (Task H2): position:fixed elements are
+           repeated on every printed page in Chromium print-to-PDF. White
+           background + top border so cards never show through; the @page
+           bottom margin reserves the vertical space. ---- */
+    .page-footer {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: #ffffff;
       border-top: 1px solid #e2e8f0;
+      padding: 0.45rem 0 0.35rem;
       font-size: 0.7rem;
       color: #64748b;
       line-height: 1.7;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
     }
   </style>
 </head>
 <body>
   <header class="report-header">
-    <div>
-      <div class="report-header__wordmark">Holm<span>Digital</span></div>
-      <div class="report-header__title">${safeUrl}</div>
+    <div class="report-header__row">
+      <div class="brand">
+        <div class="brand__monogram">HD</div>
+        <div>
+          <div class="brand__mark">HOLM<br>DIGITAL</div>
+          <div class="brand__tagline">${escapeHtml(t('plain.report_tagline'))}</div>
+        </div>
+      </div>
+      <div class="report-header__meta">
+        ${formatDate(result.timestamp)}<br>v${getEngineVersion()}
+      </div>
     </div>
-    <div class="report-header__meta">
-      ${formatDate(result.timestamp)}<br>v${getEngineVersion()}
-    </div>
+    <div class="report-header__title">${safeUrl}</div>
   </header>
 
   <div class="report-body">
@@ -639,12 +684,12 @@ ${sortedReports.map((rawReport) => {
     ${itemsHtml}
 
     <p class="closing">${t('plain.closing')}</p>
-
-    <footer>
-      ${safeUrl} &bull; ${formatDate(result.timestamp)} &bull; v${getEngineVersion()}
-      <br>${escapeHtml(t('plain.attribution'))}
-    </footer>
   </div>
+
+  <footer class="page-footer">
+    ${safeUrl} &bull; ${formatDate(result.timestamp)} &bull; v${getEngineVersion()}
+    <br>${escapeHtml(t('plain.attribution'))}
+  </footer>
 </body>
 </html>`;
 }
