@@ -26,10 +26,15 @@ Opt-in plain-language report for non-technical recipients — `--plain` / `--aud
 - `result.url` HTML-escaped before interpolation (T-34-08 mitigation)
 
 **i18n chrome:**
-- `plain.*` namespace (16 keys) in all 9 locale files (en/sv real translations; de/fr/es/nl/fi/dk/no English-valued pending native review)
+- `plain.*` namespace (18 keys) in all 9 locale files (en/sv real translations; de/fr/es/nl/fi/dk/no English-valued pending native review)
+- `plain.attribution` — discreet report attribution line rendered in terminal footer and plain PDF footer
+- `plain.fallback_framing` — framing line rendered before technical description for findings without plainLanguage copy
 
 **D-13 developer-PDF regression lock:**
 - Snapshot test on `generateReportHTML(result, sector)` (two-arg calls) ensures the developer HTML is byte-for-byte unchanged when the `audience` param lands
 
 **D-16 footer version source:**
 - Plain PDF footer version comes from `getEngineVersion()` (`__ENGINE_VERSION__` injected at build time from `packages/engine/package.json` via tsup define) — never a root or standards version
+
+**PDF page-break safety:**
+- Plain HTML template sets `break-inside: avoid; page-break-inside: avoid` on each finding item, ensuring findings shorter than a full page are never split across a page boundary in the PDF

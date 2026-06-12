@@ -15,8 +15,8 @@ New public API for non-technical recipients — the plain-language data layer th
 - `RegulatoryReport.plainLanguage?: PlainLanguageCopy` — copied through by `generateRegulatoryReport`
 
 **Data:**
-- 8 Swedish plain-language texts in `rules.sv.json` (`form-labels`, `alt-text`, `name-role-value`, `keyboard-accessible`, `color-contrast`, `link-purpose`, `heading-order`, `language-of-page`)
-- 8 English plain-language texts in `rules.en.json` (same rule set, same tone rules: you-address, business-first, no em/en dashes, no invented statistics)
+- 10 Swedish plain-language texts in `rules.sv.json` (`form-labels`, `alt-text`, `name-role-value`, `keyboard-accessible`, `color-contrast`, `link-purpose`, `heading-order`, `language-of-page`, `landmark-one-main`, `region`)
+- 10 English plain-language texts in `rules.en.json` (same rule set, same tone rules: you-address, business-first, no em/en dashes, no invented statistics)
 
 **Enrichment (D-03):**
 - `generateRegulatoryReport` now copies `plainLanguage` from the rule, with a silent English fallback for languages without translated texts (`lang !== 'en'` and rule missing `plainLanguage`)

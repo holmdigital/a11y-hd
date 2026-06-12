@@ -124,4 +124,41 @@ describe('generateReportHTML plain template (D-08/D-16)', () => {
         // Cross-check: matches getEngineVersion() which reads __ENGINE_VERSION__ at build time
         expect(html).toContain(`v${getEngineVersion()}`);
     });
+
+    it('plain footer contains attribution text', () => {
+        const html = generateReportHTML(EMPTY_RESULT, 'public', 'plain');
+        expect(html).toContain('HolmDigital Engine');
+        expect(html).toContain('HolmDigital accessibility ecosystem');
+    });
+
+    it('finding without plainLanguage renders fallback framing before description', () => {
+        const withFallback: ScanResult = {
+            ...EMPTY_RESULT,
+            reports: [
+                {
+                    ruleId: 'aria-allowed-role',
+                    holmdigitalInsight: { diggRisk: 'medium', eaaImpact: 'medium', reasoning: '' },
+                    remediation: { description: 'Role is not allowed for element', technicalGuidance: '' },
+                    testability: { automated: true, requiresManualCheck: false, pseudoAutomation: false, complexity: 'simple' },
+                    // No plainLanguage field
+                } as unknown as ScanResult['reports'][number],
+            ],
+            stats: { passed: 0, critical: 0, high: 0, medium: 1, low: 0, total: 1 },
+            score: 80,
+            complianceStatus: 'FAIL',
+        };
+        const html = generateReportHTML(withFallback, 'public', 'plain');
+        // Fallback framing must appear before the technical description
+        expect(html).toContain('Technical finding. Ask your developer to review this:');
+        expect(html).toContain('Role is not allowed for element');
+        // The framing class must be present
+        expect(html).toContain('fallback-framing');
+    });
+
+    it('plain HTML items have break-inside: avoid for PDF page break safety', () => {
+        const html = generateReportHTML(EMPTY_RESULT, 'public', 'plain');
+        // issue-item must carry the page-break guard CSS
+        expect(html).toContain('break-inside: avoid');
+        expect(html).toContain('page-break-inside: avoid');
+    });
 });

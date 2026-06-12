@@ -419,7 +419,7 @@ ${sortedReports.map((rawReport) => {
         return `  <li class="issue-item">
     <span class="badge ${badgeClass}">${badgeText}</span>
     <strong class="issue-id">${escapeHtml(report.ruleId)}</strong>
-    <p class="issue-fallback">${escapeHtml(report.remediation.description)}</p>
+    <p class="issue-fallback"><span class="fallback-framing">${escapeHtml(t('plain.fallback_framing'))}</span> ${escapeHtml(report.remediation.description)}</p>
   </li>`;
     }
 }).join('\n')}
@@ -444,7 +444,7 @@ ${sortedReports.map((rawReport) => {
     h1 { font-size: 1.5rem; font-weight: 700; margin-bottom: 0.5rem; }
     .intro { margin-bottom: 1.5rem; line-height: 1.6; }
     .issue-list { padding-left: 1.5rem; }
-    .issue-item { margin-bottom: 2rem; }
+    .issue-item { margin-bottom: 2rem; break-inside: avoid; page-break-inside: avoid; }
     .badge {
       display: inline-block;
       padding: 0.2rem 0.6rem;
@@ -458,12 +458,13 @@ ${sortedReports.map((rawReport) => {
     .badge-hindrar { background: #fff1f1; color: #b91c1c; border: 1px solid #fca5a5; }
     .badge-forsamrar { background: #fffbeb; color: #d97706; border: 1px solid #fde68a; }
     .badge-putsning { background: #f8fafc; color: #475569; border: 1px solid #e2e8f0; }
-    .issue-id { display: block; font-size: 0.9rem; margin-bottom: 0.5rem; }
+    .issue-id { display: block; font-size: 0.9rem; margin-bottom: 0.5rem; break-after: avoid; page-break-after: avoid; }
     .issue-fields { margin: 0; }
     .issue-fields dt { font-weight: 600; font-size: 0.85rem; color: #374151; margin-top: 0.4rem; }
     .issue-fields dd { margin-left: 0; font-size: 0.9rem; color: #1f2937; }
     .issue-fallback { font-size: 0.9rem; color: #1f2937; margin: 0.25rem 0 0; }
-    .closing { margin-top: 2rem; font-weight: 600; }
+    .fallback-framing { font-weight: 600; color: #374151; }
+    .closing { margin-top: 2rem; font-weight: 600; break-before: avoid; page-break-before: avoid; }
     footer {
       margin-top: 3rem;
       padding-top: 1rem;
@@ -483,6 +484,7 @@ ${sortedReports.map((rawReport) => {
   <p class="closing">${t('plain.closing')}</p>
   <footer>
     ${safeUrl} &bull; ${formatDate(result.timestamp)} &bull; v${getEngineVersion()}
+    <br>${escapeHtml(t('plain.attribution'))}
   </footer>
 </body>
 </html>`;
