@@ -1,5 +1,12 @@
 # @holmdigital/engine
 
+## 2.6.1
+
+### Patch Changes
+
+- Updated dependencies
+  - @holmdigital/components@3.0.0
+
 ## 2.6.0
 
 ### Minor Changes

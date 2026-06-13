@@ -297,8 +297,9 @@ const frameworks = [
 ```tsx
 <DatePicker
   label="Birth Date"
+  value={new Date(2026, 2, 14)}
+  onChange={(date) => setDob(date)}
   error={errors.dob} // "Invalid date"
-  required
 />
 ```
 

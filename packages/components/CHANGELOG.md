@@ -1,5 +1,28 @@
 # @holmdigital/components
 
+## 3.0.0
+
+### Major Changes
+
+- **Retroactive semver correction — no runtime changes since 2.7.5.**
+
+  The `DatePicker` public API changed in **2.7.0** (`value: string` → `value?: Date`, new `onChange?: (date: Date) => void`, native `<input type="date">` replaced with a W3C APG dialog-grid calendar, and the `React.InputHTMLAttributes` passthrough removed), but 2.7.0 was published to npm as a MINOR. This `3.0.0` declares that breaking change honestly. There are **no code changes versus 2.7.5** — it is a semver-hygiene correction so the published version history matches the actual API contract.
+
+  Migration (legacy ≤2.4 `string` API → 2.7+/3.0 `Date` API):
+
+  ```diff
+  - <DatePicker label="Birthday" value="2026-03-14" onChange={e => setVal(e.target.value)} />
+  + <DatePicker label="Birthday" value={new Date(2026, 2, 14)} onChange={d => setVal(d)} />
+  ```
+
+  Notes:
+  - Construct the `Date` with explicit numeric args (`new Date(2026, 2, 14)` = local midnight) rather than `new Date('2026-03-14')`, which parses as **UTC** midnight and can land on the previous day in negative-offset timezones.
+  - `onChange` now receives a `Date` directly (no `event.target.value`).
+  - Added props: `minDate?: Date`, `maxDate?: Date`, `locale?: string` (default `'en'`), `placeholder?: string`.
+  - Removed: arbitrary HTML attribute passthrough (`name`, `min`, `max`, `data-*`) and `forwardRef`.
+
+  Published `2.7.0`–`2.7.2` carry this change undeclared and will be `npm deprecate`-d with a pointer here (2.7.5 is intentionally left undeprecated — `@holmdigital/engine@2.6.0` resolves its `^2.7.2` range there).
+
 ## 2.7.5
 
 ### Patch Changes
@@ -42,7 +65,22 @@
 - Updated dependencies [5d7716e]
   - @holmdigital/standards@2.6.1
 
+## 2.7.1
+
+### Patch Changes
+
+- Patch bump to publish updated README links and npm metadata (repo topics, `homepage` → wiki.holmdigital.se). No runtime changes.
+
 ## 2.7.0
+
+### BREAKING — semver erratum (undeclared at release; corrected in 3.0.0)
+
+> **Retroactive correction (2026-06-13).** The `DatePicker` public API changed in this release, but 2.7.0 was published to npm as a MINOR. The breaking change is recorded here, under the version where it actually shipped on the wire (verified against the published tarballs: 2.4.0 still had the `string` API; 2.7.0 has the `Date` API). It is declared honestly in `3.0.0`, which is otherwise code-identical to 2.7.5. See the `3.0.0` entry for the full migration guide.
+
+- **`DatePicker` `value` prop type changed: `string` → `Date`** (Phase 28, source commit `dfc6f2d` `feat(28-01)!`). The pre-2.7.0 implementation rendered a native `<input type="date">` and inherited `value: string | number | readonly string[]` from `React.InputHTMLAttributes`. 2.7.0 replaced it with a W3C APG dialog-grid calendar; the public surface is now `value?: Date`, `onChange?: (date: Date) => void`.
+  - Removed `extends React.InputHTMLAttributes<HTMLInputElement>` — arbitrary HTML attrs (`name`, `min`, `max`, `data-*`) no longer pass through.
+  - `forwardRef` removed (the native input ref target is gone).
+  - Added: `minDate?: Date`, `maxDate?: Date`, `locale?: string` (default `'en'`), `placeholder?: string`.
 
 ### Minor Changes
 
@@ -105,6 +143,8 @@
 - c75ea8a: PUB-09 (Phase 33): `verify` script now chains `lint` (eslint) and `typecheck` (tsc --noEmit) before `check:exports` / `check:types` / `test:ci`. `prepublishOnly` unchanged. Added `@types/node@^22.10.2` as devDependency. Resolved 27 pre-existing `tsc --noEmit` errors across 5 categories (Node types, vitest-axe matcher augmentation, read-only ref assignment, unused @ts-expect-error, LiveRegionLocale narrowing). Public API byte-equivalent to 2.6.0.
 - Updated dependencies [c75ea8a]
   - @holmdigital/standards@2.5.3
+
+> **Release-train note (2026-06-13 erratum).** The `2.6.1`, `2.6.0`, and `2.5.0` entries below were internal release-train bumps that were **not individually published to npm** — the published wire went `2.4.0` → `2.7.0`. Their contents (Phase 31/32/33 work) reached npm bundled inside `2.7.0`. Kept here for development history.
 
 ## 2.6.1 — 2026-05-12
 
@@ -195,44 +235,6 @@
 
 - `DataTableProps` interface body byte-identical — no new prop added (`PAGE_SIZE` is a module-scope const).
 - Sortable-header contract (`scope="col"`, `aria-sort` cycling undefined→ascending→descending, inner `<button>` with hidden glyph) preserved byte-equivalent.
-
-## @holmdigital/components — Unreleased (v0.7 Phase 28)
-
-### BREAKING
-
-- **`DatePicker` `value` prop type changed: `string` → `Date`.**
-  The previous implementation rendered a native `<input type="date">` and inherited
-  `value: string | number | readonly string[]` from `React.InputHTMLAttributes`.
-  Phase 28 replaces the native input with a custom W3C APG dialog-grid calendar
-  and the public surface is now strongly typed: `value?: Date`, `onChange?: (date: Date) => void`.
-
-  Migration:
-
-  ```diff
-  - <DatePicker label="Birthday" value="2026-03-14" onChange={e => setVal(e.target.value)} />
-  + <DatePicker label="Birthday" value={new Date('2026-03-14')} onChange={d => setVal(d)} />
-  ```
-
-  Other prop changes:
-  - Removed `extends React.InputHTMLAttributes<HTMLInputElement>` (the native input is gone).
-    Arbitrary HTML attrs (`name`, `min`, `max`, `data-*`) no longer pass through.
-  - Added: `minDate?: Date`, `maxDate?: Date`, `locale?: string` (default `'en'`), `placeholder?: string`.
-  - `forwardRef` removed (ref target — the native input — is gone). v0.8 will reintroduce
-    a typed `triggerRef` prop if consumer demand surfaces.
-
-### Added
-
-- APG dialog-grid calendar UI: `role="grid"` cell grid, `aria-current="date"` on today,
-  `aria-selected="true"` on the selected cell, `aria-disabled="true"` on cells outside
-  `minDate`/`maxDate` bounds.
-- Co-located `DatePicker.css` (custom-property theming surface: `--hd-datepicker-today-bg`,
-  `--hd-datepicker-selected-bg`, `--hd-datepicker-focus-ring`, etc.).
-- Side-effect CSS subpath: `import '@holmdigital/components/DatePicker.css'`.
-
-### Notes
-
-- Plan 28-02 will add APG keyboard navigation (Arrow / Home / End / PageUp / PageDown / Shift+Page\*).
-- Plan 28-03 will add live-region announcement on commit (TC-10-LIVE).
 
 ## 2.3.0
 

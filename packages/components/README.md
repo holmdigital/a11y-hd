@@ -88,9 +88,10 @@ function App() {
         onChange={(val) => console.log(val)}
       />
 
-      <DatePicker 
-        label="Preferred Date" 
-        required
+      <DatePicker
+        label="Preferred Date"
+        value={new Date(2026, 2, 14)}
+        onChange={(date) => console.log(date)}
       />
 
       <MultiSelect
