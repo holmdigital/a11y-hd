@@ -106,19 +106,25 @@ jobs:
         if: github.ref == 'refs/heads/master' && steps.changesets.outputs.hasChangesets != 'true'
         run: |
           set -euo pipefail
-          ENGINE_VERSION=$(node -p "require('./packages/engine/package.json').version")
-          echo "Engine version: $ENGINE_VERSION"
 
-          if npm view "@holmdigital/engine@$ENGINE_VERSION" version > /dev/null 2>&1; then
-            for REPO in holmdigital/holmdigital-website holmdigital/accessibility-wiki; do
-              echo "Dispatching to $REPO"
-              curl -sf -X POST \
-                -H "Accept: application/vnd.github+json" \
-                -H "Authorization: token ${{ secrets.DISPATCH_TOKEN }}" \
-                "https://api.github.com/repos/$REPO/dispatches" \
-                -d "{\"event_type\":\"engine-release\",\"client_payload\":{\"version\":\"$ENGINE_VERSION\"}}"
-            done
-            echo "Dispatch events sent"
-          else
-            echo "Engine version not published (already existed), skipping dispatch"
-          fi
+          dispatch_if_published () {
+            local PKG_NAME="$1" EVENT_TYPE="$2" PKG_DIR="$3"
+            local VERSION
+            VERSION=$(node -p "require('./packages/${PKG_DIR}/package.json').version")
+            if npm view "${PKG_NAME}@${VERSION}" version > /dev/null 2>&1; then
+              for REPO in holmdigital/holmdigital-website holmdigital/accessibility-wiki; do
+                echo "Dispatching ${EVENT_TYPE} (${VERSION}) to $REPO"
+                curl -sf -X POST \
+                  -H "Accept: application/vnd.github+json" \
+                  -H "Authorization: token ${{ secrets.DISPATCH_TOKEN }}" \
+                  "https://api.github.com/repos/$REPO/dispatches" \
+                  -d "{\"event_type\":\"${EVENT_TYPE}\",\"client_payload\":{\"version\":\"${VERSION}\"}}"
+              done
+            else
+              echo "${PKG_NAME}@${VERSION} not freshly published, skipping dispatch"
+            fi
+          }
+
+          dispatch_if_published "@holmdigital/engine"     "engine-release"     "engine"
+          dispatch_if_published "@holmdigital/standards"  "standards-release"  "standards"
+          dispatch_if_published "@holmdigital/components" "components-release" "components"
