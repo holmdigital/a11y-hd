@@ -2,7 +2,7 @@ import chalk from 'chalk';
 import type { EnrichedReport, BusinessImpactLevel } from '@holmdigital/standards';
 import { ScanResult } from '../core/regulatory-scanner';
 import { t, setLanguage, getCurrentLang } from '../i18n';
-import { groupReportsByRule } from './plain-group';
+import { groupReportsByRule, impactBreakdown } from './plain-group';
 
 /**
  * Impact sort order: lower number = higher priority.
@@ -98,9 +98,18 @@ export function renderPlainReport(result: ScanResult, lang: string = 'en'): void
         ? t('plain.intro_unit_singular')
         : t('plain.intro_unit_plural');
 
+    // KRAV 4: per-impact-level breakdown, counted per occurrence so the
+    // sub-totals sum to the total in "Hittade N hinder". Only levels with
+    // findings, ordered by business impact, badge labels via t().
+    const breakdown = impactBreakdown(result.reports as EnrichedReport[], levelOf, IMPACT_ORDER);
+    const breakdownText = breakdown
+        .map(b => `${b.count} ${t(BADGE_KEY[b.level])}`)
+        .join(', ');
+
     // Opening chrome
     console.log(t('plain.intro_framing'));
     console.log(t('plain.intro_found', { count, unit }));
+    console.log(`${count} ${unit}: ${breakdownText}`);
     console.log(t('plain.sorted_by'));
     console.log('');
 

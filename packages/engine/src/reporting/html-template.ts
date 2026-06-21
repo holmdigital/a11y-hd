@@ -4,7 +4,7 @@ import { join } from 'node:path';
 import { ScanResult, getEngineVersion } from '../core/regulatory-scanner';
 import { generateBadgeUrl } from './badge-generator';
 import { t, getCurrentLang } from '../i18n';
-import { groupReportsByRule } from './plain-group';
+import { groupReportsByRule, impactBreakdown } from './plain-group';
 import type { EnrichedReport, BusinessImpactLevel } from '@holmdigital/standards';
 
 /**
@@ -432,6 +432,11 @@ function generatePlainReportHTML(result: ScanResult): string {
         ? t('plain.intro_unit_singular')
         : t('plain.intro_unit_plural');
 
+    // KRAV 4: per-impact-level breakdown, counted per occurrence (sums to total).
+    const breakdownText = impactBreakdown(result.reports as EnrichedReport[], plainLevelOf, PLAIN_IMPACT_ORDER)
+        .map(b => `${b.count} ${escapeHtml(t(PLAIN_BADGE_KEY[b.level]))}`)
+        .join(', ');
+
     const isSwedish = lang === 'sv';
 
     const itemsHtml = sortedGroups.length === 0
@@ -700,6 +705,7 @@ ${sortedGroups.map((group) => {
     <div class="intro">
       <p>${t('plain.intro_framing')}</p>
       <p>${t('plain.intro_found', { count, unit })}</p>
+      <p class="intro-breakdown">${count} ${escapeHtml(unit)}: ${breakdownText}</p>
     </div>
 
     ${itemsHtml}

@@ -1,4 +1,4 @@
-import type { EnrichedReport } from '@holmdigital/standards';
+import type { EnrichedReport, BusinessImpactLevel } from '@holmdigital/standards';
 
 /**
  * KRAV 1 (klarspråk launch fix): collapse a scan's findings to one entry per
@@ -32,4 +32,35 @@ export function groupReportsByRule(reports: readonly EnrichedReport[]): PlainRep
         }
     }
     return [...groups.values()];
+}
+
+export interface ImpactBreakdownEntry {
+    level: BusinessImpactLevel;
+    /** Number of findings at this impact level (counted per occurrence). */
+    count: number;
+}
+
+/**
+ * KRAV 4: per-impact-level breakdown for the intro line ("7 hinder: 6
+ * Försämrar upplevelsen, 1 Värt att putsa").
+ *
+ * Counted PER OCCURRENCE (not per grouped card), so the sub-totals sum to the
+ * total finding count. Returns only levels that actually have findings, ordered
+ * by business impact (same order as the cards). `levelOf` and `order` are
+ * passed in so the terminal and PDF renderers reuse their own (identical) impact
+ * logic and stay consistent.
+ */
+export function impactBreakdown(
+    reports: readonly EnrichedReport[],
+    levelOf: (report: EnrichedReport) => BusinessImpactLevel,
+    order: Record<BusinessImpactLevel, number>
+): ImpactBreakdownEntry[] {
+    const counts = new Map<BusinessImpactLevel, number>();
+    for (const report of reports) {
+        const level = levelOf(report);
+        counts.set(level, (counts.get(level) ?? 0) + 1);
+    }
+    return [...counts.entries()]
+        .map(([level, count]) => ({ level, count }))
+        .sort((a, b) => (order[a.level] ?? 4) - (order[b.level] ?? 4));
 }

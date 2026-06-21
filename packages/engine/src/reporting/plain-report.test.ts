@@ -294,4 +294,38 @@ describe('renderPlainReport (D-10.4)', () => {
         // The ruleId is still surfaced (on the header line)
         expect(output).toContain('aria-allowed-role');
     });
+
+    it('KRAV 4: shows a per-impact-level breakdown that sums to the total, ordered by impact', () => {
+        const make = (ruleId: string, impactLevel: string) => ({
+            ruleId,
+            holmdigitalInsight: { diggRisk: 'medium', eaaImpact: 'medium', reasoning: '' },
+            remediation: { description: 'x', technicalGuidance: '' },
+            testability: { automated: true, requiresManualCheck: false, pseudoAutomation: false, complexity: 'simple' },
+            plainLanguage: {
+                headline: 'h', whatHappens: 'w', whoIsAffected: 'a', businessImpact: 'b', howToFix: 'f',
+                impactLevel,
+            },
+        }) as unknown as ScanResult['reports'][number];
+
+        const result: ScanResult = {
+            ...BASE_RESULT,
+            // 1 stoppar-kop + 3 forsamrar (same rule) + 1 putsning = 5 total findings
+            reports: [
+                make('form-labels', 'stoppar-kop'),
+                make('color-contrast', 'forsamrar'),
+                make('color-contrast', 'forsamrar'),
+                make('color-contrast', 'forsamrar'),
+                make('heading-order', 'putsning'),
+            ],
+            stats: { passed: 0, critical: 1, high: 0, medium: 3, low: 1, total: 5 },
+            score: 30,
+            complianceStatus: 'FAIL',
+        };
+
+        const output = captureConsoleLog(() => renderPlainReport(result, 'en'));
+
+        // Counted per occurrence (3 color-contrast count as 3, not 1 card), ordered
+        // stoppar-kop > forsamrar > putsning, hindrar omitted (no findings), sums to 5.
+        expect(output).toContain('5 issues: 1 Blocks purchases, 3 Degrades experience, 1 Worth polishing');
+    });
 });

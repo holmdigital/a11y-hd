@@ -231,4 +231,35 @@ describe('generateReportHTML plain template (D-08/D-16)', () => {
         // Occurrence count rendered on the grouped card
         expect(html).toContain('3 occurrences');
     });
+
+    it('KRAV 4: renders a per-impact-level breakdown line that sums to the total', () => {
+        const make = (ruleId: string, impactLevel: string) => ({
+            ruleId,
+            holmdigitalInsight: { diggRisk: 'medium', eaaImpact: 'medium', reasoning: '' },
+            remediation: { description: 'x', technicalGuidance: '' },
+            testability: { automated: true, requiresManualCheck: false, pseudoAutomation: false, complexity: 'simple' },
+            plainLanguage: {
+                headline: 'h', whatHappens: 'w', whoIsAffected: 'a', businessImpact: 'b', howToFix: 'f',
+                impactLevel,
+            },
+        }) as unknown as ScanResult['reports'][number];
+
+        const result: ScanResult = {
+            ...EMPTY_RESULT,
+            reports: [
+                make('form-labels', 'stoppar-kop'),
+                make('color-contrast', 'forsamrar'),
+                make('color-contrast', 'forsamrar'),
+                make('heading-order', 'putsning'),
+            ],
+            stats: { passed: 0, critical: 1, high: 0, medium: 2, low: 1, total: 4 },
+            score: 30,
+            complianceStatus: 'FAIL',
+        };
+
+        const html = generateReportHTML(result, 'public', 'plain');
+
+        // Breakdown counted per occurrence, ordered by impact, only levels with findings
+        expect(html).toContain('4 issues: 1 Blocks purchases, 2 Degrades experience, 1 Worth polishing');
+    });
 });
