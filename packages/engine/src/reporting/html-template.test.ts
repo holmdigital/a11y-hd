@@ -198,4 +198,37 @@ describe('generateReportHTML plain template (D-08/D-16)', () => {
         // Attribution still rides in the (now fixed) footer
         expect(html).toContain('HolmDigital accessibility ecosystem');
     });
+
+    it('KRAV 1: groups duplicate findings into one card with an occurrence count', () => {
+        const contrast = () => ({
+            ruleId: 'color-contrast',
+            holmdigitalInsight: { diggRisk: 'medium', eaaImpact: 'medium', reasoning: '' },
+            remediation: { description: 'Fix contrast', technicalGuidance: '' },
+            testability: { automated: true, requiresManualCheck: false, pseudoAutomation: false, complexity: 'simple' },
+            plainLanguage: {
+                headline: 'Contrast headline',
+                whatHappens: 'Contrast what',
+                whoIsAffected: 'Contrast who',
+                businessImpact: 'Contrast cost',
+                howToFix: 'Contrast fix',
+                impactLevel: 'forsamrar',
+            },
+        }) as unknown as ScanResult['reports'][number];
+
+        const result: ScanResult = {
+            ...EMPTY_RESULT,
+            reports: [contrast(), contrast(), contrast()],
+            stats: { passed: 0, critical: 0, high: 0, medium: 3, low: 0, total: 3 },
+            score: 40,
+            complianceStatus: 'FAIL',
+        };
+
+        const html = generateReportHTML(result, 'public', 'plain');
+
+        // Three identical findings collapse to a single issue card
+        expect(html.match(/class="issue-id"/g)).toHaveLength(1);
+        expect(html).toContain('color-contrast');
+        // Occurrence count rendered on the grouped card
+        expect(html).toContain('3 occurrences');
+    });
 });
