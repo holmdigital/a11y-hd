@@ -152,3 +152,21 @@ describe('enrichResults', () => {
         expect(reports[1].failingNodes).toBeUndefined();
     });
 });
+
+describe('ScannerOptions.waitForHydrationMs', () => {
+    it('defaults to 2500 ms when not provided', () => {
+        const scanner = new RegulatoryScanner({ url: 'https://test.example.com' });
+        // Access via the publik konstruktor-spreaden — defaulten ligger på instansens options.
+        expect((scanner as unknown as { options: { waitForHydrationMs?: number } }).options.waitForHydrationMs).toBe(2500);
+    });
+
+    it('respects an explicit 0 to disable hydration wait', () => {
+        const scanner = new RegulatoryScanner({ url: 'https://test.example.com', waitForHydrationMs: 0 });
+        expect((scanner as unknown as { options: { waitForHydrationMs?: number } }).options.waitForHydrationMs).toBe(0);
+    });
+
+    it('respects a custom value above the default', () => {
+        const scanner = new RegulatoryScanner({ url: 'https://test.example.com', waitForHydrationMs: 5000 });
+        expect((scanner as unknown as { options: { waitForHydrationMs?: number } }).options.waitForHydrationMs).toBe(5000);
+    });
+});

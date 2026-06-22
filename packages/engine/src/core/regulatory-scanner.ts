@@ -52,6 +52,7 @@ export interface ScannerOptions {
     severityThreshold?: 'critical' | 'high' | 'medium' | 'low'; // CI fail threshold
     invalidHttpsCert?: boolean;
     light?: boolean; // Skip HTML validation + Virtual DOM for faster scan
+    waitForHydrationMs?: number; // Extra settle efter networkidle så SPA hinner hydrera (default 2500, 0 = av)
 }
 
 export interface ScanMetadata {
@@ -98,6 +99,7 @@ export class RegulatoryScanner {
             standard: 'dos-lagen', // Default till striktaste
             silent: false,
             invalidHttpsCert: false,
+            waitForHydrationMs: 2500, // Default PÅ: klientrenderade SPA:er behöver tid att hydrera innan axe körs
             ...options
         };
         this.htmlValidator = new HtmlValidator();
@@ -154,6 +156,15 @@ export class RegulatoryScanner {
                 });
             } catch {
                 this.log('Network busy, proceeding with scan anyway...');
+            }
+
+            // Hydration-settle: ge klientrenderade SPA:er (React/Vue/Next client)
+            // tid att hydrera efter att bundlen laddats. networkidle räcker inte,
+            // den uppfylls innan ramverket byggt klart komponentträdet.
+            const hydrationWait = this.options.waitForHydrationMs ?? 0;
+            if (hydrationWait > 0) {
+                this.log(`Väntar ${hydrationWait} ms på hydrering...`);
+                await new Promise(resolve => setTimeout(resolve, hydrationWait));
             }
 
             // Capture page metadata
