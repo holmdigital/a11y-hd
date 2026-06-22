@@ -76,7 +76,7 @@
             "whatHappens": "The text on buttons and links does not have enough contrast against the background for everyone to read it.",
             "whoIsAffected": "Visitors with low vision, older users, and anyone visiting the site on a phone in bright sunlight.",
             "businessImpact": "If your visitor cannot clearly read the most important button on the page, they will not click it. Weak contrast on key actions is costly.",
-            "howToFix": "Darken the text or lighten the background until the contrast is sufficient. We specify exactly which colours need adjusting.",
+            "howToFix": "Darken the text or lighten the background until the contrast is sufficient.",
             "impactLevel": "forsamrar"
         }
     },

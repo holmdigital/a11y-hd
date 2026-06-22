@@ -54,6 +54,7 @@
         "report_title": "Tillgänglighetsrapport för {url}",
         "report_tagline": "Tillgänglighetsrapport",
         "attribution": "Rapporten genererades av HolmDigital Engine, en del av HolmDigitals ekosystem för tillgänglighet.",
-        "fallback_framing": "Tekniskt fynd. Be er utvecklare titta på detta:"
+        "fallback_framing": "Tekniskt fynd som din utvecklare behöver titta på.",
+        "occurrences": "{count} förekomster"
     }
 }

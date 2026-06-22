@@ -76,7 +76,7 @@
             "whatHappens": "Texten på knappar och länkar har för låg kontrast mot bakgrunden för att alla ska kunna läsa den.",
             "whoIsAffected": "Personer med nedsatt syn, äldre, och alla som besöker sidan på mobilen i starkt solljus.",
             "businessImpact": "Om din besökare inte ser sidans viktigaste knapp tydligt så klickar hen inte. Svag kontrast på viktiga knappar är dyrt.",
-            "howToFix": "Gör texten mörkare eller bakgrunden ljusare tills kontrasten räcker. Vi anger exakt vilka färger som behöver justeras.",
+            "howToFix": "Gör texten mörkare eller bakgrunden ljusare tills kontrasten räcker.",
             "impactLevel": "forsamrar"
         }
     },

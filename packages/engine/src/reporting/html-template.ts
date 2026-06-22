@@ -4,6 +4,7 @@ import { join } from 'node:path';
 import { ScanResult, getEngineVersion } from '../core/regulatory-scanner';
 import { generateBadgeUrl } from './badge-generator';
 import { t, getCurrentLang } from '../i18n';
+import { groupReportsByRule, impactBreakdown } from './plain-group';
 import type { EnrichedReport, BusinessImpactLevel } from '@holmdigital/standards';
 
 /**
@@ -418,32 +419,44 @@ function generatePlainReportHTML(result: ScanResult): string {
     const safeUrl = escapeHtml(result.url);
     const logoDataUri = getLogoDataUri();
 
-    const sortedReports = [...result.reports].sort((a, b) => {
-        const aLevel = PLAIN_IMPACT_ORDER[plainLevelOf(a as EnrichedReport)] ?? 4;
-        const bLevel = PLAIN_IMPACT_ORDER[plainLevelOf(b as EnrichedReport)] ?? 4;
+    // KRAV 1: one card per rule with an occurrence count, sorted by impact.
+    const sortedGroups = groupReportsByRule(result.reports as EnrichedReport[]).sort((a, b) => {
+        const aLevel = PLAIN_IMPACT_ORDER[plainLevelOf(a.report)] ?? 4;
+        const bLevel = PLAIN_IMPACT_ORDER[plainLevelOf(b.report)] ?? 4;
         return aLevel - bLevel;
     });
 
-    const count = sortedReports.length;
+    // Intro count stays the TOTAL finding count across all groups.
+    const count = result.reports.length;
     const unit = count === 1
         ? t('plain.intro_unit_singular')
         : t('plain.intro_unit_plural');
 
-    const itemsHtml = sortedReports.length === 0
+    // KRAV 4: per-impact-level breakdown, counted per occurrence (sums to total).
+    const breakdownText = impactBreakdown(result.reports as EnrichedReport[], plainLevelOf, PLAIN_IMPACT_ORDER)
+        .map(b => `${b.count} ${escapeHtml(t(PLAIN_BADGE_KEY[b.level]))}`)
+        .join(', ');
+
+    const isSwedish = lang === 'sv';
+
+    const itemsHtml = sortedGroups.length === 0
         ? `<p>${t('plain.empty_state')}</p>`
         : `<ul class="issue-list">
-${sortedReports.map((rawReport) => {
-    const report = rawReport as EnrichedReport;
+${sortedGroups.map((group) => {
+    const report = group.report;
     const level = plainLevelOf(report);
     const badgeClass = PLAIN_BADGE_CLASS[level];
     const cardClass = `issue-item--${level}`;
     const badgeText = escapeHtml(t(PLAIN_BADGE_KEY[level]));
     const pl = report.plainLanguage;
+    const occurrences = group.count > 1
+        ? `, ${escapeHtml(t('plain.occurrences', { count: group.count }))}`
+        : '';
 
     if (pl) {
         return `  <li class="issue-item ${cardClass}">
     <span class="badge ${badgeClass}">${badgeText}</span>
-    <strong class="issue-id">${escapeHtml(report.ruleId)}</strong>
+    <strong class="issue-id">${escapeHtml(report.ruleId)}${occurrences}</strong>
     <dl class="issue-fields">
       <dt>${t('plain.what_happens')}</dt><dd>${escapeHtml(pl.whatHappens)}</dd>
       <dt>${t('plain.who_is_affected')}</dt><dd>${escapeHtml(pl.whoIsAffected)}</dd>
@@ -452,10 +465,13 @@ ${sortedReports.map((rawReport) => {
     </dl>
   </li>`;
     } else {
+        // KRAV 3-short: don't leak axe-core's raw English help into a Swedish
+        // report body; other locales keep the raw technical detail for now.
+        const rawDetail = isSwedish ? '' : ` ${escapeHtml(report.remediation.description)}`;
         return `  <li class="issue-item ${cardClass}">
     <span class="badge ${badgeClass}">${badgeText}</span>
-    <strong class="issue-id">${escapeHtml(report.ruleId)}</strong>
-    <p class="issue-fallback"><span class="fallback-framing">${escapeHtml(t('plain.fallback_framing'))}</span> ${escapeHtml(report.remediation.description)}</p>
+    <strong class="issue-id">${escapeHtml(report.ruleId)}${occurrences}</strong>
+    <p class="issue-fallback"><span class="fallback-framing">${escapeHtml(t('plain.fallback_framing'))}</span>${rawDetail}</p>
   </li>`;
     }
 }).join('\n')}
@@ -689,6 +705,7 @@ ${sortedReports.map((rawReport) => {
     <div class="intro">
       <p>${t('plain.intro_framing')}</p>
       <p>${t('plain.intro_found', { count, unit })}</p>
+      <p class="intro-breakdown">${count} ${escapeHtml(unit)}: ${breakdownText}</p>
     </div>
 
     ${itemsHtml}

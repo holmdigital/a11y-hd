@@ -1,7 +1,8 @@
 import chalk from 'chalk';
 import type { EnrichedReport, BusinessImpactLevel } from '@holmdigital/standards';
 import { ScanResult } from '../core/regulatory-scanner';
-import { t, setLanguage } from '../i18n';
+import { t, setLanguage, getCurrentLang } from '../i18n';
+import { groupReportsByRule, impactBreakdown } from './plain-group';
 
 /**
  * Impact sort order: lower number = higher priority.
@@ -82,32 +83,49 @@ export function renderPlainReport(result: ScanResult, lang: string = 'en'): void
         return;
     }
 
-    // Sort by business impact ascending (0 = most critical = first)
-    const sortedReports = [...result.reports].sort((a, b) => {
-        const aLevel = IMPACT_ORDER[levelOf(a as EnrichedReport)] ?? 4;
-        const bLevel = IMPACT_ORDER[levelOf(b as EnrichedReport)] ?? 4;
+    // KRAV 1: collapse findings of the same rule into one card with an
+    // occurrence count, then sort the groups by business impact (0 = first).
+    const sortedGroups = groupReportsByRule(result.reports as EnrichedReport[]).sort((a, b) => {
+        const aLevel = IMPACT_ORDER[levelOf(a.report)] ?? 4;
+        const bLevel = IMPACT_ORDER[levelOf(b.report)] ?? 4;
         return aLevel - bLevel;
     });
 
-    const count = sortedReports.length;
+    // Intro count stays the TOTAL number of findings (a group can hold many),
+    // so "Hittade 9 hinder" still reflects every barrier on the page.
+    const count = result.reports.length;
     const unit = count === 1
         ? t('plain.intro_unit_singular')
         : t('plain.intro_unit_plural');
 
+    // KRAV 4: per-impact-level breakdown, counted per occurrence so the
+    // sub-totals sum to the total in "Hittade N hinder". Only levels with
+    // findings, ordered by business impact, badge labels via t().
+    const breakdown = impactBreakdown(result.reports as EnrichedReport[], levelOf, IMPACT_ORDER);
+    const breakdownText = breakdown
+        .map(b => `${b.count} ${t(BADGE_KEY[b.level])}`)
+        .join(', ');
+
     // Opening chrome
     console.log(t('plain.intro_framing'));
     console.log(t('plain.intro_found', { count, unit }));
+    console.log(`${count} ${unit}: ${breakdownText}`);
     console.log(t('plain.sorted_by'));
     console.log('');
 
-    // Per-report rows — business-first field order (D-04)
-    sortedReports.forEach((rawReport, index) => {
-        const report = rawReport as EnrichedReport;
+    const isSwedish = getCurrentLang() === 'sv';
+
+    // One row per rule — business-first field order (D-04)
+    sortedGroups.forEach((group, index) => {
+        const report = group.report;
         const level = levelOf(report);
         const badgeText = BADGE_CHALK[level](t(BADGE_KEY[level]));
         const pl = report.plainLanguage;
+        const occurrences = group.count > 1
+            ? `, ${t('plain.occurrences', { count: group.count })}`
+            : '';
 
-        console.log(`${index + 1}. ${badgeText} — ${report.ruleId}`);
+        console.log(`${index + 1}. ${badgeText} — ${report.ruleId}${occurrences}`);
 
         if (pl) {
             // Five business-first fields from plainLanguage (D-04)
@@ -115,8 +133,13 @@ export function renderPlainReport(result: ScanResult, lang: string = 'en'): void
             console.log(`   ${t('plain.who_is_affected')} ${pl.whoIsAffected}`);
             console.log(`   ${t('plain.business_impact')} ${pl.businessImpact}`);
             console.log(`   ${t('plain.how_to_fix')} ${pl.howToFix}`);
+        } else if (isSwedish) {
+            // KRAV 3-short: never leak axe-core's raw English help into a
+            // Swedish report body. The ruleId is already on the header line.
+            console.log(`   ${t('plain.fallback_framing')}`);
         } else {
-            // Task C fallback: no plainLanguage → framing line + technical description
+            // Other locales keep the raw technical description (an English
+            // report shows English detail; full localisation is KRAV 3 long-term).
             console.log(`   ${t('plain.fallback_framing')} ${report.remediation.description}`);
         }
 

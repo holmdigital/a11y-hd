@@ -198,4 +198,68 @@ describe('generateReportHTML plain template (D-08/D-16)', () => {
         // Attribution still rides in the (now fixed) footer
         expect(html).toContain('HolmDigital accessibility ecosystem');
     });
+
+    it('KRAV 1: groups duplicate findings into one card with an occurrence count', () => {
+        const contrast = () => ({
+            ruleId: 'color-contrast',
+            holmdigitalInsight: { diggRisk: 'medium', eaaImpact: 'medium', reasoning: '' },
+            remediation: { description: 'Fix contrast', technicalGuidance: '' },
+            testability: { automated: true, requiresManualCheck: false, pseudoAutomation: false, complexity: 'simple' },
+            plainLanguage: {
+                headline: 'Contrast headline',
+                whatHappens: 'Contrast what',
+                whoIsAffected: 'Contrast who',
+                businessImpact: 'Contrast cost',
+                howToFix: 'Contrast fix',
+                impactLevel: 'forsamrar',
+            },
+        }) as unknown as ScanResult['reports'][number];
+
+        const result: ScanResult = {
+            ...EMPTY_RESULT,
+            reports: [contrast(), contrast(), contrast()],
+            stats: { passed: 0, critical: 0, high: 0, medium: 3, low: 0, total: 3 },
+            score: 40,
+            complianceStatus: 'FAIL',
+        };
+
+        const html = generateReportHTML(result, 'public', 'plain');
+
+        // Three identical findings collapse to a single issue card
+        expect(html.match(/class="issue-id"/g)).toHaveLength(1);
+        expect(html).toContain('color-contrast');
+        // Occurrence count rendered on the grouped card
+        expect(html).toContain('3 occurrences');
+    });
+
+    it('KRAV 4: renders a per-impact-level breakdown line that sums to the total', () => {
+        const make = (ruleId: string, impactLevel: string) => ({
+            ruleId,
+            holmdigitalInsight: { diggRisk: 'medium', eaaImpact: 'medium', reasoning: '' },
+            remediation: { description: 'x', technicalGuidance: '' },
+            testability: { automated: true, requiresManualCheck: false, pseudoAutomation: false, complexity: 'simple' },
+            plainLanguage: {
+                headline: 'h', whatHappens: 'w', whoIsAffected: 'a', businessImpact: 'b', howToFix: 'f',
+                impactLevel,
+            },
+        }) as unknown as ScanResult['reports'][number];
+
+        const result: ScanResult = {
+            ...EMPTY_RESULT,
+            reports: [
+                make('form-labels', 'stoppar-kop'),
+                make('color-contrast', 'forsamrar'),
+                make('color-contrast', 'forsamrar'),
+                make('heading-order', 'putsning'),
+            ],
+            stats: { passed: 0, critical: 1, high: 0, medium: 2, low: 1, total: 4 },
+            score: 30,
+            complianceStatus: 'FAIL',
+        };
+
+        const html = generateReportHTML(result, 'public', 'plain');
+
+        // Breakdown counted per occurrence, ordered by impact, only levels with findings
+        expect(html).toContain('4 issues: 1 Blocks purchases, 2 Degrades experience, 1 Worth polishing');
+    });
 });
