@@ -185,5 +185,35 @@
         "swedishGuidance": "Support channels must be accessible. Private actors offering services to consumers must ensure their support is inclusive.",
         "diggRelevance": "medium",
         "eaaRelevance": "high"
+    },
+    {
+        "id": "9.2.5.7",
+        "chapter": 9,
+        "title": "Dragging Movements",
+        "description": "Where a function can be operated with a dragging movement, it must also be operable with a single pointer action without dragging, unless dragging is essential.",
+        "applicableFor": [
+            "web",
+            "mobile-app"
+        ],
+        "manualVerification": true,
+        "checklistItem": "Check that every drag-operated function (slider, map, sortable list, swipe carousel, image comparator) also works with single clicks or taps.",
+        "swedishGuidance": "Identifiera varje funktion på sidan som svarar på en dragrörelse (slider, karta, sorterbar lista, swipe-carousell, bildjämförare). För var och en, försök utföra samma sak utan att dra: med enstaka klick eller tryck. Kontrollera att ett klickbart alternativ finns och leder till samma resultat (till exempel plus/minus på en slider, pilar på en carousell, klick på kartans zoomknappar och klickbara positioner). Om en funktion bara går att styra genom drag, och draget inte är nödvändigt för funktionen, är kriteriet inte uppfyllt. Tangentbordsstyrning ensam räcker inte som bevis; kravet gäller specifikt att pekaranvändning inte ska kräva drag.",
+        "diggRelevance": "low",
+        "eaaRelevance": "medium"
+    },
+    {
+        "id": "9.2.4.11",
+        "chapter": 9,
+        "title": "Focus Not Obscured (Minimum)",
+        "description": "When a user-interface component receives keyboard focus, it must not be entirely hidden by author-created content such as sticky headers or floating elements.",
+        "applicableFor": [
+            "web",
+            "mobile-app"
+        ],
+        "manualVerification": true,
+        "checklistItem": "Tab through the whole page and confirm that the focused element is never completely hidden by sticky headers, cookie banners or floating widgets.",
+        "swedishGuidance": "Tabba igenom hela sidan från toppen och håll ögonen på fokusmarkeringen. Var särskilt uppmärksam när sidan skrollar automatiskt för att följa fokus. Kontrollera vid varje steg att minst en del av det fokuserade elementet är synligt och inte helt täckt av sticky header, cookie-banner, chattruta eller annat flytande innehåll. Testa både högst upp på sidan (banners) och längre ned (sticky header vid skroll). Om det fokuserade elementet vid något steg blir helt dolt är minimikriteriet inte uppfyllt. Testa i den faktiska viewport-bredd där sticky-element är aktiva (de slås ofta av på små skärmar).",
+        "diggRelevance": "low",
+        "eaaRelevance": "medium"
     }
 ]

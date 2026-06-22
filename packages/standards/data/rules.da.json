@@ -3094,5 +3094,150 @@
             ],
             "eaaDeadline": "2025-06-28"
         }
+    },
+    {
+        "ruleId": "target-size",
+        "wcagCriteria": "2.5.8",
+        "wcagLevel": "AA",
+        "wcagTitle": "Target Size (Minimum)",
+        "wcagVersion": "2.2",
+        "en301549Criteria": "9.2.5.8",
+        "en301549Title": "Target Size (Minimum)",
+        "en301549Chapter": 9,
+        "dosLagenApplies": false,
+        "dosLagenReference": "WCAG 2.2-kriterium (niveau AA), endnu ikke et lovkrav. Lovens gulv er WCAG 2.1 niveau AA via EN 301 549 V3.2.1 (refereret i EU-Tidende). Kriteriet bliver aktuelt, når EN 301 549 V4.x refereres i OJEU.",
+        "remediation": {
+            "description": "Klikbare flader (knapper, links, ikoner, formularkontroller) skal være mindst 24 x 24 CSS-pixels eller have mindst 24 pixels fri afstand til nærmeste anden klikflade. Der findes undtagelser for links inde i løbende tekst, for kontroller hvis størrelse browseren bestemmer, og når en tilsvarende kontrol af korrekt størrelse findes på samme side.",
+            "technicalGuidance": "Giv interaktive elementer mindst 24px rammeflade, helst via min-height og min-width på selve kontrollen. Hvis ikonet skal være visuelt lille, så behold det lille ikon, men udvid rammefladen med padding, eller lad der være mindst 24px luft omkring (afstandsundtagelsen). Mål den faktiske rammeflade, ikke ikonets visuelle størrelse.",
+            "component": "@holmdigital/components/Button",
+            "codeExample": "/* Insufficient hit area */\n.icon-button { width: 16px; height: 16px; }\n\n/* Good: 24px hit area via min-height/min-width */\n.icon-button {\n  min-width: 24px;\n  min-height: 24px;\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n}\n\n/* Good: small icon, but 24px clearance around it (spacing exception) */\n.icon-button { margin: 4px; } /* yields >=24px center-to-center to the neighbour */",
+            "wcagTechnique": [
+                "C42",
+                "F108"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "low",
+            "eaaImpact": "medium",
+            "danishInterpretation": "Dette er det eneste af de nye 2.2-kriterier, som vores scanner faktisk finder automatisk, så det er ofte første gang, en kunde ser \"WCAG 2.2\" i en rapport. Fortolk det praktisk: tæl den faktiske rammeflade, ikke ikonets visuelle størrelse. Et skraldespandsikon, der ser ud til at være 16 pixels, kan have en usynlig 24-pixels rammeflade omkring sig, og så er kravet opfyldt. Omvendt: en stor knap med en lille reel klikflade fejler. Hyppigst falder kravet på tætte værktøjslinjer, luk-kryds i modaler, sociale ikoner i sidefoden og paginering. Bemærk, at dette endnu ikke er et lovkrav (gulvet er WCAG 2.1 AA), men det er billigt at rette og rammer mobilbrug direkte, så vi anbefaler det alligevel. Afstandsundtagelsen (24 pixels fri luft omkring) redder ofte små ikoner uden at gøre dem større visuelt.",
+            "commonMistakes": [
+                "Ikonknapper (luk-kryds, hamburgermenu, delingsikoner) med klikflade under 24 pixels",
+                "Pagineringstal og brødkrummer der ligger for tæt uden 24 pixels luft imellem",
+                "Små vippekontakter og afkrydsningsfelter i formularer, især i kompakte tabeller",
+                "Links stablet oven på hinanden i sidefod og menuer uden nok linjeafstand"
+            ],
+            "priorityRationale": "High value for the cost. Primarily affects mobile and touch users, people with motor or tremor conditions, and anyone using a screen at arm's length. Not yet a legal requirement under DOS-lagen (the floor is still WCAG 2.1 AA), but cheap to fix and the only WCAG 2.2 criterion the scanner detects automatically, so it carries outsized signalling value in a report."
+        },
+        "testability": {
+            "automated": true,
+            "requiresManualCheck": false,
+            "pseudoAutomation": false,
+            "complexity": "simple"
+        },
+        "tags": [
+            "touch-target",
+            "mobile",
+            "interaction",
+            "wcag22aa",
+            "wcag258"
+        ],
+        "plainLanguage": {
+            "headline": "Knapper og ikoner er for små at ramme",
+            "whatHappens": "Nogle knapper, links og ikoner har for lille klikflade. De er svære at ramme med fingeren på en berøringsskærm.",
+            "whoIsAffected": "Personer med rysten eller nedsat finmotorik, mange ældre, og alle der bruger mobilen i farten.",
+            "businessImpact": "Hvis den besøgende rammer forkert, giver den besøgende ofte op i stedet for at prøve igen. Små rammeflader koster dig gennemførsler, især på mobil hvor de fleste besøger dig.",
+            "howToFix": "Gør klikfladen mindst lige så stor som en fingerspids, eller læg luft omkring små ikoner, så de ikke sidder sammen. Vi peger præcist ud, hvilke der er for små.",
+            "impactLevel": "hindrar"
+        }
+    },
+    {
+        "ruleId": "dragging-movements",
+        "wcagCriteria": "2.5.7",
+        "wcagLevel": "AA",
+        "wcagTitle": "Dragging Movements",
+        "wcagVersion": "2.2",
+        "en301549Criteria": "9.2.5.7",
+        "en301549Title": "Dragging Movements",
+        "en301549Chapter": 9,
+        "dosLagenApplies": false,
+        "dosLagenReference": "WCAG 2.2-kriterium (niveau AA), endnu ikke et lovkrav. Lovens gulv er WCAG 2.1 niveau AA via EN 301 549 V3.2.1 (refereret i EU-Tidende). Kriteriet bliver aktuelt, når EN 301 549 V4.x refereres i OJEU.",
+        "remediation": {
+            "description": "Alt, der kan gøres med en trækbevægelse, skal også kunne gøres med en enkel pegehandling (for eksempel et enkelt klik eller tryk), undtagen når trækbevægelsen er nødvendig for funktionen eller styres af den underliggende teknologi. En slider, der trækkes, skal altså også kunne styres med klikbare plus- og minusknapper eller ved at klikke på en position på sporet.",
+            "technicalGuidance": "Tilbyd et klikbart alternativ til hver trækbevægelse: plus- og minusknapper på slidere, pile på karruseller, op- og nedknapper på sorterbare lister, zoom- og positionsknapper på kort. Lyt efter click- og pointerup-hændelser på diskrete kontroller, ikke kun pointermove. Tastaturunderstøttelse alene er ikke nok; kravet gælder pegerbrug uden træk.",
+            "component": null,
+            "wcagTechnique": [
+                "G219"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "low",
+            "eaaImpact": "medium",
+            "danishInterpretation": "Dette handler om aldrig at låse en funktion bag træk alene. Fortolk det bredt: kort, der kun panoreres ved at blive trukket, prisregulatorer og billedsammenligninger, der kun fungerer med træk, omsorteringslister, hvor man skal trække rækker, og karruseller, der kun reagerer på swipe. For hvert sådant mønster skal der findes et klikbart alternativ, der gør det samme. Træk, der bevæger sig frit i to retninger (tegne, træk-og-slip til vilkårlig placering) er ofte nødvendigt, og så gælder undtagelsen, men de allerfleste træk på et almindeligt websted er egentlig et valg mellem få tilstande og fungerer udmærket at klikke i stedet. Endnu ikke et lovkrav, men en af de mere usynlige barrierer: det vises ikke i en automatisk scanning og rammer stille dem, der ikke kan trække præcist.",
+            "commonMistakes": [
+                "Kort og billedsammenligninger, der kun kan panoreres eller trækkes, uden klikbare kontroller",
+                "Prisregulatorer og slidere uden plus- og minusknapper eller klikbart spor",
+                "Sorterbare lister (træk for at ændre rækkefølge) uden op- og nedknapper som alternativ",
+                "Karruseller og diasshow, der kun svarer på swipe, uden synlige pile"
+            ],
+            "priorityRationale": "Affects people who cannot perform precise drag gestures: users with tremor, limited dexterity, or those navigating by keyboard, switch or head pointer. Invisible in automated scans, so it is easy to miss and easy to ship. Not yet a legal requirement under DOS-lagen, but a genuine usability barrier with usually low remediation cost."
+        },
+        "testability": {
+            "automated": false,
+            "requiresManualCheck": true,
+            "pseudoAutomation": false,
+            "complexity": "moderate"
+        },
+        "tags": [
+            "pointer",
+            "dragging",
+            "interaction",
+            "wcag22aa",
+            "wcag257"
+        ]
+    },
+    {
+        "ruleId": "focus-not-obscured",
+        "wcagCriteria": "2.4.11",
+        "wcagLevel": "AA",
+        "wcagTitle": "Focus Not Obscured (Minimum)",
+        "wcagVersion": "2.2",
+        "en301549Criteria": "9.2.4.11",
+        "en301549Title": "Focus Not Obscured (Minimum)",
+        "en301549Chapter": 9,
+        "dosLagenApplies": false,
+        "dosLagenReference": "WCAG 2.2-kriterium (niveau AA), endnu ikke et lovkrav. Lovens gulv er WCAG 2.1 niveau AA via EN 301 549 V3.2.1 (refereret i EU-Tidende). Kriteriet bliver aktuelt, når EN 301 549 V4.x refereres i OJEU.",
+        "remediation": {
+            "description": "Når et element får tastaturfokus, må det ikke være helt skjult af andet indhold på siden, for eksempel en klæbende (sticky) sidehoved, et cookiebanner, en chatboks eller en flydende værktøjslinje. Mindst en del af det fokuserede element skal være synligt. (Det stærkere krav om, at hele elementet skal være synligt, ligger i 2.4.12, som er AAA og ikke indgår i Fase 1.)",
+            "technicalGuidance": "Sæt scroll-margin-top på fokuserbare elementer, så de ikke havner bag et sticky sidehoved, når siden ruller fokus ind i billedet. Medregn højden på sticky-elementer og flydende UI, når du beregner det synlige areal. Undgå permanente overlejringer (cookiebanner, chatboble), der dækker fokuseret indhold; giv dem lavere z-index end fokusringen, eller flyt dem ud af fokusflowet.",
+            "component": null,
+            "wcagTechnique": [
+                "C43"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "low",
+            "eaaImpact": "medium",
+            "danishInterpretation": "Dette er et kriterium, man kun finder ved faktisk at tabbe sig gennem siden. Fortolk det praktisk: den hyppigste årsag er et sticky sidehoved, der følger med, når man ruller. Når fokus tabbes nedad, og siden ruller op, kan det fokuserede element havne bag sidehovedet og blive helt usynligt. Så ved en tastaturbruger ikke, hvor hen er. Det samme sker bag cookiebannere, vedvarende chatbobler og flydende knapper nede i hjørnet. Minimumskravet er lavt sat: det er nok, at en del af elementet er synligt, det behøver ikke at være helt frit. I praksis løses det oftest med scroll-margin-top på fokuserbare elementer eller ved at give sticky-elementet det rette højdehensyn. Endnu ikke et lovkrav, men billigt at rette og umiddelbart mærkbart for alle, der navigerer med tastatur.",
+            "commonMistakes": [
+                "Sticky sidehoved, der lægger sig over elementet, der netop fik fokus ved rulning",
+                "Cookiebanner eller samtykkeboks, der dækker fokuseret indhold øverst på siden",
+                "Vedvarende chatboble eller supportknap i hjørnet, der skjuler fokus bag sig",
+                "Manglende scroll-margin, så fokus havner i kanten af eller bag et fast element"
+            ],
+            "priorityRationale": "Affects keyboard and screen-magnifier users who lose track of focus when it disappears behind sticky or floating UI. Cannot be caught by an automated scan; only tab-through testing reveals it. Not yet a legal requirement under DOS-lagen, but low-cost to fix (often a single CSS property) and a real orientation barrier."
+        },
+        "testability": {
+            "automated": false,
+            "requiresManualCheck": true,
+            "pseudoAutomation": false,
+            "complexity": "moderate"
+        },
+        "tags": [
+            "keyboard",
+            "focus",
+            "interaction",
+            "wcag22aa",
+            "wcag2411"
+        ]
     }
 ]

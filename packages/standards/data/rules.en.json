@@ -3174,5 +3174,150 @@
             ],
             "eaaDeadline": "2025-06-28"
         }
+    },
+    {
+        "ruleId": "target-size",
+        "wcagCriteria": "2.5.8",
+        "wcagLevel": "AA",
+        "wcagTitle": "Target Size (Minimum)",
+        "wcagVersion": "2.2",
+        "en301549Criteria": "9.2.5.8",
+        "en301549Title": "Target Size (Minimum)",
+        "en301549Chapter": 9,
+        "dosLagenApplies": false,
+        "dosLagenReference": "WCAG 2.2 criterion (Level AA), not yet a legal requirement. The legal floor is WCAG 2.1 Level AA via EN 301 549 V3.2.1 (referenced in the Official Journal of the EU). It becomes applicable once EN 301 549 V4.x is referenced in the OJEU.",
+        "remediation": {
+            "description": "Interactive targets (buttons, links, icons, form controls) must be at least 24 by 24 CSS pixels, or have at least 24 pixels of clear spacing to the nearest other target. Exceptions apply to links in flowing text, to controls whose size is determined by the browser, and where an equivalent control of sufficient size exists on the same page.",
+            "technicalGuidance": "Give interactive elements at least a 24px hit area, ideally via min-height and min-width on the control itself. If the icon must look small, keep the small icon but enlarge the hit area with padding, or leave at least 24px of clearance around it (the spacing exception). Measure the actual hit area, not the visual size of the icon.",
+            "component": "@holmdigital/components/Button",
+            "codeExample": "/* Insufficient hit area */\n.icon-button { width: 16px; height: 16px; }\n\n/* Good: 24px hit area via min-height/min-width */\n.icon-button {\n  min-width: 24px;\n  min-height: 24px;\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n}\n\n/* Good: small icon, but 24px clearance around it (spacing exception) */\n.icon-button { margin: 4px; } /* yields >=24px center-to-center to the neighbour */",
+            "wcagTechnique": [
+                "C42",
+                "F108"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "low",
+            "eaaImpact": "medium",
+            "swedishInterpretation": "This is the only one of the new 2.2 criteria that our scanner actually detects automatically, so it is often the first time a client sees \"WCAG 2.2\" in a report. Interpret it in practice like this: count the actual hit area, not the visual size of the icon. A bin icon that looks 16 pixels wide may have an invisible 24-pixel hit area around it, in which case the criterion is met. Conversely, a large button with a small real hit area fails. In practice it most often trips on dense toolbars, close icons in modals, social icons in the footer, and pagination. Note that this is not yet a legal requirement in Sweden (the legal floor is WCAG 2.1 AA), but it is cheap to fix and hits mobile use directly, so we recommend it anyway. The spacing exception (24 pixels of clearance) often saves small icons without making them visually larger.",
+            "commonMistakes": [
+                "Icon buttons (close icons, hamburger menus, share icons) with a hit area below 24 pixels",
+                "Pagination numbers and breadcrumbs spaced too tightly without 24 pixels of clearance between them",
+                "Small toggles and checkboxes in forms, especially in compact tables",
+                "Links stacked on top of each other in footers and menus without enough line spacing"
+            ],
+            "priorityRationale": "High value for the cost. Primarily affects mobile and touch users, people with motor or tremor conditions, and anyone using a screen at arm's length. Not yet a legal requirement under DOS-lagen (the floor is still WCAG 2.1 AA), but cheap to fix and the only WCAG 2.2 criterion the scanner detects automatically, so it carries outsized signalling value in a report."
+        },
+        "testability": {
+            "automated": true,
+            "requiresManualCheck": false,
+            "pseudoAutomation": false,
+            "complexity": "simple"
+        },
+        "tags": [
+            "touch-target",
+            "mobile",
+            "interaction",
+            "wcag22aa",
+            "wcag258"
+        ],
+        "plainLanguage": {
+            "headline": "Buttons and icons are too small to tap",
+            "whatHappens": "Some buttons, links and icons have a tap area that is too small. They are hard to hit with a finger on a touch screen.",
+            "whoIsAffected": "People with hand tremors or reduced fine motor control, many older users, and anyone using a phone on the move.",
+            "businessImpact": "When a visitor misses the button and taps the wrong thing, they often give up instead of trying again. Small tap targets cost you conversions, especially on mobile where most of your visitors are.",
+            "howToFix": "Make the tap area at least the size of a fingertip, or add space around small icons so they do not sit on top of each other. We point out exactly which ones are too small.",
+            "impactLevel": "hindrar"
+        }
+    },
+    {
+        "ruleId": "dragging-movements",
+        "wcagCriteria": "2.5.7",
+        "wcagLevel": "AA",
+        "wcagTitle": "Dragging Movements",
+        "wcagVersion": "2.2",
+        "en301549Criteria": "9.2.5.7",
+        "en301549Title": "Dragging Movements",
+        "en301549Chapter": 9,
+        "dosLagenApplies": false,
+        "dosLagenReference": "WCAG 2.2 criterion (Level AA), not yet a legal requirement. The legal floor is WCAG 2.1 Level AA via EN 301 549 V3.2.1 (referenced in the Official Journal of the EU). It becomes applicable once EN 301 549 V4.x is referenced in the OJEU.",
+        "remediation": {
+            "description": "Anything that can be done with a dragging movement must also be operable with a single pointer action (such as a single click or tap), unless the dragging movement is essential to the function or is determined by the underlying technology. A slider that is dragged must therefore also be operable with clickable plus and minus buttons or by clicking a position on the track.",
+            "technicalGuidance": "Provide a clickable alternative for every drag gesture: plus and minus buttons on sliders, arrows on carousels, up and down buttons on sortable lists, zoom and position buttons on maps. Listen for click and pointerup events on discrete controls, not just pointermove. Keyboard support alone is not enough; the criterion concerns pointer use without dragging.",
+            "component": null,
+            "wcagTechnique": [
+                "G219"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "low",
+            "eaaImpact": "medium",
+            "swedishInterpretation": "This is about never locking a function behind dragging alone. Interpret it broadly: maps that only pan by dragging, price sliders and image comparators that only work by dragging, reorderable lists where you have to drag rows, and carousels that only respond to swiping. For each such pattern there must be a clickable alternative that does the same thing. Drag that moves freely in two directions (drawing, drag-and-drop to any position) is often essential and then the exception applies, but most drag on an ordinary website is really a choice between a few states and works perfectly well as a click instead. Not yet a legal requirement in Sweden, but one of the more invisible barriers: it does not show up in an automated scan and quietly affects those who cannot drag precisely.",
+            "commonMistakes": [
+                "Maps and image comparators that can only be panned or dragged, with no clickable controls",
+                "Price sliders without plus and minus buttons or a clickable track",
+                "Sortable lists (drag to reorder) without up and down buttons as an alternative",
+                "Carousels and slideshows that only respond to swiping, with no visible arrows"
+            ],
+            "priorityRationale": "Affects people who cannot perform precise drag gestures: users with tremor, limited dexterity, or those navigating by keyboard, switch or head pointer. Invisible in automated scans, so it is easy to miss and easy to ship. Not yet a legal requirement under DOS-lagen, but a genuine usability barrier with usually low remediation cost."
+        },
+        "testability": {
+            "automated": false,
+            "requiresManualCheck": true,
+            "pseudoAutomation": false,
+            "complexity": "moderate"
+        },
+        "tags": [
+            "pointer",
+            "dragging",
+            "interaction",
+            "wcag22aa",
+            "wcag257"
+        ]
+    },
+    {
+        "ruleId": "focus-not-obscured",
+        "wcagCriteria": "2.4.11",
+        "wcagLevel": "AA",
+        "wcagTitle": "Focus Not Obscured (Minimum)",
+        "wcagVersion": "2.2",
+        "en301549Criteria": "9.2.4.11",
+        "en301549Title": "Focus Not Obscured (Minimum)",
+        "en301549Chapter": 9,
+        "dosLagenApplies": false,
+        "dosLagenReference": "WCAG 2.2 criterion (Level AA), not yet a legal requirement. The legal floor is WCAG 2.1 Level AA via EN 301 549 V3.2.1 (referenced in the Official Journal of the EU). It becomes applicable once EN 301 549 V4.x is referenced in the OJEU.",
+        "remediation": {
+            "description": "When an element receives keyboard focus, it must not be entirely hidden by other content on the page, such as a sticky header, a cookie banner, a chat widget or a floating toolbar. At least part of the focused element must remain visible. (The stronger requirement that the whole element be visible is 2.4.12, which is AAA and not part of Phase 1.)",
+            "technicalGuidance": "Set scroll-margin-top on focusable elements so they do not end up behind a sticky header when the page scrolls focus into view. Account for the height of sticky elements and floating UI when calculating the visible area. Avoid permanent overlays (cookie banners, chat bubbles) that cover focused content; give them a lower z-index than the focus ring or move them out of the focus flow.",
+            "component": null,
+            "wcagTechnique": [
+                "C43"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "low",
+            "eaaImpact": "medium",
+            "swedishInterpretation": "This is a criterion you only find by actually tabbing through the page. Interpret it practically: the most common cause is a sticky header that follows along as you scroll. When focus tabs downward and the page scrolls up, the focused element can end up behind the header and become entirely invisible. The keyboard user then has no idea where they are. The same happens behind cookie banners, persistent chat bubbles and floating buttons in the corner. The minimum bar is low: it is enough that some part of the element is visible, it need not be fully clear. In practice it is usually solved with scroll-margin-top on focusable elements or by giving the sticky element the right height allowance. Not yet a legal requirement in Sweden, but cheap to fix and immediately felt by anyone navigating with a keyboard.",
+            "commonMistakes": [
+                "Sticky header that covers the element that has just received focus during scrolling",
+                "Cookie banner or consent dialog that covers focused content at the top of the page",
+                "Persistent chat bubble or support button in the corner that hides focus behind it",
+                "Missing scroll-margin so that focus lands at the edge of or behind a fixed element"
+            ],
+            "priorityRationale": "Affects keyboard and screen-magnifier users who lose track of focus when it disappears behind sticky or floating UI. Cannot be caught by an automated scan; only tab-through testing reveals it. Not yet a legal requirement under DOS-lagen, but low-cost to fix (often a single CSS property) and a real orientation barrier."
+        },
+        "testability": {
+            "automated": false,
+            "requiresManualCheck": true,
+            "pseudoAutomation": false,
+            "complexity": "moderate"
+        },
+        "tags": [
+            "keyboard",
+            "focus",
+            "interaction",
+            "wcag22aa",
+            "wcag2411"
+        ]
     }
 ]

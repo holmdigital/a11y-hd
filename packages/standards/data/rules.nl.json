@@ -3094,5 +3094,150 @@
             ],
             "eaaDeadline": "2025-06-28"
         }
+    },
+    {
+        "ruleId": "target-size",
+        "wcagCriteria": "2.5.8",
+        "wcagLevel": "AA",
+        "wcagTitle": "Target Size (Minimum)",
+        "wcagVersion": "2.2",
+        "en301549Criteria": "9.2.5.8",
+        "en301549Title": "Target Size (Minimum)",
+        "en301549Chapter": 9,
+        "dosLagenApplies": false,
+        "dosLagenReference": "WCAG 2.2-criterium (niveau AA), nog geen wettelijke eis. De wettelijke ondergrens is WCAG 2.1 niveau AA via EN 301 549 V3.2.1 (gerefereerd in het Publicatieblad van de EU). Het criterium wordt van toepassing zodra EN 301 549 V4.x in het PBEU wordt gerefereerd.",
+        "remediation": {
+            "description": "Klikbare doelen (knoppen, links, pictogrammen, formulierbesturingselementen) moeten minstens 24 x 24 CSS-pixels zijn, of minstens 24 pixels vrije ruimte tot het dichtstbijzijnde andere doel hebben. Er gelden uitzonderingen voor links in lopende tekst, voor besturingselementen waarvan de browser de grootte bepaalt, en wanneer een gelijkwaardig besturingselement van voldoende grootte op dezelfde pagina aanwezig is.",
+            "technicalGuidance": "Geef interactieve elementen minstens een raakvlak van 24px, bij voorkeur via min-height en min-width op het besturingselement zelf. Moet het pictogram visueel klein blijven, behoud dan het kleine pictogram maar vergroot het raakvlak met padding, of laat minstens 24px ruimte eromheen (afstandsuitzondering). Meet het werkelijke raakvlak, niet de visuele grootte van het pictogram.",
+            "component": "@holmdigital/components/Button",
+            "codeExample": "/* Insufficient hit area */\n.icon-button { width: 16px; height: 16px; }\n\n/* Good: 24px hit area via min-height/min-width */\n.icon-button {\n  min-width: 24px;\n  min-height: 24px;\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n}\n\n/* Good: small icon, but 24px clearance around it (spacing exception) */\n.icon-button { margin: 4px; } /* yields >=24px center-to-center to the neighbour */",
+            "wcagTechnique": [
+                "C42",
+                "F108"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "low",
+            "eaaImpact": "medium",
+            "dutchInterpretation": "Dit is het enige van de nieuwe 2.2-criteria dat onze scanner daadwerkelijk automatisch vindt, dus het is vaak de eerste keer dat een klant \"WCAG 2.2\" in een rapport ziet. Interpreteer het praktisch zo: tel het werkelijke raakvlak, niet de visuele grootte van het pictogram. Een prullenbakpictogram dat 16 pixels lijkt, kan een onzichtbaar raakvlak van 24 pixels eromheen hebben, en dan is aan de eis voldaan. Andersom faalt een grote knop met een klein echt klikvlak. Meestal struikelt het criterium over dichte werkbalken, sluitkruisjes in modals, sociale pictogrammen in de voettekst en paginering. Let op: dit is nog geen wettelijke eis (de ondergrens is WCAG 2.1 AA), maar het is goedkoop te herstellen en raakt direct het mobiele gebruik, dus we raden het toch aan. De afstandsuitzondering (24 pixels vrije ruimte) redt vaak kleine pictogrammen zonder ze visueel groter te maken.",
+            "commonMistakes": [
+                "Pictogramknoppen (sluitkruisje, hamburgermenu, deelpictogrammen) met een klikvlak onder 24 pixels",
+                "Pagineringscijfers en broodkruimels die te dicht op elkaar staan zonder 24 pixels ruimte",
+                "Kleine schakelaars en selectievakjes in formulieren, vooral in compacte tabellen",
+                "Links op elkaar gestapeld in voettekst en menu's zonder voldoende regelafstand"
+            ],
+            "priorityRationale": "High value for the cost. Primarily affects mobile and touch users, people with motor or tremor conditions, and anyone using a screen at arm's length. Not yet a legal requirement under DOS-lagen (the floor is still WCAG 2.1 AA), but cheap to fix and the only WCAG 2.2 criterion the scanner detects automatically, so it carries outsized signalling value in a report."
+        },
+        "testability": {
+            "automated": true,
+            "requiresManualCheck": false,
+            "pseudoAutomation": false,
+            "complexity": "simple"
+        },
+        "tags": [
+            "touch-target",
+            "mobile",
+            "interaction",
+            "wcag22aa",
+            "wcag258"
+        ],
+        "plainLanguage": {
+            "headline": "Knoppen en pictogrammen zijn te klein om aan te tikken",
+            "whatHappens": "Sommige knoppen, links en pictogrammen hebben een te klein tikvlak. Ze zijn lastig te raken met een vinger op een aanraakscherm.",
+            "whoIsAffected": "Mensen met trillende handen of verminderde fijne motoriek, veel oudere gebruikers, en iedereen die onderweg de telefoon gebruikt.",
+            "businessImpact": "Als een bezoeker de knop mist en ernaast tikt, geeft de bezoeker het vaak op in plaats van het opnieuw te proberen. Kleine doelen kosten je conversies, vooral op mobiel waar de meeste bezoekers zitten.",
+            "howToFix": "Maak het tikvlak minstens zo groot als een vingertop, of laat ruimte rond kleine pictogrammen zodat ze niet aan elkaar plakken. Wij wijzen precies aan welke te klein zijn.",
+            "impactLevel": "hindrar"
+        }
+    },
+    {
+        "ruleId": "dragging-movements",
+        "wcagCriteria": "2.5.7",
+        "wcagLevel": "AA",
+        "wcagTitle": "Dragging Movements",
+        "wcagVersion": "2.2",
+        "en301549Criteria": "9.2.5.7",
+        "en301549Title": "Dragging Movements",
+        "en301549Chapter": 9,
+        "dosLagenApplies": false,
+        "dosLagenReference": "WCAG 2.2-criterium (niveau AA), nog geen wettelijke eis. De wettelijke ondergrens is WCAG 2.1 niveau AA via EN 301 549 V3.2.1 (gerefereerd in het Publicatieblad van de EU). Het criterium wordt van toepassing zodra EN 301 549 V4.x in het PBEU wordt gerefereerd.",
+        "remediation": {
+            "description": "Alles wat met een sleepbeweging kan, moet ook met een enkele aanwijzeractie (bijvoorbeeld een enkele klik of tik) te bedienen zijn, behalve wanneer de sleepbeweging essentieel is voor de functie of door de onderliggende technologie wordt bepaald. Een schuifregelaar die wordt gesleept, moet dus ook te bedienen zijn met klikbare plus- en minknoppen of door op een positie op de baan te klikken.",
+            "technicalGuidance": "Bied voor elk sleepgebaar een klikbaar alternatief: plus- en minknoppen op schuifregelaars, pijlen op carrousels, omhoog- en omlaagknoppen op sorteerbare lijsten, zoom- en positieknoppen op kaarten. Luister naar click- en pointerup-gebeurtenissen op afzonderlijke besturingselementen, niet alleen pointermove. Toetsenbordondersteuning alleen is niet genoeg; het criterium betreft het gebruik van de aanwijzer zonder slepen.",
+            "component": null,
+            "wcagTechnique": [
+                "G219"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "low",
+            "eaaImpact": "medium",
+            "dutchInterpretation": "Het gaat erom een functie nooit alleen achter slepen op te sluiten. Interpreteer het breed: kaarten die alleen door slepen pannen, prijsschuifregelaars en beeldvergelijkers die alleen met slepen werken, herordeningslijsten waarbij je rijen moet slepen, en carrousels die alleen op vegen reageren. Voor elk zo'n patroon moet er een klikbaar alternatief zijn dat hetzelfde doet. Slepen dat vrij in twee richtingen beweegt (tekenen, slepen en neerzetten op een willekeurige plek) is vaak essentieel, en dan geldt de uitzondering, maar de meeste sleepbewegingen op een gewone website zijn eigenlijk een keuze tussen een paar toestanden en werken prima met een klik. Nog geen wettelijke eis, maar een van de onzichtbaardere barrières: ze verschijnt niet in een automatische scan en raakt in stilte wie niet nauwkeurig kan slepen.",
+            "commonMistakes": [
+                "Kaarten en beeldvergelijkers die je alleen kunt pannen of slepen, zonder klikbare besturingselementen",
+                "Prijsschuifregelaars zonder plus- en minknoppen of klikbare baan",
+                "Sorteerbare lijsten (slepen om te herordenen) zonder omhoog- en omlaagknoppen als alternatief",
+                "Carrousels en diavoorstellingen die alleen op vegen reageren, zonder zichtbare pijlen"
+            ],
+            "priorityRationale": "Affects people who cannot perform precise drag gestures: users with tremor, limited dexterity, or those navigating by keyboard, switch or head pointer. Invisible in automated scans, so it is easy to miss and easy to ship. Not yet a legal requirement under DOS-lagen, but a genuine usability barrier with usually low remediation cost."
+        },
+        "testability": {
+            "automated": false,
+            "requiresManualCheck": true,
+            "pseudoAutomation": false,
+            "complexity": "moderate"
+        },
+        "tags": [
+            "pointer",
+            "dragging",
+            "interaction",
+            "wcag22aa",
+            "wcag257"
+        ]
+    },
+    {
+        "ruleId": "focus-not-obscured",
+        "wcagCriteria": "2.4.11",
+        "wcagLevel": "AA",
+        "wcagTitle": "Focus Not Obscured (Minimum)",
+        "wcagVersion": "2.2",
+        "en301549Criteria": "9.2.4.11",
+        "en301549Title": "Focus Not Obscured (Minimum)",
+        "en301549Chapter": 9,
+        "dosLagenApplies": false,
+        "dosLagenReference": "WCAG 2.2-criterium (niveau AA), nog geen wettelijke eis. De wettelijke ondergrens is WCAG 2.1 niveau AA via EN 301 549 V3.2.1 (gerefereerd in het Publicatieblad van de EU). Het criterium wordt van toepassing zodra EN 301 549 V4.x in het PBEU wordt gerefereerd.",
+        "remediation": {
+            "description": "Wanneer een element toetsenbordfocus krijgt, mag het niet volledig worden verborgen door andere inhoud op de pagina, zoals een vastgezette (sticky) koptekst, een cookiebanner, een chatvenster of een zwevende werkbalk. Ten minste een deel van het gefocuste element moet zichtbaar blijven. (De sterkere eis dat het hele element zichtbaar is, is 2.4.12, dat AAA is en geen deel uitmaakt van fase 1.)",
+            "technicalGuidance": "Stel scroll-margin-top in op focusbare elementen zodat ze niet achter een sticky koptekst belanden wanneer de pagina de focus in beeld scrollt. Reken de hoogte van sticky-elementen en zwevende UI mee bij het berekenen van het zichtbare gebied. Vermijd permanente overlays (cookiebanners, chatbubbels) die gefocuste inhoud bedekken; geef ze een lagere z-index dan de focusring of haal ze uit de focusflow.",
+            "component": null,
+            "wcagTechnique": [
+                "C43"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "low",
+            "eaaImpact": "medium",
+            "dutchInterpretation": "Dit is een criterium dat je alleen vindt door daadwerkelijk met de tab-toets door de pagina te gaan. Interpreteer het praktisch: de meest voorkomende oorzaak is een sticky koptekst die meegaat tijdens het scrollen. Wanneer de focus omlaag tabt en de pagina omhoog scrollt, kan het gefocuste element achter de koptekst belanden en volledig onzichtbaar worden. De toetsenbordgebruiker weet dan niet meer waar diegene zich bevindt. Hetzelfde gebeurt achter cookiebanners, blijvende chatbubbels en zwevende knoppen in de hoek. De minimumdrempel is laag: het is voldoende dat een deel van het element zichtbaar is, het hoeft niet volledig vrij te zijn. In de praktijk wordt het meestal opgelost met scroll-margin-top op focusbare elementen of door het sticky-element de juiste hoogtemarge te geven. Nog geen wettelijke eis, maar goedkoop te herstellen en direct merkbaar voor iedereen die met het toetsenbord navigeert.",
+            "commonMistakes": [
+                "Sticky koptekst die zich tijdens het scrollen over het element legt dat zojuist focus heeft gekregen",
+                "Cookiebanner of toestemmingsvenster dat gefocuste inhoud boven aan de pagina bedekt",
+                "Blijvende chatbubbel of supportknop in de hoek die de focus erachter verbergt",
+                "Ontbrekende scroll-margin, waardoor de focus aan de rand van of achter een vast element belandt"
+            ],
+            "priorityRationale": "Affects keyboard and screen-magnifier users who lose track of focus when it disappears behind sticky or floating UI. Cannot be caught by an automated scan; only tab-through testing reveals it. Not yet a legal requirement under DOS-lagen, but low-cost to fix (often a single CSS property) and a real orientation barrier."
+        },
+        "testability": {
+            "automated": false,
+            "requiresManualCheck": true,
+            "pseudoAutomation": false,
+            "complexity": "moderate"
+        },
+        "tags": [
+            "keyboard",
+            "focus",
+            "interaction",
+            "wcag22aa",
+            "wcag2411"
+        ]
     }
 ]

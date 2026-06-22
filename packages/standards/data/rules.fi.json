@@ -3094,5 +3094,150 @@
             ],
             "eaaDeadline": "2025-06-28"
         }
+    },
+    {
+        "ruleId": "target-size",
+        "wcagCriteria": "2.5.8",
+        "wcagLevel": "AA",
+        "wcagTitle": "Target Size (Minimum)",
+        "wcagVersion": "2.2",
+        "en301549Criteria": "9.2.5.8",
+        "en301549Title": "Target Size (Minimum)",
+        "en301549Chapter": 9,
+        "dosLagenApplies": false,
+        "dosLagenReference": "WCAG 2.2 -kriteeri (taso AA), ei vielä lakisääteinen vaatimus. Lain vähimmäistaso on WCAG 2.1 taso AA standardin EN 301 549 V3.2.1 kautta (viitattu EU:n virallisessa lehdessä). Kriteeri tulee ajankohtaiseksi, kun EN 301 549 V4.x viitataan OJEU:ssa.",
+        "remediation": {
+            "description": "Klikattavien kohteiden (painikkeet, linkit, kuvakkeet, lomakekontrollit) on oltava vähintään 24 x 24 CSS-pikseliä, tai niillä on oltava vähintään 24 pikselin vapaa väli lähimpään toiseen kohteeseen. Poikkeuksia ovat linkit juoksevassa tekstissä, kontrollit joiden koon selain määrää, ja tapaukset joissa samalla sivulla on vastaava riittävän kokoinen kontrolli.",
+            "technicalGuidance": "Anna interaktiivisille elementeille vähintään 24px osumapinta, mieluiten min-height- ja min-width-arvoilla itse kontrollissa. Jos kuvakkeen on oltava visuaalisesti pieni, säilytä pieni kuvake mutta laajenna osumapintaa paddingilla, tai jätä vähintään 24px väljyyttä ympärille (välistyspoikkeus). Mittaa todellinen osumapinta, älä kuvakkeen visuaalista kokoa.",
+            "component": "@holmdigital/components/Button",
+            "codeExample": "/* Insufficient hit area */\n.icon-button { width: 16px; height: 16px; }\n\n/* Good: 24px hit area via min-height/min-width */\n.icon-button {\n  min-width: 24px;\n  min-height: 24px;\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n}\n\n/* Good: small icon, but 24px clearance around it (spacing exception) */\n.icon-button { margin: 4px; } /* yields >=24px center-to-center to the neighbour */",
+            "wcagTechnique": [
+                "C42",
+                "F108"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "low",
+            "eaaImpact": "medium",
+            "finnishInterpretation": "Tämä on ainoa uusista 2.2-kriteereistä, jonka skannerimme todella löytää automaattisesti, joten se on usein ensimmäinen kerta kun asiakas näkee \"WCAG 2.2\":n raportissa. Tulkitse käytännössä näin: laske todellinen osumapinta, älä kuvakkeen visuaalista kokoa. Roskakorikuvake, joka näyttää 16 pikselin kokoiselta, voi olla ympäröity näkymättömällä 24 pikselin osumapinnalla, jolloin vaatimus täyttyy. Päinvastoin: suuri painike, jolla on pieni todellinen klikkauspinta, ei läpäise. Yleisimmin vaatimus kaatuu tiheisiin työkaluriveihin, sulkuruksiin modaaleissa, sosiaalisen median kuvakkeisiin alatunnisteessa ja sivutukseen. Huomaa, ettei tämä ole vielä lakisääteinen vaatimus (vähimmäistaso on WCAG 2.1 AA), mutta se on halpa korjata ja vaikuttaa suoraan mobiilikäyttöön, joten suosittelemme sitä silti. Välistyspoikkeus (24 pikselin vapaa väli) pelastaa usein pienet kuvakkeet ilman, että niitä tarvitsee suurentaa visuaalisesti.",
+            "commonMistakes": [
+                "Kuvakepainikkeet (sulkuruksi, hampurilaisvalikko, jakokuvakkeet), joiden klikkauspinta on alle 24 pikseliä",
+                "Sivutusnumerot ja murupolut liian tiheässä ilman 24 pikselin väljyyttä",
+                "Pienet liukukytkimet ja valintaruudut lomakkeissa, erityisesti tiiviissä taulukoissa",
+                "Linkit päällekkäin alatunnisteessa ja valikoissa ilman riittävää riviväliä"
+            ],
+            "priorityRationale": "High value for the cost. Primarily affects mobile and touch users, people with motor or tremor conditions, and anyone using a screen at arm's length. Not yet a legal requirement under DOS-lagen (the floor is still WCAG 2.1 AA), but cheap to fix and the only WCAG 2.2 criterion the scanner detects automatically, so it carries outsized signalling value in a report."
+        },
+        "testability": {
+            "automated": true,
+            "requiresManualCheck": false,
+            "pseudoAutomation": false,
+            "complexity": "simple"
+        },
+        "tags": [
+            "touch-target",
+            "mobile",
+            "interaction",
+            "wcag22aa",
+            "wcag258"
+        ],
+        "plainLanguage": {
+            "headline": "Painikkeet ja kuvakkeet ovat liian pieniä osua",
+            "whatHappens": "Joillakin painikkeilla, linkeillä ja kuvakkeilla on liian pieni klikkauspinta. Niitä on vaikea osua sormella kosketusnäytöllä.",
+            "whoIsAffected": "Henkilöt, joilla on käsien vapinaa tai heikentynyt hienomotoriikka, monet iäkkäät, ja kaikki jotka käyttävät puhelinta liikkeellä.",
+            "businessImpact": "Jos kävijä osuu väärään kohtaan, hän usein luovuttaa sen sijaan että yrittäisi uudelleen. Pienet osumapinnat maksavat sinulle keskeytyksiä, erityisesti mobiilissa jossa useimmat kävijät ovat.",
+            "howToFix": "Tee klikkauspinnasta vähintään sormenpään kokoinen, tai lisää väljyyttä pienten kuvakkeiden ympärille, jotteivät ne ole kiinni toisissaan. Osoitamme tarkalleen, mitkä ovat liian pieniä.",
+            "impactLevel": "hindrar"
+        }
+    },
+    {
+        "ruleId": "dragging-movements",
+        "wcagCriteria": "2.5.7",
+        "wcagLevel": "AA",
+        "wcagTitle": "Dragging Movements",
+        "wcagVersion": "2.2",
+        "en301549Criteria": "9.2.5.7",
+        "en301549Title": "Dragging Movements",
+        "en301549Chapter": 9,
+        "dosLagenApplies": false,
+        "dosLagenReference": "WCAG 2.2 -kriteeri (taso AA), ei vielä lakisääteinen vaatimus. Lain vähimmäistaso on WCAG 2.1 taso AA standardin EN 301 549 V3.2.1 kautta (viitattu EU:n virallisessa lehdessä). Kriteeri tulee ajankohtaiseksi, kun EN 301 549 V4.x viitataan OJEU:ssa.",
+        "remediation": {
+            "description": "Kaikki, mitä voi tehdä vetoeleellä, on voitava tehdä myös yhdellä osoitintoiminnolla (esimerkiksi yhdellä napsautuksella tai kosketuksella), paitsi kun vetoele on välttämätön toiminnolle tai sen määrää alla oleva tekniikka. Vedettävää liukusäädintä on siis voitava ohjata myös napsautettavilla plus- ja miinuspainikkeilla tai napsauttamalla uran kohtaa.",
+            "technicalGuidance": "Tarjoa napsautettava vaihtoehto jokaiselle vetoeleelle: plus- ja miinuspainikkeet liukusäätimissä, nuolet karuselleissa, ylös- ja alaspainikkeet järjestettävissä listoissa, zoomaus- ja sijaintipainikkeet kartoissa. Kuuntele click- ja pointerup-tapahtumia erillisissä kontrolleissa, älä pelkkää pointermovea. Pelkkä näppäimistötuki ei riitä; vaatimus koskee osoittimen käyttöä ilman vetämistä.",
+            "component": null,
+            "wcagTechnique": [
+                "G219"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "low",
+            "eaaImpact": "medium",
+            "finnishInterpretation": "Tässä on kyse siitä, ettei toimintoa koskaan lukita pelkän vetämisen taakse. Tulkitse laajasti: kartat, joita panoroidaan vain vetämällä, hintaliukusäätimet ja kuvavertailut, jotka toimivat vain vetämällä, uudelleenjärjestyslistat, joissa rivejä on vedettävä, ja karusellit, jotka reagoivat vain pyyhkäisyyn. Jokaiselle tällaiselle mallille on oltava napsautettava vaihtoehto, joka tekee saman. Vapaasti kahteen suuntaan liikkuva vetäminen (piirtäminen, vedä-ja-pudota mihin tahansa kohtaan) on usein välttämätöntä, ja silloin poikkeus pätee, mutta useimmat vetämiset tavallisella sivustolla ovat oikeastaan valinta muutaman tilan välillä ja toimivat mainiosti napsautuksena. Ei vielä lakisääteinen vaatimus, mutta yksi näkymättömämmistä esteistä: se ei näy automaattisessa skannauksessa ja haittaa hiljaa niitä, jotka eivät pysty vetämään tarkasti.",
+            "commonMistakes": [
+                "Kartat ja kuvavertailut, joita voi vain panoroida tai vetää, ilman napsautettavia kontrolleja",
+                "Hintaliukusäätimet ilman plus- ja miinuspainikkeita tai napsautettavaa uraa",
+                "Järjestettävät listat (vedä järjestyksen muuttamiseksi) ilman ylös- ja alaspainikkeita vaihtoehtona",
+                "Karusellit ja diaesitykset, jotka reagoivat vain pyyhkäisyyn, ilman näkyviä nuolia"
+            ],
+            "priorityRationale": "Affects people who cannot perform precise drag gestures: users with tremor, limited dexterity, or those navigating by keyboard, switch or head pointer. Invisible in automated scans, so it is easy to miss and easy to ship. Not yet a legal requirement under DOS-lagen, but a genuine usability barrier with usually low remediation cost."
+        },
+        "testability": {
+            "automated": false,
+            "requiresManualCheck": true,
+            "pseudoAutomation": false,
+            "complexity": "moderate"
+        },
+        "tags": [
+            "pointer",
+            "dragging",
+            "interaction",
+            "wcag22aa",
+            "wcag257"
+        ]
+    },
+    {
+        "ruleId": "focus-not-obscured",
+        "wcagCriteria": "2.4.11",
+        "wcagLevel": "AA",
+        "wcagTitle": "Focus Not Obscured (Minimum)",
+        "wcagVersion": "2.2",
+        "en301549Criteria": "9.2.4.11",
+        "en301549Title": "Focus Not Obscured (Minimum)",
+        "en301549Chapter": 9,
+        "dosLagenApplies": false,
+        "dosLagenReference": "WCAG 2.2 -kriteeri (taso AA), ei vielä lakisääteinen vaatimus. Lain vähimmäistaso on WCAG 2.1 taso AA standardin EN 301 549 V3.2.1 kautta (viitattu EU:n virallisessa lehdessä). Kriteeri tulee ajankohtaiseksi, kun EN 301 549 V4.x viitataan OJEU:ssa.",
+        "remediation": {
+            "description": "Kun elementti saa näppäimistökohdistuksen, se ei saa olla kokonaan muun sivun sisällön peitossa, kuten kiinnitetyn (sticky) ylätunnisteen, evästebannerin, chat-ruudun tai kelluvan työkalurivin. Ainakin osan kohdistetusta elementistä on oltava näkyvissä. (Vahvempi vaatimus, että koko elementin on näyttävä, on kohdassa 2.4.12, joka on AAA eikä kuulu vaiheeseen 1.)",
+            "technicalGuidance": "Aseta scroll-margin-top kohdistettaville elementeille, jotteivät ne jää kiinnitetyn ylätunnisteen taakse, kun sivu vierittää kohdistuksen näkyviin. Laske mukaan sticky-elementtien ja kelluvan käyttöliittymän korkeus, kun lasket näkyvää aluetta. Vältä pysyviä peittokuvia (evästebanneri, chat-kupla), jotka peittävät kohdistetun sisällön; anna niille pienempi z-index kuin kohdistusrenkaalle tai siirrä ne pois kohdistusvirrasta.",
+            "component": null,
+            "wcagTechnique": [
+                "C43"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "low",
+            "eaaImpact": "medium",
+            "finnishInterpretation": "Tämä on kriteeri, jonka löytää vain todella sarkainnäppäimellä selaamalla sivun läpi. Tulkitse käytännössä: yleisin syy on sticky-ylätunniste, joka seuraa mukana vieritettäessä. Kun kohdistus tabataan alaspäin ja sivu vierittyy ylös, kohdistettu elementti voi jäädä ylätunnisteen taakse ja muuttua kokonaan näkymättömäksi. Silloin näppäimistön käyttäjä ei tiedä, missä on. Sama tapahtuu evästebannereiden, sinnikkäiden chat-kuplien ja kelluvien nurkkapainikkeiden takana. Vähimmäisvaatimus on matala: riittää, että osa elementistä näkyy, sen ei tarvitse olla täysin vapaa. Käytännössä se ratkeaa useimmiten asettamalla scroll-margin-top kohdistettaville elementeille tai antamalla sticky-elementille oikean korkeushuomioinnin. Ei vielä lakisääteinen vaatimus, mutta halpa korjata ja heti tuntuva kaikille, jotka navigoivat näppäimistöllä.",
+            "commonMistakes": [
+                "Sticky-ylätunniste, joka peittää juuri kohdistuksen saaneen elementin vieritettäessä",
+                "Evästebanneri tai suostumusruutu, joka peittää kohdistetun sisällön sivun yläosassa",
+                "Sinnikäs chat-kupla tai tukipainike nurkassa, joka piilottaa kohdistuksen taakseen",
+                "Puuttuva scroll-margin, jolloin kohdistus jää kiinteän elementin reunaan tai taakse"
+            ],
+            "priorityRationale": "Affects keyboard and screen-magnifier users who lose track of focus when it disappears behind sticky or floating UI. Cannot be caught by an automated scan; only tab-through testing reveals it. Not yet a legal requirement under DOS-lagen, but low-cost to fix (often a single CSS property) and a real orientation barrier."
+        },
+        "testability": {
+            "automated": false,
+            "requiresManualCheck": true,
+            "pseudoAutomation": false,
+            "complexity": "moderate"
+        },
+        "tags": [
+            "keyboard",
+            "focus",
+            "interaction",
+            "wcag22aa",
+            "wcag2411"
+        ]
     }
 ]

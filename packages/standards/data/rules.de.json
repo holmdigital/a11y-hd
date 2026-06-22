@@ -3093,5 +3093,150 @@
             ],
             "eaaDeadline": "2025-06-28"
         }
+    },
+    {
+        "ruleId": "target-size",
+        "wcagCriteria": "2.5.8",
+        "wcagLevel": "AA",
+        "wcagTitle": "Target Size (Minimum)",
+        "wcagVersion": "2.2",
+        "en301549Criteria": "9.2.5.8",
+        "en301549Title": "Target Size (Minimum)",
+        "en301549Chapter": 9,
+        "dosLagenApplies": false,
+        "dosLagenReference": "WCAG 2.2-Kriterium (Stufe AA), noch keine gesetzliche Anforderung. Die gesetzliche Mindestebene ist WCAG 2.1 Stufe AA über EN 301 549 V3.2.1 (im Amtsblatt der EU referenziert). Das Kriterium wird relevant, sobald EN 301 549 V4.x im OJEU referenziert wird.",
+        "remediation": {
+            "description": "Anklickbare Flächen (Schaltflächen, Links, Symbole, Formularsteuerelemente) müssen mindestens 24 x 24 CSS-Pixel groß sein oder mindestens 24 Pixel freien Abstand zur nächsten anderen Klickfläche haben. Ausnahmen bestehen für Links im Fließtext, für Steuerelemente, deren Größe der Browser bestimmt, und wenn ein gleichwertiges Steuerelement passender Größe auf derselben Seite vorhanden ist.",
+            "technicalGuidance": "Geben Sie interaktiven Elementen mindestens eine 24px-Trefffläche, idealerweise über min-height und min-width am Steuerelement selbst. Soll das Symbol optisch klein bleiben, behalten Sie das kleine Symbol, vergrößern Sie aber die Trefffläche mit Padding oder lassen Sie mindestens 24px Abstand ringsum (Abstandsausnahme). Messen Sie die tatsächliche Trefffläche, nicht die optische Größe des Symbols.",
+            "component": "@holmdigital/components/Button",
+            "codeExample": "/* Insufficient hit area */\n.icon-button { width: 16px; height: 16px; }\n\n/* Good: 24px hit area via min-height/min-width */\n.icon-button {\n  min-width: 24px;\n  min-height: 24px;\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n}\n\n/* Good: small icon, but 24px clearance around it (spacing exception) */\n.icon-button { margin: 4px; } /* yields >=24px center-to-center to the neighbour */",
+            "wcagTechnique": [
+                "C42",
+                "F108"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "low",
+            "eaaImpact": "medium",
+            "germanInterpretation": "Dies ist das einzige der neuen 2.2-Kriterien, das unser Scanner tatsächlich automatisch findet, daher ist es oft das erste Mal, dass ein Kunde \"WCAG 2.2\" in einem Bericht sieht. Praktisch interpretiert: zählen Sie die tatsächliche Trefffläche, nicht die optische Größe des Symbols. Ein Papierkorbsymbol, das 16 Pixel groß aussieht, kann eine unsichtbare 24-Pixel-Trefffläche haben, dann ist die Anforderung erfüllt. Umgekehrt scheitert eine große Schaltfläche mit kleiner echter Klickfläche. Am häufigsten greift das Kriterium bei dichten Werkzeugleisten, Schließen-Symbolen in Modalen, Social-Media-Symbolen in der Fußzeile und Seitennummerierung. Beachten Sie, dass dies noch keine gesetzliche Anforderung ist (die Mindestebene ist WCAG 2.1 AA), aber es ist günstig zu beheben und wirkt sich direkt auf die mobile Nutzung aus, daher empfehlen wir es dennoch. Die Abstandsausnahme (24 Pixel freier Abstand) rettet oft kleine Symbole, ohne sie optisch vergrößern zu müssen.",
+            "commonMistakes": [
+                "Symbolschaltflächen (Schließen-Symbol, Hamburger-Menü, Teilen-Symbole) mit einer Klickfläche unter 24 Pixeln",
+                "Seitenzahlen und Brotkrumen, die zu dicht ohne 24 Pixel Abstand liegen",
+                "Kleine Schalter und Kontrollkästchen in Formularen, besonders in kompakten Tabellen",
+                "Übereinander gestapelte Links in Fußzeile und Menüs ohne ausreichenden Zeilenabstand"
+            ],
+            "priorityRationale": "High value for the cost. Primarily affects mobile and touch users, people with motor or tremor conditions, and anyone using a screen at arm's length. Not yet a legal requirement under DOS-lagen (the floor is still WCAG 2.1 AA), but cheap to fix and the only WCAG 2.2 criterion the scanner detects automatically, so it carries outsized signalling value in a report."
+        },
+        "testability": {
+            "automated": true,
+            "requiresManualCheck": false,
+            "pseudoAutomation": false,
+            "complexity": "simple"
+        },
+        "tags": [
+            "touch-target",
+            "mobile",
+            "interaction",
+            "wcag22aa",
+            "wcag258"
+        ],
+        "plainLanguage": {
+            "headline": "Schaltflächen und Symbole sind zu klein zum Antippen",
+            "whatHappens": "Einige Schaltflächen, Links und Symbole haben eine zu kleine Klickfläche. Sie sind mit dem Finger auf einem Touchscreen schwer zu treffen.",
+            "whoIsAffected": "Menschen mit Händezittern oder eingeschränkter Feinmotorik, viele ältere Nutzer und alle, die das Handy unterwegs benutzen.",
+            "businessImpact": "Wenn ein Besucher danebentippt, gibt er oft auf, statt es erneut zu versuchen. Kleine Treffflächen kosten Sie Abschlüsse, besonders mobil, wo die meisten Ihrer Besucher sind.",
+            "howToFix": "Machen Sie die Klickfläche mindestens so groß wie eine Fingerspitze, oder lassen Sie Abstand um kleine Symbole, damit sie nicht aneinanderkleben. Wir zeigen genau, welche zu klein sind.",
+            "impactLevel": "hindrar"
+        }
+    },
+    {
+        "ruleId": "dragging-movements",
+        "wcagCriteria": "2.5.7",
+        "wcagLevel": "AA",
+        "wcagTitle": "Dragging Movements",
+        "wcagVersion": "2.2",
+        "en301549Criteria": "9.2.5.7",
+        "en301549Title": "Dragging Movements",
+        "en301549Chapter": 9,
+        "dosLagenApplies": false,
+        "dosLagenReference": "WCAG 2.2-Kriterium (Stufe AA), noch keine gesetzliche Anforderung. Die gesetzliche Mindestebene ist WCAG 2.1 Stufe AA über EN 301 549 V3.2.1 (im Amtsblatt der EU referenziert). Das Kriterium wird relevant, sobald EN 301 549 V4.x im OJEU referenziert wird.",
+        "remediation": {
+            "description": "Alles, was mit einer Ziehbewegung möglich ist, muss auch mit einer einzelnen Zeigeraktion (zum Beispiel einem einfachen Klick oder Tippen) bedienbar sein, außer wenn die Ziehbewegung für die Funktion wesentlich ist oder von der zugrunde liegenden Technologie bestimmt wird. Ein Schieberegler, der gezogen wird, muss also auch mit anklickbaren Plus- und Minus-Schaltflächen oder durch Klick auf eine Position der Spur bedienbar sein.",
+            "technicalGuidance": "Bieten Sie für jede Ziehgeste eine anklickbare Alternative: Plus- und Minus-Schaltflächen an Schiebereglern, Pfeile an Karussells, Hoch- und Runter-Schaltflächen an sortierbaren Listen, Zoom- und Positions-Schaltflächen an Karten. Reagieren Sie auf click- und pointerup-Ereignisse an diskreten Steuerelementen, nicht nur auf pointermove. Tastaturunterstützung allein genügt nicht; das Kriterium betrifft die Zeigerbedienung ohne Ziehen.",
+            "component": null,
+            "wcagTechnique": [
+                "G219"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "low",
+            "eaaImpact": "medium",
+            "germanInterpretation": "Hier geht es darum, eine Funktion nie allein hinter dem Ziehen einzuschließen. Interpretieren Sie es weit: Karten, die nur durch Ziehen verschoben werden, Preisregler und Bildvergleicher, die nur per Ziehen funktionieren, Umsortierlisten, bei denen man Zeilen ziehen muss, und Karussells, die nur auf Wischen reagieren. Für jedes solche Muster muss es eine anklickbare Alternative geben, die dasselbe tut. Ziehen, das sich frei in zwei Richtungen bewegt (Zeichnen, Drag-and-drop an eine beliebige Stelle), ist oft wesentlich, dann gilt die Ausnahme, aber das allermeiste Ziehen auf einer gewöhnlichen Website ist eigentlich eine Wahl zwischen wenigen Zuständen und lässt sich bestens anklicken. Noch keine gesetzliche Anforderung, aber eine der unsichtbareren Barrieren: sie zeigt sich nicht in einem automatischen Scan und trifft still jene, die nicht präzise ziehen können.",
+            "commonMistakes": [
+                "Karten und Bildvergleicher, die sich nur verschieben oder ziehen lassen, ohne anklickbare Steuerelemente",
+                "Preisregler und Schieberegler ohne Plus- und Minus-Schaltflächen oder anklickbare Spur",
+                "Sortierbare Listen (Ziehen zum Umordnen) ohne Hoch- und Runter-Schaltflächen als Alternative",
+                "Karussells und Diashows, die nur auf Wischen reagieren, ohne sichtbare Pfeile"
+            ],
+            "priorityRationale": "Affects people who cannot perform precise drag gestures: users with tremor, limited dexterity, or those navigating by keyboard, switch or head pointer. Invisible in automated scans, so it is easy to miss and easy to ship. Not yet a legal requirement under DOS-lagen, but a genuine usability barrier with usually low remediation cost."
+        },
+        "testability": {
+            "automated": false,
+            "requiresManualCheck": true,
+            "pseudoAutomation": false,
+            "complexity": "moderate"
+        },
+        "tags": [
+            "pointer",
+            "dragging",
+            "interaction",
+            "wcag22aa",
+            "wcag257"
+        ]
+    },
+    {
+        "ruleId": "focus-not-obscured",
+        "wcagCriteria": "2.4.11",
+        "wcagLevel": "AA",
+        "wcagTitle": "Focus Not Obscured (Minimum)",
+        "wcagVersion": "2.2",
+        "en301549Criteria": "9.2.4.11",
+        "en301549Title": "Focus Not Obscured (Minimum)",
+        "en301549Chapter": 9,
+        "dosLagenApplies": false,
+        "dosLagenReference": "WCAG 2.2-Kriterium (Stufe AA), noch keine gesetzliche Anforderung. Die gesetzliche Mindestebene ist WCAG 2.1 Stufe AA über EN 301 549 V3.2.1 (im Amtsblatt der EU referenziert). Das Kriterium wird relevant, sobald EN 301 549 V4.x im OJEU referenziert wird.",
+        "remediation": {
+            "description": "Wenn ein Element Tastaturfokus erhält, darf es nicht vollständig durch anderen Seiteninhalt verdeckt sein, etwa durch eine fixierte (sticky) Kopfzeile, ein Cookie-Banner, ein Chatfenster oder eine schwebende Werkzeugleiste. Mindestens ein Teil des fokussierten Elements muss sichtbar bleiben. (Die stärkere Anforderung, dass das ganze Element sichtbar sein muss, ist 2.4.12, das AAA ist und nicht zu Phase 1 gehört.)",
+            "technicalGuidance": "Setzen Sie scroll-margin-top auf fokussierbare Elemente, damit sie nicht hinter einer Sticky-Kopfzeile landen, wenn die Seite den Fokus ins Bild scrollt. Beziehen Sie die Höhe von Sticky-Elementen und schwebender UI ein, wenn Sie die sichtbare Fläche berechnen. Vermeiden Sie permanente Overlays (Cookie-Banner, Chatblase), die fokussierten Inhalt verdecken; geben Sie ihnen einen niedrigeren z-index als dem Fokusring oder nehmen Sie sie aus dem Fokusfluss.",
+            "component": null,
+            "wcagTechnique": [
+                "C43"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "low",
+            "eaaImpact": "medium",
+            "germanInterpretation": "Dies ist ein Kriterium, das man nur findet, indem man sich tatsächlich durch die Seite tabbt. Praktisch interpretiert: die häufigste Ursache ist eine Sticky-Kopfzeile, die beim Scrollen mitwandert. Wenn der Fokus nach unten tabbt und die Seite nach oben scrollt, kann das fokussierte Element hinter der Kopfzeile landen und vollständig unsichtbar werden. Dann weiß ein Tastaturnutzer nicht, wo er ist. Dasselbe passiert hinter Cookie-Bannern, dauerhaften Chatblasen und schwebenden Schaltflächen in der Ecke. Die Mindestschwelle ist niedrig: es genügt, dass ein Teil des Elements sichtbar ist, es muss nicht völlig frei sein. In der Praxis löst man es meist mit scroll-margin-top auf fokussierbaren Elementen oder indem man dem Sticky-Element die richtige Höhenberücksichtigung gibt. Noch keine gesetzliche Anforderung, aber günstig zu beheben und unmittelbar spürbar für alle, die mit der Tastatur navigieren.",
+            "commonMistakes": [
+                "Sticky-Kopfzeile, die sich beim Scrollen über das Element legt, das gerade den Fokus erhalten hat",
+                "Cookie-Banner oder Einwilligungsdialog, der fokussierten Inhalt am Seitenanfang verdeckt",
+                "Dauerhafte Chatblase oder Support-Schaltfläche in der Ecke, die den Fokus hinter sich verbirgt",
+                "Fehlendes scroll-margin, sodass der Fokus am Rand von oder hinter einem festen Element landet"
+            ],
+            "priorityRationale": "Affects keyboard and screen-magnifier users who lose track of focus when it disappears behind sticky or floating UI. Cannot be caught by an automated scan; only tab-through testing reveals it. Not yet a legal requirement under DOS-lagen, but low-cost to fix (often a single CSS property) and a real orientation barrier."
+        },
+        "testability": {
+            "automated": false,
+            "requiresManualCheck": true,
+            "pseudoAutomation": false,
+            "complexity": "moderate"
+        },
+        "tags": [
+            "keyboard",
+            "focus",
+            "interaction",
+            "wcag22aa",
+            "wcag2411"
+        ]
     }
 ]

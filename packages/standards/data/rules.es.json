@@ -3093,5 +3093,150 @@
             ],
             "eaaDeadline": "2025-06-28"
         }
+    },
+    {
+        "ruleId": "target-size",
+        "wcagCriteria": "2.5.8",
+        "wcagLevel": "AA",
+        "wcagTitle": "Target Size (Minimum)",
+        "wcagVersion": "2.2",
+        "en301549Criteria": "9.2.5.8",
+        "en301549Title": "Target Size (Minimum)",
+        "en301549Chapter": 9,
+        "dosLagenApplies": false,
+        "dosLagenReference": "Criterio WCAG 2.2 (nivel AA), todavía no es un requisito legal. El mínimo legal es WCAG 2.1 nivel AA a través de EN 301 549 V3.2.1 (referenciada en el Diario Oficial de la UE). El criterio será aplicable cuando EN 301 549 V4.x se referencie en el DOUE.",
+        "remediation": {
+            "description": "Los objetivos interactivos (botones, enlaces, iconos, controles de formulario) deben medir al menos 24 x 24 píxeles CSS, o tener al menos 24 píxeles de espacio libre hasta el objetivo más cercano. Existen excepciones para los enlaces dentro del texto corrido, para los controles cuyo tamaño determina el navegador, y cuando existe un control equivalente de tamaño suficiente en la misma página.",
+            "technicalGuidance": "Dé a los elementos interactivos un área de contacto de al menos 24px, preferiblemente mediante min-height y min-width en el propio control. Si el icono debe verse pequeño, conserve el icono pequeño pero amplíe el área de contacto con padding, o deje al menos 24px de espacio alrededor (excepción de espaciado). Mida el área de contacto real, no el tamaño visual del icono.",
+            "component": "@holmdigital/components/Button",
+            "codeExample": "/* Insufficient hit area */\n.icon-button { width: 16px; height: 16px; }\n\n/* Good: 24px hit area via min-height/min-width */\n.icon-button {\n  min-width: 24px;\n  min-height: 24px;\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n}\n\n/* Good: small icon, but 24px clearance around it (spacing exception) */\n.icon-button { margin: 4px; } /* yields >=24px center-to-center to the neighbour */",
+            "wcagTechnique": [
+                "C42",
+                "F108"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "low",
+            "eaaImpact": "medium",
+            "spanishInterpretation": "Es el único de los nuevos criterios 2.2 que nuestro escáner detecta realmente de forma automática, así que suele ser la primera vez que un cliente ve \"WCAG 2.2\" en un informe. Interprételo en la práctica así: cuente el área de contacto real, no el tamaño visual del icono. Un icono de papelera que parece de 16 píxeles puede tener un área de contacto invisible de 24 píxeles a su alrededor, y entonces el criterio se cumple. A la inversa, un botón grande con un área de clic real pequeña no lo cumple. Lo más habitual es que el criterio falle en barras de herramientas densas, cruces de cierre en modales, iconos sociales en el pie y la paginación. Tenga en cuenta que todavía no es un requisito legal (el mínimo es WCAG 2.1 AA), pero es barato de corregir y afecta directamente al uso móvil, así que lo recomendamos igualmente. La excepción de espaciado (24 píxeles de espacio libre) suele salvar los iconos pequeños sin necesidad de agrandarlos visualmente.",
+            "commonMistakes": [
+                "Botones de icono (cruz de cierre, menú hamburguesa, iconos de compartir) con un área de clic inferior a 24 píxeles",
+                "Números de paginación y migas de pan demasiado juntos sin 24 píxeles de separación",
+                "Pequeños interruptores y casillas en formularios, sobre todo en tablas compactas",
+                "Enlaces apilados unos sobre otros en el pie y los menús sin suficiente interlineado"
+            ],
+            "priorityRationale": "High value for the cost. Primarily affects mobile and touch users, people with motor or tremor conditions, and anyone using a screen at arm's length. Not yet a legal requirement under DOS-lagen (the floor is still WCAG 2.1 AA), but cheap to fix and the only WCAG 2.2 criterion the scanner detects automatically, so it carries outsized signalling value in a report."
+        },
+        "testability": {
+            "automated": true,
+            "requiresManualCheck": false,
+            "pseudoAutomation": false,
+            "complexity": "simple"
+        },
+        "tags": [
+            "touch-target",
+            "mobile",
+            "interaction",
+            "wcag22aa",
+            "wcag258"
+        ],
+        "plainLanguage": {
+            "headline": "Los botones e iconos son demasiado pequeños para pulsar",
+            "whatHappens": "Algunos botones, enlaces e iconos tienen un área de pulsación demasiado pequeña. Son difíciles de acertar con el dedo en una pantalla táctil.",
+            "whoIsAffected": "Personas con temblor o motricidad fina reducida, muchas personas mayores, y cualquiera que use el móvil en movimiento.",
+            "businessImpact": "Si la persona visitante falla el botón y pulsa otra cosa, a menudo se rinde en lugar de volver a intentarlo. Los objetivos pequeños le cuestan conversiones, sobre todo en móvil donde está la mayoría de sus visitantes.",
+            "howToFix": "Haga el área de pulsación al menos del tamaño de la yema de un dedo, o añada espacio alrededor de los iconos pequeños para que no se toquen. Señalamos exactamente cuáles son demasiado pequeños.",
+            "impactLevel": "hindrar"
+        }
+    },
+    {
+        "ruleId": "dragging-movements",
+        "wcagCriteria": "2.5.7",
+        "wcagLevel": "AA",
+        "wcagTitle": "Dragging Movements",
+        "wcagVersion": "2.2",
+        "en301549Criteria": "9.2.5.7",
+        "en301549Title": "Dragging Movements",
+        "en301549Chapter": 9,
+        "dosLagenApplies": false,
+        "dosLagenReference": "Criterio WCAG 2.2 (nivel AA), todavía no es un requisito legal. El mínimo legal es WCAG 2.1 nivel AA a través de EN 301 549 V3.2.1 (referenciada en el Diario Oficial de la UE). El criterio será aplicable cuando EN 301 549 V4.x se referencie en el DOUE.",
+        "remediation": {
+            "description": "Todo lo que pueda hacerse con un movimiento de arrastre debe poder hacerse también con una sola acción de puntero (por ejemplo, un clic o toque sencillo), salvo cuando el movimiento de arrastre sea esencial para la función o lo determine la tecnología subyacente. Un control deslizante que se arrastra debe, por tanto, poder manejarse también con botones de más y menos en los que se pueda hacer clic o haciendo clic en una posición de la pista.",
+            "technicalGuidance": "Ofrezca una alternativa en la que se pueda hacer clic para cada gesto de arrastre: botones de más y menos en los controles deslizantes, flechas en los carruseles, botones de subir y bajar en las listas ordenables, botones de zoom y posición en los mapas. Escuche los eventos click y pointerup en controles diferenciados, no solo pointermove. El soporte de teclado por sí solo no basta; el criterio se refiere al uso del puntero sin arrastrar.",
+            "component": null,
+            "wcagTechnique": [
+                "G219"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "low",
+            "eaaImpact": "medium",
+            "spanishInterpretation": "Se trata de no encerrar nunca una función detrás del arrastre únicamente. Interprételo de forma amplia: mapas que solo se desplazan arrastrando, controles deslizantes de precio y comparadores de imágenes que solo funcionan arrastrando, listas de reordenación en las que hay que arrastrar filas, y carruseles que solo responden al deslizamiento. Para cada uno de esos patrones debe existir una alternativa en la que se pueda hacer clic y haga lo mismo. El arrastre que se mueve libremente en dos direcciones (dibujar, arrastrar y soltar en cualquier posición) suele ser esencial, y entonces se aplica la excepción, pero la mayoría de los arrastres de un sitio web corriente son en realidad una elección entre unos pocos estados y funcionan perfectamente con un clic. Todavía no es un requisito legal, pero es una de las barreras más invisibles: no aparece en un escaneo automático y afecta en silencio a quienes no pueden arrastrar con precisión.",
+            "commonMistakes": [
+                "Mapas y comparadores de imágenes que solo se pueden desplazar o arrastrar, sin controles en los que hacer clic",
+                "Controles deslizantes de precio sin botones de más y menos ni pista en la que hacer clic",
+                "Listas ordenables (arrastrar para reordenar) sin botones de subir y bajar como alternativa",
+                "Carruseles y pases de diapositivas que solo responden al deslizamiento, sin flechas visibles"
+            ],
+            "priorityRationale": "Affects people who cannot perform precise drag gestures: users with tremor, limited dexterity, or those navigating by keyboard, switch or head pointer. Invisible in automated scans, so it is easy to miss and easy to ship. Not yet a legal requirement under DOS-lagen, but a genuine usability barrier with usually low remediation cost."
+        },
+        "testability": {
+            "automated": false,
+            "requiresManualCheck": true,
+            "pseudoAutomation": false,
+            "complexity": "moderate"
+        },
+        "tags": [
+            "pointer",
+            "dragging",
+            "interaction",
+            "wcag22aa",
+            "wcag257"
+        ]
+    },
+    {
+        "ruleId": "focus-not-obscured",
+        "wcagCriteria": "2.4.11",
+        "wcagLevel": "AA",
+        "wcagTitle": "Focus Not Obscured (Minimum)",
+        "wcagVersion": "2.2",
+        "en301549Criteria": "9.2.4.11",
+        "en301549Title": "Focus Not Obscured (Minimum)",
+        "en301549Chapter": 9,
+        "dosLagenApplies": false,
+        "dosLagenReference": "Criterio WCAG 2.2 (nivel AA), todavía no es un requisito legal. El mínimo legal es WCAG 2.1 nivel AA a través de EN 301 549 V3.2.1 (referenciada en el Diario Oficial de la UE). El criterio será aplicable cuando EN 301 549 V4.x se referencie en el DOUE.",
+        "remediation": {
+            "description": "Cuando un elemento recibe el foco del teclado, no debe quedar completamente oculto por otro contenido de la página, como una cabecera fija (sticky), un banner de cookies, una ventana de chat o una barra de herramientas flotante. Al menos una parte del elemento enfocado debe permanecer visible. (El requisito más estricto de que todo el elemento sea visible corresponde a 2.4.12, que es AAA y no forma parte de la fase 1.)",
+            "technicalGuidance": "Establezca scroll-margin-top en los elementos enfocables para que no queden detrás de una cabecera fija cuando la página desplaza el foco a la vista. Tenga en cuenta la altura de los elementos fijos y de la interfaz flotante al calcular el área visible. Evite las superposiciones permanentes (banners de cookies, burbujas de chat) que cubren el contenido enfocado; deles un z-index menor que el del anillo de foco o sáquelas del flujo del foco.",
+            "component": null,
+            "wcagTechnique": [
+                "C43"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "low",
+            "eaaImpact": "medium",
+            "spanishInterpretation": "Es un criterio que solo se encuentra recorriendo realmente la página con el tabulador. Interprételo en la práctica: la causa más habitual es una cabecera fija que acompaña al desplazamiento. Cuando el foco baja con el tabulador y la página se desplaza hacia arriba, el elemento enfocado puede quedar detrás de la cabecera y volverse completamente invisible. Entonces la persona que usa el teclado no sabe dónde está. Lo mismo ocurre detrás de los banners de cookies, las burbujas de chat persistentes y los botones flotantes del rincón. El mínimo es bajo: basta con que una parte del elemento sea visible, no hace falta que esté del todo despejado. En la práctica suele resolverse con scroll-margin-top en los elementos enfocables o dando a la cabecera fija la consideración de altura adecuada. Todavía no es un requisito legal, pero es barato de corregir e inmediatamente perceptible para cualquiera que navegue con teclado.",
+            "commonMistakes": [
+                "Cabecera fija que se superpone al elemento que acaba de recibir el foco al desplazarse",
+                "Banner de cookies o cuadro de consentimiento que cubre el contenido enfocado en la parte superior de la página",
+                "Burbuja de chat persistente o botón de soporte en el rincón que oculta el foco tras de sí",
+                "Falta de scroll-margin, de modo que el foco queda en el borde o detrás de un elemento fijo"
+            ],
+            "priorityRationale": "Affects keyboard and screen-magnifier users who lose track of focus when it disappears behind sticky or floating UI. Cannot be caught by an automated scan; only tab-through testing reveals it. Not yet a legal requirement under DOS-lagen, but low-cost to fix (often a single CSS property) and a real orientation barrier."
+        },
+        "testability": {
+            "automated": false,
+            "requiresManualCheck": true,
+            "pseudoAutomation": false,
+            "complexity": "moderate"
+        },
+        "tags": [
+            "keyboard",
+            "focus",
+            "interaction",
+            "wcag22aa",
+            "wcag2411"
+        ]
     }
 ]
