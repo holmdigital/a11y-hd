@@ -3174,5 +3174,150 @@
             ],
             "eaaDeadline": "2025-06-28"
         }
+    },
+    {
+        "ruleId": "target-size",
+        "wcagCriteria": "2.5.8",
+        "wcagLevel": "AA",
+        "wcagTitle": "Target Size (Minimum)",
+        "wcagVersion": "2.2",
+        "en301549Criteria": "9.2.5.8",
+        "en301549Title": "Target Size (Minimum)",
+        "en301549Chapter": 9,
+        "dosLagenApplies": false,
+        "dosLagenReference": "WCAG 2.2-kriterium (nivå AA), ännu inte lagkrav under DOS-lagen. Lagens golv är WCAG 2.1 nivå AA via EN 301 549 V3.2.1 (refererad i EU:s officiella tidning). Kriteriet blir aktuellt när EN 301 549 V4.x refereras i OJEU.",
+        "remediation": {
+            "description": "Klickbara ytor (knappar, länkar, ikoner, formulärkontroller) måste vara minst 24 x 24 CSS-pixlar, eller ha minst 24 pixlar fritt avstånd till närmaste annan klickyta. Undantag finns för länkar inuti löpande text, för kontroller vars storlek webbläsaren bestämmer, och när en likvärdig kontroll av rätt storlek finns på samma sida.",
+            "technicalGuidance": "Sätt minst 24px träffyta på interaktiva element, helst via min-height och min-width på själva kontrollen. Om ikonen ska vara visuellt liten, behåll den lilla ikonen men utöka träffytan med padding, eller lämna minst 24px luft runt om (spacing-undantaget). Verifiera den faktiska träffytan, inte ikonens visuella storlek.",
+            "component": "@holmdigital/components/Button",
+            "codeExample": "/* Otillräcklig träffyta */\n.icon-button { width: 16px; height: 16px; }\n\n/* Bra: 24px träffyta via min-height/min-width */\n.icon-button {\n  min-width: 24px;\n  min-height: 24px;\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n}\n\n/* Bra: liten ikon, men 24px luft runt om (spacing-undantaget) */\n.icon-button { margin: 4px; } /* ger >=24px center-till-center mot grannen */",
+            "wcagTechnique": [
+                "C42",
+                "F108"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "low",
+            "eaaImpact": "medium",
+            "swedishInterpretation": "Det här är det enda av de nya 2.2-kriterierna som vår skanner faktiskt hittar automatiskt, så det blir ofta första gången en kund ser \"WCAG 2.2\" i en rapport. Tolka det i praktiken så här: räkna den faktiska träffytan, inte ikonens visuella storlek. En soptunneikon som ser ut att vara 16 pixlar kan ha en osynlig 24-pixlars träffyta runt sig och då är kravet uppfyllt. Omvänt: en stor knapp med liten verklig klickyta failar. Vanligast i svensk praktik är att kravet fälls på täta verktygsrader, stäng-kryss i modaler, sociala ikoner i sidfoten och paginering. Notera att detta ännu inte är lagkrav i Sverige (lagens golv är WCAG 2.1 AA), men det är billigt att rätta och slår direkt mot mobilanvändning, så vi rekommenderar det ändå. Spacing-undantaget (24 pixlar fritt runt om) räddar ofta små ikoner utan att de behöver göras större visuellt.",
+            "commonMistakes": [
+                "Ikonknappar (stäng-kryss, hamburgermeny, dela-ikoner) med klickyta under 24 pixlar",
+                "Pagineringssiffror och brödsmulor som ligger för tätt utan 24 pixlars luft emellan",
+                "Små växlingsreglage och kryssrutor i formulär, särskilt i kompakta tabeller",
+                "Länkar staplade på varandra i sidfot och menyer utan tillräckligt radavstånd"
+            ],
+            "priorityRationale": "High value for the cost. Primarily affects mobile and touch users, people with motor or tremor conditions, and anyone using a screen at arm's length. Not yet a legal requirement under DOS-lagen (the floor is still WCAG 2.1 AA), but cheap to fix and the only WCAG 2.2 criterion the scanner detects automatically, so it carries outsized signalling value in a report."
+        },
+        "testability": {
+            "automated": true,
+            "requiresManualCheck": false,
+            "pseudoAutomation": false,
+            "complexity": "simple"
+        },
+        "tags": [
+            "touch-target",
+            "mobile",
+            "interaction",
+            "wcag22aa",
+            "wcag258"
+        ],
+        "plainLanguage": {
+            "headline": "Knappar och ikoner är för små att träffa",
+            "whatHappens": "Vissa knappar, länkar och ikoner har för liten klickyta. De är svåra att träffa med fingret på en pekskärm.",
+            "whoIsAffected": "Personer med darrhänthet eller nedsatt finmotorik, många äldre, och alla som använder mobilen i farten.",
+            "businessImpact": "Om besökaren missar knappen och träffar fel så avbryter hen ofta i stället för att försöka igen. Små träffytor kostar dig avslut, särskilt på mobilen där de flesta besöker dig.",
+            "howToFix": "Gör klickytan minst lika stor som en fingertopp, eller lägg luft runt små ikoner så att de inte sitter ihop. Vi pekar ut exakt vilka som är för små.",
+            "impactLevel": "hindrar"
+        }
+    },
+    {
+        "ruleId": "dragging-movements",
+        "wcagCriteria": "2.5.7",
+        "wcagLevel": "AA",
+        "wcagTitle": "Dragging Movements",
+        "wcagVersion": "2.2",
+        "en301549Criteria": "9.2.5.7",
+        "en301549Title": "Dragging Movements",
+        "en301549Chapter": 9,
+        "dosLagenApplies": false,
+        "dosLagenReference": "WCAG 2.2-kriterium (nivå AA), ännu inte lagkrav under DOS-lagen. Lagens golv är WCAG 2.1 nivå AA via EN 301 549 V3.2.1 (refererad i EU:s officiella tidning). Kriteriet blir aktuellt när EN 301 549 V4.x refereras i OJEU.",
+        "remediation": {
+            "description": "Allt som går att göra med en dragrörelse måste också gå att göra med en enkel pekaråtgärd (till exempel ett enkelt klick eller tryck), utom när dragrörelsen är nödvändig för funktionen eller styrs av tekniken under. En slider som dras ska alltså också gå att styra med klickbara plus- och minusknappar eller genom att klicka på spårets position.",
+            "technicalGuidance": "Erbjud ett klickbart alternativ till varje dragrörelse: plus- och minusknappar på sliders, pilar på carouseller, upp- och nedknappar på sorterbara listor, zoom- och positionsknappar på kartor. Lyssna på click- och pointerup-händelser på diskreta kontroller, inte bara på pointermove. Tangentbordsstöd ensamt räcker inte; kravet gäller pekaranvändning utan drag.",
+            "component": null,
+            "wcagTechnique": [
+                "G219"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "low",
+            "eaaImpact": "medium",
+            "swedishInterpretation": "Det här handlar om att aldrig låsa en funktion bakom enbart drag. Tolka det brett: kartor som bara panoreras genom att dras, prisreglage och bildjämförare som bara fungerar med drag, omsorteringslistor där man måste dra rader, och carouseller som bara reagerar på svep. För varje sådant mönster ska det finnas ett klickbart alternativ som gör samma sak. Drag som rör sig fritt i två riktningar (rita, dra-och-släpp till valfri plats) är ofta nödvändigt och då gäller undantaget, men de allra flesta drag på en vanlig webbplats är egentligen ett val mellan ett fåtal lägen och går utmärkt att klicka i stället. Ännu inte lagkrav i Sverige, men en av de mer osynliga barriärerna: det syns inte i en automatisk skanning och drabbar tyst de som inte kan dra precist.",
+            "commonMistakes": [
+                "Kartor och bildjämförare som bara går att panorera eller dra, utan klickbara kontroller",
+                "Prisreglage och sliders utan plus- och minusknappar eller klickbart spår",
+                "Sorterbara listor (dra för att ändra ordning) utan upp- och nedknappar som alternativ",
+                "Carouseller och bildspel som bara svarar på svep, utan synliga pilar"
+            ],
+            "priorityRationale": "Affects people who cannot perform precise drag gestures: users with tremor, limited dexterity, or those navigating by keyboard, switch or head pointer. Invisible in automated scans, so it is easy to miss and easy to ship. Not yet a legal requirement under DOS-lagen, but a genuine usability barrier with usually low remediation cost."
+        },
+        "testability": {
+            "automated": false,
+            "requiresManualCheck": true,
+            "pseudoAutomation": false,
+            "complexity": "moderate"
+        },
+        "tags": [
+            "pointer",
+            "dragging",
+            "interaction",
+            "wcag22aa",
+            "wcag257"
+        ]
+    },
+    {
+        "ruleId": "focus-not-obscured",
+        "wcagCriteria": "2.4.11",
+        "wcagLevel": "AA",
+        "wcagTitle": "Focus Not Obscured (Minimum)",
+        "wcagVersion": "2.2",
+        "en301549Criteria": "9.2.4.11",
+        "en301549Title": "Focus Not Obscured (Minimum)",
+        "en301549Chapter": 9,
+        "dosLagenApplies": false,
+        "dosLagenReference": "WCAG 2.2-kriterium (nivå AA), ännu inte lagkrav under DOS-lagen. Lagens golv är WCAG 2.1 nivå AA via EN 301 549 V3.2.1 (refererad i EU:s officiella tidning). Kriteriet blir aktuellt när EN 301 549 V4.x refereras i OJEU.",
+        "remediation": {
+            "description": "När ett element får tangentbordsfokus får det inte vara helt dolt av annat innehåll på sidan, till exempel en klistrad (sticky) sidhuvud, en cookie-banner, en chattruta eller ett flytande verktygsfält. Minst en del av det fokuserade elementet måste vara synlig. (Det starkare kravet att hela elementet ska synas ligger i 2.4.12, som är AAA och ingår inte i Fas 1.)",
+            "technicalGuidance": "Sätt scroll-margin-top på fokusbara element så att de inte hamnar bakom ett sticky sidhuvud när sidan skrollar fokus i bild. Räkna in höjden på sticky-element och flytande UI när du beräknar synlig yta. Undvik permanenta overlays (cookie-banner, chattbubbla) som täcker fokuserat innehåll; ge dem lägre z-index än fokusringen eller flytta dem ur fokusflödet.",
+            "component": null,
+            "wcagTechnique": [
+                "C43"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "low",
+            "eaaImpact": "medium",
+            "swedishInterpretation": "Det här är ett kriterium man bara hittar genom att faktiskt tabba sig igenom sidan. Tolka det praktiskt: den vanligaste orsaken är en sticky header som följer med när man skrollar. När fokus tabbas nedåt och sidan skrollar upp kan det fokuserade elementet hamna bakom headern och bli helt osynligt. Då vet en tangentbordsanvändare inte var hen är. Samma sak händer bakom cookie-banners, kvarstående chattbubblor och flytande knappar nere i hörnet. Minimikravet är lågt satt: det räcker att någon del av elementet syns, det behöver inte vara helt fritt. I praktiken löses det oftast med scroll-margin-top på fokusbara element eller genom att ge den sticky elementet rätt höjdhänsyn. Ännu inte lagkrav i Sverige, men billigt att åtgärda och direkt kännbart för alla som navigerar med tangentbord.",
+            "commonMistakes": [
+                "Sticky sidhuvud som lägger sig över det element som just fått fokus vid skrollning",
+                "Cookie-banner eller medgivanderuta som täcker fokuserat innehåll längst upp på sidan",
+                "Kvarstående chattbubbla eller supportknapp i hörnet som döljer fokus bakom sig",
+                "Saknad scroll-margin så att fokus hamnar i kanten av eller bakom ett fast element"
+            ],
+            "priorityRationale": "Affects keyboard and screen-magnifier users who lose track of focus when it disappears behind sticky or floating UI. Cannot be caught by an automated scan; only tab-through testing reveals it. Not yet a legal requirement under DOS-lagen, but low-cost to fix (often a single CSS property) and a real orientation barrier."
+        },
+        "testability": {
+            "automated": false,
+            "requiresManualCheck": true,
+            "pseudoAutomation": false,
+            "complexity": "moderate"
+        },
+        "tags": [
+            "keyboard",
+            "focus",
+            "interaction",
+            "wcag22aa",
+            "wcag2411"
+        ]
     }
 ]

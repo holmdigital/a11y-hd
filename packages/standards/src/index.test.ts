@@ -31,6 +31,16 @@ import {
 import type { Country, ConvergenceRule } from './types';
 import rulesSv from '../data/rules.sv.json';
 import rulesEn from '../data/rules.en.json';
+import rulesDe from '../data/rules.de.json';
+import rulesFr from '../data/rules.fr.json';
+import rulesEs from '../data/rules.es.json';
+import rulesNl from '../data/rules.nl.json';
+import rulesNo from '../data/rules.no.json';
+import rulesFi from '../data/rules.fi.json';
+import rulesDa from '../data/rules.da.json';
+import rulesEnGb from '../data/rules.en-gb.json';
+import rulesEnUs from '../data/rules.en-us.json';
+import rulesEnCa from '../data/rules.en-ca.json';
 
 describe('Standards Package', () => {
     it('should export convergence rules', () => {
@@ -539,7 +549,7 @@ describe('plainLanguage encoding guard (D-10.1)', () => {
     const PLAIN_IDS = [
         'alt-text', 'color-contrast', 'form-labels', 'link-purpose',
         'name-role-value', 'keyboard-accessible', 'heading-order', 'language-of-page',
-        'landmark-one-main', 'region'
+        'landmark-one-main', 'region', 'target-size'
     ] as const;
 
     it('sv: no mojibake in any plainLanguage text field', () => {
@@ -578,7 +588,7 @@ describe('plainLanguage sv/en parity (D-10.3)', () => {
     const PLAIN_IDS = [
         'alt-text', 'color-contrast', 'form-labels', 'link-purpose',
         'name-role-value', 'keyboard-accessible', 'heading-order', 'language-of-page',
-        'landmark-one-main', 'region'
+        'landmark-one-main', 'region', 'target-size'
     ] as const;
 
     it('same 10 ruleIds have plainLanguage in both sv and en', () => {
@@ -612,4 +622,35 @@ describe('generateRegulatoryReport plainLanguage enrichment (PLAIN-02)', () => {
         const report = generateRegulatoryReport('focus-order', 'en');
         expect(report?.plainLanguage).toBeUndefined();
     });
+});
+
+describe('WCAG 2.2 Phase 1 locale parity (target-size, dragging-movements, focus-not-obscured)', () => {
+    // All 12 locale rule files
+    const LOCALE_FILES: Array<[string, ConvergenceRule[]]> = [
+        ['sv', rulesSv as ConvergenceRule[]],
+        ['en', rulesEn as ConvergenceRule[]],
+        ['de', rulesDe as ConvergenceRule[]],
+        ['fr', rulesFr as ConvergenceRule[]],
+        ['es', rulesEs as ConvergenceRule[]],
+        ['nl', rulesNl as ConvergenceRule[]],
+        ['no', rulesNo as ConvergenceRule[]],
+        ['fi', rulesFi as ConvergenceRule[]],
+        ['da', rulesDa as ConvergenceRule[]],
+        ['en-gb', rulesEnGb as ConvergenceRule[]],
+        ['en-us', rulesEnUs as ConvergenceRule[]],
+        ['en-ca', rulesEnCa as ConvergenceRule[]],
+    ];
+
+    const WCAG22_PHASE1_IDS = ['target-size', 'dragging-movements', 'focus-not-obscured'] as const;
+
+    for (const [lang, rules] of LOCALE_FILES) {
+        for (const id of WCAG22_PHASE1_IDS) {
+            it(`${lang}: contains WCAG 2.2 Phase 1 rule '${id}'`, () => {
+                const rule = rules.find(r => r.ruleId === id);
+                expect(rule, `${lang} missing rule ${id}`).toBeDefined();
+                expect(rule?.wcagVersion, `${id} in ${lang} must be wcagVersion 2.2`).toBe('2.2');
+                expect(rule?.dosLagenApplies, `${id} in ${lang} must be dosLagenApplies false`).toBe(false);
+            });
+        }
+    }
 });
