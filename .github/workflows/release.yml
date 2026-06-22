@@ -126,11 +126,13 @@ jobs:
           }
 
           dispatch_if_published () {
-            local PKG_NAME="$1" EVENT_TYPE="$2" PKG_DIR="$3"
+            local PKG_NAME="$1" EVENT_TYPE="$2" PKG_DIR="$3" TARGETS="$4"
             local VERSION
             VERSION=$(node -p "require('./packages/${PKG_DIR}/package.json').version")
             if npm_version_visible "${PKG_NAME}@${VERSION}"; then
-              for REPO in holmdigital/holmdigital-website holmdigital/accessibility-wiki; do
+              # Mållistan kommer som mellanslagsseparerad sträng, medveten
+              # ociterad i for-loopen så ordlistan delas korrekt.
+              for REPO in ${TARGETS}; do
                 echo "Dispatching ${EVENT_TYPE} (${VERSION}) to $REPO"
                 curl -sf -X POST \
                   -H "Accept: application/vnd.github+json" \
@@ -143,6 +145,11 @@ jobs:
             fi
           }
 
-          dispatch_if_published "@holmdigital/engine"     "engine-release"     "engine"
-          dispatch_if_published "@holmdigital/standards"  "standards-release"  "standards"
-          dispatch_if_published "@holmdigital/components" "components-release" "components"
+          # Per-paket-mållista istället för hårdkodad loop. Scan-servern
+          # (hetzner-project) konsumerar bara @holmdigital/engine, så den får
+          # bara engine-release och inte standards/components-release.
+          WEB_WIKI="holmdigital/holmdigital-website holmdigital/accessibility-wiki"
+
+          dispatch_if_published "@holmdigital/engine"     "engine-release"     "engine"     "${WEB_WIKI} holmdigital/hetzner-project"
+          dispatch_if_published "@holmdigital/standards"  "standards-release"  "standards"  "${WEB_WIKI}"
+          dispatch_if_published "@holmdigital/components" "components-release" "components" "${WEB_WIKI}"
