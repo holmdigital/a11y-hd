@@ -58,6 +58,7 @@ npm run test -w @holmdigital/engine        # Run engine tests
 ```bash
 npx hd-a11y-scan <url> [options]
 # Options: --lang, --ci, --json, --pdf, --viewport, --api-key
+hd-a11y-scan https://example.com --plain    # Plain-language report (klarspråk) for non-technical recipients
 ```
 
 ### Publishing
@@ -101,8 +102,8 @@ npm publish -w @holmdigital/components --access public
 
 | Package | Version | Notes |
 |---------|---------|-------|
-| @holmdigital/engine | **2.6.1** | Phase 34 plain-language report (`--plain`/`--audience` + `renderPlainReport` + plain PDF) shipped in 2.6.0; 2.6.1 = dependency range bump to components `^3.0.0` (no code change) — published 2026-06-13 |
-| @holmdigital/standards | **2.7.0** | Phase 34 `PlainLanguageCopy`/`BusinessImpactLevel` + 10 sv/en plainLanguage rule texts — published 2026-06-13 |
+| @holmdigital/engine | **2.8.0** | Plain-language report (`--plain`/`--audience` + `renderPlainReport` + plain PDF, KRAV 1-4) and configurable `ScannerOptions.waitForHydrationMs` (default 2500, 0 = off) so client-rendered SPAs hydrate before axe runs — published 2026-06 |
+| @holmdigital/standards | **2.8.0** | WCAG 2.2 Phase 1 (2.5.8 Target Size axe-mapped, 2.5.7 + 2.4.11 manual), 49 convergence rules; legal floor stays WCAG 2.1 AA via EN 301 549 V3.2.1 (`dosLagenApplies false`, no WAD/EAA context) — published 2026-06 |
 | @holmdigital/components | **3.0.0** | DataTable APG grid suite through 2.7.5 (single-tab-stop, review-driven a11y fixes, sv-pinned collation); **3.0.0 = WR-04 retroactive semver correction, code-identical to 2.7.5** — published 2026-06-13 |
 
 > All published to npm 2026-06-13 via CI OIDC Trusted Publishing on master push (`.github/workflows/release.yml`). `latest` dist-tags verified against the registry. **Local npm token in `~/.npmrc` is expired (401)** — never publish locally; push to master and CI publishes. No pending changesets.

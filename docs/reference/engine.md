@@ -1,5 +1,5 @@
 # 🚂 Engine Library Catalog
-> **Last Updated:** 2026-03-07
+> **Last Updated:** 2026-06-22
 
 The `@holmdigital/engine` is the automated testing core. It runs a headless browser (Puppeteer) to scan your web applications for accessibility violations against WCAG 2.1 and EN 301 549.
 
@@ -46,6 +46,18 @@ hd-a11y-scan <url> [options]
 | `--sector <type>` | Sector type for enforcement body and law selection (`public` or `private`). Default: `public`. | `--sector private` |
 | `--light` | Fast score-only mode — skips HTML validation and detailed legal mapping. | `--light` |
 | `--invalid-https-cert` | Allow scanning sites with invalid/self-signed HTTPS certificates ⚠️ (trusted envs only). | `--invalid-https-cert` |
+| `--audience <mode>` | Report audience: `developer` (default) or `plain`. Plain mode renders a non-technical, grouped report for managers, lawyers, and buyers. | `--audience plain` |
+| `--plain` | Alias for `--audience plain` (klarspråksläge). | `--plain` |
+
+### Hydration Wait (SPA support)
+`ScannerOptions.waitForHydrationMs` (programmatic API) adds an extra settle after `waitForNetworkIdle` and before metadata capture, so client-rendered SPAs finish hydrating before axe runs. Default is `2500` ms; set `0` to turn it off. Without this wait, unhydrated SPAs could report a false 100/100.
+
+```typescript
+const scanner = new RegulatoryScanner({
+  url: 'https://spa.example.com',
+  waitForHydrationMs: 5000 // give a heavy SPA more time; 0 disables the wait
+});
+```
 
 ---
 
@@ -141,6 +153,9 @@ A beautiful, shareable document for stakeholders. Contains:
 - Executive Summary (Score / 100)
 - Legal Risk Assessment (High/Medium/Low)
 - Detailed breakdown of issues with screenshots (if configured).
+
+### 4. Plain-Language (Non-Technical Recipients)
+Triggered by `--plain` or `--audience plain`. The terminal report and PDF are rendered in plain language for managers, lawyers, and buyers without a technical background. Findings of the same rule are grouped into one card with an occurrence count, a business-impact breakdown is shown under the intro line, and unmapped findings fall back to a translated, self-contained sentence instead of leaking axe-core's raw English help text.
 
 ---
 

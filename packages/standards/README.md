@@ -13,7 +13,7 @@
 
 This package serves as the **Single Source of Truth** for accessibility compliance mapping in the HolmDigital ecosystem. It eliminates the need to manually cross-reference standard documents by providing:
 
-1.  **WCAG 2.1 Criteria** (Technical Base)
+1.  **WCAG 2.1 AA + WCAG 2.2 Phase 1 Criteria** (Technical Base). The database covers WCAG 2.1 AA (the level required by EN 301 549 V3.2.1) plus the first WCAG 2.2 criteria (2.5.8 Target Size, 2.5.7 Dragging Movements, 2.4.11 Focus Not Obscured). Note: the legal floor in the EU stays WCAG 2.1 AA via EN 301 549 V3.2.1; the WCAG 2.2 criteria are forward-looking coverage, not a current legal requirement.
 2.  **EN 301 549** (EU Standard Mapping)
 3.  **National Laws** (Specific legal references for SE, NL, DE, IT, PT, PL, AU, etc.)
 4.  **Legal Frameworks** (WAD 2016/2102, EAA 2019/882, DDA 1992 Australia, **ADA 1990 USA**, **REHAB 1973 USA / Section 504**)
@@ -31,6 +31,7 @@ npm install @holmdigital/standards
 
 ## Features
 
+- **WCAG 2.2 Phase 1**: 2.5.8 Target Size (axe-mapped, automatically detectable) plus 2.5.7 Dragging Movements and 2.4.11 Focus Not Obscured (manual checks). 49 convergence rules in total. These three criteria are forward-looking documentation, not a legal requirement: the legal floor stays WCAG 2.1 AA via EN 301 549 V3.2.1, and they carry `dosLagenApplies false` with no WAD or EAA legal context.
 - **Multi-Language Support** (12 rule locale databases):
   - `en` (Generic / EU baseline)
   - `en-gb` (UK / PSBAR)
