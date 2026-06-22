@@ -1,5 +1,23 @@
 # @holmdigital/standards
 
+## 2.8.0
+
+### Minor Changes
+
+- 18fe29c: Add WCAG 2.2 Phase 1 criteria as forward-looking documentation: 2.5.8 Target Size (Minimum), 2.5.7 Dragging Movements and 2.4.11 Focus Not Obscured (Minimum). All three ship across the 12 locale files mapped to EN 301 549 V4.x clauses (9.2.5.8, 9.2.5.7, 9.2.4.11).
+
+  Only 2.5.8 Target Size is detectable automatically (ruleId "target-size" wires to axe-core's single WCAG 2.2 rule), so it carries plain-language copy and testability automated true. 2.5.7 and 2.4.11 ship as manual checks (testability automated false, requiresManualCheck true) and as ICT manual checklist entries, because no automated scanner catches them.
+
+  These three criteria are not yet legal requirements: the legal floor stays WCAG 2.1 AA via EN 301 549 V3.2.1. All three carry dosLagenApplies false and no WAD or EAA legal context. They switch to legal-requirement status only when EN 301 549 V4.x is referenced in the OJEU.
+
+### Patch Changes
+
+- cd4ab8f: Klarspråksrapport: launch-blockerande fixar (KRAV 1-4)
+  - **KRAV 1 (engine):** gruppera fynd av samma regel till ett enda klarspråkskort med antal förekomster ("color-contrast, 5 förekomster"), i både terminal- och PDF-renderaren. Identiska fynd staplas inte längre som dubblettkort. Grupperingen sker per `ruleId` oavsett position; introtexten ("Hittade N hinder") räknar fortfarande det totala antalet fynd.
+  - **KRAV 2 (standards):** ta bort det oinfriade löftet "Vi anger exakt vilka färger…" / "We specify exactly which colours…" ur color-contrast-copyn (sv + en). Den kvarvarande fix-meningen står på egen hand utan hex-koder eller kontrastkvot.
+  - **KRAV 3 kort sikt (engine):** läck inte axe-cores råa engelska hjälptext in i en svensk klarspråksrapport. Omappade fynd visar nu en översatt, självbärande ram-mening i stället; engelska rapporter behåller den tekniska detaljen.
+  - **KRAV 4 (engine):** visa en fördelningsrad direkt under "Hittade N hinder" med antal per affärspåverkansnivå ("7 hinder: 6 Försämrar upplevelsen, 1 Värt att putsa"), räknat per förekomst så delsummorna summerar till totalen, ordnat efter affärspåverkan, bara nivåer med fynd, badge-etiketter via t(). Gäller terminal och PDF.
+
 ## 2.7.0
 
 ### Minor Changes
