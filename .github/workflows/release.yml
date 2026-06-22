@@ -107,11 +107,29 @@ jobs:
         run: |
           set -euo pipefail
 
+          # npm registry propagation can lag several seconds after publish, so a
+          # bare `npm view` immediately after publishing yields false negatives
+          # (a freshly published version reads as "not found" and its dispatch is
+          # silently skipped). Retry the existence check with backoff before
+          # deciding the version isn't published.
+          npm_version_visible () {
+            local SPEC="$1"
+            local attempt
+            for attempt in 1 2 3 4 5 6; do
+              if npm view "${SPEC}" version > /dev/null 2>&1; then
+                return 0
+              fi
+              echo "  ${SPEC} not visible on npm yet (attempt ${attempt}/6), waiting 10s..."
+              sleep 10
+            done
+            return 1
+          }
+
           dispatch_if_published () {
             local PKG_NAME="$1" EVENT_TYPE="$2" PKG_DIR="$3"
             local VERSION
             VERSION=$(node -p "require('./packages/${PKG_DIR}/package.json').version")
-            if npm view "${PKG_NAME}@${VERSION}" version > /dev/null 2>&1; then
+            if npm_version_visible "${PKG_NAME}@${VERSION}"; then
               for REPO in holmdigital/holmdigital-website holmdigital/accessibility-wiki; do
                 echo "Dispatching ${EVENT_TYPE} (${VERSION}) to $REPO"
                 curl -sf -X POST \
@@ -121,7 +139,7 @@ jobs:
                   -d "{\"event_type\":\"${EVENT_TYPE}\",\"client_payload\":{\"version\":\"${VERSION}\"}}"
               done
             else
-              echo "${PKG_NAME}@${VERSION} not freshly published, skipping dispatch"
+              echo "${PKG_NAME}@${VERSION} not visible on npm after retries, skipping dispatch"
             fi
           }
 
