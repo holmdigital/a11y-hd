@@ -1,5 +1,5 @@
 # 🏛️ Standards Library Catalog
-> **Last Updated:** 2026-03-07
+> **Last Updated:** 2026-06-22
 
 The `@holmdigital/standards` package is the **regulatory brain** of the ecosystem. It provides machine-readable legal data, localized WCAG rules, and mappings to EU directives.
 
@@ -46,7 +46,7 @@ We map technical rules to actual legislation.
 | Data Set | Purpose |
 |----------|---------|
 | **ICT Manual Checks** | A structured checklist for things that *cannot* be automated (e.g., "Is the video synchronized?"). |
-| **WCAG Mappings** | Exact paragraph references between WCAG 2.1 and EN 301 549 (Table A.1). |
+| **WCAG Mappings** | Exact paragraph references between WCAG 2.1 AA and EN 301 549 (Table A.1). The database also carries the first WCAG 2.2 criteria (2.5.8, 2.5.7, 2.4.11) as forward-looking coverage; the legal floor stays WCAG 2.1 AA via EN 301 549 V3.2.1, not a current legal requirement. |
 
 ---
 
@@ -133,7 +133,7 @@ Query rule counts and coverage at runtime.
 import { getDatabaseStats } from '@holmdigital/standards';
 
 const stats = getDatabaseStats();
-// { totalRules: 46, totalICTChecks: ..., rulesByLevel: { A: ..., AA: ..., AAA: ... } }
+// { totalRules: 49, totalICTChecks: ..., rulesByLevel: { A: ..., AA: ..., AAA: ... } }
 ```
 
 ### 5. Check for EAA Deadlines

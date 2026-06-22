@@ -79,6 +79,7 @@ Options:
 - `--ci` : CI mode (exit code 1 on failures at or above threshold)
 - `--json` : output results as JSON
 - `--pdf <path>` : generate a PDF report
+- `--plain` (or `--audience plain`) : plain-language report and PDF for non-technical recipients
 - `--statement <path>` : generate an accessibility statement (Premium V2 HTML)
 - `--format <type>` : statement format (`html`, `md`). Default: `html`
 - `--junit <path>` : generate JUnit XML for CI dashboards
@@ -125,7 +126,7 @@ import { Heading, Button, FormField, ErrorSummary, AccessibilityStatement } from
 > Gotcha: `Checkbox` fires both `onChange` (native) and `onCheckedChange(checked)`. `Select` uses a custom compound pattern (`SelectTrigger`/`SelectContent`/`SelectItem`), no Radix dependency. Full catalog: [docs/reference/components.md](./docs/reference/components.md).
 
 ### [@holmdigital/standards](./packages/standards)
-Machine-readable regulatory database: 46 WCAG convergence rules, 12 rule-locale files, national-law metadata for 16 countries plus the EU (17 jurisdictions), and fully typed exports (`EnrichedReport`, `FailingNode`, `LegalContext`).
+Machine-readable regulatory database: 49 WCAG convergence rules, 12 rule-locale files, national-law metadata for 16 countries plus the EU (17 jurisdictions), and fully typed exports (`EnrichedReport`, `FailingNode`, `LegalContext`). Coverage spans WCAG 2.1 AA (the level required by EN 301 549 V3.2.1) plus the first WCAG 2.2 criteria (2.5.8, 2.5.7, 2.4.11) as forward-looking documentation, not a current legal requirement.
 
 ```bash
 npm install @holmdigital/standards

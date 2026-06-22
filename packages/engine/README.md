@@ -35,6 +35,7 @@ For a comprehensive guide on CLI flags, CI/CD integration, and configuration fil
 - **Configurable Severity Threshold**: Fail CI only on critical/high issues (configurable).
 - **Pseudo-Automation**: Automatically generates Playwright/Puppeteer test scripts for manual verification steps.
 - **PDF Reporting**: Generates beautiful, compliant PDF reports with severity-sorted violations, HTML error counts, and `@HolmDigital/engine` branding.
+- **Plain-Language Reports**: `--plain` (or `--audience plain`) renders the report and PDF in plain language for managers, lawyers, and buyers without a technical background. Findings of the same rule are grouped into one card with an occurrence count, with a business-impact breakdown and Swedish-language fallback.
 - **Type-Safe Results**: Scan results return fully typed `EnrichedReport[]` with `failingNodes` and `legalContext` — zero `as any` casts in the pipeline.
 - **Build-Time Version Injection**: Engine version derived from `package.json` at build time via tsup `define` — CLI, cloud client, and reports always report the correct version.
 - **TypeScript**: Written in TypeScript with full type definitions included.
@@ -73,6 +74,8 @@ npx hd-a11y-scan <url> [options]
 | `--api-key <key>` | API Key for HolmDigital Cloud |
 | `--cloud-url <url>` | Custom Cloud API Endpoint (default: cloud.holmdigital.se) |
 | `--light` | Fast score-only mode — skips HTML validation and detailed legal mapping |
+| `--plain` | Plain-language mode (klarspråksläge): report and PDF in non-technical language for recipients without a technical background. Alias for `--audience plain`. |
+| `--audience <mode>` | Report audience: `developer` (default) or `plain`. |
 
 ### 🏆 Accessibility Badge
 If your site achieves a **100% score**, the CLI will generate a [Shields.io](https://shields.io/) badge that you can add to your project's README:
@@ -113,9 +116,9 @@ npx hd-a11y-scan https://hospital.example.com --country US --sector private --st
   "url": "https://example.com",
   "timestamp": "2026-01-13T17:05:11.749Z",
   "metadata": {
-    "engineVersion": "2.5.3",
+    "engineVersion": "2.8.0",
     "axeCoreVersion": "4.11.1",
-    "standardsVersion": "2.5.2",
+    "standardsVersion": "2.8.0",
     "scanDuration": 2891,
     "pageTitle": "Example Domain",
     "pageLanguage": "en"
