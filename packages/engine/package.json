@@ -97,7 +97,7 @@
     },
     "devDependencies": {
         "@types/cosmiconfig": "^5.0.3",
-        "@types/node": "^22.10.2",
+        "@types/node": "^26.0.0",
         "@types/react": "^18.3.1 || ^19.0.0",
         "@types/react-dom": "^18.3.1 || ^19.0.0",
         "@types/ws": "^8.5.13",
