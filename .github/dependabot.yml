@@ -1,0 +1,45 @@
+# Dependabot VERSION updates (separate engine from GitHub security updates,
+# which run without a config file). This is what keeps ordinary dependencies
+# from drifting until someone bumps them by hand (e.g. axe-core 4.12.1).
+#
+# Noise control: non-major updates are batched into a few grouped PRs per week.
+# Major bumps still arrive as individual PRs so they get a deliberate review
+# (this repo has been bitten by blind majors — vitest 2->4, esbuild ranges).
+version: 2
+updates:
+  # ---- npm: monorepo workspace. The root lockfile covers engine, components,
+  # standards and the root, so a single "/" entry manages all of them. ----
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "06:00"
+      timezone: "Europe/Stockholm"
+    open-pull-requests-limit: 10
+    commit-message:
+      prefix: "chore(deps)"
+      prefix-development: "chore(dev-deps)"
+    groups:
+      production-minor-patch:
+        dependency-type: "production"
+        update-types: ["minor", "patch"]
+      development-minor-patch:
+        dependency-type: "development"
+        update-types: ["minor", "patch"]
+
+  # ---- GitHub Actions: keeps workflow action versions current. We hit the
+  # Node-20 action deprecation manually before; this surfaces such bumps. ----
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "06:00"
+      timezone: "Europe/Stockholm"
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: "ci(deps)"
+    groups:
+      github-actions:
+        patterns: ["*"]
