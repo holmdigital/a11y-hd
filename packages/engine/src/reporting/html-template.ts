@@ -453,10 +453,16 @@ ${sortedGroups.map((group) => {
         ? `, ${escapeHtml(t('plain.occurrences', { count: group.count }))}`
         : '';
 
+    // KRAV 3: primary heading is the Swedish plain-language headline when
+    // present; the raw axe ruleId follows as a small technical reference.
+    const headingHtml = pl?.headline
+        ? `${escapeHtml(pl.headline)} <span class="issue-rule-ref">(${escapeHtml(report.ruleId)})</span>`
+        : escapeHtml(report.ruleId);
+
     if (pl) {
         return `  <li class="issue-item ${cardClass}">
     <span class="badge ${badgeClass}">${badgeText}</span>
-    <strong class="issue-id">${escapeHtml(report.ruleId)}${occurrences}</strong>
+    <strong class="issue-id">${headingHtml}${occurrences}</strong>
     <dl class="issue-fields">
       <dt>${t('plain.what_happens')}</dt><dd>${escapeHtml(pl.whatHappens)}</dd>
       <dt>${t('plain.who_is_affected')}</dt><dd>${escapeHtml(pl.whoIsAffected)}</dd>
@@ -470,7 +476,7 @@ ${sortedGroups.map((group) => {
         const rawDetail = isSwedish ? '' : ` ${escapeHtml(report.remediation.description)}`;
         return `  <li class="issue-item ${cardClass}">
     <span class="badge ${badgeClass}">${badgeText}</span>
-    <strong class="issue-id">${escapeHtml(report.ruleId)}${occurrences}</strong>
+    <strong class="issue-id">${headingHtml}${occurrences}</strong>
     <p class="issue-fallback"><span class="fallback-framing">${escapeHtml(t('plain.fallback_framing'))}</span>${rawDetail}</p>
   </li>`;
     }
@@ -621,13 +627,21 @@ ${sortedGroups.map((group) => {
     /* ---- Rule ID ---- */
     .issue-id {
       display: block;
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #1e293b;
+      margin-bottom: 0.75rem;
+      break-after: avoid;
+      page-break-after: avoid;
+    }
+
+    /* Raw axe rule id as a small, subordinate technical reference next to the
+       Swedish plain-language heading. */
+    .issue-rule-ref {
       font-size: 0.78rem;
       font-weight: 600;
       color: #64748b;
       font-family: ui-monospace, 'Cascadia Code', 'Courier New', monospace;
-      margin-bottom: 0.75rem;
-      break-after: avoid;
-      page-break-after: avoid;
     }
 
     /* ---- Field label/value pairs ---- */

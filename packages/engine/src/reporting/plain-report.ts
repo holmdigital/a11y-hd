@@ -125,7 +125,13 @@ export function renderPlainReport(result: ScanResult, lang: string = 'en'): void
             ? `, ${t('plain.occurrences', { count: group.count })}`
             : '';
 
-        console.log(`${index + 1}. ${badgeText} — ${report.ruleId}${occurrences}`);
+        // KRAV 3: primary heading is the Swedish plain-language headline when
+        // present; the raw axe ruleId stays as a small parenthetical technical
+        // reference. Falls back to the bare ruleId only when no headline exists.
+        const heading = pl?.headline
+            ? `${pl.headline} (${report.ruleId})`
+            : report.ruleId;
+        console.log(`${index + 1}. ${badgeText}: ${heading}${occurrences}`);
 
         if (pl) {
             // Five business-first fields from plainLanguage (D-04)

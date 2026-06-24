@@ -328,4 +328,57 @@ describe('renderPlainReport (D-10.4)', () => {
         // stoppar-kop > forsamrar > putsning, hindrar omitted (no findings), sums to 5.
         expect(output).toContain('5 issues: 1 Blocks purchases, 3 Degrades experience, 1 Worth polishing');
     });
+
+    it('KRAV 3: uses the Swedish plainLanguage headline as the primary heading, ruleId as a parenthetical reference', () => {
+        const result: ScanResult = {
+            ...BASE_RESULT,
+            reports: [
+                {
+                    ruleId: 'region',
+                    holmdigitalInsight: { diggRisk: 'medium', eaaImpact: 'medium', reasoning: '' },
+                    remediation: { description: 'x', technicalGuidance: '' },
+                    testability: { automated: true, requiresManualCheck: false, pseudoAutomation: false, complexity: 'simple' },
+                    plainLanguage: {
+                        headline: 'Sidans innehåll är inte organiserat i tydliga områden',
+                        whatHappens: 'w', whoIsAffected: 'a', businessImpact: 'b', howToFix: 'f',
+                        impactLevel: 'forsamrar',
+                    },
+                } as unknown as ScanResult['reports'][number],
+            ],
+            stats: { passed: 0, critical: 0, high: 0, medium: 1, low: 0, total: 1 },
+            score: 80,
+            complianceStatus: 'FAIL',
+        };
+
+        const output = captureConsoleLog(() => renderPlainReport(result, 'sv'));
+
+        // The Swedish headline is the primary heading, with the raw ruleId kept
+        // as a small parenthetical technical reference on the same line.
+        expect(output).toContain('Sidans innehåll är inte organiserat i tydliga områden (region)');
+    });
+
+    it('KRAV 3: falls back to the bare ruleId on the heading line when no headline exists', () => {
+        const result: ScanResult = {
+            ...BASE_RESULT,
+            reports: [
+                {
+                    ruleId: 'custom-rule',
+                    holmdigitalInsight: { diggRisk: 'high', eaaImpact: 'high', reasoning: '' },
+                    remediation: { description: 'fallback text', technicalGuidance: '' },
+                    testability: { automated: false, requiresManualCheck: true, pseudoAutomation: false, complexity: 'complex' },
+                    // No plainLanguage field
+                } as unknown as ScanResult['reports'][number],
+            ],
+            stats: { passed: 0, critical: 0, high: 1, medium: 0, low: 0, total: 1 },
+            score: 0,
+            complianceStatus: 'FAIL',
+        };
+
+        const output = captureConsoleLog(() => renderPlainReport(result, 'en'));
+
+        // Heading line shows the ruleId, not wrapped in parentheses (no headline).
+        expect(output).toContain('1. ');
+        expect(output).toContain('custom-rule');
+        expect(output).not.toContain('(custom-rule)');
+    });
 });
