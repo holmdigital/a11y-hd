@@ -262,4 +262,57 @@ describe('generateReportHTML plain template (D-08/D-16)', () => {
         // Breakdown counted per occurrence, ordered by impact, only levels with findings
         expect(html).toContain('4 issues: 1 Blocks purchases, 2 Degrades experience, 1 Worth polishing');
     });
+
+    it('KRAV 3: uses the Swedish headline as the card heading with the ruleId as a subordinate reference', () => {
+        const result: ScanResult = {
+            ...EMPTY_RESULT,
+            reports: [
+                {
+                    ruleId: 'region',
+                    holmdigitalInsight: { diggRisk: 'medium', eaaImpact: 'medium', reasoning: '' },
+                    remediation: { description: 'x', technicalGuidance: '' },
+                    testability: { automated: true, requiresManualCheck: false, pseudoAutomation: false, complexity: 'simple' },
+                    plainLanguage: {
+                        headline: 'Sidans innehåll är inte organiserat i tydliga områden',
+                        whatHappens: 'w', whoIsAffected: 'a', businessImpact: 'b', howToFix: 'f',
+                        impactLevel: 'forsamrar',
+                    },
+                } as unknown as ScanResult['reports'][number],
+            ],
+            stats: { passed: 0, critical: 0, high: 0, medium: 1, low: 0, total: 1 },
+            score: 80,
+            complianceStatus: 'FAIL',
+        };
+
+        const html = generateReportHTML(result, 'public', 'plain');
+
+        // Swedish headline is the heading text; ruleId wrapped in the subordinate ref span
+        expect(html).toContain('Sidans innehåll är inte organiserat i tydliga områden');
+        expect(html).toContain('<span class="issue-rule-ref">(region)</span>');
+    });
+
+    it('KRAV 3: falls back to the bare ruleId heading when a finding has no plainLanguage', () => {
+        const result: ScanResult = {
+            ...EMPTY_RESULT,
+            reports: [
+                {
+                    ruleId: 'custom-rule',
+                    holmdigitalInsight: { diggRisk: 'high', eaaImpact: 'high', reasoning: '' },
+                    remediation: { description: 'fallback text', technicalGuidance: '' },
+                    testability: { automated: false, requiresManualCheck: true, pseudoAutomation: false, complexity: 'complex' },
+                    // No plainLanguage field
+                } as unknown as ScanResult['reports'][number],
+            ],
+            stats: { passed: 0, critical: 0, high: 1, medium: 0, low: 0, total: 1 },
+            score: 0,
+            complianceStatus: 'FAIL',
+        };
+
+        const html = generateReportHTML(result, 'public', 'plain');
+
+        // Heading holds the ruleId, with no subordinate-ref span rendered in the
+        // card body (the .issue-rule-ref CSS rule always exists in the <style> block).
+        expect(html).toContain('custom-rule');
+        expect(html).not.toContain('<span class="issue-rule-ref">');
+    });
 });
