@@ -38,7 +38,13 @@ export default defineConfig({
         '!src/DatePicker/date-utils.ts',
     ],
     format: ['cjs', 'esm'],
-    dts: true,
+    // tsup 8.x hardcodes deprecated `baseUrl` into the DTS rollup compilerOptions
+    // (rollup.js: `baseUrl: compilerOptions.baseUrl || "."`), which TS6 flags as
+    // TS5101. Scope the silencer to the DTS pass only — putting it in the shared
+    // tsconfig.base breaks `tsc --noEmit` typecheck (TS5103) because that pass has
+    // no active deprecation to ignore. Tech debt: baseUrl dies in TS7; remove this
+    // once tsup stops injecting it or the DTS pipeline moves off rollup-plugin-dts.
+    dts: { compilerOptions: { ignoreDeprecations: '6.0' } },
     clean: true,
     external: ['react', 'react-dom', '@holmdigital/standards', 'lucide-react'],
     // Explicit guard against future tsup default flips. CSS extraction

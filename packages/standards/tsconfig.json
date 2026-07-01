@@ -4,7 +4,8 @@
         "rootDir": "./src",
         "outDir": "./dist",
         "resolveJsonModule": true,
-        "esModuleInterop": true
+        "esModuleInterop": true,
+        "types": ["node", "vitest/globals"]
     },
     "include": [
         "src/**/*"

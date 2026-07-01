@@ -36,8 +36,8 @@
         "README.md"
     ],
     "scripts": {
-        "build": "tsup src/index.ts --format cjs,esm --dts --clean",
-        "dev": "tsup src/index.ts --format cjs,esm --dts --watch",
+        "build": "tsup",
+        "dev": "tsup --watch",
         "test": "vitest",
         "test:ci": "vitest run",
         "lint": "eslint src",
@@ -77,7 +77,7 @@
     "devDependencies": {
         "@types/node": "^26.0.0",
         "tsup": "^8.3.5",
-        "typescript": "^5.7.2",
+        "typescript": "^6.0.3",
         "vitest": "^4.1.9"
     }
 }
