@@ -390,6 +390,14 @@
                 "telecommunications"
             ],
             "eaaDeadline": "2025-06-28"
+        },
+        "plainLanguage": {
+            "headline": "Webbläsarens flik visar inget tydligt sidnamn",
+            "whatHappens": "Sidan saknar en beskrivande titel, eller så har flera sidor samma titel. Titeln är namnet som visas i webbläsarens flik, i bokmärken och när en skärmläsare läser upp vilken sida besökaren har öppnat.",
+            "whoIsAffected": "Besökare som använder skärmläsare, och alla som har många flikar öppna samtidigt eller letar efter sidan bland sina bokmärken.",
+            "businessImpact": "När flikarna heter samma sak, eller ingenting alls, hittar besökaren inte tillbaka till din sida bland tio andra öppna flikar. Sidan blir svår att bokmärka och dela, och du tappar återbesök.",
+            "howToFix": "Ge varje sida en egen beskrivande titel, till exempel 'Kontakt, Holm Digital'. Din utvecklare ser till att titeln uppdateras även när innehållet byts utan att sidan laddas om.",
+            "impactLevel": "forsamrar"
         }
     },
     {
@@ -460,6 +468,14 @@
                 "telecommunications"
             ],
             "eaaDeadline": "2025-06-28"
+        },
+        "plainLanguage": {
+            "headline": "Sidans struktur finns bara på ytan",
+            "whatHappens": "Det som ser ut som rubriker och listor är egentligen bara text som gjorts stor eller fet. I koden finns ingen riktig struktur, så hjälpmedel kan inte känna igen vad som hör ihop.",
+            "whoIsAffected": "Besökare med skärmläsare, som lyssnar sig igenom sidan och behöver strukturen för att förstå vad som är rubrik, vad som är en lista och vad som hör ihop.",
+            "businessImpact": "En skärmläsare läser upp allt som en enda gråröra. Besökaren hittar inte fram till det hen kom för och lämnar.",
+            "howToFix": "Din utvecklare bygger rubriker, listor och tabeller med rätt kod i stället för att bara göra text stor eller fet. Då förstår hjälpmedlen strukturen.",
+            "impactLevel": "hindrar"
         }
     },
     {
@@ -530,6 +546,14 @@
                 "telecommunications"
             ],
             "eaaDeadline": "2025-06-28"
+        },
+        "plainLanguage": {
+            "headline": "Viktig information visas bara med färg",
+            "whatHappens": "Sidan använder färg som enda sätt att förmedla något, till exempel en röd ram för att markera ett fel, eller en färg som enda skillnad mellan en länk och vanlig text. Ser man inte färgen så missar man informationen.",
+            "whoIsAffected": "Personer med färgblindhet eller nedsatt färgseende (ungefär var tolfte man), personer med nedsatt syn, och alla som läser sidan i starkt solljus eller i gråskala.",
+            "businessImpact": "Om en besökare inte uppfattar att ett fält är fel ifyllt, eller inte ser att en text är en klickbar länk, så kör hen fast. Det som var tänkt att vägleda blir i stället en återvändsgränd.",
+            "howToFix": "Komplettera alltid färgen med något mer, till exempel en text, en ikon eller en understrykning. Din utvecklare markerar länkar och felmeddelanden så att de syns även utan färg.",
+            "impactLevel": "forsamrar"
         }
     },
     {
@@ -599,6 +623,14 @@
                 "telecommunications"
             ],
             "eaaDeadline": "2025-06-28"
+        },
+        "plainLanguage": {
+            "headline": "Sidan spräcker ramen när man zoomar in",
+            "whatHappens": "När besökaren förstorar sidan eller använder en smal skärm ryms inte innehållet, utan man tvingas skrolla i sidled för att läsa varje rad.",
+            "whoIsAffected": "Personer med nedsatt syn som förstorar texten rejält, och alla som besöker sajten i mobilen.",
+            "businessImpact": "Att skrolla fram och tillbaka på varje rad är så jobbigt att de flesta ger upp. Du tappar särskilt mobilbesökare, som ofta är de flesta.",
+            "howToFix": "Din utvecklare ser till att innehållet flödar om och anpassar sig efter skärmens bredd i stället för att ligga fast i en bred layout.",
+            "impactLevel": "hindrar"
         }
     },
     {
@@ -666,6 +698,14 @@
                 "telecommunications"
             ],
             "eaaDeadline": "2025-06-28"
+        },
+        "plainLanguage": {
+            "headline": "Knappar och fält syns knappt mot bakgrunden",
+            "whatHappens": "Kanterna på knappar, fält och ikoner har för svag kontrast mot bakgrunden. Det syns inte tydligt var man ska klicka eller skriva.",
+            "whoIsAffected": "Personer med nedsatt syn, äldre, och alla som sitter i starkt ljus eller med en billig skärm.",
+            "businessImpact": "Om besökaren inte ser att något går att klicka på så använder hen det inte. En osynlig knapp är en oanvänd knapp.",
+            "howToFix": "Din utvecklare gör kanterna på knappar, fält och viktiga ikoner tydligare mot bakgrunden så att man ser var man ska trycka.",
+            "impactLevel": "forsamrar"
         }
     },
     {
@@ -732,6 +772,14 @@
                 "telecommunications"
             ],
             "eaaDeadline": "2025-06-28"
+        },
+        "plainLanguage": {
+            "headline": "Texten klipps av när man glesar ut den",
+            "whatHappens": "En del besökare ökar avståndet mellan rader och bokstäver för att kunna läsa. Då hamnar text utanför sina rutor eller klipps av, så innehåll försvinner.",
+            "whoIsAffected": "Personer med dyslexi eller nedsatt syn som ställer in glesare text för att orka läsa.",
+            "businessImpact": "Om texten går sönder så fort besökaren anpassar den så kan hen inte läsa den, och en läsare som inte kan läsa handlar inte.",
+            "howToFix": "Din utvecklare låter rutorna växa med texten i stället för att ha fasta höjder, så att inget klipps av.",
+            "impactLevel": "forsamrar"
         }
     },
     {
@@ -800,6 +848,14 @@
                 "telecommunications"
             ],
             "eaaDeadline": "2025-06-28"
+        },
+        "plainLanguage": {
+            "headline": "Små hjälprutor försvinner innan man hinner läsa dem",
+            "whatHappens": "Text som dyker upp när man för muspekaren över något, till exempel en liten förklaringsruta, försvinner så fort man flyttar pekaren eller går inte att stänga.",
+            "whoIsAffected": "Personer som förstorar skärmen och behöver flytta pekaren för att läsa, och personer med motoriska svårigheter som har svårt att hålla pekaren stilla.",
+            "businessImpact": "Om hjälptexten försvinner innan besökaren hunnit läsa den så uteblir hjälpen, och en förvirrad besökare avbryter.",
+            "howToFix": "Din utvecklare ser till att de här rutorna ligger kvar tills man är klar, går att läsa med pekaren och går att stänga.",
+            "impactLevel": "forsamrar"
         }
     },
     {
@@ -869,6 +925,14 @@
                 "telecommunications"
             ],
             "eaaDeadline": "2025-06-28"
+        },
+        "plainLanguage": {
+            "headline": "Filmerna saknar undertext",
+            "whatHappens": "Video med tal saknar textning, så allt som sägs går bara att uppfatta genom ljudet.",
+            "whoIsAffected": "Personer som är döva eller hörselskadade, men också alla som tittar med ljudet av i en tyst miljö eller på en bullrig buss.",
+            "businessImpact": "Utan text går hela budskapet i filmen förlorat för en stor grupp. Innehåll de inte kan ta del av säljer inte.",
+            "howToFix": "Lägg till korrekt undertext på alla filmer med tal. Autogenererad text behöver alltid gås igenom och rättas.",
+            "impactLevel": "hindrar"
         }
     },
     {
@@ -936,6 +1000,14 @@
                 "telecommunications"
             ],
             "eaaDeadline": "2025-06-28"
+        },
+        "plainLanguage": {
+            "headline": "Filmen berättar inte det som bara syns",
+            "whatHappens": "I filmen visas viktig information bara i bild, till exempel text på skärmen eller något som händer, utan att det sägs i ljudet.",
+            "whoIsAffected": "Personer som inte kan se skärmen och bara har ljudet att gå på.",
+            "businessImpact": "Den som lyssnar men inte ser missar delar av budskapet och får en halv historia. Poängen med filmen går förlorad för dem.",
+            "howToFix": "Se till att allt viktigt som visas i bild också sägs i ljudet, antingen i berättarrösten eller i en version med syntolkning.",
+            "impactLevel": "forsamrar"
         }
     },
     {
@@ -1002,6 +1074,14 @@
                 "telecommunications"
             ],
             "eaaDeadline": "2025-06-28"
+        },
+        "plainLanguage": {
+            "headline": "Sidan låser sig till stående eller liggande läge",
+            "whatHappens": "Sajten tvingar fram ett visst läge, stående eller liggande, och går inte att vrida till det håll besökaren vill.",
+            "whoIsAffected": "Personer som har sin surfplatta eller telefon fast monterad, till exempel på en rullstol, och inte själva kan vrida enheten.",
+            "businessImpact": "Den som inte kan vrida sin enhet stängs ute helt. För dem blir sajten oanvändbar även om allt annat fungerar.",
+            "howToFix": "Din utvecklare tar bort låsningen så att sidan fungerar både stående och liggande.",
+            "impactLevel": "forsamrar"
         }
     },
     {
@@ -1069,6 +1149,14 @@
                 "telecommunications"
             ],
             "eaaDeadline": "2025-06-28"
+        },
+        "plainLanguage": {
+            "headline": "Formuläret hjälper inte till att fylla i sig självt",
+            "whatHappens": "Fälten för namn, adress och liknande är inte märkta med vad de innehåller, så webbläsaren kan inte fylla i dem åt besökaren automatiskt.",
+            "whoIsAffected": "Personer med motoriska svårigheter eller kognitiv funktionsnedsättning, som slipper mycket skrivande om uppgifterna fylls i automatiskt.",
+            "businessImpact": "Ju mer besökaren måste skriva för hand, desto fler hoppar av mitt i. Automatisk ifyllning gör att fler slutför.",
+            "howToFix": "Din utvecklare märker upp fälten så att webbläsarens sparade uppgifter kan fyllas i med ett klick.",
+            "impactLevel": "forsamrar"
         }
     },
     {
@@ -1135,6 +1223,14 @@
                 "telecommunications"
             ],
             "eaaDeadline": "2025-06-28"
+        },
+        "plainLanguage": {
+            "headline": "Besökaren fastnar och kan inte ta sig vidare",
+            "whatHappens": "En del av sidan fångar tangentbordet så att besökaren kommer in men inte ut igen. Det händer ofta i popup-rutor, kartor eller chattfönster som saknar en väg ut.",
+            "whoIsAffected": "Personer som använder tangentbord eller skärmläsare i stället för mus, och alla som av motoriska skäl inte kan peka och klicka.",
+            "businessImpact": "Fastnar besökaren i en fälla är hela sidan stängd för hen, ofta återstår bara att stänga webbläsaren och börja om. Är fällan i kassan eller ett formulär är köpet förlorat på fläcken.",
+            "howToFix": "Din utvecklare ser till att man alltid kan ta sig ut ur varje del med tangentbordet, till exempel med Esc eller genom att tabba vidare. Kontrollera särskilt egna popup-rutor och sånt som är inklistrat från andra tjänster, till exempel en chatt eller karta.",
+            "impactLevel": "stoppar-kop"
         }
     },
     {
@@ -1200,6 +1296,14 @@
                 "telecommunications"
             ],
             "eaaDeadline": "2025-06-28"
+        },
+        "plainLanguage": {
+            "headline": "Enstaka tangenttryck utlöser saker av misstag",
+            "whatHappens": "Sajten har genvägar som reagerar på en enda tangent. Det räcker att trycka fel eller prata för att något ska hända oavsiktligt.",
+            "whoIsAffected": "Personer som styr datorn med rösten, där ett enda uttalat ord kan råka utlösa en genväg.",
+            "businessImpact": "Oavsiktliga kommandon skapar förvirring och fel, men det drabbar en liten grupp och går ofta att undvika.",
+            "howToFix": "Din utvecklare låter besökaren stänga av eller ändra genvägarna, eller ser till att de bara gäller när rätt del av sidan är i fokus.",
+            "impactLevel": "putsning"
         }
     },
     {
@@ -1267,6 +1371,14 @@
                 "telecommunications"
             ],
             "eaaDeadline": "2025-06-28"
+        },
+        "plainLanguage": {
+            "headline": "Man blir utloggad innan man hinner klart",
+            "whatHappens": "Sidan har en tidsgräns som löper ut utan förvarning. Har man inte fyllt i tillräckligt snabbt loggas man ut och det ifyllda försvinner.",
+            "whoIsAffected": "Personer som läser eller skriver långsamt, använder hjälpmedel, eller behöver extra tid av vilket skäl som helst.",
+            "businessImpact": "Att förlora allt man fyllt i mitt i en ansökan eller ett köp är så frustrerande att många aldrig kommer tillbaka. Där dör affären.",
+            "howToFix": "Varna innan tiden går ut och ge en tydlig knapp för att förlänga. Låt besökaren få mer tid i stället för att kastas ut.",
+            "impactLevel": "stoppar-kop"
         }
     },
     {
@@ -1335,6 +1447,14 @@
                 "telecommunications"
             ],
             "eaaDeadline": "2025-06-28"
+        },
+        "plainLanguage": {
+            "headline": "Rörligt innehåll går inte att stoppa",
+            "whatHappens": "Något på sidan rör sig, blinkar eller byter bild av sig självt och går inte att pausa.",
+            "whoIsAffected": "Personer med koncentrationssvårigheter, till exempel ADHD, och personer som läser långsamt och inte hinner innan bilden byts.",
+            "businessImpact": "Ständig rörelse drar blicken från det som är viktigt. Besökaren tappar fokus på ditt budskap och på köpknappen.",
+            "howToFix": "Din utvecklare lägger till en tydlig pausknapp på bildspel och annat som rör sig av sig självt.",
+            "impactLevel": "forsamrar"
         }
     },
     {
@@ -1402,6 +1522,14 @@
                 "telecommunications"
             ],
             "eaaDeadline": "2025-06-28"
+        },
+        "plainLanguage": {
+            "headline": "Blinkande innehåll kan utlösa epileptiska anfall",
+            "whatHappens": "Något på sidan blinkar snabbt, mer än tre gånger i sekunden. Sådant blinkande kan framkalla anfall.",
+            "whoIsAffected": "Personer med ljuskänslig epilepsi, för vilka snabbt blinkande är en direkt hälsorisk.",
+            "businessImpact": "Det här är en säkerhetsfråga, inte bara en bekvämlighet. En besökare som riskerar sin hälsa lämnar sajten omedelbart, och du riskerar ditt rykte.",
+            "howToFix": "Ta bort eller sakta ner allt som blinkar snabbt så att inget blinkar mer än tre gånger i sekunden.",
+            "impactLevel": "hindrar"
         }
     },
     {
@@ -1471,6 +1599,14 @@
                 "telecommunications"
             ],
             "eaaDeadline": "2025-06-28"
+        },
+        "plainLanguage": {
+            "headline": "Besökaren tvingas igenom hela menyn på varje sida",
+            "whatHappens": "Det saknas ett sätt att hoppa förbi menyn och gå direkt till innehållet. Den som navigerar med tangentbord måste kliva igenom alla menylänkar på varje ny sida.",
+            "whoIsAffected": "Personer som navigerar med tangentbord eller skärmläsare i stället för mus.",
+            "businessImpact": "Att trötta ut besökaren med samma menyklick om och om igen gör att hen ger upp innan hen når det viktiga.",
+            "howToFix": "Din utvecklare lägger till en hoppa till innehåll-länk högst upp som blir synlig när man tabbar dit.",
+            "impactLevel": "forsamrar"
         }
     },
     {
@@ -1540,6 +1676,14 @@
                 "telecommunications"
             ],
             "eaaDeadline": "2025-06-28"
+        },
+        "plainLanguage": {
+            "headline": "Tangentbordet hoppar huller om buller på sidan",
+            "whatHappens": "När man klickar sig fram med tangentbordet hoppar markeringen i en ologisk ordning, inte i den ordning innehållet står på skärmen.",
+            "whoIsAffected": "Personer som navigerar med tangentbord eller skärmläsare och förlitar sig på att ordningen följer det man ser.",
+            "businessImpact": "Ett oförutsägbart hoppande gör sidan förvirrande att använda. Besökaren tappar tråden och avbryter.",
+            "howToFix": "Din utvecklare ser till att markeringen följer samma ordning som innehållet visas i på skärmen.",
+            "impactLevel": "forsamrar"
         }
     },
     {
@@ -1683,6 +1827,14 @@
                 "telecommunications"
             ],
             "eaaDeadline": "2025-06-28"
+        },
+        "plainLanguage": {
+            "headline": "Det finns bara ett sätt att hitta på sajten",
+            "whatHappens": "Besökaren kan bara ta sig fram på ett enda sätt, till exempel via menyn, utan att det finns någon sökfunktion eller innehållsförteckning som alternativ.",
+            "whoIsAffected": "Personer som har svårt att orientera sig i menyer och hellre söker, och alla som letar efter en specifik sida på en stor sajt.",
+            "businessImpact": "Hittar besökaren inte fram på sitt sätt så hittar hen inte fram alls. Ett extra sätt att navigera fångar upp fler.",
+            "howToFix": "Erbjud minst två sätt att hitta, till exempel både en meny och en sökfunktion.",
+            "impactLevel": "putsning"
         }
     },
     {
@@ -1750,6 +1902,14 @@
                 "telecommunications"
             ],
             "eaaDeadline": "2025-06-28"
+        },
+        "plainLanguage": {
+            "headline": "Rubriker och fältnamn säger inte vad de handlar om",
+            "whatHappens": "Rubrikerna och namnen på formulärfälten är vaga eller kryptiska och beskriver inte vad som kommer under dem eller ska fyllas i.",
+            "whoIsAffected": "Alla besökare, men särskilt de som skummar via rubriker med skärmläsare och behöver dem för att förstå var de ska.",
+            "businessImpact": "Otydliga rubriker gör att besökaren inte hittar rätt och gissar fel. Tydliga rubriker leder snabbare till mål och till köp.",
+            "howToFix": "Skriv rubriker och fältnamn som säger precis vad de handlar om, till exempel Leveransadress i stället för Steg 2.",
+            "impactLevel": "forsamrar"
         }
     },
     {
@@ -1819,6 +1979,14 @@
                 "telecommunications"
             ],
             "eaaDeadline": "2025-06-28"
+        },
+        "plainLanguage": {
+            "headline": "Det syns inte vilken knapp eller länk besökaren har valt",
+            "whatHappens": "När besökaren flyttar sig runt på sidan med tangentbordet syns det inte vilken knapp eller länk som är vald just nu. Markeringen som ska visa var fokus ligger är borttagen eller för svag.",
+            "whoIsAffected": "Personer som navigerar med tangentbord i stället för mus, av motoriska skäl eller vana, och alla som tillfälligt sitter utan fungerande mus.",
+            "businessImpact": "Om besökaren inte ser var hen befinner sig på sidan blir det gissningslek att klicka rätt. Många ger upp mitt i ett formulär eller ett köp, för ingen vill trycka i blindo.",
+            "howToFix": "Ta aldrig bort markeringen som visar fokus. Din utvecklare ser till att den valda knappen eller länken får en tydlig ram med tillräcklig kontrast.",
+            "impactLevel": "hindrar"
         }
     },
     {
@@ -1958,6 +2126,14 @@
                 "telecommunications"
             ],
             "eaaDeadline": "2025-06-28"
+        },
+        "plainLanguage": {
+            "headline": "Utländska ord läses upp med fel uttal",
+            "whatHappens": "Enstaka ord eller citat på ett annat språk är inte utmärkta i koden. Skärmläsaren läser dem med svenskt uttal och de blir obegripliga.",
+            "whoIsAffected": "Personer med skärmläsare som stöter på inklistrade fraser på till exempel engelska mitt i den svenska texten.",
+            "businessImpact": "Enstaka felläsningar stör men fäller sällan hela upplevelsen. Det är mest en fråga om finish.",
+            "howToFix": "Din utvecklare märker upp de främmande orden med rätt språk så att de uttalas korrekt.",
+            "impactLevel": "putsning"
         }
     },
     {
@@ -2025,6 +2201,14 @@
                 "telecommunications"
             ],
             "eaaDeadline": "2025-06-28"
+        },
+        "plainLanguage": {
+            "headline": "Saker händer bara för att man klickar sig till ett fält",
+            "whatHappens": "Så fort ett fält eller en meny får markeringen händer något oväntat, till exempel att ett nytt fönster öppnas eller sidan byts.",
+            "whoIsAffected": "Personer som navigerar med tangentbord eller skärmläsare och bara ville flytta sig till fältet, inte starta något.",
+            "businessImpact": "Oväntade hopp får besökaren att känna att hen tappar kontrollen. En osäker besökare vågar inte fortsätta.",
+            "howToFix": "Din utvecklare ser till att ingenting startar bara för att man flyttar sig till ett fält. Något ska hända först när besökaren själv väljer det.",
+            "impactLevel": "forsamrar"
         }
     },
     {
@@ -2093,6 +2277,14 @@
                 "telecommunications"
             ],
             "eaaDeadline": "2025-06-28"
+        },
+        "plainLanguage": {
+            "headline": "Sidan laddar om så fort man gör ett val",
+            "whatHappens": "När besökaren väljer något i en lista eller kryssar i en ruta laddar sidan om eller flyttar sig, utan förvarning.",
+            "whoIsAffected": "Personer med skärmläsare och personer med kognitiv funktionsnedsättning, som tappar bort sig när sidan plötsligt ändras.",
+            "businessImpact": "Oförutsägbara omladdningar mitt i ett val gör besökaren osäker och avbryter.",
+            "howToFix": "Din utvecklare låter besökaren göra klart sina val och bekräfta med en knapp, i stället för att sidan ändras vid varje klick.",
+            "impactLevel": "forsamrar"
         }
     },
     {
@@ -2159,6 +2351,14 @@
                 "telecommunications"
             ],
             "eaaDeadline": "2025-06-28"
+        },
+        "plainLanguage": {
+            "headline": "Menyn byter plats mellan sidorna",
+            "whatHappens": "Menyn och andra återkommande delar ligger på olika ställen eller i olika ordning på olika sidor.",
+            "whoIsAffected": "Personer med kognitiv funktionsnedsättning och alla som lärt sig var saker finns och sedan inte hittar dem igen.",
+            "businessImpact": "Om besökaren måste leta upp menyn på nytt på varje sida tröttnar hen. Igenkänning gör sajten snabbare att använda.",
+            "howToFix": "Håll menyn och återkommande element på samma plats och i samma ordning på alla sidor.",
+            "impactLevel": "forsamrar"
         }
     },
     {
@@ -2226,6 +2426,14 @@
                 "telecommunications"
             ],
             "eaaDeadline": "2025-06-28"
+        },
+        "plainLanguage": {
+            "headline": "Samma funktion heter olika på olika ställen",
+            "whatHappens": "En och samma funktion kallas olika saker eller visas med olika ikoner på olika sidor, till exempel Sök på ett ställe och Hitta på ett annat.",
+            "whoIsAffected": "Personer med kognitiv funktionsnedsättning och alla som känner igen en knapp på dess namn eller ikon.",
+            "businessImpact": "Olika namn på samma sak får besökaren att tro att det är olika funktioner. Det skapar tvekan och onödiga supportfrågor.",
+            "howToFix": "Använd samma namn och samma ikon för samma funktion överallt på sajten.",
+            "impactLevel": "putsning"
         }
     },
     {
@@ -2293,6 +2501,14 @@
                 "telecommunications"
             ],
             "eaaDeadline": "2025-06-28"
+        },
+        "plainLanguage": {
+            "headline": "Formuläret säger inte vad som blev fel",
+            "whatHappens": "När besökaren fyller i något fel i ett formulär förklaras inte felet i text, eller så markeras fältet bara med en färg. Det står inte vilket fält som är fel eller hur man rättar det.",
+            "whoIsAffected": "Besökare som använder skärmläsare och inte ser en röd markering, personer med nedsatt syn, och alla som stressar igenom ett formulär och behöver tydlig vägledning.",
+            "businessImpact": "Ett formulär som inte säger vad som blev fel gör att besökaren försöker om och om igen och till slut ger upp. Varje avbrutet formulär är en tappad kontakt, bokning eller order.",
+            "howToFix": "Din utvecklare visar ett tydligt felmeddelande i text nära fältet, som pekar ut exakt vad som är fel och hur det rättas. 'Något gick fel' räcker inte när felet är känt.",
+            "impactLevel": "hindrar"
         }
     },
     {
@@ -2359,6 +2575,14 @@
                 "telecommunications"
             ],
             "eaaDeadline": "2025-06-28"
+        },
+        "plainLanguage": {
+            "headline": "Felmeddelandet säger inte hur man rättar felet",
+            "whatHappens": "När besökaren fyllt i något fel säger sidan bara att det är fel, utan att förklara vad som förväntas eller hur man rättar det.",
+            "whoIsAffected": "Alla som fyller i formulär, särskilt de som har svårt att gissa sig till rätt format på egen hand.",
+            "businessImpact": "En besökare som fastnar på ett fel utan att förstå hur det ska rättas ger upp mitt i. Ett hjälpsamt tips räddar affären.",
+            "howToFix": "Skriv felmeddelanden som säger vad som gäller, till exempel Ange datum som ÅÅÅÅ-MM-DD, inte bara Fel.",
+            "impactLevel": "forsamrar"
         }
     },
     {
@@ -2427,6 +2651,14 @@
                 "telecommunications"
             ],
             "eaaDeadline": "2025-06-28"
+        },
+        "plainLanguage": {
+            "headline": "Inget skyddsnät innan man binder sig eller betalar",
+            "whatHappens": "Vid köp, avtal eller andra viktiga beslut går det inte att kontrollera, ändra eller ångra innan man skickar in det bindande.",
+            "whoIsAffected": "Alla besökare, särskilt de som lätt gör fel av misstag och behöver en chans att granska innan de bekräftar.",
+            "businessImpact": "Beslut som inte går att ångra leder till felaktiga beställningar, ånger och supportärenden. Ett bekräftelsesteg minskar dyra misstag.",
+            "howToFix": "Din utvecklare lägger till en sammanfattning innan det slutgiltiga steget, där besökaren kan granska och ändra.",
+            "impactLevel": "forsamrar"
         }
     },
     {
@@ -2494,6 +2726,14 @@
                 "telecommunications"
             ],
             "eaaDeadline": "2025-06-28"
+        },
+        "plainLanguage": {
+            "headline": "Rörig kod under ytan kan förvirra hjälpmedel",
+            "whatHappens": "Koden bakom sidan har fel som dubbla märkningar och taggar som inte stängs. Moderna webbläsare rättar mycket själva, men hjälpmedel kan snubbla på det.",
+            "whoIsAffected": "Personer med skärmläsare, i de fall den röriga koden får hjälpmedlet att läsa upp fel.",
+            "businessImpact": "Oftast märks det inte, men i värsta fall läser skärmläsaren upp fel och besökaren blir vilseledd. Billig hygien att åtgärda.",
+            "howToFix": "Din utvecklare rensar koden så att varje märkning är unik och alla taggar stängs korrekt.",
+            "impactLevel": "putsning"
         }
     },
     {
@@ -2641,6 +2881,14 @@
                 "telecommunications"
             ],
             "eaaDeadline": "2025-06-28"
+        },
+        "plainLanguage": {
+            "headline": "Viktiga meddelanden når inte fram till alla",
+            "whatHappens": "När något händer utan att sidan laddas om, till exempel att en vara läggs i varukorgen eller en sökning blir klar, visas det bara på skärmen. Skärmläsaren berättar det inte.",
+            "whoIsAffected": "Personer med skärmläsare, som inte ser bekräftelsen och inte får veta att något faktiskt hände.",
+            "businessImpact": "Om besökaren inte får veta att varan lades i korgen eller att något sparades så tror hen att det inte fungerade och gör om eller ger upp.",
+            "howToFix": "Din utvecklare ser till att sådana meddelanden också läses upp av skärmläsaren, inte bara visas på skärmen.",
+            "impactLevel": "forsamrar"
         }
     },
     {
@@ -2778,6 +3026,14 @@
                 "telecommunications"
             ],
             "eaaDeadline": "2025-06-28"
+        },
+        "plainLanguage": {
+            "headline": "Sidan saknar en tydlig huvudrubrik",
+            "whatHappens": "Sidan har ingen huvudrubrik (en så kallad H1) som talar om vad sidan handlar om. Huvudrubriken är den viktigaste rubriken och det första en skärmläsare letar efter för att sammanfatta sidan.",
+            "whoIsAffected": "Besökare som använder skärmläsare och hoppar mellan rubriker för att snabbt förstå en sida, samt alla som skummar sidan för att se om de hamnat rätt.",
+            "businessImpact": "Utan en tydlig huvudrubrik vet inte besökaren direkt om hen kommit rätt. Osäkerheten gör att fler lämnar sidan innan de läst klart, och Google får också svårare att förstå vad sidan handlar om.",
+            "howToFix": "Din utvecklare lägger till exakt en huvudrubrik högst upp i innehållet, som med egna ord beskriver just den sidan.",
+            "impactLevel": "forsamrar"
         }
     },
     {
@@ -2912,6 +3168,14 @@
                 "telecommunications"
             ],
             "eaaDeadline": "2025-06-28"
+        },
+        "plainLanguage": {
+            "headline": "Sidhuvudet ligger fel i strukturen",
+            "whatHappens": "Sidans sidhuvud är inpackat på fel ställe i koden i stället för att ligga överst som ett eget område. Då hittar hjälpmedel det inte lika lätt.",
+            "whoIsAffected": "Personer med skärmläsare som brukar hoppa direkt till sidhuvudet för att nå logotyp, meny och sök.",
+            "businessImpact": "En liten strukturmiss som gör navigeringen lite krångligare för hjälpmedelsanvändare. Värt att rätta, men marginellt.",
+            "howToFix": "Din utvecklare flyttar sidhuvudet så att det ligger överst som ett eget område, inte inuti något annat.",
+            "impactLevel": "putsning"
         }
     },
     {
@@ -2975,6 +3239,14 @@
                 "telecommunications"
             ],
             "eaaDeadline": "2025-06-28"
+        },
+        "plainLanguage": {
+            "headline": "Sidan har flera sidhuvuden",
+            "whatHappens": "Sidan är uppmärkt med mer än ett sidhuvud. Hjälpmedel förväntar sig ett enda och blir förvirrade av flera.",
+            "whoIsAffected": "Personer med skärmläsare som navigerar via sidans områden och inte vet vilket sidhuvud som är det rätta.",
+            "businessImpact": "Dubbla sidhuvuden gör navigeringen otydlig för hjälpmedelsanvändare, men det är en liten sak att städa bort.",
+            "howToFix": "Din utvecklare ser till att bara den översta delen är uppmärkt som sidhuvud.",
+            "impactLevel": "putsning"
         }
     },
     {
@@ -3038,6 +3310,14 @@
                 "telecommunications"
             ],
             "eaaDeadline": "2025-06-28"
+        },
+        "plainLanguage": {
+            "headline": "Flera områden på sidan har samma namn",
+            "whatHappens": "Sidan har flera likadana områden, till exempel flera menyer, utan att de fått egna namn. Hjälpmedel kan inte skilja dem åt.",
+            "whoIsAffected": "Personer med skärmläsare som listar sidans områden och ser flera med samma namn utan att veta vad som är vad.",
+            "businessImpact": "Namnlösa likadana områden gör det svårare att navigera med hjälpmedel, men det är en mindre justering.",
+            "howToFix": "Din utvecklare ger varje område ett eget namn, till exempel Huvudmeny och Sidfotsmeny.",
+            "impactLevel": "putsning"
         }
     },
     {
@@ -3110,69 +3390,6 @@
             "businessImpact": "När sidan saknar tydlig struktur kan skärmläsaranvändare inte hoppa direkt till huvudinnehållet. De navigerar rad för rad och ger upp innan de slutfört det de kom för.",
             "howToFix": "Omslut allt innehåll i lämpliga HTML-element som header, nav, main och footer. Din utvecklare kan strukturera om sidlayouten för att uppfylla kravet.",
             "impactLevel": "forsamrar"
-        }
-    },
-    {
-        "ruleId": "audio-description",
-        "wcagCriteria": "1.2.5",
-        "wcagLevel": "AA",
-        "wcagTitle": "Audio Description (Prerecorded)",
-        "wcagVersion": "2.0",
-        "en301549Criteria": "9.1.2.5",
-        "en301549Title": "Audio description (prerecorded)",
-        "en301549Chapter": 9,
-        "dosLagenApplies": true,
-        "dosLagenReference": "100 § (Tidsberoende media)",
-        "remediation": {
-            "description": "Förinspelat videoinnehåll måste ha syntolkning om visuell information är kritisk.",
-            "technicalGuidance": "Tillhandahåll ett alternativt ljudspår eller version som beskriver vad som händer visuellt.",
-            "component": null,
-            "wcagTechnique": [
-                "G78"
-            ]
-        },
-        "holmdigitalInsight": {
-            "diggRisk": "medium",
-            "eaaImpact": "low",
-            "swedishInterpretation": "Video som förmedlar information visuellt måste beskrivas för de som inte kan se skärmen.",
-            "commonMistakes": [
-                "Video saknar syntolkning trots viktig visuell info"
-            ]
-        },
-        "testability": {
-            "automated": false,
-            "requiresManualCheck": true,
-            "pseudoAutomation": false,
-            "complexity": "hard"
-        },
-        "tags": [
-            "wcag2aa",
-            "wcag125",
-            "WAD",
-            "EAA",
-            "public-sector",
-            "private-sector"
-        ],
-        "legalContext": {
-            "appliesTo": [
-                "WAD",
-                "EAA",
-                "ADA",
-                "REHAB"
-            ],
-            "sectors": [
-                "public",
-                "private"
-            ],
-            "wadArticle": "Article 4, Annex referencing EN 301 549",
-            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
-            "eaaProductScope": [
-                "e-commerce",
-                "banking",
-                "transport",
-                "telecommunications"
-            ],
-            "eaaDeadline": "2025-06-28"
         }
     },
     {
@@ -3273,7 +3490,15 @@
             "interaction",
             "wcag22aa",
             "wcag257"
-        ]
+        ],
+        "plainLanguage": {
+            "headline": "Vissa saker går bara att styra genom att dra",
+            "whatHappens": "En del funktioner fungerar bara om man drar med fingret eller musen, till exempel en karta, ett reglage eller ett bildspel. Det finns inget sätt att klicka i stället.",
+            "whoIsAffected": "Personer med darrhänthet eller nedsatt finmotorik, och de som styr med tangentbord eller andra hjälpmedel och inte kan dra precist.",
+            "businessImpact": "Låser du en funktion bakom en dragrörelse så stängs de som inte kan dra ute från just den funktionen.",
+            "howToFix": "Din utvecklare lägger till klickbara alternativ, till exempel plus- och minusknappar på reglage och pilar på bildspel.",
+            "impactLevel": "hindrar"
+        }
     },
     {
         "ruleId": "focus-not-obscured",
@@ -3318,6 +3543,14 @@
             "interaction",
             "wcag22aa",
             "wcag2411"
-        ]
+        ],
+        "plainLanguage": {
+            "headline": "Besökaren tappar bort var hen är på sidan",
+            "whatHappens": "När man klickar sig fram med tangentbordet kan det man just markerat hamna bakom ett sidhuvud som ligger kvar högst upp, en kakruta eller en chattbubbla. Då syns inte längre var man är.",
+            "whoIsAffected": "Personer som navigerar med tangentbord och personer som förstorar skärmen, och som tappar orienteringen när markeringen försvinner bakom något.",
+            "businessImpact": "En besökare som inte ser var hen befinner sig på sidan blir osäker och avbryter. Särskilt kännbart i formulär och kassa.",
+            "howToFix": "Din utvecklare ser till att det markerade alltid syns, genom att lämna plats så att det inte hamnar bakom fasta element.",
+            "impactLevel": "forsamrar"
+        }
     }
 ]
