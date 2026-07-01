@@ -15,6 +15,7 @@ import { generateStatement, generateStatementContent, StatementMetadata } from '
 import { generateBadgeMarkdown } from '../reporting/badge-generator';
 import { setLanguage, t } from '../i18n';
 import type { EnrichedReport } from '@holmdigital/standards';
+import { isPlainLanguageSupported, getPlainLanguageSupportedLanguages } from '../reporting/plain-language-support';
 import { sendToCloud, CloudConfig } from './cloud-client';
 
 /**
@@ -128,6 +129,18 @@ program
         };
 
         setLanguage(options.lang);
+
+        // Klarspråk language gate (brand protection): --plain only renders in a
+        // language whose core rules are translated. Otherwise the report would be
+        // served in English under a non-English flag, which defeats the point of
+        // klarspråk. Refuse early, before scanning. JSON output is raw data and
+        // unaffected by audience, so it is never gated.
+        if (options.audience === 'plain' && !options.json && !isPlainLanguageSupported(options.lang)) {
+            console.error(chalk.red(`✗ ${t('plain.gate_blocked', { lang: options.lang })}`));
+            console.error(chalk.gray(`  ${t('plain.gate_supported', { langs: getPlainLanguageSupportedLanguages().join(', ') })}`));
+            console.error(chalk.gray(`  ${t('plain.gate_howto')}`));
+            process.exit(1);
+        }
 
         if (!isValidUrl(url)) {
             // ... validation ...

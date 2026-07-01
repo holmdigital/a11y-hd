@@ -55,6 +55,9 @@
         "report_tagline": "Tillgänglighetsrapport",
         "attribution": "Rapporten genererades av HolmDigital Engine, en del av HolmDigitals ekosystem för tillgänglighet.",
         "fallback_framing": "Tekniskt fynd som din utvecklare behöver titta på.",
-        "occurrences": "{count} förekomster"
+        "occurrences": "{count} förekomster",
+        "gate_blocked": "Klarspråk stöds ännu inte på '{lang}'.",
+        "gate_supported": "Språk med klarspråk: {langs}.",
+        "gate_howto": "Kör utan --plain för utvecklarrapporten, eller välj ett språk som stöds (t.ex. --lang sv)."
     }
 }
