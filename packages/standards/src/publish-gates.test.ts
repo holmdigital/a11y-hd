@@ -72,9 +72,14 @@ describe('PUB-09 publish-gate drift guard', () => {
             expect(pkg.scripts['prepublishOnly']).toBe('npm run verify');
         });
 
-        it('components devDependencies includes @types/node pinned to ^22', () => {
+        // @types/node moved 22 -> 26 across all three packages (and website)
+        // via Dependabot. Verified 2026-07-01 that all three packages typecheck
+        // green against @types/node@22, so no code relies on Node-26-only APIs
+        // and the Node 22 runtime is unaffected. The guard tracks the current
+        // pinned major so cross-package drift stays visible.
+        it('components devDependencies includes @types/node pinned to ^26', () => {
             const typesNode = pkg.devDependencies?.['@types/node'] ?? '';
-            expect(typesNode).toMatch(/^\^22/);
+            expect(typesNode).toMatch(/^\^26/);
         });
     });
 
