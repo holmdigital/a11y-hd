@@ -91,14 +91,14 @@
         "html-validate": "11.5.3",
         "ora": "^8.1.1",
         "puppeteer": "25.2.0",
-        "react": "^18.3.1 || ^19.0.0",
+        "react": "^19.2.7",
         "react-dom": "^18.3.1 || ^19.0.0",
         "ws": "^8.18.0"
     },
     "devDependencies": {
         "@types/cosmiconfig": "^5.0.3",
         "@types/node": "^26.0.0",
-        "@types/react": "^18.3.1 || ^19.0.0",
+        "@types/react": "^19.2.17",
         "@types/react-dom": "^18.3.1 || ^19.0.0",
         "@types/ws": "^8.5.13",
         "tsup": "^8.3.5",
