@@ -58,6 +58,7 @@ holmdigital-wiki-standalone/
 # AI Agent Documentation (private)
 CLAUDE.md
 GEMINI.md
+.claude/
 .skills/
 .agent/
 .gemini/
