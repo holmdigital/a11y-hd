@@ -32,6 +32,13 @@ export default [
             // pre-existing patterns out of Phase 33 scope — deferred
             // to a dedicated react-hooks audit plan.
             "react-hooks/exhaustive-deps": "warn",
+            // no-useless-assignment was promoted into eslint's recommended
+            // set in ESLint 10. It flags 6 benign defensive-default patterns
+            // (switch/loop seed values e.g. `let nextIndex = index`, fallback
+            // empties) across engine + components — none are bugs. Disabled to
+            // keep the eslint 9->10 bump behavior-preserving; adopt it
+            // deliberately in a dedicated cleanup if desired.
+            "no-useless-assignment": "off",
             // Custom rules
             "@typescript-eslint/no-explicit-any": "warn",
             "@typescript-eslint/no-unused-vars": ["warn", { "argsIgnorePattern": "^_" }]
