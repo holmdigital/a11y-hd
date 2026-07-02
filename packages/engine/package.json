@@ -86,7 +86,7 @@
         "@holmdigital/standards": "^2.8.0",
         "axe-core": "^4.12.1",
         "chalk": "^5.3.0",
-        "commander": "^12.1.0",
+        "commander": "^15.0.0",
         "cosmiconfig": "^9.0.2",
         "html-validate": "11.5.4",
         "ora": "^8.1.1",
