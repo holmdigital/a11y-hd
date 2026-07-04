@@ -88,26 +88,26 @@ export const TooltipTrigger = ({ children, asChild: _asChild = false, ...props }
         }
     };
 
-    if (React.isValidElement(children)) {
-        return React.cloneElement(children as React.ReactElement<React.HTMLAttributes<HTMLElement>>, {
+    if (React.isValidElement<React.HTMLAttributes<HTMLElement>>(children)) {
+        return React.cloneElement(children, {
             'aria-describedby': open ? id : undefined,
-            onMouseEnter: (e: React.MouseEvent) => {
+            onMouseEnter: (e: React.MouseEvent<HTMLElement>) => {
                 handleOpen();
                 children.props.onMouseEnter?.(e);
             },
-            onMouseLeave: (e: React.MouseEvent) => {
+            onMouseLeave: (e: React.MouseEvent<HTMLElement>) => {
                 handleClose();
                 children.props.onMouseLeave?.(e);
             },
-            onFocus: (e: React.FocusEvent) => {
+            onFocus: (e: React.FocusEvent<HTMLElement>) => {
                 handleOpen();
                 children.props.onFocus?.(e);
             },
-            onBlur: (e: React.FocusEvent) => {
+            onBlur: (e: React.FocusEvent<HTMLElement>) => {
                 handleClose();
                 children.props.onBlur?.(e);
             },
-            onKeyDown: (e: React.KeyboardEvent) => {
+            onKeyDown: (e: React.KeyboardEvent<HTMLElement>) => {
                 handleKeyDown(e);
                 if (!e.defaultPrevented) {
                     children.props.onKeyDown?.(e);

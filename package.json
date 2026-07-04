@@ -8,6 +8,12 @@
         "packages/components",
         "packages/standards"
     ],
+    "overrides": {
+        "react": "^19.2.7",
+        "react-dom": "^19.2.7",
+        "@types/react": "^19.2.0",
+        "@types/react-dom": "^19.2.0"
+    },
     "scripts": {
         "build": "npm run build -w @holmdigital/standards && npm run build -w @holmdigital/components && npm run build -w @holmdigital/engine",
         "dev": "npm run dev --workspaces --if-present",
