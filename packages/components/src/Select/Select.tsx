@@ -84,7 +84,7 @@ interface SelectContextType {
     setIsOpen: (open: boolean) => void;
     highlightedIndex: number;
     setHighlightedIndex: (index: number) => void;
-    listboxRef: React.RefObject<HTMLDivElement>;
+    listboxRef: React.RefObject<HTMLDivElement | null>;
     /** Stable id for the listbox; trigger references it via aria-controls. */
     listboxId: string;
     /** Stable id prefix for option elements (used by aria-activedescendant). */
