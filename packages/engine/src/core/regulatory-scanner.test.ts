@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { readFileSync } from 'node:fs';
 import { getEngineVersion, RegulatoryScanner } from './regulatory-scanner';
+import { setLanguage } from '../i18n';
 
 /**
  * Inline AxeScanOutput type — NOT exported from regulatory-scanner.ts,
@@ -150,6 +151,46 @@ describe('enrichResults', () => {
         expect(reports[0].failingNodes).toBeDefined();
         // Second report is fallback (no failingNodes)
         expect(reports[1].failingNodes).toBeUndefined();
+    });
+});
+
+describe('enrichResultsLight (klarspråk on the light path)', () => {
+    // enrichResultsLight is private; bracket notation mirrors the enrichResults tests.
+    const scanner = new RegulatoryScanner({ url: 'https://test.example.com' });
+    const enrichLight = (input: AxeScanOutput) =>
+        (scanner as unknown as { enrichResultsLight: (i: AxeScanOutput) => Promise<import('@holmdigital/standards').EnrichedReport[]> })
+            .enrichResultsLight(input);
+
+    it('attaches Swedish plainLanguage for a mapped rule', async () => {
+        setLanguage('sv');
+        const reports = await enrichLight(mockAxeOutput);
+        setLanguage('en');
+
+        expect(reports.length).toBe(1);
+        expect(reports[0].ruleId).toBe('color-contrast');
+        expect(reports[0].plainLanguage).toBeDefined();
+        expect(reports[0].plainLanguage!.headline.length).toBeGreaterThan(0);
+        expect(['stoppar-kop', 'hindrar', 'forsamrar', 'putsning']).toContain(reports[0].plainLanguage!.impactLevel);
+    });
+
+    it('leaves plainLanguage undefined for an unmapped rule', async () => {
+        const reports = await enrichLight(mockAxeOutputNoMatch);
+        expect(reports[0].plainLanguage).toBeUndefined();
+    });
+
+    it('only looks up klarspråk for the top-N findings', async () => {
+        // Nine copies of the mapped rule: index 7 is within top-8, index 8 is beyond it.
+        const many: AxeScanOutput = {
+            violations: Array.from({ length: 9 }, () => mockAxeOutput.violations[0]),
+            passes: []
+        };
+        setLanguage('sv');
+        const reports = await enrichLight(many);
+        setLanguage('en');
+
+        expect(reports.length).toBe(9);
+        expect(reports[7].plainLanguage).toBeDefined();
+        expect(reports[8].plainLanguage).toBeUndefined();
     });
 });
 

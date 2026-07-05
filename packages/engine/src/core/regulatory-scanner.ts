@@ -211,7 +211,7 @@ export class RegulatoryScanner {
 
             // Transformera resultat med regulatorisk kontext
             const regulatoryReports = this.options.light
-                ? this.enrichResultsLight(axeResults)
+                ? await this.enrichResultsLight(axeResults)
                 : await this.enrichResults(axeResults);
 
             const scanDuration = Date.now() - startTime;
@@ -252,10 +252,15 @@ export class RegulatoryScanner {
     }
 
     /**
-     * Light enrichment — maps axe severity directly without standards lookup.
-     * Much faster: no async imports, no rule database queries.
+     * Light enrichment — maps axe severity directly, then attaches plain-language
+     * (klarspråk) copy to the top findings so the public light scan can render
+     * readable cards instead of raw axe rule ids. Stays light: a single standards
+     * import and a lookup only for the first N findings (the widget shows a
+     * handful). The language follows getCurrentLang() — the public Swedish scan
+     * sets 'sv'; generateRegulatoryReport carries the built-in EN fallback for
+     * rules lacking the target language.
      */
-    private enrichResultsLight(axeResults: AxeScanOutput): EnrichedReport[] {
+    private async enrichResultsLight(axeResults: AxeScanOutput): Promise<EnrichedReport[]> {
         const impactToRisk: Record<string, 'critical' | 'high' | 'medium' | 'low'> = {
             critical: 'critical',
             serious: 'high',
@@ -263,9 +268,20 @@ export class RegulatoryScanner {
             minor: 'low'
         };
 
-        return axeResults.violations.map(violation => {
+        const KLARSPRAK_TOP_N = 8;
+        const { generateRegulatoryReport } = await import('@holmdigital/standards');
+        const { getCurrentLang } = await import('../i18n');
+        const lang = getCurrentLang();
+
+        return axeResults.violations.map((violation, index) => {
             const impact = (violation as unknown as { impact?: string }).impact || 'moderate';
             const risk = impactToRisk[impact] || 'medium';
+
+            // Klarspråk only for the top-N findings (undefined for the rest, and
+            // for unmapped best-practice rules generateRegulatoryReport returns null).
+            const plainLanguage = index < KLARSPRAK_TOP_N
+                ? generateRegulatoryReport(violation.id, lang)?.plainLanguage
+                : undefined;
 
             return {
                 ruleId: violation.id,
@@ -274,6 +290,7 @@ export class RegulatoryScanner {
                 dosLagenReference: '',
                 diggRisk: risk,
                 eaaImpact: risk,
+                plainLanguage,
                 remediation: {
                     description: violation.help,
                     technicalGuidance: violation.description,
