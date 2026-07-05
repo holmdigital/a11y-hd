@@ -3,6 +3,7 @@ import type { EnrichedReport, BusinessImpactLevel } from '@holmdigital/standards
 import { ScanResult } from '../core/regulatory-scanner';
 import { t, setLanguage, getCurrentLang } from '../i18n';
 import { groupReportsByRule, impactBreakdown } from './plain-group';
+import { languageDisplayName } from './plain-language-support';
 
 /**
  * Impact sort order: lower number = higher priority.
@@ -73,8 +74,15 @@ function levelOf(report: EnrichedReport): BusinessImpactLevel {
  * @param result - ScanResult with plainLanguage populated at enrichment time (plan 02)
  * @param lang   - Language code; passed to setLanguage() before rendering
  */
-export function renderPlainReport(result: ScanResult, lang: string = 'en'): void {
+export function renderPlainReport(result: ScanResult, lang: string = 'en', plainFallbackFrom?: string): void {
     setLanguage(lang);
+
+    // Fallback notice: --plain was requested in a language we do not yet cover,
+    // so the report is served in English (the floor) instead of being refused.
+    if (plainFallbackFrom) {
+        console.log(chalk.yellow(t('plain.gate_fallback', { lang: languageDisplayName(plainFallbackFrom) })));
+        console.log('');
+    }
 
     if (result.reports.length === 0) {
         console.log(t('plain.empty_state'));

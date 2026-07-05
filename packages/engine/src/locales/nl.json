@@ -58,6 +58,7 @@
         "occurrences": "{count} occurrences",
         "gate_blocked": "Begrijpelijke taal (klarspråk) is nog niet beschikbaar in '{lang}'.",
         "gate_supported": "Talen met begrijpelijke taal: {langs}.",
-        "gate_howto": "Voer uit zonder --plain voor het ontwikkelaarsrapport, of gebruik een ondersteunde taal (bijv. --lang sv)."
+        "gate_howto": "Voer uit zonder --plain voor het ontwikkelaarsrapport, of gebruik een ondersteunde taal (bijv. --lang sv).",
+        "gate_fallback": "Duidelijke taal is nog niet beschikbaar in {lang}, daarom wordt dit rapport in het Engels getoond. We voegen talen land voor land toe."
     }
 }

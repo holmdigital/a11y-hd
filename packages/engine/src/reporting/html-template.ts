@@ -5,6 +5,7 @@ import { ScanResult, getEngineVersion } from '../core/regulatory-scanner';
 import { generateBadgeUrl } from './badge-generator';
 import { t, getCurrentLang } from '../i18n';
 import { groupReportsByRule, impactBreakdown } from './plain-group';
+import { languageDisplayName } from './plain-language-support';
 import type { EnrichedReport, BusinessImpactLevel } from '@holmdigital/standards';
 
 /**
@@ -49,10 +50,11 @@ function escapeHtml(str: string): string {
 export function generateReportHTML(
     result: ScanResult,
     sector: 'public' | 'private' = 'public',
-    audience: 'developer' | 'plain' = 'developer'
+    audience: 'developer' | 'plain' = 'developer',
+    plainFallbackFrom?: string
 ): string {
     if (audience === 'plain') {
-        return generatePlainReportHTML(result);
+        return generatePlainReportHTML(result, plainFallbackFrom);
     }
 
     const criticalCount = result.stats.critical;
@@ -414,10 +416,17 @@ function getLogoDataUri(): string {
  * (5 fields + badge) + neutral closing + footer with URL/date/version (D-16).
  * NO score, NO WCAG/DIGG tables, NO legal sections.
  */
-function generatePlainReportHTML(result: ScanResult): string {
+function generatePlainReportHTML(result: ScanResult, plainFallbackFrom?: string): string {
     const lang = getCurrentLang();
     const safeUrl = escapeHtml(result.url);
     const logoDataUri = getLogoDataUri();
+
+    // Fallback notice: shown when --plain was requested in a language we do not
+    // yet cover, so the report is served in English instead of being refused.
+    const fallbackName = plainFallbackFrom ? languageDisplayName(plainFallbackFrom) : '';
+    const noticeHtml = fallbackName
+        ? `<p class="plain-fallback-notice">${escapeHtml(t('plain.gate_fallback', { lang: fallbackName }))}</p>`
+        : '';
 
     // KRAV 1: one card per rule with an occurrence count, sorted by impact.
     const sortedGroups = groupReportsByRule(result.reports as EnrichedReport[]).sort((a, b) => {
@@ -581,6 +590,23 @@ ${sortedGroups.map((group) => {
       color: #0f172a;
     }
 
+    /* ---- Fallback notice: calm, informational banner shown when the report
+           is served in English because the requested language is not yet
+           covered. Amber note, not an error. ---- */
+    .plain-fallback-notice {
+      background: #fffbeb;
+      border: 1px solid #fde68a;
+      border-left: 4px solid #d97706;
+      border-radius: 8px;
+      padding: 0.85rem 1.1rem;
+      margin-bottom: 1.6rem;
+      font-size: 0.85rem;
+      color: #713f12;
+      line-height: 1.55;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
     /* ---- Issue list ---- */
     .issue-list {
       list-style: none;
@@ -716,6 +742,7 @@ ${sortedGroups.map((group) => {
   </header>
 
   <div class="report-body">
+    ${noticeHtml}
     <div class="intro">
       <p>${t('plain.intro_framing')}</p>
       <p>${t('plain.intro_found', { count, unit })}</p>

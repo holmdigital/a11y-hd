@@ -58,6 +58,7 @@
         "occurrences": "{count} occurrences",
         "gate_blocked": "Selkokielinen (klarspråk) raportti ei ole vielä saatavilla kielellä '{lang}'.",
         "gate_supported": "Kielet, joilla selkokielinen raportti on saatavilla: {langs}.",
-        "gate_howto": "Aja ilman --plain-valitsinta kehittäjäraporttia varten tai käytä tuettua kieltä (esim. --lang sv)."
+        "gate_howto": "Aja ilman --plain-valitsinta kehittäjäraporttia varten tai käytä tuettua kieltä (esim. --lang sv).",
+        "gate_fallback": "Selkokieli ei ole vielä saatavilla kielellä {lang}, joten tämä raportti näytetään englanniksi. Lisäämme kieliä maa kerrallaan."
     }
 }

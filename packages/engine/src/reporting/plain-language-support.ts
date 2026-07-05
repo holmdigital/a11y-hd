@@ -65,3 +65,24 @@ export function isPlainLanguageSupported(lang: string): boolean {
 export function getPlainLanguageSupportedLanguages(): string[] {
     return CANDIDATE_LANGS.filter((lang) => isPlainLanguageSupported(lang));
 }
+
+/**
+ * English display name for a locale code, used in the plain-report fallback
+ * notice ("not yet available in German ...") so the message reads naturally
+ * instead of showing a bare locale code. Unknown codes fall back to the code.
+ */
+const LANG_DISPLAY_NAME: Record<string, string> = {
+    de: 'German',
+    fr: 'French',
+    es: 'Spanish',
+    nl: 'Dutch',
+    no: 'Norwegian',
+    nb: 'Norwegian',
+    fi: 'Finnish',
+    da: 'Danish',
+    dk: 'Danish',
+};
+
+export function languageDisplayName(code: string): string {
+    return LANG_DISPLAY_NAME[code.toLowerCase()] ?? code;
+}

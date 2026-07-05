@@ -15,7 +15,7 @@ import { generateStatement, generateStatementContent, StatementMetadata } from '
 import { generateBadgeMarkdown } from '../reporting/badge-generator';
 import { setLanguage, t } from '../i18n';
 import type { EnrichedReport } from '@holmdigital/standards';
-import { isPlainLanguageSupported, getPlainLanguageSupportedLanguages } from '../reporting/plain-language-support';
+import { isPlainLanguageSupported } from '../reporting/plain-language-support';
 import { sendToCloud, CloudConfig } from './cloud-client';
 
 /**
@@ -130,16 +130,16 @@ program
 
         setLanguage(options.lang);
 
-        // Klarspråk language gate (brand protection): --plain only renders in a
-        // language whose core rules are translated. Otherwise the report would be
-        // served in English under a non-English flag, which defeats the point of
-        // klarspråk. Refuse early, before scanning. JSON output is raw data and
-        // unaffected by audience, so it is never gated.
+        // Klarspråk fallback: --plain in a language we do not yet cover natively
+        // is served in English (the plain-language floor) with a notice, rather
+        // than refused, so every country gets a readable report. We fill native
+        // languages one country at a time; until then, English. Switch the render
+        // language to English BEFORE scanning so enrichment picks the English
+        // plainLanguage. JSON output is raw data, unaffected by audience, ungated.
+        let plainFallbackFrom: string | undefined;
         if (options.audience === 'plain' && !options.json && !isPlainLanguageSupported(options.lang)) {
-            console.error(chalk.red(`✗ ${t('plain.gate_blocked', { lang: options.lang })}`));
-            console.error(chalk.gray(`  ${t('plain.gate_supported', { langs: getPlainLanguageSupportedLanguages().join(', ') })}`));
-            console.error(chalk.gray(`  ${t('plain.gate_howto')}`));
-            process.exit(1);
+            plainFallbackFrom = options.lang;
+            setLanguage('en');
         }
 
         if (!isValidUrl(url)) {
@@ -193,7 +193,7 @@ program
             if (options.pdf) {
                 if (spinner) spinner.start(t('cli.generating_pdf'));
                 const html = options.audience === 'plain'
-                    ? generateReportHTML(result, options.sector as 'public' | 'private', 'plain')
+                    ? generateReportHTML(result, options.sector as 'public' | 'private', 'plain', plainFallbackFrom)
                     : generateReportHTML(result, options.sector as 'public' | 'private');
                 await generatePDF(html, options.pdf);
                 if (spinner) spinner.succeed(t('cli.pdf_saved', { path: options.pdf }));
@@ -262,7 +262,7 @@ program
                 console.log(chalk.gray(`\nScan: ${result.metadata.scanDuration}ms | ${result.metadata.engineVersion}`));
             } else if (options.audience === 'plain') {
                 const { renderPlainReport } = await import('../reporting/plain-report');
-                renderPlainReport(result, options.lang);
+                renderPlainReport(result, plainFallbackFrom ? 'en' : options.lang, plainFallbackFrom);
             } else {
                 // --- CLI DASHBOARD IMPLEMENTATION ---
 

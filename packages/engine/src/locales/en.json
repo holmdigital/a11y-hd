@@ -58,6 +58,7 @@
         "occurrences": "{count} occurrences",
         "gate_blocked": "Plain-language (klarspråk) output is not yet available in '{lang}'.",
         "gate_supported": "Languages with klarspråk: {langs}.",
-        "gate_howto": "Run without --plain for the developer report, or use a supported language (e.g. --lang sv)."
+        "gate_howto": "Run without --plain for the developer report, or use a supported language (e.g. --lang sv).",
+        "gate_fallback": "Plain language is not yet available in {lang}, so this report is shown in English. We add languages one country at a time."
     }
 }

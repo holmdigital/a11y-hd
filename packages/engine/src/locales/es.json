@@ -58,6 +58,7 @@
         "occurrences": "{count} occurrences",
         "gate_blocked": "El lenguaje claro (klarspråk) aún no está disponible en '{lang}'.",
         "gate_supported": "Idiomas con lenguaje claro: {langs}.",
-        "gate_howto": "Ejecuta sin --plain para el informe para desarrolladores, o usa un idioma compatible (p. ej. --lang sv)."
+        "gate_howto": "Ejecuta sin --plain para el informe para desarrolladores, o usa un idioma compatible (p. ej. --lang sv).",
+        "gate_fallback": "El lenguaje claro aún no está disponible en {lang}, por lo que este informe se muestra en inglés. Añadimos idiomas país por país."
     }
 }

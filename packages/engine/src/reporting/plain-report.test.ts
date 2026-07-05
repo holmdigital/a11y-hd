@@ -382,3 +382,19 @@ describe('renderPlainReport (D-10.4)', () => {
         expect(output).not.toContain('(custom-rule)');
     });
 });
+
+describe('renderPlainReport fallback notice', () => {
+    beforeEach(() => setLanguage('en'));
+    afterEach(() => setLanguage('en'));
+
+    it('prints an English notice when the report falls back from an uncovered language', () => {
+        const output = captureConsoleLog(() => renderPlainReport(BASE_RESULT, 'en', 'de'));
+        expect(output).toContain('German');
+        expect(output).toContain('shown in English');
+    });
+
+    it('prints no fallback notice for a natively supported language', () => {
+        const output = captureConsoleLog(() => renderPlainReport(BASE_RESULT, 'en'));
+        expect(output).not.toContain('not yet available');
+    });
+});

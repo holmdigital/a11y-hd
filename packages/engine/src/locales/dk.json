@@ -58,6 +58,7 @@
         "occurrences": "{count} occurrences",
         "gate_blocked": "Klarsprog (klarspråk) er endnu ikke tilgængeligt på '{lang}'.",
         "gate_supported": "Sprog med klarsprog: {langs}.",
-        "gate_howto": "Kør uden --plain for udviklerrapporten, eller brug et understøttet sprog (f.eks. --lang sv)."
+        "gate_howto": "Kør uden --plain for udviklerrapporten, eller brug et understøttet sprog (f.eks. --lang sv).",
+        "gate_fallback": "Klarsprog er endnu ikke tilgængeligt på {lang}, så denne rapport vises på engelsk. Vi tilføjer sprog land for land."
     }
 }
