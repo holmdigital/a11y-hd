@@ -58,6 +58,7 @@
         "occurrences": "{count} occurrences",
         "gate_blocked": "Verständliche Sprache (Klarspråk) ist für '{lang}' noch nicht verfügbar.",
         "gate_supported": "Sprachen mit verständlicher Sprache: {langs}.",
-        "gate_howto": "Ohne --plain ausführen für den Entwicklerbericht, oder eine unterstützte Sprache verwenden (z. B. --lang sv)."
+        "gate_howto": "Ohne --plain ausführen für den Entwicklerbericht, oder eine unterstützte Sprache verwenden (z. B. --lang sv).",
+        "gate_fallback": "Einfache Sprache ist für {lang} noch nicht verfügbar, daher wird dieser Bericht auf Englisch angezeigt. Wir ergänzen Sprachen Land für Land."
     }
 }

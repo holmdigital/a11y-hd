@@ -390,6 +390,14 @@
                 "telecommunications"
             ],
             "eaaDeadline": "2025-06-28"
+        },
+        "plainLanguage": {
+            "headline": "The browser tab shows no clear page name",
+            "whatHappens": "The page has no descriptive title, or several pages share the same one. The title is the name shown in the browser tab, in bookmarks, and read aloud by a screen reader to say which page is open.",
+            "whoIsAffected": "Visitors using a screen reader, and anyone with many tabs open at once or looking for your page among their bookmarks.",
+            "businessImpact": "When every tab is named the same, or nothing at all, visitors cannot find their way back to your page among ten others. It becomes hard to bookmark and share, and you lose return visits.",
+            "howToFix": "Give each page its own descriptive title, for example Contact, Holm Digital. Your developer makes sure the title also updates when the content changes without the page reloading.",
+            "impactLevel": "forsamrar"
         }
     },
     {
@@ -460,6 +468,14 @@
                 "telecommunications"
             ],
             "eaaDeadline": "2025-06-28"
+        },
+        "plainLanguage": {
+            "headline": "The page structure is only skin deep",
+            "whatHappens": "What looks like headings and lists is really just text made large or bold. In the code there is no real structure, so assistive technology cannot tell what belongs together.",
+            "whoIsAffected": "Visitors using a screen reader, who listen their way through the page and rely on structure to tell what is a heading, what is a list, and what belongs together.",
+            "businessImpact": "A screen reader reads everything out as one grey blur. The visitor cannot get to what they came for and leaves.",
+            "howToFix": "Your developer builds headings, lists, and tables with the right code instead of just making text large or bold. Then assistive technology understands the structure.",
+            "impactLevel": "hindrar"
         }
     },
     {
@@ -530,6 +546,14 @@
                 "telecommunications"
             ],
             "eaaDeadline": "2025-06-28"
+        },
+        "plainLanguage": {
+            "headline": "Important information is shown by colour alone",
+            "whatHappens": "The page uses colour as the only way to convey something, for example a red border to mark an error, or colour as the only difference between a link and plain text. If you cannot see the colour, you miss the information.",
+            "whoIsAffected": "People with colour blindness or reduced colour vision (around one man in twelve), people with low vision, and anyone reading the page in bright sunlight or in greyscale.",
+            "businessImpact": "If a visitor does not notice that a field is filled in wrong, or does not see that a piece of text is a clickable link, they get stuck. What was meant to guide them becomes a dead end.",
+            "howToFix": "Always back up colour with something more, for example a text, an icon, or an underline. Your developer marks links and error messages so they show even without colour.",
+            "impactLevel": "forsamrar"
         }
     },
     {
@@ -599,6 +623,14 @@
                 "telecommunications"
             ],
             "eaaDeadline": "2025-06-28"
+        },
+        "plainLanguage": {
+            "headline": "The page breaks out of its frame when you zoom in",
+            "whatHappens": "When a visitor enlarges the page or uses a narrow screen, the content does not fit, and they are forced to scroll sideways to read every line.",
+            "whoIsAffected": "People with low vision who enlarge the text a lot, and anyone visiting the site on a phone.",
+            "businessImpact": "Scrolling back and forth on every line is such hard work that most give up. You lose mobile visitors in particular, who are often the majority.",
+            "howToFix": "Your developer makes sure the content reflows and adapts to the width of the screen instead of staying fixed in a wide layout.",
+            "impactLevel": "hindrar"
         }
     },
     {
@@ -666,6 +698,14 @@
                 "telecommunications"
             ],
             "eaaDeadline": "2025-06-28"
+        },
+        "plainLanguage": {
+            "headline": "Buttons and fields barely show against the background",
+            "whatHappens": "The edges of buttons, fields, and icons have too little contrast against the background. It is not clear where to click or type.",
+            "whoIsAffected": "People with low vision, older users, and anyone in bright light or on a cheap screen.",
+            "businessImpact": "If a visitor cannot see that something is clickable, they do not use it. An invisible button is an unused button.",
+            "howToFix": "Your developer makes the edges of buttons, fields, and key icons clearer against the background so people can see where to press.",
+            "impactLevel": "forsamrar"
         }
     },
     {
@@ -732,6 +772,14 @@
                 "telecommunications"
             ],
             "eaaDeadline": "2025-06-28"
+        },
+        "plainLanguage": {
+            "headline": "Text gets cut off when you space it out",
+            "whatHappens": "Some visitors increase the space between lines and letters so they can read. When they do, text spills out of its box or gets cut off, and content disappears.",
+            "whoIsAffected": "People with dyslexia or low vision who set wider spacing to make reading manageable.",
+            "businessImpact": "If the text breaks the moment a visitor adjusts it, they cannot read it, and a reader who cannot read does not buy.",
+            "howToFix": "Your developer lets the boxes grow with the text instead of using fixed heights, so nothing is cut off.",
+            "impactLevel": "forsamrar"
         }
     },
     {
@@ -800,6 +848,14 @@
                 "telecommunications"
             ],
             "eaaDeadline": "2025-06-28"
+        },
+        "plainLanguage": {
+            "headline": "Small help boxes vanish before you can read them",
+            "whatHappens": "Text that appears when you move the pointer over something, for example a small explanation box, disappears as soon as you move the pointer, or cannot be closed.",
+            "whoIsAffected": "People who magnify the screen and have to move the pointer to read, and people with motor difficulties who struggle to hold the pointer still.",
+            "businessImpact": "If the help text vanishes before the visitor has read it, the help never lands, and a confused visitor gives up.",
+            "howToFix": "Your developer makes sure these boxes stay put until you are done, can be read with the pointer on them, and can be dismissed.",
+            "impactLevel": "forsamrar"
         }
     },
     {
@@ -869,6 +925,14 @@
                 "telecommunications"
             ],
             "eaaDeadline": "2025-06-28"
+        },
+        "plainLanguage": {
+            "headline": "The videos have no captions",
+            "whatHappens": "Video with speech has no captions, so everything said can only be taken in through the sound.",
+            "whoIsAffected": "People who are deaf or hard of hearing, but also anyone watching with the sound off in a quiet place or on a noisy bus.",
+            "businessImpact": "Without captions the whole message of the video is lost for a large group. Content they cannot take in does not sell.",
+            "howToFix": "Add accurate captions to every video with speech. Auto generated captions always need to be checked and corrected.",
+            "impactLevel": "hindrar"
         }
     },
     {
@@ -936,6 +1000,14 @@
                 "telecommunications"
             ],
             "eaaDeadline": "2025-06-28"
+        },
+        "plainLanguage": {
+            "headline": "The video does not tell you what only appears on screen",
+            "whatHappens": "In the video, important information is shown only on screen, for example text or something happening, without being said in the audio.",
+            "whoIsAffected": "People who cannot see the screen and have only the sound to go on.",
+            "businessImpact": "Someone who listens but cannot see misses part of the message and gets half the story. The point of the video is lost for them.",
+            "howToFix": "Make sure everything important shown on screen is also said in the audio, either in the narration or in a version with audio description.",
+            "impactLevel": "forsamrar"
         }
     },
     {
@@ -1002,6 +1074,14 @@
                 "telecommunications"
             ],
             "eaaDeadline": "2025-06-28"
+        },
+        "plainLanguage": {
+            "headline": "The page locks to portrait or landscape",
+            "whatHappens": "The site forces one orientation, portrait or landscape, and cannot be turned the way the visitor wants.",
+            "whoIsAffected": "People whose tablet or phone is fixed in place, for example on a wheelchair, and who cannot turn the device themselves.",
+            "businessImpact": "Anyone who cannot turn their device is shut out completely. For them the site is unusable even if everything else works.",
+            "howToFix": "Your developer removes the lock so the page works both in portrait and landscape.",
+            "impactLevel": "forsamrar"
         }
     },
     {
@@ -1069,6 +1149,14 @@
                 "telecommunications"
             ],
             "eaaDeadline": "2025-06-28"
+        },
+        "plainLanguage": {
+            "headline": "The form does not help fill itself in",
+            "whatHappens": "The fields for name, address, and the like are not marked with what they hold, so the browser cannot fill them in for the visitor automatically.",
+            "whoIsAffected": "People with motor difficulties or a cognitive disability, who are spared a lot of typing when details are filled in automatically.",
+            "businessImpact": "The more a visitor has to type by hand, the more drop out partway. Automatic filling means more of them finish.",
+            "howToFix": "Your developer marks up the fields so the browser's saved details can be filled in with one click.",
+            "impactLevel": "forsamrar"
         }
     },
     {
@@ -1135,6 +1223,14 @@
                 "telecommunications"
             ],
             "eaaDeadline": "2025-06-28"
+        },
+        "plainLanguage": {
+            "headline": "Visitors get stuck and cannot move on",
+            "whatHappens": "Part of the page captures the keyboard so visitors can get in but not back out. It often happens in pop-ups, maps, or chat windows that offer no way out.",
+            "whoIsAffected": "People who use a keyboard or screen reader instead of a mouse, and anyone who cannot point and click for motor reasons.",
+            "businessImpact": "Once a visitor is caught in a trap, the whole page is closed to them, often the only way out is to shut the browser and start over. If the trap is in the checkout or a form, the sale is lost on the spot.",
+            "howToFix": "Your developer makes sure the keyboard can always leave every part of the page, for example with Esc or by tabbing onward. Check your own pop-ups and anything embedded from other services in particular, such as a chat or a map.",
+            "impactLevel": "stoppar-kop"
         }
     },
     {
@@ -1200,6 +1296,14 @@
                 "telecommunications"
             ],
             "eaaDeadline": "2025-06-28"
+        },
+        "plainLanguage": {
+            "headline": "Single key presses trigger things by accident",
+            "whatHappens": "The site has shortcuts that react to a single key. A mistaken press, or even speaking, is enough to make something happen unintentionally.",
+            "whoIsAffected": "People who control the computer by voice, where a single spoken word can happen to trigger a shortcut.",
+            "businessImpact": "Accidental commands cause confusion and mistakes, but they affect a small group and can often be avoided.",
+            "howToFix": "Your developer lets the visitor turn off or change the shortcuts, or makes sure they only apply when the right part of the page is in focus.",
+            "impactLevel": "putsning"
         }
     },
     {
@@ -1267,6 +1371,14 @@
                 "telecommunications"
             ],
             "eaaDeadline": "2025-06-28"
+        },
+        "plainLanguage": {
+            "headline": "You get logged out before you can finish",
+            "whatHappens": "The page has a time limit that runs out without warning. If you have not filled things in fast enough, you are logged out and what you entered is gone.",
+            "whoIsAffected": "People who read or type slowly, use assistive technology, or need more time for any reason at all.",
+            "businessImpact": "Losing everything you entered partway through an application or a purchase is so frustrating that many never come back. That is where the sale dies.",
+            "howToFix": "Warn before the time runs out and give a clear button to extend it. Let the visitor have more time instead of throwing them out.",
+            "impactLevel": "stoppar-kop"
         }
     },
     {
@@ -1335,6 +1447,14 @@
                 "telecommunications"
             ],
             "eaaDeadline": "2025-06-28"
+        },
+        "plainLanguage": {
+            "headline": "Moving content cannot be stopped",
+            "whatHappens": "Something on the page moves, blinks, or changes on its own and cannot be paused.",
+            "whoIsAffected": "People with concentration difficulties, for example ADHD, and people who read slowly and do not finish before the image changes.",
+            "businessImpact": "Constant movement pulls the eye away from what matters. The visitor loses focus on your message and on the buy button.",
+            "howToFix": "Your developer adds a clear pause button to slideshows and anything else that moves on its own.",
+            "impactLevel": "forsamrar"
         }
     },
     {
@@ -1402,6 +1522,14 @@
                 "telecommunications"
             ],
             "eaaDeadline": "2025-06-28"
+        },
+        "plainLanguage": {
+            "headline": "Flashing content can trigger epileptic seizures",
+            "whatHappens": "Something on the page flashes quickly, more than three times a second. Flashing like this can bring on seizures.",
+            "whoIsAffected": "People with photosensitive epilepsy, for whom rapid flashing is a direct health risk.",
+            "businessImpact": "This is a safety matter, not just a comfort. A visitor who is risking their health leaves the site at once, and you risk your reputation.",
+            "howToFix": "Remove or slow down anything that flashes quickly so nothing flashes more than three times a second.",
+            "impactLevel": "hindrar"
         }
     },
     {
@@ -1471,6 +1599,14 @@
                 "telecommunications"
             ],
             "eaaDeadline": "2025-06-28"
+        },
+        "plainLanguage": {
+            "headline": "Visitors are dragged through the whole menu on every page",
+            "whatHappens": "There is no way to skip past the menu and go straight to the content. Anyone navigating by keyboard has to step through every menu link on each new page.",
+            "whoIsAffected": "People who navigate by keyboard or screen reader instead of a mouse.",
+            "businessImpact": "Wearing the visitor down with the same menu clicks over and over makes them give up before they reach what matters.",
+            "howToFix": "Your developer adds a skip to content link at the very top that becomes visible when you tab to it.",
+            "impactLevel": "forsamrar"
         }
     },
     {
@@ -1540,6 +1676,14 @@
                 "telecommunications"
             ],
             "eaaDeadline": "2025-06-28"
+        },
+        "plainLanguage": {
+            "headline": "The keyboard jumps around the page at random",
+            "whatHappens": "When you move through the page with the keyboard, the highlight jumps in an illogical order, not the order the content appears on screen.",
+            "whoIsAffected": "People who navigate by keyboard or screen reader and rely on the order following what they see.",
+            "businessImpact": "Unpredictable jumping makes the page confusing to use. The visitor loses the thread and quits.",
+            "howToFix": "Your developer makes sure the highlight follows the same order the content appears in on screen.",
+            "impactLevel": "forsamrar"
         }
     },
     {
@@ -1683,6 +1827,14 @@
                 "telecommunications"
             ],
             "eaaDeadline": "2025-06-28"
+        },
+        "plainLanguage": {
+            "headline": "There is only one way to find things on the site",
+            "whatHappens": "The visitor can only get around one single way, for example through the menu, with no search function or table of contents as an alternative.",
+            "whoIsAffected": "People who find menus hard to navigate and would rather search, and anyone looking for a specific page on a large site.",
+            "businessImpact": "If a visitor cannot find their way, they do not find it at all. An extra way to navigate catches more of them.",
+            "howToFix": "Offer at least two ways to find things, for example both a menu and a search function.",
+            "impactLevel": "putsning"
         }
     },
     {
@@ -1750,6 +1902,14 @@
                 "telecommunications"
             ],
             "eaaDeadline": "2025-06-28"
+        },
+        "plainLanguage": {
+            "headline": "Headings and field names do not say what they are about",
+            "whatHappens": "The headings and the names of form fields are vague or cryptic and do not describe what comes under them or what to fill in.",
+            "whoIsAffected": "All visitors, but especially those who skim by headings with a screen reader and rely on them to know where to go.",
+            "businessImpact": "Unclear headings mean the visitor does not find the right place and guesses wrong. Clear headings lead faster to the goal and to a purchase.",
+            "howToFix": "Write headings and field names that say exactly what they are about, for example Delivery address instead of Step 2.",
+            "impactLevel": "forsamrar"
         }
     },
     {
@@ -1819,6 +1979,14 @@
                 "telecommunications"
             ],
             "eaaDeadline": "2025-06-28"
+        },
+        "plainLanguage": {
+            "headline": "You cannot see which button or link the visitor has selected",
+            "whatHappens": "When the visitor moves around the page with the keyboard, there is no sign of which button or link is selected right now. The highlight that should show where focus sits is removed or too faint.",
+            "whoIsAffected": "People who navigate by keyboard instead of a mouse, whether for motor reasons or habit, and anyone temporarily without a working mouse.",
+            "businessImpact": "If visitors cannot see where they are on the page, clicking the right thing becomes a guessing game. Many give up partway through a form or a purchase, because no one wants to press blind.",
+            "howToFix": "Never remove the highlight that shows focus. Your developer makes sure the selected button or link gets a clear outline with enough contrast.",
+            "impactLevel": "hindrar"
         }
     },
     {
@@ -1958,6 +2126,14 @@
                 "telecommunications"
             ],
             "eaaDeadline": "2025-06-28"
+        },
+        "plainLanguage": {
+            "headline": "Foreign words are read out with the wrong pronunciation",
+            "whatHappens": "Single words or quotes in another language are not marked in the code. The screen reader reads them with the wrong pronunciation and they come out as gibberish.",
+            "whoIsAffected": "People using a screen reader who come across a phrase in another language in the middle of the main text.",
+            "businessImpact": "The odd misreading is annoying but rarely sinks the whole experience. It is mostly a matter of finish.",
+            "howToFix": "Your developer marks up the foreign words with the right language so they are pronounced correctly.",
+            "impactLevel": "putsning"
         }
     },
     {
@@ -2025,6 +2201,14 @@
                 "telecommunications"
             ],
             "eaaDeadline": "2025-06-28"
+        },
+        "plainLanguage": {
+            "headline": "Things happen just because you reach a field",
+            "whatHappens": "The moment a field or menu receives the highlight, something unexpected happens, for example a new window opens or the page changes.",
+            "whoIsAffected": "People who navigate by keyboard or screen reader and only wanted to move to the field, not start anything.",
+            "businessImpact": "Unexpected jumps make the visitor feel they are losing control. An uneasy visitor does not dare to carry on.",
+            "howToFix": "Your developer makes sure nothing starts just because you move to a field. Something should only happen when the visitor chooses it themselves.",
+            "impactLevel": "forsamrar"
         }
     },
     {
@@ -2093,6 +2277,14 @@
                 "telecommunications"
             ],
             "eaaDeadline": "2025-06-28"
+        },
+        "plainLanguage": {
+            "headline": "The page reloads as soon as you make a choice",
+            "whatHappens": "When the visitor picks something from a list or ticks a box, the page reloads or moves, without warning.",
+            "whoIsAffected": "People using a screen reader and people with a cognitive disability, who lose their place when the page suddenly changes.",
+            "businessImpact": "Unpredictable reloads in the middle of a choice make the visitor uneasy and they quit.",
+            "howToFix": "Your developer lets the visitor finish their choices and confirm with a button, instead of the page changing at every click.",
+            "impactLevel": "forsamrar"
         }
     },
     {
@@ -2159,6 +2351,14 @@
                 "telecommunications"
             ],
             "eaaDeadline": "2025-06-28"
+        },
+        "plainLanguage": {
+            "headline": "The menu moves around between pages",
+            "whatHappens": "The menu and other recurring parts sit in different places or in a different order on different pages.",
+            "whoIsAffected": "People with a cognitive disability and anyone who has learned where things are and then cannot find them again.",
+            "businessImpact": "If the visitor has to hunt for the menu afresh on every page, they tire of it. Recognition makes the site faster to use.",
+            "howToFix": "Keep the menu and recurring elements in the same place and the same order on every page.",
+            "impactLevel": "forsamrar"
         }
     },
     {
@@ -2226,6 +2426,14 @@
                 "telecommunications"
             ],
             "eaaDeadline": "2025-06-28"
+        },
+        "plainLanguage": {
+            "headline": "The same function is named differently in different places",
+            "whatHappens": "One and the same function is called different things or shown with different icons on different pages, for example Search in one place and Find in another.",
+            "whoIsAffected": "People with a cognitive disability and anyone who recognises a button by its name or icon.",
+            "businessImpact": "Different names for the same thing make the visitor think they are different functions. That creates hesitation and needless support questions.",
+            "howToFix": "Use the same name and the same icon for the same function everywhere on the site.",
+            "impactLevel": "putsning"
         }
     },
     {
@@ -2293,6 +2501,14 @@
                 "telecommunications"
             ],
             "eaaDeadline": "2025-06-28"
+        },
+        "plainLanguage": {
+            "headline": "The form does not say what went wrong",
+            "whatHappens": "When the visitor fills in something wrong in a form, the error is not explained in text, or the field is only marked with a colour. It does not say which field is wrong or how to fix it.",
+            "whoIsAffected": "Visitors using a screen reader who cannot see a red mark, people with low vision, and anyone rushing through a form who needs clear guidance.",
+            "businessImpact": "A form that does not say what went wrong makes the visitor try again and again and finally give up. Every abandoned form is a lost contact, booking, or order.",
+            "howToFix": "Your developer shows a clear error message in text near the field, pointing out exactly what is wrong and how to fix it. Something went wrong is not enough when the error is known.",
+            "impactLevel": "hindrar"
         }
     },
     {
@@ -2359,6 +2575,14 @@
                 "telecommunications"
             ],
             "eaaDeadline": "2025-06-28"
+        },
+        "plainLanguage": {
+            "headline": "The error message does not say how to fix it",
+            "whatHappens": "When a visitor fills in something incorrectly, the page only says it is wrong, without explaining what is expected or how to correct it.",
+            "whoIsAffected": "Anyone filling in a form, especially those who cannot easily guess the right format on their own.",
+            "businessImpact": "A visitor stuck on an error they do not understand gives up halfway. A helpful hint saves the sale.",
+            "howToFix": "Write error messages that say what is expected, for example Enter the date as YYYY-MM-DD, rather than just Invalid.",
+            "impactLevel": "forsamrar"
         }
     },
     {
@@ -2427,6 +2651,14 @@
                 "telecommunications"
             ],
             "eaaDeadline": "2025-06-28"
+        },
+        "plainLanguage": {
+            "headline": "No safety net before you commit or pay",
+            "whatHappens": "For purchases, contracts, or other important decisions, there is no way to check, change, or undo before you submit something binding.",
+            "whoIsAffected": "All visitors, especially those who easily make mistakes by accident and need a chance to review before they confirm.",
+            "businessImpact": "Decisions that cannot be undone lead to wrong orders, regret, and support cases. A confirmation step cuts down on costly mistakes.",
+            "howToFix": "Your developer adds a summary before the final step, where the visitor can review and change.",
+            "impactLevel": "forsamrar"
         }
     },
     {
@@ -2494,6 +2726,14 @@
                 "telecommunications"
             ],
             "eaaDeadline": "2025-06-28"
+        },
+        "plainLanguage": {
+            "headline": "Messy code under the surface can confuse assistive technology",
+            "whatHappens": "The code behind the page has faults such as duplicate markup and tags that are not closed. Modern browsers fix a lot on their own, but assistive technology can trip over it.",
+            "whoIsAffected": "People using a screen reader, in the cases where the messy code makes the assistive technology read something out wrong.",
+            "businessImpact": "Most of the time it goes unnoticed, but at worst the screen reader reads something out wrong and the visitor is misled. Cheap hygiene to sort out.",
+            "howToFix": "Your developer tidies the code so every piece of markup is unique and all tags are closed correctly.",
+            "impactLevel": "putsning"
         }
     },
     {
@@ -2641,6 +2881,14 @@
                 "telecommunications"
             ],
             "eaaDeadline": "2025-06-28"
+        },
+        "plainLanguage": {
+            "headline": "Important messages do not reach everyone",
+            "whatHappens": "When something happens without the page reloading, for example an item added to the basket or a search finishing, it only shows on screen. The screen reader does not announce it.",
+            "whoIsAffected": "People using a screen reader, who cannot see the confirmation and are not told that anything actually happened.",
+            "businessImpact": "If the visitor is not told that the item went into the basket or that something was saved, they think it did not work and either redo it or give up.",
+            "howToFix": "Your developer makes sure such messages are also announced by the screen reader, not just shown on screen.",
+            "impactLevel": "forsamrar"
         }
     },
     {
@@ -2778,6 +3026,14 @@
                 "telecommunications"
             ],
             "eaaDeadline": "2025-06-28"
+        },
+        "plainLanguage": {
+            "headline": "The page has no clear main heading",
+            "whatHappens": "The page has no main heading (a so called H1) to say what the page is about. The main heading is the most important one and the first thing a screen reader looks for to sum up the page.",
+            "whoIsAffected": "Visitors using a screen reader who jump between headings to grasp a page quickly, and anyone skimming the page to see if they have landed in the right place.",
+            "businessImpact": "Without a clear main heading, the visitor cannot tell at once whether they have come to the right place. That uncertainty makes more of them leave before they finish reading, and Google also has a harder time understanding what the page is about.",
+            "howToFix": "Your developer adds exactly one main heading at the top of the content that describes that particular page in its own words.",
+            "impactLevel": "forsamrar"
         }
     },
     {
@@ -2912,6 +3168,14 @@
                 "telecommunications"
             ],
             "eaaDeadline": "2025-06-28"
+        },
+        "plainLanguage": {
+            "headline": "The page header sits in the wrong place in the structure",
+            "whatHappens": "The page header is wrapped in the wrong place in the code instead of sitting at the top as its own region. Assistive technology then does not find it as easily.",
+            "whoIsAffected": "People using a screen reader who tend to jump straight to the header to reach the logo, menu, and search.",
+            "businessImpact": "A small structural slip that makes navigation a little more awkward for assistive technology users. Worth fixing, but marginal.",
+            "howToFix": "Your developer moves the header so it sits at the top as its own region, not inside something else.",
+            "impactLevel": "putsning"
         }
     },
     {
@@ -2975,6 +3239,14 @@
                 "telecommunications"
             ],
             "eaaDeadline": "2025-06-28"
+        },
+        "plainLanguage": {
+            "headline": "The page has more than one header",
+            "whatHappens": "The page is marked up with more than one header. Assistive technology expects a single one and is confused by several.",
+            "whoIsAffected": "People using a screen reader who navigate by the page's regions and cannot tell which header is the right one.",
+            "businessImpact": "Duplicate headers make navigation unclear for assistive technology users, but it is a small thing to tidy away.",
+            "howToFix": "Your developer makes sure only the top part is marked up as the header.",
+            "impactLevel": "putsning"
         }
     },
     {
@@ -3038,6 +3310,14 @@
                 "telecommunications"
             ],
             "eaaDeadline": "2025-06-28"
+        },
+        "plainLanguage": {
+            "headline": "Several regions on the page share the same name",
+            "whatHappens": "The page has several identical regions, for example several menus, without giving them their own names. Assistive technology cannot tell them apart.",
+            "whoIsAffected": "People using a screen reader who list the page's regions and see several with the same name without knowing which is which.",
+            "businessImpact": "Identical regions with no names make navigating with assistive technology harder, but it is a minor adjustment.",
+            "howToFix": "Your developer gives each region its own name, for example Main menu and Footer menu.",
+            "impactLevel": "putsning"
         }
     },
     {
@@ -3110,69 +3390,6 @@
             "businessImpact": "When the page has no clear structure, screen reader users cannot skip straight to the main content. They navigate line by line and give up before completing their task.",
             "howToFix": "Wrap all content in appropriate HTML elements such as header, nav, main, and footer. Your developer can restructure the page layout to meet this requirement.",
             "impactLevel": "forsamrar"
-        }
-    },
-    {
-        "ruleId": "audio-description",
-        "wcagCriteria": "1.2.5",
-        "wcagLevel": "AA",
-        "wcagTitle": "Audio Description (Prerecorded)",
-        "wcagVersion": "2.0",
-        "en301549Criteria": "9.1.2.5",
-        "en301549Title": "Audio description (prerecorded)",
-        "en301549Chapter": 9,
-        "dosLagenApplies": true,
-        "dosLagenReference": "100 § (Tidsberoende media)",
-        "remediation": {
-            "description": "Prerecorded video content must have audio description if visual information is critical.",
-            "technicalGuidance": "Provide an alternative audio track or version describing what happens visually.",
-            "component": null,
-            "wcagTechnique": [
-                "G78"
-            ]
-        },
-        "holmdigitalInsight": {
-            "diggRisk": "medium",
-            "eaaImpact": "low",
-            "swedishInterpretation": "Video conveying information visually must be described for those who cannot see the screen.",
-            "commonMistakes": [
-                "Video missing audio description despite important visual info"
-            ]
-        },
-        "testability": {
-            "automated": false,
-            "requiresManualCheck": true,
-            "pseudoAutomation": false,
-            "complexity": "hard"
-        },
-        "tags": [
-            "wcag2aa",
-            "wcag125",
-            "WAD",
-            "EAA",
-            "public-sector",
-            "private-sector"
-        ],
-        "legalContext": {
-            "appliesTo": [
-                "WAD",
-                "EAA",
-                "ADA",
-                "REHAB"
-            ],
-            "sectors": [
-                "public",
-                "private"
-            ],
-            "wadArticle": "Article 4, Annex referencing EN 301 549",
-            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
-            "eaaProductScope": [
-                "e-commerce",
-                "banking",
-                "transport",
-                "telecommunications"
-            ],
-            "eaaDeadline": "2025-06-28"
         }
     },
     {
@@ -3273,7 +3490,15 @@
             "interaction",
             "wcag22aa",
             "wcag257"
-        ]
+        ],
+        "plainLanguage": {
+            "headline": "Some things can only be controlled by dragging",
+            "whatHappens": "Some functions only work if you drag with your finger or the mouse, for example a map, a slider, or a slideshow. There is no way to click instead.",
+            "whoIsAffected": "People with shaky hands or reduced fine motor control, and those who use a keyboard or other assistive technology and cannot drag precisely.",
+            "businessImpact": "Lock a function behind a drag and you shut out everyone who cannot drag from that function.",
+            "howToFix": "Your developer adds clickable alternatives, for example plus and minus buttons on sliders and arrows on slideshows.",
+            "impactLevel": "hindrar"
+        }
     },
     {
         "ruleId": "focus-not-obscured",
@@ -3318,6 +3543,14 @@
             "interaction",
             "wcag22aa",
             "wcag2411"
-        ]
+        ],
+        "plainLanguage": {
+            "headline": "Visitors lose track of where they are on the page",
+            "whatHappens": "When you move through the page with the keyboard, the thing you just selected can end up behind a header that stays at the top, a cookie box, or a chat bubble. Then you can no longer see where you are.",
+            "whoIsAffected": "People who navigate by keyboard and people who magnify the screen, and who lose their bearings when the highlight disappears behind something.",
+            "businessImpact": "A visitor who cannot see where they are on the page becomes uneasy and quits. It is felt most in forms and the checkout.",
+            "howToFix": "Your developer makes sure the selected item is always visible, by leaving room so it does not end up behind fixed elements.",
+            "impactLevel": "forsamrar"
+        }
     }
 ]

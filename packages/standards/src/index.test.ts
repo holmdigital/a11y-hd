@@ -617,10 +617,12 @@ describe('generateRegulatoryReport plainLanguage enrichment (PLAIN-02)', () => {
         expect(report?.plainLanguage?.impactLevel).toBe('stoppar-kop');
     });
 
-    it('returns undefined plainLanguage for a rule with no text in any lang', () => {
-        // Any rule not in the 8-rule set with no plainLanguage
+    it('returns EN plainLanguage for every rule now the en floor is complete (focus-order)', () => {
+        // The en plainLanguage floor is fully filled (48/48). focus-order previously
+        // had no plainLanguage in any language; this now guards the floor from regressing.
         const report = generateRegulatoryReport('focus-order', 'en');
-        expect(report?.plainLanguage).toBeUndefined();
+        expect(report?.plainLanguage).toBeDefined();
+        expect(report?.plainLanguage?.impactLevel).toBe('forsamrar');
     });
 });
 

@@ -3032,69 +3032,6 @@
         }
     },
     {
-        "ruleId": "audio-description",
-        "wcagCriteria": "1.2.5",
-        "wcagLevel": "AA",
-        "wcagTitle": "Audio Description (Prerecorded)",
-        "wcagVersion": "2.0",
-        "en301549Criteria": "9.1.2.5",
-        "en301549Title": "Audio description (prerecorded)",
-        "en301549Chapter": 9,
-        "dosLagenApplies": true,
-        "dosLagenReference": "BITV 2.0, Anlage 1, WCAG 2.1 AA erforderlich",
-        "remediation": {
-            "description": "Voraufgezeichnete Videoinhalte müssen eine Audiodeskription haben, wenn visuelle Informationen kritisch sind.",
-            "technicalGuidance": "Stellen Sie eine alternative Tonspur oder Version bereit, die beschreibt, was visuell passiert.",
-            "component": null,
-            "wcagTechnique": [
-                "G78"
-            ]
-        },
-        "holmdigitalInsight": {
-            "diggRisk": "medium",
-            "eaaImpact": "low",
-            "germanInterpretation": "Video, das Informationen visuell vermittelt, muss für diejenigen beschrieben werden, die den Bildschirm nicht sehen können.",
-            "commonMistakes": [
-                "Video fehlt Audiodeskription trotz wichtiger visueller Infos"
-            ]
-        },
-        "testability": {
-            "automated": false,
-            "requiresManualCheck": true,
-            "pseudoAutomation": false,
-            "complexity": "hard"
-        },
-        "tags": [
-            "wcag2aa",
-            "wcag125",
-            "WAD",
-            "EAA",
-            "public-sector",
-            "private-sector"
-        ],
-        "legalContext": {
-            "appliesTo": [
-                "WAD",
-                "EAA",
-                "ADA",
-                "REHAB"
-            ],
-            "sectors": [
-                "public",
-                "private"
-            ],
-            "wadArticle": "Article 4, Annex referencing EN 301 549",
-            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
-            "eaaProductScope": [
-                "e-commerce",
-                "banking",
-                "transport",
-                "telecommunications"
-            ],
-            "eaaDeadline": "2025-06-28"
-        }
-    },
-    {
         "ruleId": "target-size",
         "wcagCriteria": "2.5.8",
         "wcagLevel": "AA",

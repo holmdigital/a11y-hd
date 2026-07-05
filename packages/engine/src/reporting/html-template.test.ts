@@ -316,3 +316,19 @@ describe('generateReportHTML plain template (D-08/D-16)', () => {
         expect(html).not.toContain('<span class="issue-rule-ref">');
     });
 });
+
+describe('plain report fallback notice banner', () => {
+    it('renders the notice banner element when served in English as a fallback', () => {
+        setLanguage('en');
+        const html = generateReportHTML(EMPTY_RESULT, 'public', 'plain', 'de');
+        // The CSS class always exists in <style>; assert on the rendered element.
+        expect(html).toContain('<p class="plain-fallback-notice">');
+        expect(html).toContain('German');
+    });
+
+    it('renders no notice banner element for a natively supported language', () => {
+        setLanguage('en');
+        const html = generateReportHTML(EMPTY_RESULT, 'public', 'plain');
+        expect(html).not.toContain('<p class="plain-fallback-notice">');
+    });
+});

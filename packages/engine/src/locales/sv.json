@@ -58,6 +58,7 @@
         "occurrences": "{count} förekomster",
         "gate_blocked": "Klarspråk stöds ännu inte på '{lang}'.",
         "gate_supported": "Språk med klarspråk: {langs}.",
-        "gate_howto": "Kör utan --plain för utvecklarrapporten, eller välj ett språk som stöds (t.ex. --lang sv)."
+        "gate_howto": "Kör utan --plain för utvecklarrapporten, eller välj ett språk som stöds (t.ex. --lang sv).",
+        "gate_fallback": "Klarspråk finns ännu inte på {lang}, så den här rapporten visas på engelska. Vi lägger till språk land för land."
     }
 }
