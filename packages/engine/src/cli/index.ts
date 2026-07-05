@@ -234,7 +234,12 @@ program
                     topIssues: result.reports.slice(0, 5).map(r => ({
                         id: r.ruleId,
                         impact: r.holmdigitalInsight.diggRisk,
-                        description: r.remediation.description
+                        description: r.remediation.description,
+                        // Plain-language (klarspråk) fields, present when the rule
+                        // is covered; undefined values drop out of the JSON.
+                        headline: r.plainLanguage?.headline,
+                        businessImpact: r.plainLanguage?.businessImpact,
+                        impactLevel: r.plainLanguage?.impactLevel
                     }))
                 };
                 console.log(JSON.stringify(lightResult, null, 2));
