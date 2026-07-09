@@ -261,6 +261,8 @@ Contributions are welcome. See [CONTRIBUTING.md](./CONTRIBUTING.md).
 
 MIT. See [LICENSE](./LICENSE). Copyright (c) 2026 Holm Digital AB.
 
+Third-party dependency licenses are listed in [THIRD-PARTY-NOTICES.md](./THIRD-PARTY-NOTICES.md).
+
 ## Links
 
 - Docs (wiki): https://wiki.holmdigital.se
