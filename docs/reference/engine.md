@@ -48,6 +48,40 @@ hd-a11y-scan <url> [options]
 | `--invalid-https-cert` | Allow scanning sites with invalid/self-signed HTTPS certificates ⚠️ (trusted envs only). | `--invalid-https-cert` |
 | `--audience <mode>` | Report audience: `developer` (default) or `plain`. Plain mode renders a non-technical, grouped report for managers, lawyers, and buyers. | `--audience plain` |
 | `--plain` | Alias for `--audience plain` (klarspråksläge). | `--plain` |
+| `--noscript-check` | Robustness probe: how much content is available without JavaScript. Advisory only, never affects the score. | `--noscript-check` |
+
+### Robustness Without JavaScript (`--noscript-check`)
+
+Opt-in. Loads the page a second time with JavaScript disabled and compares the amount of visible text against the normal, hydrated scan. The result is a **content coverage ratio**, not an axe error count — an empty page has almost no axe errors, so error counts are useless here.
+
+| Coverage | Verdict | Meaning |
+| --- | --- | --- |
+| `< 5 %` | `empty` | The page is effectively blank without JavaScript. |
+| `5–49 %` | `partial` | A substantial part of the content is missing without JavaScript. |
+| `≥ 50 %` | `ok` | Core content is server-rendered; JavaScript is an enhancement. |
+| n/a | `unknown` | The probe failed, or the page has no text even with JavaScript. A failed probe never fails the scan. |
+
+> **This is a recommendation, not a legal requirement.** No WCAG 2.x success criterion requires a page to work without JavaScript. Principle 4 ("Robust") is about content being parseable by user agents and assistive technology, not about progressive enhancement; SC 4.1.2 explicitly assumes script-generated components. The requirement existed in WCAG 1.0 checkpoint 6.3 (1999) and was removed in WCAG 2.0, and W3C technique SCR38 states outright that it "is not required for conformance with WCAG 2.x."
+>
+> Consequently the finding **never** affects `score`, `stats` or `complianceStatus`, and is **never** emitted as a WCAG violation. It is carried in a separate `result.noScript` object whose `isWcagViolation` and `affectsScore` fields are permanently `false`.
+
+Content inside `<noscript>` elements is excluded from the measurement. A `<noscript>` block only renders when JavaScript is off, so counting it would compare text that exists in one measurement and is impossible in the other, inflating the coverage ratio.
+
+```bash
+npx hd-a11y-scan https://spa.example.com --noscript-check --lang sv
+```
+
+```typescript
+const scanner = new RegulatoryScanner({
+  url: 'https://spa.example.com',
+  noScriptCheck: true // default: false — costs one extra page load
+});
+const result = await scanner.scan();
+result.noScript?.verdict;        // 'ok' | 'partial' | 'empty' | 'unknown'
+result.noScript?.coverageRatio;  // 0..1
+```
+
+Cost: one extra page load. Off by default.
 
 ### Hydration Wait (SPA support)
 `ScannerOptions.waitForHydrationMs` (programmatic API) adds an extra settle after `waitForNetworkIdle` and before metadata capture, so client-rendered SPAs finish hydrating before axe runs. Default is `2500` ms; set `0` to turn it off. Without this wait, unhydrated SPAs could report a false 100/100.

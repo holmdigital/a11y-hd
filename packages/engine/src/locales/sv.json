@@ -19,7 +19,16 @@
         "use_component": "Använd komponent: {component}",
         "pseudo_tests": "\n🧬 Genererar Pseudo-automationstester...\n",
         "test_for": "Test för {ruleId}:",
-        "junit_saved": "JUnit XML-rapport sparad till {path}"
+        "junit_saved": "JUnit XML-rapport sparad till {path}",
+        "noscript_heading": "\n🧪 Robusthet utan JavaScript (rådgivande)",
+        "noscript_coverage": "Innehåll som finns utan JavaScript: {percent}% ({without} av {with} tecken)",
+        "noscript_empty": "Sidan är i praktiken tom utan JavaScript.",
+        "noscript_partial": "En väsentlig del av innehållet saknas utan JavaScript.",
+        "noscript_ok": "Kärninnehållet finns tillgängligt utan JavaScript.",
+        "noscript_unknown": "Kunde inte mätas.",
+        "noscript_fallback": "Sidan har en <noscript>-fallback.",
+        "noscript_no_fallback": "Ingen <noscript>-fallback hittades.",
+        "noscript_advisory": "Rekommendation, inte ett lagkrav. Inget WCAG-kriterium kräver att en sida fungerar utan JavaScript, så detta påverkar inte konformansscoren."
     },
     "report": {
         "title": "Tillgänglighetsrapport - {url}",

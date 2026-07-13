@@ -19,7 +19,16 @@
         "use_component": "Käytä komponenttia: {component}",
         "pseudo_tests": "\n🧬 Luodaan Pseudo-automaatiotestejä...\n",
         "test_for": "Testi {ruleId}:lle:",
-        "junit_saved": "JUnit XML -raportti tallennettu kohteeseen {path}"
+        "junit_saved": "JUnit XML -raportti tallennettu kohteeseen {path}",
+        "noscript_heading": "\n🧪 Vakaus ilman JavaScriptiä (suositus)",
+        "noscript_coverage": "Sisältöä saatavilla ilman JavaScriptiä: {percent}% ({without}/{with} merkkiä)",
+        "noscript_empty": "Sivu on käytännössä tyhjä ilman JavaScriptiä.",
+        "noscript_partial": "Merkittävä osa sisällöstä puuttuu ilman JavaScriptiä.",
+        "noscript_ok": "Ydinsisältö on saatavilla ilman JavaScriptiä.",
+        "noscript_unknown": "Ei voitu mitata.",
+        "noscript_fallback": "Sivulla on <noscript>-varasisältö.",
+        "noscript_no_fallback": "<noscript>-varasisältöä ei löytynyt.",
+        "noscript_advisory": "Suositus, ei lakisääteinen vaatimus. Mikään WCAG-onnistumiskriteeri ei edellytä, että sivu toimii ilman JavaScriptiä, joten tämä ei vaikuta vaatimustenmukaisuuspisteisiin."
     },
     "report": {
         "title": "Saavutettavuusraportti - {url}",

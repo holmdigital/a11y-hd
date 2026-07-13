@@ -8,6 +8,7 @@ import puppeteer, { Browser, Page } from 'puppeteer';
 import type { RegulatoryReport, EnrichedReport } from '@holmdigital/standards';
 import { VirtualDOMBuilder } from './virtual-dom';
 import { HtmlValidator, ValidationResult } from './html-validator';
+import { evaluateNoScriptCoverage, probeWithoutJavaScript, NoScriptResult } from './noscript-check';
 
 import { readFileSync } from 'node:fs';
 
@@ -42,6 +43,15 @@ function getStandardsVersion(): string {
     }
 }
 
+/**
+ * En riktig User Agent, så vi inte blockas eller får en "lite"-version av sidan.
+ * Delas av huvudskanningen och robusthetssonden. De MÅSTE använda samma sträng:
+ * svarar servern med olika markup för olika user agents jämför sonden två skilda
+ * sidor i stället för samma sida med och utan JavaScript.
+ */
+const SCAN_USER_AGENT =
+    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36';
+
 export interface ScannerOptions {
     url: string;
     headless?: boolean;
@@ -53,6 +63,7 @@ export interface ScannerOptions {
     invalidHttpsCert?: boolean;
     light?: boolean; // Skip HTML validation + Virtual DOM for faster scan
     waitForHydrationMs?: number; // Extra settle efter networkidle så SPA hinner hydrera (default 2500, 0 = av)
+    noScriptCheck?: boolean; // Opt-in robusthetskontroll utan JS (rådgivande, påverkar aldrig score)
 }
 
 export interface ScanMetadata {
@@ -80,6 +91,12 @@ export interface ScanResult {
     score: number;
     complianceStatus: 'PASS' | 'FAIL';
     htmlValidation?: ValidationResult;
+    /**
+     * Robusthet utan JavaScript. Endast närvarande när noScriptCheck är på.
+     * RÅDGIVANDE: ingår aldrig i score, stats eller complianceStatus ovan.
+     * Se noscript-check.ts för varför detta inte är ett WCAG-fel.
+     */
+    noScript?: NoScriptResult;
     // EU Legal Framework summary
     legalSummary?: {
         wadApplicable: number;   // Rules applicable to WAD
@@ -100,6 +117,7 @@ export class RegulatoryScanner {
             silent: false,
             invalidHttpsCert: false,
             waitForHydrationMs: 2500, // Default PÅ: klientrenderade SPA:er behöver tid att hydrera innan axe körs
+            noScriptCheck: false, // Default AV: opt-in, kostar en extra sidladdning
             ...options
         };
         this.htmlValidator = new HtmlValidator();
@@ -171,6 +189,16 @@ export class RegulatoryScanner {
             pageTitle = await page.title();
             pageLanguage = await page.evaluate(() => document.documentElement.lang || undefined);
 
+            // Referensmätning för robusthetskontrollen: hur mycket text finns när
+            // sidan ÄR hydrerad? Måste tas här, medan sidan lever, för att kunna
+            // jämföras med den JS-fria laddningen längre ned. Kostar inget när av.
+            let textLengthWithJs: number | undefined;
+            if (this.options.noScriptCheck) {
+                textLengthWithJs = await page.evaluate(
+                    () => (document.body?.innerText ?? '').trim().length
+                );
+            }
+
             // Capture HTML for validation (skip in light mode)
             let htmlValidation: ValidationResult | undefined;
             if (!this.options.light) {
@@ -214,10 +242,21 @@ export class RegulatoryScanner {
                 ? await this.enrichResultsLight(axeResults)
                 : await this.enrichResults(axeResults);
 
+            // Robusthetskontroll utan JS. Körs EFTER huvudskanningen och resultatet
+            // hängs på utanför generateResultPackage, så det är strukturellt omöjligt
+            // för det att påverka score, stats eller complianceStatus.
+            let noScript: NoScriptResult | undefined;
+            if (this.options.noScriptCheck) {
+                noScript = await this.runNoScriptCheck(textLengthWithJs ?? 0);
+            }
+
             const scanDuration = Date.now() - startTime;
             const result = this.generateResultPackage(regulatoryReports, passedCount, scanDuration, pageTitle, pageLanguage);
             if (htmlValidation) {
                 result.htmlValidation = htmlValidation;
+            }
+            if (noScript) {
+                result.noScript = noScript;
             }
             return result;
 
@@ -242,13 +281,59 @@ export class RegulatoryScanner {
         if (!this.browser) throw new Error('Browser not initialized');
         const page = await this.browser.newPage();
         // Sätt en riktig User Agent för att undvika att bli blockad eller få en "lite"-version
-        await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36');
+        await page.setUserAgent(SCAN_USER_AGENT);
         return page;
     }
 
     private async injectAxe(page: Page) {
         const axeSource = axeCore.source;
         await page.evaluate(axeSource);
+    }
+
+    /**
+     * Laddar sidan en andra gång med JS avstängt och jämför innehållsmängden
+     * med den hydrerade sidan. Rådgivande robusthetsindikator, aldrig ett
+     * WCAG-fel och aldrig en faktor i scoren. Se noscript-check.ts.
+     *
+     * Kastar aldrig: en misslyckad sond får inte fälla en i övrigt lyckad scan.
+     * Vid fel returneras verdict 'unknown' med felmeddelandet bevarat, inte
+     * 'empty' (vi vill inte larma om en tom sida när det var sonden som brast).
+     */
+    private async runNoScriptCheck(textLengthWithJs: number): Promise<NoScriptResult> {
+        try {
+            if (!this.browser) throw new Error('Browser not initialized');
+
+            this.log('Mäter robusthet utan JavaScript...');
+            const measurement = await probeWithoutJavaScript(this.browser, {
+                // SAMMA user agent och viewport som huvudskanningen. Skiljer de sig
+                // åt kan servern svara med annan markup och jämförelsen blir falsk:
+                // vi skulle mäta två olika sidor, inte JS-effekten.
+                url: this.options.url,
+                userAgent: SCAN_USER_AGENT,
+                viewport: this.options.viewport
+            });
+
+            return evaluateNoScriptCoverage(
+                measurement.textLength,
+                textLengthWithJs,
+                measurement.hasNoScriptFallback
+            );
+        } catch (e) {
+            const message = e instanceof Error ? e.message : String(e);
+            this.log(`Robusthetskontrollen kunde inte genomföras: ${message}`);
+
+            return {
+                textLengthWithoutJs: 0,
+                textLengthWithJs: Math.max(0, textLengthWithJs),
+                coverageRatio: 0,
+                verdict: 'unknown',
+                hasContentWithoutJs: false,
+                hasNoScriptFallback: false,
+                isWcagViolation: false,
+                affectsScore: false,
+                error: message
+            };
+        }
     }
 
     /**

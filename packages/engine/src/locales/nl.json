@@ -19,7 +19,16 @@
         "use_component": "Gebruik component: {component}",
         "pseudo_tests": "\n🧬 Pseudo-automatiseringstests genereren...\n",
         "test_for": "Test voor {ruleId}:",
-        "junit_saved": "JUnit XML-rapport opgeslagen op {path}"
+        "junit_saved": "JUnit XML-rapport opgeslagen op {path}",
+        "noscript_heading": "\n🧪 Robuustheid zonder JavaScript (advies)",
+        "noscript_coverage": "Inhoud beschikbaar zonder JavaScript: {percent}% ({without} van {with} tekens)",
+        "noscript_empty": "De pagina is zonder JavaScript in feite leeg.",
+        "noscript_partial": "Een aanzienlijk deel van de inhoud ontbreekt zonder JavaScript.",
+        "noscript_ok": "De kerninhoud is beschikbaar zonder JavaScript.",
+        "noscript_unknown": "Kon niet worden gemeten.",
+        "noscript_fallback": "Er is een <noscript>-fallback aanwezig.",
+        "noscript_no_fallback": "Er is geen <noscript>-fallback gevonden.",
+        "noscript_advisory": "Aanbeveling, geen wettelijke vereiste. Geen enkel WCAG-succescriterium vereist dat een pagina zonder JavaScript werkt. Dit heeft dus geen invloed op de conformiteitsscore."
     },
     "report": {
         "title": "Toegankelijkheidsrapport - {url}",

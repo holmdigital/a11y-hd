@@ -332,3 +332,74 @@ describe('plain report fallback notice banner', () => {
         expect(html).not.toContain('<p class="plain-fallback-notice">');
     });
 });
+
+/**
+ * Robusthetssektionen utan JS.
+ *
+ * Kravet från Juno: fyndet får aldrig presenteras som ett WCAG-fel eller som en
+ * del av konformansresultatet. Testerna nedan bevakar exakt det.
+ */
+describe('robusthetssektion utan JavaScript', () => {
+    const withNoScript = (verdict: 'ok' | 'partial' | 'empty' | 'unknown', ratio: number): ScanResult => ({
+        ...EMPTY_RESULT,
+        noScript: {
+            textLengthWithoutJs: Math.round(4200 * ratio),
+            textLengthWithJs: 4200,
+            coverageRatio: ratio,
+            verdict,
+            hasContentWithoutJs: ratio >= 0.05,
+            hasNoScriptFallback: false,
+            isWcagViolation: false,
+            affectsScore: false
+        }
+    });
+
+    it('renderas inte alls när kontrollen inte körts (opt-in)', () => {
+        setLanguage('sv');
+        const html = generateReportHTML(EMPTY_RESULT, 'public');
+        expect(html).not.toContain('Robusthet utan JavaScript');
+    });
+
+    it('renderas i utvecklarrapporten när kontrollen körts', () => {
+        setLanguage('sv');
+        const html = generateReportHTML(withNoScript('empty', 0), 'public');
+        expect(html).toContain('Robusthet utan JavaScript');
+        expect(html).toContain('Sidan är i praktiken tom utan JavaScript.');
+    });
+
+    it('renderas i klarspråksrapporten när kontrollen körts', () => {
+        setLanguage('sv');
+        const html = generateReportHTML(withNoScript('empty', 0), 'public', 'plain');
+        expect(html).toContain('Robusthet utan JavaScript');
+    });
+
+    it('märks ALLTID som rekommendation och inte lagkrav', () => {
+        setLanguage('sv');
+        (['empty', 'partial', 'ok', 'unknown'] as const).forEach(verdict => {
+            const html = generateReportHTML(withNoScript(verdict, 0.3), 'public');
+            expect(html).toContain('Rekommendation, inte ett lagkrav.');
+            expect(html).toContain('påverkar inte konformansscoren');
+        });
+    });
+
+    it('presenteras utanför violation-listan och rör inte scoren', () => {
+        setLanguage('sv');
+        const clean = generateReportHTML(EMPTY_RESULT, 'public');
+        const withProbe = generateReportHTML(withNoScript('empty', 0), 'public');
+
+        // Samma score, samma violation-markup. Enda skillnaden i hela dokumentet
+        // är den tillagda robusthetssektionen: tar man bort den är rapporterna
+        // tecken för tecken identiska. Fyndet kan alltså inte ha smugit sig in i
+        // scoren, statistiken eller violation-listan.
+        const collapse = (s: string) => s.replace(/\s+/g, ' ').trim();
+        expect(withProbe).toContain('100');
+        expect(withProbe).not.toContain('class="violation-title">noscript');
+        expect(collapse(withProbe.replace(/<section[\s\S]*?<\/section>/, ''))).toBe(collapse(clean));
+    });
+
+    it('visar täckningsgraden i procent', () => {
+        setLanguage('sv');
+        const html = generateReportHTML(withNoScript('partial', 0.3), 'public');
+        expect(html).toContain('30%');
+    });
+});

@@ -1,4 +1,5 @@
 export * from './core/regulatory-scanner';
+export * from './core/noscript-check';
 export * from './core/virtual-dom';
 export * from './automation/pseudo-automation';
 export * from './i18n';

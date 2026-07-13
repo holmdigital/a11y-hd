@@ -211,3 +211,16 @@ describe('ScannerOptions.waitForHydrationMs', () => {
         expect((scanner as unknown as { options: { waitForHydrationMs?: number } }).options.waitForHydrationMs).toBe(5000);
     });
 });
+
+describe('ScannerOptions.noScriptCheck', () => {
+    const readOption = (scanner: RegulatoryScanner) =>
+        (scanner as unknown as { options: { noScriptCheck?: boolean } }).options.noScriptCheck;
+
+    it('defaults to false — robusthetskontrollen är opt-in och kostar en extra sidladdning', () => {
+        expect(readOption(new RegulatoryScanner({ url: 'https://test.example.com' }))).toBe(false);
+    });
+
+    it('can be enabled explicitly', () => {
+        expect(readOption(new RegulatoryScanner({ url: 'https://test.example.com', noScriptCheck: true }))).toBe(true);
+    });
+});

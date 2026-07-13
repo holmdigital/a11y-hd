@@ -17,6 +17,51 @@ import { setLanguage, t } from '../i18n';
 import type { EnrichedReport } from '@holmdigital/standards';
 import { isPlainLanguageSupported } from '../reporting/plain-language-support';
 import { sendToCloud, CloudConfig } from './cloud-client';
+import type { NoScriptResult } from '../core/noscript-check';
+
+/**
+ * Skriver ut robusthetsindikatorn utan JS.
+ *
+ * Presenteras medvetet SEPARAT från konformansscoren och alltid tillsammans med
+ * raden om att det är en rekommendation och inte ett lagkrav. Inget WCAG-
+ * kriterium kräver att en sida fungerar utan JavaScript, och vi får aldrig ge
+ * intryck av att detta är en överträdelse. Ändra inte den formuleringen utan
+ * att först läsa noscript-check.ts.
+ */
+function renderNoScriptAdvisory(noScript: NoScriptResult): void {
+    console.log(chalk.bold(t('cli.noscript_heading')));
+
+    if (noScript.verdict === 'unknown') {
+        console.log(chalk.gray(`  ${t('cli.noscript_unknown')}${noScript.error ? ` (${noScript.error})` : ''}`));
+        console.log(chalk.gray(`  ${t('cli.noscript_advisory')}`));
+        return;
+    }
+
+    const percent = Math.round(noScript.coverageRatio * 100);
+    const color = noScript.verdict === 'empty' ? chalk.red
+        : noScript.verdict === 'partial' ? chalk.yellow
+            : chalk.green;
+    const icon = noScript.verdict === 'empty' ? '🔴'
+        : noScript.verdict === 'partial' ? '🟡'
+            : '🟢';
+
+    const summary = noScript.verdict === 'empty' ? t('cli.noscript_empty')
+        : noScript.verdict === 'partial' ? t('cli.noscript_partial')
+            : t('cli.noscript_ok');
+
+    console.log(`  ${icon} ${color.bold(summary)}`);
+    console.log(chalk.white(`  ${t('cli.noscript_coverage', {
+        percent,
+        without: noScript.textLengthWithoutJs,
+        with: noScript.textLengthWithJs
+    })}`));
+
+    if (noScript.verdict !== 'ok') {
+        console.log(chalk.gray(`  ${noScript.hasNoScriptFallback ? t('cli.noscript_fallback') : t('cli.noscript_no_fallback')}`));
+    }
+
+    console.log(chalk.gray(`  ${t('cli.noscript_advisory')}`));
+}
 
 /**
  * Validates URL format
@@ -68,6 +113,7 @@ program
     .option('--light', 'Light scan: fast score-only mode (skips HTML validation and detailed legal mapping)')
     .option('--audience <mode>', 'Output audience: developer (default) or plain', 'developer')
     .option('--plain', 'Alias for --audience plain (klarspråksläge for non-technical recipients)')
+    .option('--noscript-check', 'Robustness probe: measure how much content is available without JavaScript. Advisory only, never affects the compliance score.')
     .action(async (url: string, cliOptions) => {
         // 1. Load Config from file (.a11yrc, package.json, etc.)
         const explorer = cosmiconfig('a11y');
@@ -99,6 +145,8 @@ program
             publishDate: cliOptions.publishDate || fileConfig.publishDate,
             light: cliOptions.light ?? fileConfig.light ?? false,
             plain: cliOptions.plain ?? fileConfig.plain ?? false,
+            // Commander camelCase:ar --noscript-check till noscriptCheck.
+            noScriptCheck: cliOptions.noscriptCheck ?? fileConfig.noScriptCheck ?? false,
             audience: cliOptions.plain
                 ? 'plain'
                 : (cliOptions.audience || fileConfig.audience || 'developer'),
@@ -126,6 +174,7 @@ program
             light: boolean;
             plain: boolean;
             audience: 'developer' | 'plain';
+            noScriptCheck: boolean;
         };
 
         setLanguage(options.lang);
@@ -180,7 +229,8 @@ program
                 silent: options.json || options.light,
                 severityThreshold: options.threshold as 'critical' | 'high' | 'medium' | 'low',
                 invalidHttpsCert: options.invalidHttpsCert,
-                light: options.light
+                light: options.light,
+                noScriptCheck: options.noScriptCheck
             });
 
             if (spinner) spinner.text = t('cli.analyzing');
@@ -231,6 +281,9 @@ program
                     complianceStatus: result.complianceStatus,
                     stats: result.stats,
                     scanDuration: result.metadata.scanDuration,
+                    // Rådgivande robusthetsindikator. Undefined när --noscript-check
+                    // inte används och faller då ur JSON:en av sig själv.
+                    noScript: result.noScript,
                     topIssues: result.reports.slice(0, 5).map(r => ({
                         id: r.ruleId,
                         impact: r.holmdigitalInsight.diggRisk,
@@ -403,6 +456,12 @@ program
                         }
                     });
                 }
+            }
+
+            // Robusthet utan JS: skrivs ut för alla människoläsbara lägen (dashboard,
+            // light och klarspråk). JSON-lägena bär datan i result.noScript i stället.
+            if (result.noScript && !options.json) {
+                renderNoScriptAdvisory(result.noScript);
             }
 
             if (options.ci && result.reports.length > 0) {
