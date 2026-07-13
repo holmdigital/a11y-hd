@@ -404,9 +404,9 @@ describe('robusthetssektion utan JavaScript', () => {
     });
 
     /**
-     * Vem fyndet drabbar. Poängen (Marcus Österberg, Webperf): utan den här raden
-     * avfärdas fyndet med "alla har ju JavaScript". Raden ska INTE innehålla någon
-     * siffra: enda kända underlaget är GDS 2013, gammalt och orepliterat.
+     * Vem fyndet drabbar. Utan den här raden avfärdas fyndet med "alla har ju
+     * JavaScript", och då är hela kontrollen bortkastad. Raden ska INTE innehålla
+     * någon siffra: enda kända underlaget är GDS 2013, gammalt och orepliterat.
      */
     it('säger VEM det drabbar när sidan är tom utan JavaScript', () => {
         setLanguage('sv');

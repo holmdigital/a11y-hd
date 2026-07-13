@@ -12,7 +12,7 @@ import {
  */
 describe('evaluateNoScriptCoverage — de tre scenarierna', () => {
     it('helt tom utan JS: klientrenderat SPA ger verdict "empty"', () => {
-        // 0 tecken utan JS, 4200 med. Det är sidan Marcus beskriver.
+        // 0 tecken utan JS, 4200 med. Ett klientrenderat SPA: tomt skal tills skripten kört.
         const r = evaluateNoScriptCoverage(0, 4200);
 
         expect(r.verdict).toBe('empty');
