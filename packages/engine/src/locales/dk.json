@@ -19,7 +19,18 @@
         "use_component": "Brug komponent: {component}",
         "pseudo_tests": "\n🧬 Genererer Pseudo-automatiseringstests...\n",
         "test_for": "Test for {ruleId}:",
-        "junit_saved": "JUnit XML-rapport gemt i {path}"
+        "junit_saved": "JUnit XML-rapport gemt i {path}",
+        "noscript_heading": "\n🧪 Robusthed uden JavaScript (anbefaling)",
+        "noscript_coverage": "Indhold tilgængeligt uden JavaScript: {percent}% ({without} af {with} tegn)",
+        "noscript_empty": "Siden er reelt tom uden JavaScript.",
+        "noscript_partial": "En væsentlig del af indholdet mangler uden JavaScript.",
+        "noscript_ok": "Kerneindholdet er tilgængeligt uden JavaScript.",
+        "noscript_unknown": "Kunne ikke måles.",
+        "noscript_fallback": "Der findes en <noscript>-fallback.",
+        "noscript_no_fallback": "Der blev ikke fundet nogen <noscript>-fallback.",
+        "noscript_impact": "Det rammer sjældent dem, der har slået JavaScript fra, men dem, hvis scripts aldrig nåede frem: dårligt mobilnet, en virksomhedsproxy, en browserudvidelse der driller, en timeout. De får en tom side i stedet for en langsom.",
+        "noscript_advisory": "Anbefaling, ikke et lovkrav. Intet WCAG-succeskriterium kræver, at en side fungerer uden JavaScript, så dette påvirker ikke konformitetsscoren.",
+        "badge_withheld": "100/100 uden anmærkninger. Robusthedstjekket er ikke rent, så vi genererer ikke et delbart badge."
     },
     "report": {
         "title": "Tilgængelighedsrapport - {url}",

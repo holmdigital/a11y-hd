@@ -47,6 +47,73 @@ function escapeHtml(str: string): string {
         .replace(/>/g, '&gt;');
 }
 
+/**
+ * Sektion för robusthet utan JavaScript. Delas av utvecklar- och
+ * klarspråksrapporten och är helt självbärande (inline-stilar, ingen ny CSS).
+ *
+ * Presenteras SEPARAT från konformansresultatet och alltid med raden om att det
+ * är en rekommendation och inte ett lagkrav. Inget WCAG-kriterium kräver att en
+ * sida fungerar utan JavaScript. Att färga eller placera detta som en
+ * överträdelse vore att ljuga om lagen. Se noscript-check.ts.
+ *
+ * Returnerar tom sträng när kontrollen inte körts, så anropet kan stå ovillkorat.
+ */
+function renderNoScriptSection(result: ScanResult): string {
+    const noScript = result.noScript;
+    if (!noScript) return '';
+
+    const palette = {
+        empty: { accent: '#b91c1c', bg: '#fef2f2', icon: '🔴' },
+        partial: { accent: '#b45309', bg: '#fffbeb', icon: '🟡' },
+        ok: { accent: '#15803d', bg: '#f0fdf4', icon: '🟢' },
+        unknown: { accent: '#475569', bg: '#f8fafc', icon: '⚪' }
+    }[noScript.verdict];
+
+    const summary = noScript.verdict === 'empty' ? t('cli.noscript_empty')
+        : noScript.verdict === 'partial' ? t('cli.noscript_partial')
+            : noScript.verdict === 'ok' ? t('cli.noscript_ok')
+                : t('cli.noscript_unknown');
+
+    // Vem fyndet drabbar. Bara vid empty och partial: vid ok finns innehållet och
+    // det finns ingen att drabba. Utan den här raden avfärdas fyndet med "alla har
+    // ju JavaScript", vilket är precis den blinda fläcken kontrollen ska belysa.
+    // Medvetet utan siffror, se kommentaren i cli/index.ts.
+    const impact = noScript.verdict === 'empty' || noScript.verdict === 'partial'
+        ? `<p style="margin: 0 0 0.5rem; color: #0f172a; font-size: 0.95rem; line-height: 1.55;">
+                ${escapeHtml(t('cli.noscript_impact'))}
+           </p>`
+        : '';
+
+    const detail = noScript.verdict === 'unknown'
+        ? ''
+        : `<p style="margin: 0 0 0.5rem; color: #334155; font-size: 0.95rem;">
+                ${escapeHtml(t('cli.noscript_coverage', {
+            percent: Math.round(noScript.coverageRatio * 100),
+            without: noScript.textLengthWithoutJs,
+            with: noScript.textLengthWithJs
+        }))}
+           </p>
+           ${noScript.verdict !== 'ok' ? `<p style="margin: 0 0 0.5rem; color: #475569; font-size: 0.9rem;">
+                ${escapeHtml(noScript.hasNoScriptFallback ? t('cli.noscript_fallback') : t('cli.noscript_no_fallback'))}
+           </p>` : ''}`;
+
+    return `
+        <section style="margin: 2rem 0; padding: 1.25rem 1.5rem; background: ${palette.bg}; border-left: 5px solid ${palette.accent}; border-radius: 6px;">
+            <h2 style="margin: 0 0 0.75rem; font-size: 1.1rem; color: ${palette.accent};">
+                ${escapeHtml(t('cli.noscript_heading').trim())}
+            </h2>
+            <p style="margin: 0 0 0.5rem; font-weight: 600; color: #0f172a; font-size: 1rem;">
+                <span aria-hidden="true">${palette.icon}</span> ${escapeHtml(summary)}
+            </p>
+            ${impact}
+            ${detail}
+            <p style="margin: 0.75rem 0 0; color: #475569; font-size: 0.85rem; line-height: 1.5;">
+                ${escapeHtml(t('cli.noscript_advisory'))}
+            </p>
+        </section>
+    `;
+}
+
 export function generateReportHTML(
     result: ScanResult,
     sector: 'public' | 'private' = 'public',
@@ -328,7 +395,7 @@ export function generateReportHTML(
             </div>
             `;
     }).join('')}
-
+${renderNoScriptSection(result)}
         <footer>
             ${t('report.footer', { version: getEngineVersion() })}
         </footer>
@@ -750,7 +817,7 @@ ${sortedGroups.map((group) => {
     </div>
 
     ${itemsHtml}
-
+${renderNoScriptSection(result)}
     <p class="closing">${t('plain.closing')}</p>
   </div>
 

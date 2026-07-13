@@ -19,7 +19,18 @@
         "use_component": "Use el componente: {component}",
         "pseudo_tests": "\n🧬 Generando pruebas de pseudo-automatización...\n",
         "test_for": "Prueba para {ruleId}:",
-        "junit_saved": "Informe JUnit XML guardado en {path}"
+        "junit_saved": "Informe JUnit XML guardado en {path}",
+        "noscript_heading": "\n🧪 Robustez sin JavaScript (recomendación)",
+        "noscript_coverage": "Contenido disponible sin JavaScript: {percent}% ({without} de {with} caracteres)",
+        "noscript_empty": "La página está prácticamente vacía sin JavaScript.",
+        "noscript_partial": "Falta una parte sustancial del contenido sin JavaScript.",
+        "noscript_ok": "El contenido principal está disponible sin JavaScript.",
+        "noscript_unknown": "No se pudo medir.",
+        "noscript_fallback": "Hay una alternativa <noscript> presente.",
+        "noscript_no_fallback": "No se encontró ninguna alternativa <noscript>.",
+        "noscript_impact": "Rara vez afecta a quien ha desactivado JavaScript, sino a quien nunca recibió los scripts: una red móvil deficiente, un proxy corporativo, una extensión del navegador que falla, un tiempo de espera agotado. Ven una página vacía en lugar de una lenta.",
+        "noscript_advisory": "Recomendación, no un requisito legal. Ningún criterio de conformidad de las WCAG exige que una página funcione sin JavaScript, por lo que esto no afecta a la puntuación de conformidad.",
+        "badge_withheld": "100/100 sin observaciones. La comprobación de robustez no está limpia, por lo que no generamos una insignia compartible."
     },
     "report": {
         "title": "Informe de Accesibilidad - {url}",

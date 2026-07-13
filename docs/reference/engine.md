@@ -1,5 +1,5 @@
 # 🚂 Engine Library Catalog
-> **Last Updated:** 2026-06-22
+> **Last Updated:** 2026-07-13
 
 The `@holmdigital/engine` is the automated testing core. It runs a headless browser (Puppeteer) to scan your web applications for accessibility violations against WCAG 2.1 and EN 301 549.
 
@@ -48,9 +48,68 @@ hd-a11y-scan <url> [options]
 | `--invalid-https-cert` | Allow scanning sites with invalid/self-signed HTTPS certificates ⚠️ (trusted envs only). | `--invalid-https-cert` |
 | `--audience <mode>` | Report audience: `developer` (default) or `plain`. Plain mode renders a non-technical, grouped report for managers, lawyers, and buyers. | `--audience plain` |
 | `--plain` | Alias for `--audience plain` (klarspråksläge). | `--plain` |
+| `--noscript-check` | Robustness probe: how much content is available without JavaScript. Advisory only, never affects the score. | `--noscript-check` |
+| `--wait-for-hydration <ms>` | Settle time after network idle so client-rendered SPAs finish hydrating before axe runs. Default `2500`, `0` disables, max `60000`. | `--wait-for-hydration 5000` |
+
+### Robustness Without JavaScript (`--noscript-check`)
+
+Opt-in. Loads the page a second time with JavaScript disabled and compares the amount of visible text against the normal, hydrated scan. The result is a **content coverage ratio**, not an axe error count. An empty page has almost no axe errors, so error counts are useless here.
+
+| Coverage | Verdict | Meaning |
+| --- | --- | --- |
+| `< 5 %` | `empty` | The page is effectively blank without JavaScript. |
+| `5–49 %` | `partial` | A substantial part of the content is missing without JavaScript. |
+| `≥ 50 %` | `ok` | Core content is server-rendered; JavaScript is an enhancement. |
+| n/a | `unknown` | The probe failed, or the page has no text even with JavaScript. A failed probe never fails the scan. |
+
+> **This is a recommendation, not a legal requirement.** No WCAG 2.x success criterion requires a page to work without JavaScript. Principle 4 ("Robust") is about content being parseable by user agents and assistive technology, not about progressive enhancement; SC 4.1.2 explicitly assumes script-generated components. The requirement existed in WCAG 1.0 checkpoint 6.3 (1999) and was removed in WCAG 2.0, and W3C technique SCR38 states outright that it "is not required for conformance with WCAG 2.x."
+>
+> Consequently the finding **never** affects `score`, `stats` or `complianceStatus`, and is **never** emitted as a WCAG violation. It is carried in a separate `result.noScript` object whose `isWcagViolation` and `affectsScore` fields are permanently `false`.
+
+**Who this affects.** When the verdict is `empty` or `partial`, the report adds one line naming who is hit: not the people who turned JavaScript off (a vanishingly small group), but the people whose scripts never arrived. A weak mobile network. A corporate proxy. A browser extension that misbehaves. A timeout. They get an empty page instead of a slow one. The line is deliberately qualitative and carries no statistic: the only widely cited figure (UK GDS, 2013) is old and has never been replicated, and an ageing number does not belong in a tool with a long life. The line is rendered in the CLI, in the developer HTML report and in the plain-language report, and is localised in all nine languages (`cli.noscript_impact`). It is advisory text only and changes nothing about the score.
+
+Content inside `<noscript>` elements is excluded from the measurement. A `<noscript>` block only renders when JavaScript is off, so counting it would compare text that exists in one measurement and is impossible in the other, inflating the coverage ratio.
+
+```bash
+npx hd-a11y-scan https://spa.example.com --noscript-check --lang sv
+```
+
+```typescript
+const scanner = new RegulatoryScanner({
+  url: 'https://spa.example.com',
+  noScriptCheck: true // default: false, costs one extra page load
+});
+const result = await scanner.scan();
+result.noScript?.verdict;        // 'ok' | 'partial' | 'empty' | 'unknown'
+result.noScript?.coverageRatio;  // 0..1
+```
+
+Cost: one extra page load. Off by default.
+
+#### The badge is withheld on an `empty` verdict
+
+When `--noscript-check` returns the verdict `empty`, the CLI does **not** print the shareable "🏆 Perfect Score" badge, even on a 100/100 scan. It prints this instead:
+
+```
+100/100 with no findings. The robustness check is not clean, so we do not generate a shareable badge.
+```
+
+The score is **not** touched. The page still reports `score: 100` and `complianceStatus: "PASS"`, because it is genuinely WCAG conformant: no success criterion requires a page to work without JavaScript, and lowering the score would misrepresent the law. The badge, however, is a marketing artefact, not a legal verdict. We do not award a shareable badge to a page that a user on a weak network never gets to see.
+
+Only `empty` withholds the badge. A `partial` verdict still earns it: core content is present and the page can be read. The line is localised in all nine languages (`cli.badge_withheld`), and the pure predicate is `isBadgeWithheldByRobustness()` in `reporting/badge-generator.ts`.
 
 ### Hydration Wait (SPA support)
-`ScannerOptions.waitForHydrationMs` (programmatic API) adds an extra settle after `waitForNetworkIdle` and before metadata capture, so client-rendered SPAs finish hydrating before axe runs. Default is `2500` ms; set `0` to turn it off. Without this wait, unhydrated SPAs could report a false 100/100.
+An extra settle after `waitForNetworkIdle` and before metadata capture, so client-rendered SPAs finish hydrating before axe runs. Default is `2500` ms; set `0` to turn it off. Without this wait, unhydrated SPAs could report a false 100/100.
+
+Available both on the CLI (`--wait-for-hydration <ms>`) and on the programmatic API (`ScannerOptions.waitForHydrationMs`). The CLI value must be a whole number of milliseconds between `0` and `60000`; anything else exits with code 1 and an error naming both the bad value and the expected format. A page that has not hydrated within a minute will not hydrate at all.
+
+```bash
+# Heavy SPA: give it five seconds
+npx hd-a11y-scan https://spa.example.com --wait-for-hydration 5000
+
+# Static site: skip the wait entirely and save 2.5 seconds per scan
+npx hd-a11y-scan https://static.example.com --wait-for-hydration 0
+```
 
 ```typescript
 const scanner = new RegulatoryScanner({
@@ -58,6 +117,8 @@ const scanner = new RegulatoryScanner({
   waitForHydrationMs: 5000 // give a heavy SPA more time; 0 disables the wait
 });
 ```
+
+Precedence is CLI flag > `.a11yrc` (`waitForHydrationMs`) > the 2500 ms default.
 
 ---
 
@@ -75,6 +136,8 @@ Instead of long CLI commands, you can store your settings in a `.a11yrc` file in
   "junit": "./reports/accessibility.xml",
   "pdf": "./reports/accessibility.pdf",
   "invalidHttpsCert": true,
+  "noScriptCheck": false,
+  "waitForHydrationMs": 2500,
   "org": "HolmDigital AB",
   "email": "hej@holmdigital.se",
   "phone": "070-123 45 67",

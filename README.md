@@ -80,6 +80,8 @@ Options:
 - `--json` : output results as JSON
 - `--pdf <path>` : generate a PDF report
 - `--plain` (or `--audience plain`) : plain-language report and PDF for non-technical recipients
+- `--noscript-check` : robustness probe: how much content is available without JavaScript (advisory, never affects the score; a page that is blank without JS keeps its score but is not awarded the shareable badge)
+- `--wait-for-hydration <ms>` : settle time after network idle so client-rendered SPAs finish hydrating before axe runs. Default: `2500`. `0` disables it, max `60000`
 - `--statement <path>` : generate an accessibility statement (Premium V2 HTML)
 - `--format <type>` : statement format (`html`, `md`). Default: `html`
 - `--junit <path>` : generate JUnit XML for CI dashboards

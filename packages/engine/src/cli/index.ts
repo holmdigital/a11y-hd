@@ -12,11 +12,69 @@ import { PseudoAutomationEngine } from '../automation/pseudo-automation';
 import { generateReportHTML } from '../reporting/html-template';
 import { generatePDF } from '../reporting/pdf-generator';
 import { generateStatement, generateStatementContent, StatementMetadata } from '../reporting/statement-generator';
-import { generateBadgeMarkdown } from '../reporting/badge-generator';
+import { generateBadgeMarkdown, isBadgeWithheldByRobustness } from '../reporting/badge-generator';
+import { parseHydrationWait, InvalidOptionError, MAX_HYDRATION_WAIT_MS } from './parse-options';
 import { setLanguage, t } from '../i18n';
 import type { EnrichedReport } from '@holmdigital/standards';
 import { isPlainLanguageSupported } from '../reporting/plain-language-support';
 import { sendToCloud, CloudConfig } from './cloud-client';
+import type { NoScriptResult } from '../core/noscript-check';
+
+/**
+ * Skriver ut robusthetsindikatorn utan JS.
+ *
+ * Presenteras medvetet SEPARAT från konformansscoren och alltid tillsammans med
+ * raden om att det är en rekommendation och inte ett lagkrav. Inget WCAG-
+ * kriterium kräver att en sida fungerar utan JavaScript, och vi får aldrig ge
+ * intryck av att detta är en överträdelse. Ändra inte den formuleringen utan
+ * att först läsa noscript-check.ts.
+ *
+ * Vid empty och partial skrivs dessutom en rad om VEM fyndet drabbar. Utan den
+ * avfärdas fyndet med "alla har ju JavaScript". Poängen är att det sällan är den
+ * som valt bort JS, utan den vars skript aldrig kom fram. Raden är medvetet
+ * kvalitativ och utan siffror: det enda kända underlaget (GDS 2013) är gammalt
+ * och orepliterat, och en åldrande siffra hör inte hemma i ett verktyg som lever
+ * länge.
+ */
+function renderNoScriptAdvisory(noScript: NoScriptResult): void {
+    console.log(chalk.bold(t('cli.noscript_heading')));
+
+    if (noScript.verdict === 'unknown') {
+        console.log(chalk.gray(`  ${t('cli.noscript_unknown')}${noScript.error ? ` (${noScript.error})` : ''}`));
+        console.log(chalk.gray(`  ${t('cli.noscript_advisory')}`));
+        return;
+    }
+
+    const percent = Math.round(noScript.coverageRatio * 100);
+    const color = noScript.verdict === 'empty' ? chalk.red
+        : noScript.verdict === 'partial' ? chalk.yellow
+            : chalk.green;
+    const icon = noScript.verdict === 'empty' ? '🔴'
+        : noScript.verdict === 'partial' ? '🟡'
+            : '🟢';
+
+    const summary = noScript.verdict === 'empty' ? t('cli.noscript_empty')
+        : noScript.verdict === 'partial' ? t('cli.noscript_partial')
+            : t('cli.noscript_ok');
+
+    console.log(`  ${icon} ${color.bold(summary)}`);
+
+    if (noScript.verdict !== 'ok') {
+        console.log(chalk.white(`  ${t('cli.noscript_impact')}`));
+    }
+
+    console.log(chalk.white(`  ${t('cli.noscript_coverage', {
+        percent,
+        without: noScript.textLengthWithoutJs,
+        with: noScript.textLengthWithJs
+    })}`));
+
+    if (noScript.verdict !== 'ok') {
+        console.log(chalk.gray(`  ${noScript.hasNoScriptFallback ? t('cli.noscript_fallback') : t('cli.noscript_no_fallback')}`));
+    }
+
+    console.log(chalk.gray(`  ${t('cli.noscript_advisory')}`));
+}
 
 /**
  * Validates URL format
@@ -68,11 +126,31 @@ program
     .option('--light', 'Light scan: fast score-only mode (skips HTML validation and detailed legal mapping)')
     .option('--audience <mode>', 'Output audience: developer (default) or plain', 'developer')
     .option('--plain', 'Alias for --audience plain (klarspråksläge for non-technical recipients)')
+    .option('--noscript-check', 'Robustness probe: measure how much content is available without JavaScript. Advisory only, never affects the compliance score.')
+    .option('--wait-for-hydration <ms>', `Milliseconds to wait after network idle so client-rendered SPAs finish hydrating before axe runs (default 2500, 0 disables, max ${MAX_HYDRATION_WAIT_MS})`)
     .action(async (url: string, cliOptions) => {
         // 1. Load Config from file (.a11yrc, package.json, etc.)
         const explorer = cosmiconfig('a11y');
         const configResult = await explorer.search();
         const fileConfig = configResult ? configResult.config : {};
+
+        // Hydration-waiten: CLI > config-fil > scannerns egen default (2500 ms).
+        // Undefined här betyder "rör inte", inte "0". Commander camelCase:ar
+        // --wait-for-hydration till waitForHydration.
+        let waitForHydrationMs: number | undefined;
+        try {
+            waitForHydrationMs = cliOptions.waitForHydration !== undefined
+                ? parseHydrationWait(cliOptions.waitForHydration)
+                : (fileConfig.waitForHydrationMs !== undefined
+                    ? parseHydrationWait(String(fileConfig.waitForHydrationMs))
+                    : undefined);
+        } catch (e) {
+            if (e instanceof InvalidOptionError) {
+                console.error(chalk.red(e.message));
+                process.exit(1);
+            }
+            throw e;
+        }
 
         // 2. Merge Options: CLI > File > Defaults
         const options = {
@@ -99,6 +177,9 @@ program
             publishDate: cliOptions.publishDate || fileConfig.publishDate,
             light: cliOptions.light ?? fileConfig.light ?? false,
             plain: cliOptions.plain ?? fileConfig.plain ?? false,
+            // Commander camelCase:ar --noscript-check till noscriptCheck.
+            noScriptCheck: cliOptions.noscriptCheck ?? fileConfig.noScriptCheck ?? false,
+            waitForHydrationMs,
             audience: cliOptions.plain
                 ? 'plain'
                 : (cliOptions.audience || fileConfig.audience || 'developer'),
@@ -126,6 +207,8 @@ program
             light: boolean;
             plain: boolean;
             audience: 'developer' | 'plain';
+            noScriptCheck: boolean;
+            waitForHydrationMs?: number;
         };
 
         setLanguage(options.lang);
@@ -180,7 +263,9 @@ program
                 silent: options.json || options.light,
                 severityThreshold: options.threshold as 'critical' | 'high' | 'medium' | 'low',
                 invalidHttpsCert: options.invalidHttpsCert,
-                light: options.light
+                light: options.light,
+                noScriptCheck: options.noScriptCheck,
+                waitForHydrationMs: options.waitForHydrationMs
             });
 
             if (spinner) spinner.text = t('cli.analyzing');
@@ -231,6 +316,9 @@ program
                     complianceStatus: result.complianceStatus,
                     stats: result.stats,
                     scanDuration: result.metadata.scanDuration,
+                    // Rådgivande robusthetsindikator. Undefined när --noscript-check
+                    // inte används och faller då ur JSON:en av sig själv.
+                    noScript: result.noScript,
                     topIssues: result.reports.slice(0, 5).map(r => ({
                         id: r.ruleId,
                         impact: r.holmdigitalInsight.diggRisk,
@@ -277,10 +365,17 @@ program
                 console.log(chalk.bold(`[ Compliance Score: ${scoreColor(result.score + '/100')} ] ${result.score >= 90 ? '🟢' : (result.score >= 70 ? '🟡' : '🔴')}`));
 
                 if (result.score === 100) {
-                    const badge = generateBadgeMarkdown(result.score);
-                    if (badge) {
-                        console.log(chalk.green.bold('\n🏆 Perfect Score! Here is your accessibility badge:'));
-                        console.log(chalk.white(badge));
+                    // Scoren står kvar på 100/100 och PASS. Det enda som händer här
+                    // är att den DELBARA badgen hålls inne när sidan är tom utan JS.
+                    // Se isBadgeWithheldByRobustness i badge-generator.ts.
+                    if (isBadgeWithheldByRobustness(result.noScript)) {
+                        console.log(chalk.yellow(`\n${t('cli.badge_withheld')}`));
+                    } else {
+                        const badge = generateBadgeMarkdown(result.score);
+                        if (badge) {
+                            console.log(chalk.green.bold('\n🏆 Perfect Score! Here is your accessibility badge:'));
+                            console.log(chalk.white(badge));
+                        }
                     }
                 }
 
@@ -403,6 +498,12 @@ program
                         }
                     });
                 }
+            }
+
+            // Robusthet utan JS: skrivs ut för alla människoläsbara lägen (dashboard,
+            // light och klarspråk). JSON-lägena bär datan i result.noScript i stället.
+            if (result.noScript && !options.json) {
+                renderNoScriptAdvisory(result.noScript);
             }
 
             if (options.ci && result.reports.length > 0) {

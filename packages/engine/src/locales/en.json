@@ -19,7 +19,18 @@
         "use_component": "Use component: {component}",
         "pseudo_tests": "\n🧬 Generating Pseudo-Automation Tests...\n",
         "test_for": "Test for {ruleId}:",
-        "junit_saved": "JUnit XML report saved to {path}"
+        "junit_saved": "JUnit XML report saved to {path}",
+        "noscript_heading": "\n🧪 Robustness without JavaScript (advisory)",
+        "noscript_coverage": "Content available without JavaScript: {percent}% ({without} of {with} characters)",
+        "noscript_empty": "The page is effectively empty without JavaScript.",
+        "noscript_partial": "A substantial part of the content is missing without JavaScript.",
+        "noscript_ok": "Core content is available without JavaScript.",
+        "noscript_unknown": "Could not be measured.",
+        "noscript_fallback": "A <noscript> fallback is present.",
+        "noscript_no_fallback": "No <noscript> fallback was found.",
+        "noscript_impact": "This rarely affects the people who turned JavaScript off, but the people whose scripts never arrived: a weak mobile network, a corporate proxy, a browser extension that misbehaves, a timeout. They get an empty page instead of a slow one.",
+        "noscript_advisory": "Recommendation, not a legal requirement. No WCAG success criterion requires a page to work without JavaScript, so this does not affect the compliance score.",
+        "badge_withheld": "100/100 with no findings. The robustness check is not clean, so we do not generate a shareable badge."
     },
     "report": {
         "title": "Accessibility Report - {url}",

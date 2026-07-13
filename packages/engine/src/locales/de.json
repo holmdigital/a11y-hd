@@ -19,7 +19,18 @@
         "use_component": "Verwenden Sie die Komponente: {component}",
         "pseudo_tests": "\n🧬 Generiere Pseudo-Automatisierungstests...\n",
         "test_for": "Test für {ruleId}:",
-        "junit_saved": "JUnit XML-Bericht gespeichert unter {path}"
+        "junit_saved": "JUnit XML-Bericht gespeichert unter {path}",
+        "noscript_heading": "\n🧪 Robustheit ohne JavaScript (Empfehlung)",
+        "noscript_coverage": "Ohne JavaScript verfügbare Inhalte: {percent}% ({without} von {with} Zeichen)",
+        "noscript_empty": "Die Seite ist ohne JavaScript praktisch leer.",
+        "noscript_partial": "Ohne JavaScript fehlt ein wesentlicher Teil des Inhalts.",
+        "noscript_ok": "Die Kerninhalte sind ohne JavaScript verfügbar.",
+        "noscript_unknown": "Konnte nicht gemessen werden.",
+        "noscript_fallback": "Ein <noscript>-Fallback ist vorhanden.",
+        "noscript_no_fallback": "Es wurde kein <noscript>-Fallback gefunden.",
+        "noscript_impact": "Das trifft selten die Menschen, die JavaScript abgeschaltet haben, sondern die Menschen, deren Skripte nie ankamen: ein schwaches Mobilfunknetz, ein Firmenproxy, eine störende Browsererweiterung, ein Timeout. Sie bekommen eine leere Seite statt einer langsamen.",
+        "noscript_advisory": "Empfehlung, keine gesetzliche Anforderung. Kein WCAG-Erfolgskriterium verlangt, dass eine Seite ohne JavaScript funktioniert. Dies beeinflusst daher den Konformitätswert nicht.",
+        "badge_withheld": "100/100 ohne Befund. Die Robustheitsprüfung ist nicht sauber, deshalb erzeugen wir kein teilbares Badge."
     },
     "report": {
         "title": "Barrierefreiheitsbericht - {url}",

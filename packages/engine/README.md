@@ -36,6 +36,7 @@ For a comprehensive guide on CLI flags, CI/CD integration, and configuration fil
 - **Pseudo-Automation**: Automatically generates Playwright/Puppeteer test scripts for manual verification steps.
 - **PDF Reporting**: Generates beautiful, compliant PDF reports with severity-sorted violations, HTML error counts, and `@HolmDigital/engine` branding.
 - **Plain-Language Reports**: `--plain` (or `--audience plain`) renders the report and PDF in plain language for managers, lawyers, and buyers without a technical background. Findings of the same rule are grouped into one card with an occurrence count, with a business-impact breakdown and Swedish-language fallback.
+- **Robustness Without JavaScript** (opt-in): `--noscript-check` loads the page a second time with JavaScript disabled and reports how much of the content survives. A client-rendered SPA that is blank without JS breaks for every user whose script fails to load (network, proxy, firewall, extension). They get an empty page, not a degraded one. When the page is empty or partial, the report also names who is affected, so the finding is not waved away with "everyone has JavaScript". **This is advisory, not a legal requirement**: no WCAG success criterion requires a page to work without JavaScript, so the finding never affects the compliance score and is never reported as a WCAG violation.
 - **Type-Safe Results**: Scan results return fully typed `EnrichedReport[]` with `failingNodes` and `legalContext` — zero `as any` casts in the pipeline.
 - **Build-Time Version Injection**: Engine version derived from `package.json` at build time via tsup `define` — CLI, cloud client, and reports always report the correct version.
 - **TypeScript**: Written in TypeScript with full type definitions included.
@@ -76,6 +77,8 @@ npx hd-a11y-scan <url> [options]
 | `--light` | Fast score-only mode — skips HTML validation and detailed legal mapping |
 | `--plain` | Plain-language mode (klarspråksläge): report and PDF in non-technical language for recipients without a technical background. Alias for `--audience plain`. |
 | `--audience <mode>` | Report audience: `developer` (default) or `plain`. |
+| `--noscript-check` | Robustness probe: measures how much of the page content is available without JavaScript. **Advisory only. Never affects the compliance score.** |
+| `--wait-for-hydration <ms>` | Settle time after network idle so client-rendered SPAs finish hydrating before axe runs. Default: `2500`. `0` disables the wait, maximum `60000`. |
 
 ### 🏆 Accessibility Badge
 If your site achieves a **100% score**, the CLI will generate a [Shields.io](https://shields.io/) badge that you can add to your project's README:
@@ -83,6 +86,14 @@ If your site achieves a **100% score**, the CLI will generate a [Shields.io](htt
 ![Accessibility Status: 100% Compliant](https://img.shields.io/badge/HolmDigital_Engine-100%25-00703C?style=flat-square)
 
 The badge uses accessible colors (AAA compliant contrast) and is included in both the CLI output and the HTML report.
+
+**One exception.** If you run `--noscript-check` and the verdict is `empty` (the page is effectively blank without JavaScript), the badge is not generated. The score is untouched: the page still shows 100/100 and PASS, because it is genuinely WCAG conformant and lowering the score would misrepresent the law. But the badge is a shareable marketing artefact, not a legal verdict, and we do not hand out an award to a page that a user on a weak network never gets to see. The CLI prints one line instead:
+
+```
+100/100 with no findings. The robustness check is not clean, so we do not generate a shareable badge.
+```
+
+A `partial` verdict still earns the badge: core content is there and the page can be read.
 
 > **⚠️ Security Note:** The `--invalid-https-cert` flag should only be used in trusted environments (local dev, staging). It disables certificate validation and is not recommended for production. *(Contributed by [@FerdiStro](https://github.com/FerdiStro))*
 
