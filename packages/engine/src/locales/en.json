@@ -29,7 +29,8 @@
         "noscript_fallback": "A <noscript> fallback is present.",
         "noscript_no_fallback": "No <noscript> fallback was found.",
         "noscript_impact": "This rarely affects the people who turned JavaScript off, but the people whose scripts never arrived: a weak mobile network, a corporate proxy, a browser extension that misbehaves, a timeout. They get an empty page instead of a slow one.",
-        "noscript_advisory": "Recommendation, not a legal requirement. No WCAG success criterion requires a page to work without JavaScript, so this does not affect the compliance score."
+        "noscript_advisory": "Recommendation, not a legal requirement. No WCAG success criterion requires a page to work without JavaScript, so this does not affect the compliance score.",
+        "badge_withheld": "100/100 with no findings. The robustness check is not clean, so we do not generate a shareable badge."
     },
     "report": {
         "title": "Accessibility Report - {url}",

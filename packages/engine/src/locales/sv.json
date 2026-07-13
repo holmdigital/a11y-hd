@@ -29,7 +29,8 @@
         "noscript_fallback": "Sidan har en <noscript>-fallback.",
         "noscript_no_fallback": "Ingen <noscript>-fallback hittades.",
         "noscript_impact": "Det drabbar sällan den som valt bort JavaScript, utan den vars skript aldrig kom fram: dåligt mobilnät, en företagsproxy, ett webbläsartillägg som krånglar, en timeout. De får en tom sida i stället för en långsam.",
-        "noscript_advisory": "Rekommendation, inte ett lagkrav. Inget WCAG-kriterium kräver att en sida fungerar utan JavaScript, så detta påverkar inte konformansscoren."
+        "noscript_advisory": "Rekommendation, inte ett lagkrav. Inget WCAG-kriterium kräver att en sida fungerar utan JavaScript, så detta påverkar inte konformansscoren.",
+        "badge_withheld": "100/100 utan anmärkning. Robusthetskontrollen är inte ren, så vi genererar ingen delbar badge."
     },
     "report": {
         "title": "Tillgänglighetsrapport - {url}",

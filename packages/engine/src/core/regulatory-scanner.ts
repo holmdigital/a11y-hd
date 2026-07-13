@@ -120,6 +120,14 @@ export class RegulatoryScanner {
             noScriptCheck: false, // Default AV: opt-in, kostar en extra sidladdning
             ...options
         };
+
+        // Spreaden ovan skriver över defaulten även när nyckeln finns men är
+        // undefined (vanligt när värdet kommer från en CLI-flagga som inte
+        // sattes). Utan denna rad blir waitForHydrationMs undefined → 0 ms, och
+        // SPA:er får falskt 100/100 igen. Återställ defaulten.
+        if (this.options.waitForHydrationMs === undefined) {
+            this.options.waitForHydrationMs = 2500;
+        }
         this.htmlValidator = new HtmlValidator();
     }
 

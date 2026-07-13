@@ -12,7 +12,8 @@ import { PseudoAutomationEngine } from '../automation/pseudo-automation';
 import { generateReportHTML } from '../reporting/html-template';
 import { generatePDF } from '../reporting/pdf-generator';
 import { generateStatement, generateStatementContent, StatementMetadata } from '../reporting/statement-generator';
-import { generateBadgeMarkdown } from '../reporting/badge-generator';
+import { generateBadgeMarkdown, isBadgeWithheldByRobustness } from '../reporting/badge-generator';
+import { parseHydrationWait, InvalidOptionError, MAX_HYDRATION_WAIT_MS } from './parse-options';
 import { setLanguage, t } from '../i18n';
 import type { EnrichedReport } from '@holmdigital/standards';
 import { isPlainLanguageSupported } from '../reporting/plain-language-support';
@@ -126,11 +127,30 @@ program
     .option('--audience <mode>', 'Output audience: developer (default) or plain', 'developer')
     .option('--plain', 'Alias for --audience plain (klarspråksläge for non-technical recipients)')
     .option('--noscript-check', 'Robustness probe: measure how much content is available without JavaScript. Advisory only, never affects the compliance score.')
+    .option('--wait-for-hydration <ms>', `Milliseconds to wait after network idle so client-rendered SPAs finish hydrating before axe runs (default 2500, 0 disables, max ${MAX_HYDRATION_WAIT_MS})`)
     .action(async (url: string, cliOptions) => {
         // 1. Load Config from file (.a11yrc, package.json, etc.)
         const explorer = cosmiconfig('a11y');
         const configResult = await explorer.search();
         const fileConfig = configResult ? configResult.config : {};
+
+        // Hydration-waiten: CLI > config-fil > scannerns egen default (2500 ms).
+        // Undefined här betyder "rör inte", inte "0". Commander camelCase:ar
+        // --wait-for-hydration till waitForHydration.
+        let waitForHydrationMs: number | undefined;
+        try {
+            waitForHydrationMs = cliOptions.waitForHydration !== undefined
+                ? parseHydrationWait(cliOptions.waitForHydration)
+                : (fileConfig.waitForHydrationMs !== undefined
+                    ? parseHydrationWait(String(fileConfig.waitForHydrationMs))
+                    : undefined);
+        } catch (e) {
+            if (e instanceof InvalidOptionError) {
+                console.error(chalk.red(e.message));
+                process.exit(1);
+            }
+            throw e;
+        }
 
         // 2. Merge Options: CLI > File > Defaults
         const options = {
@@ -159,6 +179,7 @@ program
             plain: cliOptions.plain ?? fileConfig.plain ?? false,
             // Commander camelCase:ar --noscript-check till noscriptCheck.
             noScriptCheck: cliOptions.noscriptCheck ?? fileConfig.noScriptCheck ?? false,
+            waitForHydrationMs,
             audience: cliOptions.plain
                 ? 'plain'
                 : (cliOptions.audience || fileConfig.audience || 'developer'),
@@ -187,6 +208,7 @@ program
             plain: boolean;
             audience: 'developer' | 'plain';
             noScriptCheck: boolean;
+            waitForHydrationMs?: number;
         };
 
         setLanguage(options.lang);
@@ -242,7 +264,8 @@ program
                 severityThreshold: options.threshold as 'critical' | 'high' | 'medium' | 'low',
                 invalidHttpsCert: options.invalidHttpsCert,
                 light: options.light,
-                noScriptCheck: options.noScriptCheck
+                noScriptCheck: options.noScriptCheck,
+                waitForHydrationMs: options.waitForHydrationMs
             });
 
             if (spinner) spinner.text = t('cli.analyzing');
@@ -342,10 +365,17 @@ program
                 console.log(chalk.bold(`[ Compliance Score: ${scoreColor(result.score + '/100')} ] ${result.score >= 90 ? '🟢' : (result.score >= 70 ? '🟡' : '🔴')}`));
 
                 if (result.score === 100) {
-                    const badge = generateBadgeMarkdown(result.score);
-                    if (badge) {
-                        console.log(chalk.green.bold('\n🏆 Perfect Score! Here is your accessibility badge:'));
-                        console.log(chalk.white(badge));
+                    // Scoren står kvar på 100/100 och PASS. Det enda som händer här
+                    // är att den DELBARA badgen hålls inne när sidan är tom utan JS.
+                    // Se isBadgeWithheldByRobustness i badge-generator.ts.
+                    if (isBadgeWithheldByRobustness(result.noScript)) {
+                        console.log(chalk.yellow(`\n${t('cli.badge_withheld')}`));
+                    } else {
+                        const badge = generateBadgeMarkdown(result.score);
+                        if (badge) {
+                            console.log(chalk.green.bold('\n🏆 Perfect Score! Here is your accessibility badge:'));
+                            console.log(chalk.white(badge));
+                        }
                     }
                 }
 

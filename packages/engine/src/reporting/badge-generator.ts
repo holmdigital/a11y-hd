@@ -30,3 +30,27 @@ export function generateBadgeMarkdown(score: number): string | null {
     }
     return `![Accessibility Status: 100% Compliant](${url})`;
 }
+
+/**
+ * Ska den delbara badgen hållas inne trots 100/100?
+ *
+ * Ja, och bara i ett fall: när robusthetskontrollen ger verdict 'empty', alltså
+ * när sidan i praktiken är tom utan JavaScript.
+ *
+ * LÄS INNAN DU ÄNDRAR:
+ * Detta rör INTE scoren. Sidan ÄR WCAG-konform och ska fortsatt visa 100/100 och
+ * PASS. Att sänka scoren vore att ljuga om lagen: inget WCAG-kriterium kräver att
+ * en sida fungerar utan JavaScript (se noscript-check.ts).
+ *
+ * Badgen är däremot en marknadsföringsartefakt, inte en juridisk bedömning. Den
+ * är till för att delas i ett README eller på en sajt. Vi delar inte ut en
+ * delbar utmärkelse till en sida som en användare på dåligt nät aldrig ser.
+ *
+ * 'partial' räcker inte. Där finns kärninnehåll utan JS, sidan går att läsa.
+ * Bara det binära fallet "tom" håller inne badgen.
+ */
+export function isBadgeWithheldByRobustness(
+    noScript?: { verdict: string } | null
+): boolean {
+    return noScript?.verdict === 'empty';
+}

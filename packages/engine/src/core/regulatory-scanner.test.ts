@@ -210,6 +210,15 @@ describe('ScannerOptions.waitForHydrationMs', () => {
         const scanner = new RegulatoryScanner({ url: 'https://test.example.com', waitForHydrationMs: 5000 });
         expect((scanner as unknown as { options: { waitForHydrationMs?: number } }).options.waitForHydrationMs).toBe(5000);
     });
+
+    it('keeps the 2500 ms default when the key is present but undefined', () => {
+        // CLI:n skickar alltid med nyckeln. Är flaggan inte satt är värdet undefined,
+        // och objekt-spreaden i konstruktorn skriver då över defaulten med undefined
+        // (spread bryr sig om nyckelns existens, inte dess värde). Utan skyddet blev
+        // waiten 0 ms för ALLA CLI-körningar, och SPA:er fick falskt 100/100 igen.
+        const scanner = new RegulatoryScanner({ url: 'https://test.example.com', waitForHydrationMs: undefined });
+        expect((scanner as unknown as { options: { waitForHydrationMs?: number } }).options.waitForHydrationMs).toBe(2500);
+    });
 });
 
 describe('ScannerOptions.noScriptCheck', () => {

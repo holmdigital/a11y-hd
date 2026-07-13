@@ -49,6 +49,7 @@ hd-a11y-scan <url> [options]
 | `--audience <mode>` | Report audience: `developer` (default) or `plain`. Plain mode renders a non-technical, grouped report for managers, lawyers, and buyers. | `--audience plain` |
 | `--plain` | Alias for `--audience plain` (klarspråksläge). | `--plain` |
 | `--noscript-check` | Robustness probe: how much content is available without JavaScript. Advisory only, never affects the score. | `--noscript-check` |
+| `--wait-for-hydration <ms>` | Settle time after network idle so client-rendered SPAs finish hydrating before axe runs. Default `2500`, `0` disables, max `60000`. | `--wait-for-hydration 5000` |
 
 ### Robustness Without JavaScript (`--noscript-check`)
 
@@ -85,8 +86,30 @@ result.noScript?.coverageRatio;  // 0..1
 
 Cost: one extra page load. Off by default.
 
+#### The badge is withheld on an `empty` verdict
+
+When `--noscript-check` returns the verdict `empty`, the CLI does **not** print the shareable "🏆 Perfect Score" badge, even on a 100/100 scan. It prints this instead:
+
+```
+100/100 with no findings. The robustness check is not clean, so we do not generate a shareable badge.
+```
+
+The score is **not** touched. The page still reports `score: 100` and `complianceStatus: "PASS"`, because it is genuinely WCAG conformant: no success criterion requires a page to work without JavaScript, and lowering the score would misrepresent the law. The badge, however, is a marketing artefact, not a legal verdict. We do not award a shareable badge to a page that a user on a weak network never gets to see.
+
+Only `empty` withholds the badge. A `partial` verdict still earns it: core content is present and the page can be read. The line is localised in all nine languages (`cli.badge_withheld`), and the pure predicate is `isBadgeWithheldByRobustness()` in `reporting/badge-generator.ts`.
+
 ### Hydration Wait (SPA support)
-`ScannerOptions.waitForHydrationMs` (programmatic API) adds an extra settle after `waitForNetworkIdle` and before metadata capture, so client-rendered SPAs finish hydrating before axe runs. Default is `2500` ms; set `0` to turn it off. Without this wait, unhydrated SPAs could report a false 100/100.
+An extra settle after `waitForNetworkIdle` and before metadata capture, so client-rendered SPAs finish hydrating before axe runs. Default is `2500` ms; set `0` to turn it off. Without this wait, unhydrated SPAs could report a false 100/100.
+
+Available both on the CLI (`--wait-for-hydration <ms>`) and on the programmatic API (`ScannerOptions.waitForHydrationMs`). The CLI value must be a whole number of milliseconds between `0` and `60000`; anything else exits with code 1 and an error naming both the bad value and the expected format. A page that has not hydrated within a minute will not hydrate at all.
+
+```bash
+# Heavy SPA: give it five seconds
+npx hd-a11y-scan https://spa.example.com --wait-for-hydration 5000
+
+# Static site: skip the wait entirely and save 2.5 seconds per scan
+npx hd-a11y-scan https://static.example.com --wait-for-hydration 0
+```
 
 ```typescript
 const scanner = new RegulatoryScanner({
@@ -94,6 +117,8 @@ const scanner = new RegulatoryScanner({
   waitForHydrationMs: 5000 // give a heavy SPA more time; 0 disables the wait
 });
 ```
+
+Precedence is CLI flag > `.a11yrc` (`waitForHydrationMs`) > the 2500 ms default.
 
 ---
 
@@ -111,6 +136,8 @@ Instead of long CLI commands, you can store your settings in a `.a11yrc` file in
   "junit": "./reports/accessibility.xml",
   "pdf": "./reports/accessibility.pdf",
   "invalidHttpsCert": true,
+  "noScriptCheck": false,
+  "waitForHydrationMs": 2500,
   "org": "HolmDigital AB",
   "email": "hej@holmdigital.se",
   "phone": "070-123 45 67",
