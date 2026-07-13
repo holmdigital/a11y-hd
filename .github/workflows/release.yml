@@ -22,7 +22,7 @@ jobs:
       - name: Setup Node.js 20
         uses: actions/setup-node@v6
         with:
-          node-version: 20
+          node-version: 22
           cache: 'npm'
 
       - name: Upgrade NPM
