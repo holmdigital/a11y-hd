@@ -392,9 +392,19 @@ describe('robusthetssektion utan JavaScript', () => {
         // tecken för tecken identiska. Fyndet kan alltså inte ha smugit sig in i
         // scoren, statistiken eller violation-listan.
         const collapse = (s: string) => s.replace(/\s+/g, ' ').trim();
+        // Klipp ut första <section>...</section> med indexOf i stället för regex.
+        // En bakåtsökande regex över godtycklig HTML är ett ReDoS-mål (CodeQL
+        // js/polynomial-redos), och strängsökning är dessutom snabbare.
+        const stripFirstSection = (s: string) => {
+            const start = s.indexOf('<section');
+            if (start === -1) return s;
+            const end = s.indexOf('</section>', start);
+            if (end === -1) return s;
+            return s.slice(0, start) + s.slice(end + '</section>'.length);
+        };
         expect(withProbe).toContain('100');
         expect(withProbe).not.toContain('class="violation-title">noscript');
-        expect(collapse(withProbe.replace(/<section[\s\S]*?<\/section>/, ''))).toBe(collapse(clean));
+        expect(collapse(stripFirstSection(withProbe))).toBe(collapse(clean));
     });
 
     it('visar täckningsgraden i procent', () => {
