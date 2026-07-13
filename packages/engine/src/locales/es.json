@@ -28,6 +28,7 @@
         "noscript_unknown": "No se pudo medir.",
         "noscript_fallback": "Hay una alternativa <noscript> presente.",
         "noscript_no_fallback": "No se encontró ninguna alternativa <noscript>.",
+        "noscript_impact": "Rara vez afecta a quien ha desactivado JavaScript, sino a quien nunca recibió los scripts: una red móvil deficiente, un proxy corporativo, una extensión del navegador que falla, un tiempo de espera agotado. Ven una página vacía en lugar de una lenta.",
         "noscript_advisory": "Recomendación, no un requisito legal. Ningún criterio de conformidad de las WCAG exige que una página funcione sin JavaScript, por lo que esto no afecta a la puntuación de conformidad."
     },
     "report": {

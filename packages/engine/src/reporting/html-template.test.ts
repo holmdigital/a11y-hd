@@ -402,4 +402,35 @@ describe('robusthetssektion utan JavaScript', () => {
         const html = generateReportHTML(withNoScript('partial', 0.3), 'public');
         expect(html).toContain('30%');
     });
+
+    /**
+     * Vem fyndet drabbar. Poängen (Marcus Österberg, Webperf): utan den här raden
+     * avfärdas fyndet med "alla har ju JavaScript". Raden ska INTE innehålla någon
+     * siffra: enda kända underlaget är GDS 2013, gammalt och orepliterat.
+     */
+    it('säger VEM det drabbar när sidan är tom utan JavaScript', () => {
+        setLanguage('sv');
+        const html = generateReportHTML(withNoScript('empty', 0), 'public');
+        expect(html).toContain('vars skript aldrig kom fram');
+    });
+
+    it('säger VEM det drabbar även vid partiellt bortfall', () => {
+        setLanguage('sv');
+        const html = generateReportHTML(withNoScript('partial', 0.3), 'public');
+        expect(html).toContain('vars skript aldrig kom fram');
+    });
+
+    it('säger inget om vem det drabbar när innehållet finns (ok/unknown)', () => {
+        setLanguage('sv');
+        (['ok', 'unknown'] as const).forEach(verdict => {
+            const html = generateReportHTML(withNoScript(verdict, 0.95), 'public');
+            expect(html).not.toContain('vars skript aldrig kom fram');
+        });
+    });
+
+    it('finns även i klarspråksrapporten, som är PDF-flödet', () => {
+        setLanguage('sv');
+        const html = generateReportHTML(withNoScript('empty', 0), 'public', 'plain');
+        expect(html).toContain('vars skript aldrig kom fram');
+    });
 });

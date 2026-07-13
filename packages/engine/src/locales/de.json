@@ -28,6 +28,7 @@
         "noscript_unknown": "Konnte nicht gemessen werden.",
         "noscript_fallback": "Ein <noscript>-Fallback ist vorhanden.",
         "noscript_no_fallback": "Es wurde kein <noscript>-Fallback gefunden.",
+        "noscript_impact": "Das trifft selten die Menschen, die JavaScript abgeschaltet haben, sondern die Menschen, deren Skripte nie ankamen: ein schwaches Mobilfunknetz, ein Firmenproxy, eine störende Browsererweiterung, ein Timeout. Sie bekommen eine leere Seite statt einer langsamen.",
         "noscript_advisory": "Empfehlung, keine gesetzliche Anforderung. Kein WCAG-Erfolgskriterium verlangt, dass eine Seite ohne JavaScript funktioniert. Dies beeinflusst daher den Konformitätswert nicht."
     },
     "report": {

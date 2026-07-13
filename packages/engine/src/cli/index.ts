@@ -27,6 +27,13 @@ import type { NoScriptResult } from '../core/noscript-check';
  * kriterium kräver att en sida fungerar utan JavaScript, och vi får aldrig ge
  * intryck av att detta är en överträdelse. Ändra inte den formuleringen utan
  * att först läsa noscript-check.ts.
+ *
+ * Vid empty och partial skrivs dessutom en rad om VEM fyndet drabbar. Utan den
+ * avfärdas fyndet med "alla har ju JavaScript". Poängen är att det sällan är den
+ * som valt bort JS, utan den vars skript aldrig kom fram. Raden är medvetet
+ * kvalitativ och utan siffror: det enda kända underlaget (GDS 2013) är gammalt
+ * och orepliterat, och en åldrande siffra hör inte hemma i ett verktyg som lever
+ * länge.
  */
 function renderNoScriptAdvisory(noScript: NoScriptResult): void {
     console.log(chalk.bold(t('cli.noscript_heading')));
@@ -50,6 +57,11 @@ function renderNoScriptAdvisory(noScript: NoScriptResult): void {
             : t('cli.noscript_ok');
 
     console.log(`  ${icon} ${color.bold(summary)}`);
+
+    if (noScript.verdict !== 'ok') {
+        console.log(chalk.white(`  ${t('cli.noscript_impact')}`));
+    }
+
     console.log(chalk.white(`  ${t('cli.noscript_coverage', {
         percent,
         without: noScript.textLengthWithoutJs,

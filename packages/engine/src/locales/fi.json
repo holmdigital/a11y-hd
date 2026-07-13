@@ -28,6 +28,7 @@
         "noscript_unknown": "Ei voitu mitata.",
         "noscript_fallback": "Sivulla on <noscript>-varasisältö.",
         "noscript_no_fallback": "<noscript>-varasisältöä ei löytynyt.",
+        "noscript_impact": "Tämä koskee harvoin niitä, jotka ovat kytkeneet JavaScriptin pois. Se koskee niitä, joiden skriptit eivät koskaan tulleet perille: heikko mobiiliverkko, yrityksen välityspalvelin, häiriköivä selainlaajennus, aikakatkaisu. He saavat tyhjän sivun hitaan sivun sijaan.",
         "noscript_advisory": "Suositus, ei lakisääteinen vaatimus. Mikään WCAG-onnistumiskriteeri ei edellytä, että sivu toimii ilman JavaScriptiä, joten tämä ei vaikuta vaatimustenmukaisuuspisteisiin."
     },
     "report": {

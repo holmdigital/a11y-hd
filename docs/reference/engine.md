@@ -65,6 +65,8 @@ Opt-in. Loads the page a second time with JavaScript disabled and compares the a
 >
 > Consequently the finding **never** affects `score`, `stats` or `complianceStatus`, and is **never** emitted as a WCAG violation. It is carried in a separate `result.noScript` object whose `isWcagViolation` and `affectsScore` fields are permanently `false`.
 
+**Who this affects.** When the verdict is `empty` or `partial`, the report adds one line naming who is hit: not the people who turned JavaScript off (a vanishingly small group), but the people whose scripts never arrived. A weak mobile network. A corporate proxy. A browser extension that misbehaves. A timeout. They get an empty page instead of a slow one. The line is deliberately qualitative and carries no statistic: the only widely cited figure (UK GDS, 2013) is old and has never been replicated, and an ageing number does not belong in a tool with a long life. The line is rendered in the CLI, in the developer HTML report and in the plain-language report, and is localised in all nine languages (`cli.noscript_impact`). It is advisory text only and changes nothing about the score.
+
 Content inside `<noscript>` elements is excluded from the measurement. A `<noscript>` block only renders when JavaScript is off, so counting it would compare text that exists in one measurement and is impossible in the other, inflating the coverage ratio.
 
 ```bash

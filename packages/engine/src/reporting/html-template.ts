@@ -74,6 +74,16 @@ function renderNoScriptSection(result: ScanResult): string {
             : noScript.verdict === 'ok' ? t('cli.noscript_ok')
                 : t('cli.noscript_unknown');
 
+    // Vem fyndet drabbar. Bara vid empty och partial: vid ok finns innehållet och
+    // det finns ingen att drabba. Utan den här raden avfärdas fyndet med "alla har
+    // ju JavaScript", vilket är precis den blinda fläcken kontrollen ska belysa.
+    // Medvetet utan siffror, se kommentaren i cli/index.ts.
+    const impact = noScript.verdict === 'empty' || noScript.verdict === 'partial'
+        ? `<p style="margin: 0 0 0.5rem; color: #0f172a; font-size: 0.95rem; line-height: 1.55;">
+                ${escapeHtml(t('cli.noscript_impact'))}
+           </p>`
+        : '';
+
     const detail = noScript.verdict === 'unknown'
         ? ''
         : `<p style="margin: 0 0 0.5rem; color: #334155; font-size: 0.95rem;">
@@ -95,6 +105,7 @@ function renderNoScriptSection(result: ScanResult): string {
             <p style="margin: 0 0 0.5rem; font-weight: 600; color: #0f172a; font-size: 1rem;">
                 <span aria-hidden="true">${palette.icon}</span> ${escapeHtml(summary)}
             </p>
+            ${impact}
             ${detail}
             <p style="margin: 0.75rem 0 0; color: #475569; font-size: 0.85rem; line-height: 1.5;">
                 ${escapeHtml(t('cli.noscript_advisory'))}
