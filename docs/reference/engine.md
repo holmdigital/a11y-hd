@@ -1,5 +1,5 @@
 # 🚂 Engine Library Catalog
-> **Last Updated:** 2026-06-22
+> **Last Updated:** 2026-07-13
 
 The `@holmdigital/engine` is the automated testing core. It runs a headless browser (Puppeteer) to scan your web applications for accessibility violations against WCAG 2.1 and EN 301 549.
 
@@ -53,7 +53,7 @@ hd-a11y-scan <url> [options]
 
 ### Robustness Without JavaScript (`--noscript-check`)
 
-Opt-in. Loads the page a second time with JavaScript disabled and compares the amount of visible text against the normal, hydrated scan. The result is a **content coverage ratio**, not an axe error count — an empty page has almost no axe errors, so error counts are useless here.
+Opt-in. Loads the page a second time with JavaScript disabled and compares the amount of visible text against the normal, hydrated scan. The result is a **content coverage ratio**, not an axe error count. An empty page has almost no axe errors, so error counts are useless here.
 
 | Coverage | Verdict | Meaning |
 | --- | --- | --- |
@@ -77,7 +77,7 @@ npx hd-a11y-scan https://spa.example.com --noscript-check --lang sv
 ```typescript
 const scanner = new RegulatoryScanner({
   url: 'https://spa.example.com',
-  noScriptCheck: true // default: false — costs one extra page load
+  noScriptCheck: true // default: false, costs one extra page load
 });
 const result = await scanner.scan();
 result.noScript?.verdict;        // 'ok' | 'partial' | 'empty' | 'unknown'
