@@ -92,14 +92,14 @@
         "ora": "^9.4.1",
         "puppeteer": "25.3.0",
         "react": "^18.3.1 || ^19.0.0",
-        "react-dom": "^18.3.1 || ^19.0.0",
+        "react-dom": "^19.2.7",
         "ws": "^8.18.0"
     },
     "devDependencies": {
         "@types/cosmiconfig": "^6.0.3",
         "@types/node": "^26.0.1",
         "@types/react": "^18.3.1 || ^19.0.0",
-        "@types/react-dom": "^18.3.1 || ^19.0.0",
+        "@types/react-dom": "^19.2.3",
         "@types/ws": "^8.5.13",
         "tsup": "^8.3.5",
         "typescript": "^6.0.3",
