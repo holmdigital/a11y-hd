@@ -27,6 +27,23 @@ updates:
       development-minor-patch:
         dependency-type: "development"
         update-types: ["minor", "patch"]
+    ignore:
+      # React-majors är ett produktbeslut, inte en rutinbump. Engine har
+      # react-dom som RUNTIME-dependency (renderToStaticMarkup i
+      # reporting/statement-generator.ts) och components har
+      # peerDependencies.react-dom ">=18.0.0". En major smalnar av
+      # "^18.3.1 || ^19.0.0" och släpper därmed React 18 för konsumenter —
+      # en breaking change som kräver changeset + major-bump, inte
+      # chore(deps). Se stängd PR #87. Minor/patch inom 18.x/19.x
+      # fortsätter grupperas som vanligt.
+      - dependency-name: "react"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "react-dom"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "@types/react"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "@types/react-dom"
+        update-types: ["version-update:semver-major"]
 
   # ---- GitHub Actions: keeps workflow action versions current. We hit the
   # Node-20 action deprecation manually before; this surfaces such bumps. ----
