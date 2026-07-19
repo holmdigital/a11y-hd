@@ -1,5 +1,5 @@
 # 🏛️ Standards Library Catalog
-> **Last Updated:** 2026-06-22
+> **Last Updated:** 2026-07-19
 
 The `@holmdigital/standards` package is the **regulatory brain** of the ecosystem. It provides machine-readable legal data, localized WCAG rules, and mappings to EU directives.
 
@@ -133,7 +133,7 @@ Query rule counts and coverage at runtime.
 import { getDatabaseStats } from '@holmdigital/standards';
 
 const stats = getDatabaseStats();
-// { totalRules: 49, totalICTChecks: ..., rulesByLevel: { A: ..., AA: ..., AAA: ... } }
+// { totalRules: 48, totalICTChecks: 14, rulesByLevel: { A: 28, AA: 20, AAA: 0 } }
 ```
 
 ### 5. Check for EAA Deadlines

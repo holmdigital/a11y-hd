@@ -71,6 +71,8 @@ npx hd-a11y-scan <url> [options]
 | `--sector <type>` | Sector type: `public` (WAD) or `private` (EAA). Default: `public` |
 | `--viewport <size>` | Set viewport size (`mobile`, `tablet`, `desktop`, or custom `1024x768`) |
 | `--generate-tests` | Generate Pseudo-Automation tests |
+| `--junit <path>` | Generate a JUnit XML report for CI dashboards |
+| `--format <type>` | Output format for statement (`html`, `md`). Default: `html` |
 | `--invalid-https-cert` | Allow scanning sites with invalid/self-signed HTTPS certificates ⚠️ |
 | `--api-key <key>` | API Key for HolmDigital Cloud |
 | `--cloud-url <url>` | Custom Cloud API Endpoint (default: cloud.holmdigital.se) |
@@ -127,9 +129,9 @@ npx hd-a11y-scan https://hospital.example.com --country US --sector private --st
   "url": "https://example.com",
   "timestamp": "2026-01-13T17:05:11.749Z",
   "metadata": {
-    "engineVersion": "2.8.0",
-    "axeCoreVersion": "4.11.1",
-    "standardsVersion": "2.8.0",
+    "engineVersion": "2.13.0",
+    "axeCoreVersion": "4.12.1",
+    "standardsVersion": "2.10.0",
     "scanDuration": 2891,
     "pageTitle": "Example Domain",
     "pageLanguage": "en"
