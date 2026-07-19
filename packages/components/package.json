@@ -388,7 +388,7 @@
         "react-dom": "^18.2.0",
         "storybook": "^10.2.13",
         "tsup": "^8.3.5",
-        "typescript": "^6.0.3"
+        "typescript": "^7.0.2"
     },
     "dependencies": {
         "@holmdigital/standards": "^2.6.1"
