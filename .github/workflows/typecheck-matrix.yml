@@ -1,0 +1,113 @@
+# Typechecks the workspace against BOTH supported React majors.
+#
+# Why this exists: @holmdigital/components declares `peerDependencies.react
+# ">=18.0.0"` and @holmdigital/engine declares `react "^18.3.1 || ^19.0.0"`,
+# but the repo's own devDependencies and root `overrides` pin a single React
+# version. Without this matrix the React 18 half of that promise is claimed and
+# never checked — which is exactly how components 3.1.0 shipped with a
+# `RefObject<HTMLDivElement | null>` in Select.tsx that compiled only under
+# React 19 (see the NullableRef comment in Select.tsx).
+#
+# React 18 and 19 type `RefObject<T>` differently and each rejects the other's
+# spelling at a `ref` prop, so this is a real, recurring hazard rather than a
+# one-off.
+name: Typecheck matrix (React 18 / 19)
+
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  typecheck:
+    name: React ${{ matrix.react.major }}
+    runs-on: ubuntu-latest
+    strategy:
+      # Report both legs. Knowing "18 fails, 19 passes" is the whole point;
+      # cancelling the sibling on first failure would hide which half broke.
+      fail-fast: false
+      matrix:
+        react:
+          - major: '18'
+            runtime: '^18.3.1'
+            types: '^18.3.27'
+            typesDom: '^18.3.7'
+          - major: '19'
+            runtime: '^19.2.7'
+            types: '^19.2.0'
+            typesDom: '^19.2.3'
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: 'npm'
+
+      # The repo pins React via root `overrides` plus components' devDependencies.
+      # Both have to move together, otherwise npm resolves the override and the
+      # devDependency to different majors and the install fails on peer conflicts.
+      - name: Pin workspace to React ${{ matrix.react.major }}
+        run: |
+          npm pkg set \
+            "overrides.react=${{ matrix.react.runtime }}" \
+            "overrides.react-dom=${{ matrix.react.runtime }}" \
+            "overrides.@types/react=${{ matrix.react.types }}" \
+            "overrides.@types/react-dom=${{ matrix.react.typesDom }}"
+          npm pkg set \
+            "devDependencies.react=${{ matrix.react.runtime }}" \
+            "devDependencies.react-dom=${{ matrix.react.runtime }}" \
+            "devDependencies.@types/react=${{ matrix.react.types }}" \
+            "devDependencies.@types/react-dom=${{ matrix.react.typesDom }}" \
+            -w @holmdigital/components
+
+      # `npm ci` would fail here: the lockfile is committed against the pinned
+      # major and we have just rewritten the manifests away from it.
+      - name: Install
+        run: npm install
+
+      # Guard against the pin silently not taking effect — without this a
+      # resolution quirk could leave React 19 installed on the "18" leg and the
+      # job would pass while testing nothing.
+      - name: Verify resolved React major is ${{ matrix.react.major }}
+        run: |
+          for pkg in react react-dom @types/react @types/react-dom; do
+            actual=$(node -p "require('./node_modules/$pkg/package.json').version")
+            major=${actual%%.*}
+            echo "$pkg = $actual"
+            if [ "$major" != "${{ matrix.react.major }}" ]; then
+              echo "::error::$pkg resolved to $actual, expected major ${{ matrix.react.major }}"
+              exit 1
+            fi
+          done
+          dupes=$(find node_modules -path "*/@types/react/package.json" -not -path "node_modules/@types/react/package.json" || true)
+          if [ -n "$dupes" ]; then
+            echo "::error::duplicate @types/react in the tree, typecheck result would be unreliable:"
+            echo "$dupes"
+            exit 1
+          fi
+
+      # typecheck reads the sibling packages' emitted .d.ts, so they must be
+      # built first and in dependency order.
+      - name: Build standards (dependency level 1)
+        run: npm run build -w @holmdigital/standards
+
+      - name: Build components (dependency level 2)
+        run: npm run build -w @holmdigital/components
+
+      - name: Typecheck all workspaces
+        run: npm run typecheck
+
+      # The type-level check above cannot catch a runtime regression from a
+      # React major (rendering, effects, ref timing), so exercise the
+      # React-heavy suite on both legs too.
+      - name: Test components
+        run: npm run test:ci -w @holmdigital/components
