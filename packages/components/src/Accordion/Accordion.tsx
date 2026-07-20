@@ -86,6 +86,13 @@ export interface AccordionItemProps {
     className?: string;
 }
 
+// Shared shape of the props AccordionItem injects into its Trigger/Content
+// children (see AccordionTriggerProps / AccordionContentProps below).
+interface AccordionInjectedProps {
+    value?: string;
+    isOpen?: boolean;
+}
+
 export const AccordionItem = ({ value, children, className }: AccordionItemProps) => {
     const context = useContext(AccordionContext);
     if (!context) throw new Error('AccordionItem must be used within an Accordion');
@@ -95,9 +102,9 @@ export const AccordionItem = ({ value, children, className }: AccordionItemProps
     return (
         <div className={`hd-accordion__item${className ? ' ' + className : ''}`}>
             {React.Children.map(children, child => {
-                if (React.isValidElement(child)) {
+                if (React.isValidElement<AccordionInjectedProps>(child)) {
                     return React.cloneElement(child, {
-                        ...(child.props as Record<string, unknown>),
+                        ...child.props,
                         value, // Pass value down to Trigger and Content
                         isOpen
                     });
