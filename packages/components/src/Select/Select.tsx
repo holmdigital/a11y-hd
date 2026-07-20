@@ -77,6 +77,26 @@ const CheckIconOrGlyph = () => {
 };
 // -------------------------------------------------------------------------
 
+/**
+ * A ref object holding an element that may not be mounted yet, spelled so it
+ * typechecks under both React 18 and React 19.
+ *
+ * The two versions define `RefObject<T>` differently — React 18 as
+ * `{ readonly current: T | null }`, React 19 as `{ current: T }` — so
+ * `useRef<T>(null)` yields `RefObject<T>` under 18 but `RefObject<T | null>`
+ * under 19. Each version then rejects the other's spelling when the value is
+ * handed to a `ref` prop: TypeScript's variance shortcut for generic interfaces
+ * compares the type ARGUMENTS (`T | null` vs `T`) instead of the expanded
+ * shapes, and `T | null` is not assignable to `T` under strictNullChecks. The
+ * expanded shapes are in fact identical, so writing the shape structurally
+ * sidesteps the shortcut and satisfies both majors.
+ *
+ * Do not "simplify" this back to `React.RefObject<HTMLDivElement | null>` —
+ * that spelling compiles only under React 19 and breaks the React 18 leg of
+ * the typecheck matrix (.github/workflows/typecheck-matrix.yml).
+ */
+type NullableRef<T> = { readonly current: T | null };
+
 interface SelectContextType {
     value: string;
     onChange: (value: string) => void;
@@ -84,7 +104,7 @@ interface SelectContextType {
     setIsOpen: (open: boolean) => void;
     highlightedIndex: number;
     setHighlightedIndex: (index: number) => void;
-    listboxRef: React.RefObject<HTMLDivElement | null>;
+    listboxRef: NullableRef<HTMLDivElement>;
     /** Stable id for the listbox; trigger references it via aria-controls. */
     listboxId: string;
     /** Stable id prefix for option elements (used by aria-activedescendant). */
