@@ -23,6 +23,13 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
+# This workflow only reads the repository and runs npm — it never writes back,
+# comments, or publishes. Pinning the token to read-only keeps a compromised
+# dependency in the install/build/test steps from being able to push, tag or
+# open pull requests with it. (CodeQL: actions/missing-workflow-permissions)
+permissions:
+  contents: read
+
 jobs:
   typecheck:
     name: React ${{ matrix.react.major }}

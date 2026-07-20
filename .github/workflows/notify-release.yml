@@ -4,16 +4,29 @@ on:
   release:
     types: [published]
 
+# This job never touches the repository — it only makes an outbound call to
+# ntfy — so it needs no GITHUB_TOKEN scopes at all.
+# (CodeQL: actions/missing-workflow-permissions)
+permissions: {}
+
 jobs:
   notify:
     runs-on: ubuntu-latest
     steps:
+      # The release tag is passed through the environment rather than
+      # interpolated into the script body. A `${{ }}` expression is substituted
+      # into the shell source BEFORE the shell runs, so a tag name containing
+      # shell metacharacters (git allows `;` in ref names) would execute as
+      # code. Referencing "$RELEASE_TAG" keeps it a value.
       - name: Send ntfy notification
+        env:
+          NTFY_TOKEN: ${{ secrets.KARIN_NTFY_TOKEN }}
+          RELEASE_TAG: ${{ github.event.release.tag_name }}
         run: |
           HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" \
-            -H "Authorization: Bearer ${{ secrets.KARIN_NTFY_TOKEN }}" \
-            -H "Title: Ny release: ${{ github.event.release.tag_name }}" \
-            -d "Version ${{ github.event.release.tag_name }} publicerad pa npm. Kontrollera att holmdigital.se visar senaste versionen." \
+            -H "Authorization: Bearer $NTFY_TOKEN" \
+            -H "Title: Ny release: $RELEASE_TAG" \
+            -d "Version $RELEASE_TAG publicerad pa npm. Kontrollera att holmdigital.se visar senaste versionen." \
             https://notify.holmdigital.se/vi)
           echo "ntfy HTTP status: $HTTP_STATUS"
           if [ "$HTTP_STATUS" != "200" ]; then
