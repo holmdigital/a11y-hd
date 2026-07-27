@@ -383,7 +383,7 @@
         "axe-core": "^4.12.1",
         "eslint-plugin-testing-library": "^7.16.2",
         "jsdom": "^29.1.1",
-        "lucide-react": "^1.25.0",
+        "lucide-react": "^1.27.0",
         "react": "^19.2.7",
         "react-dom": "^19.2.7",
         "storybook": "^10.2.13",
