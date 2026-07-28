@@ -81,6 +81,9 @@
     ],
     "author": "Holm Digital AB",
     "license": "MIT",
+    "engines": {
+        "node": ">=22.22.0"
+    },
     "dependencies": {
         "@holmdigital/components": "^3.0.0",
         "@holmdigital/standards": "^2.10.0",

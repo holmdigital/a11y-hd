@@ -72,7 +72,7 @@ jobs:
       
       - uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22'
       
       - name: Install scanner
         run: npm install -g @holmdigital/engine
@@ -103,7 +103,7 @@ jobs:
 
 ```yaml
 accessibility:
-  image: node:20
+  image: node:22
   stage: test
   before_script:
 
@@ -125,7 +125,7 @@ accessibility:
 ```yaml
 - task: NodeTool@0
   inputs:
-    versionSpec: '20.x'
+    versionSpec: '22.x'
 
 - script: |
 

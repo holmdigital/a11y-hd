@@ -30,7 +30,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
-        with: { node-version: 20, cache: 'npm' }
+        with: { node-version: 22, cache: 'npm' }
       - run: npm ci
       - name: Verify All Packages
         # `verify` runs the same chain as `prepublishOnly`:

@@ -187,7 +187,7 @@ jobs:
 ### GitLab CI
 ```yaml
 a11y-check:
-  image: node:20
+  image: node:22
   script:
     - npm install
     - npm run dev &

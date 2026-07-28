@@ -123,7 +123,7 @@ function checkLegalRisks() {
 # .gitlab-ci.yml
 accessibility-check:
   stage: test
-  image: node:20
+  image: node:22
   script:
     - npm ci
     - npm run build
@@ -217,7 +217,7 @@ pool:
 steps:
   - task: NodeTool@0
     inputs:
-      versionSpec: '20.x'
+      versionSpec: '22.x'
     displayName: 'Install Node.js'
 
   - script: npm ci
