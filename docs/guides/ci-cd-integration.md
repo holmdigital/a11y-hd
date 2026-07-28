@@ -125,7 +125,7 @@ accessibility:
 ```yaml
 - task: NodeTool@0
   inputs:
-    versionSpec: '20.x'
+    versionSpec: '22.x'
 
 - script: |
 
