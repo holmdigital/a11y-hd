@@ -123,7 +123,7 @@ function checkLegalRisks() {
 # .gitlab-ci.yml
 accessibility-check:
   stage: test
-  image: node:20
+  image: node:22
   script:
     - npm ci
     - npm run build
