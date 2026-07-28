@@ -2,7 +2,7 @@
     "name": "@holmdigital/components",
     "author": "Holm Digital AB",
     "license": "MIT",
-    "version": "3.1.0",
+    "version": "4.0.0",
     "private": false,
     "engines": {
         "node": ">=22.22.0"
@@ -394,6 +394,6 @@
         "typescript": "^6.0.3"
     },
     "dependencies": {
-        "@holmdigital/standards": "^2.6.1"
+        "@holmdigital/standards": "^3.0.0"
     }
 }
