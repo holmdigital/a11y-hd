@@ -12,7 +12,8 @@
         "react": "^19.2.7",
         "react-dom": "^19.2.7",
         "@types/react": "^19.2.0",
-        "@types/react-dom": "^19.2.0"
+        "@types/react-dom": "^19.2.0",
+        "esbuild": "^0.28.1"
     },
     "scripts": {
         "build": "npm run build -w @holmdigital/standards && npm run build -w @holmdigital/components && npm run build -w @holmdigital/engine",
