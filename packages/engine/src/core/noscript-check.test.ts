@@ -93,7 +93,7 @@ describe('evaluateNoScriptCoverage — kantfall', () => {
 });
 
 /**
- * Detta är kravet från Juno och det viktigaste i hela filen.
+ * Detta är det juridiska kravet och det viktigaste i hela filen.
  * Inget WCAG-framgångskriterium kräver att en sida fungerar utan JavaScript.
  * Om vi någonsin rapporterar detta som en WCAG-överträdelse ljuger vi om lagen.
  */

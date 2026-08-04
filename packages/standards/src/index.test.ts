@@ -422,7 +422,7 @@ describe('National Laws — US (ADA)', () => {
     });
 
     it('should expose DOJ via ENFORCEMENT_BODIES.US as the primary accessibility authority', () => {
-        // Constant kept as DOJ per Juno's ruling (DOJ is the recognized US accessibility authority).
+        // Constant kept as DOJ per legal review (DOJ is the recognized US accessibility authority).
         // For per-law enforcement consumers should use getNationalLaws('US')[*].enforcement.
         expect(ENFORCEMENT_BODIES.US).toBe('Department of Justice (Civil Rights Division)');
     });

@@ -336,7 +336,7 @@ describe('plain report fallback notice banner', () => {
 /**
  * Robusthetssektionen utan JS.
  *
- * Kravet från Juno: fyndet får aldrig presenteras som ett WCAG-fel eller som en
+ * Juridiskt krav: fyndet får aldrig presenteras som ett WCAG-fel eller som en
  * del av konformansresultatet. Testerna nedan bevakar exakt det.
  */
 describe('robusthetssektion utan JavaScript', () => {
