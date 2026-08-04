@@ -100,7 +100,7 @@
 
 ### Minor Changes
 
-- 884f142: **Canada federal ACA + France RGAA authority correction** (Juno 2026-06-05 lagbevakning):
+- 884f142: **Canada federal ACA + France RGAA authority correction** (legal review 2026-06-05):
   1. **New: Accessible Canada Act (`ca-aca`)** — Adds the Canadian federal accessibility framework that was missing entirely. Previously only `ca-aoda` (Ontario provincial) was encoded. Canadian users now resolve the federal layer via `getNationalLawByFramework('ACA', 'CA')`.
      - Law: Accessible Canada Act (S.C. 2019, c. 10) + Accessible Canada Regulations (SOR/2021-241), ICT amendments in force **2025-12-05**
      - Technical standard: **CAN/ASC-EN 301 549:2024** (WCAG 2.1 Level AA)
@@ -114,7 +114,7 @@
   4. **Fix: France RGAA authority** — `fr-rgaa.enforcement.authorityName` corrected from `'Arcom'` to `'DINUM (Direction interministérielle du numérique)'`. DINUM is the current supervisory authority for RGAA 4.1.2; Arcom only takes over when RGAA 5 publishes (expected late 2026). Previous Arcom designation pre-empted a not-yet-effective transition. `ENFORCEMENT_BODIES.FR` and `ENFORCEMENT_BODIES_DETAILED.FR.wad` updated to match. A new `note` on the `fr-rgaa` entry documents the upcoming RGAA 5 transition (WCAG 2.2 + mobile + documents + Arcom authority).
   5. **Regression tests added** — `getEnforcementBody('FR')` must NOT return Arcom; `fr-rgaa.enforcement.authorityName` must contain DINUM. CA federal layer is asserted with explicit deadlines and `ACA` framework resolution.
 
-  **Items intentionally NOT changed this release** (per Juno's 2026-06-05 spec, deferred for separate triggers):
+  **Items intentionally NOT changed this release** (per the 2026-06-05 legal review, deferred for separate triggers):
   - SE: DIGG + PTS → Digitaliseringsmyndigheten (effective 2027-01-01) — wait for autumn 2026 proposition.
   - EU: EN 301 549 V4.1.x — do not switch until OJEU citation, not just ETSI publication.
 
@@ -143,7 +143,7 @@
 
 ### Patch Changes
 
-- 8309522: Compliance data updates per Juno (2026-05-22 lagbevakning):
+- 8309522: Compliance data updates per legal review (2026-05-22):
   - **IT (`it-eaa`)**: Update sanctions to reflect AgID Delibera n. 38/2026 — PMI fines 2,500–40,000 EUR per violation; added new `note` field documenting the service-level accessibility approach per Linee Guida sull'accessibilità dei servizi digitali (in force 24 March 2026 via Gazzetta Ufficiale, based on EN 301 549 V3.2.1 + WCAG 2.1 AA, mandatory for e-commerce, banking, transport, electronic communications, audiovisual, e-books).
   - **US (`us-ada-title-ii`)**: Correct compliance deadlines per DOJ Interim Final Rule (published 2026-04-20) — large entity 2026-04-24 → 2027-04-26; small entity 2027-04-24 → 2028-04-26. Comment period closes 2026-06-22. Technical standard (WCAG 2.1 AA) unchanged. The previous large-entity deadline had already passed in the data — consumers were seeing an expired deadline.
   - **IE (`ie-eaa`)**: Add new entry for S.I. No. 636/2023 (European Union (Accessibility Requirements of Products and Services) Regulations 2023), in force 28 June 2025. CCPC is primary market surveillance authority; sector authorities are Central Bank of Ireland (financial services, per Consumer Protection Code 2025) and ComReg (electronic communications). Includes EAA microbusiness exemption (Article 4(5)). Ireland's full EAA transposition was missing from the package since 2025-06-28.
