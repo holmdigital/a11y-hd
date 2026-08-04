@@ -143,7 +143,7 @@ Before 2.4.0 a silent inconsistency lived in the codebase:
 
 GSA is the correct authority for Section 508 (it runs Section508.gov). DOJ is correct for ADA. Mixing the two produced contradictory output.
 
-**Legal ruling from Juno (our compliance lead):**
+**Legal ruling:**
 
 | Export | Value after 2.4.0 |
 |--------|-------------------|
@@ -268,35 +268,6 @@ Both packages ship new tests covering the U.S. ADA paths:
 
 Post-release totals: **49 standards tests + 122 engine tests** green.
 
----
-
-## The legal review — a story worth telling
-
-The full implementation cycle ran over two days (2026-04-17 to 2026-04-18) under tight deadline pressure (2026-04-24). The process involved several roles:
-
-1. **Juno** (compliance lead) — initial prioritisation memo, wrote the legal specification with CFR references
-2. **Meja** (tool expert) — implementation specification with copy-paste-ready JSON and code
-3. **Daniel** (external code review) — identified 5 gaps in Meja's spec (e.g. `rules.en.json` also needs tagging, CLI routing was missing, GSA/DOJ inconsistency, tests, changeset)
-4. **Ebba** (fullstack) — implementation, executed all steps
-5. **Juno** again — legal review of the resulting PR after implementation
-6. **Klara** (code review) — final technical sign-off
-
-Juno's PR review is worth detailing because it caught errors **the team had introduced itself**:
-
-| # | Finding | Class | Root cause | Resolution |
-|---|---------|-------|------------|-----------|
-| 2.1 | `smallEntity.deadline` was `2028-04-26` instead of `2027-04-24` | 🔴 **BLOCKER** | Juno had written the wrong date in an earlier memo (`klargorande-gsa-doj-2026-04-18.md`, line 89). Ebba followed the most recent document. | Fixed in `national-laws.json` + tests + docs + changeset. |
-| 2.2 | Title II sanctions listed `$75k / $150k` civil penalties | 🟠 **HIGH** | Those amounts belong to **Title III** (28 CFR § 36.504), not Title II. Title II uses Rehabilitation Act remedies (42 U.S.C. § 12133 → 29 U.S.C. § 794a) — DOJ investigations, settlement agreements, private lawsuits. No fixed monetary penalty schedule. | Title II sanctions rewritten without fixed dollar amounts; `minAmount/maxAmount` set to `0` (same pattern as `us-508`). |
-| 2.2b | Title III sanctions listed `$75k / $150k` without inflation note | 🟠 **HIGH** | Those are statutory base amounts per 28 CFR § 36.504 but are annually inflation-adjusted per 28 CFR Part 85 (Federal Civil Penalties Inflation Adjustment Act). | Base amounts retained with explicit note about inflation adjustment + reference to the Federal Register. Ellie verifies the current 2026 figure in a follow-up patch. |
-| 2.3 | Title III note said "WCAG 2.1 AA is the de facto standard" | 🟡 MED | Could be misread as implying WCAG 2.1 AA is **legally binding** under Title III. There is no final DOJ rule for Title III web accessibility — only case law citing WCAG. | Reworded: "No final DOJ rule... DOJ enforcement and private litigation under Title III frequently cite WCAG 2.0/2.1 Level AA as the technical reference in settlements... but no single standard is formally mandated." |
-| 2.4 | ADA framework entry had `applicationDeadline: "2026-04-24"` | 🟢 LOW | ADA 1990 has no uniform applicationDeadline — the statute took effect 1990/1992. "2026-04-24" is a sub-rule deadline for Title II large entities, not a framework-level deadline. | Field removed from the framework entry. Deadline structure now lives solely at the law level via `complianceDeadlines`. |
-
-**The takeaway:** tools that carry legal data need legal review, not just code review. Ebba's test suite verifies that the TypeScript type is correct — but no unit test flags a legally wrong date. A good reminder of why compliance tools cannot be built without domain expertise embedded in the process.
-
-The corrections landed as a separate commit (`f67e551`) after the feature commit (`b30249a`), so the audit trail makes the legal fix-up pass distinct from the original implementation.
-
----
-
 ## Migration guide for consumers
 
 ### No breaking changes
@@ -372,15 +343,15 @@ The template's final status block still reads "partially compliant with Section 
 
 ### 2. Double parentheses in law output
 
-The `fullName` field already contains "(28 CFR Part 35)" and the engine appends "(ADA Title II)" — the result ends up "... (28 CFR Part 35) (ADA Title II)". Functional but aesthetic. Juno's finding 2.5 — flagged as cosmetic, Meja/Ebba call.
+The `fullName` field already contains "(28 CFR Part 35)" and the engine appends "(ADA Title II)" — the result ends up "... (28 CFR Part 35) (ADA Title II)". Functional but aesthetic. Flagged as cosmetic during legal review.
 
 ### 3. No federal vs state/local filter
 
-For `sector='public'` we render both ADA Title II and Section 508. A customer that is a federal agency gets an unnecessary Title II reference; a municipality gets an unnecessary Section 508 reference. An `entityType: 'federal' | 'state' | 'local'` flag in statement metadata would solve this but is on the backlog. See Juno's finding 2.6.
+For `sector='public'` we render both ADA Title II and Section 508. A customer that is a federal agency gets an unnecessary Title II reference; a municipality gets an unnecessary Section 508 reference. An `entityType: 'federal' | 'state' | 'local'` flag in statement metadata would solve this but is on the backlog.
 
 ### 4. Title III civil penalties need inflation verification
 
-The `$75,000` / `$150,000` base amounts are statutory per 28 CFR § 36.504 but are annually inflation-adjusted per 28 CFR Part 85. The current 2026 figure needs verification against the most recent Federal Register notice (published January 2026). Ellie is the follow-up owner.
+The `$75,000` / `$150,000` base amounts are statutory per 28 CFR § 36.504 but are annually inflation-adjusted per 28 CFR Part 85. The current 2026 figure needs verification against the most recent Federal Register notice (published January 2026). Verification of the current figure is tracked as follow-up work.
 
 ### 5. `EUDirective` type used pragmatically for ADA
 
@@ -388,15 +359,7 @@ The `$75,000` / `$150,000` base amounts are statutory per 28 CFR § 36.504 but a
 
 ---
 
-## Credits and references
-
-### Team
-- **Juno** — legal specification and review
-- **Meja** — implementation specification
-- **Ebba** — implementation
-- **Daniel** — code review (identified the 5 gaps in the original spec)
-- **Klara** — final technical code review
-
+## References
 ### Legal sources
 
 | Reference | Description |
