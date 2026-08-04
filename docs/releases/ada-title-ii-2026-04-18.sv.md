@@ -143,7 +143,7 @@ Innan 2.4.0 fanns en tyst inkonsekvens:
 
 GSA är korrekt för Section 508 (federal Section508.gov). DOJ är korrekt för ADA. Att blanda gav motsägelsefull output.
 
-**Juno (jurist) beslutade:**
+**Juridisk bedömning:**
 
 | Export | Värde efter 2.4.0 |
 |--------|-------------------|
@@ -267,35 +267,6 @@ Båda paketen har nya tester för US ADA-vägarna:
 
 Total efter release: **49 standards-tester + 122 engine-tester** grönt.
 
----
-
-## Den juridiska granskningen — en story värd att berätta
-
-Hela implementationsflödet gjordes på två dagar (2026-04-17 till 2026-04-18) med tight deadline (2026-04-24). Processen involverade flera roller:
-
-1. **Juno** (jurist) — ursprunglig prioriterings-PM, skrev juridisk spec med CFR-referenser
-2. **Meja** (verktygsexpert) — implementationsspec med copy-paste-ready JSON/kod
-3. **Daniel** (extern code review) — identifierade 5 gap i Mejas spec (bl.a. `rules.en.json` måste också taggas, CLI-routing saknas, GSA/DOJ-inkonsistens, tester, changeset)
-4. **Ebba** (fullstack) — implementation, genomförde alla steg
-5. **Juno** igen — juridisk granskning av PR:en efter implementation
-6. **Klara** (code review) — final technical sign-off
-
-Junos granskning av PR:en är värd att detaljera eftersom den fångade fel som **teamet själv hade introducerat**:
-
-| # | Fynd | Klass | Orsak | Åtgärd |
-|---|------|-------|-------|--------|
-| 2.1 | `smallEntity.deadline` var `2028-04-26` istället för `2027-04-24` | 🔴 **BLOCKER** | Juno själv hade skrivit fel datum i ett tidigare PM (`klargorande-gsa-doj-2026-04-18.md`, rad 89). Ebba följde det senaste dokumentet. | Rättad i `national-laws.json` + test + docs + changeset. |
-| 2.2 | Title II sanctions angav `$75k / $150k` civil penalties | 🟠 **HIGH** | De beloppen är **Title III**-belopp (28 CFR § 36.504). Title II använder Rehab Act-remedies (42 U.S.C. § 12133 → 29 U.S.C. § 794a) — DOJ-utredningar, settlement agreements, privata stämningar. Ingen fixed monetary penalty-schedule. | Title II-sanctions omskriven utan fasta $-belopp; `minAmount/maxAmount` satt till `0` (samma mönster som `us-508`). |
-| 2.2b | Title III sanctions angav `$75k / $150k` utan inflationsnot | 🟠 **HIGH** | Beloppen är statutory base per 28 CFR § 36.504 men årligen inflationsjusterade per 28 CFR Part 85 (Federal Civil Penalties Inflation Adjustment Act). | Base-beloppen behålls med explicit anteckning om inflationsjustering + hänvisning till Federal Register. Ellie verifierar aktuell 2026-siffra i uppföljande patch. |
-| 2.3 | Title III note sade "WCAG 2.1 AA is the de facto standard" | 🟡 MED | Kunde misstolkas som att WCAG 2.1 AA är **juridiskt bindande** under Title III. Det finns ingen slutlig DOJ-regel för Title III webbaccessibility — bara case law som citerar WCAG. | Omformulerad: "No final DOJ rule... DOJ enforcement and private litigation under Title III frequently cite WCAG 2.0/2.1 Level AA as the technical reference in settlements... but no single standard is formally mandated." |
-| 2.4 | ADA-framework-entry hade `applicationDeadline: "2026-04-24"` | 🟢 LOW | ADA 1990 har ingen enhetlig applicationDeadline — lagen trädde i kraft 1990/1992. "2026-04-24" är en sub-regel-deadline för Title II för stora enheter, inte en framework-level deadline. | Fältet borttaget från framework-entry. Deadline-strukturen ligger nu enbart på lag-nivå via `complianceDeadlines`. |
-
-**Poängen:** verktyg som bär juridisk data behöver juridisk review, inte bara code review. Ebba kör tester som verifierar att TypeScript-typen är korrekt — men tests fångar inte att datumet är juridiskt fel. Bra påminnelse om varför compliance-verktyg inte kan byggas utan domänexpertis direkt i processen.
-
-Rättelserna kom in som en separat commit (`f67e551`) efter feature-commiten (`b30249a`), så audit-trailen visar tydligt vilka ändringar som var juridiska korrektioner mot ursprungsinläsningen.
-
----
-
 ## Migrationsguide för kunder
 
 ### Ingen breaking change
@@ -371,15 +342,15 @@ Mallens sista statement-block säger fortfarande "partially compliant with Secti
 
 ### 2. Dubbla parenteser i lag-output
 
-Fullname-fältet innehåller "(28 CFR Part 35)" och engine appendar "(ADA Title II)" — resultatet blir "… (28 CFR Part 35) (ADA Title II)". Fungerar men inte snyggt. Junos fynd 2.5 — markerad som kosmetisk, Meja/Ebba-beslut.
+Fullname-fältet innehåller "(28 CFR Part 35)" och engine appendar "(ADA Title II)" — resultatet blir "… (28 CFR Part 35) (ADA Title II)". Fungerar men inte snyggt. Markerad som kosmetisk i den juridiska granskningen.
 
 ### 3. Federal vs delstatlig/kommunal filtrering saknas
 
-För `sector='public'` visar vi både ADA Title II och Section 508. En kund som är en federal myndighet får onödig Title II-referens; en kommun får onödig Section 508-referens. En `entityType: 'federal' | 'state' | 'local'`-flagga i statement-metadata skulle lösa detta men är backlog. Se Junos fynd 2.6.
+För `sector='public'` visar vi både ADA Title II och Section 508. En kund som är en federal myndighet får onödig Title II-referens; en kommun får onödig Section 508-referens. En `entityType: 'federal' | 'state' | 'local'`-flagga i statement-metadata skulle lösa detta men är backlog.
 
 ### 4. Title III civil penalties kräver inflations-verifiering
 
-Base-beloppen `$75,000` / `$150,000` är statutory per 28 CFR § 36.504 men årligen inflationsjusterade per 28 CFR Part 85. Den aktuella 2026-siffran behöver verifieras mot senaste Federal Register-notis (publicerad januari 2026). Ellie är uppföljande ägare.
+Base-beloppen `$75,000` / `$150,000` är statutory per 28 CFR § 36.504 men årligen inflationsjusterade per 28 CFR Part 85. Den aktuella 2026-siffran behöver verifieras mot senaste Federal Register-notis (publicerad januari 2026). Verifiering av aktuell siffra är tracked som uppföljande arbete.
 
 ### 5. `EUDirective`-typen används pragmatiskt för ADA
 
@@ -387,15 +358,7 @@ Base-beloppen `$75,000` / `$150,000` är statutory per 28 CFR § 36.504 men årl
 
 ---
 
-## Referenser och tack
-
-### Teamet
-- **Juno** — juridisk spec och review
-- **Meja** — implementationsspec
-- **Ebba** — implementation
-- **Daniel** — code review (identifierade de 5 gapen i original-specen)
-- **Klara** — final technical code review
-
+## Referenser
 ### Juridiska källor
 
 | Referens | Beskrivning |
