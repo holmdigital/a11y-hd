@@ -385,7 +385,7 @@
         "@types/react-dom": "^19.2.0",
         "axe-core": "^4.13.0",
         "eslint-plugin-testing-library": "^7.16.2",
-        "jsdom": "^29.1.1",
+        "jsdom": "^30.0.1",
         "lucide-react": "^1.27.0",
         "react": "^19.2.8",
         "react-dom": "^19.2.8",
