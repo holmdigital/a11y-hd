@@ -1,5 +1,13 @@
 # @holmdigital/engine
 
+## 3.0.2
+
+### Patch Changes
+
+- caa24e9: Fix Norwegian CLI verdict string (Intern #23). The `no` locale's `cli.not_compliant` referenced _Diskriminerings- og tilgjengelighetsloven_, a law repealed 1 January 2018. It now names the forskrift that is actually in force: `forskrift om universell utforming av IKT-løsninger`. Also picks up the corrected Norwegian law-reference data from `@holmdigital/standards`.
+- Updated dependencies [caa24e9]
+  - @holmdigital/standards@3.0.1
+
 ## 3.0.1
 
 ### Patch Changes
