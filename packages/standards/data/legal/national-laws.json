@@ -147,7 +147,7 @@
         "NO": [
             {
                 "id": "no-ikt",
-                "law": "Forskrift om universell utforming av IKT",
+                "law": "Forskrift om universell utforming av IKT-løsninger",
                 "fullName": "Forskrift om universell utforming av informasjons- og kommunikasjonsteknologi (IKT)",
                 "euFramework": "WAD",
                 "scope": "both",
@@ -159,8 +159,8 @@
                     "website": "https://uutilsynet.no"
                 },
                 "sanctions": {
-                    "type": "Tvangsmulkt (löpande dagsböter)",
-                    "description": "Löpande dagsböter tills bristerna är åtgärdade.",
+                    "type": "Löpande vite (tvangsmulkt)",
+                    "description": "Löpande vite som löper per dag tills bristerna är åtgärdade.",
                     "minAmount": 0,
                     "maxAmount": 0,
                     "currency": "NOK"

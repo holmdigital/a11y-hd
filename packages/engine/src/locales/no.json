@@ -13,7 +13,7 @@
         "statement_saved": "Tilgjengelighetserklæring lagret i {path}",
         "score": "\nEtterlevelsespoeng: {score}/100",
         "status": "Etterlevelsesstatus: {status}",
-        "not_compliant": "  (Oppfyller ikke lovkrav - Diskriminerings- og tilgjengelighetsloven)",
+        "not_compliant": "  (Oppfyller ikke lovkrav - forskrift om universell utforming av IKT-løsninger)",
         "viewport": "Visningsområde: {width}x{height}",
         "prescriptive_fix": "\n💡 Foreslått løsning:",
         "use_component": "Bruk komponent: {component}",
