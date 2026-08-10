@@ -186,7 +186,15 @@ describe('Enforcement Bodies', () => {
                 expect(entry.wad).toBeDefined();
                 expect(entry.eaa).toBeDefined();
                 expect(entry.wad.length).toBeGreaterThan(0);
-                expect(entry.eaa.length).toBeGreaterThan(0);
+                if (country === 'NO') {
+                    // Norway is EEA, not EU: the EAA has not been incorporated into the EEA
+                    // agreement, so it is not in force in Norwegian law (NO lags with IS and LI).
+                    // The field is intentionally empty and must NOT be filled with an authority
+                    // name until status is verified against regjeringen.no. See Intern #23 p.6.
+                    expect(entry.eaa).toBe('');
+                } else {
+                    expect(entry.eaa.length).toBeGreaterThan(0);
+                }
             }
         });
 

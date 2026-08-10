@@ -25,7 +25,7 @@ import nationalLawsData from '../data/legal/national-laws.json';
 
 export const ENFORCEMENT_BODIES: Record<Country, string> = {
     SE: 'Agency for Digital Government (Digg)',
-    NO: 'Norwegian Digitalisation Agency (Digdir)',
+    NO: 'Tilsynet for universell utforming av ikt (uu-tilsynet)',
     DK: 'Agency for Digital Government (Digitaliseringsstyrelsen)',
     FI: 'Regional State Administrative Agency for Southern Finland (AVI)',
     NL: 'Logius',
@@ -45,7 +45,7 @@ export const ENFORCEMENT_BODIES: Record<Country, string> = {
 
 export const ENFORCEMENT_BODIES_DETAILED: Record<Country, { wad: string; eaa: string }> = {
     SE: { wad: 'Agency for Digital Government (Digg)', eaa: 'Swedish Post and Telecom Authority (PTS)' },
-    NO: { wad: 'Norwegian Digitalisation Agency (Digdir)', eaa: 'Norwegian Communications Authority (Nkom)' },
+    NO: { wad: 'Tilsynet for universell utforming av ikt (uu-tilsynet)', eaa: '' },
     DK: { wad: 'Agency for Digital Government (Digitaliseringsstyrelsen)', eaa: 'Danish Safety Technology Authority (Sikkerhedsstyrelsen)' },
     FI: { wad: 'Regional State Administrative Agency for Southern Finland (AVI)', eaa: 'Finnish Transport and Communications Agency (Traficom)' },
     NL: { wad: 'Logius', eaa: 'Authority for Consumers and Markets (ACM)' },

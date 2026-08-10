@@ -2597,7 +2597,7 @@
         "en301549Title": "Info and relationships",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "9 § (Struktur och relationer)",
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level A required",
         "remediation": {
             "description": "Siden må ha nøyaktig ett 'main'-landemerke.",
             "technicalGuidance": "Bruk <main>-elementet én gang per side for å identifisere hovedinnholdet. Unngå å ha flere <main> uten unike etiketter, eller at det mangler helt.",
@@ -2662,7 +2662,7 @@
         "en301549Title": "Info and relationships",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "9 § (Struktur och relationer)",
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level A required",
         "remediation": {
             "description": "Siden må ha en nivå 1-overskrift (<h1>).",
             "technicalGuidance": "Sørg for at det er nøyaktig én <h1> som beskriver sidens unike innhold.",
@@ -2726,7 +2726,7 @@
         "en301549Title": "Info and relationships",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "9 § (Struktur och relationer)",
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level A required",
         "remediation": {
             "description": "Overskrifter må følge en logisk rekkefølge (h1 -> h2 -> h3).",
             "technicalGuidance": "Ikke hopp over overskriftsnivåer (f.eks. direkte fra h1 til h3).",
@@ -2789,7 +2789,7 @@
         "en301549Title": "Info and relationships",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "9 § (Struktur och relationer)",
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level A required",
         "remediation": {
             "description": "Banneret (<header>) må være på toppnivå.",
             "technicalGuidance": "Ikke plasser <header> inne i et annet landemerke hvis det er sidens hovedbanner.",
@@ -2852,7 +2852,7 @@
         "en301549Title": "Info and relationships",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "9 § (Struktur och relationer)",
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level A required",
         "remediation": {
             "description": "Siden må bare ha ett 'banner'-landemerke (vanligvis <header>).",
             "technicalGuidance": "Sørg for at du bare har én <header> på toppnivå.",
@@ -2915,7 +2915,7 @@
         "en301549Title": "Info and relationships",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "9 § (Struktur och relationer)",
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level A required",
         "remediation": {
             "description": "Landemerker må ha unike roller eller etiketter.",
             "technicalGuidance": "Hvis du har flere <nav>-elementer, gi dem unike 'aria-label' (f.eks. 'Hovedmeny', 'Bunntekstmeny').",
@@ -2978,7 +2978,7 @@
         "en301549Title": "Info and relationships",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "9 § (Struktur och relationer)",
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level A required",
         "remediation": {
             "description": "Alt innhold på siden må være inneholdt i landemerker (regioner).",
             "technicalGuidance": "Sørg for at alt innhold er inne i <main>, <header>, <nav>, <footer>, eller <aside>.",
