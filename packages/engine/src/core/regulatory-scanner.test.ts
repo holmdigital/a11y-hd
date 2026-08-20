@@ -16,6 +16,18 @@ interface AxeScanOutput {
         nodes: Array<{ html: string; target: string[]; failureSummary: string }>;
     }>;
     passes: Array<{ id: string }>;
+    incomplete?: Array<{
+        id: string;
+        help: string;
+        description: string;
+        tags: string[];
+        nodes: Array<{
+            html: string;
+            target: string[];
+            failureSummary?: string;
+            any?: Array<{ id: string; message?: string; data?: Record<string, unknown> }>;
+        }>;
+    }>;
 }
 
 // Test fixture: matched rule (color-contrast exists in standards data)
@@ -231,5 +243,72 @@ describe('ScannerOptions.noScriptCheck', () => {
 
     it('can be enabled explicitly', () => {
         expect(readOption(new RegulatoryScanner({ url: 'https://test.example.com', noScriptCheck: true }))).toBe(true);
+    });
+});
+
+// KRAV-3 (Intern #12): motorn ska LÄSA och BÄRA VIDARE axes `incomplete`.
+// Två röda test skrivna före koden. Fixturen speglar det frysta fallet i
+// Intern #20: kontrastnoden som axe 4.11.1/4.12.1 la i `incomplete` med
+// messageKey `bgOverlap` — bakgrunden kunde inte bestämmas, och contrastRatio 0
+// betyder DÄR "inte uppmätt", inte "noll kontrast".
+describe('enrichIncomplete — axe incomplete bärs som needs review/cantTell (Intern #12)', () => {
+    const scanner = new RegulatoryScanner({ url: 'https://example.com', silent: true });
+    type EnrichedReport = import('@holmdigital/standards').EnrichedReport;
+    type ScanResult = import('./regulatory-scanner').ScanResult;
+    const enrichIncomplete = (input: AxeScanOutput) =>
+        (scanner as unknown as { enrichIncomplete: (i: AxeScanOutput) => Promise<EnrichedReport[]> })
+            .enrichIncomplete(input);
+    const buildPackage = (reports: EnrichedReport[], passed: number) =>
+        (scanner as unknown as { generateResultPackage: (r: EnrichedReport[], p: number, d: number) => ScanResult })
+            .generateResultPackage(reports, passed, 0);
+
+    const incompleteBgOverlap: AxeScanOutput = {
+        violations: [],
+        passes: [{ id: 'html-has-lang' }],
+        incomplete: [{
+            id: 'color-contrast',
+            help: 'Elements must have sufficient color contrast',
+            description: 'Ensures the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds',
+            tags: ['wcag2aa', 'cat.color', 'WAD', 'EAA'],
+            nodes: [{
+                html: '<div class="text-slate-500 pb-2">added 1 package in 2s</div>',
+                target: ['.pb-2'],
+                failureSummary: "Fix any of the following: Element's background color could not be determined because it is overlapped by another element",
+                any: [{
+                    id: 'color-contrast',
+                    message: "Element's background color could not be determined because it is overlapped by another element",
+                    data: { contrastRatio: 0, messageKey: 'bgOverlap', expectedContrastRatio: '4.5:1' }
+                }]
+            }]
+        }]
+    };
+
+    it('carries incomplete into reports as a cantTell item, excluded from stats/score/complianceStatus', async () => {
+        const incompleteReports = await enrichIncomplete(incompleteBgOverlap);
+        expect(incompleteReports).toHaveLength(1);
+        expect(incompleteReports[0].cantTell).toBe(true);
+        expect(incompleteReports[0].ruleId).toBe('color-contrast');
+
+        // En incomplete-post, noll violations. Den ska finnas kvar i reports men
+        // inte påverka någon siffra som betyder pass/fail.
+        const result = buildPackage(incompleteReports, incompleteBgOverlap.passes.length);
+        expect(result.stats.total).toBe(0);           // exkluderad ur total
+        expect(result.stats.critical).toBe(0);
+        expect(result.stats.high).toBe(0);
+        expect(result.stats.needsReview).toBe(1);      // men räknad som needs review
+        expect(result.score).toBe(100);               // påverkar inte score
+        expect(result.complianceStatus).toBe('PASS'); // eller compliance
+        // Inte tyst borttappad: posten finns kvar i reports, märkt cantTell.
+        expect(result.reports.some(r => r.cantTell && r.ruleId === 'color-contrast')).toBe(true);
+    });
+
+    it('reads messageKey (bgOverlap) and does not present contrastRatio 0 as a measured failure', async () => {
+        const [report] = await enrichIncomplete(incompleteBgOverlap);
+        expect(report.reviewReason).toBe('bgOverlap');
+        // Skälet ska bära "kunde inte bestämmas", ALDRIG ett uppmätt 0-kontrastvärde.
+        const node = report.failingNodes?.[0];
+        expect(node?.failureSummary).toMatch(/could not be determined/i);
+        expect(node?.failureSummary ?? '').not.toMatch(/\b0(?:\.0+)?\s*:\s*1\b/); // ingen "0:1"
+        expect(report.cantTell).toBe(true);
     });
 });

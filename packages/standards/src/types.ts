@@ -174,6 +174,21 @@ export interface FailingNode {
 export interface EnrichedReport extends RegulatoryReport {
     failingNodes?: FailingNode[];
     legalContext?: LegalContext;
+    /**
+     * "Needs review" mot användaren, `cantTell` internt. Buren från axes
+     * `incomplete`: axe kunde inte avgöra pass/fail, en människa måste
+     * kontrollera. Poster med `cantTell === true` MÅSTE exkluderas ur stats,
+     * score och complianceStatus (KRAV-3, Intern #12) — de bärs vidare i
+     * `reports` så att en verklig brist inte försvinner tyst, men räknas aldrig
+     * som fel.
+     */
+    cantTell?: boolean;
+    /**
+     * För cantTell-poster: axes `messageKey` (t.ex. `bgOverlap` = bakgrunden
+     * kunde inte bestämmas). Läses uttryckligen så att ett mätvärde som
+     * `contrastRatio: 0` inte förväxlas med "noll kontrast" (Intern #20).
+     */
+    reviewReason?: string;
 }
 
 // ============================================
