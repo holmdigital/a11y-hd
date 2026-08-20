@@ -3,6 +3,7 @@ import type { EnrichedReport, BusinessImpactLevel } from '@holmdigital/standards
 import { ScanResult } from '../core/regulatory-scanner';
 import { t, setLanguage, getCurrentLang } from '../i18n';
 import { groupReportsByRule, impactBreakdown } from './plain-group';
+import { needsReviewOf, violationsOf } from './needs-review';
 import { languageDisplayName } from './plain-language-support';
 
 /**
@@ -84,7 +85,12 @@ export function renderPlainReport(result: ScanResult, lang: string = 'en', plain
         console.log('');
     }
 
-    if (result.reports.length === 0) {
+    // Needs review (cantTell) räknas och visas som egen kategori, aldrig som
+    // hinder. Barriärintro, kort och breakdown använder bara verkliga violations.
+    const violations = violationsOf(result.reports as EnrichedReport[]);
+    const needsReview = needsReviewOf(result.reports as EnrichedReport[]);
+
+    if (violations.length === 0 && needsReview.length === 0) {
         console.log(t('plain.empty_state'));
         console.log('');
         console.log(t('plain.attribution'));
@@ -93,7 +99,7 @@ export function renderPlainReport(result: ScanResult, lang: string = 'en', plain
 
     // KRAV 1: collapse findings of the same rule into one card with an
     // occurrence count, then sort the groups by business impact (0 = first).
-    const sortedGroups = groupReportsByRule(result.reports as EnrichedReport[]).sort((a, b) => {
+    const sortedGroups = groupReportsByRule(violations).sort((a, b) => {
         const aLevel = IMPACT_ORDER[levelOf(a.report)] ?? 4;
         const bLevel = IMPACT_ORDER[levelOf(b.report)] ?? 4;
         return aLevel - bLevel;
@@ -101,7 +107,7 @@ export function renderPlainReport(result: ScanResult, lang: string = 'en', plain
 
     // Intro count stays the TOTAL number of findings (a group can hold many),
     // so "Hittade 9 hinder" still reflects every barrier on the page.
-    const count = result.reports.length;
+    const count = violations.length;
     const unit = count === 1
         ? t('plain.intro_unit_singular')
         : t('plain.intro_unit_plural');
@@ -109,17 +115,20 @@ export function renderPlainReport(result: ScanResult, lang: string = 'en', plain
     // KRAV 4: per-impact-level breakdown, counted per occurrence so the
     // sub-totals sum to the total in "Hittade N hinder". Only levels with
     // findings, ordered by business impact, badge labels via t().
-    const breakdown = impactBreakdown(result.reports as EnrichedReport[], levelOf, IMPACT_ORDER);
+    const breakdown = impactBreakdown(violations, levelOf, IMPACT_ORDER);
     const breakdownText = breakdown
         .map(b => `${b.count} ${t(BADGE_KEY[b.level])}`)
         .join(', ');
 
-    // Opening chrome
-    console.log(t('plain.intro_framing'));
-    console.log(t('plain.intro_found', { count, unit }));
-    console.log(`${count} ${unit}: ${breakdownText}`);
-    console.log(t('plain.sorted_by'));
-    console.log('');
+    // Opening chrome — bara när det finns verkliga hinder. En sida där enda
+    // fyndet är "needs review" ska inte påstå "Hittade 0 hinder".
+    if (violations.length > 0) {
+        console.log(t('plain.intro_framing'));
+        console.log(t('plain.intro_found', { count, unit }));
+        console.log(`${count} ${unit}: ${breakdownText}`);
+        console.log(t('plain.sorted_by'));
+        console.log('');
+    }
 
     const isSwedish = getCurrentLang() === 'sv';
 
@@ -159,6 +168,21 @@ export function renderPlainReport(result: ScanResult, lang: string = 'en', plain
 
         console.log('');
     });
+
+    // Needs review (cantTell): egen sektion — axe kunde inte avgöra dessa, en
+    // människa bör bekräfta. De räknas ALDRIG som hinder i listan ovan (Intern #12).
+    if (needsReview.length > 0) {
+        console.log(t('plain.needs_review_heading', { count: needsReview.length }));
+        console.log(t('plain.needs_review_intro'));
+        needsReview.forEach(report => {
+            const pl = report.plainLanguage;
+            const heading = pl?.headline
+                ? `${pl.headline} (${report.ruleId})`
+                : report.ruleId;
+            console.log(`- ${heading}`);
+        });
+        console.log('');
+    }
 
     // Closing chrome
     console.log(t('plain.closing'));

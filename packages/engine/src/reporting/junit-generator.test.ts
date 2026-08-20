@@ -22,7 +22,8 @@ describe('junit-generator', () => {
             high: 0,
             medium: 0,
             low: 0,
-            total: 0
+            total: 0,
+            needsReview: 0
         },
         score: 100,
         complianceStatus: 'PASS'
@@ -75,6 +76,32 @@ describe('junit-generator', () => {
         expect(xml).toContain('<system-out>');
         expect(xml).toContain('Target: img');
         expect(xml).toContain('HTML: &lt;img src=&quot;bad.jpg&quot;&gt;');
+    });
+
+    it('should emit cantTell reports as <skipped>, never <failure> (Intern #12)', () => {
+        const reviewResult: ScanResult = {
+            ...mockResult,
+            reports: [
+                {
+                    ruleId: 'color-contrast',
+                    wcagCriteria: '1.4.3',
+                    en301549Criteria: '9.1.4.3',
+                    cantTell: true,
+                    holmdigitalInsight: { diggRisk: 'serious', reasoning: 'Background could not be determined' },
+                    remediation: { description: 'Review manually' },
+                    failingNodes: []
+                } as unknown as ScanResult['reports'][number]
+            ],
+            stats: { ...mockResult.stats, total: 0, passed: 0, needsReview: 1 }
+        };
+
+        const xml = generateJUnitXML(reviewResult);
+        // Räknas som skipped, aldrig failure.
+        expect(xml).toContain('failures="0"');
+        expect(xml).toContain('skipped="1"');
+        expect(xml).toContain('<testcase name="[NEEDS REVIEW] color-contrast"');
+        expect(xml).toContain('<skipped message="Background could not be determined"/>');
+        expect(xml).not.toContain('<failure');
     });
 
     it('should handle special characters correctly', () => {

@@ -1,20 +1,17 @@
 import type { EnrichedReport } from '@holmdigital/standards';
+import { needsReviewOf, violationsOf } from './needs-review';
 
 /**
  * Generates GitHub Actions workflow commands for annotations
  * Reference: https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions#setting-a-warning-message
+ *
+ * Needs review-poster (cantTell, från axes incomplete) annoteras som `::notice`
+ * — synliggörs i loggen men får ALDRIG fälla bygget (Intern #12). Verkliga fel
+ * blir error (critical) eller warning.
  */
 export function generateGitHubActionsAnnotations(reports: EnrichedReport[]) {
-    reports.forEach(report => {
-        // Map engine severity to GitHub annotation levels
-        // GitHub levels: debug, notice, warning, error
-        let level = 'warning';
-        if (report.holmdigitalInsight.diggRisk === 'critical') {
-            level = 'error';
-        }
-
-        // Construct message
-        const title = `[${report.ruleId}] ${report.wcagCriteria}`;
+    const emit = (report: EnrichedReport, level: 'error' | 'warning' | 'notice', titlePrefix = '') => {
+        const title = `${titlePrefix}[${report.ruleId}] ${report.wcagCriteria}`;
         const message = `${report.holmdigitalInsight.reasoning}\n\nLegitimacy: ${report.dosLagenReference}\nFix: ${report.remediation.component ? `Use <${report.remediation.component} />` : 'Manual remediation required'}`;
 
         // Output for each failing node if available
@@ -28,5 +25,15 @@ export function generateGitHubActionsAnnotations(reports: EnrichedReport[]) {
         } else {
             console.log(`::${level} title=${title}::${message}`);
         }
+    };
+
+    // Verkliga fel: error (critical) / warning (övrigt).
+    violationsOf(reports).forEach(report => {
+        emit(report, report.holmdigitalInsight.diggRisk === 'critical' ? 'error' : 'warning');
+    });
+
+    // Needs review (cantTell): notice — synliggörs, aldrig ett fel.
+    needsReviewOf(reports).forEach(report => {
+        emit(report, 'notice', '[needs review] ');
     });
 }

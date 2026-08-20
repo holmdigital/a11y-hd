@@ -381,6 +381,80 @@ describe('renderPlainReport (D-10.4)', () => {
         expect(output).toContain('custom-rule');
         expect(output).not.toContain('(custom-rule)');
     });
+
+    it('Intern #12: cantTell reports are excluded from the barrier count and shown in a needs-review section', () => {
+        const violation = () => ({
+            ruleId: 'color-contrast',
+            holmdigitalInsight: { diggRisk: 'medium', eaaImpact: 'medium', reasoning: '' },
+            remediation: { description: 'Fix contrast', technicalGuidance: '' },
+            testability: { automated: true, requiresManualCheck: false, pseudoAutomation: false, complexity: 'simple' },
+            plainLanguage: {
+                headline: 'Contrast headline', whatHappens: 'w', whoIsAffected: 'a',
+                businessImpact: 'b', howToFix: 'f', impactLevel: 'forsamrar',
+            },
+        }) as unknown as ScanResult['reports'][number];
+
+        const result: ScanResult = {
+            ...BASE_RESULT,
+            reports: [
+                violation(),
+                {
+                    ruleId: 'link-in-text-block',
+                    cantTell: true,
+                    holmdigitalInsight: { diggRisk: 'serious', eaaImpact: 'high', reasoning: '' },
+                    remediation: { description: 'Review manually', technicalGuidance: '' },
+                    testability: { automated: true, requiresManualCheck: true, pseudoAutomation: false, complexity: 'complex' },
+                    plainLanguage: {
+                        headline: 'Link review headline', whatHappens: 'w', whoIsAffected: 'a',
+                        businessImpact: 'b', howToFix: 'f', impactLevel: 'forsamrar',
+                    },
+                } as unknown as ScanResult['reports'][number],
+            ],
+            stats: { passed: 0, critical: 0, high: 0, medium: 1, low: 0, total: 1, needsReview: 1 },
+            score: 80,
+            complianceStatus: 'FAIL',
+        };
+
+        const output = captureConsoleLog(() => renderPlainReport(result, 'en'));
+
+        // Barriärintron räknar bara det verkliga hindret, aldrig cantTell.
+        expect(output).toContain('Found 1 issue');
+        // Needs review-sektionen syns med sin rubrik och posten.
+        expect(output).toContain('Needs a human check (1)');
+        expect(output).toContain('Link review headline');
+        // Det verkliga hindret är det enda numrerade kortet ("1."), cantTell
+        // får aldrig ett eget "2."-kort i hinderlistan.
+        expect(output).toContain('1. ');
+        expect(output).not.toContain('2. ');
+    });
+
+    it('Intern #12: a page whose only finding is cantTell shows needs-review, not "Found 0 issues"', () => {
+        const result: ScanResult = {
+            ...BASE_RESULT,
+            reports: [
+                {
+                    ruleId: 'color-contrast',
+                    cantTell: true,
+                    holmdigitalInsight: { diggRisk: 'serious', eaaImpact: 'high', reasoning: '' },
+                    remediation: { description: 'Review manually', technicalGuidance: '' },
+                    testability: { automated: true, requiresManualCheck: true, pseudoAutomation: false, complexity: 'complex' },
+                    plainLanguage: {
+                        headline: 'Contrast review', whatHappens: 'w', whoIsAffected: 'a',
+                        businessImpact: 'b', howToFix: 'f', impactLevel: 'forsamrar',
+                    },
+                } as unknown as ScanResult['reports'][number],
+            ],
+            stats: { passed: 0, critical: 0, high: 0, medium: 0, low: 0, total: 0, needsReview: 1 },
+            score: 100,
+            complianceStatus: 'PASS',
+        };
+
+        const output = captureConsoleLog(() => renderPlainReport(result, 'en'));
+
+        expect(output).not.toContain('Found 0');
+        expect(output).toContain('Needs a human check (1)');
+        expect(output).toContain('Contrast review');
+    });
 });
 
 describe('renderPlainReport fallback notice', () => {

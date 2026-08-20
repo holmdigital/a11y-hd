@@ -42,6 +42,8 @@
         "total_issues": "Antal brister",
         "html_errors": "HTML-fel",
         "detailed_violations": "Detaljerade brister",
+        "needs_review_title": "Behöver granskas ({count})",
+        "needs_review_note": "axe-core kunde inte avgöra dessa automatiskt — kontrollera dem manuellt. De räknas inte in i summorna ovan.",
         "prescriptive_fix": "💡 Preskriptiv Lösning",
         "use": "Använd",
         "footer": "Genererad av @holmdigital/engine v{version} • Standarder: WCAG 2.1 AA, EN 301 549, DOS-lagen"
@@ -67,6 +69,8 @@
         "attribution": "Rapporten genererades av HolmDigital Engine, en del av HolmDigitals ekosystem för tillgänglighet.",
         "fallback_framing": "Tekniskt fynd som din utvecklare behöver titta på.",
         "occurrences": "{count} förekomster",
+        "needs_review_heading": "Behöver en mänsklig kontroll ({count})",
+        "needs_review_intro": "Automatiken kunde inte avgöra dessa — en människa bör bekräfta dem. De räknas inte som hinder ovan.",
         "gate_blocked": "Klarspråk stöds ännu inte på '{lang}'.",
         "gate_supported": "Språk med klarspråk: {langs}.",
         "gate_howto": "Kör utan --plain för utvecklarrapporten, eller välj ett språk som stöds (t.ex. --lang sv).",

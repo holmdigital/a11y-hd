@@ -17,6 +17,7 @@ import { parseHydrationWait, InvalidOptionError, MAX_HYDRATION_WAIT_MS } from '.
 import { setLanguage, t } from '../i18n';
 import type { EnrichedReport } from '@holmdigital/standards';
 import { isPlainLanguageSupported } from '../reporting/plain-language-support';
+import { needsReviewOf, violationsOf } from '../reporting/needs-review';
 import { sendToCloud, CloudConfig } from './cloud-client';
 import type { NoScriptResult } from '../core/noscript-check';
 
@@ -319,7 +320,9 @@ program
                     // Rådgivande robusthetsindikator. Undefined när --noscript-check
                     // inte används och faller då ur JSON:en av sig själv.
                     noScript: result.noScript,
-                    topIssues: result.reports.slice(0, 5).map(r => ({
+                    // Needs review (cantTell) hör inte hemma bland topIssues — de är
+                    // inte fel. Antalet bärs av result.stats.needsReview (Intern #12).
+                    topIssues: violationsOf(result.reports).slice(0, 5).map(r => ({
                         id: r.ruleId,
                         impact: r.holmdigitalInsight.diggRisk,
                         description: r.remediation.description,
@@ -341,11 +344,15 @@ program
                 console.log('');
                 console.log(chalk.bold(`Score: ${scoreColor(`${result.score}/100`)}  Status: ${statusColor(result.complianceStatus)}`));
                 console.log(chalk.gray(`Critical: ${result.stats.critical} | High: ${result.stats.high} | Medium: ${result.stats.medium} | Low: ${result.stats.low}`));
+                if (result.stats.needsReview > 0) {
+                    console.log(chalk.gray(`Needs review: ${result.stats.needsReview}`));
+                }
 
-                if (result.reports.length > 0) {
+                const lightViolations = violationsOf(result.reports);
+                if (lightViolations.length > 0) {
                     console.log('');
                     console.log(chalk.bold('Top Issues:'));
-                    result.reports.slice(0, 5).forEach(r => {
+                    lightViolations.slice(0, 5).forEach(r => {
                         const color = r.holmdigitalInsight.diggRisk === 'critical' ? chalk.red
                             : r.holmdigitalInsight.diggRisk === 'high' ? chalk.yellow : chalk.gray;
                         console.log(color(`  [${r.holmdigitalInsight.diggRisk.toUpperCase()}] ${r.ruleId} — ${r.remediation.description}`));
@@ -358,6 +365,12 @@ program
                 renderPlainReport(result, plainFallbackFrom ? 'en' : options.lang, plainFallbackFrom);
             } else {
                 // --- CLI DASHBOARD IMPLEMENTATION ---
+
+                // Needs review (cantTell) räknas aldrig som fel: kategoripoäng,
+                // legal risk och violations-listan bygger på violations, medan
+                // needs review visas i en egen sektion (Intern #12).
+                const violations = violationsOf(result.reports);
+                const needsReview = needsReviewOf(result.reports);
 
                 // 1. Header & Score
                 console.log('\n');
@@ -384,7 +397,7 @@ program
                 // 2. Category Progress Bars
                 // Provide a rough visualization based on types of failures found
                 const calculateCategoryScore = (filterFn: (r: EnrichedReport) => boolean) => {
-                    const failures = result.reports.filter(filterFn).length;
+                    const failures = violations.filter(filterFn).length;
                     // Formula: Start at 100, deduct 20 per failure, min 10.
                     return Math.max(10, 100 - (failures * 20));
                 };
@@ -398,7 +411,7 @@ program
                     {
                         name: 'Keyboard Nav  ',
                         score: calculateCategoryScore(r => ['2.1.1', '2.1.2', '2.4.3', '2.4.7'].some(c => r.wcagCriteria.includes(c))),
-                        critical: result.reports.some(r => ['2.1.1', '2.1.2'].some(c => r.wcagCriteria.includes(c)) && r.holmdigitalInsight.diggRisk === 'critical')
+                        critical: violations.some(r => ['2.1.1', '2.1.2'].some(c => r.wcagCriteria.includes(c)) && r.holmdigitalInsight.diggRisk === 'critical')
                     },
                     {
                         name: 'Contrast      ',
@@ -430,11 +443,11 @@ program
                 if (result.legalSummary && result.legalSummary.eaaDeadlineViolations > 0) {
                     legalRisk = 'HIGH';
                     // Determine actual risk reason based on violations
-                    const hasKeyboardIssues = result.reports.some(r =>
+                    const hasKeyboardIssues = violations.some(r =>
                         ['2.1.1', '2.1.2'].some(c => r.wcagCriteria.includes(c)));
-                    const hasContrastIssues = result.reports.some(r =>
+                    const hasContrastIssues = violations.some(r =>
                         r.wcagCriteria.includes('1.4.3') || r.ruleId === 'color-contrast');
-                    const hasStructureIssues = result.reports.some(r =>
+                    const hasStructureIssues = violations.some(r =>
                         r.wcagCriteria.includes('1.3.1'));
 
                     if (hasKeyboardIssues) riskReason = 'Keyboard accessibility blocks EAA compliance';
@@ -464,11 +477,11 @@ program
                 }
 
                 // 5. Report Details
-                if (result.reports.length > 0) {
+                if (violations.length > 0) {
                     console.log(chalk.bold('Top Violations:'));
                 }
 
-                result.reports.forEach((report, i) => {
+                violations.forEach((report, i) => {
                     if (i > 5) return; // Limit to top 5 for CLI readability
 
                     const color = report.holmdigitalInsight.diggRisk === 'critical' ? chalk.red : chalk.yellow;
@@ -480,8 +493,20 @@ program
                     }
                 });
 
-                if (result.reports.length > 5) {
-                    console.log(chalk.gray(`\n... and ${result.reports.length - 5} more issues.`));
+                if (violations.length > 5) {
+                    console.log(chalk.gray(`\n... and ${violations.length - 5} more issues.`));
+                }
+
+                // Needs review (cantTell): axe kunde inte avgöra dessa — en människa
+                // måste titta. Egen sektion, aldrig bland violations ovan (Intern #12).
+                if (needsReview.length > 0) {
+                    console.log(chalk.cyan.bold(`\nℹ️  Needs review (${needsReview.length}): axe could not determine these automatically`));
+                    needsReview.slice(0, 5).forEach(report => {
+                        console.log(chalk.cyan(`  [NEEDS REVIEW] ${report.ruleId} — WCAG ${report.wcagCriteria}`));
+                    });
+                    if (needsReview.length > 5) {
+                        console.log(chalk.gray(`  ... and ${needsReview.length - 5} more to review.`));
+                    }
                 }
 
                 console.log(chalk.gray('\n----------------------------------------'));
@@ -491,7 +516,7 @@ program
                 if (options.generateTests) {
                     console.log(chalk.magenta.bold(t('cli.pseudo_tests')));
                     const automation = new PseudoAutomationEngine();
-                    result.reports.forEach(report => {
+                    violations.forEach(report => {
                         if (report.testability.pseudoAutomation) {
                             console.log(chalk.cyan(t('cli.test_for', { ruleId: report.ruleId })));
                             console.log(chalk.gray(automation.generateTestScript(report, url)));

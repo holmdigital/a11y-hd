@@ -6,6 +6,7 @@ import { ScanResult } from '../core/regulatory-scanner';
 import fs from 'fs/promises';
 import path from 'path';
 import { generateBadgeUrl } from './badge-generator';
+import { violationsOf } from './needs-review';
 
 /**
  * Metadata for organizational information in the accessibility statement
@@ -121,9 +122,11 @@ export async function generateStatementContent(
         complianceLevel = 'partial'; // Some issues, but no critical ones
     }
 
-    // 2. Extract known issues (non-compliant items)
+    // 2. Extract known issues (non-compliant items).
+    // Needs review (cantTell) exkluderas: de är inte bekräftade brister och får
+    // aldrig listas som non-compliance i en juridisk redogörelse (Intern #12).
     const issuesMap = new Map<string, string>();
-    result.reports.forEach(report => {
+    violationsOf(result.reports).forEach(report => {
         if (!issuesMap.has(report.ruleId)) {
             // Updated to handle simple string if that's what report.wcagCriteria is
             const issueText = `${report.ruleId} (${report.wcagCriteria})`;

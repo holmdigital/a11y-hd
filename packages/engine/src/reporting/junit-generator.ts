@@ -1,4 +1,5 @@
 import { ScanResult } from '../core/regulatory-scanner';
+import { needsReviewOf, violationsOf } from './needs-review';
 
 /**
  * Generates JUnit XML format for CI/CD integration
@@ -8,15 +9,19 @@ export function generateJUnitXML(result: ScanResult): string {
     const { url, reports, stats, metadata } = result;
     const duration = metadata.scanDuration;
     const timestamp = result.timestamp;
+    const violations = violationsOf(reports);
+    const needsReview = needsReviewOf(reports);
 
-    // Total tests is the sum of passes and violations
-    const totalTests = stats.passed + stats.total;
+    // Tester = pass + violations + needs review. Fel = bara violations; needs
+    // review räknas som skipped, aldrig som failure (Intern #12).
+    const totalTests = stats.passed + stats.total + stats.needsReview;
     const failures = stats.total;
+    const skipped = stats.needsReview;
 
     const xmlLines = [
         `<?xml version="1.0" encoding="UTF-8"?>`,
         `<testsuites name="HolmDigital Accessibility Scan" time="${duration / 1000}" tests="${totalTests}" failures="${failures}">`,
-        `  <testsuite name="${url}" tests="${totalTests}" failures="${failures}" errors="0" time="${duration / 1000}" timestamp="${timestamp}">`,
+        `  <testsuite name="${url}" tests="${totalTests}" failures="${failures}" skipped="${skipped}" errors="0" time="${duration / 1000}" timestamp="${timestamp}">`,
         `    <properties>`,
         `      <property name="engineVersion" value="${metadata.engineVersion}"/>`,
         `      <property name="axeCoreVersion" value="${metadata.axeCoreVersion}"/>`,
@@ -34,8 +39,8 @@ export function generateJUnitXML(result: ScanResult): string {
         xmlLines.push(`    <testcase name="Passed Accessibility Rule ${i + 1}" classname="Accessibility.Success" time="0" />`);
     }
 
-    // 2. Add Failures (Violations)
-    reports.forEach(report => {
+    // 2. Add Failures (Violations only — needs review exkluderas)
+    violations.forEach(report => {
         const severity = report.holmdigitalInsight.diggRisk;
         // Escape XML characters
         const message = escapeXML(report.holmdigitalInsight.reasoning);
@@ -57,6 +62,14 @@ export function generateJUnitXML(result: ScanResult): string {
             xmlLines.push(`      <system-out>${escapeXML(nodeInfo)}</system-out>`);
         }
 
+        xmlLines.push(`    </testcase>`);
+    });
+
+    // 3. Needs review (cantTell): <skipped>, aldrig <failure> (Intern #12).
+    needsReview.forEach(report => {
+        const message = escapeXML(report.holmdigitalInsight.reasoning);
+        xmlLines.push(`    <testcase name="[NEEDS REVIEW] ${report.ruleId}" classname="${report.wcagCriteria}" time="0">`);
+        xmlLines.push(`      <skipped message="${message}"/>`);
         xmlLines.push(`    </testcase>`);
     });
 

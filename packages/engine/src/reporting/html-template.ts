@@ -5,6 +5,7 @@ import { ScanResult, getEngineVersion } from '../core/regulatory-scanner';
 import { generateBadgeUrl } from './badge-generator';
 import { t, getCurrentLang } from '../i18n';
 import { groupReportsByRule, impactBreakdown } from './plain-group';
+import { needsReviewOf, violationsOf } from './needs-review';
 import { languageDisplayName } from './plain-language-support';
 import type { EnrichedReport, BusinessImpactLevel } from '@holmdigital/standards';
 
@@ -128,6 +129,28 @@ export function generateReportHTML(
     const highCount = result.stats.high;
     const htmlErrorsCount = result.htmlValidation?.errors?.length ?? 0;
     const scoreColor = result.score > 90 ? '#16a34a' : result.score > 70 ? '#eab308' : '#dc2626';
+
+    // Needs review (cantTell): axe kunde inte avgöra dessa. Egen sektion under
+    // violations, aldrig i violations-listan eller summorna ovan (Intern #12).
+    // Tom sträng när inget finns — då blir HTML:en byte-identisk med tidigare.
+    const needsReviewReports = needsReviewOf(result.reports);
+    const needsReviewSection = needsReviewReports.length === 0 ? '' : `
+        <div class="section-title">${t('report.needs_review_title', { count: needsReviewReports.length })}</div>
+        <p style="font-size: 0.9rem; color: #64748b; margin-bottom: 0.75rem;">${t('report.needs_review_note')}</p>
+        ${needsReviewReports.map(report => `
+            <div class="violation-card">
+                <div class="violation-header">
+                    <div class="violation-title">${report.ruleId}</div>
+                    <div><span class="badge">needs review</span></div>
+                </div>
+                <div class="violation-meta">
+                    WCAG ${report.wcagCriteria} • EN 301 549 ${report.en301549Criteria}
+                </div>
+                <div style="font-size: 0.95rem; color: #334155; line-height: 1.5;">
+                    ${report.holmdigitalInsight.reasoning}
+                </div>
+            </div>
+            `).join('')}`;
 
     return `
     <!DOCTYPE html>
@@ -360,7 +383,7 @@ export function generateReportHTML(
 
         <div class="section-title">${t('report.detailed_violations')}</div>
 
-        ${[...result.reports].sort((a, b) => {
+        ${violationsOf(result.reports).sort((a, b) => {
         const severityOrder = { critical: 0, high: 1, medium: 2, low: 3 };
         const aRisk = a.holmdigitalInsight.diggRisk.toLowerCase() as keyof typeof severityOrder;
         const bRisk = b.holmdigitalInsight.diggRisk.toLowerCase() as keyof typeof severityOrder;
@@ -394,7 +417,7 @@ export function generateReportHTML(
                 ` : ''}
             </div>
             `;
-    }).join('')}
+    }).join('')}${needsReviewSection}
 ${renderNoScriptSection(result)}
         <footer>
             ${t('report.footer', { version: getEngineVersion() })}
@@ -495,21 +518,26 @@ function generatePlainReportHTML(result: ScanResult, plainFallbackFrom?: string)
         ? `<p class="plain-fallback-notice">${escapeHtml(t('plain.gate_fallback', { lang: fallbackName }))}</p>`
         : '';
 
+    // Needs review (cantTell) hålls utanför hinderlistan, räkningen och
+    // breakdown; visas i egen sektion längre ner (Intern #12).
+    const violations = violationsOf(result.reports as EnrichedReport[]);
+    const needsReview = needsReviewOf(result.reports as EnrichedReport[]);
+
     // KRAV 1: one card per rule with an occurrence count, sorted by impact.
-    const sortedGroups = groupReportsByRule(result.reports as EnrichedReport[]).sort((a, b) => {
+    const sortedGroups = groupReportsByRule(violations).sort((a, b) => {
         const aLevel = PLAIN_IMPACT_ORDER[plainLevelOf(a.report)] ?? 4;
         const bLevel = PLAIN_IMPACT_ORDER[plainLevelOf(b.report)] ?? 4;
         return aLevel - bLevel;
     });
 
     // Intro count stays the TOTAL finding count across all groups.
-    const count = result.reports.length;
+    const count = violations.length;
     const unit = count === 1
         ? t('plain.intro_unit_singular')
         : t('plain.intro_unit_plural');
 
     // KRAV 4: per-impact-level breakdown, counted per occurrence (sums to total).
-    const breakdownText = impactBreakdown(result.reports as EnrichedReport[], plainLevelOf, PLAIN_IMPACT_ORDER)
+    const breakdownText = impactBreakdown(violations, plainLevelOf, PLAIN_IMPACT_ORDER)
         .map(b => `${b.count} ${escapeHtml(t(PLAIN_BADGE_KEY[b.level]))}`)
         .join(', ');
 
@@ -558,6 +586,34 @@ ${sortedGroups.map((group) => {
     }
 }).join('\n')}
 </ul>`;
+
+    // Needs review (cantTell): egen sektion under hinderlistan. Axe kunde inte
+    // avgöra dessa — en människa bör bekräfta. Aldrig räknade som hinder.
+    const needsReviewHtml = needsReview.length === 0
+        ? ''
+        : `<section class="needs-review">
+      <h2 class="needs-review-heading">${escapeHtml(t('plain.needs_review_heading', { count: needsReview.length }))}</h2>
+      <p class="needs-review-intro">${escapeHtml(t('plain.needs_review_intro'))}</p>
+      <ul class="needs-review-list">
+${needsReview.map((report) => {
+    const pl = report.plainLanguage;
+    const heading = pl?.headline
+        ? `${escapeHtml(pl.headline)} <span class="issue-rule-ref">(${escapeHtml(report.ruleId)})</span>`
+        : escapeHtml(report.ruleId);
+    return `  <li>${heading}</li>`;
+}).join('\n')}
+      </ul>
+    </section>`;
+
+    // Intro-count visas bara när det finns verkliga hinder — annars vore
+    // "Hittade 0 hinder" missvisande på en sida vars enda fynd är needs review.
+    const introHtml = violations.length === 0
+        ? ''
+        : `<div class="intro">
+      <p>${t('plain.intro_framing')}</p>
+      <p>${t('plain.intro_found', { count, unit })}</p>
+      <p class="intro-breakdown">${count} ${escapeHtml(unit)}: ${breakdownText}</p>
+    </div>`;
 
     return `<!DOCTYPE html>
 <html lang="${lang}">
@@ -774,6 +830,34 @@ ${sortedGroups.map((group) => {
       page-break-before: avoid;
     }
 
+    /* ---- Needs review (cantTell): kept visually distinct from the barrier
+           list — a neutral, low-alarm block for items a human must confirm. ---- */
+    .needs-review {
+      margin-top: 2rem;
+      padding: 1rem 1.25rem;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-left: 4px solid #64748b;
+      border-radius: 6px;
+    }
+    .needs-review-heading {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #334155;
+      margin-bottom: 0.35rem;
+    }
+    .needs-review-intro {
+      font-size: 0.9rem;
+      color: #64748b;
+      margin-bottom: 0.6rem;
+    }
+    .needs-review-list {
+      margin: 0;
+      padding-left: 1.25rem;
+      font-size: 0.95rem;
+      color: #334155;
+    }
+
     /* ---- Fixed per-page footer (Task H2): position:fixed elements are
            repeated on every printed page in Chromium print-to-PDF. White
            background + top border so cards never show through; the @page
@@ -810,13 +894,9 @@ ${sortedGroups.map((group) => {
 
   <div class="report-body">
     ${noticeHtml}
-    <div class="intro">
-      <p>${t('plain.intro_framing')}</p>
-      <p>${t('plain.intro_found', { count, unit })}</p>
-      <p class="intro-breakdown">${count} ${escapeHtml(unit)}: ${breakdownText}</p>
-    </div>
+    ${introHtml}
 
-    ${itemsHtml}
+    ${itemsHtml}${needsReviewHtml}
 ${renderNoScriptSection(result)}
     <p class="closing">${t('plain.closing')}</p>
   </div>
