@@ -157,11 +157,12 @@
         "remediation": {
             "description": "Alle afbeeldingen moeten beschrijvende alternatieve tekst hebben.",
             "technicalGuidance": "Voeg alt-attributen toe aan alle img-elementen. Voor decoratieve afbeeldingen, gebruik alt=\"\". Voor informatieve afbeeldingen, beschrijf de inhoud beknopt.",
-            "codeExample": "// Bad: Msising alt\n<img src=\"logo.png\" />\n\n// Good: Descriptive alt\n<img src=\"logo.png\" alt=\"HolmDigital Logo\" />\n\n// Good: Decorative image\n<img src=\"decoration.png\" alt=\"\" role=\"presentation\" />",
+            "codeExample": "// Bad: Missing alt\n<img src=\"logo.png\" />\n\n// Good: Descriptive alt\n<img src=\"logo.png\" alt=\"HolmDigital Logo\" />\n\n// Good: Decorative image\n<img src=\"decoration.png\" alt=\"\" role=\"presentation\" />",
             "wcagTechnique": [
                 "G94",
                 "G95",
-                "H37"
+                "H37",
+                "H67"
             ]
         },
         "holmdigitalInsight": {

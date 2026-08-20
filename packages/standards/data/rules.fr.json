@@ -157,11 +157,12 @@
         "remediation": {
             "description": "Toutes les images doivent avoir un texte alternatif descriptif.",
             "technicalGuidance": "Ajoutez alt à toutes les balises img. Pour les images décoratives, utilisez alt=\"\".",
-            "codeExample": "// Bad: Msising alt\n<img src=\"logo.png\" />\n\n// Good: Descriptive alt\n<img src=\"logo.png\" alt=\"HolmDigital Logo\" />\n\n// Good: Decorative image\n<img src=\"decoration.png\" alt=\"\" role=\"presentation\" />",
+            "codeExample": "// Bad: Missing alt\n<img src=\"logo.png\" />\n\n// Good: Descriptive alt\n<img src=\"logo.png\" alt=\"HolmDigital Logo\" />\n\n// Good: Decorative image\n<img src=\"decoration.png\" alt=\"\" role=\"presentation\" />",
             "wcagTechnique": [
                 "G94",
                 "G95",
-                "H37"
+                "H37",
+                "H67"
             ]
         },
         "holmdigitalInsight": {

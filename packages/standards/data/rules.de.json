@@ -157,11 +157,12 @@
         "remediation": {
             "description": "Alle Bilder müssen beschreibenden Alternativtext haben.",
             "technicalGuidance": "Fügen Sie alt-Attribute zu allen img-Elementen hinzu. Für dekorative Bilder verwenden Sie alt=\"\". Für informative Bilder beschreiben Sie den Inhalt prägnant.",
-            "codeExample": "// Bad: Msising alt\n<img src=\"logo.png\" />\n\n// Good: Descriptive alt\n<img src=\"logo.png\" alt=\"HolmDigital Logo\" />\n\n// Good: Decorative image\n<img src=\"decoration.png\" alt=\"\" role=\"presentation\" />",
+            "codeExample": "// Bad: Missing alt\n<img src=\"logo.png\" />\n\n// Good: Descriptive alt\n<img src=\"logo.png\" alt=\"HolmDigital Logo\" />\n\n// Good: Decorative image\n<img src=\"decoration.png\" alt=\"\" role=\"presentation\" />",
             "wcagTechnique": [
                 "G94",
                 "G95",
-                "H37"
+                "H37",
+                "H67"
             ]
         },
         "holmdigitalInsight": {
