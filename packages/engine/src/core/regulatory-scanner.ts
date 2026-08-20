@@ -25,6 +25,25 @@ interface AxeScanOutput {
         nodes: Array<{ html: string; target: string[]; failureSummary: string }>;
     }>;
     passes: Array<{ id: string }>;
+    /**
+     * axes `incomplete`: kontroller som axe INTE kunde avgöra (varken pass eller
+     * fail). KRAV-3 (Intern #12): dessa ska bäras vidare, inte tappas tyst.
+     * Noderna har check-arrayer (`any`) med `message` och `data.messageKey` —
+     * skälet läses därifrån (t.ex. `bgOverlap`), aldrig ett `contrastRatio: 0`
+     * som om det vore en uppmätt nollkontrast.
+     */
+    incomplete?: Array<{
+        id: string;
+        help: string;
+        description: string;
+        tags: string[];
+        nodes: Array<{
+            html: string;
+            target: string[];
+            failureSummary?: string;
+            any?: Array<{ id: string; message?: string; data?: Record<string, unknown> }>;
+        }>;
+    }>;
 }
 
 /* global __ENGINE_VERSION__ */
@@ -87,6 +106,11 @@ export interface ScanResult {
         medium: number;
         low: number;
         total: number;
+        /**
+         * Antal "needs review"-poster (cantTell) burna från axes `incomplete`.
+         * Informativt: ingår ALDRIG i total, score eller complianceStatus.
+         */
+        needsReview: number;
     };
     score: number;
     complianceStatus: 'PASS' | 'FAIL';
@@ -250,6 +274,12 @@ export class RegulatoryScanner {
                 ? await this.enrichResultsLight(axeResults)
                 : await this.enrichResults(axeResults);
 
+            // KRAV-3 (Intern #12): bär axes `incomplete` vidare som needs review/
+            // cantTell-poster. De hamnar i reports men exkluderas ur stats, score
+            // och complianceStatus (görs i generateResultPackage).
+            const incompleteReports = await this.enrichIncomplete(axeResults);
+            const allReports = [...regulatoryReports, ...incompleteReports];
+
             // Robusthetskontroll utan JS. Körs EFTER huvudskanningen och resultatet
             // hängs på utanför generateResultPackage, så det är strukturellt omöjligt
             // för det att påverka score, stats eller complianceStatus.
@@ -259,7 +289,7 @@ export class RegulatoryScanner {
             }
 
             const scanDuration = Date.now() - startTime;
-            const result = this.generateResultPackage(regulatoryReports, passedCount, scanDuration, pageTitle, pageLanguage);
+            const result = this.generateResultPackage(allReports, passedCount, scanDuration, pageTitle, pageLanguage);
             if (htmlValidation) {
                 result.htmlValidation = htmlValidation;
             }
@@ -505,6 +535,87 @@ export class RegulatoryScanner {
         return reports;
     }
 
+    /**
+     * KRAV-3 (Intern #12): bär axes `incomplete` vidare som "needs review"-poster
+     * (internt `cantTell`). axe kunde inte avgöra pass/fail, så en människa måste
+     * kontrollera. Poster märks `cantTell` och exkluderas ur stats/score/
+     * complianceStatus i generateResultPackage — men tappas aldrig tyst.
+     *
+     * Skälet läses ur nodens check-data (`message` + `messageKey`), t.ex.
+     * `bgOverlap` = bakgrunden kunde inte bestämmas. Ett `contrastRatio: 0` som
+     * följer med i det fallet är INTE en uppmätt nollkontrast, så vi bär
+     * skäl-texten, aldrig ett hopfabricerat mätvärde (Intern #20).
+     */
+    private async enrichIncomplete(axeResults: AxeScanOutput): Promise<EnrichedReport[]> {
+        const incomplete = axeResults.incomplete;
+        if (!incomplete || incomplete.length === 0) return [];
+
+        const reports: EnrichedReport[] = [];
+        const { generateRegulatoryReport, getConvergenceRule } = await import('@holmdigital/standards');
+        const { getCurrentLang } = await import('../i18n');
+        const lang = getCurrentLang();
+
+        const readMessageKey = (
+            checks?: Array<{ id: string; message?: string; data?: Record<string, unknown> }>
+        ) => checks?.find(c => c.data && typeof c.data === 'object' && 'messageKey' in c.data) ?? checks?.[0];
+
+        for (const item of incomplete) {
+            const firstCheck = readMessageKey(item.nodes[0]?.any);
+            const rawKey = firstCheck?.data && typeof firstCheck.data === 'object'
+                ? (firstCheck.data as { messageKey?: unknown }).messageKey
+                : undefined;
+            const reviewReason = typeof rawKey === 'string' ? rawKey : undefined;
+
+            // Skäl per nod: axes egen check-message (VARFÖR den inte kunde avgöras).
+            // Aldrig ett kontrastvärde — i bgOverlap-fallet finns inget uppmätt.
+            const failingNodes = item.nodes.slice(0, 3).map(node => {
+                const c = readMessageKey(node.any);
+                return {
+                    html: node.html,
+                    target: node.target.join(' '),
+                    failureSummary: c?.message ?? node.failureSummary ?? item.help
+                };
+            });
+            const reasoning = failingNodes[0]?.failureSummary ?? item.help;
+
+            const base: RegulatoryReport | null = generateRegulatoryReport(item.id, lang);
+            if (base) {
+                const fullRule = getConvergenceRule(base.ruleId, lang);
+                reports.push({
+                    ...base,
+                    cantTell: true,
+                    reviewReason,
+                    holmdigitalInsight: { ...base.holmdigitalInsight, reasoning },
+                    legalContext: fullRule?.legalContext,
+                    failingNodes
+                });
+            } else {
+                // Regel utan mappning: bär ändå posten som cantTell så inget tappas.
+                reports.push({
+                    ruleId: item.id,
+                    wcagCriteria: item.tags.find(t => t.startsWith('wcag')) || 'Unknown',
+                    en301549Criteria: '',
+                    dosLagenReference: '',
+                    diggRisk: 'medium',
+                    eaaImpact: 'medium',
+                    remediation: { description: item.help, technicalGuidance: item.description, component: undefined },
+                    holmdigitalInsight: {
+                        diggRisk: 'medium',
+                        eaaImpact: 'medium',
+                        reasoning,
+                        swedishInterpretation: '',
+                        priorityRationale: ''
+                    },
+                    testability: { automated: false, requiresManualCheck: true, pseudoAutomation: false, complexity: 'moderate' },
+                    cantTell: true,
+                    reviewReason,
+                    failingNodes
+                });
+            }
+        }
+        return reports;
+    }
+
     private generateResultPackage(
         reports: EnrichedReport[],
         passedCount: number,
@@ -512,13 +623,20 @@ export class RegulatoryScanner {
         pageTitle?: string,
         pageLanguage?: string
     ): ScanResult {
+        // KRAV-3 (Intern #12): "needs review"-poster (cantTell) bärs i reports men
+        // räknas ALDRIG som fel. Skilj scored (verkliga fel) från cantTell innan
+        // stats, score och complianceStatus beräknas.
+        const scored = reports.filter(r => !r.cantTell);
+        const needsReview = reports.length - scored.length;
+
         const stats = {
             passed: passedCount,
-            critical: reports.filter(r => r.holmdigitalInsight.diggRisk === 'critical').length,
-            high: reports.filter(r => r.holmdigitalInsight.diggRisk === 'high').length,
-            medium: reports.filter(r => r.holmdigitalInsight.diggRisk === 'medium').length,
-            low: reports.filter(r => r.holmdigitalInsight.diggRisk === 'low').length,
-            total: reports.length
+            critical: scored.filter(r => r.holmdigitalInsight.diggRisk === 'critical').length,
+            high: scored.filter(r => r.holmdigitalInsight.diggRisk === 'high').length,
+            medium: scored.filter(r => r.holmdigitalInsight.diggRisk === 'medium').length,
+            low: scored.filter(r => r.holmdigitalInsight.diggRisk === 'low').length,
+            total: scored.length,
+            needsReview
         };
 
         // Justerat score-system för att match Lighthouse strängare nivaer
@@ -561,8 +679,8 @@ export class RegulatoryScanner {
             pageLanguage
         };
 
-        // Calculate EU Legal Framework summary
-        const reportsWithContext = reports.filter(r => r.legalContext);
+        // Calculate EU Legal Framework summary (cantTell exkluderas: inte bekräftade fel)
+        const reportsWithContext = scored.filter(r => r.legalContext);
         const legalSummary = {
             wadApplicable: reportsWithContext.filter(r =>
                 r.legalContext?.appliesTo?.includes('WAD')
