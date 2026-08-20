@@ -155,7 +155,7 @@
         "dosLagenApplies": true,
         "dosLagenReference": "BITV 2.0, Anlage 1, WCAG 2.1 A erforderlich",
         "remediation": {
-            "description": "Alle Bilder müssen beschreibenden Alternativtext haben.",
+            "description": "Bilder, die Informationen vermitteln, müssen eine Textalternative haben, die einen gleichwertigen Zweck erfüllt, während rein dekorative Bilder so gekennzeichnet werden müssen, dass Hilfstechnologien sie ignorieren können. Diese Kennzeichnung ist aktiv: ein leeres alt (alt=\"\") ist der Standardweg, und das alt-Attribut ganz wegzulassen reicht nicht aus, weil Hilfstechnologien das Bild dann nicht ignorieren können (ein Screenreader kann zum Beispiel den Dateinamen vorlesen). Die Anforderung betrifft das Ergebnis, nicht die Technik.",
             "technicalGuidance": "Fügen Sie alt-Attribute zu allen img-Elementen hinzu. Für dekorative Bilder verwenden Sie alt=\"\". Für informative Bilder beschreiben Sie den Inhalt prägnant.",
             "codeExample": "// Bad: Missing alt\n<img src=\"logo.png\" />\n\n// Good: Descriptive alt\n<img src=\"logo.png\" alt=\"HolmDigital Logo\" />\n\n// Good: Decorative image\n<img src=\"decoration.png\" alt=\"\" role=\"presentation\" />",
             "wcagTechnique": [

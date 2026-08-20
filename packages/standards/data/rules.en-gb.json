@@ -155,7 +155,7 @@
         "dosLagenApplies": true,
         "dosLagenReference": "PSBAR 2018, WCAG 2.1 AA required",
         "remediation": {
-            "description": "All images must have descriptive alternative text.",
+            "description": "Images that convey information must have a text alternative that serves the equivalent purpose, while purely decorative images must be marked so assistive technology can ignore them. That marking is active: an empty alt (alt=\"\") is the standard way, and leaving out the alt attribute entirely is not enough, because assistive technology then cannot ignore the image (a screen reader may, for example, read out the file name). The requirement is about the outcome, not the technique.",
             "technicalGuidance": "Add alt attributes to all img elements. For decorative images, use alt=\"\". For informative images, concisely describe the content.",
             "codeExample": "// Bad: Missing alt\n<img src=\"logo.png\" />\n\n// Good: Descriptive alt\n<img src=\"logo.png\" alt=\"HolmDigital Logo\" />\n\n// Good: Decorative image\n<img src=\"decoration.png\" alt=\"\" role=\"presentation\" />",
             "wcagTechnique": [

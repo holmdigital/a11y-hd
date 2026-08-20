@@ -155,7 +155,7 @@
         "dosLagenApplies": true,
         "dosLagenReference": "Besluit digitale toegankelijkheid overheid, WCAG 2.1 AA verplicht",
         "remediation": {
-            "description": "Alle afbeeldingen moeten beschrijvende alternatieve tekst hebben.",
+            "description": "Afbeeldingen die informatie overbrengen, moeten een tekstalternatief hebben dat een gelijkwaardig doel dient, terwijl puur decoratieve afbeeldingen zo gemarkeerd moeten worden dat hulptechnologie ze kan negeren. Die markering is actief: een leeg alt (alt=\"\") is de standaardmanier, en het alt-attribuut helemaal weglaten is niet genoeg, omdat hulptechnologie de afbeelding dan niet kan negeren (een schermlezer kan bijvoorbeeld de bestandsnaam voorlezen). De eis gaat over het resultaat, niet over de techniek.",
             "technicalGuidance": "Voeg alt-attributen toe aan alle img-elementen. Voor decoratieve afbeeldingen, gebruik alt=\"\". Voor informatieve afbeeldingen, beschrijf de inhoud beknopt.",
             "codeExample": "// Bad: Missing alt\n<img src=\"logo.png\" />\n\n// Good: Descriptive alt\n<img src=\"logo.png\" alt=\"HolmDigital Logo\" />\n\n// Good: Decorative image\n<img src=\"decoration.png\" alt=\"\" role=\"presentation\" />",
             "wcagTechnique": [
