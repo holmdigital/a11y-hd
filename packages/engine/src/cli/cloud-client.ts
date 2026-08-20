@@ -4,7 +4,9 @@
  */
 
 import type { ScanResult } from '../core/regulatory-scanner';
+import type { EnrichedReport } from '@holmdigital/standards';
 import { getEngineVersion } from '../core/regulatory-scanner';
+import { needsReviewOf, violationsOf } from '../reporting/needs-review';
 
 export interface CloudConfig {
     apiKey: string;
@@ -32,15 +34,17 @@ export interface CloudPayload {
     minor_count: number;
     engine_version: string;
     violations: CloudViolation[];
+    /** "Needs review" (cantTell): burna från axes incomplete, aldrig fel. */
+    needs_review_count: number;
+    needs_review: CloudViolation[];
 }
 
 /**
  * Transform ScanResult to CloudPayload format
  */
 export function transformToCloudPayload(result: ScanResult): CloudPayload {
-    const violations: CloudViolation[] = result.reports.map((report) => {
+    const toCloudViolation = (report: EnrichedReport): CloudViolation => {
         const firstNode = report.failingNodes?.[0];
-
         return {
             rule_id: report.ruleId,
             impact: report.holmdigitalInsight?.diggRisk || 'medium',
@@ -50,7 +54,12 @@ export function transformToCloudPayload(result: ScanResult): CloudPayload {
             failure_summary: report.holmdigitalInsight?.reasoning || report.remediation?.description || '',
             fix_suggestion: report.remediation?.description || ''
         };
-    });
+    };
+
+    // Bara verkliga fel i violations (konsekvent med total_violations = stats.total).
+    // Needs review (cantTell) skickas separat, aldrig som violation (Intern #12).
+    const violations = violationsOf(result.reports).map(toCloudViolation);
+    const needs_review = needsReviewOf(result.reports).map(toCloudViolation);
 
     return {
         url: result.url,
@@ -62,7 +71,9 @@ export function transformToCloudPayload(result: ScanResult): CloudPayload {
         moderate_count: result.stats.medium,
         minor_count: result.stats.low,
         engine_version: getEngineVersion(),
-        violations
+        violations,
+        needs_review_count: result.stats.needsReview,
+        needs_review
     };
 }
 

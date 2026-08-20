@@ -81,6 +81,43 @@ describe('cloud-client', () => {
             expect(payload.violations[0].element_selector).toBe('button.submit');
         });
 
+        it('should keep cantTell reports out of violations and expose them as needs_review (Intern #12)', () => {
+            const scanResult: ScanResult = {
+                url: 'https://example.com',
+                timestamp: '2024-01-01T00:00:00Z',
+                reports: [
+                    {
+                        ruleId: 'color-contrast',
+                        wcagCriteria: '1.4.3',
+                        en301549Criteria: '9.1.4.3',
+                        holmdigitalInsight: { diggRisk: 'serious', reasoning: 'Low contrast' },
+                        remediation: { description: 'Improve contrast' },
+                        failingNodes: [{ target: 'button', html: '<button>', failureSummary: 'x' }]
+                    },
+                    {
+                        ruleId: 'image-alt',
+                        wcagCriteria: '1.1.1',
+                        en301549Criteria: '9.1.1.1',
+                        cantTell: true,
+                        holmdigitalInsight: { diggRisk: 'serious', reasoning: 'Could not determine' },
+                        remediation: { description: 'Review manually' },
+                        failingNodes: []
+                    }
+                ] as unknown as ScanResult['reports'],
+                stats: { critical: 0, high: 1, medium: 0, low: 0, total: 1, needsReview: 1 },
+                score: 90,
+                complianceStatus: 'FAIL'
+            };
+
+            const payload = transformToCloudPayload(scanResult);
+
+            expect(payload.violations).toHaveLength(1);
+            expect(payload.violations[0].rule_id).toBe('color-contrast');
+            expect(payload.needs_review).toHaveLength(1);
+            expect(payload.needs_review[0].rule_id).toBe('image-alt');
+            expect(payload.needs_review_count).toBe(1);
+        });
+
         it('should handle empty reports', () => {
             const scanResult: ScanResult = {
                 url: 'https://example.com',
