@@ -560,22 +560,39 @@ export class RegulatoryScanner {
         ) => checks?.find(c => c.data && typeof c.data === 'object' && 'messageKey' in c.data) ?? checks?.[0];
 
         for (const item of incomplete) {
-            const firstCheck = readMessageKey(item.nodes[0]?.any);
-            const rawKey = firstCheck?.data && typeof firstCheck.data === 'object'
-                ? (firstCheck.data as { messageKey?: unknown }).messageKey
-                : undefined;
-            const reviewReason = typeof rawKey === 'string' ? rawKey : undefined;
-
-            // Skäl per nod: axes egen check-message (VARFÖR den inte kunde avgöras).
-            // Aldrig ett kontrastvärde — i bgOverlap-fallet finns inget uppmätt.
-            const failingNodes = item.nodes.slice(0, 3).map(node => {
+            // En incomplete-post kan ha noder med olika skäl. I det frysta fallet
+            // (Intern #20) kommer benigna `nonBmp`-noder (rena ikon-glyfer, →) FÖRE
+            // `bgOverlap`-noden — och den senare är det verkliga granskningsbehovet.
+            // Prioritera därför "kunde inte avgöra kontrast"-noder (de bär
+            // contrastRatio/expectedContrastRatio i sin data) före de benigna, så
+            // det som faktiskt måste granskas inte begravs och truncas bort.
+            const nodeInfos = item.nodes.map(node => {
                 const c = readMessageKey(node.any);
+                const data = c?.data && typeof c.data === 'object' ? c.data as Record<string, unknown> : undefined;
+                const messageKey = data && typeof data.messageKey === 'string' ? data.messageKey : undefined;
+                const concerning = !!data && ('expectedContrastRatio' in data || 'contrastRatio' in data);
                 return {
                     html: node.html,
                     target: node.target.join(' '),
-                    failureSummary: c?.message ?? node.failureSummary ?? item.help
+                    // axes egen check-message (VARFÖR den inte kunde avgöras).
+                    // Aldrig ett kontrastvärde — i bgOverlap-fallet finns inget uppmätt.
+                    failureSummary: c?.message ?? node.failureSummary ?? item.help,
+                    messageKey,
+                    concerning
                 };
             });
+            // Stabil sort: granskningsvärda noder först, benigna sist.
+            const ordered = nodeInfos
+                .map((n, i) => ({ n, i }))
+                .sort((a, b) => (Number(b.n.concerning) - Number(a.n.concerning)) || (a.i - b.i))
+                .map(x => x.n);
+
+            const reviewReason = (ordered.find(n => n.concerning) ?? ordered[0])?.messageKey;
+            const failingNodes = ordered.slice(0, 3).map(n => ({
+                html: n.html,
+                target: n.target,
+                failureSummary: n.failureSummary
+            }));
             const reasoning = failingNodes[0]?.failureSummary ?? item.help;
 
             const base: RegulatoryReport | null = generateRegulatoryReport(item.id, lang);
