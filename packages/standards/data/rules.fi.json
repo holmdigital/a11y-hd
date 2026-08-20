@@ -157,7 +157,7 @@
         "remediation": {
             "description": "Kuvilla, jotka välittävät tietoa, on oltava tekstivastine, joka täyttää vastaavan tarkoituksen, kun taas puhtaasti koristeelliset kuvat on merkittävä niin, että avustava teknologia voi jättää ne huomiotta. Merkintä on aktiivinen: tyhjä alt (alt=\"\") on vakiotapa, eikä alt-attribuutin jättäminen kokonaan pois riitä, koska avustava teknologia ei silloin voi jättää kuvaa huomiotta (ruudunlukija voi esimerkiksi lukea tiedostonimen ääneen). Vaatimus koskee lopputulosta, ei tekniikkaa.",
             "technicalGuidance": "Lisää alt-attribuutit kaikkiin img-elementteihin. Käytä koristeellisille kuville alt=\"\". Informatiivisille kuville kuvaile sisältö tiiviisti.",
-            "codeExample": "// Bad: Missing alt\n<img src=\"logo.png\" />\n\n// Good: Descriptive alt\n<img src=\"logo.png\" alt=\"HolmDigital Logo\" />\n\n// Good: Decorative image\n<img src=\"decoration.png\" alt=\"\" role=\"presentation\" />",
+            "codeExample": "// Huono: alt puuttuu\n<img src=\"logo.png\" />\n\n// Hyvä: kuvaileva alt\n<img src=\"logo.png\" alt=\"HolmDigital Logo\" />\n\n// Hyvä: koristeellinen kuva\n<img src=\"decoration.png\" alt=\"\" role=\"presentation\" />",
             "wcagTechnique": [
                 "G94",
                 "G95",

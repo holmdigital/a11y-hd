@@ -157,7 +157,7 @@
         "remediation": {
             "description": "Les images qui véhiculent de l'information doivent avoir une alternative textuelle qui remplit un objectif équivalent, tandis que les images purement décoratives doivent être marquées de façon que les technologies d'assistance puissent les ignorer. Ce marquage est actif : un alt vide (alt=\"\") est la méthode standard, et omettre entièrement l'attribut alt ne suffit pas, car les technologies d'assistance ne peuvent alors pas ignorer l'image (un lecteur d'écran peut par exemple lire le nom du fichier). L'exigence porte sur le résultat, pas sur la technique.",
             "technicalGuidance": "Ajoutez alt à toutes les balises img. Pour les images décoratives, utilisez alt=\"\".",
-            "codeExample": "// Bad: Missing alt\n<img src=\"logo.png\" />\n\n// Good: Descriptive alt\n<img src=\"logo.png\" alt=\"HolmDigital Logo\" />\n\n// Good: Decorative image\n<img src=\"decoration.png\" alt=\"\" role=\"presentation\" />",
+            "codeExample": "// Mauvais : alt manquant\n<img src=\"logo.png\" />\n\n// Bon : alt descriptif\n<img src=\"logo.png\" alt=\"HolmDigital Logo\" />\n\n// Bon : image décorative\n<img src=\"decoration.png\" alt=\"\" role=\"presentation\" />",
             "wcagTechnique": [
                 "G94",
                 "G95",
