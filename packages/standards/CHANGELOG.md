@@ -1,5 +1,23 @@
 # @holmdigital/standards
 
+## 3.0.2
+
+### Patch Changes
+
+- 26e4f8d: Translate the readable `codeExample` comments for the alt-text rule (`image-alt`) into each locale (Intern #13 follow-up). The three guiding comments — "Missing alt", "Descriptive alt" and "Decorative image" — were left in English in every non-English rules file even though the surrounding rule text was localised. They are now translated in `sv`, `de`, `fr`, `es`, `nl`, `fi`, `da` and `no`; the English variants (`en`, `en-ca`, `en-gb`, `en-us`) are unchanged. Code identifiers and JSX (`<img>`, `src`, `alt`, `role="presentation"`, the `HolmDigital Logo` sample value) stay in English — only the `//` comment prose is localised.
+- 299f376: Rewrite the alt-text rule's `remediation.description` (Intern #13). The old text ("All images must have descriptive alternative text.") was wrong about WCAG 1.1.1: it ignored the decoration exception and implied `alt` is always required. The new, WCAG-reviewed wording distinguishes informative from decorative images, states that decorative images must be actively marked so assistive technology can ignore them (an empty `alt=""` is the standard way, and omitting `alt` entirely is not enough), and frames the requirement as being about the outcome, not the technique.
+
+  Applied in all 11 affected language files (`sv`, `en`, `en-ca`, `en-gb`, `en-us`, `da`, `de`, `fi`, `fr`, `nl`, `no`) — `sv`/`en` verbatim as approved, the rest as faithful translations, none using em/en-dashes. `es` already stated the criterion and is left unchanged.
+
+- 0a99805: Fix alt-text rule data (Intern #13). Two live, customer-facing corrections in all 12 language files:
+
+  - **Typo:** `remediation.codeExample` said `// Bad: Msising alt` — corrected to `Missing`. It shipped in every report on every language.
+  - **Missing technique:** added `H67` (null `alt` for decorative images) to `remediation.wcagTechnique`, which listed only `G94`, `G95`, `H37`. `H67` is the sufficient technique for exactly the decorative-image case the rule covers.
+
+  `rules.es.json` included — the typo and technique list were identical across all twelve files. No wording change to `remediation.description` here; that is handled separately.
+
+- e92b6a4: Add two optional fields to `EnrichedReport` for KRAV-3 (Intern #12): `cantTell` (marks a "needs review" post carried from axe's `incomplete`, which must be excluded from stats/score/complianceStatus) and `reviewReason` (axe's `messageKey`, e.g. `bgOverlap`, so a `contrastRatio: 0` is not mistaken for zero contrast). Both are optional and additive — no change for existing consumers.
+
 ## 3.0.1
 
 ### Patch Changes
