@@ -173,7 +173,7 @@
         "remediation": {
             "description": "Bilder som förmedlar information ska ha ett textalternativ som fyller ett likvärdigt syfte, medan rent dekorativa bilder ska märkas så att hjälpmedel kan ignorera dem. Den markeringen är aktiv: tomt alt (alt=\"\") är standardsättet, och att helt utelämna alt-attributet räcker inte, eftersom hjälpmedel då inte kan ignorera bilden (en skärmläsare kan till exempel läsa upp filnamnet). Kravet gäller resultatet, inte tekniken.",
             "technicalGuidance": "Lägg till alt-attribut på alla img-element. För dekorativa bilder, använd alt=\"\". För informativa bilder, beskriv innehållet koncist.",
-            "codeExample": "// Bad: Missing alt\n<img src=\"logo.png\" />\n\n// Good: Descriptive alt\n<img src=\"logo.png\" alt=\"HolmDigital Logo\" />\n\n// Good: Decorative image\n<img src=\"decoration.png\" alt=\"\" role=\"presentation\" />",
+            "codeExample": "// Dåligt: alt saknas\n<img src=\"logo.png\" />\n\n// Bra: beskrivande alt\n<img src=\"logo.png\" alt=\"HolmDigital Logo\" />\n\n// Bra: dekorativ bild\n<img src=\"decoration.png\" alt=\"\" role=\"presentation\" />",
             "wcagTechnique": [
                 "G94",
                 "G95",
