@@ -1,5 +1,37 @@
 # @holmdigital/engine
 
+## 3.1.0
+
+### Minor Changes
+
+- e92b6a4: Carry axe-core's `incomplete` results forward (KRAV-3, Intern #12). Until now the engine read only `violations` and `passes` and dropped `incomplete` entirely — checks axe could not decide (for example a contrast node whose background is overlapped) vanished from the report: not flagged, not passed, not "review". A reader asking "do we have a contrast problem?" got an answer that never mentioned the element.
+
+  The engine now reads `incomplete` and carries each item into `ScanResult.reports` marked `cantTell` ("needs review" to the user). Marked posts are **excluded from `stats` (`total`, `critical`/`high`/`medium`/`low`), `score`, `complianceStatus` and `legalSummary`** — they are surfaced, never counted as failures. A new informational `stats.needsReview` counts them.
+
+  The reason is read from axe's `messageKey`/`message`, not from `contrastRatio`: in the `bgOverlap` case `contrastRatio` is `0`, which means "could not be determined", not "zero contrast" (Intern #20). The carried post therefore reports the real reason and never a fabricated measurement.
+
+  Reporter/CLI presentation of "needs review" as a distinct section is a follow-up; this change is the engine data model.
+
+- 36b251a: Present "needs review" (KRAV-3 `cantTell`, Intern #12) as a distinct category across every reporter — the follow-up promised by the engine data-model change. Items axe-core could not decide are surfaced separately and are never mixed into the violation lists or counts:
+
+  - **CLI dashboard & light output:** category scores, legal-risk heuristics and the "Top Violations" list are computed from real violations only; a new "Needs review" section lists the `cantTell` items, and the light output/JSON keep them out of `topIssues` (the count rides on `stats.needsReview`).
+  - **HTML (developer & plain-language):** violations and the impact breakdown exclude `cantTell`; a separate, low-alarm "needs review" section renders them. A page whose only finding is "needs review" no longer claims "0 issues".
+  - **JUnit:** `cantTell` becomes `<skipped>` (and a `skipped=` count), never `<failure>`.
+  - **GitHub Actions:** `cantTell` is annotated as `::notice`, never `::error`/`::warning`, so it can never fail a build.
+  - **Cloud payload:** violations exclude `cantTell`; new `needs_review` and `needs_review_count` fields carry them separately.
+  - **Accessibility statement:** the legal non-compliance list excludes `cantTell` (a "could not determine" is not a declared failure).
+
+  New localised strings (`plain.needs_review_*`, `report.needs_review_*`) added for all nine locales.
+
+### Patch Changes
+
+- d5efb31: When axe's `incomplete` carries a color-contrast item with mixed reasons, surface the one that actually needs review (Intern #20). In the frozen acceptance case, benign `nonBmp` nodes (icon-only glyphs like `→`) precede the `bgOverlap` node in axe's output; the previous logic took the first node, so the `bgOverlap` concern was labelled `nonBmp` and could be truncated out of the carried nodes. The engine now orders "could not determine contrast" nodes (those whose check data carries `contrastRatio`/`expectedContrastRatio`) ahead of the benign ones, so `reviewReason` and `failingNodes` reflect the real review need. The ordering is stable, so nodes of equal significance keep axe's order.
+- Updated dependencies [26e4f8d]
+- Updated dependencies [299f376]
+- Updated dependencies [0a99805]
+- Updated dependencies [e92b6a4]
+  - @holmdigital/standards@3.0.2
+
 ## 3.0.2
 
 ### Patch Changes
