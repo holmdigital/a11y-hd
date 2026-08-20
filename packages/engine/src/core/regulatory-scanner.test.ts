@@ -311,4 +311,33 @@ describe('enrichIncomplete — axe incomplete bärs som needs review/cantTell (I
         expect(node?.failureSummary ?? '').not.toMatch(/\b0(?:\.0+)?\s*:\s*1\b/); // ingen "0:1"
         expect(report.cantTell).toBe(true);
     });
+
+    // Intern #20: i det frysta fallet ligger benigna `nonBmp`-noder (rena
+    // ikon-glyfer, →) FÖRE `bgOverlap`-noden. bgOverlap är det verkliga
+    // granskningsbehovet och får inte begravas/truncas bort bakom pilarna.
+    const incompleteMixed: AxeScanOutput = {
+        violations: [],
+        passes: [],
+        incomplete: [{
+            id: 'color-contrast',
+            help: 'Elements must meet minimum color contrast ratio thresholds',
+            description: 'Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds',
+            tags: ['cat.color', 'wcag2aa', 'wcag143'],
+            nodes: [
+                { html: '<span aria-hidden="true">→</span>', target: ['a.one > span'], any: [{ id: 'color-contrast', message: 'Element content contains only non-text characters', data: { messageKey: 'nonBmp' } }] },
+                { html: '<span aria-hidden="true">→</span>', target: ['a.two > span'], any: [{ id: 'color-contrast', message: 'Element content contains only non-text characters', data: { messageKey: 'nonBmp' } }] },
+                { html: '<span aria-hidden="true">→</span>', target: ['a.three > span'], any: [{ id: 'color-contrast', message: 'Element content contains only non-text characters', data: { messageKey: 'nonBmp' } }] },
+                { html: '<div class="text-slate-500 pb-2">added 1 package in 2s</div>', target: ['.pb-2'], any: [{ id: 'color-contrast', message: "Element's background color could not be determined because it is overlapped by another element", data: { contrastRatio: 0, messageKey: 'bgOverlap', expectedContrastRatio: '4.5:1' } }] }
+            ]
+        }]
+    };
+
+    it('prioritises the concerning bgOverlap node over benign nonBmp arrows that precede it (Intern #20)', async () => {
+        const [report] = await enrichIncomplete(incompleteMixed);
+        expect(report.cantTell).toBe(true);
+        // bgOverlap ska bli reviewReason, inte de benigna nonBmp-pilarna först i arrayen.
+        expect(report.reviewReason).toBe('bgOverlap');
+        // och bgOverlap-noden ska finnas bland de burna failingNodes (inte truncad bort).
+        expect(report.failingNodes?.some(n => /could not be determined/i.test(n.failureSummary))).toBe(true);
+    });
 });
