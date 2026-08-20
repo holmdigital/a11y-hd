@@ -173,11 +173,12 @@
         "remediation": {
             "description": "Alla bilder måste ha beskrivande alternativtext.",
             "technicalGuidance": "Lägg till alt-attribut på alla img-element. För dekorativa bilder, använd alt=\"\". För informativa bilder, beskriv innehållet koncist.",
-            "codeExample": "// Bad: Msising alt\n<img src=\"logo.png\" />\n\n// Good: Descriptive alt\n<img src=\"logo.png\" alt=\"HolmDigital Logo\" />\n\n// Good: Decorative image\n<img src=\"decoration.png\" alt=\"\" role=\"presentation\" />",
+            "codeExample": "// Bad: Missing alt\n<img src=\"logo.png\" />\n\n// Good: Descriptive alt\n<img src=\"logo.png\" alt=\"HolmDigital Logo\" />\n\n// Good: Decorative image\n<img src=\"decoration.png\" alt=\"\" role=\"presentation\" />",
             "wcagTechnique": [
                 "G94",
                 "G95",
-                "H37"
+                "H37",
+                "H67"
             ]
         },
         "holmdigitalInsight": {
