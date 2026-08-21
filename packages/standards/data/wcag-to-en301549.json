@@ -1645,7 +1645,7 @@
         "en301549Title": "Info and relationships",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level A required",
+        "dosLagenReference": "Lag 2018:1937 10 §, preciserad i MDFFS 2019:2 4 och 5 §§ via EN 301 549 V3.2.1 Annex A, WCAG 2.1 nivå A krävs",
         "remediation": {
             "description": "The page must have exactly one 'main' landmark.",
             "technicalGuidance": "Use the <main> element once per page to identify the main content. Avoid having multiple <main> without unique labels, or missing it entirely.",
@@ -1685,7 +1685,7 @@
         "en301549Title": "Info and relationships",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level A required",
+        "dosLagenReference": "Lag 2018:1937 10 §, preciserad i MDFFS 2019:2 4 och 5 §§ via EN 301 549 V3.2.1 Annex A, WCAG 2.1 nivå A krävs",
         "remediation": {
             "description": "The page must have a level 1 heading (<h1>).",
             "technicalGuidance": "Ensure there is exactly one <h1> describing the page's unique content.",
@@ -1724,7 +1724,7 @@
         "en301549Title": "Info and relationships",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level A required",
+        "dosLagenReference": "Lag 2018:1937 10 §, preciserad i MDFFS 2019:2 4 och 5 §§ via EN 301 549 V3.2.1 Annex A, WCAG 2.1 nivå A krävs",
         "remediation": {
             "description": "Headings must follow a logical order (h1 -> h2 -> h3).",
             "technicalGuidance": "Do not skip heading levels (e.g. directly from h1 to h3).",
@@ -1762,7 +1762,7 @@
         "en301549Title": "Info and relationships",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level A required",
+        "dosLagenReference": "Lag 2018:1937 10 §, preciserad i MDFFS 2019:2 4 och 5 §§ via EN 301 549 V3.2.1 Annex A, WCAG 2.1 nivå A krävs",
         "remediation": {
             "description": "The banner (<header>) must be at the top level.",
             "technicalGuidance": "Do not place <header> inside another landmark if it is the page's main banner.",
@@ -1800,7 +1800,7 @@
         "en301549Title": "Info and relationships",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level A required",
+        "dosLagenReference": "Lag 2018:1937 10 §, preciserad i MDFFS 2019:2 4 och 5 §§ via EN 301 549 V3.2.1 Annex A, WCAG 2.1 nivå A krävs",
         "remediation": {
             "description": "The page must have only one 'banner' landmark (usually <header>).",
             "technicalGuidance": "Ensure you only have one <header> at the top level.",
@@ -1838,7 +1838,7 @@
         "en301549Title": "Info and relationships",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level A required",
+        "dosLagenReference": "Lag 2018:1937 10 §, preciserad i MDFFS 2019:2 4 och 5 §§ via EN 301 549 V3.2.1 Annex A, WCAG 2.1 nivå A krävs",
         "remediation": {
             "description": "Landmarks must have unique roles or labels.",
             "technicalGuidance": "If you have multiple <nav> elements, give them unique 'aria-label' (e.g., 'Main Menu', 'Footer Menu').",
@@ -1876,7 +1876,7 @@
         "en301549Title": "Info and relationships",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level A required",
+        "dosLagenReference": "Lag 2018:1937 10 §, preciserad i MDFFS 2019:2 4 och 5 §§ via EN 301 549 V3.2.1 Annex A, WCAG 2.1 nivå A krävs",
         "remediation": {
             "description": "All content on the page must be contained within landmarks (regions).",
             "technicalGuidance": "Ensure all content is inside <main>, <header>, <nav>, <footer>, or <aside>.",
@@ -1903,44 +1903,6 @@
         "tags": [
             "wcag2a",
             "wcag131"
-        ]
-    },
-    {
-        "ruleId": "audio-description",
-        "wcagCriteria": "1.2.5",
-        "wcagLevel": "AA",
-        "wcagTitle": "Audio Description (Prerecorded)",
-        "wcagVersion": "2.0",
-        "en301549Criteria": "9.1.2.5",
-        "en301549Title": "Audio description (prerecorded)",
-        "en301549Chapter": 9,
-        "dosLagenApplies": true,
-        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level AA required",
-        "remediation": {
-            "description": "Prerecorded video content must have audio description if visual information is critical.",
-            "technicalGuidance": "Provide an alternative audio track or version describing what happens visually.",
-            "component": null,
-            "wcagTechnique": [
-                "G78"
-            ]
-        },
-        "holmdigitalInsight": {
-            "diggRisk": "medium",
-            "eaaImpact": "low",
-            "swedishInterpretation": "Video conveying information visually must be described for those who cannot see the screen.",
-            "commonMistakes": [
-                "Video missing audio description despite important visual info"
-            ]
-        },
-        "testability": {
-            "automated": false,
-            "requiresManualCheck": true,
-            "pseudoAutomation": false,
-            "complexity": "hard"
-        },
-        "tags": [
-            "wcag2aa",
-            "wcag125"
         ]
     },
     {

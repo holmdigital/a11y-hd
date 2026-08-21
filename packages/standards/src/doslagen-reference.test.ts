@@ -67,12 +67,17 @@ describe('Intern #28 — dosLagenReference lagrum', () => {
         expect(count(ALL_DATA['rules.sv'], SV_AA)).toBe(17);
     });
 
-    it('wcag-to-en301549 bär svensk 10 §-lydelse för §7 och neutralt EN-mönster för de nakna refs', () => {
-        expect(count(ALL_DATA['wcag-to-en301549'], SV_A)).toBe(21);
+    it('wcag-to-en301549 bär svensk 10 §-lydelse (28 A / 17 AA), inga neutrala mönster, ingen dubblett', () => {
+        // Filen är svensk rätt i dosLagenReference — inte språkneutral. Alla f.d.
+        // §7, 9 § och 100 § bär nu den svenska 10 §-lydelsen. Fördelningen 28/17
+        // är identisk med rules.sv och svår att träffa av misstag.
+        expect(count(ALL_DATA['wcag-to-en301549'], SV_A)).toBe(28);
         expect(count(ALL_DATA['wcag-to-en301549'], SV_AA)).toBe(17);
-        // f.d. 7× "9 §" (1.3.1 A) + f.d. 1× "100 §" (1.2.5 AA)
-        expect(count(ALL_DATA['wcag-to-en301549'], 'EN 301 549 V3.2.1, WCAG 2.1 Level A required')).toBe(7);
-        expect(count(ALL_DATA['wcag-to-en301549'], 'EN 301 549 V3.2.1, WCAG 2.1 Level AA required')).toBe(1);
+        expect(ALL_DATA['wcag-to-en301549']).not.toContain('WCAG 2.1 Level A required');
+        expect(ALL_DATA['wcag-to-en301549']).not.toContain('WCAG 2.1 Level AA required');
+        // Dubbletten av audio-description (den f.d. bogus "100 §"-posten) är
+        // borttagen — samma dedup som 2560b6f gjorde i rules.*.json.
+        expect(count(ALL_DATA['wcag-to-en301549'], '"ruleId":"audio-description"')).toBe(1);
     });
 
     it('en/da/fi: inga svenska strängar, de 7 f.d. 9 § bär filens neutrala EN-mönster', () => {
