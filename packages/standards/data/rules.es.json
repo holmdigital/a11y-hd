@@ -9,7 +9,7 @@
         "en301549Title": "Contrast (minimum)",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "UNE 139803:2012, Nivel AA requerido",
+        "dosLagenReference": "Real Decreto 1112/2018, artículos 5 y 6, mediante UNE-EN 301549:2022 (EN 301 549 V3.2.1) Anexo A, Nivel AA requerido",
         "remediation": {
             "description": "El texto y las imágenes de texto deben tener una relación de contraste de al menos 4.5:1 (3:1 para texto grande).",
             "technicalGuidance": "Utilice herramientas como WebAIM Contrast Checker para verificar. Ajuste los colores o añada opacidad al fondo.",
@@ -82,7 +82,7 @@
         "en301549Title": "Keyboard",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "UNE 139803:2012, Nivel A requerido",
+        "dosLagenReference": "Real Decreto 1112/2018, artículos 5 y 6, mediante UNE-EN 301549:2022 (EN 301 549 V3.2.1) Anexo A, Nivel A requerido",
         "remediation": {
             "description": "Todas las funcionalidades del contenido se pueden operar a través de una interfaz de teclado.",
             "technicalGuidance": "Asegúrese de que todos los elementos interactivos se puedan enfocar y activar usando Tab, Enter o Espacio. Use elementos HTML nativos (<button>, <a>) siempre que sea posible. Asegúrese de que `tabindex` se use correctamente.",
@@ -153,7 +153,7 @@
         "en301549Title": "Non-text content",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "UNE 139803:2012, Nivel A requerido",
+        "dosLagenReference": "Real Decreto 1112/2018, artículos 5 y 6, mediante UNE-EN 301549:2022 (EN 301 549 V3.2.1) Anexo A, Nivel A requerido",
         "remediation": {
             "description": "Todo el contenido no textual que se presenta al usuario tiene una alternativa textual que sirve para el mismo propósito.",
             "technicalGuidance": "Añada el atributo `alt` a todas las imágenes `<img>`. Si es decorativa, use `alt=\"\"`. Para imágenes complejas, use figuras con subtítulos.",
@@ -225,7 +225,7 @@
         "en301549Title": "Labels or instructions",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "UNE 139803:2012, Nivel A requerido",
+        "dosLagenReference": "Real Decreto 1112/2018, artículos 5 y 6, mediante UNE-EN 301549:2022 (EN 301 549 V3.2.1) Anexo A, Nivel A requerido",
         "remediation": {
             "description": "Si un componente de entrada acepta texto, la identificación de ese componente es un texto presentado visualmente.",
             "technicalGuidance": "Todos los inputs deben tener una etiqueta asociada. Use `<label for=\"id\">`, envolver en `<label>`, o `aria-label`/`aria-labelledby`.",
@@ -299,7 +299,7 @@
         "en301549Title": "Page titled",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "UNE 139803:2012, Nivel A requerido",
+        "dosLagenReference": "Real Decreto 1112/2018, artículos 5 y 6, mediante UNE-EN 301549:2022 (EN 301 549 V3.2.1) Anexo A, Nivel A requerido",
         "remediation": {
             "description": "Las páginas web tienen títulos que describen su tema o propósito.",
             "technicalGuidance": "El elemento `<title>` en el `<head>` debe ser único y descriptivo para cada página. Formato: 'Nombre de la página - Nombre del sitio'.",
@@ -370,7 +370,7 @@
         "en301549Title": "Info and relationships",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "UNE 139803:2012, Nivel A requerido",
+        "dosLagenReference": "Real Decreto 1112/2018, artículos 5 y 6, mediante UNE-EN 301549:2022 (EN 301 549 V3.2.1) Anexo A, Nivel A requerido",
         "remediation": {
             "description": "La información, estructura y relaciones transmitidas a través de la presentación pueden ser determinadas por programa o están disponibles en texto.",
             "technicalGuidance": "Use HTML semántico: <header>, <nav>, <main>, <footer>, <h1>-<h6>, <ul>/ <ol>, <table>. No use estilos visuales para crear encabezados o listas 'falsos'.",
@@ -440,7 +440,7 @@
         "en301549Title": "Use of color",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "UNE 139803:2012, Nivel A requerido",
+        "dosLagenReference": "Real Decreto 1112/2018, artículos 5 y 6, mediante UNE-EN 301549:2022 (EN 301 549 V3.2.1) Anexo A, Nivel A requerido",
         "remediation": {
             "description": "El color no se usa como el único medio visual para transmitir información, indicar una acción, solicitar una respuesta o distinguir un elemento visual.",
             "technicalGuidance": "Acompañe el color con texto, iconos o subrayado. Por ejemplo, los enlaces deben tener subrayado u otro marcador visual además del color. Los mensajes de error necesitan texto/icono, no solo un borde rojo.",
@@ -510,7 +510,7 @@
         "en301549Title": "Reflow",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "UNE 139803:2012, Nivel AA requerido",
+        "dosLagenReference": "Real Decreto 1112/2018, artículos 5 y 6, mediante UNE-EN 301549:2022 (EN 301 549 V3.2.1) Anexo A, Nivel AA requerido",
         "remediation": {
             "description": "El contenido se puede presentar sin pérdida de información o funcionalidad, y sin requerir desplazamiento en dos dimensiones.",
             "technicalGuidance": "Use diseño responsivo (CSS Media Queries, Flexbox, Grid). Evite anchos fijos en píxeles. Asegúrese de que las tablas y las imágenes se escalen correctamente.",
@@ -579,7 +579,7 @@
         "en301549Title": "Non-text contrast",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "UNE 139803:2012, Nivel AA requerido",
+        "dosLagenReference": "Real Decreto 1112/2018, artículos 5 y 6, mediante UNE-EN 301549:2022 (EN 301 549 V3.2.1) Anexo A, Nivel AA requerido",
         "remediation": {
             "description": "La presentación visual de los componentes de la interfaz de usuario y los objetos gráficos tiene una relación de contraste de al menos 3:1 contra los colores adyacentes.",
             "technicalGuidance": "Se aplica a botones, bordes de entrada, iconos e indicadores de enfoque. Asegúrese de que todos los elementos interactivos sean claramente visibles contra el fondo.",
@@ -646,7 +646,7 @@
         "en301549Title": "Text spacing",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "UNE 139803:2012, Nivel AA requerido",
+        "dosLagenReference": "Real Decreto 1112/2018, artículos 5 y 6, mediante UNE-EN 301549:2022 (EN 301 549 V3.2.1) Anexo A, Nivel AA requerido",
         "remediation": {
             "description": "En el contenido implementado utilizando lenguajes de marcado, no se produce ninguna pérdida de contenido o funcionalidad al ajustar el espaciado del texto.",
             "technicalGuidance": "Evite alturas fijas en los contenedores de texto. Deje que los contenedores crezcan con el contenido. Pruebe con el bookmarklet de espaciado de texto.",
@@ -712,7 +712,7 @@
         "en301549Title": "Content on hover or focus",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "UNE 139803:2012, Nivel AA requerido",
+        "dosLagenReference": "Real Decreto 1112/2018, artículos 5 y 6, mediante UNE-EN 301549:2022 (EN 301 549 V3.2.1) Anexo A, Nivel AA requerido",
         "remediation": {
             "description": "Cuando el puntero o el foco del teclado activan contenido adicional, dicho contenido es descartable, cernible y persistente.",
             "technicalGuidance": "Asegúrese de que los tooltips no desaparezcan al mover el ratón del activador al propio tooltip. Permita que ESC lo cierre.",
@@ -780,7 +780,7 @@
         "en301549Title": "Captions (prerecorded)",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "UNE 139803:2012, Nivel A requerido",
+        "dosLagenReference": "Real Decreto 1112/2018, artículos 5 y 6, mediante UNE-EN 301549:2022 (EN 301 549 V3.2.1) Anexo A, Nivel A requerido",
         "remediation": {
             "description": "Se proporcionan subtítulos para todo el contenido de audio pregrabado dentro de medios sincronizados.",
             "technicalGuidance": "Use el elemento `<track>` con archivos WebVTT para video HTML5. Para redes sociales, asegúrese de que los subtítulos estén activados.",
@@ -849,7 +849,7 @@
         "en301549Title": "Audio description (prerecorded)",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "UNE 139803:2012, Nivel AA requerido",
+        "dosLagenReference": "Real Decreto 1112/2018, artículos 5 y 6, mediante UNE-EN 301549:2022 (EN 301 549 V3.2.1) Anexo A, Nivel AA requerido",
         "remediation": {
             "description": "Se proporciona audiodescripción para todo el contenido de video pregrabado.",
             "technicalGuidance": "Ya sea como una pista de audio separada, una versión alternativa del video, o (si son 'bustos parlantes') asegurando que toda la información visual se transmita por audio.",
@@ -916,7 +916,7 @@
         "en301549Title": "Orientation",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "UNE 139803:2012, Nivel AA requerido",
+        "dosLagenReference": "Real Decreto 1112/2018, artículos 5 y 6, mediante UNE-EN 301549:2022 (EN 301 549 V3.2.1) Anexo A, Nivel AA requerido",
         "remediation": {
             "description": "El contenido no restringe su visión y operación a una sola orientación de pantalla, a menos que una orientación específica sea esencial.",
             "technicalGuidance": "No bloquee la pantalla en retrato o paisaje mediante CSS o manifiesto JS. Use media queries para gestionar el diseño.",
@@ -982,7 +982,7 @@
         "en301549Title": "Identify input purpose",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "UNE 139803:2012, Nivel AA requerido",
+        "dosLagenReference": "Real Decreto 1112/2018, artículos 5 y 6, mediante UNE-EN 301549:2022 (EN 301 549 V3.2.1) Anexo A, Nivel AA requerido",
         "remediation": {
             "description": "El propósito de cada campo de entrada que recopila información sobre el usuario puede ser determinado por programa.",
             "technicalGuidance": "Use el atributo 'autocomplete' en los campos de entrada para datos personales (nombre, correo electrónico, teléfono, dirección, etc.).",
@@ -1049,7 +1049,7 @@
         "en301549Title": "No keyboard trap",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "UNE 139803:2012, Nivel A requerido",
+        "dosLagenReference": "Real Decreto 1112/2018, artículos 5 y 6, mediante UNE-EN 301549:2022 (EN 301 549 V3.2.1) Anexo A, Nivel A requerido",
         "remediation": {
             "description": "Si el foco se puede mover a un componente de la página mediante el teclado, entonces se puede mover fuera de ese componente usando solo el teclado.",
             "technicalGuidance": "Cuidado con widgets JS que atrapan el foco (ej: ventanas modales). Asegúrese de que siempre haya una salida (ej: ESC o shift+tab).",
@@ -1115,7 +1115,7 @@
         "en301549Title": "Character key shortcuts",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "UNE 139803:2012, Nivel A requerido",
+        "dosLagenReference": "Real Decreto 1112/2018, artículos 5 y 6, mediante UNE-EN 301549:2022 (EN 301 549 V3.2.1) Anexo A, Nivel A requerido",
         "remediation": {
             "description": "Si un atajo de teclado se implementa usando solo letras, signos de puntuación, números o símbolos caracteres, entonces se puede desactivar, reasignar o activar solo al enfocar.",
             "technicalGuidance": "Evite atajos de una sola tecla si es posible. Si son necesarios, asegúrese de que no entren en conflicto con el dictado por voz o la escritura accidental.",
@@ -1180,7 +1180,7 @@
         "en301549Title": "Timing adjustable",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "UNE 139803:2012, Nivel A requerido",
+        "dosLagenReference": "Real Decreto 1112/2018, artículos 5 y 6, mediante UNE-EN 301549:2022 (EN 301 549 V3.2.1) Anexo A, Nivel A requerido",
         "remediation": {
             "description": "Si se establece un límite de tiempo (sesión, tiempo de lectura), el usuario debe poder desactivarlo, ajustarlo o extenderlo.",
             "technicalGuidance": "Proporcione una advertencia antes de que expire la sesión con un botón 'Extender sesión'. El límite de tiempo debe ser de al menos 20 segundos.",
@@ -1247,7 +1247,7 @@
         "en301549Title": "Pause, stop, hide",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "UNE 139803:2012, Nivel A requerido",
+        "dosLagenReference": "Real Decreto 1112/2018, artículos 5 y 6, mediante UNE-EN 301549:2022 (EN 301 549 V3.2.1) Anexo A, Nivel A requerido",
         "remediation": {
             "description": "Para la información en movimiento, parpadeante, desplazable o de actualización automática, existe un mecanismo para que el usuario pueda pausarla, detenerla u ocultarla.",
             "technicalGuidance": "Proporcione un botón de pausa para carruseles, tickers de valores o videos de fondo con reproducción automática.",
@@ -1315,7 +1315,7 @@
         "en301549Title": "Three flashes or below threshold",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "UNE 139803:2012, Nivel A requerido",
+        "dosLagenReference": "Real Decreto 1112/2018, artículos 5 y 6, mediante UNE-EN 301549:2022 (EN 301 549 V3.2.1) Anexo A, Nivel A requerido",
         "remediation": {
             "description": "Las páginas web no contienen nada que parpadee más de tres veces en un segundo, o el parpadeo está por debajo de los umbrales de parpadeo general y rojo.",
             "technicalGuidance": "Evite el contenido que parpadea rápidamente (efectos estroboscópicos). Esto puede provocar convulsiones.",
@@ -1382,7 +1382,7 @@
         "en301549Title": "Bypass blocks",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "UNE 139803:2012, Nivel A requerido",
+        "dosLagenReference": "Real Decreto 1112/2018, artículos 5 y 6, mediante UNE-EN 301549:2022 (EN 301 549 V3.2.1) Anexo A, Nivel A requerido",
         "remediation": {
             "description": "Existe un mecanismo disponible para saltar bloques de contenido que se repiten en múltiples páginas web.",
             "technicalGuidance": "Añada un enlace 'Saltar al contenido' como el primer elemento enfocable de la página. Use landmarks (header, nav, main, aside, footer) para permitir la navegación con lector de pantalla.",
@@ -1451,7 +1451,7 @@
         "en301549Title": "Focus order",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "UNE 139803:2012, Nivel A requerido",
+        "dosLagenReference": "Real Decreto 1112/2018, artículos 5 y 6, mediante UNE-EN 301549:2022 (EN 301 549 V3.2.1) Anexo A, Nivel A requerido",
         "remediation": {
             "description": "Si una página web se puede navegar secuencialmente y las secuencias de navegación afectan el significado o la operación, los componentes enfocables reciben el foco en un orden que preserva el significado y la operatividad.",
             "technicalGuidance": "El orden del DOM determina el orden del foco. No manipule tab-index (> 0). Organice los elementos lógicamente en el HTML.",
@@ -1520,7 +1520,7 @@
         "en301549Title": "Link purpose (in context)",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "UNE 139803:2012, Nivel A requerido",
+        "dosLagenReference": "Real Decreto 1112/2018, artículos 5 y 6, mediante UNE-EN 301549:2022 (EN 301 549 V3.2.1) Anexo A, Nivel A requerido",
         "remediation": {
             "description": "El propósito de cada enlace se puede determinar solo con el texto del enlace o con el texto del enlace junto con su contexto determinado por programa.",
             "technicalGuidance": "Evite 'Leer más' o 'Haga clic aquí'. El texto del enlace debe indicar el destino (ej: 'Leer más sobre nuestros servicios').",
@@ -1588,7 +1588,7 @@
         "en301549Title": "Multiple ways",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "UNE 139803:2012, Nivel AA requerido",
+        "dosLagenReference": "Real Decreto 1112/2018, artículos 5 y 6, mediante UNE-EN 301549:2022 (EN 301 549 V3.2.1) Anexo A, Nivel AA requerido",
         "remediation": {
             "description": "Debe haber más de una forma de encontrar una página web dentro de un conjunto de páginas web.",
             "technicalGuidance": "Al menos dos de: Menú, Búsqueda, Mapa del sitio, Enlaces en el contenido.",
@@ -1655,7 +1655,7 @@
         "en301549Title": "Headings and labels",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "UNE 139803:2012, Nivel AA requerido",
+        "dosLagenReference": "Real Decreto 1112/2018, artículos 5 y 6, mediante UNE-EN 301549:2022 (EN 301 549 V3.2.1) Anexo A, Nivel AA requerido",
         "remediation": {
             "description": "Los encabezados y las etiquetas deben describir el tema o propósito.",
             "technicalGuidance": "Escriba encabezados claros y descriptivos que den significado al contenido debajo de ellos. Las etiquetas de formulario deben ser comprensibles.",
@@ -1722,7 +1722,7 @@
         "en301549Title": "Focus visible",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "UNE 139803:2012, Nivel AA requerido",
+        "dosLagenReference": "Real Decreto 1112/2018, artículos 5 y 6, mediante UNE-EN 301549:2022 (EN 301 549 V3.2.1) Anexo A, Nivel AA requerido",
         "remediation": {
             "description": "Cualquier interfaz de usuario operable por teclado debe tener un indicador de foco visible.",
             "technicalGuidance": "Nunca elimine el contorno con CSS (outline: none) sin reemplazarlo con un indicador visual claro. Asegúrese de que el contraste del anillo de foco sea suficiente (ver 1.4.11).",
@@ -1791,7 +1791,7 @@
         "en301549Title": "Language of page",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "UNE 139803:2012, Nivel A requerido",
+        "dosLagenReference": "Real Decreto 1112/2018, artículos 5 y 6, mediante UNE-EN 301549:2022 (EN 301 549 V3.2.1) Anexo A, Nivel A requerido",
         "remediation": {
             "description": "El idioma humano predeterminado de cada página web debe ser determinable por programa.",
             "technicalGuidance": "Establezca el atributo 'lang' en el elemento <html>. Por ejemplo, <html lang='en'> para inglés.",
@@ -1857,7 +1857,7 @@
         "en301549Title": "Language of parts",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "UNE 139803:2012, Nivel AA requerido",
+        "dosLagenReference": "Real Decreto 1112/2018, artículos 5 y 6, mediante UNE-EN 301549:2022 (EN 301 549 V3.2.1) Anexo A, Nivel AA requerido",
         "remediation": {
             "description": "El idioma humano de cada pasaje o frase en el contenido debe ser determinable por programa.",
             "technicalGuidance": "Use el atributo lang en elementos que difieran del idioma principal de la página. Por ejemplo, <span lang='fr'>Bonjour</span>.",
@@ -1922,7 +1922,7 @@
         "en301549Title": "On focus",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "UNE 139803:2012, Nivel A requerido",
+        "dosLagenReference": "Real Decreto 1112/2018, artículos 5 y 6, mediante UNE-EN 301549:2022 (EN 301 549 V3.2.1) Anexo A, Nivel A requerido",
         "remediation": {
             "description": "Cuando un componente recibe el foco, no debe iniciar un cambio de contexto.",
             "technicalGuidance": "No abra nuevas ventanas, envíe formularios o mueva el foco automáticamente solo porque el usuario tabula a un campo.",
@@ -1989,7 +1989,7 @@
         "en301549Title": "On input",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "UNE 139803:2012, Nivel A requerido",
+        "dosLagenReference": "Real Decreto 1112/2018, artículos 5 y 6, mediante UNE-EN 301549:2022 (EN 301 549 V3.2.1) Anexo A, Nivel A requerido",
         "remediation": {
             "description": "Cambiar la configuración de cualquier componente no causa automáticamente un cambio de contexto a menos que se haya informado al usuario del comportamiento antes de usar el componente.",
             "technicalGuidance": "Informe al usuario que la selección en una lista recarga la página. Preferiblemente, añada un botón para confirmar la elección.",
@@ -2057,7 +2057,7 @@
         "en301549Title": "Consistent navigation",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "UNE 139803:2012, Nivel AA requerido",
+        "dosLagenReference": "Real Decreto 1112/2018, artículos 5 y 6, mediante UNE-EN 301549:2022 (EN 301 549 V3.2.1) Anexo A, Nivel AA requerido",
         "remediation": {
             "description": "Los mecanismos de navegación que se repiten en varias páginas web aparecen en el mismo orden relativo cada vez que se repiten.",
             "technicalGuidance": "El menú principal debe verse igual y estar en el mismo lugar en todas las páginas. La función de búsqueda también.",
@@ -2123,7 +2123,7 @@
         "en301549Title": "Consistent identification",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "UNE 139803:2012, Nivel AA requerido",
+        "dosLagenReference": "Real Decreto 1112/2018, artículos 5 y 6, mediante UNE-EN 301549:2022 (EN 301 549 V3.2.1) Anexo A, Nivel AA requerido",
         "remediation": {
             "description": "Los componentes que tienen la misma funcionalidad dentro de un conjunto de páginas web se identifican de manera consistente.",
             "technicalGuidance": "No llame a la búsqueda 'Buscar' en una página y 'Encontrar' en otra. Use el mismo icono para la misma función.",
@@ -2190,7 +2190,7 @@
         "en301549Title": "Error identification",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "UNE 139803:2012, Nivel A requerido",
+        "dosLagenReference": "Real Decreto 1112/2018, artículos 5 y 6, mediante UNE-EN 301549:2022 (EN 301 549 V3.2.1) Anexo A, Nivel A requerido",
         "remediation": {
             "description": "Si se detecta automáticamente un error de entrada, el elemento que está en error se identifica y el error se describe al usuario en texto.",
             "technicalGuidance": "Muestre el mensaje de error cerca del campo. Enlace con aria-describedby o incluya en la etiqueta. No solo coloree el campo de rojo.",
@@ -2257,7 +2257,7 @@
         "en301549Title": "Error suggestion",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "UNE 139803:2012, Nivel AA requerido",
+        "dosLagenReference": "Real Decreto 1112/2018, artículos 5 y 6, mediante UNE-EN 301549:2022 (EN 301 549 V3.2.1) Anexo A, Nivel AA requerido",
         "remediation": {
             "description": "Si se detecta automáticamente un error de entrada y se conocen sugerencias para la corrección, se proporcionan las sugerencias al usuario.",
             "technicalGuidance": "Si el formato de fecha es incorrecto, muestre el formato requerido (AAAA-MM-DD). Ofrezca sugerencias de ortografía para la búsqueda ('¿Quiso decir...?').",
@@ -2323,7 +2323,7 @@
         "en301549Title": "Error prevention (legal, financial, data)",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "UNE 139803:2012, Nivel AA requerido",
+        "dosLagenReference": "Real Decreto 1112/2018, artículos 5 y 6, mediante UNE-EN 301549:2022 (EN 301 549 V3.2.1) Anexo A, Nivel AA requerido",
         "remediation": {
             "description": "Para las páginas web que causan compromisos legales o transacciones financieras, los usuarios deben poder: Revertir, Verificar o Confirmar.",
             "technicalGuidance": "Ofrezca una página de resumen antes del envío final con la posibilidad de editar.",
@@ -2391,7 +2391,7 @@
         "en301549Title": "Parsing",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "UNE 139803:2012, Nivel A requerido",
+        "dosLagenReference": "Real Decreto 1112/2018, artículos 5 y 6, mediante UNE-EN 301549:2022 (EN 301 549 V3.2.1) Anexo A, Nivel A requerido",
         "remediation": {
             "description": "Actualización: Desde WCAG 2.2 este criterio ha sido eliminado/obsoleto, pero en WCAG 2.1/EN 301 549 se aplica: Los IDs deben ser únicos, los elementos estar correctamente anidados.",
             "technicalGuidance": "Valide el HTML. Asegúrese de que los atributos id sean únicos en la página. Cierre todas las etiquetas correctamente.",
@@ -2458,7 +2458,7 @@
         "en301549Title": "Name, role, value",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "UNE 139803:2012, Nivel A requerido",
+        "dosLagenReference": "Real Decreto 1112/2018, artículos 5 y 6, mediante UNE-EN 301549:2022 (EN 301 549 V3.2.1) Anexo A, Nivel A requerido",
         "remediation": {
             "description": "Para todos los componentes de la interfaz de usuario, el nombre y la función pueden ser determinados por programa; los estados, propiedades y valores pueden ser configurados por programa; y la notificación de cambios está disponible.",
             "technicalGuidance": "Use elementos HTML nativos cuando sea posible. Si usa componentes personalizados, asegúrese de usar ARIA correctamente (role, aria-label, aria-valuenow).",
@@ -2528,7 +2528,7 @@
         "en301549Title": "Status messages",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "UNE 139803:2012, Nivel AA requerido",
+        "dosLagenReference": "Real Decreto 1112/2018, artículos 5 y 6, mediante UNE-EN 301549:2022 (EN 301 549 V3.2.1) Anexo A, Nivel AA requerido",
         "remediation": {
             "description": "Los mensajes de estado deben poder presentarse al usuario sin recibir el foco (a través de lectores de pantalla).",
             "technicalGuidance": "Use regiones aria-live (polite/assertive) o role='status'/'alert' para mensajes que aparecen dinámicamente (ej. 'Guardado', 'Búsqueda completada').",
@@ -2597,7 +2597,7 @@
         "en301549Title": "Info and relationships",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "UNE 139803:2012, Nivel A requerido",
+        "dosLagenReference": "Real Decreto 1112/2018, artículos 5 y 6, mediante UNE-EN 301549:2022 (EN 301 549 V3.2.1) Anexo A, Nivel A requerido",
         "remediation": {
             "description": "La página debe tener una (y solo una) región principal (<main>).",
             "technicalGuidance": "Use el elemento <main> para el contenido principal. Si tiene varios, use aria-label, pero generalmente uno es mejor. Evite tener múltiples <main> sin etiquetas únicas, o que falte por completo.",
@@ -2662,7 +2662,7 @@
         "en301549Title": "Info and relationships",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "UNE 139803:2012, Nivel A requerido",
+        "dosLagenReference": "Real Decreto 1112/2018, artículos 5 y 6, mediante UNE-EN 301549:2022 (EN 301 549 V3.2.1) Anexo A, Nivel A requerido",
         "remediation": {
             "description": "La página debe tener un título de nivel 1 (<h1>).",
             "technicalGuidance": "Asegúrese de que hay exactamente un <h1> describiendo el contenido único de la página.",
@@ -2726,7 +2726,7 @@
         "en301549Title": "Info and relationships",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "UNE 139803:2012, Nivel A requerido",
+        "dosLagenReference": "Real Decreto 1112/2018, artículos 5 y 6, mediante UNE-EN 301549:2022 (EN 301 549 V3.2.1) Anexo A, Nivel A requerido",
         "remediation": {
             "description": "Los encabezados deben seguir un orden lógico (h1 -> h2 -> h3).",
             "technicalGuidance": "No salte niveles de encabezado (ej: directamente de h1 a h3).",
@@ -2789,7 +2789,7 @@
         "en301549Title": "Info and relationships",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "UNE 139803:2012, Nivel A requerido",
+        "dosLagenReference": "Real Decreto 1112/2018, artículos 5 y 6, mediante UNE-EN 301549:2022 (EN 301 549 V3.2.1) Anexo A, Nivel A requerido",
         "remediation": {
             "description": "El banner (<header>) debe estar en el nivel superior.",
             "technicalGuidance": "No coloque <header> dentro de otro landmark si es el banner principal de la página.",
@@ -2852,7 +2852,7 @@
         "en301549Title": "Info and relationships",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "UNE 139803:2012, Nivel A requerido",
+        "dosLagenReference": "Real Decreto 1112/2018, artículos 5 y 6, mediante UNE-EN 301549:2022 (EN 301 549 V3.2.1) Anexo A, Nivel A requerido",
         "remediation": {
             "description": "La página debe tener solo un landmark 'banner' (generalmente <header>).",
             "technicalGuidance": "Solo un <header> fuera de artículos/secciones. Asegúrese de tener un solo <header> en el nivel superior.",
@@ -2915,7 +2915,7 @@
         "en301549Title": "Info and relationships",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "UNE 139803:2012, Nivel A requerido",
+        "dosLagenReference": "Real Decreto 1112/2018, artículos 5 y 6, mediante UNE-EN 301549:2022 (EN 301 549 V3.2.1) Anexo A, Nivel A requerido",
         "remediation": {
             "description": "Los landmarks deben tener roles o etiquetas únicos.",
             "technicalGuidance": "Si tiene múltiples elementos <nav>, déles un 'aria-label' único (ej: 'Menú principal', 'Menú pie de página').",
@@ -2978,7 +2978,7 @@
         "en301549Title": "Info and relationships",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "UNE 139803:2012, Nivel A requerido",
+        "dosLagenReference": "Real Decreto 1112/2018, artículos 5 y 6, mediante UNE-EN 301549:2022 (EN 301 549 V3.2.1) Anexo A, Nivel A requerido",
         "remediation": {
             "description": "Todo el contenido de la página debe estar contenido dentro de landmarks (regiones).",
             "technicalGuidance": "Asegúrese de que todo el contenido esté dentro de <main>, <header>, <nav>, <footer> o <aside>.",

@@ -19,7 +19,7 @@ This package serves as the **Single Source of Truth** for accessibility complian
 4.  **Legal Frameworks** (WAD 2016/2102, EAA 2019/882, DDA 1992 Australia, **ADA 1990 USA**, **REHAB 1973 USA / Section 504**)
 5.  **Nordic Authority Data** (Digg, PTS, UU-tilsynet, etc.)
 
-It allows developers to query: *"Which law mandates WCAG 1.4.3 in Sweden?"* and get the exact legal paragraph (`Lag (2018:1937) 12 §`).
+It allows developers to query: *"Which law mandates WCAG 1.4.3 in Sweden?"* and get the exact legal paragraph (`Lag (2018:1937) 10 §`).
 
 For the full regulatory database details, API reference, and legal framework mappings (WAD/EAA), see the **[Standards Library Catalog](../../docs/reference/standards.md)**.
 
@@ -43,7 +43,7 @@ npm install @holmdigital/standards
   - `da` (Denmark / Tilgængelighed)
   - `de` (Germany / BITV 2.0)
   - `fr` (France / RGAA)
-  - `es` (Spain / UNE 139803)
+  - `es` (Spain / Real Decreto 1112/2018)
   - `nl` (Netherlands / Digitoegankelijk)
   - *`it`, `pt`, `pl`, `au` — national law metadata only; rule text uses `en`*
 - **Risk Assessment**: DIGG-aligned risk levels (`critical`, `high`, `medium`, `low`).
