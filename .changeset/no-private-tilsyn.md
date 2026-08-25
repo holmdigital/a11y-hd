@@ -1,0 +1,5 @@
+---
+"@holmdigital/engine": patch
+---
+
+Fix two defects in the generated accessibility statement (Intern #23 Fynd B). For a **private Norwegian** entity the "Tilsyn" (enforcement) section rendered with empty holes — "​ har ansvaret for tilsyn med …" — because `NO.eaa` has no supervisory authority (private Norwegian actors are bound by the requirements but there is no market-surveillance body to name). The empty section also implied a reporting duty a private actor does not have. The enforcement section is now **omitted entirely** when there is no authority to name (the data is unchanged — `.eaa` is deliberately not filled with the public-sector uu-tilsynet). Separately, a title-less template section (present in every locale, holding the conditional non-compliance list) rendered as a bare **"## undefined"** heading that reached the customer; a section with no title now renders its content without a heading, and sections that resolve to empty are dropped. No change to any statement that has an authority (e.g. Norwegian public sector still names uu-tilsynet).

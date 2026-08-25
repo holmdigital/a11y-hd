@@ -91,7 +91,7 @@ const RESPONSE_TIME_DEFAULT: Record<string, string> = {
 interface StatementTemplate {
     title: string;
     intro: string;
-    sections: Array<{ id?: string; title: string; content: string }>;
+    sections: Array<{ id?: string; title?: string; content: string }>;
 }
 
 /**
@@ -437,7 +437,21 @@ export async function generateStatementContent(
 
         const title = processText(template.title);
         const intro = processText(template.intro);
-        const sections = template.sections.map(s => `## ${s.title}\n\n${processText(s.content)}`).join('\n\n');
+        // Tillsynsmyndigheten (kan vara tom, t.ex. privat norsk sektor — .eaa = '').
+        const enforcementBody = String(substitutions['{<enforcement_body>}'] ?? '').trim();
+        const sections = template.sections
+            .map(s => {
+                // Intern #23: utelämna hela Tilsyn-sektionen när det inte finns någon
+                // tillsynsmyndighet. Annars renderas tomma hål (" har ansvaret …") och
+                // sektionen antyder en redogörelseplikt en privat aktör inte har.
+                if (s.id === 'enforcement' && enforcementBody === '') return null;
+                const body = processText(s.content).trim();
+                if (body === '') return null;                 // hoppa sektioner som blir tomma
+                // Intern #23: en section utan titel får aldrig rendera "## undefined".
+                return s.title ? `## ${s.title}\n\n${body}` : body;
+            })
+            .filter((x): x is string => x !== null)
+            .join('\n\n');
 
         content = `# ${title}\n\n${intro}\n\n${sections}\n\n---\nGenerated using [${props.generatorTool?.name || 'HolmDigital Engine'}](${props.generatorTool?.url || 'https://holmdigital.se'})`;
     }
