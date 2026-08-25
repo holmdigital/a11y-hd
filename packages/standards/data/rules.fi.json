@@ -2598,7 +2598,7 @@
         "en301549Title": "Info and relationships",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "9 § (Struktur och relationer)",
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level A required",
         "remediation": {
             "description": "Sivulla on oltava tasan yksi 'main'-landmark.",
             "technicalGuidance": "Käytä <main>-elementtiä kerran per sivu tunnistaaksesi pääsisällön. Vältä useita <main>-elementtejä ilman uniikkeja nimilappuja, tai sen puuttumista kokonaan.",
@@ -2663,7 +2663,7 @@
         "en301549Title": "Info and relationships",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "9 § (Struktur och relationer)",
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level A required",
         "remediation": {
             "description": "Sivulla on oltava tason 1 otsikko (<h1>).",
             "technicalGuidance": "Varmista että on tasan yksi <h1> joka kuvaa sivun uniikkia sisältöä.",
@@ -2727,7 +2727,7 @@
         "en301549Title": "Info and relationships",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "9 § (Struktur och relationer)",
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level A required",
         "remediation": {
             "description": "Otsikoiden on seurattava loogista järjestystä (h1 -> h2 -> h3).",
             "technicalGuidance": "Älä ohita otsikkotasoja (esim. suoraan h1:stä h3:een).",
@@ -2790,7 +2790,7 @@
         "en301549Title": "Info and relationships",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "9 § (Struktur och relationer)",
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level A required",
         "remediation": {
             "description": "Bannerin (<header>) on oltava ylimmällä tasolla.",
             "technicalGuidance": "Älä aseta <header>ia toisen landmarkin sisään jos se on sivun pääbanneri.",
@@ -2853,7 +2853,7 @@
         "en301549Title": "Info and relationships",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "9 § (Struktur och relationer)",
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level A required",
         "remediation": {
             "description": "Sivulla saa olla vain yksi 'banner'-landmark (yleensä <header>).",
             "technicalGuidance": "Varmista että sinulla on vain yksi <header> ylimmällä tasolla.",
@@ -2916,7 +2916,7 @@
         "en301549Title": "Info and relationships",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "9 § (Struktur och relationer)",
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level A required",
         "remediation": {
             "description": "Landmarkeilla on oltava uniikit roolit tai nimilaput.",
             "technicalGuidance": "Jos sinulla on useita <nav>-elementtejä, anna niille uniikit 'aria-label' (esim. 'Päävalikko', 'Alatunnistevalikko').",
@@ -2979,7 +2979,7 @@
         "en301549Title": "Info and relationships",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "9 § (Struktur och relationer)",
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level A required",
         "remediation": {
             "description": "Kaiken sisällön sivulla on oltava landmarkkien (alueiden) sisällä.",
             "technicalGuidance": "Varmista että kaikki sisältö on <main>-, <header>-, <nav>-, <footer>- tai <aside>-elementin sisällä.",

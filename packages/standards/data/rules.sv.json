@@ -9,7 +9,7 @@
         "en301549Title": "Contrast (minimum)",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "Lag 2018:1937 §7, WCAG 2.1 nivå AA krävs",
+        "dosLagenReference": "Lag 2018:1937 10 §, preciserad i MDFFS 2019:2 4 och 5 §§ via EN 301 549 V3.2.1 Annex A, WCAG 2.1 nivå AA krävs",
         "remediation": {
             "description": "Text och bilder av text måste ha ett kontrastvärde på minst 4,5:1 (3:1 för stor text).",
             "technicalGuidance": "Använd verktyg som WebAIM Contrast Checker för att verifiera kontrast. Justera färgval eller lägg till bakgrundsopacity för att uppnå korrekt kontrast.",
@@ -90,7 +90,7 @@
         "en301549Title": "Keyboard",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "Lag 2018:1937 §7, WCAG 2.1 nivå A krävs",
+        "dosLagenReference": "Lag 2018:1937 10 §, preciserad i MDFFS 2019:2 4 och 5 §§ via EN 301 549 V3.2.1 Annex A, WCAG 2.1 nivå A krävs",
         "remediation": {
             "description": "All funktionalitet måste vara navigerbar med tangentbord.",
             "technicalGuidance": "Använd semantiska HTML-element (button, a, input) istället för div/span med click handlers. Se till att tabindex används korrekt.",
@@ -169,7 +169,7 @@
         "en301549Title": "Non-text content",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "Lag 2018:1937 §7, WCAG 2.1 nivå A krävs",
+        "dosLagenReference": "Lag 2018:1937 10 §, preciserad i MDFFS 2019:2 4 och 5 §§ via EN 301 549 V3.2.1 Annex A, WCAG 2.1 nivå A krävs",
         "remediation": {
             "description": "Bilder som förmedlar information ska ha ett textalternativ som fyller ett likvärdigt syfte, medan rent dekorativa bilder ska märkas så att hjälpmedel kan ignorera dem. Den markeringen är aktiv: tomt alt (alt=\"\") är standardsättet, och att helt utelämna alt-attributet räcker inte, eftersom hjälpmedel då inte kan ignorera bilden (en skärmläsare kan till exempel läsa upp filnamnet). Kravet gäller resultatet, inte tekniken.",
             "technicalGuidance": "Lägg till alt-attribut på alla img-element. För dekorativa bilder, använd alt=\"\". För informativa bilder, beskriv innehållet koncist.",
@@ -250,7 +250,7 @@
         "en301549Title": "Labels or instructions",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "Lag 2018:1937 §7, WCAG 2.1 nivå A krävs",
+        "dosLagenReference": "Lag 2018:1937 10 §, preciserad i MDFFS 2019:2 4 och 5 §§ via EN 301 549 V3.2.1 Annex A, WCAG 2.1 nivå A krävs",
         "remediation": {
             "description": "Formulärfält måste ha tydliga etiketter eller instruktioner.",
             "technicalGuidance": "Använd label-element kopplade till input via for/id. För komplexa formulär, använd fieldset och legend. Använd aria-describedby för extra instruktioner.",
@@ -332,7 +332,7 @@
         "en301549Title": "Page titled",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "Lag 2018:1937 §7, WCAG 2.1 nivå A krävs",
+        "dosLagenReference": "Lag 2018:1937 10 §, preciserad i MDFFS 2019:2 4 och 5 §§ via EN 301 549 V3.2.1 Annex A, WCAG 2.1 nivå A krävs",
         "remediation": {
             "description": "Varje webbsida måste ha en beskrivande titel.",
             "technicalGuidance": "Använd title-elementet i head. Titeln ska vara unik för varje sida och beskriva dess syfte. Format: 'Sidnamn - Webbplatsnamn'.",
@@ -411,7 +411,7 @@
         "en301549Title": "Info and relationships",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "Lag 2018:1937 §7, WCAG 2.1 nivå A krävs",
+        "dosLagenReference": "Lag 2018:1937 10 §, preciserad i MDFFS 2019:2 4 och 5 §§ via EN 301 549 V3.2.1 Annex A, WCAG 2.1 nivå A krävs",
         "remediation": {
             "description": "Information, struktur och relationer som förmedlas visuellt kan också bestämmas programmatiskt eller finns tillgängliga i text.",
             "technicalGuidance": "Använd semantisk HTML: <header>, <nav>, <main>, <footer>, <h1>-<h6>, <ul>/ <ol>, <table>. Använd inte visuella stilar för att skapa 'falska' rubriker eller listor.",
@@ -489,7 +489,7 @@
         "en301549Title": "Use of color",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "Lag 2018:1937 §7, WCAG 2.1 nivå A krävs",
+        "dosLagenReference": "Lag 2018:1937 10 §, preciserad i MDFFS 2019:2 4 och 5 §§ via EN 301 549 V3.2.1 Annex A, WCAG 2.1 nivå A krävs",
         "remediation": {
             "description": "Färg får inte användas som det enda visuella sättet att förmedla information, indikera en handling, uppmana till svar eller skilja på visuella element.",
             "technicalGuidance": "Komplettera färg med text, ikoner eller understrykning. T.ex. länkar måste ha understrykning eller annan visuell markör utöver färg. Felmeddelanden behöver text/ikon, inte bara en röd ram.",
@@ -567,7 +567,7 @@
         "en301549Title": "Reflow",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "Lag 2018:1937 §7, WCAG 2.1 nivå AA krävs",
+        "dosLagenReference": "Lag 2018:1937 10 §, preciserad i MDFFS 2019:2 4 och 5 §§ via EN 301 549 V3.2.1 Annex A, WCAG 2.1 nivå AA krävs",
         "remediation": {
             "description": "Innehåll måste vara presentabelt utan att kräva scrollning i två dimensioner ner till 320px bredd.",
             "technicalGuidance": "Använd responsiv design (CSS Media Queries, Flexbox, Grid). Undvik fasta bredder i pixlar. Se till att tabeller och bilder skalar korrekt.",
@@ -644,7 +644,7 @@
         "en301549Title": "Non-text contrast",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "Lag 2018:1937 §7, WCAG 2.1 nivå AA krävs",
+        "dosLagenReference": "Lag 2018:1937 10 §, preciserad i MDFFS 2019:2 4 och 5 §§ via EN 301 549 V3.2.1 Annex A, WCAG 2.1 nivå AA krävs",
         "remediation": {
             "description": "Den visuella presentationen av gränssnittskomponenter och grafiska objekt måste ha ett kontrastförhållande på minst 3:1 mot angränsande färger.",
             "technicalGuidance": "Gäller knappar, input-ramar, ikoner och fokusindikatorer. Se till att alla interaktiva element syns tydligt mot bakgrunden.",
@@ -719,7 +719,7 @@
         "en301549Title": "Text spacing",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "Lag 2018:1937 §7, WCAG 2.1 nivå AA krävs",
+        "dosLagenReference": "Lag 2018:1937 10 §, preciserad i MDFFS 2019:2 4 och 5 §§ via EN 301 549 V3.2.1 Annex A, WCAG 2.1 nivå AA krävs",
         "remediation": {
             "description": "Content or functionality must not be lost when the user changes text spacing (line height, paragraph spacing, etc.).",
             "technicalGuidance": "Avoid fixed heights on text containers. Let containers grow with content. Test with text spacing bookmarklet.",
@@ -793,7 +793,7 @@
         "en301549Title": "Content on hover or focus",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "Lag 2018:1937 §7, WCAG 2.1 nivå AA krävs",
+        "dosLagenReference": "Lag 2018:1937 10 §, preciserad i MDFFS 2019:2 4 och 5 §§ via EN 301 549 V3.2.1 Annex A, WCAG 2.1 nivå AA krävs",
         "remediation": {
             "description": "Innehåll som visas vid hover/fokus (t.ex. tooltips) måste vara avfärdbart, hovringsbart och beständigt.",
             "technicalGuidance": "Se till att tooltips inte försvinner när musen flyttas från utlösaren till själva tooltipen. Tillåt ESC för att avfärda.",
@@ -869,7 +869,7 @@
         "en301549Title": "Captions (prerecorded)",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "Lag 2018:1937 §7, WCAG 2.1 nivå A krävs",
+        "dosLagenReference": "Lag 2018:1937 10 §, preciserad i MDFFS 2019:2 4 och 5 §§ via EN 301 549 V3.2.1 Annex A, WCAG 2.1 nivå A krävs",
         "remediation": {
             "description": "Textning måste tillhandahållas för allt förinspelat ljudinnehåll i synkroniserad media.",
             "technicalGuidance": "Använd <track>-elementet med WebVTT-filer för HTML5-video. För inbäddade sociala medier, se till att textning är aktiverad.",
@@ -946,7 +946,7 @@
         "en301549Title": "Audio description (prerecorded)",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "Lag 2018:1937 §7, WCAG 2.1 nivå AA krävs",
+        "dosLagenReference": "Lag 2018:1937 10 §, preciserad i MDFFS 2019:2 4 och 5 §§ via EN 301 549 V3.2.1 Annex A, WCAG 2.1 nivå AA krävs",
         "remediation": {
             "description": "Syntolkning måste tillhandahållas för allt förinspelat videoinnehåll.",
             "technicalGuidance": "Antingen som ett separat ljudspår, en alternativ version av videon, eller (om 'talking heads') genom att se till att all info förmedlas via ljud.",
@@ -1021,7 +1021,7 @@
         "en301549Title": "Orientation",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "Lag 2018:1937 §7, WCAG 2.1 nivå AA krävs",
+        "dosLagenReference": "Lag 2018:1937 10 §, preciserad i MDFFS 2019:2 4 och 5 §§ via EN 301 549 V3.2.1 Annex A, WCAG 2.1 nivå AA krävs",
         "remediation": {
             "description": "Innehåll får inte begränsa sin visning och användning till en enda skärmorientering, såvida inte en viss orientering är nödvändig.",
             "technicalGuidance": "Lås inte skärmen till porträtt eller landskap via CSS eller JS-manifest. Använd CSS media queries för att hantera layoutändringar.",
@@ -1095,7 +1095,7 @@
         "en301549Title": "Identify input purpose",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "Lag 2018:1937 §7, WCAG 2.1 nivå AA krävs",
+        "dosLagenReference": "Lag 2018:1937 10 §, preciserad i MDFFS 2019:2 4 och 5 §§ via EN 301 549 V3.2.1 Annex A, WCAG 2.1 nivå AA krävs",
         "remediation": {
             "description": "Syftet med varje inmatningsfält som samlar in information om användaren kan bestämmas programmatiskt.",
             "technicalGuidance": "Använd 'autocomplete'-attributet på inmatningsfält för personuppgifter (namn, e-post, tel, adress etc.).",
@@ -1170,7 +1170,7 @@
         "en301549Title": "No keyboard trap",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "Lag 2018:1937 §7, WCAG 2.1 nivå A krävs",
+        "dosLagenReference": "Lag 2018:1937 10 §, preciserad i MDFFS 2019:2 4 och 5 §§ via EN 301 549 V3.2.1 Annex A, WCAG 2.1 nivå A krävs",
         "remediation": {
             "description": "Om fokus kan flyttas till en komponent på sidan med tangentbord, måste fokus också kunna flyttas bort från den komponenten med endast tangentbord.",
             "technicalGuidance": "Var försiktig med JS-widgets som fångar fokus (t.ex. modala fönster). Se till att det alltid finns en väg ut (t.ex. ESC eller shift+tab).",
@@ -1244,7 +1244,7 @@
         "en301549Title": "Character key shortcuts",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "Lag 2018:1937 §7, WCAG 2.1 nivå A krävs",
+        "dosLagenReference": "Lag 2018:1937 10 §, preciserad i MDFFS 2019:2 4 och 5 §§ via EN 301 549 V3.2.1 Annex A, WCAG 2.1 nivå A krävs",
         "remediation": {
             "description": "Om ett kortkommando består av endast ett tecken (bokstav, siffra, symbol), måste det finnas ett sätt att stänga av det eller mappa om det, eller så får det bara vara aktivt vid fokus.",
             "technicalGuidance": "Undvik en-teckens-genvägar om möjligt. Om det behövs, se till att de inte krockar med röststyrning eller oavsiktlig inmatning.",
@@ -1317,7 +1317,7 @@
         "en301549Title": "Timing adjustable",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "Lag 2018:1937 §7, WCAG 2.1 nivå A krävs",
+        "dosLagenReference": "Lag 2018:1937 10 §, preciserad i MDFFS 2019:2 4 och 5 §§ via EN 301 549 V3.2.1 Annex A, WCAG 2.1 nivå A krävs",
         "remediation": {
             "description": "Om en tidsgräns (session, lästid) är satt, måste användaren kunna stänga av, justera eller förlänga den.",
             "technicalGuidance": "Ge en varning innan sessionen går ut med en 'Förläng session'-knapp. Tidsgränsen måste vara minst 20 sekunder.",
@@ -1392,7 +1392,7 @@
         "en301549Title": "Pause, stop, hide",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "Lag 2018:1937 §7, WCAG 2.1 nivå A krävs",
+        "dosLagenReference": "Lag 2018:1937 10 §, preciserad i MDFFS 2019:2 4 och 5 §§ via EN 301 549 V3.2.1 Annex A, WCAG 2.1 nivå A krävs",
         "remediation": {
             "description": "För rörligt, blinkande eller rullande innehåll som startar automatiskt och varar längre än 5 sekunder, måste det finnas ett sätt att pausa, stoppa eller dölja det.",
             "technicalGuidance": "Gäller karuseller (sliders), autouppdaterande nyhetsflöden, animerade bakgrunder. Lägg till en tydlig pausknapp.",
@@ -1468,7 +1468,7 @@
         "en301549Title": "Three flashes or below threshold",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "Lag 2018:1937 §7, WCAG 2.1 nivå A krävs",
+        "dosLagenReference": "Lag 2018:1937 10 §, preciserad i MDFFS 2019:2 4 och 5 §§ via EN 301 549 V3.2.1 Annex A, WCAG 2.1 nivå A krävs",
         "remediation": {
             "description": "Innehåll får inte blinka mer än tre gånger per sekund (kan orsaka anfall).",
             "technicalGuidance": "Undvik snabbt blinkande i video och animationer. Använd verktyg för att mäta blinkfrekvens (PEAT).",
@@ -1543,7 +1543,7 @@
         "en301549Title": "Bypass blocks",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "Lag 2018:1937 §7, WCAG 2.1 nivå A krävs",
+        "dosLagenReference": "Lag 2018:1937 10 §, preciserad i MDFFS 2019:2 4 och 5 §§ via EN 301 549 V3.2.1 Annex A, WCAG 2.1 nivå A krävs",
         "remediation": {
             "description": "Det måste finnas ett sätt att hoppa över block av innehåll som upprepas på flera sidor (t.ex. navigering).",
             "technicalGuidance": "Implementera en 'Hoppa till huvudinnehåll'-länk högst upp på sidan som blir synlig vid fokus. Använd semantiska landmärken (<main>, <nav>).",
@@ -1620,7 +1620,7 @@
         "en301549Title": "Focus order",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "Lag 2018:1937 §7, WCAG 2.1 nivå A krävs",
+        "dosLagenReference": "Lag 2018:1937 10 §, preciserad i MDFFS 2019:2 4 och 5 §§ via EN 301 549 V3.2.1 Annex A, WCAG 2.1 nivå A krävs",
         "remediation": {
             "description": "Fokusordningen måste vara logisk och följa mening/struktur.",
             "technicalGuidance": "Matcha DOM-ordning med visuell ordning. Undvik tabindex större än 0. Hantera fokus manuellt i modaler och menyer.",
@@ -1697,7 +1697,7 @@
         "en301549Title": "Link purpose (in context)",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "Lag 2018:1937 §7, WCAG 2.1 nivå A krävs",
+        "dosLagenReference": "Lag 2018:1937 10 §, preciserad i MDFFS 2019:2 4 och 5 §§ via EN 301 549 V3.2.1 Annex A, WCAG 2.1 nivå A krävs",
         "remediation": {
             "description": "Syftet med varje länk kan förstås från länktexten ensam eller från länktexten tillsammans med dess sammanhang.",
             "technicalGuidance": "Undvik 'Läs mer' eller 'Klicka här'. Skriv beskrivande länktexter. Använd aria-label om visuellt utrymme är begränsat men mer info behövs.",
@@ -1773,7 +1773,7 @@
         "en301549Title": "Multiple ways",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "Lag 2018:1937 §7, WCAG 2.1 nivå AA krävs",
+        "dosLagenReference": "Lag 2018:1937 10 §, preciserad i MDFFS 2019:2 4 och 5 §§ via EN 301 549 V3.2.1 Annex A, WCAG 2.1 nivå AA krävs",
         "remediation": {
             "description": "Det måste finnas mer än ett sätt att hitta en webbsida inom en uppsättning webbsidor.",
             "technicalGuidance": "Minst två av: Meny, Sök, Webbplatskarta, Länkar i innehållet.",
@@ -1848,7 +1848,7 @@
         "en301549Title": "Headings and labels",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "Lag 2018:1937 §7, WCAG 2.1 nivå AA krävs",
+        "dosLagenReference": "Lag 2018:1937 10 §, preciserad i MDFFS 2019:2 4 och 5 §§ via EN 301 549 V3.2.1 Annex A, WCAG 2.1 nivå AA krävs",
         "remediation": {
             "description": "Rubriker och etiketter måste beskriva ämne eller syfte.",
             "technicalGuidance": "Skriv tydliga, beskrivande rubriker som ger mening åt innehållet under dem. Formuläretiketter måste vara begripliga.",
@@ -1923,7 +1923,7 @@
         "en301549Title": "Focus visible",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "Lag 2018:1937 §7, WCAG 2.1 nivå AA krävs",
+        "dosLagenReference": "Lag 2018:1937 10 §, preciserad i MDFFS 2019:2 4 och 5 §§ via EN 301 549 V3.2.1 Annex A, WCAG 2.1 nivå AA krävs",
         "remediation": {
             "description": "Varje gränssnitt som kan hanteras med tangentbord måste ha en synlig fokusindikator.",
             "technicalGuidance": "Ta aldrig bort outline med CSS (outline: none) utan att ersätta det med en tydlig visuell indikator. Se till att fokusringens kontrast är tillräcklig (se 1.4.11).",
@@ -2000,7 +2000,7 @@
         "en301549Title": "Language of page",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "Lag 2018:1937 §7, WCAG 2.1 nivå A krävs",
+        "dosLagenReference": "Lag 2018:1937 10 §, preciserad i MDFFS 2019:2 4 och 5 §§ via EN 301 549 V3.2.1 Annex A, WCAG 2.1 nivå A krävs",
         "remediation": {
             "description": "Det förvalda mänskliga språket för varje webbsida måste kunna bestämmas programmatiskt.",
             "technicalGuidance": "Sätt 'lang'-attributet på <html>-elementet. T.ex. <html lang='sv'> för svenska.",
@@ -2074,7 +2074,7 @@
         "en301549Title": "Language of parts",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "Lag 2018:1937 §7, WCAG 2.1 nivå AA krävs",
+        "dosLagenReference": "Lag 2018:1937 10 §, preciserad i MDFFS 2019:2 4 och 5 §§ via EN 301 549 V3.2.1 Annex A, WCAG 2.1 nivå AA krävs",
         "remediation": {
             "description": "Det mänskliga språket för varje passage eller fras i innehållet måste kunna bestämmas programmatiskt.",
             "technicalGuidance": "Använd lang-attributet på element som skiljer sig från sidans huvudspråk. T.ex. <span lang='en'>Hello</span> på en svensk sida.",
@@ -2147,7 +2147,7 @@
         "en301549Title": "On focus",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "Lag 2018:1937 §7, WCAG 2.1 nivå A krävs",
+        "dosLagenReference": "Lag 2018:1937 10 §, preciserad i MDFFS 2019:2 4 och 5 §§ via EN 301 549 V3.2.1 Annex A, WCAG 2.1 nivå A krävs",
         "remediation": {
             "description": "När en komponent får fokus får den inte initiera en förändring av sammanhang.",
             "technicalGuidance": "Öppna inte nya fönster, skicka inte formulär eller flytta fokus automatiskt bara för att användaren tabbar till ett fält.",
@@ -2222,7 +2222,7 @@
         "en301549Title": "On input",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "Lag 2018:1937 §7, WCAG 2.1 nivå A krävs",
+        "dosLagenReference": "Lag 2018:1937 10 §, preciserad i MDFFS 2019:2 4 och 5 §§ via EN 301 549 V3.2.1 Annex A, WCAG 2.1 nivå A krävs",
         "remediation": {
             "description": "Att ändra inställningen för någon komponent orsakar inte automatiskt en förändring av sammanhang om inte användaren har informerats om beteendet innan komponenten används.",
             "technicalGuidance": "Informera användaren om att val i en lista laddar om sidan. Helst, lägg till en knapp för att bekräfta valet.",
@@ -2298,7 +2298,7 @@
         "en301549Title": "Consistent navigation",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "Lag 2018:1937 §7, WCAG 2.1 nivå AA krävs",
+        "dosLagenReference": "Lag 2018:1937 10 §, preciserad i MDFFS 2019:2 4 och 5 §§ via EN 301 549 V3.2.1 Annex A, WCAG 2.1 nivå AA krävs",
         "remediation": {
             "description": "Navigeringsmekanismer som upprepas på flera webbsidor förekommer i samma relativa ordning varje gång de upprepas.",
             "technicalGuidance": "Huvudmenyn ska se likadan ut och finnas på samma plats på alla sidor. Sökfunktionen likaså.",
@@ -2372,7 +2372,7 @@
         "en301549Title": "Consistent identification",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "Lag 2018:1937 §7, WCAG 2.1 nivå AA krävs",
+        "dosLagenReference": "Lag 2018:1937 10 §, preciserad i MDFFS 2019:2 4 och 5 §§ via EN 301 549 V3.2.1 Annex A, WCAG 2.1 nivå AA krävs",
         "remediation": {
             "description": "Komponenter som har samma funktionalitet inom en uppsättning webbsidor identifieras konsekvent.",
             "technicalGuidance": "Kalla inte sök för 'Sök' på en sida och 'Hitta' på en annan. Använd samma ikon för samma funktion.",
@@ -2447,7 +2447,7 @@
         "en301549Title": "Error identification",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "Lag 2018:1937 §7, WCAG 2.1 nivå A krävs",
+        "dosLagenReference": "Lag 2018:1937 10 §, preciserad i MDFFS 2019:2 4 och 5 §§ via EN 301 549 V3.2.1 Annex A, WCAG 2.1 nivå A krävs",
         "remediation": {
             "description": "Om ett inmatningsfel upptäcks automatiskt, identifieras objektet som har fel och felet beskrivs för användaren i text.",
             "technicalGuidance": "Visa felmeddelande nära fältet. Koppla med aria-describedby eller inkludera i label. Färga inte bara fältet rött.",
@@ -2522,7 +2522,7 @@
         "en301549Title": "Error suggestion",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "Lag 2018:1937 §7, WCAG 2.1 nivå AA krävs",
+        "dosLagenReference": "Lag 2018:1937 10 §, preciserad i MDFFS 2019:2 4 och 5 §§ via EN 301 549 V3.2.1 Annex A, WCAG 2.1 nivå AA krävs",
         "remediation": {
             "description": "Om ett inmatningsfel upptäcks automatiskt och förslag till korrigering är kända, ges förslagen till användaren.",
             "technicalGuidance": "Om datumformat är fel, visa vilket format som krävs (ÅÅÅÅ-MM-DD). Erbjud stavningsförslag vid sök ('Menade du...?').",
@@ -2596,7 +2596,7 @@
         "en301549Title": "Error prevention (legal, financial, data)",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "Lag 2018:1937 §7, WCAG 2.1 nivå AA krävs",
+        "dosLagenReference": "Lag 2018:1937 10 §, preciserad i MDFFS 2019:2 4 och 5 §§ via EN 301 549 V3.2.1 Annex A, WCAG 2.1 nivå AA krävs",
         "remediation": {
             "description": "För webbsidor som orsakar juridiska åtaganden eller finansiella transaktioner måste användare kunna: Ångra, Kontrollera eller Bekräfta.",
             "technicalGuidance": "Erbjud en sammanfattningssida innan slutgiltig inskickning med möjlighet att redigera.",
@@ -2672,7 +2672,7 @@
         "en301549Title": "Parsing",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "Lag 2018:1937 §7, WCAG 2.1 nivå A krävs",
+        "dosLagenReference": "Lag 2018:1937 10 §, preciserad i MDFFS 2019:2 4 och 5 §§ via EN 301 549 V3.2.1 Annex A, WCAG 2.1 nivå A krävs",
         "remediation": {
             "description": "Uppdatering: Från WCAG 2.2 är detta kriterium borttaget/föråldrat, men i WCAG 2.1/EN 301 549 gäller det: ID:n måste vara unika, element korrekt nästlade.",
             "technicalGuidance": "Validera HTML. Se till att id-attribut är unika på sidan. Stäng alla taggar korrekt.",
@@ -2747,7 +2747,7 @@
         "en301549Title": "Name, role, value",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "Lag 2018:1937 §7, WCAG 2.1 nivå A krävs",
+        "dosLagenReference": "Lag 2018:1937 10 §, preciserad i MDFFS 2019:2 4 och 5 §§ via EN 301 549 V3.2.1 Annex A, WCAG 2.1 nivå A krävs",
         "remediation": {
             "description": "För alla komponenter ska namn och roll kunna bestämmas programmatiskt. Värden ska kunna sättas programmatiskt.",
             "technicalGuidance": "Använd nativa HTML-element när det går. Om anpassade komponenter används, måste ARIA (role, aria-label, aria-valuenow) användas korrekt.",
@@ -2825,7 +2825,7 @@
         "en301549Title": "Status messages",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "Lag 2018:1937 §7, WCAG 2.1 nivå AA krävs",
+        "dosLagenReference": "Lag 2018:1937 10 §, preciserad i MDFFS 2019:2 4 och 5 §§ via EN 301 549 V3.2.1 Annex A, WCAG 2.1 nivå AA krävs",
         "remediation": {
             "description": "Statusmeddelanden ska kunna presenteras för användaren utan att motta fokus (via skärmläsare).",
             "technicalGuidance": "Använd aria-live regioner (polite/assertive) eller role='status'/'alert' för meddelanden som dyker upp dynamiskt (t.ex. 'Sparat', 'Sökning klar').",
@@ -2902,7 +2902,7 @@
         "en301549Title": "Info and relationships",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "9 § (Struktur och relationer)",
+        "dosLagenReference": "Lag 2018:1937 10 §, preciserad i MDFFS 2019:2 4 och 5 §§ via EN 301 549 V3.2.1 Annex A, WCAG 2.1 nivå A krävs",
         "remediation": {
             "description": "Sidan måste ha exakt ett 'main' (huvudsakligt innehåll) landmärke.",
             "technicalGuidance": "Använd <main>-elementet en gång per sida för att identifiera huvudinnehållet. Undvik att ha flera <main> utan unika etiketter, eller att missa det helt.",
@@ -2975,7 +2975,7 @@
         "en301549Title": "Info and relationships",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "9 § (Struktur och relationer)",
+        "dosLagenReference": "Lag 2018:1937 10 §, preciserad i MDFFS 2019:2 4 och 5 §§ via EN 301 549 V3.2.1 Annex A, WCAG 2.1 nivå A krävs",
         "remediation": {
             "description": "Sidan måste ha en rubrik på nivå 1 (<h1>).",
             "technicalGuidance": "Se till att det finns exakt en <h1> som beskriver sidans unika innehåll.",
@@ -3047,7 +3047,7 @@
         "en301549Title": "Info and relationships",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "9 § (Struktur och relationer)",
+        "dosLagenReference": "Lag 2018:1937 10 §, preciserad i MDFFS 2019:2 4 och 5 §§ via EN 301 549 V3.2.1 Annex A, WCAG 2.1 nivå A krävs",
         "remediation": {
             "description": "Rubriker måste följa en logisk ordning (h1 -> h2 -> h3).",
             "technicalGuidance": "Hoppa inte över rubriknivåer (t.ex. direkt från h1 till h3).",
@@ -3118,7 +3118,7 @@
         "en301549Title": "Info and relationships",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "9 § (Struktur och relationer)",
+        "dosLagenReference": "Lag 2018:1937 10 §, preciserad i MDFFS 2019:2 4 och 5 §§ via EN 301 549 V3.2.1 Annex A, WCAG 2.1 nivå A krävs",
         "remediation": {
             "description": "Bannern (<header>) måste ligga på toppnivå.",
             "technicalGuidance": "Placera inte <header> inuti ett annat landmärke om det är sidans huvudbanner.",
@@ -3189,7 +3189,7 @@
         "en301549Title": "Info and relationships",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "9 § (Struktur och relationer)",
+        "dosLagenReference": "Lag 2018:1937 10 §, preciserad i MDFFS 2019:2 4 och 5 §§ via EN 301 549 V3.2.1 Annex A, WCAG 2.1 nivå A krävs",
         "remediation": {
             "description": "Sidan får bara ha ett 'banner' landmärke (vanligtvis <header>).",
             "technicalGuidance": "Se till att du bara har en <header> på toppnivå.",
@@ -3260,7 +3260,7 @@
         "en301549Title": "Info and relationships",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "9 § (Struktur och relationer)",
+        "dosLagenReference": "Lag 2018:1937 10 §, preciserad i MDFFS 2019:2 4 och 5 §§ via EN 301 549 V3.2.1 Annex A, WCAG 2.1 nivå A krävs",
         "remediation": {
             "description": "Landmärken måste ha unika roller eller etiketter.",
             "technicalGuidance": "Om du har flera <nav>-element, ge dem unika 'aria-label' (t.ex. 'Huvudmeny', 'Sidfotsmeny').",
@@ -3331,7 +3331,7 @@
         "en301549Title": "Info and relationships",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "9 § (Struktur och relationer)",
+        "dosLagenReference": "Lag 2018:1937 10 §, preciserad i MDFFS 2019:2 4 och 5 §§ via EN 301 549 V3.2.1 Annex A, WCAG 2.1 nivå A krävs",
         "remediation": {
             "description": "Allt innehåll på sidan måste finnas inuti landmärken (regioner).",
             "technicalGuidance": "Se till att allt innehåll finns inuti <main>, <header>, <nav>, <footer>, eller <aside>.",

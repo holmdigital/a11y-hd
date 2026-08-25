@@ -293,8 +293,8 @@
         "ES": [
             {
                 "id": "es-une",
-                "law": "UNE 139803",
-                "fullName": "Real Decreto sobre accesibilidad de sitios web y aplicaciones móviles",
+                "law": "Real Decreto 1112/2018",
+                "fullName": "Real Decreto 1112/2018, de 7 de septiembre, sobre accesibilidad de los sitios web y aplicaciones para dispositivos móviles del sector público",
                 "euFramework": "WAD",
                 "scope": "public",
                 "enforcement": {
@@ -744,7 +744,7 @@
                 "enforcement": {
                     "authority": "it-agid",
                     "authorityName": "Agency for Digital Italy (AgID)",
-                    "responsibility": "Supervisory authority for EAA-covered digital services in Italy (art. 21 D.Lgs. 82/2022). AgID handles services oversight, complaints, and sanctions. Sector split per D.Lgs. 82/2022 + D.Lgs. 208/2021: MIMIT supervises products; AGCOM supervises audiovisual media services only. AgID operates a pre-istruttoria phase (codified in Delibera n. 84/2026, 15 May 2026): on complaint or finding, AgID notifies the provider, requests a written response, and sets a remediation window before opening sanctioning proceedings. Sanctions are reserved for persistent non-compliance — the operative obligation for organisations is to have a documented response routine ready, not to assume immediate fines.",
+                    "responsibility": "Supervisory authority for EAA-covered digital services in Italy (art. 21 D.Lgs. 82/2022). AgID handles services oversight, complaints, and sanctions. Sector split per D.Lgs. 82/2022 + D.Lgs. 208/2021: MIMIT supervises products; AGCOM supervises audiovisual media services only. AgID operates a pre-istruttoria phase (codified in Determinazione n. 84 del 15 maggio 2026, 15 May 2026): on complaint or finding, AgID notifies the provider, requests a written response, and sets a remediation window before opening sanctioning proceedings. Sanctions are reserved for persistent non-compliance — the operative obligation for organisations is to have a documented response routine ready, not to assume immediate fines.",
                     "website": "https://www.agid.gov.it"
                 },
                 "sectorAuthorities": [
@@ -776,7 +776,7 @@
                         "legalBasis": "Directive (EU) 2019/882 Article 4(5); microenterprise definition per Commission Recommendation 2003/361/EC"
                     }
                 },
-                "note": "Italy transposed the EAA via D.Lgs. 27 May 2022, n. 82 (in force 28 June 2025). Authority split: AgID supervises digital services (websites, e-commerce, banking, transport, electronic communications, e-books) under art. 21; MIMIT supervises products; AGCOM supervises only audiovisual media services under art. 31 D.Lgs. 208/2021. The complaint mechanism (any party can file a non-compliance report via AgID's portal) is NOT new — it was established by Legge n. 4/2004 (Legge Stanca) and D.Lgs. 82/2022. Two 2026 AgID acts further the framework: (1) Delibera n. 38/2026 (4 March 2026, in force 24 March 2026 via Gazzetta Ufficiale) — Linee Guida sull'accessibilità dei servizi digitali, structured checklists for websites/web apps, documents/office files, and mobile apps, based on EN 301 549 V3.2.1 + WCAG 2.1 AA; shifts the compliance perspective from individual web pages to entire digital services. (2) Delibera n. 84/2026 (15 May 2026, GU 23 May 2026) — Regolamento sulle procedure di accertamento delle violazioni e applicazione delle sanzioni; codifies the pre-istruttoria phase (notification → response window → remediation period → sanctioning proceedings only on persistent non-compliance). Mandatory for operators in: e-commerce, banking and financial services, transport, electronic communications, audiovisual media services, e-books. Guideline source: https://www.agid.gov.it/sites/agid/files/2026-03/Linee_Guida_accessibilit%C3%A0_dei_servizi_(EAA).pdf"
+                "note": "Italy transposed the EAA via D.Lgs. 27 May 2022, n. 82 (in force 28 June 2025). Authority split: AgID supervises digital services (websites, e-commerce, banking, transport, electronic communications, e-books) under art. 21; MIMIT supervises products; AGCOM supervises only audiovisual media services under art. 31 D.Lgs. 208/2021. The complaint mechanism (any party can file a non-compliance report via AgID's portal) is NOT new — it was established by Legge n. 4/2004 (Legge Stanca) and D.Lgs. 82/2022. Two 2026 AgID acts further the framework: (1) Determinazione n. 38 del 4 marzo 2026 (4 March 2026, in force 24 March 2026 via Gazzetta Ufficiale) — Linee Guida sull'accessibilità dei servizi digitali, structured checklists for websites/web apps, documents/office files, and mobile apps, based on EN 301 549 V3.2.1 + WCAG 2.1 AA; shifts the compliance perspective from individual web pages to entire digital services. (2) Determinazione n. 84 del 15 maggio 2026 (15 May 2026, GU 23 May 2026) — Regolamento sulle procedure di accertamento delle violazioni e applicazione delle sanzioni; codifies the pre-istruttoria phase (notification → response window → remediation period → sanctioning proceedings only on persistent non-compliance). Mandatory for operators in: e-commerce, banking and financial services, transport, electronic communications, audiovisual media services, e-books. Guideline source: https://www.agid.gov.it/sites/agid/files/2026-03/Linee_Guida_accessibilit%C3%A0_dei_servizi_(EAA).pdf"
             }
         ],
         "PT": [

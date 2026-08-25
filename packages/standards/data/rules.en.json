@@ -2902,7 +2902,7 @@
         "en301549Title": "Info and relationships",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "9 § (Struktur och relationer)",
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level A required",
         "remediation": {
             "description": "The page must have exactly one 'main' landmark.",
             "technicalGuidance": "Use the <main> element once per page to identify the main content. Avoid having multiple <main> without unique labels, or missing it entirely.",
@@ -2975,7 +2975,7 @@
         "en301549Title": "Info and relationships",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "9 § (Struktur och relationer)",
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level A required",
         "remediation": {
             "description": "The page must have a level 1 heading (<h1>).",
             "technicalGuidance": "Ensure there is exactly one <h1> describing the page's unique content.",
@@ -3047,7 +3047,7 @@
         "en301549Title": "Info and relationships",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "9 § (Struktur och relationer)",
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level A required",
         "remediation": {
             "description": "Headings must follow a logical order (h1 -> h2 -> h3).",
             "technicalGuidance": "Do not skip heading levels (e.g. directly from h1 to h3).",
@@ -3118,7 +3118,7 @@
         "en301549Title": "Info and relationships",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "9 § (Struktur och relationer)",
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level A required",
         "remediation": {
             "description": "The banner (<header>) must be at the top level.",
             "technicalGuidance": "Do not place <header> inside another landmark if it is the page's main banner.",
@@ -3189,7 +3189,7 @@
         "en301549Title": "Info and relationships",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "9 § (Struktur och relationer)",
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level A required",
         "remediation": {
             "description": "The page must have only one 'banner' landmark (usually <header>).",
             "technicalGuidance": "Ensure you only have one <header> at the top level.",
@@ -3260,7 +3260,7 @@
         "en301549Title": "Info and relationships",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "9 § (Struktur och relationer)",
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level A required",
         "remediation": {
             "description": "Landmarks must have unique roles or labels.",
             "technicalGuidance": "If you have multiple <nav> elements, give them unique 'aria-label' (e.g., 'Main Menu', 'Footer Menu').",
@@ -3331,7 +3331,7 @@
         "en301549Title": "Info and relationships",
         "en301549Chapter": 9,
         "dosLagenApplies": true,
-        "dosLagenReference": "9 § (Struktur och relationer)",
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level A required",
         "remediation": {
             "description": "All content on the page must be contained within landmarks (regions).",
             "technicalGuidance": "Ensure all content is inside <main>, <header>, <nav>, <footer>, or <aside>.",

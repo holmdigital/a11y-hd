@@ -46,7 +46,7 @@ That is the whole loop: point it at a URL, get back violations, the regulation e
 - 🇳🇱 **Digitoegankelijk** (Netherlands)
 - 🇩🇪 **BITV 2.0** (Germany)
 - 🇫🇷 **RGAA** (France)
-- 🇪🇸 **UNE 139803** (Spain)
+- 🇪🇸 **Real Decreto 1112/2018** (Spain)
 - 🇮🇹 **Legge Stanca** (Italy)
 - 🇵🇹 **DL 83/2018** (Portugal)
 - 🇵🇱 **Ustawa o dostępności cyfrowej** (Poland)
@@ -140,7 +140,7 @@ import { getEN301549Mapping, getNationalLawByFramework, getEnforcementBody } fro
 
 // WCAG → EN 301 549 → Swedish legal context
 getEN301549Mapping('1.4.3', 'sv');
-// { wcagCriteria: "1.4.3", en301549Criteria: "9.1.4.3", dosLagenReference: "Lag 2018:1937 §7..." }
+// { wcagCriteria: "1.4.3", en301549Criteria: "9.1.4.3", dosLagenReference: "Lag 2018:1937 10 §..." }
 
 // National law by sector (WAD = public, EAA = private, DDA = Australia)
 getNationalLawByFramework('EAA', 'DE');
