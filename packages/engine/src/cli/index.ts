@@ -18,6 +18,7 @@ import { setLanguage, t } from '../i18n';
 import type { EnrichedReport } from '@holmdigital/standards';
 import { isPlainLanguageSupported } from '../reporting/plain-language-support';
 import { needsReviewOf, violationsOf } from '../reporting/needs-review';
+import { klarsprakLegalLine } from '../reporting/legal-line';
 import { sendToCloud, CloudConfig } from './cloud-client';
 import type { NoScriptResult } from '../core/noscript-check';
 
@@ -326,6 +327,11 @@ program
                         id: r.ruleId,
                         impact: r.holmdigitalInsight.diggRisk,
                         description: r.remediation.description,
+                        // Lagrummet exponeras i den publika widgeten (Intern #29) —
+                        // ett fält, inte hela regelobjektet. Samma korta 3-fals-
+                        // klarspråk som --plain, annars felmärks WCAG 2.2-fynden som
+                        // lagkrav i widgeten (Karins beslut 2026-08-25).
+                        legalBasis: klarsprakLegalLine(r.dosLagenReference),
                         // Plain-language (klarspråk) fields, present when the rule
                         // is covered; undefined values drop out of the JSON.
                         headline: r.plainLanguage?.headline,

@@ -6,6 +6,7 @@ import { generateBadgeUrl } from './badge-generator';
 import { t, getCurrentLang } from '../i18n';
 import { groupReportsByRule, impactBreakdown } from './plain-group';
 import { needsReviewOf, violationsOf } from './needs-review';
+import { klarsprakLegalLine } from './legal-line';
 import { languageDisplayName } from './plain-language-support';
 import type { EnrichedReport, BusinessImpactLevel } from '@holmdigital/standards';
 
@@ -563,6 +564,12 @@ ${sortedGroups.map((group) => {
         ? `${escapeHtml(pl.headline)} <span class="issue-rule-ref">(${escapeHtml(report.ruleId)})</span>`
         : escapeHtml(report.ruleId);
 
+    // Intern #29: lagrummet per fynd (Junos lydelse). Samma rad som --plain, får
+    // inte glida isär. Endast sv — Juno godkände svensk lydelse.
+    const legalHtml = isSwedish
+        ? `\n    <p class="issue-legal">${escapeHtml(klarsprakLegalLine(report.dosLagenReference))}</p>`
+        : '';
+
     if (pl) {
         return `  <li class="issue-item ${cardClass}">
     <span class="badge ${badgeClass}">${badgeText}</span>
@@ -572,7 +579,7 @@ ${sortedGroups.map((group) => {
       <dt>${t('plain.who_is_affected')}</dt><dd>${escapeHtml(pl.whoIsAffected)}</dd>
       <dt>${t('plain.business_impact')}</dt><dd>${escapeHtml(pl.businessImpact)}</dd>
       <dt>${t('plain.how_to_fix')}</dt><dd>${escapeHtml(pl.howToFix)}</dd>
-    </dl>
+    </dl>${legalHtml}
   </li>`;
     } else {
         // KRAV 3-short: don't leak axe-core's raw English help into a Swedish
@@ -581,7 +588,7 @@ ${sortedGroups.map((group) => {
         return `  <li class="issue-item ${cardClass}">
     <span class="badge ${badgeClass}">${badgeText}</span>
     <strong class="issue-id">${headingHtml}${occurrences}</strong>
-    <p class="issue-fallback"><span class="fallback-framing">${escapeHtml(t('plain.fallback_framing'))}</span>${rawDetail}</p>
+    <p class="issue-fallback"><span class="fallback-framing">${escapeHtml(t('plain.fallback_framing'))}</span>${rawDetail}</p>${legalHtml}
   </li>`;
     }
 }).join('\n')}
@@ -818,6 +825,13 @@ ${needsReview.map((report) => {
     .fallback-framing {
       font-weight: 600;
       color: #0f172a;
+    }
+    /* ---- Legal basis per finding (Intern #29) ---- */
+    .issue-legal {
+      font-size: 0.85rem;
+      color: #475569;
+      margin: 0.4rem 0 0;
+      font-weight: 600;
     }
 
     /* ---- Closing line ---- */

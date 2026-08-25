@@ -4,6 +4,7 @@ import { ScanResult } from '../core/regulatory-scanner';
 import { t, setLanguage, getCurrentLang } from '../i18n';
 import { groupReportsByRule, impactBreakdown } from './plain-group';
 import { needsReviewOf, violationsOf } from './needs-review';
+import { klarsprakLegalLine } from './legal-line';
 import { languageDisplayName } from './plain-language-support';
 
 /**
@@ -164,6 +165,12 @@ export function renderPlainReport(result: ScanResult, lang: string = 'en', plain
             // Other locales keep the raw technical description (an English
             // report shows English detail; full localisation is KRAV 3 long-term).
             console.log(`   ${t('plain.fallback_framing')} ${report.remediation.description}`);
+        }
+
+        // Intern #29: lagrummet per fynd (Junos lydelse, svensk klarspråk). Samma
+        // rad som klarspråks-HTML. Endast sv — Juno godkände svensk lydelse.
+        if (isSwedish) {
+            console.log(`   ${klarsprakLegalLine(report.dosLagenReference)}`);
         }
 
         console.log('');

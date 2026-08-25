@@ -204,6 +204,33 @@ describe('enrichResultsLight (klarspråk on the light path)', () => {
         expect(reports[7].plainLanguage).toBeDefined();
         expect(reports[8].plainLanguage).toBeUndefined();
     });
+
+    // Intern #29: light-läget måste bära lagrummet, inte tom sträng — det är ytan
+    // den publika widgeten matar och där #28:s lagrumsrättelse ska synas.
+    it('fills dosLagenReference and en301549Criteria for a mapped rule (never empty)', async () => {
+        setLanguage('sv');
+        const reports = await enrichLight(mockAxeOutput);
+        setLanguage('en');
+
+        expect(reports[0].dosLagenReference.length).toBeGreaterThan(0);
+        expect(reports[0].dosLagenReference).not.toBe('');
+        expect(reports[0].en301549Criteria.length).toBeGreaterThan(0);
+        expect(reports[0].en301549Criteria).not.toBe('');
+    });
+
+    it('says the legal basis is unknown for an unmapped rule — never empty, never a fake reference', async () => {
+        setLanguage('sv');
+        const reportsSv = await enrichLight(mockAxeOutputNoMatch);
+        setLanguage('en');
+
+        expect(reportsSv[0].dosLagenReference).toBe('Lagrum okänt');
+        expect(reportsSv[0].dosLagenReference).not.toBe('');
+        // Never a "Rekommendation"/"Kräver manuell bedömning"-style phrase in the law slot.
+        expect(reportsSv[0].dosLagenReference).not.toMatch(/Rekommendation|manuell/i);
+
+        const reportsEn = await enrichLight(mockAxeOutputNoMatch);
+        expect(reportsEn[0].dosLagenReference).toBe('Legal basis unknown');
+    });
 });
 
 describe('ScannerOptions.waitForHydrationMs', () => {
