@@ -149,12 +149,12 @@ const sectors = getSectorAuthorities('SE');
 | 🇳🇱 NL | Digitoegankelijk | Warenwet | 900k EUR |
 | 🇩🇪 DE | BITV 2.0 | BFSG | 500k EUR |
 | 🇫🇷 FR | RGAA | - | 300k EUR |
-| 🇪🇸 ES | Real Decreto | - | 1M EUR |
+| 🇪🇸 ES | Real Decreto 1112/2018 | - | 1M EUR |
 | 🇮🇪 IE | S.I. 358/2020 | - | 60k EUR |
 | 🇳🇴 NO | IKT-forskrift | - | Daily fines |
 | 🇫🇮 FI | 306/2019 | EAA | Vite |
 | 🇩🇰 DK | Tilgængelighed | - | Fines |
-| 🇮🇹 IT | Legge 4/2004 | D.Lgs. 82/2024 | Up to 5% of turnover |
+| 🇮🇹 IT | Legge 4/2004 | D.Lgs. 82/2022 | Up to 5% of turnover |
 | 🇵🇹 PT | DL 83/2018 | DL 101-D/2023 | 44k EUR |
 | 🇵🇱 PL | Ustawa o dostępności cyfrowej | Ustawa o dostępności produktów i usług | 100k PLN |
 | 🇬🇧 GB | PSBAR | - | Unlawful Act Notice |
