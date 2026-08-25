@@ -94,6 +94,68 @@ interface StatementTemplate {
     sections: Array<{ id?: string; title: string; content: string }>;
 }
 
+/**
+ * Language-keyed fallback for the national-law slot when the data has no naming law.
+ * Intern #31: a statement must NEVER render an empty law reference. When a country has
+ * no matching national law (e.g. an EAA transposition not yet in the data, or a country
+ * that legitimately has no EAA post), the "complies with …" sentence is reworded to be
+ * true WITHOUT naming a law — never by inventing one and never by claiming an EU
+ * directive is a country's national law. Naming the real law is #32 (Juno's wording).
+ */
+const NATIONAL_LAW_FALLBACK: Record<string, string> = {
+    en: 'applicable accessibility requirements',
+    sv: 'gällande tillgänglighetskrav',
+    no: 'gjeldende tilgjengelighetskrav',
+    da: 'gældende tilgængelighedskrav',
+    fi: 'sovellettavat saavutettavuusvaatimukset',
+    de: 'die geltenden Barrierefreiheitsanforderungen',
+    nl: 'de geldende toegankelijkheidseisen',
+    fr: "la réglementation d'accessibilité applicable",
+    es: 'los requisitos de accesibilidad aplicables',
+    it: 'i requisiti di accessibilità applicabili',
+    pt: 'os requisitos de acessibilidade aplicáveis',
+    pl: 'obowiązujące wymagania dostępności',
+};
+
+/**
+ * Resolve the human-readable national-law reference used in a statement's
+ * "complies with …" sentence. Kept separate so it can be tested across every
+ * country × sector (Intern #31). Never returns an empty string.
+ */
+export function resolveNationalLawReference(
+    country: Country,
+    sector: 'public' | 'private',
+    lang: string = 'en'
+): string {
+    if (country === 'AU') {
+        const ddaLaw = getNationalLawByFramework('DDA', 'AU');
+        return ddaLaw ? `${ddaLaw.fullName}` : 'Disability Discrimination Act 1992 (Cth)';
+    }
+    if (country === 'US') {
+        // US has two ADA laws split by scope (Title II public / Title III private)
+        // plus Section 508 as a parallel federal framework, plus HHS Section 504.
+        const usLaws = getNationalLaws('US');
+        const adaLaw = usLaws.find(l => l.euFramework === 'ADA' && l.scope === sector);
+        if (adaLaw) {
+            if (sector === 'public') {
+                const s508 = usLaws.find(l => l.id === 'us-508');
+                return s508
+                    ? `${adaLaw.fullName} (${adaLaw.law}) & ${s508.fullName} (${s508.law})`
+                    : `${adaLaw.fullName} (${adaLaw.law})`;
+            }
+            const hhs504 = usLaws.find(l => l.euFramework === 'REHAB' && l.scope === 'private');
+            return hhs504
+                ? `${adaLaw.fullName} (${adaLaw.law}) & ${hhs504.fullName} (${hhs504.law})`
+                : `${adaLaw.fullName} (${adaLaw.law})`;
+        }
+    }
+    const law = getNationalLawByFramework(sector === 'private' ? 'EAA' : 'WAD', country);
+    if (law) return `${law.fullName} (${law.law})`;
+    // Intern #31: never empty — reword the sentence to be true without a law name.
+    const langKey = lang.split('-')[0];
+    return NATIONAL_LAW_FALLBACK[langKey] ?? NATIONAL_LAW_FALLBACK.en;
+}
+
 export async function generateStatementContent(
     result: ScanResult,
     lang: string = 'en',
@@ -320,36 +382,7 @@ export async function generateStatementContent(
                 }
                 return getEnforcementBody(country, sector);
             })(),
-            '{<national_law>}': (() => {
-                if (country === 'AU') {
-                    const ddaLaw = getNationalLawByFramework('DDA', 'AU');
-                    return ddaLaw ? `${ddaLaw.fullName}` : 'Disability Discrimination Act 1992 (Cth)';
-                }
-                if (country === 'US') {
-                    // US has two ADA laws split by scope (Title II public / Title III private)
-                    // plus Section 508 as a parallel federal-agency framework, plus HHS
-                    // Section 504 (REHAB) for healthcare/HHS-funded private organisations.
-                    const usLaws = getNationalLaws('US');
-                    const adaLaw = usLaws.find(l => l.euFramework === 'ADA' && l.scope === sector);
-                    if (adaLaw) {
-                        if (sector === 'public') {
-                            // State/local: include Section 508 as parallel reference
-                            const s508 = usLaws.find(l => l.id === 'us-508');
-                            return s508
-                                ? `${adaLaw.fullName} (${adaLaw.law}) & ${s508.fullName} (${s508.law})`
-                                : `${adaLaw.fullName} (${adaLaw.law})`;
-                        }
-                        // Private sector: append Section 504 (HHS) as parallel reference for
-                        // HHS-funded organisations (hospitals, FQHCs, research, health plans).
-                        const hhs504 = usLaws.find(l => l.euFramework === 'REHAB' && l.scope === 'private');
-                        return hhs504
-                            ? `${adaLaw.fullName} (${adaLaw.law}) & ${hhs504.fullName} (${hhs504.law})`
-                            : `${adaLaw.fullName} (${adaLaw.law})`;
-                    }
-                }
-                const law = getNationalLawByFramework(sector === 'private' ? 'EAA' : 'WAD', country);
-                return law ? `${law.fullName} (${law.law})` : '';
-            })(),
+            '{<national_law>}': resolveNationalLawReference(country, sector, lang),
             '{<ahrc_url>}': 'https://www.humanrights.gov.au/complaints',
             '{<brister>}': nonComplianceItems.length > 0 ? nonComplianceItems.map(item => `* ${item}`).join('\n') : (lang === 'sv' ? 'Inga kända brister.' : 'No known issues.'),
             '{<puutteet>}': nonComplianceItems.length > 0 ? nonComplianceItems.map(item => `* ${item}`).join('\n') : (lang === 'fi' ? 'Ei tiedossa olevia puutteita.' : 'No known issues.'),
