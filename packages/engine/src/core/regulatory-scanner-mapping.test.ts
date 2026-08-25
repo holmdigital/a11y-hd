@@ -40,7 +40,7 @@ describe('mapping every axe rule — zero wrong criterion (Intern #30)', () => {
         for (const { ruleId, tags } of axeRules) {
             // Mirror the engine: direct id match first, else criterion fallback.
             const direct = generateRegulatoryReport(ruleId, LANG);
-            const mappedRuleId = direct ? ruleId : selectMappedRuleId(tags, rules);
+            const mappedRuleId = direct ? ruleId : selectMappedRuleId(ruleId, tags, rules);
             if (!mappedRuleId) continue; // honest "no mapping" branch
             const report = generateRegulatoryReport(mappedRuleId, LANG);
             if (!report) continue;
@@ -60,7 +60,7 @@ describe('mapping every axe rule — zero wrong criterion (Intern #30)', () => {
             const axeRule = axeRules.find(r => r.ruleId === ruleId);
             expect(axeRule, `axe rule ${ruleId} not found`).toBeTruthy();
             const tags = axeRule!.tags;
-            const mappedRuleId = generateRegulatoryReport(ruleId, LANG) ? ruleId : selectMappedRuleId(tags, rules);
+            const mappedRuleId = generateRegulatoryReport(ruleId, LANG) ? ruleId : selectMappedRuleId(ruleId, tags, rules);
             if (mappedRuleId) {
                 const report = generateRegulatoryReport(mappedRuleId, LANG)!;
                 expect(mappedRuleId).not.toBe('color-contrast');
@@ -71,4 +71,16 @@ describe('mapping every axe rule — zero wrong criterion (Intern #30)', () => {
             // If unmapped, that's the honest branch — also acceptable (never mislabelled).
         }
     );
+
+    // Karin's tiebreak ratification (2026-08-25): link-name and area-alt map to
+    // 4.1.2 (Name, Role, Value), not 2.4.4 — the failure is a missing accessible name.
+    it.each(['link-name', 'area-alt'])('%s maps to 4.1.2 (Name, Role, Value), not 2.4.4', (ruleId) => {
+        const axeRule = axeRules.find(r => r.ruleId === ruleId);
+        expect(axeRule, `axe rule ${ruleId} not found`).toBeTruthy();
+        // Sanity: axe declares both 2.4.4 and 4.1.2 for these.
+        expect(criteriaFromTags(axeRule!.tags)).toEqual(expect.arrayContaining(['2.4.4', '4.1.2']));
+        const mappedRuleId = generateRegulatoryReport(ruleId, LANG) ? ruleId : selectMappedRuleId(ruleId, axeRule!.tags, rules);
+        const report = generateRegulatoryReport(mappedRuleId!, LANG)!;
+        expect(report.wcagCriteria).toBe('4.1.2');
+    });
 });

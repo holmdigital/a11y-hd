@@ -47,15 +47,32 @@ function compareCriteria(a: string, b: string): number {
 }
 
 /**
+ * Explicit criterion overrides for multi-criterion axe rules where the base rule
+ * (lowest criterion) would pick the wrong one (Intern #30, ratified by Karin
+ * 2026-08-25). For `link-name` and `area-alt` the actual failure is a missing
+ * accessible NAME, so 4.1.2 (Name, Role, Value) wins over 2.4.4 (Link Purpose).
+ */
+const CRITERION_OVERRIDE: Record<string, string> = {
+    'link-name': '4.1.2',
+    'area-alt': '4.1.2',
+};
+
+/**
  * Resolve which of our rules an axe violation maps to, by criterion (Intern #30).
  * Returns the ruleId of a rule whose `wcagCriteria` equals one of the criteria the
  * axe rule's own tags declare, or null when we map none (→ the honest "no specific
- * mapping" branch). Tiebreak when an axe rule declares several mapped criteria (e.g.
- * `area-alt` = 2.4.4 + 4.1.2): the lowest criterion — the earliest WCAG principle —
- * which is deterministic and stable across data changes.
+ * mapping" branch). Tiebreak when an axe rule declares several mapped criteria:
+ * lowest criterion wins (earliest WCAG principle, deterministic), except the
+ * `CRITERION_OVERRIDE` entries which map explicitly to 4.1.2.
  */
-export function selectMappedRuleId(tags: string[], rules: ConvergenceRule[]): string | null {
-    const matched = criteriaFromTags(tags)
+export function selectMappedRuleId(ruleId: string, tags: string[], rules: ConvergenceRule[]): string | null {
+    const criteria = criteriaFromTags(tags);
+    const override = CRITERION_OVERRIDE[ruleId];
+    if (override && criteria.includes(override)) {
+        const r = rules.find(rr => rr.wcagCriteria === override);
+        if (r) return r.ruleId;
+    }
+    const matched = criteria
         .map(c => rules.find(r => r.wcagCriteria === c))
         .filter((r): r is ConvergenceRule => !!r);
     if (matched.length === 0) return null;
@@ -510,7 +527,7 @@ export class RegulatoryScanner {
             //    på delad tagg (Intern #30). Den gamla taggmatchningen tog [0] i
             //    filordning, så color-contrast vann allt som bar en nivåtagg.
             if (!report) {
-                const ruleId = selectMappedRuleId(violation.tags, allRules);
+                const ruleId = selectMappedRuleId(violation.id, violation.tags, allRules);
                 if (ruleId) {
                     report = generateRegulatoryReport(ruleId, lang);
                 }
