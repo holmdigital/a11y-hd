@@ -58,22 +58,48 @@ const CRITERION_OVERRIDE: Record<string, string> = {
 };
 
 /**
- * Resolve which of our rules an axe violation maps to, by criterion (Intern #30).
- * Returns the ruleId of a rule whose `wcagCriteria` equals one of the criteria the
- * axe rule's own tags declare, or null when we map none (→ the honest "no specific
- * mapping" branch). Tiebreak when an axe rule declares several mapped criteria:
- * lowest criterion wins (earliest WCAG principle, deterministic), except the
- * `CRITERION_OVERRIDE` entries which map explicitly to 4.1.2.
+ * The subset of our ruleIds that ARE axe rule ids (Intern #27 K3). These "self-
+ * matching" rules are always reached in step 1 (direct id match); they must never be
+ * chosen as a tag fallback, or e.g. `list` (1.3.1) could be labelled `landmark-one-main`
+ * depending on file order. Derived from axe's own rule set, not a hardcoded table.
  */
-export function selectMappedRuleId(ruleId: string, tags: string[], rules: ConvergenceRule[]): string | null {
+export function getSelfMatchingRuleIds(rules: ConvergenceRule[]): Set<string> {
+    const axeIds = new Set((axeCore.getRules() as Array<{ ruleId: string }>).map(r => r.ruleId));
+    return new Set(rules.filter(r => axeIds.has(r.ruleId)).map(r => r.ruleId));
+}
+
+/**
+ * Resolve which of our rules an axe violation maps to, by criterion (Intern #30/#27).
+ * Returns the ruleId of a rule whose `wcagCriteria` equals one of the criteria the axe
+ * rule's own tags declare, or null when we map none (→ the honest "no specific mapping"
+ * branch). Tiebreak when an axe rule declares several criteria: lowest criterion wins
+ * (earliest WCAG principle, deterministic), except `CRITERION_OVERRIDE` (→ 4.1.2).
+ *
+ * K3 (Intern #27): among the rules holding a criterion, prefer a GENERAL rule over a
+ * self-matching one (a rule that owns an axe id), so the choice never depends on file
+ * order. A self-matching rule is used only when it alone holds the criterion — hardening
+ * so a future axe rule on e.g. `wcag143` still maps to `color-contrast` instead of
+ * silently falling to "no match".
+ */
+export function selectMappedRuleId(
+    ruleId: string,
+    tags: string[],
+    rules: ConvergenceRule[],
+    selfMatchingIds: Set<string> = new Set()
+): string | null {
+    const ruleForCriterion = (c: string): ConvergenceRule | undefined => {
+        const holders = rules.filter(r => r.wcagCriteria === c);
+        return holders.find(r => !selfMatchingIds.has(r.ruleId)) ?? holders[0];
+    };
+
     const criteria = criteriaFromTags(tags);
     const override = CRITERION_OVERRIDE[ruleId];
     if (override && criteria.includes(override)) {
-        const r = rules.find(rr => rr.wcagCriteria === override);
+        const r = ruleForCriterion(override);
         if (r) return r.ruleId;
     }
     const matched = criteria
-        .map(c => rules.find(r => r.wcagCriteria === c))
+        .map(c => ruleForCriterion(c))
         .filter((r): r is ConvergenceRule => !!r);
     if (matched.length === 0) return null;
     matched.sort((a, b) => compareCriteria(a.wcagCriteria, b.wcagCriteria));
@@ -464,6 +490,7 @@ export class RegulatoryScanner {
         const { getCurrentLang } = await import('../i18n');
         const lang = getCurrentLang();
         const allRules = getAllConvergenceRules(lang);
+        const selfMatchingIds = getSelfMatchingRuleIds(allRules);
 
         return axeResults.violations.map((violation, index) => {
             const impact = (violation as unknown as { impact?: string }).impact || 'moderate';
@@ -475,7 +502,7 @@ export class RegulatoryScanner {
             // möter, och lagrumsrättelsen i #28 ska synas där.
             let report = generateRegulatoryReport(violation.id, lang);
             if (!report) {
-                const ruleId = selectMappedRuleId(violation.id, violation.tags, allRules);
+                const ruleId = selectMappedRuleId(violation.id, violation.tags, allRules, selfMatchingIds);
                 if (ruleId) report = generateRegulatoryReport(ruleId, lang);
             }
 
@@ -527,6 +554,7 @@ export class RegulatoryScanner {
         const { getCurrentLang } = await import('../i18n');
         const lang = getCurrentLang();
         const allRules = getAllConvergenceRules(lang);
+        const selfMatchingIds = getSelfMatchingRuleIds(allRules);
 
         for (const violation of axeResults.violations) {
             // 1. Försök matcha direkt på Rule ID (mest exakt)
@@ -534,10 +562,10 @@ export class RegulatoryScanner {
             let report: RegulatoryReport | null = generateRegulatoryReport(violation.id, lang);
 
             // 2. Fallback: matcha på WCAG-KRITERIUM ur axes egna wcagNNN-taggar, inte
-            //    på delad tagg (Intern #30). Den gamla taggmatchningen tog [0] i
-            //    filordning, så color-contrast vann allt som bar en nivåtagg.
+            //    på delad tagg (Intern #30/#27). Självmatchande regler föredras bort
+            //    (K3) så valet aldrig beror på filordning.
             if (!report) {
-                const ruleId = selectMappedRuleId(violation.id, violation.tags, allRules);
+                const ruleId = selectMappedRuleId(violation.id, violation.tags, allRules, selfMatchingIds);
                 if (ruleId) {
                     report = generateRegulatoryReport(ruleId, lang);
                 }
