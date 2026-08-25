@@ -326,6 +326,9 @@ program
                         id: r.ruleId,
                         impact: r.holmdigitalInsight.diggRisk,
                         description: r.remediation.description,
+                        // Lagrummet exponeras i den publika widgeten (Intern #29) —
+                        // ett fält, inte hela regelobjektet. Håller light-JSON kompakt.
+                        legalBasis: r.dosLagenReference,
                         // Plain-language (klarspråk) fields, present when the rule
                         // is covered; undefined values drop out of the JSON.
                         headline: r.plainLanguage?.headline,

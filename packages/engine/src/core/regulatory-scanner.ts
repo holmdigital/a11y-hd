@@ -460,27 +460,37 @@ export class RegulatoryScanner {
         };
 
         const KLARSPRAK_TOP_N = 8;
-        const { generateRegulatoryReport } = await import('@holmdigital/standards');
+        const { generateRegulatoryReport, getAllConvergenceRules } = await import('@holmdigital/standards');
         const { getCurrentLang } = await import('../i18n');
         const lang = getCurrentLang();
+        const allRules = getAllConvergenceRules(lang);
 
         return axeResults.violations.map((violation, index) => {
             const impact = (violation as unknown as { impact?: string }).impact || 'moderate';
             const risk = impactToRisk[impact] || 'medium';
 
-            // Klarspråk only for the top-N findings (undefined for the rest, and
-            // for unmapped best-practice rules generateRegulatoryReport returns null).
-            const plainLanguage = index < KLARSPRAK_TOP_N
-                ? generateRegulatoryReport(violation.id, lang)?.plainLanguage
-                : undefined;
+            // Lös rapporten som i enrichResults (direkt-id → kriterie-fallback,
+            // Intern #30) så light-läget bär rätt lagrum och en301549 (Intern #29),
+            // inte tom sträng. Den publika widgeten är ytan flest okända besökare
+            // möter, och lagrumsrättelsen i #28 ska synas där.
+            let report = generateRegulatoryReport(violation.id, lang);
+            if (!report) {
+                const ruleId = selectMappedRuleId(violation.id, violation.tags, allRules);
+                if (ruleId) report = generateRegulatoryReport(ruleId, lang);
+            }
+
+            // Klarspråk only for the top-N findings (undefined for the rest).
+            const plainLanguage = index < KLARSPRAK_TOP_N ? report?.plainLanguage : undefined;
 
             return {
                 ruleId: violation.id,
-                // Intern #30: härled ett riktigt kriterium ur wcagNNN-taggarna —
+                // Intern #30: rätt kriterium ur rapporten, annars ur wcagNNN-taggarna —
                 // aldrig en nivåbeteckning som "wcag2a".
-                wcagCriteria: criteriaFromTags(violation.tags)[0] || (violation.tags.includes('best-practice') ? 'Best Practice' : 'Unknown'),
-                en301549Criteria: '',
-                dosLagenReference: '',
+                wcagCriteria: report?.wcagCriteria || criteriaFromTags(violation.tags)[0] || (violation.tags.includes('best-practice') ? 'Best Practice' : 'Unknown'),
+                // Intern #29: fyll från rapporten. Omappat fynd → okänt lagrum, aldrig
+                // tom sträng och aldrig en fras som utger sig för att vara ett lagrum.
+                en301549Criteria: report?.en301549Criteria || 'Unknown',
+                dosLagenReference: report?.dosLagenReference || (lang === 'sv' ? 'Lagrum okänt' : 'Legal basis unknown'),
                 diggRisk: risk,
                 eaaImpact: risk,
                 plainLanguage,
