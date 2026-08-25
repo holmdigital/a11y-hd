@@ -5,12 +5,80 @@
 
 import axeCore from 'axe-core';
 import puppeteer, { Browser, Page } from 'puppeteer';
-import type { RegulatoryReport, EnrichedReport } from '@holmdigital/standards';
+import type { RegulatoryReport, EnrichedReport, ConvergenceRule } from '@holmdigital/standards';
 import { VirtualDOMBuilder } from './virtual-dom';
 import { HtmlValidator, ValidationResult } from './html-validator';
 import { evaluateNoScriptCoverage, probeWithoutJavaScript, NoScriptResult } from './noscript-check';
 
 import { readFileSync } from 'node:fs';
+
+/**
+ * Intern #30: pick the mapped rule for an axe violation by its WCAG CRITERION,
+ * not by any shared tag. axe carries two kinds of `wcag*` tag:
+ *   - criterion tags — pure digits, e.g. `wcag111` = 1.1.1, `wcag258` = 2.5.8,
+ *     `wcag1410` = 1.4.10 (principle.guideline.criterion),
+ *   - level tags — carry letters, e.g. `wcag2a`, `wcag21aa` (NOT a criterion).
+ * The old fallback matched ANY shared tag and took `[0]` (file order), so
+ * `color-contrast` (which bears `wcag2a`/`wcag21aa`) won every rule carrying a
+ * level tag — an image with no alt was reported as a contrast failure.
+ */
+export function wcagTagToCriterion(tag: string): string | null {
+    const m = /^wcag(\d+)$/.exec(tag);
+    if (!m) return null;                       // level tags (wcag2a, …) carry letters
+    const d = m[1];
+    if (d.length < 3) return null;             // need principle+guideline+criterion
+    return `${d[0]}.${d[1]}.${d.slice(2)}`;
+}
+
+/** The WCAG criteria (dotted) that an axe rule's own tags declare, in tag order. */
+export function criteriaFromTags(tags: string[]): string[] {
+    return tags.map(wcagTagToCriterion).filter((c): c is string => c !== null);
+}
+
+/** Compare dotted WCAG criteria numerically: 1.4.3 < 1.4.10 < 2.4.4. */
+function compareCriteria(a: string, b: string): number {
+    const pa = a.split('.').map(Number);
+    const pb = b.split('.').map(Number);
+    for (let i = 0; i < 3; i++) {
+        const diff = (pa[i] ?? 0) - (pb[i] ?? 0);
+        if (diff !== 0) return diff;
+    }
+    return 0;
+}
+
+/**
+ * Explicit criterion overrides for multi-criterion axe rules where the base rule
+ * (lowest criterion) would pick the wrong one (Intern #30, ratified by Karin
+ * 2026-08-25). For `link-name` and `area-alt` the actual failure is a missing
+ * accessible NAME, so 4.1.2 (Name, Role, Value) wins over 2.4.4 (Link Purpose).
+ */
+const CRITERION_OVERRIDE: Record<string, string> = {
+    'link-name': '4.1.2',
+    'area-alt': '4.1.2',
+};
+
+/**
+ * Resolve which of our rules an axe violation maps to, by criterion (Intern #30).
+ * Returns the ruleId of a rule whose `wcagCriteria` equals one of the criteria the
+ * axe rule's own tags declare, or null when we map none (→ the honest "no specific
+ * mapping" branch). Tiebreak when an axe rule declares several mapped criteria:
+ * lowest criterion wins (earliest WCAG principle, deterministic), except the
+ * `CRITERION_OVERRIDE` entries which map explicitly to 4.1.2.
+ */
+export function selectMappedRuleId(ruleId: string, tags: string[], rules: ConvergenceRule[]): string | null {
+    const criteria = criteriaFromTags(tags);
+    const override = CRITERION_OVERRIDE[ruleId];
+    if (override && criteria.includes(override)) {
+        const r = rules.find(rr => rr.wcagCriteria === override);
+        if (r) return r.ruleId;
+    }
+    const matched = criteria
+        .map(c => rules.find(r => r.wcagCriteria === c))
+        .filter((r): r is ConvergenceRule => !!r);
+    if (matched.length === 0) return null;
+    matched.sort((a, b) => compareCriteria(a.wcagCriteria, b.wcagCriteria));
+    return matched[0].ruleId;
+}
 
 /**
  * Minimal interface for serialized axe-core output from page.evaluate().
@@ -408,7 +476,9 @@ export class RegulatoryScanner {
 
             return {
                 ruleId: violation.id,
-                wcagCriteria: violation.tags.find(t => t.startsWith('wcag')) || (violation.tags.includes('best-practice') ? 'Best Practice' : 'Unknown'),
+                // Intern #30: härled ett riktigt kriterium ur wcagNNN-taggarna —
+                // aldrig en nivåbeteckning som "wcag2a".
+                wcagCriteria: criteriaFromTags(violation.tags)[0] || (violation.tags.includes('best-practice') ? 'Best Practice' : 'Unknown'),
                 en301549Criteria: '',
                 dosLagenReference: '',
                 diggRisk: risk,
@@ -443,20 +513,23 @@ export class RegulatoryScanner {
 
     private async enrichResults(axeResults: AxeScanOutput): Promise<EnrichedReport[]> {
         const reports: EnrichedReport[] = [];
-        const { searchRulesByTags, generateRegulatoryReport, getConvergenceRule } = await import('@holmdigital/standards');
+        const { generateRegulatoryReport, getConvergenceRule, getAllConvergenceRules } = await import('@holmdigital/standards');
         const { getCurrentLang } = await import('../i18n');
         const lang = getCurrentLang();
+        const allRules = getAllConvergenceRules(lang);
 
         for (const violation of axeResults.violations) {
             // 1. Försök matcha direkt på Rule ID (mest exakt)
             // Detta garanterar att 'page-has-heading-one' mappar till vår regel med samma ID
             let report: RegulatoryReport | null = generateRegulatoryReport(violation.id, lang);
 
-            // 2. Fallback: Sök via tags
+            // 2. Fallback: matcha på WCAG-KRITERIUM ur axes egna wcagNNN-taggar, inte
+            //    på delad tagg (Intern #30). Den gamla taggmatchningen tog [0] i
+            //    filordning, så color-contrast vann allt som bar en nivåtagg.
             if (!report) {
-                const matchingRules = searchRulesByTags(violation.tags, lang);
-                if (matchingRules.length > 0) {
-                    report = generateRegulatoryReport(matchingRules[0].ruleId, lang);
+                const ruleId = selectMappedRuleId(violation.id, violation.tags, allRules);
+                if (ruleId) {
+                    report = generateRegulatoryReport(ruleId, lang);
                 }
             }
 
@@ -610,7 +683,9 @@ export class RegulatoryScanner {
                 // Regel utan mappning: bär ändå posten som cantTell så inget tappas.
                 reports.push({
                     ruleId: item.id,
-                    wcagCriteria: item.tags.find(t => t.startsWith('wcag')) || 'Unknown',
+                    // Intern #30 (sidofynd): aldrig en nivåbeteckning som kriterium.
+                    // Rör inte enrichIncompletes mappnings-/needs-review-logik i övrigt.
+                    wcagCriteria: criteriaFromTags(item.tags)[0] || 'Unknown',
                     en301549Criteria: '',
                     dosLagenReference: '',
                     diggRisk: 'medium',
