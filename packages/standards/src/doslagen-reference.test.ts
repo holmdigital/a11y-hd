@@ -11,7 +11,6 @@ import rulesNl from '../data/rules.nl.json';
 import rulesEnGb from '../data/rules.en-gb.json';
 import rulesEnUs from '../data/rules.en-us.json';
 import rulesEnCa from '../data/rules.en-ca.json';
-import wcagToEn from '../data/wcag-to-en301549.json';
 import nationalLaws from '../data/legal/national-laws.json';
 
 /**
@@ -41,7 +40,6 @@ const ALL_DATA: Record<string, string> = {
     'rules.en-gb': JSON.stringify(rulesEnGb),
     'rules.en-us': JSON.stringify(rulesEnUs),
     'rules.en-ca': JSON.stringify(rulesEnCa),
-    'wcag-to-en301549': JSON.stringify(wcagToEn),
     'national-laws': JSON.stringify(nationalLaws),
 };
 
@@ -62,25 +60,13 @@ describe('Intern #28 — dosLagenReference lagrum', () => {
         }
     });
 
-    it('rules.sv bär Junos svenska 10 §-lydelse (28 nivå A, 17 nivå AA)', () => {
-        expect(count(ALL_DATA['rules.sv'], SV_A)).toBe(28); // 21 f.d. §7 + 7 f.d. 9 §
+    it('rules.sv bär Junos svenska 10 §-lydelse (21 nivå A, 17 nivå AA)', () => {
+        // 21 f.d. §7 (de 7 f.d. 9 § blev "Best Practice" i Intern #27, ej lagkrav).
+        expect(count(ALL_DATA['rules.sv'], SV_A)).toBe(21);
         expect(count(ALL_DATA['rules.sv'], SV_AA)).toBe(17);
     });
 
-    it('wcag-to-en301549 bär svensk 10 §-lydelse (28 A / 17 AA), inga neutrala mönster, ingen dubblett', () => {
-        // Filen är svensk rätt i dosLagenReference — inte språkneutral. Alla f.d.
-        // §7, 9 § och 100 § bär nu den svenska 10 §-lydelsen. Fördelningen 28/17
-        // är identisk med rules.sv och svår att träffa av misstag.
-        expect(count(ALL_DATA['wcag-to-en301549'], SV_A)).toBe(28);
-        expect(count(ALL_DATA['wcag-to-en301549'], SV_AA)).toBe(17);
-        expect(ALL_DATA['wcag-to-en301549']).not.toContain('WCAG 2.1 Level A required');
-        expect(ALL_DATA['wcag-to-en301549']).not.toContain('WCAG 2.1 Level AA required');
-        // Dubbletten av audio-description (den f.d. bogus "100 §"-posten) är
-        // borttagen — samma dedup som 2560b6f gjorde i rules.*.json.
-        expect(count(ALL_DATA['wcag-to-en301549'], '"ruleId":"audio-description"')).toBe(1);
-    });
-
-    it('en/da/fi: inga svenska strängar, de 7 f.d. 9 § bär filens neutrala EN-mönster', () => {
+    it('en/da/fi: inga svenska strängar', () => {
         for (const f of ['rules.en', 'rules.da', 'rules.fi']) {
             expect(ALL_DATA[f]).not.toContain('krävs');
             expect(ALL_DATA[f]).not.toContain('Struktur och relationer');
@@ -88,15 +74,17 @@ describe('Intern #28 — dosLagenReference lagrum', () => {
         }
     });
 
-    it('da och fi har samma A/AA-fördelning som no (28 A / 17 AA) efter rättelsen', () => {
+    it('da och fi har samma A/AA-fördelning som no (21 A / 17 AA) efter Best Practice-flytten', () => {
+        // 21, inte 28: de 7 f.d. 9 § blev "Best Practice" (Intern #27), utan EN-lagrum.
         for (const f of ['rules.da', 'rules.fi', 'rules.no']) {
-            expect(count(ALL_DATA[f], 'WCAG 2.1 Level A required')).toBe(28);
+            expect(count(ALL_DATA[f], 'WCAG 2.1 Level A required')).toBe(21);
             expect(count(ALL_DATA[f], 'WCAG 2.1 Level AA required')).toBe(17);
         }
     });
 
-    it('rules.es bär Junos RD 1112/2018-lydelse (28 nivå A, 17 nivå AA)', () => {
-        expect(count(ALL_DATA['rules.es'], ES_A)).toBe(28);
+    it('rules.es bär Junos RD 1112/2018-lydelse (21 nivå A, 17 nivå AA)', () => {
+        // 21, inte 28: de 7 f.d. 9 § blev "Best Practice" (Intern #27).
+        expect(count(ALL_DATA['rules.es'], ES_A)).toBe(21);
         expect(count(ALL_DATA['rules.es'], ES_AA)).toBe(17);
     });
 
