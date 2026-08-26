@@ -86,14 +86,24 @@ describe('KRAV-13 regression guards (Intern #27)', () => {
 });
 
 describe('KRAV-13 K3 hardening + K6 measurable outcome (Intern #27)', () => {
-    it('K3: the fallback never selects a self-matching rule when a general rule holds the criterion', () => {
-        // 1.3.1 is held by info-and-relationships + 7 self-matching landmark/heading rules.
-        const holders = rules.filter(r => r.wcagCriteria === '1.3.1');
-        expect(holders.length).toBeGreaterThan(1);
-        // Regardless of file order, the chosen rule is the general (non-self-matching) one.
+    it('K3: the fallback prefers a general rule over a self-matching one for a shared criterion', () => {
+        // Real data (post Intern #27, the 7 landmark/heading rules are now Best Practice):
+        // 1.3.1 is held by the general info-and-relationships; `list` resolves to it and
+        // never to a self-matching landmark rule.
         const chosen = selectMappedRuleId('list', ['wcag131'], rules, selfMatchingIds);
-        expect(selfMatchingIds.has(chosen!)).toBe(false);
         expect(chosen).toBe('info-and-relationships');
+        expect(selfMatchingIds.has(chosen!)).toBe(false);
+
+        // Synthetic order-independence: when a criterion is held by BOTH a self-matching
+        // rule (its id is an axe id, reached only via the direct id match) and a general
+        // one, the general always wins — regardless of file order.
+        const general = { ruleId: 'info-and-relationships', wcagCriteria: '1.3.1' };
+        const selfMatch = { ruleId: 'region', wcagCriteria: '1.3.1' };
+        const selfIds = new Set(['region']);
+        for (const order of [[selfMatch, general], [general, selfMatch]]) {
+            const r = selectMappedRuleId('x', ['wcag131'], order as unknown as typeof rules, selfIds);
+            expect(r).toBe('info-and-relationships');
+        }
     });
 
     it('K6: no axe rule is ever labelled with a criterion axe did not declare (zero silent errors)', () => {
