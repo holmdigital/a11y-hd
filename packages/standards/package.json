@@ -27,7 +27,8 @@
             }
         },
         "./data/*": "./data/*",
-        "./schema/*": "./schema/*"
+        "./schema/*": "./schema/*",
+        "./package.json": "./package.json"
     },
     "files": [
         "dist",

@@ -107,6 +107,28 @@ export function selectMappedRuleId(
 }
 
 /**
+ * Titlar som en vänta-/challenge-/omdirigeringssida typiskt bär (Intern #43).
+ */
+const INTERSTITIAL_TITLE = /\b(v[aä]nta|please wait|just a moment|checking your browser|attention required|redirecting|one moment|ett [oö]gonblick|verifying you are human)\b/i;
+
+/**
+ * Intern #43: känn av när axe mätte en interstitial-/vänta-/bot-challenge-sida i
+ * stället för det riktiga innehållet. Körs EFTER hydration-waiten, så en sida som
+ * fortfarande är en vänta-sida då är en verklig challenge, inte en transient
+ * laddningsskärm. Konservativ: en tydlig vänta-titel, ELLER en meta-refresh-
+ * omdirigering på en nästan tom sida. En kort men riktig sida flaggas inte.
+ */
+export function isInterstitialPage(
+    pageTitle: string | undefined,
+    hasMetaRefresh: boolean,
+    bodyTextLength: number
+): boolean {
+    if (pageTitle && INTERSTITIAL_TITLE.test(pageTitle)) return true;
+    if (hasMetaRefresh && bodyTextLength < 400) return true;
+    return false;
+}
+
+/**
  * Minimal interface for serialized axe-core output from page.evaluate().
  * NOT the full axe-core AxeResults type (missing EnvironmentData, etc.).
  */
@@ -145,9 +167,11 @@ export function getEngineVersion(): string {
     return __ENGINE_VERSION__;
 }
 
-function getStandardsVersion(): string {
+export function getStandardsVersion(): string {
     try {
-        // Try to find @holmdigital/standards package.json via require.resolve
+        // Try to find @holmdigital/standards package.json via require.resolve.
+        // Intern #43: standards `exports` måste exponera "./package.json", annars
+        // faller detta på ERR_PACKAGE_PATH_NOT_EXPORTED och versionen blir 'unknown'.
         const stdPath = require.resolve('@holmdigital/standards/package.json');
         const pkg = JSON.parse(readFileSync(stdPath, 'utf-8'));
         return pkg.version;
@@ -186,6 +210,12 @@ export interface ScanMetadata {
     scanDuration: number; // milliseconds
     pageTitle?: string;
     pageLanguage?: string;
+    /**
+     * Intern #43: true när den scannade sidan ser ut som en interstitial-/vänta-/
+     * bot-challenge-sida. Då kan resultatet gälla en platshållarsida, inte det
+     * riktiga innehållet. Rådgivande — påverkar aldrig score/stats/compliance.
+     */
+    interstitialSuspected?: boolean;
 }
 
 export interface ScanResult {
@@ -263,6 +293,7 @@ export class RegulatoryScanner {
         const startTime = Date.now();
         let pageTitle: string | undefined;
         let pageLanguage: string | undefined;
+        let interstitialSuspected: boolean | undefined;
         let passedCount = 0;
 
         try {
@@ -314,6 +345,20 @@ export class RegulatoryScanner {
             // Capture page metadata
             pageTitle = await page.title();
             pageLanguage = await page.evaluate(() => document.documentElement.lang || undefined);
+
+            // Intern #43: känn av interstitial-/vänta-/challenge-sida. Görs EFTER
+            // hydration-waiten — är sidan fortfarande en vänta-sida då är det en
+            // verklig challenge, inte en transient laddningsskärm.
+            const interstitialSignals = await page.evaluate(() => ({
+                hasMetaRefresh: !!document.querySelector('meta[http-equiv="refresh" i]'),
+                bodyTextLength: (document.body?.innerText ?? '').trim().length
+            }));
+            interstitialSuspected = isInterstitialPage(
+                pageTitle, interstitialSignals.hasMetaRefresh, interstitialSignals.bodyTextLength
+            );
+            if (interstitialSuspected) {
+                this.log('⚠️  Sidan ser ut som en vänta-/omdirigerings-/challenge-sida — resultatet kan gälla en platshållarsida, inte det riktiga innehållet. Prova ett högre --wait-for-hydration <ms>.');
+            }
 
             // Referensmätning för robusthetskontrollen: hur mycket text finns när
             // sidan ÄR hydrerad? Måste tas här, medan sidan lever, för att kunna
@@ -383,7 +428,7 @@ export class RegulatoryScanner {
             }
 
             const scanDuration = Date.now() - startTime;
-            const result = this.generateResultPackage(allReports, passedCount, scanDuration, pageTitle, pageLanguage);
+            const result = this.generateResultPackage(allReports, passedCount, scanDuration, pageTitle, pageLanguage, interstitialSuspected);
             if (htmlValidation) {
                 result.htmlValidation = htmlValidation;
             }
@@ -751,7 +796,8 @@ export class RegulatoryScanner {
         passedCount: number,
         scanDuration: number,
         pageTitle?: string,
-        pageLanguage?: string
+        pageLanguage?: string,
+        interstitialSuspected?: boolean
     ): ScanResult {
         // KRAV-3 (Intern #12): "needs review"-poster (cantTell) bärs i reports men
         // räknas ALDRIG som fel. Skilj scored (verkliga fel) från cantTell innan
@@ -806,7 +852,10 @@ export class RegulatoryScanner {
             standardsVersion: getStandardsVersion(),
             scanDuration,
             pageTitle,
-            pageLanguage
+            pageLanguage,
+            // Intern #43: bara med när flaggan är satt, så äldre snapshots/JSON
+            // inte får ett nytt fält på nej-fallet.
+            ...(interstitialSuspected ? { interstitialSuspected: true } : {})
         };
 
         // Calculate EU Legal Framework summary (cantTell exkluderas: inte bekräftade fel)
