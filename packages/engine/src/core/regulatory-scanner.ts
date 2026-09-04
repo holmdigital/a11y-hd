@@ -35,6 +35,21 @@ export function criteriaFromTags(tags: string[]): string[] {
     return tags.map(wcagTagToCriterion).filter((c): c is string => c !== null);
 }
 
+/**
+ * Intern #39: the EN 301 549 criterion an axe rule declares in its own tags, e.g.
+ * `EN-9.1.4.4` → `9.1.4.4`. Only the `EN-9.x[.x[.x]]` criterion tags match — the
+ * framework tag `EN-301-549` is deliberately NOT matched. Used ONLY as a fallback
+ * for honestly-unmapped findings (where we would otherwise emit `'Unknown'`); it
+ * never overrides our rule data on a matched finding.
+ */
+export function en301549FromTags(tags: string[]): string | null {
+    for (const tag of tags) {
+        const m = /^EN-(9(?:\.\d+){1,3})$/.exec(tag);
+        if (m) return m[1];
+    }
+    return null;
+}
+
 /** Compare dotted WCAG criteria numerically: 1.4.3 < 1.4.10 < 2.4.4. */
 function compareCriteria(a: string, b: string): number {
     const pa = a.split('.').map(Number);
@@ -574,7 +589,9 @@ export class RegulatoryScanner {
                 wcagCriteria: report?.wcagCriteria || criteriaFromTags(violation.tags)[0] || (violation.tags.includes('best-practice') ? 'Best Practice' : 'Unknown'),
                 // Intern #29: fyll från rapporten. Omappat fynd → okänt lagrum, aldrig
                 // tom sträng och aldrig en fras som utger sig för att vara ett lagrum.
-                en301549Criteria: report?.en301549Criteria || 'Unknown',
+                // Intern #39: för omappade fynd, använd EN-9.x ur axes egen tagg som
+                // fallback innan 'Unknown' — matchad regeldata går alltid först.
+                en301549Criteria: report?.en301549Criteria || en301549FromTags(violation.tags) || 'Unknown',
                 dosLagenReference: report?.dosLagenReference || (lang === 'sv' ? 'Lagrum okänt' : 'Legal basis unknown'),
                 diggRisk: risk,
                 eaaImpact: risk,
@@ -673,7 +690,9 @@ export class RegulatoryScanner {
                 reports.push({
                     ruleId: violation.id,
                     wcagCriteria: isBestPractice ? 'Best Practice' : 'Unknown',
-                    en301549Criteria: isBestPractice ? 'N/A' : 'Unknown',
+                    // Intern #39: omappat fynd → EN-9.x ur axes egen tagg som fallback
+                    // före 'Unknown'. Best practice behåller 'N/A'. Rör aldrig matchade.
+                    en301549Criteria: isBestPractice ? 'N/A' : (en301549FromTags(violation.tags) || 'Unknown'),
                     dosLagenReference: isBestPractice ? fallback.bestPracticeRef : fallback.manualRef,
                     diggRisk: riskLevel,
                     eaaImpact: riskLevel,
