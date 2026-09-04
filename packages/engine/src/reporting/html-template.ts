@@ -116,12 +116,57 @@ function renderNoScriptSection(result: ScanResult): string {
     `;
 }
 
+/**
+ * Intern #43 fynd 1: självständig HTML för en INCONCLUSIVE-scan (interstitial-
+ * sida). Ett score-kort skulle ljuga (100 = falskt rent, 0 = falskt underkänt),
+ * så vi visar bara ett ärligt "kunde inte mäta"-besked med sidans titel.
+ */
+function inconclusiveReportHTML(result: ScanResult): string {
+    return `<!DOCTYPE html>
+<html lang="${getCurrentLang()}">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>${t('report.title', { url: result.url })}</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f8fafc; color: #0f172a; margin: 0; padding: 3rem 1.5rem; }
+        .wrap { max-width: 640px; margin: 0 auto; }
+        .brand { font-weight: 700; color: #0369a1; margin-bottom: 2rem; }
+        .card { background: #fffbeb; border: 1px solid #fde68a; border-radius: 12px; padding: 2rem; }
+        .icon { font-size: 2rem; }
+        h1 { font-size: 1.35rem; margin: 0.5rem 0 1rem; color: #92400e; }
+        p { line-height: 1.6; color: #334155; }
+        .page-title { margin-top: 1.5rem; font-size: 0.85rem; color: #64748b; word-break: break-all; }
+        .footer { text-align: center; color: #94a3b8; font-size: 0.75rem; margin-top: 2rem; }
+    </style>
+</head>
+<body>
+    <div class="wrap">
+        <div class="brand">@HolmDigital/engine</div>
+        <div class="card">
+            <div class="icon">⚠️</div>
+            <h1>${t('report.inconclusive_title')}</h1>
+            <p>${t('report.inconclusive_detail')}</p>
+            <div class="page-title">${t('report.scan_target', { url: result.url })}<br/>${escapeHtml(result.metadata.pageTitle || 'N/A')}</div>
+        </div>
+        <div class="footer">${t('report.footer', { version: getEngineVersion() })}</div>
+    </div>
+</body>
+</html>`;
+}
+
 export function generateReportHTML(
     result: ScanResult,
     sector: 'public' | 'private' = 'public',
     audience: 'developer' | 'plain' = 'developer',
     plainFallbackFrom?: string
 ): string {
+    // Intern #43 fynd 1: interstitial-/vänta-/challenge-sida — vi mätte inte det
+    // riktiga innehållet. Rendera en ärlig banner för båda målgrupperna i stället
+    // för ett score-kort (0 eller 100 vore lika vilseledande som en falsk 85).
+    if (result.complianceStatus === 'INCONCLUSIVE') {
+        return inconclusiveReportHTML(result);
+    }
     if (audience === 'plain') {
         return generatePlainReportHTML(result, plainFallbackFrom);
     }

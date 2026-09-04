@@ -9,6 +9,35 @@ export function generateJUnitXML(result: ScanResult): string {
     const { url, reports, stats, metadata } = result;
     const duration = metadata.scanDuration;
     const timestamp = result.timestamp;
+
+    // Intern #43 fynd 1: en INCONCLUSIVE-scan mätte inte det riktiga innehållet
+    // (interstitial-/vänta-sida). Tomma reports skulle annars ge "0 tests, 0
+    // failures" — ser ut som en ren PASS i CI. Emitta i stället ETT <error>-
+    // testcase så CI-artefakten ärligt visar att sidan inte kunde mätas.
+    if (result.complianceStatus === 'INCONCLUSIVE') {
+        const msg = escapeXML(
+            `Scan inconclusive: the page looked like a wait/redirect/bot-challenge page (interstitial), ` +
+            `so the real content was not assessed. Try a higher --wait-for-hydration. Page title: ${metadata.pageTitle || 'N/A'}`
+        );
+        return [
+            `<?xml version="1.0" encoding="UTF-8"?>`,
+            `<testsuites name="HolmDigital Accessibility Scan" time="${duration / 1000}" tests="1" failures="0" errors="1">`,
+            `  <testsuite name="${escapeXML(url)}" tests="1" failures="0" skipped="0" errors="1" time="${duration / 1000}" timestamp="${timestamp}">`,
+            `    <properties>`,
+            `      <property name="engineVersion" value="${escapeXML(metadata.engineVersion)}"/>`,
+            `      <property name="standardsVersion" value="${escapeXML(metadata.standardsVersion)}"/>`,
+            `      <property name="pageTitle" value="${escapeXML(metadata.pageTitle || 'N/A')}"/>`,
+            `      <property name="complianceStatus" value="INCONCLUSIVE"/>`,
+            `      <property name="interstitialSuspected" value="true"/>`,
+            `    </properties>`,
+            `    <testcase name="Accessibility scan" classname="Accessibility.Inconclusive" time="${duration / 1000}">`,
+            `      <error message="${msg}" type="inconclusive"/>`,
+            `    </testcase>`,
+            `  </testsuite>`,
+            `</testsuites>`
+        ].join('\n');
+    }
+
     const violations = violationsOf(reports);
     const needsReview = needsReviewOf(reports);
 

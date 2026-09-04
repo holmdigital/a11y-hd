@@ -26,7 +26,9 @@ export interface CloudViolation {
 export interface CloudPayload {
     url: string;
     compliance_score: number;
-    compliance_status: 'PASS' | 'FAIL';
+    // Intern #43: INCONCLUSIVE kan bäras av typen, men sendToCloud POST:ar aldrig
+    // ett sådant resultat (inget riktigt mätt innehåll att ingesta).
+    compliance_status: 'PASS' | 'FAIL' | 'INCONCLUSIVE';
     total_violations: number;
     critical_count: number;
     serious_count: number;
@@ -90,6 +92,16 @@ export async function sendToCloud(
     config: CloudConfig,
     result: ScanResult
 ): Promise<CloudResponse> {
+    // Intern #43 fynd 1: ladda aldrig upp en INCONCLUSIVE-scan — den mätte inte
+    // det riktiga innehållet. Självförsvar även om en framtida anropare glömmer
+    // CLI-gaten. (compliance_status i moln-API:t är i praktiken PASS/FAIL.)
+    if (result.complianceStatus === 'INCONCLUSIVE') {
+        return {
+            success: false,
+            error: 'Scan inconclusive (interstitial/wait page) — not uploaded; no real content was assessed.'
+        };
+    }
+
     const payload = transformToCloudPayload(result);
     const endpoint = `${config.cloudUrl.replace(/\/$/, '')}/api/v1/ingest`;
 
