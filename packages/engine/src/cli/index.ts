@@ -287,7 +287,13 @@ program
             }
 
             // Statement Generation
-            if (options.statement) {
+            // Intern #43 fynd 1: generera ALDRIG en tillgänglighetsredogörelse från
+            // en INCONCLUSIVE-scan — den skulle bygga på tomma reports och påstå
+            // "inga brister" för en sida vi aldrig mätte. Hoppa över med besked.
+            if (options.statement && result.complianceStatus === 'INCONCLUSIVE') {
+                if (spinner) spinner.warn('Skipping accessibility statement — scan inconclusive (interstitial/wait page); the real content was not assessed.');
+                else if (!options.json) console.error(chalk.yellow('Skipping accessibility statement — scan inconclusive; real content not assessed.'));
+            } else if (options.statement) {
                 if (spinner) spinner.start(t('cli.generating_statement', { path: options.statement }));
 
                 const metadata: StatementMetadata = {
@@ -342,6 +348,23 @@ program
                 console.log(JSON.stringify(lightResult, null, 2));
             } else if (options.json) {
                 console.log(JSON.stringify(result, null, 2));
+            } else if (result.complianceStatus === 'INCONCLUSIVE') {
+                // Intern #43 fynd 1: sidan var en interstitial-/vänta-/challenge-sida.
+                // Visa ett ärligt besked för alla människoläsbara format i stället för
+                // en vilseledande score/status. JSON-lägena ovan bär INCONCLUSIVE själva.
+                if (options.audience === 'plain') {
+                    // Klarspråk för icke-teknisk mottagare (plain.inconclusive).
+                    const { renderPlainReport } = await import('../reporting/plain-report');
+                    renderPlainReport(result, plainFallbackFrom ? 'en' : options.lang, plainFallbackFrom);
+                } else {
+                    console.log('');
+                    console.log(chalk.yellow.bold(t('cli.inconclusive_headline')));
+                    console.log(chalk.yellow(t('cli.inconclusive_detail')));
+                    if (result.metadata.pageTitle) {
+                        console.log(chalk.gray(`  (${result.metadata.pageTitle})`));
+                    }
+                    console.log('');
+                }
             } else if (options.light) {
                 // Compact CLI output for light scan
                 const scoreColor = result.score >= 90 ? chalk.green : (result.score >= 70 ? chalk.yellow : chalk.red);
@@ -542,6 +565,12 @@ program
                 generateGitHubActionsAnnotations(result.reports);
             }
 
+            // Intern #43 fynd 1: en INCONCLUSIVE-scan har inga reports att annotera,
+            // men får inte passera tyst i CI — emitta en ärlig workflow-varning.
+            if (options.ci && result.complianceStatus === 'INCONCLUSIVE') {
+                console.log('::warning::Accessibility scan inconclusive — the page looked like an interstitial/wait/bot-challenge page, so the real content was not assessed. Try a higher --wait-for-hydration.');
+            }
+
             // JUnit Output
             if (options.junit) {
                 const { generateJUnitXML } = await import('../reporting/junit-generator');
@@ -552,13 +581,28 @@ program
                 else if (!options.json) console.log(chalk.green(`✓ JUnit report saved to ${options.junit}`));
             }
 
+            // Intern #43 fynd 1: i CI får en INCONCLUSIVE-scan inte se ut som ett
+            // grönt PASS. Den mätte inte det riktiga innehållet → exit 1, så att en
+            // challenge-blockerad scan larmar i stället för att smyga igenom.
+            if (options.ci && result.complianceStatus === 'INCONCLUSIVE') {
+                if (!options.json) console.error(chalk.yellow('\nCI/CD: scan inconclusive — real content not assessed (interstitial/wait page). Not treated as a pass.'));
+                process.exit(1);
+            }
+
             if (options.ci && result.stats.critical > 0) {
                 if (!options.json) console.error(chalk.red(t('cli.critical_failure')));
                 process.exit(1);
             }
 
-            // Cloud Integration: Send results if API key is provided
-            if (options.apiKey) {
+            // Cloud Integration: Send results if API key is provided.
+            // Intern #43 fynd 1: ladda ALDRIG upp ett INCONCLUSIVE-resultat — det
+            // finns inget riktigt mätt innehåll att ingesta, och moln-API:ts
+            // compliance_status är typat PASS/FAIL. Hoppa över med ett ärligt besked.
+            if (options.apiKey && result.complianceStatus === 'INCONCLUSIVE') {
+                if (!options.json) {
+                    console.log(chalk.yellow('Skipping cloud upload — scan inconclusive (interstitial/wait page), nothing real to ingest.'));
+                }
+            } else if (options.apiKey) {
                 const cloudSpinner = !options.json ? ora('Uploading results to HolmDigital Cloud...').start() : null;
 
                 const cloudConfig: CloudConfig = {

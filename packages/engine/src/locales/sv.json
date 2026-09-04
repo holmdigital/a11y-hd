@@ -30,7 +30,9 @@
         "noscript_no_fallback": "Ingen <noscript>-fallback hittades.",
         "noscript_impact": "Det drabbar sällan den som valt bort JavaScript, utan den vars skript aldrig kom fram: dåligt mobilnät, en företagsproxy, ett webbläsartillägg som krånglar, en timeout. De får en tom sida i stället för en långsam.",
         "noscript_advisory": "Rekommendation, inte ett lagkrav. Inget WCAG-kriterium kräver att en sida fungerar utan JavaScript, så detta påverkar inte konformansscoren.",
-        "badge_withheld": "100/100 utan anmärkning. Robusthetskontrollen är inte ren, så vi genererar ingen delbar badge."
+        "badge_withheld": "100/100 utan anmärkning. Robusthetskontrollen är inte ren, så vi genererar ingen delbar badge.",
+        "inconclusive_headline": "⚠️  Kunde inte skanna det riktiga innehållet",
+        "inconclusive_detail": "Sidan såg ut som en vänta-/omdirigerings-/bot-challenge-sida (interstitial), så resultatet gäller inte den riktiga sajten. Ett ärligt \"kunde inte mäta\" är bättre än en vilseledande score. Prova ett högre --wait-for-hydration <ms>, eller öppna adressen i en webbläsare och kontrollera."
     },
     "report": {
         "title": "Tillgänglighetsrapport - {url}",
@@ -46,7 +48,9 @@
         "needs_review_note": "axe-core kunde inte avgöra dessa automatiskt — kontrollera dem manuellt. De räknas inte in i summorna ovan.",
         "prescriptive_fix": "💡 Preskriptiv Lösning",
         "use": "Använd",
-        "footer": "Genererad av @holmdigital/engine v{version} • Standarder: WCAG 2.1 AA, EN 301 549, DOS-lagen"
+        "footer": "Genererad av @holmdigital/engine v{version} • Standarder: WCAG 2.1 AA, EN 301 549, DOS-lagen",
+        "inconclusive_title": "Vi kunde inte skanna den riktiga sidan",
+        "inconclusive_detail": "Sidan såg ut som en vänta-, omdirigerings- eller verifieringsskärm (t.ex. en bot-kontroll eller en interstitial), så motorn mätte den skärmen i stället för din sajt. Inget här speglar ditt riktiga innehåll. Prova igen med ett högre --wait-for-hydration-värde, och om det kvarstår, öppna adressen i en webbläsare för att bekräfta att sajten laddar."
     },
     "plain": {
         "what_happens": "Vad som händer:",
@@ -64,6 +68,7 @@
         "intro_unit_plural": "hinder",
         "closing": "Börja uppifrån. Punkterna högst upp kostar dig mest kunder.",
         "empty_state": "Vi hittade inga hinder den här gången.",
+        "inconclusive": "Vi kunde inte läsa din riktiga sida den här gången. Det såg ut som en vänta- eller verifieringsskärm (t.ex. ett \"vänligen vänta\"-meddelande eller en bot-kontroll), så det finns inget tillförlitligt att rapportera ännu. Prova igen — och om det fortsätter, öppna din webbplats i en vanlig webbläsare och kontrollera att den laddar.",
         "report_title": "Tillgänglighetsrapport för {url}",
         "report_tagline": "Tillgänglighetsrapport",
         "attribution": "Rapporten genererades av HolmDigital Engine, en del av HolmDigitals ekosystem för tillgänglighet.",

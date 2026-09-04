@@ -237,7 +237,15 @@ export interface ScanResult {
         needsReview: number;
     };
     score: number;
-    complianceStatus: 'PASS' | 'FAIL';
+    /**
+     * PASS/FAIL för en riktigt mätt sida. INCONCLUSIVE (Intern #43 fynd 1) när
+     * sidan var en interstitial-/vänta-/bot-challenge-sida: motorn mätte inte det
+     * riktiga innehållet, så den emitterar medvetet INGEN vanlig score/compliance
+     * — `score` är 0 och `reports`/`stats` är tomma. Läs `complianceStatus` FÖRST;
+     * ett INCONCLUSIVE-`score` är inte ett betyg. `metadata.interstitialSuspected`
+     * bär varför.
+     */
+    complianceStatus: 'PASS' | 'FAIL' | 'INCONCLUSIVE';
     htmlValidation?: ValidationResult;
     /**
      * Robusthet utan JavaScript. Endast närvarande när noScriptCheck är på.
@@ -429,11 +437,16 @@ export class RegulatoryScanner {
 
             const scanDuration = Date.now() - startTime;
             const result = this.generateResultPackage(allReports, passedCount, scanDuration, pageTitle, pageLanguage, interstitialSuspected);
-            if (htmlValidation) {
-                result.htmlValidation = htmlValidation;
-            }
-            if (noScript) {
-                result.noScript = noScript;
+            // Intern #43: html-validering och noscript-sonden mätte också vänta-
+            // sidan, inte det riktiga innehållet — häng inte på dem på ett
+            // INCONCLUSIVE-resultat.
+            if (result.complianceStatus !== 'INCONCLUSIVE') {
+                if (htmlValidation) {
+                    result.htmlValidation = htmlValidation;
+                }
+                if (noScript) {
+                    result.noScript = noScript;
+                }
             }
             return result;
 
@@ -857,6 +870,26 @@ export class RegulatoryScanner {
             // inte får ett nytt fält på nej-fallet.
             ...(interstitialSuspected ? { interstitialSuspected: true } : {})
         };
+
+        // Intern #43 fynd 1: sidan var en interstitial-/vänta-/challenge-sida —
+        // axe mätte inte det riktiga innehållet. Emitta INTE en vanlig score/
+        // compliance för fel sida (en falsk 85/FAIL är värre än ett ärligt "kunde
+        // inte mäta"). Släpp vänta-sidans egna artefakter (t.ex. dess meta-refresh
+        // 2.2.1), nolla stats och markera resultatet INCONCLUSIVE. Rådgivande-
+        // flaggan + varningen från scan() säger redan åt användaren att höja
+        // --wait-for-hydration.
+        if (interstitialSuspected) {
+            return {
+                url: this.options.url,
+                timestamp: new Date().toISOString(),
+                metadata,
+                reports: [],
+                stats: { passed: 0, critical: 0, high: 0, medium: 0, low: 0, total: 0, needsReview: 0 },
+                score: 0,
+                complianceStatus: 'INCONCLUSIVE',
+                legalSummary: { wadApplicable: 0, eaaApplicable: 0, eaaDeadlineViolations: 0 }
+            };
+        }
 
         // Calculate EU Legal Framework summary (cantTell exkluderas: inte bekräftade fel)
         const reportsWithContext = scored.filter(r => r.legalContext);

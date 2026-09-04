@@ -86,6 +86,16 @@ export function renderPlainReport(result: ScanResult, lang: string = 'en', plain
         console.log('');
     }
 
+    // Intern #43 fynd 1: en INCONCLUSIVE-scan har tomma reports. Utan den här
+    // grenen skulle empty_state nedan påstå "inga hinder" — ett falskt rent besked
+    // för en sida vi aldrig lyckades mäta. Säg det ärligt i klarspråk i stället.
+    if (result.complianceStatus === 'INCONCLUSIVE') {
+        console.log(t('plain.inconclusive'));
+        console.log('');
+        console.log(t('plain.attribution'));
+        return;
+    }
+
     // Needs review (cantTell) räknas och visas som egen kategori, aldrig som
     // hinder. Barriärintro, kort och breakdown använder bara verkliga violations.
     const violations = violationsOf(result.reports as EnrichedReport[]);
