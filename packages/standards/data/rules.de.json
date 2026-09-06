@@ -13,8 +13,8 @@
         "remediation": {
             "description": "Text und Bilder von Text müssen ein Kontrastverhältnis von mindestens 4,5:1 (3:1 für großen Text) haben.",
             "technicalGuidance": "Verwenden Sie Tools wie den WebAIM Contrast Checker zur Überprüfung. Passen Sie Farben an oder fügen Sie Hintergrundtransparenz hinzu, um den korrekten Kontrast zu erreichen.",
-            "component": "@holmdigital/components/Button",
-            "codeExample": "import { Button } from '@holmdigital/components';\n\n// Bad: Poor contrast\n<button style={{ background: '#777', color: '#999' }}>Click me</button>\n\n// Good: Use accessible component\n<Button variant=\"primary\">Click me</Button>",
+            "component": null,
+            "codeExample": null,
             "wcagTechnique": [
                 "G18",
                 "G145",
@@ -86,8 +86,8 @@
         "remediation": {
             "description": "Alle Funktionen müssen per Tastatur zugänglich sein.",
             "technicalGuidance": "Verwenden Sie semantische HTML-Elemente (button, a, input) anstelle von div/span mit Click-Handlern. Stellen Sie sicher, dass tabindex korrekt verwendet wird.",
-            "component": "@holmdigital/components/Button",
-            "codeExample": "// Bad: Div with onClick\n<div onClick={handleClick}>Click Me</div>\n\n// Good: Button element\n<button onClick={handleClick}>Click Me</button>\n\n// Best: Use HolmDigital component\nimport { Button } from '@holmdigital/components';\n<Button onClick={handleClick}>Click Me</Button>",
+            "component": null,
+            "codeExample": "// Bad: Div with onClick\n<div onClick={handleClick}>Click Me</div>\n\n// Good: Button element\n<button onClick={handleClick}>Click Me</button>",
             "wcagTechnique": [
                 "G202",
                 "H91"
@@ -445,7 +445,7 @@
         "remediation": {
             "description": "Farbe wird nicht als einziges visuelles Mittel verwendet, um Informationen zu vermitteln, eine Handlung anzuzeigen, eine Reaktion zu veranlassen oder ein visuelles Element zu unterscheiden.",
             "technicalGuidance": "Ergänzen Sie Farbe mit Text, Symbolen oder Unterstreichungen. Z. B. müssen Links Unterstreichungen oder eine andere visuelle Markierung neben der Farbe haben. Fehlermeldungen benötigen Text/Symbol, nicht nur einen roten Rahmen.",
-            "component": "@holmdigital/components/FormField",
+            "component": null,
             "wcagTechnique": [
                 "G14",
                 "G182",
@@ -584,7 +584,7 @@
         "remediation": {
             "description": "Die visuelle Darstellung von Benutzeroberflächenkomponenten und grafischen Objekten muss ein Kontrastverhältnis von mindestens 3:1 zu angrenzenden Farben haben.",
             "technicalGuidance": "Gilt für Schaltflächen, Eingaberahmen, Symbole und Fokusindikatoren. Stellen Sie sicher, dass alle interaktiven Elemente klar vom Hintergrund sichtbar sind.",
-            "component": "@holmdigital/components/Button",
+            "component": null,
             "wcagTechnique": [
                 "G195",
                 "G207"
@@ -1726,7 +1726,7 @@
         "remediation": {
             "description": "Jede Benutzeroberfläche, die mit der Tastatur bedient werden kann, muss einen sichtbaren Fokusindikator haben.",
             "technicalGuidance": "Entfernen Sie niemals die Outline mit CSS (outline: none), ohne sie durch einen deutlichen visuellen Indikator zu ersetzen. Stellen Sie sicher, dass der Kontrast des Fokusrings ausreichend ist (siehe 1.4.11).",
-            "component": "@holmdigital/components/Button",
+            "component": null,
             "wcagTechnique": [
                 "G149",
                 "G165",
@@ -2462,8 +2462,8 @@
         "remediation": {
             "description": "Für alle Benutzeroberflächenkomponenten können Name und Rolle programmatisch bestimmt werden; Werte können gesetzt werden; und Benachrichtigungen über Änderungen sind verfügbar.",
             "technicalGuidance": "Verwenden Sie nach Möglichkeit native HTML-Elemente. Wenn benutzerdefinierte Komponenten verwendet werden, muss ARIA (role, aria-label, aria-valuenow) korrekt eingesetzt werden.",
-            "component": "@holmdigital/components/ProgressBar",
-            "codeExample": "import { ProgressBar } from '@holmdigital/components';\n\n// Schlecht: Div ohne Rolle\n<div style={{ width: '50%' }}>50%</div>\n\n// Gut: Zugängliche Komponente\n<ProgressBar value={50} label=\"Laden...\" />",
+            "component": null,
+            "codeExample": null,
             "wcagTechnique": [
                 "ARIA4",
                 "ARIA5"
@@ -3046,7 +3046,7 @@
         "remediation": {
             "description": "Anklickbare Flächen (Schaltflächen, Links, Symbole, Formularsteuerelemente) müssen mindestens 24 x 24 CSS-Pixel groß sein oder mindestens 24 Pixel freien Abstand zur nächsten anderen Klickfläche haben. Ausnahmen bestehen für Links im Fließtext, für Steuerelemente, deren Größe der Browser bestimmt, und wenn ein gleichwertiges Steuerelement passender Größe auf derselben Seite vorhanden ist.",
             "technicalGuidance": "Geben Sie interaktiven Elementen mindestens eine 24px-Trefffläche, idealerweise über min-height und min-width am Steuerelement selbst. Soll das Symbol optisch klein bleiben, behalten Sie das kleine Symbol, vergrößern Sie aber die Trefffläche mit Padding oder lassen Sie mindestens 24px Abstand ringsum (Abstandsausnahme). Messen Sie die tatsächliche Trefffläche, nicht die optische Größe des Symbols.",
-            "component": "@holmdigital/components/Button",
+            "component": null,
             "codeExample": "/* Insufficient hit area */\n.icon-button { width: 16px; height: 16px; }\n\n/* Good: 24px hit area via min-height/min-width */\n.icon-button {\n  min-width: 24px;\n  min-height: 24px;\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n}\n\n/* Good: small icon, but 24px clearance around it (spacing exception) */\n.icon-button { margin: 4px; } /* yields >=24px center-to-center to the neighbour */",
             "wcagTechnique": [
                 "C42",

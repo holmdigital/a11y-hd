@@ -13,8 +13,8 @@
         "remediation": {
             "description": "Tekstin ja tekstikuvien kontrastisuhteen on oltava vähintään 4.5:1 (3:1 suurelle tekstille).",
             "technicalGuidance": "Käytä työkaluja kuten WebAIM Contrast Checker kontrastin tarkistamiseen. Säädä värivalintoja tai lisää taustan läpinäkyvyyttä oikean kontrastin saavuttamiseksi.",
-            "component": "@holmdigital/components/Button",
-            "codeExample": "import { Button } from '@holmdigital/components';\n\n// Bad: Poor contrast\n<button style={{ background: '#777', color: '#999' }}>Click me</button>\n\n// Good: Use accessible component\n<Button variant=\"primary\">Click me</Button>",
+            "component": null,
+            "codeExample": null,
             "wcagTechnique": [
                 "G18",
                 "G145",
@@ -86,8 +86,8 @@
         "remediation": {
             "description": "Kaikkien toimintojen on oltava käytettävissä näppäimistöllä.",
             "technicalGuidance": "Käytä semanttisia HTML-elementtejä (button, a, input) div/span-elementtien sijaan click-käsittelijöillä. Varmista että tabindex on käytetty oikein.",
-            "component": "@holmdigital/components/Button",
-            "codeExample": "// Bad: Div with onClick\n<div onClick={handleClick}>Click Me</div>\n\n// Good: Button element\n<button onClick={handleClick}>Click Me</button>\n\n// Best: Use HolmDigital component\nimport { Button } from '@holmdigital/components';\n<Button onClick={handleClick}>Click Me</Button>",
+            "component": null,
+            "codeExample": "// Bad: Div with onClick\n<div onClick={handleClick}>Click Me</div>\n\n// Good: Button element\n<button onClick={handleClick}>Click Me</button>",
             "wcagTechnique": [
                 "G202",
                 "H91"
@@ -445,7 +445,7 @@
         "remediation": {
             "description": "Väriä ei käytetä ainoana visuaalisena keinona tiedon välittämiseen, toiminnon osoittamiseen, vastauksen pyytämiseen tai visuaalisen elementin erottamiseen.",
             "technicalGuidance": "Täydennä väriä tekstillä, ikoneilla tai alleviivauksella. Esim. linkeillä on oltava alleviivaus tai muu visuaalinen merkki värin lisäksi. Virheilmoitukset tarvitsevat tekstin/ikonin, ei pelkästään punaista reunaa.",
-            "component": "@holmdigital/components/FormField",
+            "component": null,
             "wcagTechnique": [
                 "G14",
                 "G182",
@@ -584,7 +584,7 @@
         "remediation": {
             "description": "Käyttöliittymäkomponenttien ja graafisten objektien visuaalisen esityksen kontrastisuhteen on oltava vähintään 3:1 vierekkisiin väreihin nähden.",
             "technicalGuidance": "Koskee painikkeita, input-reunoja, ikoneja ja fokusindikaattoreita. Varmista että kaikki interaktiiviset elementit erottuvat selkeästi taustasta.",
-            "component": "@holmdigital/components/Button",
+            "component": null,
             "wcagTechnique": [
                 "G195",
                 "G207"
@@ -1727,7 +1727,7 @@
         "remediation": {
             "description": "Jokaisessa näppäimistöllä käytettävässä käyttöliittymässä on oltava näkyvä fokusindikaattori.",
             "technicalGuidance": "Älä koskaan poista outlineä CSS:llä (outline: none) korvaamatta sitä selkeällä visuaalisella indikaattorilla. Varmista fokusrenkaan riittävä kontrasti (ks. 1.4.11).",
-            "component": "@holmdigital/components/Button",
+            "component": null,
             "wcagTechnique": [
                 "G149",
                 "G165",
@@ -2463,8 +2463,8 @@
         "remediation": {
             "description": "Kaikille komponenteille nimi ja rooli voidaan määrittää ohjelmallisesti. Arvot voidaan asettaa ohjelmallisesti.",
             "technicalGuidance": "Käytä natiiveja HTML-elementtejä mahdollisuuksien mukaan. Jos mukautettuja komponentteja käytetään, ARIA (role, aria-label, aria-valuenow) on käytettävä oikein.",
-            "component": "@holmdigital/components/ProgressBar",
-            "codeExample": "import { ProgressBar } from '@holmdigital/components';\n\n// Bad: Div without role\n<div style={{ width: '50%' }}>50%</div>\n\n// Good: Accessible Component\n<ProgressBar value={50} label=\"Loading...\" />",
+            "component": null,
+            "codeExample": null,
             "wcagTechnique": [
                 "ARIA4",
                 "ARIA5"
@@ -3047,7 +3047,7 @@
         "remediation": {
             "description": "Klikattavien kohteiden (painikkeet, linkit, kuvakkeet, lomakekontrollit) on oltava vähintään 24 x 24 CSS-pikseliä, tai niillä on oltava vähintään 24 pikselin vapaa väli lähimpään toiseen kohteeseen. Poikkeuksia ovat linkit juoksevassa tekstissä, kontrollit joiden koon selain määrää, ja tapaukset joissa samalla sivulla on vastaava riittävän kokoinen kontrolli.",
             "technicalGuidance": "Anna interaktiivisille elementeille vähintään 24px osumapinta, mieluiten min-height- ja min-width-arvoilla itse kontrollissa. Jos kuvakkeen on oltava visuaalisesti pieni, säilytä pieni kuvake mutta laajenna osumapintaa paddingilla, tai jätä vähintään 24px väljyyttä ympärille (välistyspoikkeus). Mittaa todellinen osumapinta, älä kuvakkeen visuaalista kokoa.",
-            "component": "@holmdigital/components/Button",
+            "component": null,
             "codeExample": "/* Insufficient hit area */\n.icon-button { width: 16px; height: 16px; }\n\n/* Good: 24px hit area via min-height/min-width */\n.icon-button {\n  min-width: 24px;\n  min-height: 24px;\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n}\n\n/* Good: small icon, but 24px clearance around it (spacing exception) */\n.icon-button { margin: 4px; } /* yields >=24px center-to-center to the neighbour */",
             "wcagTechnique": [
                 "C42",

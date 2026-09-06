@@ -13,8 +13,8 @@
         "remediation": {
             "description": "Tekst en afbeeldingen van tekst moeten een contrastverhouding hebben van minimaal 4,5:1 (3:1 voor grote tekst).",
             "technicalGuidance": "Gebruik tools zoals WebAIM Contrast Checker om contrast te verifiëren. Pas kleurkeuzes aan of voeg achtergrondtransparantie toe om correct contrast te bereiken.",
-            "component": "@holmdigital/components/Button",
-            "codeExample": "import { Button } from '@holmdigital/components';\n\n// Bad: Poor contrast\n<button style={{ background: '#777', color: '#999' }}>Click me</button>\n\n// Good: Use accessible component\n<Button variant=\"primary\">Click me</Button>",
+            "component": null,
+            "codeExample": null,
             "wcagTechnique": [
                 "G18",
                 "G145",
@@ -86,8 +86,8 @@
         "remediation": {
             "description": "Alle functionaliteit moet toegankelijk zijn via het toetsenbord.",
             "technicalGuidance": "Gebruik semantische HTML-elementen (button, a, input) in plaats van div/span met click handlers. Zorg ervoor dat tabindex correct wordt gebruikt.",
-            "component": "@holmdigital/components/Button",
-            "codeExample": "// Bad: Div with onClick\n<div onClick={handleClick}>Click Me</div>\n\n// Good: Button element\n<button onClick={handleClick}>Click Me</button>\n\n// Best: Use HolmDigital component\nimport { Button } from '@holmdigital/components';\n<Button onClick={handleClick}>Click Me</Button>",
+            "component": null,
+            "codeExample": "// Bad: Div with onClick\n<div onClick={handleClick}>Click Me</div>\n\n// Good: Button element\n<button onClick={handleClick}>Click Me</button>",
             "wcagTechnique": [
                 "G202",
                 "H91"
@@ -445,7 +445,7 @@
         "remediation": {
             "description": "Kleur wordt niet gebruikt als enige visuele manier om informatie over te brengen, een actie aan te geven, een reactie uit te lokken of een visueel element te onderscheiden.",
             "technicalGuidance": "Vul kleur aan met tekst, iconen of onderstreping. Bijv. links moeten onderstrepingen of een andere visuele markering behalve kleur hebben. Foutmeldingen hebben tekst/icoon nodig, niet alleen een rode rand.",
-            "component": "@holmdigital/components/FormField",
+            "component": null,
             "wcagTechnique": [
                 "G14",
                 "G182",
@@ -584,7 +584,7 @@
         "remediation": {
             "description": "De visuele presentatie van gebruikersinterface-componenten en grafische objecten moet een contrastverhouding hebben van minimaal 3:1 tegen aangrenzende kleuren.",
             "technicalGuidance": "Geldt voor knoppen, invoergrenslijnen, iconen en focusindicatoren. Zorg dat alle interactieve elementen duidelijk zichtbaar zijn tegen de achtergrond.",
-            "component": "@holmdigital/components/Button",
+            "component": null,
             "wcagTechnique": [
                 "G195",
                 "G207"
@@ -1727,7 +1727,7 @@
         "remediation": {
             "description": "Elke gebruikersinterface die met het toetsenbord bedienbaar is, moet een zichtbare focusindicator hebben.",
             "technicalGuidance": "Verwijder nooit outline met CSS (outline: none) zonder deze te vervangen door een duidelijke visuele indicator. Zorg dat contrast van focusring voldoende is (zie 1.4.11).",
-            "component": "@holmdigital/components/Button",
+            "component": null,
             "wcagTechnique": [
                 "G149",
                 "G165",
@@ -2463,8 +2463,8 @@
         "remediation": {
             "description": "Voor alle gebruikersinterfacecomponenten kunnen naam en rol programmatisch worden bepaald; waarden kunnen programmatisch worden ingesteld.",
             "technicalGuidance": "Gebruik indien mogelijk native HTML-elementen. Als aangepaste componenten worden gebruikt, moet ARIA (role, aria-label, aria-valuenow) correct worden gebruikt.",
-            "component": "@holmdigital/components/ProgressBar",
-            "codeExample": "import { ProgressBar } from '@holmdigital/components';\n\n// Slecht: Div zonder rol\n<div style={{ width: '50%' }}>50%</div>\n\n// Goed: Toegankelijke component\n<ProgressBar value={50} label=\"Laden...\" />",
+            "component": null,
+            "codeExample": null,
             "wcagTechnique": [
                 "ARIA4",
                 "ARIA5"
@@ -3047,7 +3047,7 @@
         "remediation": {
             "description": "Klikbare doelen (knoppen, links, pictogrammen, formulierbesturingselementen) moeten minstens 24 x 24 CSS-pixels zijn, of minstens 24 pixels vrije ruimte tot het dichtstbijzijnde andere doel hebben. Er gelden uitzonderingen voor links in lopende tekst, voor besturingselementen waarvan de browser de grootte bepaalt, en wanneer een gelijkwaardig besturingselement van voldoende grootte op dezelfde pagina aanwezig is.",
             "technicalGuidance": "Geef interactieve elementen minstens een raakvlak van 24px, bij voorkeur via min-height en min-width op het besturingselement zelf. Moet het pictogram visueel klein blijven, behoud dan het kleine pictogram maar vergroot het raakvlak met padding, of laat minstens 24px ruimte eromheen (afstandsuitzondering). Meet het werkelijke raakvlak, niet de visuele grootte van het pictogram.",
-            "component": "@holmdigital/components/Button",
+            "component": null,
             "codeExample": "/* Insufficient hit area */\n.icon-button { width: 16px; height: 16px; }\n\n/* Good: 24px hit area via min-height/min-width */\n.icon-button {\n  min-width: 24px;\n  min-height: 24px;\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n}\n\n/* Good: small icon, but 24px clearance around it (spacing exception) */\n.icon-button { margin: 4px; } /* yields >=24px center-to-center to the neighbour */",
             "wcagTechnique": [
                 "C42",

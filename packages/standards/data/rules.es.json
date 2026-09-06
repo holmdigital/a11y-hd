@@ -13,8 +13,8 @@
         "remediation": {
             "description": "El texto y las imágenes de texto deben tener una relación de contraste de al menos 4.5:1 (3:1 para texto grande).",
             "technicalGuidance": "Utilice herramientas como WebAIM Contrast Checker para verificar. Ajuste los colores o añada opacidad al fondo.",
-            "component": "@holmdigital/components/Button",
-            "codeExample": "import { Button } from '@holmdigital/components';\n\n// Bad: Poor contrast\n<button style={{ background: '#777', color: '#999' }}>Click me</button>\n\n// Good: Use accessible component\n<Button variant=\"primary\">Click me</Button>",
+            "component": null,
+            "codeExample": null,
             "wcagTechnique": [
                 "G18",
                 "G145",
@@ -86,8 +86,8 @@
         "remediation": {
             "description": "Todas las funcionalidades del contenido se pueden operar a través de una interfaz de teclado.",
             "technicalGuidance": "Asegúrese de que todos los elementos interactivos se puedan enfocar y activar usando Tab, Enter o Espacio. Use elementos HTML nativos (<button>, <a>) siempre que sea posible. Asegúrese de que `tabindex` se use correctamente.",
-            "component": "@holmdigital/components/Button",
-            "codeExample": "// Bad: Div with onClick\n<div onClick={handleClick}>Click Me</div>\n\n// Good: Button element\n<button onClick={handleClick}>Click Me</button>\n\n// Best: Use HolmDigital component\nimport { Button } from '@holmdigital/components';\n<Button onClick={handleClick}>Click Me</Button>",
+            "component": null,
+            "codeExample": "// Bad: Div with onClick\n<div onClick={handleClick}>Click Me</div>\n\n// Good: Button element\n<button onClick={handleClick}>Click Me</button>",
             "wcagTechnique": [
                 "G202",
                 "H91"
@@ -444,7 +444,7 @@
         "remediation": {
             "description": "El color no se usa como el único medio visual para transmitir información, indicar una acción, solicitar una respuesta o distinguir un elemento visual.",
             "technicalGuidance": "Acompañe el color con texto, iconos o subrayado. Por ejemplo, los enlaces deben tener subrayado u otro marcador visual además del color. Los mensajes de error necesitan texto/icono, no solo un borde rojo.",
-            "component": "@holmdigital/components/FormField",
+            "component": null,
             "wcagTechnique": [
                 "G14",
                 "G182",
@@ -583,7 +583,7 @@
         "remediation": {
             "description": "La presentación visual de los componentes de la interfaz de usuario y los objetos gráficos tiene una relación de contraste de al menos 3:1 contra los colores adyacentes.",
             "technicalGuidance": "Se aplica a botones, bordes de entrada, iconos e indicadores de enfoque. Asegúrese de que todos los elementos interactivos sean claramente visibles contra el fondo.",
-            "component": "@holmdigital/components/Button",
+            "component": null,
             "wcagTechnique": [
                 "G195",
                 "G207"
@@ -1726,7 +1726,7 @@
         "remediation": {
             "description": "Cualquier interfaz de usuario operable por teclado debe tener un indicador de foco visible.",
             "technicalGuidance": "Nunca elimine el contorno con CSS (outline: none) sin reemplazarlo con un indicador visual claro. Asegúrese de que el contraste del anillo de foco sea suficiente (ver 1.4.11).",
-            "component": "@holmdigital/components/Button",
+            "component": null,
             "wcagTechnique": [
                 "G149",
                 "G165",
@@ -2462,8 +2462,8 @@
         "remediation": {
             "description": "Para todos los componentes de la interfaz de usuario, el nombre y la función pueden ser determinados por programa; los estados, propiedades y valores pueden ser configurados por programa; y la notificación de cambios está disponible.",
             "technicalGuidance": "Use elementos HTML nativos cuando sea posible. Si usa componentes personalizados, asegúrese de usar ARIA correctamente (role, aria-label, aria-valuenow).",
-            "component": "@holmdigital/components/ProgressBar",
-            "codeExample": "import { ProgressBar } from '@holmdigital/components';\n\n// Malo: Div sin role\n<div style={{ width: '50%' }}>50%</div>\n\n// Bueno: Componente accesible\n<ProgressBar value={50} label=\"Cargando...\" />",
+            "component": null,
+            "codeExample": null,
             "wcagTechnique": [
                 "ARIA4",
                 "ARIA5"
@@ -3046,7 +3046,7 @@
         "remediation": {
             "description": "Los objetivos interactivos (botones, enlaces, iconos, controles de formulario) deben medir al menos 24 x 24 píxeles CSS, o tener al menos 24 píxeles de espacio libre hasta el objetivo más cercano. Existen excepciones para los enlaces dentro del texto corrido, para los controles cuyo tamaño determina el navegador, y cuando existe un control equivalente de tamaño suficiente en la misma página.",
             "technicalGuidance": "Dé a los elementos interactivos un área de contacto de al menos 24px, preferiblemente mediante min-height y min-width en el propio control. Si el icono debe verse pequeño, conserve el icono pequeño pero amplíe el área de contacto con padding, o deje al menos 24px de espacio alrededor (excepción de espaciado). Mida el área de contacto real, no el tamaño visual del icono.",
-            "component": "@holmdigital/components/Button",
+            "component": null,
             "codeExample": "/* Insufficient hit area */\n.icon-button { width: 16px; height: 16px; }\n\n/* Good: 24px hit area via min-height/min-width */\n.icon-button {\n  min-width: 24px;\n  min-height: 24px;\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n}\n\n/* Good: small icon, but 24px clearance around it (spacing exception) */\n.icon-button { margin: 4px; } /* yields >=24px center-to-center to the neighbour */",
             "wcagTechnique": [
                 "C42",

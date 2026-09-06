@@ -13,8 +13,8 @@
         "remediation": {
             "description": "Le texte et les images de texte doivent avoir un rapport de contraste d'au moins 4,5:1 (3:1 pour le texte large).",
             "technicalGuidance": "Utilisez des outils comme WebAIM Contrast Checker pour vérifier. Ajustez les couleurs ou ajoutez un fond.",
-            "component": "@holmdigital/components/Button",
-            "codeExample": "import { Button } from '@holmdigital/components';\n\n// Bad: Poor contrast\n<button style={{ background: '#777', color: '#999' }}>Click me</button>\n\n// Good: Use accessible component\n<Button variant=\"primary\">Click me</Button>",
+            "component": null,
+            "codeExample": null,
             "wcagTechnique": [
                 "G18",
                 "G145",
@@ -86,8 +86,8 @@
         "remediation": {
             "description": "Toutes les fonctionnalités doivent être accessibles via le clavier.",
             "technicalGuidance": "Utilisez du HTML sémantique (button, a, input) au lieu de div/span. Assurez-vous que tabindex est correct.",
-            "component": "@holmdigital/components/Button",
-            "codeExample": "// Bad: Div with onClick\n<div onClick={handleClick}>Click Me</div>\n\n// Good: Button element\n<button onClick={handleClick}>Click Me</button>\n\n// Best: Use HolmDigital component\nimport { Button } from '@holmdigital/components';\n<Button onClick={handleClick}>Click Me</Button>",
+            "component": null,
+            "codeExample": "// Bad: Div with onClick\n<div onClick={handleClick}>Click Me</div>\n\n// Good: Button element\n<button onClick={handleClick}>Click Me</button>",
             "wcagTechnique": [
                 "G202",
                 "H91"
@@ -443,7 +443,7 @@
         "remediation": {
             "description": "La couleur ne doit pas être le seul moyen visuel de transmettre l'information.",
             "technicalGuidance": "Complétez la couleur par du texte, des icônes ou un soulignement. Par ex., les liens doivent avoir un soulignement. Les messages d'erreur nécessitent du texte ou une icône.",
-            "component": "@holmdigital/components/FormField",
+            "component": null,
             "wcagTechnique": [
                 "G14",
                 "G182",
@@ -582,7 +582,7 @@
         "remediation": {
             "description": "La présentation visuelle des composants d'interface et objets graphiques doit avoir un contraste d'au moins 3:1.",
             "technicalGuidance": "S'applique aux boutons, bordures de champs, icônes et indicateurs de focus.",
-            "component": "@holmdigital/components/Button",
+            "component": null,
             "wcagTechnique": [
                 "G195",
                 "G207"
@@ -1724,7 +1724,7 @@
         "remediation": {
             "description": "Toute interface utilisateur utilisable au clavier doit avoir un indicateur de focus visible.",
             "technicalGuidance": "Ne jamais supprimer l'outline avec CSS (outline: none) sans le remplacer par un indicateur visuel clair. Assurez-vous que le contraste de l'anneau de focus est suffisant (voir 1.4.11).",
-            "component": "@holmdigital/components/Button",
+            "component": null,
             "wcagTechnique": [
                 "G149",
                 "G165",
@@ -2462,8 +2462,8 @@
         "remediation": {
             "description": "Pour tous les composants d'interface utilisateur, le nom et le rôle peuvent être déterminés par programme ; les états, les propriétés et les valeurs peuvent être définis par programme ; et la notification des changements est disponible.",
             "technicalGuidance": "Utilisez les éléments HTML natifs lorsque cela est possible. Si des composants personnalisés sont utilisés, ARIA (role, aria-label, aria-valuenow) doit être utilisé correctement.",
-            "component": "@holmdigital/components/ProgressBar",
-            "codeExample": "import { ProgressBar } from '@holmdigital/components';\n\n// Mauvais : Div sans rôle\n<div style={{ width: '50%' }}>50%</div>\n\n// Bon : Composant accessible\n<ProgressBar value={50} label=\"Chargement...\" />",
+            "component": null,
+            "codeExample": null,
             "wcagTechnique": [
                 "ARIA4",
                 "ARIA5"
@@ -3046,7 +3046,7 @@
         "remediation": {
             "description": "Les cibles cliquables (boutons, liens, icônes, contrôles de formulaire) doivent mesurer au moins 24 x 24 pixels CSS, ou disposer d'au moins 24 pixels d'espace libre jusqu'à la cible la plus proche. Des exceptions existent pour les liens dans le texte courant, pour les contrôles dont la taille est déterminée par le navigateur, et lorsqu'un contrôle équivalent de taille suffisante existe sur la même page.",
             "technicalGuidance": "Donnez aux éléments interactifs une zone de contact d'au moins 24px, idéalement via min-height et min-width sur le contrôle lui-même. Si l'icône doit rester petite visuellement, conservez la petite icône mais agrandissez la zone de contact avec du padding, ou laissez au moins 24px d'espace autour (exception d'espacement). Mesurez la zone de contact réelle, pas la taille visuelle de l'icône.",
-            "component": "@holmdigital/components/Button",
+            "component": null,
             "codeExample": "/* Insufficient hit area */\n.icon-button { width: 16px; height: 16px; }\n\n/* Good: 24px hit area via min-height/min-width */\n.icon-button {\n  min-width: 24px;\n  min-height: 24px;\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n}\n\n/* Good: small icon, but 24px clearance around it (spacing exception) */\n.icon-button { margin: 4px; } /* yields >=24px center-to-center to the neighbour */",
             "wcagTechnique": [
                 "C42",
