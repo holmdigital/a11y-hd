@@ -13,8 +13,8 @@
         "remediation": {
             "description": "Text och bilder av text måste ha ett kontrastvärde på minst 4,5:1 (3:1 för stor text).",
             "technicalGuidance": "Använd verktyg som WebAIM Contrast Checker för att verifiera kontrast. Justera färgval eller lägg till bakgrundsopacity för att uppnå korrekt kontrast.",
-            "component": "@holmdigital/components/Button",
-            "codeExample": "import { Button } from '@holmdigital/components';\n\n// Bad: Poor contrast\n<button style={{ background: '#777', color: '#999' }}>Click me</button>\n\n// Good: Use accessible component\n<Button variant=\"primary\">Click me</Button>",
+            "component": null,
+            "codeExample": null,
             "wcagTechnique": [
                 "G18",
                 "G145",
@@ -94,8 +94,8 @@
         "remediation": {
             "description": "All funktionalitet måste vara navigerbar med tangentbord.",
             "technicalGuidance": "Använd semantiska HTML-element (button, a, input) istället för div/span med click handlers. Se till att tabindex används korrekt.",
-            "component": "@holmdigital/components/Button",
-            "codeExample": "// Bad: Div with onClick\n<div onClick={handleClick}>Click Me</div>\n\n// Good: Button element\n<button onClick={handleClick}>Click Me</button>\n\n// Best: Use HolmDigital component\nimport { Button } from '@holmdigital/components';\n<Button onClick={handleClick}>Click Me</Button>",
+            "component": null,
+            "codeExample": "// Bad: Div with onClick\n<div onClick={handleClick}>Click Me</div>\n\n// Good: Button element\n<button onClick={handleClick}>Click Me</button>",
             "wcagTechnique": [
                 "G202",
                 "H91"
@@ -493,7 +493,7 @@
         "remediation": {
             "description": "Färg får inte användas som det enda visuella sättet att förmedla information, indikera en handling, uppmana till svar eller skilja på visuella element.",
             "technicalGuidance": "Komplettera färg med text, ikoner eller understrykning. T.ex. länkar måste ha understrykning eller annan visuell markör utöver färg. Felmeddelanden behöver text/ikon, inte bara en röd ram.",
-            "component": "@holmdigital/components/FormField",
+            "component": null,
             "wcagTechnique": [
                 "G14",
                 "G182",
@@ -648,7 +648,7 @@
         "remediation": {
             "description": "Den visuella presentationen av gränssnittskomponenter och grafiska objekt måste ha ett kontrastförhållande på minst 3:1 mot angränsande färger.",
             "technicalGuidance": "Gäller knappar, input-ramar, ikoner och fokusindikatorer. Se till att alla interaktiva element syns tydligt mot bakgrunden.",
-            "component": "@holmdigital/components/Button",
+            "component": null,
             "wcagTechnique": [
                 "G195",
                 "G207"
@@ -1927,7 +1927,7 @@
         "remediation": {
             "description": "Varje gränssnitt som kan hanteras med tangentbord måste ha en synlig fokusindikator.",
             "technicalGuidance": "Ta aldrig bort outline med CSS (outline: none) utan att ersätta det med en tydlig visuell indikator. Se till att fokusringens kontrast är tillräcklig (se 1.4.11).",
-            "component": "@holmdigital/components/Button",
+            "component": null,
             "wcagTechnique": [
                 "G149",
                 "G165",
@@ -2751,8 +2751,8 @@
         "remediation": {
             "description": "För alla komponenter ska namn och roll kunna bestämmas programmatiskt. Värden ska kunna sättas programmatiskt.",
             "technicalGuidance": "Använd nativa HTML-element när det går. Om anpassade komponenter används, måste ARIA (role, aria-label, aria-valuenow) användas korrekt.",
-            "component": "@holmdigital/components/ProgressBar",
-            "codeExample": "import { ProgressBar } from '@holmdigital/components';\n\n// Dåligt: Div utan roll\n<div style={{ width: '50%' }}>50%</div>\n\n// Bra: Tillgänglig komponent\n<ProgressBar value={50} label=\"Laddar...\" />",
+            "component": null,
+            "codeExample": null,
             "wcagTechnique": [
                 "ARIA4",
                 "ARIA5"
@@ -3407,7 +3407,7 @@
         "remediation": {
             "description": "Klickbara ytor (knappar, länkar, ikoner, formulärkontroller) måste vara minst 24 x 24 CSS-pixlar, eller ha minst 24 pixlar fritt avstånd till närmaste annan klickyta. Undantag finns för länkar inuti löpande text, för kontroller vars storlek webbläsaren bestämmer, och när en likvärdig kontroll av rätt storlek finns på samma sida.",
             "technicalGuidance": "Sätt minst 24px träffyta på interaktiva element, helst via min-height och min-width på själva kontrollen. Om ikonen ska vara visuellt liten, behåll den lilla ikonen men utöka träffytan med padding, eller lämna minst 24px luft runt om (spacing-undantaget). Verifiera den faktiska träffytan, inte ikonens visuella storlek.",
-            "component": "@holmdigital/components/Button",
+            "component": null,
             "codeExample": "/* Otillräcklig träffyta */\n.icon-button { width: 16px; height: 16px; }\n\n/* Bra: 24px träffyta via min-height/min-width */\n.icon-button {\n  min-width: 24px;\n  min-height: 24px;\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n}\n\n/* Bra: liten ikon, men 24px luft runt om (spacing-undantaget) */\n.icon-button { margin: 4px; } /* ger >=24px center-till-center mot grannen */",
             "wcagTechnique": [
                 "C42",

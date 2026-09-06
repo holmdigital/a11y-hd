@@ -13,8 +13,8 @@
         "remediation": {
             "description": "Text and images of text must have a contrast ratio of at least 4.5:1 (3:1 for large text).",
             "technicalGuidance": "Use tools like WebAIM Contrast Checker to verify contrast. Adjust colour choices or add background opacity to achieve correct contrast.",
-            "component": "@holmdigital/components/Button",
-            "codeExample": "import { Button } from '@holmdigital/components';\n\n// Bad: Poor contrast\n<button style={{ background: '#777', color: '#999' }}>Click me</button>\n\n// Good: Use accessible component\n<Button variant=\"primary\">Click me</Button>",
+            "component": null,
+            "codeExample": null,
             "wcagTechnique": [
                 "G18",
                 "G145",
@@ -86,8 +86,8 @@
         "remediation": {
             "description": "All functionality must be accessible via keyboard.",
             "technicalGuidance": "Use semantic HTML elements (button, a, input) instead of div/span with click handlers. Ensure tabindex is used correctly.",
-            "component": "@holmdigital/components/Button",
-            "codeExample": "// Bad: Div with onClick\n<div onClick={handleClick}>Click Me</div>\n\n// Good: Button element\n<button onClick={handleClick}>Click Me</button>\n\n// Best: Use HolmDigital component\nimport { Button } from '@holmdigital/components';\n<Button onClick={handleClick}>Click Me</Button>",
+            "component": null,
+            "codeExample": "// Bad: Div with onClick\n<div onClick={handleClick}>Click Me</div>\n\n// Good: Button element\n<button onClick={handleClick}>Click Me</button>",
             "wcagTechnique": [
                 "G202",
                 "H91"
@@ -445,7 +445,7 @@
         "remediation": {
             "description": "Color is not used as the only visual means of conveying information, indicating an action, prompting a response, or distinguishing a visual element.",
             "technicalGuidance": "Complement colour with text, icons, or underlining. E.g. links must have underlines or another visual marker besides colour. Error messages need text/icon, not just a red border.",
-            "component": "@holmdigital/components/FormField",
+            "component": null,
             "wcagTechnique": [
                 "G14",
                 "G182",
@@ -584,7 +584,7 @@
         "remediation": {
             "description": "The visual presentation of user interface components and graphical objects must have a contrast ratio of at least 3:1 against adjacent colours.",
             "technicalGuidance": "Applies to buttons, input borders, icons, and focus indicators. Ensure all interactive elements are clearly visible against the background.",
-            "component": "@holmdigital/components/Button",
+            "component": null,
             "wcagTechnique": [
                 "G195",
                 "G207"
@@ -1727,7 +1727,7 @@
         "remediation": {
             "description": "Any user interface operable by keyboard must have a visible focus indicator.",
             "technicalGuidance": "Never remove outline with CSS (outline: none) without replacing it with a clear visual indicator. Ensure contrast of focus ring is sufficient (see 1.4.11).",
-            "component": "@holmdigital/components/Button",
+            "component": null,
             "wcagTechnique": [
                 "G149",
                 "G165",
@@ -3045,7 +3045,7 @@
         "remediation": {
             "description": "Interactive targets (buttons, links, icons, form controls) must be at least 24 by 24 CSS pixels, or have at least 24 pixels of clear spacing to the nearest other target. Exceptions apply to links in flowing text, to controls whose size is determined by the browser, and where an equivalent control of sufficient size exists on the same page.",
             "technicalGuidance": "Give interactive elements at least a 24px hit area, ideally via min-height and min-width on the control itself. If the icon must look small, keep the small icon but enlarge the hit area with padding, or leave at least 24px of clearance around it (the spacing exception). Measure the actual hit area, not the visual size of the icon.",
-            "component": "@holmdigital/components/Button",
+            "component": null,
             "codeExample": "/* Insufficient hit area */\n.icon-button { width: 16px; height: 16px; }\n\n/* Good: 24px hit area via min-height/min-width */\n.icon-button {\n  min-width: 24px;\n  min-height: 24px;\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n}\n\n/* Good: small icon, but 24px clearance around it (spacing exception) */\n.icon-button { margin: 4px; } /* yields >=24px center-to-center to the neighbour */",
             "wcagTechnique": [
                 "C42",

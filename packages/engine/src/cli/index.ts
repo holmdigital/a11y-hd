@@ -581,14 +581,6 @@ program
                 else if (!options.json) console.log(chalk.green(`✓ JUnit report saved to ${options.junit}`));
             }
 
-            // Intern #43 fynd 1: i CI får en INCONCLUSIVE-scan inte se ut som ett
-            // grönt PASS. Den mätte inte det riktiga innehållet → exit 1, så att en
-            // challenge-blockerad scan larmar i stället för att smyga igenom.
-            if (options.ci && result.complianceStatus === 'INCONCLUSIVE') {
-                if (!options.json) console.error(chalk.yellow('\nCI/CD: scan inconclusive — real content not assessed (interstitial/wait page). Not treated as a pass.'));
-                process.exit(1);
-            }
-
             if (options.ci && result.stats.critical > 0) {
                 if (!options.json) console.error(chalk.red(t('cli.critical_failure')));
                 process.exit(1);
@@ -623,6 +615,20 @@ program
                         console.error(chalk.red(`Cloud error: ${cloudResponse.error}`));
                     }
                 }
+            }
+
+            // Intern #43 fynd 1 (Mejas exit-kod-fynd): en INCONCLUSIVE-scan mätte
+            // ALDRIG det riktiga innehållet — det är en misslyckad mätning, inte ett
+            // utlåtande. PASS/FAIL är lyckade mätningar och lyder under --ci-gaten;
+            // detta hör i stället ihop med scanfel-grenen nedan, som exit:ar 1 oavsett
+            // flaggor. Ovillkorligt non-zero, så ingen pipeline kan läsa en omätt sida
+            // som grön. Ligger sist så att all output (banner, JUnit, moln-besked)
+            // hinner skrivas först.
+            if (result.complianceStatus === 'INCONCLUSIVE') {
+                if (!options.json) {
+                    console.error(chalk.yellow('\nScan inconclusive — real content not assessed (interstitial/wait page). Exiting 1 so an unmeasured page is never read as success.'));
+                }
+                process.exit(1);
             }
 
         } catch (error) {
