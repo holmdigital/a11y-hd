@@ -1,0 +1,75 @@
+# The real verification gate for pull requests.
+#
+# Why this exists (Intern #49): the only PR workflow was the React 18/19
+# typecheck matrix, and CodeQL — which reports `NEUTRAL` (skipping) on
+# Dependabot PRs. The matrix is valuable but it is NOT a full gate:
+#
+#   * it rewrites react/react-dom/@types/* in the manifests and then runs
+#     `npm install`, so it never validates the COMMITTED lockfile — and a
+#     dependency PR is a lockfile change, which is precisely what needs
+#     validating,
+#   * it runs the components suite only, so engine (312) and standards (338)
+#     tests never ran against a dependency bump,
+#   * it does not lint, and it does not build the engine.
+#
+# A Dependabot PR showing "CLEAN" therefore had most of the repo unverified.
+# This workflow closes that hole by running the same chain the handbook tells a
+# human to run before merging one: `npm ci` (not `npm install` — it is what the
+# release job runs and it is what catches lockfile/peer conflicts) followed by
+# build, lint, typecheck and the full test suite across all three packages.
+#
+# Keep the two workflows: this one proves the committed tree is sound, the
+# matrix proves the React 18 half of our peer-range promise still typechecks.
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+# Reads the repository and runs npm; it never writes back, comments or
+# publishes. Read-only keeps a compromised dependency in the install/build/test
+# steps from pushing, tagging or opening pull requests.
+# (CodeQL: actions/missing-workflow-permissions)
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    name: Build, lint, typecheck, test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: 'npm'
+
+      # `npm ci` deliberately, not `npm install`: it installs the committed
+      # lockfile exactly and fails on a lockfile/manifest mismatch or an
+      # unresolvable peer range. That is the check a dependency bump needs.
+      - name: Install (npm ci — validates the committed lockfile)
+        run: npm ci
+
+      # Root `build` runs the three packages in dependency order
+      # (standards -> components -> engine); typecheck reads their emitted .d.ts.
+      - name: Build all packages
+        run: npm run build
+
+      - name: Lint all workspaces
+        run: npm run lint
+
+      - name: Typecheck all workspaces
+        run: npm run typecheck
+
+      - name: Test all workspaces
+        run: npm run test:ci
