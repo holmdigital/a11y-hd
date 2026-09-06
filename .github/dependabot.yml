@@ -21,12 +21,34 @@ updates:
       prefix: "chore(deps)"
       prefix-development: "chore(dev-deps)"
     groups:
+      # `applies-to` is spelled out on every group now that security groups
+      # exist below — the default is version-updates, but leaving it implicit
+      # next to an explicit one reads like an oversight.
       production-minor-patch:
+        applies-to: version-updates
         dependency-type: "production"
         update-types: ["minor", "patch"]
       development-minor-patch:
+        applies-to: version-updates
         dependency-type: "development"
         update-types: ["minor", "patch"]
+      # ---- Security updates (Intern #49) ----
+      # The security-updates engine runs on its own schedule and ignores the
+      # version-update groups above, so advisories arrived one PR at a time,
+      # mid-week, outside the weekly batch. These groups batch whatever lands
+      # together WITHOUT slowing anything down: the engine still opens as soon
+      # as an advisory is published, grouping only merges what coincides.
+      #
+      # Production and development are deliberately separate groups rather than
+      # one: a batch that mixes them cannot be triaged (or later auto-merged) as
+      # a unit, because a prod dependency of a published package needs a
+      # changeset while a dev dependency never reaches consumers.
+      security-production:
+        applies-to: security-updates
+        dependency-type: "production"
+      security-development:
+        applies-to: security-updates
+        dependency-type: "development"
     ignore:
       # React-majors är ett produktbeslut, inte en rutinbump. Engine har
       # react-dom som RUNTIME-dependency (renderToStaticMarkup i
@@ -59,4 +81,8 @@ updates:
       prefix: "ci(deps)"
     groups:
       github-actions:
+        applies-to: version-updates
+        patterns: ["*"]
+      github-actions-security:
+        applies-to: security-updates
         patterns: ["*"]
