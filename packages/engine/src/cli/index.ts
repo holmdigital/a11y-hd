@@ -337,7 +337,12 @@ program
                         // ett fält, inte hela regelobjektet. Samma korta 3-fals-
                         // klarspråk som --plain, annars felmärks WCAG 2.2-fynden som
                         // lagkrav i widgeten (Karins beslut 2026-08-25).
-                        legalBasis: klarsprakLegalLine(r.dosLagenReference),
+                        // Intern #56: sektorsstyrd lydelse även i widget-JSON:en —
+                        // annars påstår den publika widgeten DOS-lagen för privata kunder.
+                        legalBasis: klarsprakLegalLine(r.dosLagenReference, {
+                            sector: options.sector as 'public' | 'private',
+                            ruleId: r.ruleId
+                        }),
                         // Plain-language (klarspråk) fields, present when the rule
                         // is covered; undefined values drop out of the JSON.
                         headline: r.plainLanguage?.headline,
@@ -355,7 +360,7 @@ program
                 if (options.audience === 'plain') {
                     // Klarspråk för icke-teknisk mottagare (plain.inconclusive).
                     const { renderPlainReport } = await import('../reporting/plain-report');
-                    renderPlainReport(result, plainFallbackFrom ? 'en' : options.lang, plainFallbackFrom);
+                    renderPlainReport(result, plainFallbackFrom ? 'en' : options.lang, plainFallbackFrom, options.sector as 'public' | 'private');
                 } else {
                     console.log('');
                     console.log(chalk.yellow.bold(t('cli.inconclusive_headline')));
@@ -391,7 +396,7 @@ program
                 console.log(chalk.gray(`\nScan: ${result.metadata.scanDuration}ms | ${result.metadata.engineVersion}`));
             } else if (options.audience === 'plain') {
                 const { renderPlainReport } = await import('../reporting/plain-report');
-                renderPlainReport(result, plainFallbackFrom ? 'en' : options.lang, plainFallbackFrom);
+                renderPlainReport(result, plainFallbackFrom ? 'en' : options.lang, plainFallbackFrom, options.sector as 'public' | 'private');
             } else {
                 // --- CLI DASHBOARD IMPLEMENTATION ---
 

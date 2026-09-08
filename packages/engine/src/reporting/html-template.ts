@@ -168,7 +168,9 @@ export function generateReportHTML(
         return inconclusiveReportHTML(result);
     }
     if (audience === 'plain') {
-        return generatePlainReportHTML(result, plainFallbackFrom);
+        // Intern #56: sektorn måste följa med hit — lagraden per fynd renderas
+        // längre ned och får inte påstå DOS-lagen för en privat kund.
+        return generatePlainReportHTML(result, plainFallbackFrom, sector);
     }
 
     const criticalCount = result.stats.critical;
@@ -552,7 +554,7 @@ function getLogoDataUri(): string {
  * (5 fields + badge) + neutral closing + footer with URL/date/version (D-16).
  * NO score, NO WCAG/DIGG tables, NO legal sections.
  */
-function generatePlainReportHTML(result: ScanResult, plainFallbackFrom?: string): string {
+function generatePlainReportHTML(result: ScanResult, plainFallbackFrom?: string, sector?: 'public' | 'private'): string {
     const lang = getCurrentLang();
     const safeUrl = escapeHtml(result.url);
     const logoDataUri = getLogoDataUri();
@@ -612,7 +614,7 @@ ${sortedGroups.map((group) => {
     // Intern #29: lagrummet per fynd (Junos lydelse). Samma rad som --plain, får
     // inte glida isär. Endast sv — Juno godkände svensk lydelse.
     const legalHtml = isSwedish
-        ? `\n    <p class="issue-legal">${escapeHtml(klarsprakLegalLine(report.dosLagenReference))}</p>`
+        ? `\n    <p class="issue-legal">${escapeHtml(klarsprakLegalLine(report.dosLagenReference, { sector, ruleId: report.ruleId }))}</p>`
         : '';
 
     if (pl) {
