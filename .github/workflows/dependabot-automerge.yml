@@ -1,0 +1,71 @@
+# Auto-merge for low-risk Dependabot updates (Intern #49).
+#
+# Scope is deliberately narrow — three conditions must ALL hold:
+#
+#   1. patch or minor (never major; majors get a deliberate review, and this
+#      repo has been bitten by blind majors: vitest 2->4, esbuild ranges),
+#   2. a DIRECT DEVELOPMENT dependency — never production. A prod dependency of
+#      a published package changes what consumers receive on the next release,
+#      so it needs a changeset; merging it bare is the WR-04 pattern that gave
+#      us an undeclared breaking change once already (see the react-dom note in
+#      .github/dependabot.yml and closed PR #87),
+#   3. NOT a security update (`ghsa-id` empty). Gating on severity instead would
+#      mean trusting a metadata field to be present and parsed — and the
+#      fail-open case there is auto-merging a critical. Security updates are
+#      grouped (see dependabot.yml) so the noise is already handled; they cost
+#      one human glance per batch, which is the right trade.
+#
+# Anything that does not match every condition simply falls through and waits
+# for a human. This fails CLOSED by design: grouped PRs and indirect
+# dependencies may report a `dependency-type` that does not match, and that is
+# an acceptable outcome — a missed auto-merge is a nuisance, a wrong one is not.
+#
+# `--auto` does NOT merge immediately: it queues the merge until the branch
+# protection's required checks pass (Build, lint, typecheck, test / React 18 /
+# React 19). Without those required checks configured on master this workflow
+# would merge unverified code, so the protection is load-bearing, not optional.
+name: Dependabot auto-merge
+
+on: pull_request
+
+# Dependabot-triggered `pull_request` runs get a read-only token by default;
+# this block is what elevates it enough to enable auto-merge. It is the pattern
+# GitHub documents for automating Dependabot.
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  automerge:
+    name: Enable auto-merge for low-risk updates
+    runs-on: ubuntu-latest
+    # `pull_request.user.login` rather than `github.actor`: the actor can be a
+    # human who re-ran the workflow, the PR author cannot.
+    if: github.event.pull_request.user.login == 'dependabot[bot]'
+
+    steps:
+      - name: Fetch Dependabot metadata
+        id: meta
+        uses: dependabot/fetch-metadata@v2
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Enable auto-merge (dev, patch/minor, non-security only)
+        if: >
+          steps.meta.outputs.ghsa-id == '' &&
+          steps.meta.outputs.dependency-type == 'direct:development' &&
+          (steps.meta.outputs.update-type == 'version-update:semver-patch' ||
+           steps.meta.outputs.update-type == 'version-update:semver-minor')
+        run: gh pr merge --auto --squash "$PR_URL"
+        env:
+          PR_URL: ${{ github.event.pull_request.html_url }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Explain why this PR was left for a human
+        if: >
+          steps.meta.outputs.ghsa-id != '' ||
+          steps.meta.outputs.dependency-type != 'direct:development' ||
+          (steps.meta.outputs.update-type != 'version-update:semver-patch' &&
+           steps.meta.outputs.update-type != 'version-update:semver-minor')
+        run: |
+          echo "::notice::Left for human review — dependency-type=${{ steps.meta.outputs.dependency-type }}, update-type=${{ steps.meta.outputs.update-type }}, ghsa-id=${{ steps.meta.outputs.ghsa-id }}"
