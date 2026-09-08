@@ -76,7 +76,7 @@ function levelOf(report: EnrichedReport): BusinessImpactLevel {
  * @param result - ScanResult with plainLanguage populated at enrichment time (plan 02)
  * @param lang   - Language code; passed to setLanguage() before rendering
  */
-export function renderPlainReport(result: ScanResult, lang: string = 'en', plainFallbackFrom?: string): void {
+export function renderPlainReport(result: ScanResult, lang: string = 'en', plainFallbackFrom?: string, sector?: 'public' | 'private'): void {
     setLanguage(lang);
 
     // Fallback notice: --plain was requested in a language we do not yet cover,
@@ -180,7 +180,9 @@ export function renderPlainReport(result: ScanResult, lang: string = 'en', plain
         // Intern #29: lagrummet per fynd (Junos lydelse, svensk klarspråk). Samma
         // rad som klarspråks-HTML. Endast sv — Juno godkände svensk lydelse.
         if (isSwedish) {
-            console.log(`   ${klarsprakLegalLine(report.dosLagenReference)}`);
+            // Intern #56: sektorn avgör lydelsen — en privat kund ska aldrig få
+            // DOS-lagen, som gäller offentlig sektor.
+            console.log(`   ${klarsprakLegalLine(report.dosLagenReference, { sector, ruleId: report.ruleId })}`);
         }
 
         console.log('');
