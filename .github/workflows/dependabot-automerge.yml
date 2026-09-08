@@ -39,6 +39,8 @@ jobs:
   automerge:
     name: Enable auto-merge for low-risk updates
     runs-on: ubuntu-latest
+    timeout-minutes: 5
+
     # `pull_request.user.login` rather than `github.actor`: the actor can be a
     # human who re-ran the workflow, the PR author cannot.
     if: github.event.pull_request.user.login == 'dependabot[bot]'
@@ -46,7 +48,8 @@ jobs:
     steps:
       - name: Fetch Dependabot metadata
         id: meta
-        uses: dependabot/fetch-metadata@v2
+        # SHA-pinnad: kör i ett jobb med contents/pull-requests write.
+        uses: dependabot/fetch-metadata@21025c705c08248db411dc16f3619e6b5f9ea21a # v2
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
 

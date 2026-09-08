@@ -12,6 +12,8 @@ jobs:
   build-and-release:
     name: Build and Release Wiki
     runs-on: ubuntu-latest
+    timeout-minutes: 15
+
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v7
@@ -34,7 +36,8 @@ jobs:
           zip -r ../../wiki-release.zip .
 
       - name: Create Release
-        uses: softprops/action-gh-release@v3
+        # SHA-pinnad: tredjeparts-action som skapar releaser med contents: write.
+        uses: softprops/action-gh-release@efb35369e0ad2afab669f228072c1b0d510eae64 # v3
         with:
           files: wiki-release.zip
           draft: false
