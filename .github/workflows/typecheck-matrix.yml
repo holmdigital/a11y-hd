@@ -34,6 +34,8 @@ jobs:
   typecheck:
     name: React ${{ matrix.react.major }}
     runs-on: ubuntu-latest
+    timeout-minutes: 25
+
     strategy:
       # Report both legs. Knowing "18 fails, 19 passes" is the whole point;
       # cancelling the sibling on first failure would hide which half broke.

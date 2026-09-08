@@ -11,6 +11,8 @@ jobs:
   release:
     name: Release
     runs-on: ubuntu-latest
+    timeout-minutes: 30
+
     permissions:
       contents: write
       pull-requests: write
@@ -42,7 +44,10 @@ jobs:
 
       - name: Create Release Pull Request
         id: changesets
-        uses: changesets/action@v1
+        # SHA-pinnad: den här actionen kör med contents/pull-requests/id-token
+        # write, alltså med rätten att publicera. En flyttad tagg vore en kapad
+        # publiceringskedja. Dependabot uppdaterar SHA-pins precis som taggar.
+        uses: changesets/action@a45c4d594aa4e2c509dc14a9f2b3b67ba3780d0d # v1
         with:
           # Only use the action for versioning/PR creation
           version: npx changeset version

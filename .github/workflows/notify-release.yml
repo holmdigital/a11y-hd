@@ -12,6 +12,8 @@ permissions: {}
 jobs:
   notify:
     runs-on: ubuntu-latest
+    timeout-minutes: 5
+
     steps:
       # The release tag is passed through the environment rather than
       # interpolated into the script body. A `${{ }}` expression is substituted
