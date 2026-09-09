@@ -1,79 +1,123 @@
+import { getConvergenceRule } from '@holmdigital/standards';
+
 /**
- * Klarspråk legal-basis line for a finding (Intern #29, Juno's approved wordings,
- * ratified by Karin 2026-08-25). Branches on the CONTENT of `dosLagenReference`,
- * in this order — the WCAG 2.2 case ("ännu inte lagkrav") MUST be tested before the
- * default, otherwise a not-yet-binding criterion is mislabelled as a legal
- * requirement:
+ * Klarspråk legal-basis line for a finding.
  *
- *   Fall A  empty / a non-law fallback phrase (unmapped)  → "Lagrum okänt …"
- *   Fall B  value contains "ännu inte lagkrav" (WCAG 2.2) → "Ännu inte lagkrav …"
- *   Fall C  a real DOS-lagen reference                    → "Lagkrav: DOS-lagen …"
+ * Intern #29 gave the first three cases. Intern #56 replaced them: Juno went
+ * through all 48 rules in `rules.sv.json` individually rather than generalising
+ * from two, and the result is THREE branches, not two. The distinction that a
+ * two-branch model gets wrong is `color-contrast`: it is a real WCAG 1.4.3 AA
+ * requirement, not good practice, and must never be lumped in with the
+ * best-practice rules.
  *
- * The exact same string is used by `--plain` (terminal) and the plain HTML so the
- * two can never drift apart. Swedish only — Juno approved wordings for the Swedish
- * klarspråk report; other locales are a separate request (render nothing there).
+ *   Gren 1  38 rules  real WCAG A/AA + dosLagenApplies:true  → formal legal requirement
+ *   Gren 2   7 rules  wcagCriteria === "Best Practice"       → good practice, no law
+ *   Gren 3   3 rules  real WCAG 2.2 AA but not yet binding   → becomes law with EN 301 549 V4.x
  *
- * Intern #56: the three cases above describe PUBLIC sector. With `sector: 'private'`
- * DOS-lagen is never named at all — see PRIVATE_SECTOR_LINES below. `opts` is
- * optional so every existing call keeps its exact current output; public-sector
- * reports are byte-identical to before.
+ * Gren 3 (`target-size`, `dragging-movements`, `focus-not-obscured`) is NOT the
+ * same as gren 2 and is reported wrong if the two are conflated: these ARE real
+ * success criteria, they are simply not referenced in the Official Journal yet.
  *
- * NOTE (Juno guardrail): "10 §" is not hard-derived from data — it is correct for all
- * 45 current DOS-lagen requirements. If `standards` ever emits a different paragraph
- * for a legal requirement, Fall C must be revised with Juno.
+ * The branch is derived from fields the report already carries — `wcagCriteria`
+ * and the "ännu inte lagkrav" marker in `dosLagenReference`. Verified against the
+ * data: that derivation reproduces Juno's 38/7/3 split exactly.
+ *
+ * DATA WARNING (Juno, Intern #56): never build this line from `legalContext`.
+ * That block is present on 45 of 48 rules with identical text, including all
+ * seven best-practice rules, so it cannot distinguish a legal requirement from
+ * good practice. Only `wcagCriteria` / `wcagLevel` / `dosLagenReference` are
+ * trustworthy signals here.
+ *
+ * Swedish only — Juno approved Swedish wordings; both call sites gate on `sv`.
+ * `opts` is optional so any call without it keeps the pre-#56 public behaviour.
  */
-/**
- * Junos godkända lydelser för PRIVAT sektor (Intern #56, 2026-09-08). Nycklade på
- * ruleId, inte på kriterium: `region` och `heading-order` citerar båda 1.3.1 men
- * skiljer sig i svansen ("sidstruktur" vs "rubrikstruktur").
- *
- * De påstår medvetet INGET skarpt EAA-krav. Om EAA gäller en enskild privat aktör
- * beror på om tjänsten är konsumentriktad — en juridisk bedömning som varken vi
- * eller motorn kan göra ur en URL. Lydelserna håller sig därför till WCAG 2.2 och
- * EN 301 549, som är sektorsoberoende.
- */
-const PRIVATE_SECTOR_LINES: Record<string, string> = {
-    'name-role-value': 'Standard: WCAG 2.2, framgångskriterium 4.1.2 Namn, roll, värde (nivå A). Motsvaras av EN 301 549. En knapp utan tillgängligt namn kan inte tolkas av skärmläsare.',
-    'region': 'Standard: WCAG 2.2, framgångskriterium 1.3.1 Information och relationer (nivå A), samt god praxis för sidstruktur.',
-    'heading-order': 'Standard: WCAG 2.2, framgångskriterium 1.3.1 Information och relationer (nivå A), samt god praxis för rubrikstruktur.',
-};
 
 /** Fall A — Junos godkända lydelse för "vi kan inte peka ut ett lagrum". */
 const UNKNOWN_LINE = 'Lagrum okänt. Fyndet kunde inte kopplas till ett specifikt lagrum.';
 
+/**
+ * Gren 2, fastställda lydelser för de två regler Vilma formulerat (Intern #56,
+ * 18:37). Gäller BÅDA sektorerna: det här är en klassningsfråga, inte en
+ * sektorsfråga — de är god praxis för alla.
+ *
+ * Den tidigare lydelsen ("WCAG 2.2 ... 1.3.1 ... nivå A") togs bort för att den
+ * ÖVERDREV. Juno belade mot primärkälla att axe taggar båda `best-practice` utan
+ * wcag-tagg, att SC 1.3.1 varken kräver sekventiell rubrikordning eller att allt
+ * innehåll ligger i landmärken, och att närmaste kriterier är 2.4.10 (AAA)
+ * respektive 2.4.1 (där en skiplänk räcker). Ingen av dem bär upp ett A-krav.
+ */
+const BEST_PRACTICE_LINES: Record<string, string> = {
+    'region': 'Klassas som god praxis för sidstruktur, snarare än ett formellt framgångskriterium i WCAG 2.2 eller ett krav i EN 301 549. Landmärken låter användare av hjälpmedel hoppa direkt till huvudinnehåll, navigation och sidfot, och gör sidan mätbart lättare att navigera.',
+    'heading-order': 'Klassas som god praxis för rubrikstruktur, snarare än ett formellt framgångskriterium i WCAG 2.2 eller ett krav i EN 301 549. En logisk rubrikordning låter skärmläsaranvändare överblicka sidan och hoppa mellan avsnitt, ungefär som via en innehållsförteckning.',
+};
+
+interface LegalLineOptions {
+    sector?: 'public' | 'private';
+    ruleId?: string;
+    /** Kriteriet från fyndet, t.ex. "1.4.3" eller "Best Practice". */
+    wcagCriteria?: string;
+    /** EN-kriteriet från fyndet, t.ex. "9.1.4.3". */
+    en301549Criteria?: string;
+}
+
+/** Slår upp nivå och titel ur regeldatan — bärs inte av EnrichedReport. */
+function ruleFacts(ruleId?: string): { level: string; title: string } {
+    if (!ruleId) return { level: '', title: '' };
+    try {
+        const rule = getConvergenceRule(ruleId, 'sv') as unknown as { wcagLevel?: string; wcagTitle?: string } | null;
+        return { level: rule?.wcagLevel ?? '', title: rule?.wcagTitle ?? '' };
+    } catch {
+        return { level: '', title: '' };
+    }
+}
+
+/** "WCAG AA 1.4.3 (Contrast (Minimum))" — utan tomma parenteser när titel saknas. */
+function criterionPhrase(level: string, criteria: string, title: string): string {
+    const head = `WCAG ${level} ${criteria}`.replace(/\s+/g, ' ').trim();
+    return title ? `${head} (${title})` : head;
+}
+
 export function klarsprakLegalLine(
     dosLagenReference: string | undefined | null,
-    opts?: { sector?: 'public' | 'private'; ruleId?: string }
+    opts?: LegalLineOptions
 ): string {
     const ref = (dosLagenReference ?? '').trim();
-
-    // Intern #56: DOS-lagen gäller OFFENTLIG sektor. En privat kund fick tidigare
-    // "Lagkrav: DOS-lagen (2018:1937), 10 §." i sin klarspråks-PDF — fel lag, i
-    // utgående kundtext. För privat sektor nämns DOS-lagen därför aldrig.
-    //
-    // Juno har godkänt lydelser för tre regler. För övriga faller vi tillbaka på
-    // den redan godkända "lagrum okänt"-raden i stället för att hitta på juridisk
-    // text — och för en privat aktör är den dessutom sann i sak, se kommentaren
-    // vid PRIVATE_SECTOR_LINES. Byts ut när Juno definierat en generell lydelse.
-    if (opts?.sector === 'private') {
-        return (opts.ruleId && PRIVATE_SECTOR_LINES[opts.ruleId]) || UNKNOWN_LINE;
-    }
-
-    // Fall A: no reference, our light "unknown" marker, or a non-law fallback phrase
-    // (e.g. "Kräver manuell bedömning" / "Rekommendation (ej lagkrav)"). A finding
-    // without a mapping must say the legal basis is unknown — never a phrase that
-    // poses as a law.
     const isRealDosLagen = ref.includes('2018:1937');
     const isNotYetLaw = ref.includes('ännu inte lagkrav');
-    if (ref === '' || (!isRealDosLagen && !isNotYetLaw)) {
+
+    // Fall A: omappat fynd. En fallback-fras ("Kräver manuell bedömning") får
+    // aldrig renderas som om den vore ett lagrum.
+    const isBestPractice = opts?.wcagCriteria === 'Best Practice' || ref.includes('Rekommendation (ej lagkrav)');
+    if (!isBestPractice && !isRealDosLagen && !isNotYetLaw) {
         return UNKNOWN_LINE;
     }
 
-    // Fall B: WCAG 2.2 criterion — tested BEFORE the default (Juno).
-    if (isNotYetLaw) {
-        return 'Ännu inte lagkrav under DOS-lagen (WCAG 2.2-kriterium). Blir bindande när EN 301 549 V4.x refereras i EU:s officiella tidning.';
+    const { level, title } = ruleFacts(opts?.ruleId);
+
+    // Gren 2 — god praxis. Samma text oavsett sektor.
+    if (isBestPractice) {
+        const fixed = opts?.ruleId && BEST_PRACTICE_LINES[opts.ruleId];
+        if (fixed) return fixed;
+        return `Ingen lagkrav, varken DOS-lagen eller lagen om vissa produkters och tjänsters tillgänglighet. ${opts?.ruleId ?? 'Regeln'} är god praxis (axe-core taggar den best-practice) och rekommenderas för bättre struktur, men ingår inte i lagens golv.`;
     }
 
-    // Fall C: a real DOS-lagen A/AA requirement.
-    return 'Lagkrav: DOS-lagen (2018:1937), 10 §.';
+    // Gren 3 — riktigt WCAG 2.2-kriterium som ännu inte är bindande. Samma text
+    // oavsett sektor. Skiljs från gren 2: detta ÄR ett framgångskriterium.
+    if (isNotYetLaw) {
+        const phrase = criterionPhrase(level, opts?.wcagCriteria ?? '', title);
+        return `Ännu inte lagkrav, varken DOS-lagen eller lagen om vissa produkters och tjänsters tillgänglighet. ${phrase} tillkom i WCAG 2.2 och blir bindande i båda lagarna när EN 301 549 V4.x refereras i EU:s officiella tidning, väntat 30 november 2026.`;
+    }
+
+    // Gren 1 — formellt lagkrav. Här, och bara här, skiljer sig sektorerna.
+    const phrase = criterionPhrase(level, opts?.wcagCriteria ?? '', title);
+    if (opts?.sector === 'private') {
+        // Juno kunde INTE belägga vilken EN 301 549-version som är citerad för
+        // lag 2023:254 mot primärkälla — harmoniseringen verkar pågå. Raden går
+        // därför ut med markeringen kvar, aldrig med ett gissat versionsnummer.
+        return `Lagkrav: lagen om vissa produkters och tjänsters tillgänglighet (2023:254), 6 och 9 §§. ${phrase}. EN 301 549-version för denna lag är inte verifierad.`;
+    }
+    const en = opts?.en301549Criteria && opts.en301549Criteria !== 'N/A' && opts.en301549Criteria !== 'Unknown'
+        ? `, EN 301 549 ${opts.en301549Criteria}`
+        : '';
+    return `Lagkrav: DOS-lagen (2018:1937), 10 §. ${phrase}${en}.`;
 }

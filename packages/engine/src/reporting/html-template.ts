@@ -614,7 +614,7 @@ ${sortedGroups.map((group) => {
     // Intern #29: lagrummet per fynd (Junos lydelse). Samma rad som --plain, får
     // inte glida isär. Endast sv — Juno godkände svensk lydelse.
     const legalHtml = isSwedish
-        ? `\n    <p class="issue-legal">${escapeHtml(klarsprakLegalLine(report.dosLagenReference, { sector, ruleId: report.ruleId }))}</p>`
+        ? `\n    <p class="issue-legal">${escapeHtml(klarsprakLegalLine(report.dosLagenReference, { sector, ruleId: report.ruleId, wcagCriteria: report.wcagCriteria, en301549Criteria: report.en301549Criteria }))}</p>`
         : '';
 
     if (pl) {
