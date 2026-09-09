@@ -341,7 +341,9 @@ program
                         // annars påstår den publika widgeten DOS-lagen för privata kunder.
                         legalBasis: klarsprakLegalLine(r.dosLagenReference, {
                             sector: options.sector as 'public' | 'private',
-                            ruleId: r.ruleId
+                            ruleId: r.ruleId,
+                            wcagCriteria: r.wcagCriteria,
+                            en301549Criteria: r.en301549Criteria
                         }),
                         // Plain-language (klarspråk) fields, present when the rule
                         // is covered; undefined values drop out of the JSON.

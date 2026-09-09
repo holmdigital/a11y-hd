@@ -182,7 +182,10 @@ export function renderPlainReport(result: ScanResult, lang: string = 'en', plain
         if (isSwedish) {
             // Intern #56: sektorn avgör lydelsen — en privat kund ska aldrig få
             // DOS-lagen, som gäller offentlig sektor.
-            console.log(`   ${klarsprakLegalLine(report.dosLagenReference, { sector, ruleId: report.ruleId })}`);
+            console.log(`   ${klarsprakLegalLine(report.dosLagenReference, {
+                sector, ruleId: report.ruleId,
+                wcagCriteria: report.wcagCriteria, en301549Criteria: report.en301549Criteria
+            })}`);
         }
 
         console.log('');
