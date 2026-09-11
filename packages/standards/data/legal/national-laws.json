@@ -193,6 +193,16 @@
                 },
                 "inForce": true,
                 "effectiveDate": "2018-09-23"
+            },
+            {
+                "id": "dk-eaa",
+                "law": "Lov om tilgængelighedskrav for produkter og tjenester",
+                "fullName": "Lov om tilgængelighedskrav for produkter og tjenester (Lovtidende A nr. 801, 8. juni 2022; ændret ved Lovtidende A nr. 637, 11. juni 2024) — gennemførelse af direktiv (EU) 2019/882",
+                "euFramework": "EAA",
+                "scope": "private",
+                "inForce": true,
+                "effectiveDate": "2025-06-28",
+                "note": "Intern #63 (Juno, 2026-09-10): `enforcement` and `sanctions` are deliberately absent — neither could be established against primary source. retsinformation.dk and sik.dk both return 403 Forbidden to automated retrieval, so the statute text was never opened. A search-result summary names Sikkerhedsstyrelsen as the control authority except for electronic communications and land, air and sea transport; that is an assertion, not a source, and must not be written into the data. Law name and publication references come from the EUR-Lex list of national implementing measures for Directive (EU) 2019/882. Opening the statute by hand is what unblocks these two fields."
             }
         ],
         "DE": [
@@ -288,6 +298,22 @@
                 "inForce": true,
                 "effectiveDate": "2019-09-23",
                 "note": "Current authoritative version is RGAA 4.1.2 with DINUM as the supervisory authority for the French public sector. RGAA 5 is planned for publication late 2026 and will transfer the supervisory role from DINUM to Arcom and upgrade the technical baseline to WCAG 2.2 with explicit mobile-application and document-accessibility requirements. Existing declarations under RGAA 4.1.2 remain valid for 18 months after RGAA 5's publication (capped at 3 years from the declaration date). Until RGAA 5 is published, DINUM remains the correct authority — do not pre-emptively switch to Arcom."
+            },
+            {
+                "id": "fr-eaa",
+                "law": "Code de la consommation, art. L. 412-13",
+                "fullName": "Exigences d'accessibilité applicables aux produits et services (transposition de la directive (UE) 2019/882) — code de la consommation art. L. 412-13 et D. 412-57, arrêté du 9 octobre 2023",
+                "euFramework": "EAA",
+                "scope": "private",
+                "inForce": true,
+                "effectiveDate": "2025-06-28",
+                "enforcement": {
+                    "authority": "fr-dgccrf",
+                    "authorityName": "DGCCRF (Direction générale de la concurrence, de la consommation et de la répression des fraudes)",
+                    "responsibility": "Autorité générale de surveillance du marché pour l'accessibilité des produits et services. Coordonne les autorités sectorielles. Arcom est compétente pour les services d'accès aux médias audiovisuels et les livres numériques (art. L. 511-25-1).",
+                    "website": "https://www.economie.gouv.fr/dgccrf"
+                },
+                "note": "Intern #63 (Juno, 2026-09-10): `sanctions` is deliberately absent. The sanction TYPE is established — art. R. 451-4 of the code de la consommation makes a breach \"une amende relevant des contraventions de 5e classe\", a criminal fine rather than an administrative penalty — but no amount was established against primary source, and the Sanction shape requires minAmount/maxAmount. No figure may be invented to make the record look complete. France has no standalone EAA statute; the transposition sits in the code de la consommation. Arcom's competence under art. L. 511-25-1 is narrow and explicit: services providing access to audiovisual media services, plus e-books and e-book reading software. Everything else is DGCCRF's."
             }
         ],
         "ES": [
@@ -312,6 +338,16 @@
                 },
                 "inForce": true,
                 "effectiveDate": "2018-09-23"
+            },
+            {
+                "id": "es-eaa",
+                "law": "Ley 11/2023",
+                "fullName": "Ley 11/2023, de 8 de mayo — trasposición de la Directiva (UE) 2019/882 (BOE núm. 110, de 9 de mayo de 2023, BOE-A-2023-11022)",
+                "euFramework": "EAA",
+                "scope": "private",
+                "inForce": true,
+                "effectiveDate": "2025-06-28",
+                "note": "Intern #63 (Juno, 2026-09-10, BOE-A-2023-11022 read in full): `enforcement` is absent because Spain HAS no national supervisory authority for this — art. 27.3 assigns it to each autonomous community and to the cities of Ceuta and Melilla, each designating its own. The art. 28 \"unidad técnica de apoyo y coordinación\" is explicitly an advisory and coordinating body for those authorities, not a supervisory one, and must not be recorded as the authority. `sanctions` is absent because art. 30 gives the statute no penalty range of its own: breaches are penalised under the applicable sectoral legislation, and failing that, under Title III of RDL 1/2013. No euro figure may be written here; there is none to write. Neither absence is a gap to be filled later — it is what the law says."
             }
         ],
         "IE": [

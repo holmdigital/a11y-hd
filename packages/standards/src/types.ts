@@ -301,14 +301,42 @@ export interface NationalLaw {
      */
     jurisdiction?: 'national' | 'subnational';
     lawUrl?: string;
-    enforcement: {
+    /**
+     * Intern #63: OPTIONAL since 4.0.0. It was required, and that was wrong.
+     *
+     * Spain genuinely has no national supervisory authority for EAA matters —
+     * Ley 11/2023 art. 27.3 hands it to each autonomous community and to Ceuta
+     * and Melilla, each designating its own. Denmark's is simply not established
+     * against primary source yet. Neither may be filled with a plausible-looking
+     * body to satisfy a type: a named authority in this field is a claim the
+     * customer may act on.
+     *
+     * Absent means "no single authority, or not established" — never "none
+     * exists". Consumers MUST narrow before reading, and must not fall back to
+     * another country's authority or to the flat ENFORCEMENT_BODIES constant
+     * without saying which they used.
+     */
+    enforcement?: {
         authority: string;
         authorityName: string;
         responsibility: string;
         website: string;
     };
     sectorAuthorities?: SectorAuthority[];
-    sanctions: Sanction;
+    /**
+     * Intern #63: OPTIONAL since 4.0.0, for the same reason as `enforcement`.
+     *
+     * Spain's Ley 11/2023 art. 30 carries no penalty range of its own; it defers
+     * to the applicable sectoral legislation and then to Title III of RDL
+     * 1/2013. France's sanction TYPE is established (a 5th-class contravention
+     * under art. R. 451-4 code de la consommation) but no amount is. `Sanction`
+     * demands `minAmount`/`maxAmount`, and an invented figure in a compliance
+     * product is worse than an honest absence.
+     *
+     * `getMaxSanction()` skips laws without this field rather than reading a
+     * missing range as zero.
+     */
+    sanctions?: Sanction;
     inForce: boolean;
     effectiveDate: string;
     note?: string;

@@ -25,7 +25,9 @@ import {
     getEnforcementBody,
     // National laws
     getNationalLawByFramework,
+    getNationalLawForSector,
     getNationalLaws,
+    getMaxSanction,
     generateRegulatoryReport,
 } from './index';
 import type { Country, ConvergenceRule } from './types';
@@ -352,8 +354,8 @@ describe('National Laws — FR (RGAA authority)', () => {
     // citation / RGAA 5 publication, DO NOT pre-emptively switch authority to Arcom.
     it('should list DINUM (not Arcom) as fr-rgaa authority', () => {
         const law = getNationalLawByFramework('WAD', 'FR');
-        expect(law?.enforcement.authorityName).toContain('DINUM');
-        expect(law?.enforcement.authorityName).not.toContain('Arcom');
+        expect(law?.enforcement?.authorityName).toContain('DINUM');
+        expect(law?.enforcement?.authorityName).not.toContain('Arcom');
     });
 });
 
@@ -367,7 +369,7 @@ describe('National Laws — US (ADA)', () => {
         const s508 = getNationalLawByFramework('WAD', 'US');
         expect(s508).not.toBeNull();
         expect(s508?.law).toBe('Section 508');
-        expect(s508?.enforcement.authority).toBe('us-gsa');
+        expect(s508?.enforcement?.authority).toBe('us-gsa');
     });
 
     it('should return ADA Title II as first ADA match for US (public scope)', () => {
@@ -375,7 +377,7 @@ describe('National Laws — US (ADA)', () => {
         expect(adaLaw).not.toBeNull();
         expect(adaLaw?.id).toBe('us-ada-title-ii');
         expect(adaLaw?.scope).toBe('public');
-        expect(adaLaw?.enforcement.authority).toBe('us-doj');
+        expect(adaLaw?.enforcement?.authority).toBe('us-doj');
     });
 
     it('should expose ADA Title III via scope-aware lookup', () => {
@@ -463,8 +465,8 @@ describe('National Laws — US HHS Section 504', () => {
 
     it('should have HHS OCR as enforcement authority', () => {
         const law = getNationalLaws('US').find(l => l.id === 'us-hhs-section-504');
-        expect(law?.enforcement.authority).toBe('us-hhs-ocr');
-        expect(law?.enforcement.authorityName).toBe('HHS Office for Civil Rights (OCR)');
+        expect(law?.enforcement?.authority).toBe('us-hhs-ocr');
+        expect(law?.enforcement?.authorityName).toBe('HHS Office for Civil Rights (OCR)');
     });
 
     it('should resolve us-hhs-section-504 via getNationalLawByFramework(\'REHAB\', \'US\')', () => {
@@ -663,4 +665,98 @@ describe('WCAG 2.2 Phase 1 locale parity (target-size, dragging-movements, focus
             });
         }
     }
+});
+
+/**
+ * Intern #63 — EAA-transponeringar för Frankrike, Danmark och Spanien.
+ *
+ * Juno granskade mot primärkälla 2026-09-10. Det som inte gick att belägga fick
+ * inte byggas, och de här testerna finns för att det ska förbli obyggt: en halv
+ * post med ärliga luckor är rätt utfall, en hel post med påhittade värden är det
+ * inte. Testerna failar alltså både om posterna försvinner OCH om någon "fyller
+ * i" dem för att de ska se kompletta ut.
+ */
+describe('Intern #63 — EAA-transponeringar FR, DK, ES', () => {
+    it('alla tre länderna har en EAA-post för privat sektor', () => {
+        for (const [country, id] of [['FR', 'fr-eaa'], ['DK', 'dk-eaa'], ['ES', 'es-eaa']] as const) {
+            const law = getNationalLaws(country).find(l => l.id === id);
+            expect(law, `${id} saknas`).toBeDefined();
+            expect(law?.euFramework).toBe('EAA');
+            expect(law?.scope).toBe('private');
+            expect(law?.inForce).toBe(true);
+            expect(law?.effectiveDate).toBe('2025-06-28');
+        }
+    });
+
+    it('privat sektor i FR, DK och ES får ett namngivet lagrum, inte en omskrivning', () => {
+        // Karins fynd i #63: en privat kund i något av de tre fick tidigare ingen
+        // lag namngiven alls. Det är hela poängen med posterna.
+        expect(getNationalLawForSector('FR', 'private')?.id).toBe('fr-eaa');
+        expect(getNationalLawForSector('DK', 'private')?.id).toBe('dk-eaa');
+        expect(getNationalLawForSector('ES', 'private')?.id).toBe('es-eaa');
+    });
+
+    it('offentlig sektor i FR, DK och ES rörs inte av tillskottet', () => {
+        expect(getNationalLawForSector('FR', 'public')?.id).toBe('fr-rgaa');
+        expect(getNationalLawForSector('DK', 'public')?.id).toBe('dk-wad');
+        expect(getNationalLawForSector('ES', 'public')?.id).toBe('es-une');
+    });
+
+    it('fr-eaa har DGCCRF som myndighet men INGET sanktionsspann', () => {
+        const law = getNationalLaws('FR').find(l => l.id === 'fr-eaa');
+        expect(law?.enforcement?.authority).toBe('fr-dgccrf');
+        expect(law?.enforcement?.authorityName).toContain('DGCCRF');
+        // Sanktionsarten är belagd (contravention de 5e klass, art. R. 451-4),
+        // beloppet är det inte. En siffra här vore uppfunnen.
+        expect(law?.sanctions, 'fr-eaa får inget sanktionsspann förrän beloppet är belagt').toBeUndefined();
+    });
+
+    it('dk-eaa har varken tillsyn eller sanktioner — båda är obelagda', () => {
+        const law = getNationalLaws('DK').find(l => l.id === 'dk-eaa');
+        // retsinformation.dk och sik.dk svarar 403; lagtexten är aldrig öppnad.
+        // Sikkerhedsstyrelsen kommer ur en sökträffssammanfattning, inte en källa.
+        expect(law?.enforcement, 'dk-eaa får ingen myndighet förrän lagtexten är öppnad').toBeUndefined();
+        expect(law?.sanctions).toBeUndefined();
+    });
+
+    it('es-eaa har varken tillsyn eller sanktioner — så ser lagen ut', () => {
+        const law = getNationalLaws('ES').find(l => l.id === 'es-eaa');
+        // Ley 11/2023 art. 27.3: tillsynen ligger hos de autonoma regionerna samt
+        // Ceuta och Melilla. Art. 30: inget eget sanktionsspann, lagen hänvisar
+        // till sektorslagstiftning och därefter till avdelning III i RDL 1/2013.
+        // Det här är inte en lucka att fylla senare, det är vad lagen säger.
+        expect(law?.enforcement, 'Spanien har ingen nationell tillsynsmyndighet för detta').toBeUndefined();
+        expect(law?.sanctions, 'Ley 11/2023 anger inget eget sanktionsspann').toBeUndefined();
+    });
+
+    it('FR:s EAA-myndighet är DGCCRF, inte Arcom', () => {
+        // Arcoms mandat enligt code de la consommation art. L. 511-25-1 omfattar
+        // bara tillgång till audiovisuella medietjänster samt e-böcker och
+        // läsprogramvara. Som generellt påstående om fransk EAA-tillsyn var Arcom fel.
+        expect(ENFORCEMENT_BODIES_DETAILED.FR.eaa).toContain('DGCCRF');
+        expect(ENFORCEMENT_BODIES_DETAILED.FR.eaa).not.toContain('Arcom');
+        expect(getEnforcementBody('FR', 'private')).toContain('DGCCRF');
+        // WAD-sidan är oförändrad: DINUM är rätt för RGAA och offentlig sektor.
+        expect(ENFORCEMENT_BODIES_DETAILED.FR.wad).toContain('DINUM');
+    });
+
+    it('ES:s EAA-tillsyn beskrivs som regional, inte som ett ministerium', () => {
+        // Ministerio de Consumo är inte tillsynsmyndighet enligt lagen.
+        expect(ENFORCEMENT_BODIES_DETAILED.ES.eaa).not.toContain('Consumo');
+        expect(ENFORCEMENT_BODIES_DETAILED.ES.eaa).not.toContain('Ministry of Consumer');
+        expect(ENFORCEMENT_BODIES_DETAILED.ES.eaa).toContain('27.3');
+    });
+
+    it('getMaxSanction hoppar över lagar utan spann i stället för att läsa dem som noll', () => {
+        // Alla tre länderna har nu minst en lag utan sanctions. Att läsa den som
+        // ett nolltak skulle underskatta landets maxexponering — den enda
+        // riktning den här funktionen inte får ha fel åt.
+        const fr = getMaxSanction('FR');
+        expect(fr?.amount).toBe(300000);
+        const es = getMaxSanction('ES');
+        expect(es?.amount).toBe(1000000);
+        for (const country of ['FR', 'DK', 'ES'] as const) {
+            expect(() => getMaxSanction(country), country).not.toThrow();
+        }
+    });
 });

@@ -399,8 +399,12 @@ export async function generateStatementContent(
                     // Intern #64 (M4): inForce-filtret gäller även här — myndighetsnamnet
                     // hämtas ur en lagpost, och en lag som inte trätt i kraft får inte
                     // peka ut tillsynen för något som gäller i dag.
+                    // Intern #63: `enforcement` är valfritt sedan standards 4.0.0 —
+                    // Spaniens tillsyn är regional och Danmarks obelagd. Saknas den
+                    // faller vi till getEnforcementBody i stället för att rendera
+                    // ett tomt myndighetsnamn i kundtext.
                     const adaLaw = getNationalLaws('US').find(l => l.euFramework === 'ADA' && l.scope === sector && l.inForce !== false);
-                    if (adaLaw) return adaLaw.enforcement.authorityName;
+                    if (adaLaw?.enforcement) return adaLaw.enforcement.authorityName;
                 }
                 return getEnforcementBody(country, sector);
             })(),

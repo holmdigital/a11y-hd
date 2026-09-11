@@ -46,12 +46,33 @@ export const ENFORCEMENT_BODIES: Record<Country, string> = {
 export const ENFORCEMENT_BODIES_DETAILED: Record<Country, { wad: string; eaa: string }> = {
     SE: { wad: 'Agency for Digital Government (Digg)', eaa: 'Swedish Post and Telecom Authority (PTS)' },
     NO: { wad: 'Tilsynet for universell utforming av ikt (uu-tilsynet)', eaa: '' },
+    // UNVERIFIED, Intern #63 (Juno, 2026-09-10) — DECISION PENDING, do not treat as sourced.
+    // Sikkerhedsstyrelsen comes from a search-result summary, not a primary source:
+    // retsinformation.dk and sik.dk both return 403 to automated retrieval, so the
+    // Danish statute was never opened. This string reaches customer text as
+    // {<enforcement_body>} for Danish private-sector statements, so it is an
+    // unestablished claim in a document the customer signs as their own — the same
+    // class of defect as Intern #64's Section 504 leak. It is left as-is rather than
+    // emptied because Denmark's EAA IS in force and an authority does exist; the
+    // precedent for emptying (NO below) covers a country where the EAA does not
+    // apply at all. Juno decides: source it, or empty it. See the dk-eaa note.
     DK: { wad: 'Agency for Digital Government (Digitaliseringsstyrelsen)', eaa: 'Danish Safety Technology Authority (Sikkerhedsstyrelsen)' },
     FI: { wad: 'Regional State Administrative Agency for Southern Finland (AVI)', eaa: 'Finnish Transport and Communications Agency (Traficom)' },
     NL: { wad: 'Logius', eaa: 'Authority for Consumers and Markets (ACM)' },
     DE: { wad: 'Federal Monitoring Body for Accessibility of Information Technology (BFIT-Bund)', eaa: 'Federal Network Agency (Bundesnetzagentur)' },
-    FR: { wad: 'DINUM (Direction interministérielle du numérique)', eaa: 'Regulatory Authority for Audiovisual and Digital Communication (Arcom)' },
-    ES: { wad: 'Ministry for Digital Transformation and the Civil Service (MPTFP)', eaa: 'Ministry of Consumer Affairs (Ministerio de Consumo)' },
+    // Intern #63 (Juno, 2026-09-10): Arcom was wrong here as a general claim. Its
+    // EAA competence under code de la consommation art. L. 511-25-1 covers only
+    // access services to audiovisual media, e-books and e-book reading software.
+    // DGCCRF is France's general market surveillance authority and coordinates
+    // the sector authorities. Per-sector detail lives on the fr-eaa law entry.
+    FR: { wad: 'DINUM (Direction interministérielle du numérique)', eaa: 'DGCCRF (Direction générale de la concurrence, de la consommation et de la répression des fraudes)' },
+    // Intern #63 (Juno, 2026-09-10, BOE-A-2023-11022 read in full): the Ministry
+    // of Consumer Affairs was wrong — Ley 11/2023 art. 27.3 gives supervision to
+    // each autonomous community and to Ceuta and Melilla, each designating its
+    // own authority. The art. 28 unidad técnica coordinates and advises those
+    // authorities; it does not supervise. Spain has no single national body to
+    // name here, so the arrangement is named instead of an organ.
+    ES: { wad: 'Ministry for Digital Transformation and the Civil Service (MPTFP)', eaa: 'Supervisory authority designated by the relevant autonomous community, or by Ceuta or Melilla (Ley 11/2023, art. 27.3)' },
     IE: { wad: 'National Disability Authority (NDA)', eaa: 'Competition and Consumer Protection Commission (CCPC)' },
     IT: { wad: 'Agency for Digital Italy (AgID)', eaa: 'Agency for Digital Italy (AgID)' },
     PT: { wad: 'Administrative Modernization Agency (AMA)', eaa: 'Directorate-General for Consumer Affairs (DGAC)' },
@@ -544,7 +565,14 @@ export function getSanctions(lawId: string, country: Country = 'SE'): Sanction |
  * Get maximum potential sanction amount for a country
  */
 export function getMaxSanction(country: Country = 'SE'): { law: string; amount: number; currency: string } | null {
-    const laws = getNationalLaws(country);
+    // Intern #63: `sanctions` is optional since 4.0.0 — Spain's EAA statute
+    // carries no penalty range of its own, and France's amount is not
+    // established. A law without a range must be skipped, never read as a zero
+    // ceiling: that would understate a country's maximum exposure, which is the
+    // one direction this function must never be wrong in.
+    const laws = getNationalLaws(country).filter(
+        (law): law is NationalLaw & { sanctions: Sanction } => law.sanctions !== undefined
+    );
     if (laws.length === 0) return null;
 
     const maxLaw = laws.reduce((max, current) =>
