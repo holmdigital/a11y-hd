@@ -1,7 +1,7 @@
 import React from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { AccessibilityStatement, AccessibilityStatementProps } from '@holmdigital/components';
-import { Country, getEnforcementBody, getNationalLawByFramework, getNationalLaws } from '@holmdigital/standards';
+import { Country, getEnforcementBody, getNationalLawForSector, getNationalLaws } from '@holmdigital/standards';
 import { ScanResult } from '../core/regulatory-scanner';
 import fs from 'fs/promises';
 import path from 'path';
@@ -127,14 +127,28 @@ export function resolveNationalLawReference(
     sector: 'public' | 'private',
     lang: string = 'en'
 ): string {
+    // Intern #64 (M4): a statute that has not entered into force must never be
+    // rendered as current law. `inForce` was declared in the type and read
+    // nowhere, so `us-hhs-section-504` (effective 2027-05-11) was named as
+    // binding law to US private-sector customers today.
+    const inForce = <T extends { inForce?: boolean }>(law: T | undefined | null): law is T =>
+        !!law && law.inForce !== false;
+
     if (country === 'AU') {
-        const ddaLaw = getNationalLawByFramework('DDA', 'AU');
+        // AU keeps its own branch: it carries two DDA-framework laws (au-dda
+        // scope 'both', au-dta scope 'public') and the statement has always
+        // named the Disability Discrimination Act. Routing it through the
+        // sector selector would silently switch the public track to au-dta,
+        // which nothing asked for.
+        const ddaLaw = getNationalLaws('AU').find(l => l.euFramework === 'DDA' && inForce(l));
         return ddaLaw ? `${ddaLaw.fullName}` : 'Disability Discrimination Act 1992 (Cth)';
     }
     if (country === 'US') {
-        // US has two ADA laws split by scope (Title II public / Title III private)
-        // plus Section 508 as a parallel federal framework, plus HHS Section 504.
-        const usLaws = getNationalLaws('US');
+        // US carries several parallel federal statutes rather than one, so it
+        // keeps a dedicated branch: ADA split by scope, plus Section 508 on the
+        // public side and HHS Section 504 on the private side. The `inForce`
+        // filter is what removes Section 504 until 2027.
+        const usLaws = getNationalLaws('US').filter(inForce);
         const adaLaw = usLaws.find(l => l.euFramework === 'ADA' && l.scope === sector);
         if (adaLaw) {
             if (sector === 'public') {
@@ -149,7 +163,12 @@ export function resolveNationalLawReference(
                 : `${adaLaw.fullName} (${adaLaw.law})`;
         }
     }
-    const law = getNationalLawByFramework(sector === 'private' ? 'EAA' : 'WAD', country);
+    // Intern #64 (M1): country + scope + inForce, never `euFramework`. The old
+    // lookup asked for EAA on the private track, so a law with scope 'both'
+    // whose framework was not EAA became invisible — Norway's forskrift and
+    // Canada's ACA both fell through to a lawless fallback phrase. It also made
+    // a province's statute the country's answer for Canada.
+    const law = getNationalLawForSector(country, sector);
     if (law) return `${law.fullName} (${law.law})`;
     // Intern #31: never empty — reword the sentence to be true without a law name.
     const langKey = lang.split('-')[0];
@@ -377,7 +396,10 @@ export async function generateStatementContent(
                 // or private sector (Title III) — both enforced by DOJ. Override the default
                 // GSA-returning lookup (which targets federal Section 508).
                 if (country === 'US') {
-                    const adaLaw = getNationalLaws('US').find(l => l.euFramework === 'ADA' && l.scope === sector);
+                    // Intern #64 (M4): inForce-filtret gäller även här — myndighetsnamnet
+                    // hämtas ur en lagpost, och en lag som inte trätt i kraft får inte
+                    // peka ut tillsynen för något som gäller i dag.
+                    const adaLaw = getNationalLaws('US').find(l => l.euFramework === 'ADA' && l.scope === sector && l.inForce !== false);
                     if (adaLaw) return adaLaw.enforcement.authorityName;
                 }
                 return getEnforcementBody(country, sector);

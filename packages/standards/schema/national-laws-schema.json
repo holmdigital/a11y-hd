@@ -40,6 +40,7 @@
                 "fullName": { "type": "string", "minLength": 1 },
                 "euFramework": { "enum": ["WAD", "EAA", "DDA", "ADA", "REHAB", "ACA"] },
                 "scope": { "enum": ["public", "private", "both"] },
+                "jurisdiction": { "enum": ["national", "subnational"] },
                 "lawUrl": { "type": "string", "pattern": "^https?://" },
                 "enforcement": { "$ref": "#/definitions/Enforcement" },
                 "sectorAuthorities": {

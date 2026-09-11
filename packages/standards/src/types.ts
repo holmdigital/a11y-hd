@@ -290,6 +290,16 @@ export interface NationalLaw {
     fullName: string;
     euFramework: LegalFramework;
     scope: Sector;
+    /**
+     * Intern #64: whether the statute speaks for the whole country or only a
+     * sub-national unit. Ontario's AODA is a provincial law; rendering it as
+     * "Canada's law" is factually wrong however right it is for Ontario.
+     *
+     * Optional and treated as national when absent, so existing data and
+     * consumers are unaffected. Only set `'subnational'` when the statute
+     * genuinely belongs to a province, state or Land.
+     */
+    jurisdiction?: 'national' | 'subnational';
     lawUrl?: string;
     enforcement: {
         authority: string;
