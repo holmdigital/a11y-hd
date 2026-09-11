@@ -23,66 +23,164 @@ import nordicAuthoritiesData from '../data/legal/nordic-authorities.json';
 import statementToolsData from '../data/legal/statement-tools.json';
 import nationalLawsData from '../data/legal/national-laws.json';
 
-export const ENFORCEMENT_BODIES: Record<Country, string> = {
-    SE: 'Agency for Digital Government (Digg)',
-    NO: 'Tilsynet for universell utforming av ikt (uu-tilsynet)',
-    DK: 'Agency for Digital Government (Digitaliseringsstyrelsen)',
-    FI: 'Regional State Administrative Agency for Southern Finland (AVI)',
-    NL: 'Logius',
-    DE: 'Federal Monitoring Body for Accessibility of Information Technology (BFIT-Bund)',
-    FR: 'DINUM (Direction interministérielle du numérique)',
-    ES: 'Ministry for Digital Transformation and the Civil Service (MPTFP)',
-    IE: 'National Disability Authority (NDA)',
-    IT: 'Agency for Digital Italy (AgID)',
-    PT: 'Administrative Modernization Agency (AMA)',
-    PL: 'Ministry of Digitization (Ministerstwo Cyfryzacji)',
-    GB: 'Equality and Human Rights Commission (EHRC)',
-    US: 'Department of Justice (Civil Rights Division)',
-    CA: 'Accessibility Commissioner (Canadian Human Rights Commission)',
-    AU: 'Australian Human Rights Commission (AHRC)',
-    EU: 'European Commission (DG CNECT)'
-};
-
-export const ENFORCEMENT_BODIES_DETAILED: Record<Country, { wad: string; eaa: string }> = {
+/**
+ * Last resort only: the hand-written names, used where `national-laws.json`
+ * has nothing to derive from.
+ *
+ * This is what `ENFORCEMENT_BODIES` and `ENFORCEMENT_BODIES_DETAILED` used to
+ * BE, and being hand-written is exactly why they contradicted the data for four
+ * countries at once (Intern #63). It is kept, unexported, purely so a country
+ * without law data still names someone: today that is only `EU`, which has no
+ * entry in `national-laws.json` by design (an EU-level case has no national
+ * law key — see Intern #63, "EU-nivån").
+ *
+ * Do not add to this table to fix a wrong name. Fix the law entry instead; the
+ * derivation below will follow it.
+ */
+const ENFORCEMENT_BODIES_FALLBACK: Record<Country, { wad: string; eaa: string }> = {
     SE: { wad: 'Agency for Digital Government (Digg)', eaa: 'Swedish Post and Telecom Authority (PTS)' },
     NO: { wad: 'Tilsynet for universell utforming av ikt (uu-tilsynet)', eaa: '' },
-    // UNVERIFIED, Intern #63 (Juno, 2026-09-10) — DECISION PENDING, do not treat as sourced.
-    // Sikkerhedsstyrelsen comes from a search-result summary, not a primary source:
-    // retsinformation.dk and sik.dk both return 403 to automated retrieval, so the
-    // Danish statute was never opened. This string reaches customer text as
-    // {<enforcement_body>} for Danish private-sector statements, so it is an
-    // unestablished claim in a document the customer signs as their own — the same
-    // class of defect as Intern #64's Section 504 leak. It is left as-is rather than
-    // emptied because Denmark's EAA IS in force and an authority does exist; the
-    // precedent for emptying (NO below) covers a country where the EAA does not
-    // apply at all. Juno decides: source it, or empty it. See the dk-eaa note.
     DK: { wad: 'Agency for Digital Government (Digitaliseringsstyrelsen)', eaa: 'Danish Safety Technology Authority (Sikkerhedsstyrelsen)' },
     FI: { wad: 'Regional State Administrative Agency for Southern Finland (AVI)', eaa: 'Finnish Transport and Communications Agency (Traficom)' },
     NL: { wad: 'Logius', eaa: 'Authority for Consumers and Markets (ACM)' },
     DE: { wad: 'Federal Monitoring Body for Accessibility of Information Technology (BFIT-Bund)', eaa: 'Federal Network Agency (Bundesnetzagentur)' },
-    // Intern #63 (Juno, 2026-09-10): Arcom was wrong here as a general claim. Its
-    // EAA competence under code de la consommation art. L. 511-25-1 covers only
-    // access services to audiovisual media, e-books and e-book reading software.
-    // DGCCRF is France's general market surveillance authority and coordinates
-    // the sector authorities. Per-sector detail lives on the fr-eaa law entry.
     FR: { wad: 'DINUM (Direction interministérielle du numérique)', eaa: 'DGCCRF (Direction générale de la concurrence, de la consommation et de la répression des fraudes)' },
-    // Intern #63 (Juno, 2026-09-10, BOE-A-2023-11022 read in full): the Ministry
-    // of Consumer Affairs was wrong — Ley 11/2023 art. 27.3 gives supervision to
-    // each autonomous community and to Ceuta and Melilla, each designating its
-    // own authority. The art. 28 unidad técnica coordinates and advises those
-    // authorities; it does not supervise. Spain has no single national body to
-    // name here, so the arrangement is named instead of an organ.
     ES: { wad: 'Ministry for Digital Transformation and the Civil Service (MPTFP)', eaa: 'Supervisory authority designated by the relevant autonomous community, or by Ceuta or Melilla (Ley 11/2023, art. 27.3)' },
     IE: { wad: 'National Disability Authority (NDA)', eaa: 'Competition and Consumer Protection Commission (CCPC)' },
     IT: { wad: 'Agency for Digital Italy (AgID)', eaa: 'Agency for Digital Italy (AgID)' },
     PT: { wad: 'Administrative Modernization Agency (AMA)', eaa: 'Directorate-General for Consumer Affairs (DGAC)' },
     PL: { wad: 'Ministry of Digitization (Ministerstwo Cyfryzacji)', eaa: 'Office of Competition and Consumer Protection (UOKiK)' },
     GB: { wad: 'Equality and Human Rights Commission (EHRC)', eaa: 'Equality and Human Rights Commission (EHRC)' },
-    US: { wad: 'General Services Administration (GSA)', eaa: 'Department of Justice (Civil Rights Division)' },
+    US: { wad: 'Department of Justice (Civil Rights Division)', eaa: 'Department of Justice (Civil Rights Division)' },
     CA: { wad: 'Accessibility Commissioner (Canadian Human Rights Commission)', eaa: 'Accessibility Commissioner (Canadian Human Rights Commission)' },
     AU: { wad: 'Australian Human Rights Commission (AHRC)', eaa: 'Australian Human Rights Commission (AHRC)' },
-    EU: { wad: 'European Commission (DG CNECT)', eaa: 'European Commission (DG JUST)' }
+    EU: { wad: 'European Commission (DG CNECT)', eaa: 'European Commission (DG JUST)' },
 };
+
+/**
+ * Intern #63 — the per-sector enforcement bodies, DERIVED from
+ * `national-laws.json` instead of hand-written.
+ *
+ * The hand-written map contradicted the data for four countries at once
+ * (`ca-aoda`, `de-bfsg`, `gb-psbar`, `nl-wad`): the same package gave two
+ * different answers to "who supervises this", and only one of them was the
+ * one a statement actually rendered. Deriving it means the contradiction
+ * cannot recur — there is one source.
+ *
+ * Ordering below matters and is deliberate: the law's own `enforcement` first,
+ * then a sourced override for genuine legal absences, then the flat
+ * `ENFORCEMENT_BODIES` fallback. An override may only FILL an absence, never
+ * shadow a value the data can supply; a test enforces that.
+ */
+
+/**
+ * Which law's `enforcement` answers for a country and sector.
+ *
+ * Mirrors `resolveNationalLawReference()`'s own AU/US routing in the engine
+ * EXACTLY, so this constant can never contradict the law a statement names.
+ *
+ * Do NOT replace the AU and US branches with a plain `getNationalLawForSector()`
+ * call. AU's candidates prefer `au-dta` (scope 'public') over `au-dda`
+ * (scope 'both') because the selector prefers an exact scope match, and Juno
+ * ruled 2026-09-11 that `au-dda` is the only binding instrument for Australia
+ * in either sector. US carries several parallel federal statutes where
+ * `us-508` and `us-ada-title-ii` are both scope 'public', so a generic
+ * selector picks whichever sits first in the JSON array rather than whichever
+ * was intended.
+ */
+export function deriveEnforcementLaw(country: Country, sector: Sector): NationalLaw | null {
+    if (country === 'AU') {
+        return getNationalLaws('AU').find(l => l.euFramework === 'DDA' && l.inForce !== false) ?? null;
+    }
+    if (country === 'US') {
+        // Public goes to Section 508 (GSA), private to ADA Title III (DOJ).
+        //
+        // Mejas spec skrev grenen som 'ADA filtrerad på scope', men sa samtidigt
+        // att US.wad skulle vara GSA 'oförändrad av derivationen'. De två går
+        // inte ihop: ADA filtrerad på public ger Title II, alltså DOJ, och GSA
+        // hade tyst försvunnit. Avsikten går före koden, och GSA-uppdelningen är
+        // dessutom dokumenterad som medveten efter juridisk granskning. Valet på
+        // id respektive ramverk-plus-scope är lika deterministiskt som hennes och
+        // beror inte på ordningen i JSON-arrayen, vilket var hela hennes poäng.
+        if (sector !== 'private') {
+            return getNationalLaws('US').find(l => l.id === 'us-508' && l.inForce !== false) ?? null;
+        }
+        return getNationalLaws('US').find(l => l.euFramework === 'ADA' && l.scope === 'private' && l.inForce !== false) ?? null;
+    }
+    return getNationalLawForSector(country, sector);
+}
+
+/**
+ * Countries where NO single authority name can be derived from the law's own
+ * `enforcement` field — by the law's design, not as a data gap to be filled
+ * later. Every entry needs a primary source and Juno's sign-off in its comment.
+ *
+ * The accompanying test fails if an entry here covers a country and sector
+ * whose law DOES carry `enforcement.authorityName`, so an override can never
+ * silently shadow a sourced value.
+ */
+const ENFORCEMENT_NO_SINGLE_AUTHORITY: Partial<Record<Country, { public?: string; private?: string }>> = {
+    // Ley 11/2023 art. 27.3 (Intern #63, Juno, BOE-A-2023-11022 read in full):
+    // Spain has no national body — each autonomous community, plus Ceuta and
+    // Melilla, designates its own. The art. 28 unidad técnica coordinates and
+    // advises those authorities; it does not supervise.
+    ES: { private: 'Supervisory authority designated by the relevant autonomous community, or by Ceuta or Melilla (Ley 11/2023, art. 27.3)' },
+};
+
+/**
+ * Sektorer där myndighetsfältet är avsiktligt TOMT, så att utlåtandet utelämnar
+ * hela tillsynssektionen i stället för att namnge någon.
+ *
+ * Det här är något annat än ENFORCEMENT_NO_SINGLE_AUTHORITY ovan. Ett undantag
+ * där säger "namnge det här i stället"; en undertryckning här säger "namnge
+ * ingen", och den får därför skugga ett värde datan kan leverera.
+ *
+ * Intern #23 Fynd B: norsk privat sektor. Skälet är inte att tillsynen är
+ * overifierad — UU-tilsynet utövar tillsyn över no-ikt — utan att en
+ * tillsynssektion i ett privat utlåtande antyder en rapporteringsplikt en
+ * privat aktör inte har. Att fältet är tomt är vad som får motorn att utelämna
+ * sektionen helt i stället för att rendera den med hål i.
+ *
+ * En post här kräver samma sak som ett undantag: ett skäl och någons signatur.
+ */
+const ENFORCEMENT_SUPPRESSED: Partial<Record<Country, Sector[]>> = {
+    NO: ['private'],
+};
+
+function deriveEnforcementBody(country: Country, sector: Sector): string {
+    if (ENFORCEMENT_SUPPRESSED[country]?.includes(sector)) return '';
+    const law = deriveEnforcementLaw(country, sector);
+    return law?.enforcement?.authorityName
+        ?? ENFORCEMENT_NO_SINGLE_AUTHORITY[country]?.[sector as 'public' | 'private']
+        ?? ENFORCEMENT_BODIES_FALLBACK[country][sector === 'private' ? 'eaa' : 'wad'];
+}
+
+export const ENFORCEMENT_BODIES_DETAILED: Record<Country, { wad: string; eaa: string }> =
+    (Object.keys(ENFORCEMENT_BODIES_FALLBACK) as Country[]).reduce((acc, country) => {
+        acc[country] = {
+            wad: deriveEnforcementBody(country, 'public'),
+            eaa: deriveEnforcementBody(country, 'private'),
+        };
+        return acc;
+    }, {} as Record<Country, { wad: string; eaa: string }>);
+
+/**
+ * The single enforcement body for a country, defaulting to the public-sector
+ * one. Derived from `ENFORCEMENT_BODIES_DETAILED`, so it cannot drift from it
+ * — the two contradicting each other was half of the Intern #63 finding.
+ */
+export const ENFORCEMENT_BODIES: Record<Country, string> =
+    (Object.keys(ENFORCEMENT_BODIES_DETAILED) as Country[]).reduce((acc, country) => {
+        // US är det dokumenterade undantaget: den detaljerade WAD-posten är GSA,
+        // som administrerar Section 508 för federala myndigheter, men DOJ är den
+        // erkända amerikanska tillgänglighetsmyndigheten och det värde den här
+        // konstanten burit efter juridisk granskning. Undantaget fanns i den
+        // handskrivna tabellen och följer med hit i stället för att tyst tappas.
+        acc[country] = country === 'US'
+            ? ENFORCEMENT_BODIES_DETAILED.US.eaa
+            : ENFORCEMENT_BODIES_DETAILED[country].wad;
+        return acc;
+    }, {} as Record<Country, string>);
 
 /**
  * Get the enforcement body name for a country.

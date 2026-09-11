@@ -202,6 +202,12 @@
                 "scope": "private",
                 "inForce": true,
                 "effectiveDate": "2025-06-28",
+                "enforcement": {
+                    "authority": "dk-sik",
+                    "authorityName": "Sikkerhedsstyrelsen",
+                    "responsibility": "Kontrolmyndighed for hovedparten af de omfattede produkter og tjenester (Sikkerhedsstyrelsens pressemeddelelse, 2025-06-25). Andre myndigheder kan vaere ansvarlige for enkelte omraader; hvilke er ikke belagt mod primaerkilde.",
+                    "website": "https://www.sik.dk"
+                },
                 "note": "Intern #63 (Juno, 2026-09-10): `enforcement` and `sanctions` are deliberately absent — neither could be established against primary source. retsinformation.dk and sik.dk both return 403 Forbidden to automated retrieval, so the statute text was never opened. A search-result summary names Sikkerhedsstyrelsen as the control authority except for electronic communications and land, air and sea transport; that is an assertion, not a source, and must not be written into the data. Law name and publication references come from the EUR-Lex list of national implementing measures for Directive (EU) 2019/882. Opening the statute by hand is what unblocks these two fields."
             }
         ],
@@ -238,9 +244,9 @@
                 "scope": "private",
                 "lawUrl": "https://www.gesetze-im-internet.de/bfsg/",
                 "enforcement": {
-                    "authority": "de-bfit",
-                    "authorityName": "Marknadskontroll på delstatsnivå",
-                    "responsibility": "Specifika federala myndigheter per sektor.",
+                    "authority": "de-laender-mue",
+                    "authorityName": "State-level market surveillance authorities (Marktüberwachungsbehörden der Länder)",
+                    "responsibility": "Market surveillance under BFSG § 20 (\"Die Länder stellen sicher, dass ihre Marktüberwachungsbehörden ihre Aufgaben ordnungsgemäß wahrnehmen können\"), covering both products (§§ 20-27) and services (§§ 28-31). BAuA coordinates federally under § 24 by forwarding Länder reports to the Commission, but is not itself a supervisory authority. The name of any joint Länder body is not established against primary source.",
                     "website": "https://www.bmas.de"
                 },
                 "sanctions": {
@@ -727,7 +733,7 @@
                 "id": "au-dta",
                 "law": "Digital Experience Policy — Digital Access Standard",
                 "fullName": "Australian Government Digital Experience Policy — Digital Access Standard",
-                "euFramework": "DDA",
+                "euFramework": "DAS",
                 "scope": "public",
                 "lawUrl": "https://www.digital.gov.au/policy/digital-experience/digital-access-standard",
                 "enforcement": {

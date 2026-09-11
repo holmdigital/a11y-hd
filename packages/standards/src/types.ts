@@ -10,7 +10,23 @@ export type EAAImpact = 'none' | 'low' | 'medium' | 'high' | 'critical';
 export type TestComplexity = 'simple' | 'moderate' | 'complex';
 
 // EU Legal Framework types
-export type LegalFramework = 'WAD' | 'EAA' | 'DDA' | 'ADA' | 'REHAB' | 'ACA';
+/**
+ * The regulatory family a national law belongs to.
+ *
+ * `DAS` (Intern #63, Juno 2026-09-11) is Australia's Digital Access Standard.
+ * It was tagged `DDA`, sharing the Disability Discrimination Act's code, and
+ * that was wrong twice over. Substantively: the Standard is an internal
+ * Commonwealth policy under the Digital Experience Policy / Investment
+ * Oversight Framework, with no connection to discrimination law, no third-party
+ * standing and no sanction beyond reporting to the DTA. Structurally:
+ * `getNationalLawByFramework()` returns the FIRST array match, so
+ * `getNationalLawByFramework('DDA', 'AU')` worked only because `au-dda`
+ * happens to sit before `au-dta` in the JSON. Re-sorting the array, or adding
+ * an AU entry earlier, would have silently started returning the Standard as
+ * Australia's law — exactly what the AU branch in `statement-generator.ts`
+ * exists to prevent. A distinct code removes the risk structurally.
+ */
+export type LegalFramework = 'WAD' | 'EAA' | 'DDA' | 'ADA' | 'REHAB' | 'ACA' | 'DAS';
 export type Sector = 'public' | 'private' | 'both';
 export type Country = 'SE' | 'NO' | 'DK' | 'FI' | 'NL' | 'DE' | 'FR' | 'ES' | 'IE' | 'IT' | 'PT' | 'PL' | 'GB' | 'US' | 'CA' | 'AU' | 'EU';
 

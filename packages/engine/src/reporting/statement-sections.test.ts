@@ -40,7 +40,10 @@ describe('statement sections (Intern #23 Fynd B)', () => {
     it('keeps the Tilsyn section for the public sector, where an authority exists', async () => {
         const out = await generateStatementContent(mockResult, 'no', 'md', md('NO', 'public'));
         expect(out).toContain('## Tilsyn');
-        expect(out).toContain('Tilsynet for universell utforming av ikt');
+        // Intern #63: namnet kommer nu ur no-ikt:s eget enforcement-fält, som säger
+        // 'UU-tilsynet'. Den handskrivna tabellen sa 'Tilsynet for universell
+        // utforming av ikt (uu-tilsynet)'. Samma myndighet, datans lydelse.
+        expect(out).toContain('UU-tilsynet');
     });
 
     it('never renders a bare "## undefined" heading in any locale', async () => {
