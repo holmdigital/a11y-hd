@@ -26,6 +26,7 @@ import {
     // National laws
     getNationalLawByFramework,
     getNationalLawForSector,
+    deriveEnforcementLaw,
     getNationalLaws,
     getMaxSanction,
     generateRegulatoryReport,
@@ -170,8 +171,12 @@ describe('Enforcement Bodies', () => {
     });
 
     it('should not change non-EU entries', () => {
-        expect(ENFORCEMENT_BODIES.GB).toBe('Equality and Human Rights Commission (EHRC)');
-        expect(ENFORCEMENT_BODIES.US).toBe('Department of Justice (Civil Rights Division)');
+        // Intern #63: GB var en av de fyra motsägelserna. Konstanten sa EHRC,
+        // gb-psbar säger CDDO. Konstanten härleds nu ur lagposten, så CDDO är
+        // rätt svar för offentlig sektor. EHRC står kvar för privat sektor via
+        // gb-eqa2010, se ENFORCEMENT_BODIES_DETAILED.GB.eaa.
+        expect(ENFORCEMENT_BODIES.GB).toBe('Central Digital and Data Office (CDDO)');
+        expect(ENFORCEMENT_BODIES.US).toContain('Department of Justice');
         expect(ENFORCEMENT_BODIES.CA).toBe('Accessibility Commissioner (Canadian Human Rights Commission)');
     });
 
@@ -189,10 +194,13 @@ describe('Enforcement Bodies', () => {
                 expect(entry.eaa).toBeDefined();
                 expect(entry.wad.length).toBeGreaterThan(0);
                 if (country === 'NO') {
-                    // Norway is EEA, not EU: the EAA has not been incorporated into the EEA
-                    // agreement, so it is not in force in Norwegian law (NO lags with IS and LI).
-                    // The field is intentionally empty and must NOT be filled with an authority
-                    // name until status is verified against regjeringen.no. See Intern #23 p.6.
+                    // Intern #23 Fynd B, bevarad genom ENFORCEMENT_SUPPRESSED.
+                    // Härledningen skulle ge UU-tilsynet, eftersom no-ikt har
+                    // scope 'both' och UU-tilsynet är dess tillsyn. Fältet hålls
+                    // ändå tomt, och skälet är inte att tillsynen är overifierad
+                    // utan att en tillsynssektion i ett PRIVAT utlåtande antyder
+                    // en rapporteringsplikt en privat aktör inte har. Tomt fält
+                    // är vad som får motorn att utelämna hela sektionen.
                     expect(entry.eaa).toBe('');
                 } else {
                     expect(entry.eaa.length).toBeGreaterThan(0);
@@ -207,12 +215,17 @@ describe('Enforcement Bodies', () => {
                 if (country === 'US') continue;
                 expect(ENFORCEMENT_BODIES_DETAILED[country].wad).toBe(ENFORCEMENT_BODIES[country]);
             }
+            // Intern #63: den flata konstanten HÄRLEDS nu ur den detaljerade, så de
+            // två kan inte längre drifta isär. Att de gjorde det var halva fyndet.
         });
 
         it('should split GSA (Section 508) vs DOJ (ADA) for US', () => {
+            // Intern #63: uppdelningen är oförändrad i sak, men namnen kommer nu ur
+            // lagposternas egna enforcement-fält i stället för ur en handskriven
+            // tabell, så de lyder exakt som datan.
             expect(ENFORCEMENT_BODIES_DETAILED.US.wad).toBe('General Services Administration (GSA)');
-            expect(ENFORCEMENT_BODIES_DETAILED.US.eaa).toBe('Department of Justice (Civil Rights Division)');
-            expect(ENFORCEMENT_BODIES.US).toBe('Department of Justice (Civil Rights Division)');
+            expect(ENFORCEMENT_BODIES_DETAILED.US.eaa).toContain('Department of Justice');
+            expect(ENFORCEMENT_BODIES.US).toContain('Department of Justice');
         });
 
         it('should have AHRC for both AU sectors', () => {
@@ -427,14 +440,14 @@ describe('National Laws — US (ADA)', () => {
         // Default / public → Section 508 domain → GSA (federal agencies)
         expect(getEnforcementBody('US')).toBe('General Services Administration (GSA)');
         expect(getEnforcementBody('US', 'public')).toBe('General Services Administration (GSA)');
-        // Private → ADA Title III → DOJ
-        expect(getEnforcementBody('US', 'private')).toBe('Department of Justice (Civil Rights Division)');
+        // Private → ADA Title III → DOJ (lydelsen kommer ur us-ada-title-iii)
+        expect(getEnforcementBody('US', 'private')).toContain('Department of Justice');
     });
 
     it('should expose DOJ via ENFORCEMENT_BODIES.US as the primary accessibility authority', () => {
         // Constant kept as DOJ per legal review (DOJ is the recognized US accessibility authority).
         // For per-law enforcement consumers should use getNationalLaws('US')[*].enforcement.
-        expect(ENFORCEMENT_BODIES.US).toBe('Department of Justice (Civil Rights Division)');
+        expect(ENFORCEMENT_BODIES.US).toContain('Department of Justice');
     });
 });
 
@@ -711,12 +724,17 @@ describe('Intern #63 — EAA-transponeringar FR, DK, ES', () => {
         expect(law?.sanctions, 'fr-eaa får inget sanktionsspann förrän beloppet är belagt').toBeUndefined();
     });
 
-    it('dk-eaa har varken tillsyn eller sanktioner — båda är obelagda', () => {
+    it('dk-eaa har belagd tillsyn men fortfarande inga sanktioner', () => {
         const law = getNationalLaws('DK').find(l => l.id === 'dk-eaa');
-        // retsinformation.dk och sik.dk svarar 403; lagtexten är aldrig öppnad.
-        // Sikkerhedsstyrelsen kommer ur en sökträffssammanfattning, inte en källa.
-        expect(law?.enforcement, 'dk-eaa får ingen myndighet förrän lagtexten är öppnad').toBeUndefined();
-        expect(law?.sanctions).toBeUndefined();
+        // Tillsynen är belagd sedan 2026-09-11: Sikkerhedsstyrelsens eget
+        // pressmeddelande via Ritzau. Nyansen "hovedparten af områderne" står i
+        // responsibility — myndigheten täcker de flesta men inte alla områden,
+        // och vilka undantagen är förblir obelagt.
+        expect(law?.enforcement?.authorityName).toBe('Sikkerhedsstyrelsen');
+        expect(law?.enforcement?.responsibility).toContain('hovedparten');
+        // Sanktionsart och belopp är fortfarande obelagda. Strafparagrafens rubrik
+        // syns i en betalväggsdatabas, innehållet gör det inte. Ingen siffra här.
+        expect(law?.sanctions, 'dk-eaa får inget sanktionsspann förrän straffbestämmelsen är öppnad').toBeUndefined();
     });
 
     it('es-eaa har varken tillsyn eller sanktioner — så ser lagen ut', () => {
@@ -758,5 +776,93 @@ describe('Intern #63 — EAA-transponeringar FR, DK, ES', () => {
         for (const country of ['FR', 'DK', 'ES'] as const) {
             expect(() => getMaxSanction(country), country).not.toThrow();
         }
+    });
+});
+
+/**
+ * Intern #63 — ENFORCEMENT_BODIES_DETAILED härleds ur national-laws.json.
+ *
+ * Den handskrivna tabellen sa emot datan för fyra länder samtidigt: samma paket
+ * gav två olika svar på vem som utövar tillsyn, och bara ett av dem var det som
+ * faktiskt renderades i ett utlåtande. Testerna nedan gör att motsägelsen inte
+ * kan återuppstå, och att ett undantag aldrig kan skugga ett värde datan redan
+ * kan leverera.
+ */
+describe('Intern #63 — ENFORCEMENT_BODIES_DETAILED är härledd', () => {
+    const ALL_COUNTRIES: Country[] = ['SE', 'NO', 'DK', 'FI', 'NL', 'DE', 'FR', 'ES', 'IE', 'IT', 'PT', 'PL', 'GB', 'US', 'CA', 'AU', 'EU'];
+    const SECTORS: Array<['public' | 'private', 'wad' | 'eaa']> = [['public', 'wad'], ['private', 'eaa']];
+
+    it('varje land och sektor matchar den lag datan faktiskt namnger', () => {
+        const drift: string[] = [];
+        for (const country of ALL_COUNTRIES) {
+            for (const [sector, key] of SECTORS) {
+                const law = deriveEnforcementLaw(country, sector);
+                const fromData = law?.enforcement?.authorityName;
+                if (!fromData) continue;
+                if (ENFORCEMENT_BODIES_DETAILED[country][key] === '') continue; // undertryckt, se ENFORCEMENT_SUPPRESSED // ingen lag, eller lag utan myndighet: fallback täcks nedan
+                if (ENFORCEMENT_BODIES_DETAILED[country][key] !== fromData) {
+                    drift.push(`${country}/${sector}: konstanten säger "${ENFORCEMENT_BODIES_DETAILED[country][key]}", datan säger "${fromData}"`);
+                }
+            }
+        }
+        expect(drift, `Konstant och data säger emot varandra:\n${drift.join('\n')}`).toEqual([]);
+    });
+
+    it('de fyra motsägelserna i #63 är borta', () => {
+        // ca-aoda, de-bfsg, gb-psbar och nl-wad sa emot den handskrivna tabellen.
+        // ca-aoda är dessutom subnationell och får aldrig svara för landet.
+        expect(ENFORCEMENT_BODIES_DETAILED.GB.wad).toContain('Central Digital and Data Office');
+        expect(ENFORCEMENT_BODIES_DETAILED.NL.wad).toContain('Binnenlandse Zaken');
+        expect(ENFORCEMENT_BODIES_DETAILED.DE.eaa).toContain('Marktüberwachungsbehörden der Länder');
+        expect(ENFORCEMENT_BODIES_DETAILED.CA.wad).not.toContain('Ontario');
+        expect(ENFORCEMENT_BODIES_DETAILED.CA.eaa).not.toContain('Ontario');
+    });
+
+    it('myndighetsnamnet är landets eget, inte en engelsk översättning', () => {
+        // Fynd 3 i #65: ett svenskt dokument sa "Swedish Post and Telecom
+        // Authority (PTS)" medan lagposten bar "PTS (Post- och telestyrelsen)".
+        expect(ENFORCEMENT_BODIES_DETAILED.SE.wad).toBe('Digg (Myndigheten för digital förvaltning)');
+        expect(ENFORCEMENT_BODIES_DETAILED.SE.eaa).toBe('PTS (Post- och telestyrelsen)');
+    });
+
+    it('AU och US följer motorns egen routing, inte sektorsväljaren rakt av', () => {
+        // getNationalLawForSector('AU','public') ger au-dta på exakt scope-träff.
+        // Juno har avgjort att au-dda är Australiens enda bindande instrument i
+        // båda sektorerna, så härledningen måste spegla motorns AU-gren.
+        expect(deriveEnforcementLaw('AU', 'public')?.id).toBe('au-dda');
+        expect(deriveEnforcementLaw('AU', 'private')?.id).toBe('au-dda');
+        expect(deriveEnforcementLaw('US', 'public')?.id).toBe('us-508');
+        expect(deriveEnforcementLaw('US', 'private')?.id).toBe('us-ada-title-iii');
+    });
+
+    it('ett undantag får aldrig skugga ett värde datan kan leverera', () => {
+        // ENFORCEMENT_NO_SINGLE_AUTHORITY finns för äkta rättsliga frånvaron, inte
+        // för att överrösta datan. Blir en post där belagd ska undantaget bort.
+        for (const country of ALL_COUNTRIES) {
+            for (const sector of ['public', 'private'] as const) {
+                const key = sector === 'private' ? 'eaa' : 'wad';
+                const law = deriveEnforcementLaw(country, sector);
+                // En undertryckning (ENFORCEMENT_SUPPRESSED) säger 'namnge ingen' och
+                // får därför skugga datan. Ett undantag säger 'namnge det här i
+                // stället' och får det inte. Bara det senare regleras här.
+                if (ENFORCEMENT_BODIES_DETAILED[country][key] === '') continue;
+                if (law?.enforcement?.authorityName) {
+                    expect(
+                        ENFORCEMENT_BODIES_DETAILED[country][key],
+                        `${country}/${sector} har en belagd authorityName i datan — konstanten måste använda den`
+                    ).toBe(law.enforcement.authorityName);
+                }
+            }
+        }
+    });
+
+    it('au-dta har en egen ramverkskod, så DDA-uppslaget är entydigt', () => {
+        // Juno 2026-09-11: att tagga Digital Access Standard som DDA var sakligt
+        // fel OCH en latent bugg — getNationalLawByFramework returnerar första
+        // träffen, så en omsortering av JSON-arrayen hade tyst kunnat göra
+        // styrdokumentet till Australiens lag.
+        const dta = getNationalLaws('AU').find(l => l.id === 'au-dta');
+        expect(dta?.euFramework).toBe('DAS');
+        expect(getNationalLawByFramework('DDA', 'AU')?.id).toBe('au-dda');
     });
 });

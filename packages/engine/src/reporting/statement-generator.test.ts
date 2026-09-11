@@ -157,7 +157,10 @@ describe('TLD country detection for en-* locales', () => {
     it('should detect .uk TLD as GB country', async () => {
         const ukResult = { ...mockResult, url: 'https://example.gov.uk' };
         const output = await generateStatementContent(ukResult, 'en-gb', 'md', { ...metadata, country: undefined });
-        expect(output).toContain('Equality and Human Rights Commission');
+        // Intern #63: myndighetsnamnet kommer nu ur lagposten i stället för ur en
+        // handskriven tabell som sa emot datan. Testet mäter TLD-detektion, och
+        // gör det lika bra med det rättade namnet.
+        expect(output).toContain('Central Digital and Data Office');
     });
 
     it('should detect .us TLD as US country', async () => {
@@ -203,13 +206,19 @@ describe('TLD detection — extended country coverage', () => {
     it('should detect .nl TLD as NL country', async () => {
         const nlResult = { ...mockResult, url: 'https://example.nl' };
         const output = await generateStatementContent(nlResult, 'nl', 'md', { ...metadata, country: undefined });
-        expect(output).toContain('Logius');
+        // Intern #63: myndighetsnamnet kommer nu ur lagposten i stället för ur en
+        // handskriven tabell som sa emot datan. Testet mäter TLD-detektion, och
+        // gör det lika bra med det rättade namnet.
+        expect(output).toContain('Binnenlandse Zaken');
     });
 
     it('should detect .es TLD as ES country', async () => {
         const esResult = { ...mockResult, url: 'https://example.es' };
         const output = await generateStatementContent(esResult, 'es', 'md', { ...metadata, country: undefined });
-        expect(output).toContain('MPTFP');
+        // Intern #63: myndighetsnamnet kommer nu ur lagposten i stället för ur en
+        // handskriven tabell som sa emot datan. Testet mäter TLD-detektion, och
+        // gör det lika bra med det rättade namnet.
+        expect(output).toContain('Ministerio para la Transformación Digital');
     });
 
     it('should detect .it TLD as IT country', async () => {
