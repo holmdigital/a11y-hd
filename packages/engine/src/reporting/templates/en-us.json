@@ -25,7 +25,7 @@
         {
             "id": "technical",
             "title": "Technical information about this website's accessibility",
-            "content": "{This website is fully compliant with Section 508 of the Rehabilitation Act./This website is partially compliant with Section 508 of the Rehabilitation Act, due to the non-compliances listed below./This website is not compliant with Section 508 of the Rehabilitation Act. The non-accessible sections are listed below.}"
+            "content": "{This website is fully compliant with {<national_law>}./This website is partially compliant with {<national_law>}, due to the non-compliances listed below./This website is not compliant with {<national_law>}. The non-accessible sections are listed below.}"
         },
         {
             "content": "The content described below is, in one way or another, not fully accessible.\n\n[\n**Non-compliance with the accessibility regulations**\n\n{<issues>}\n]"
