@@ -471,15 +471,65 @@ export function getNationalLaw(id: string, country: Country = 'SE'): NationalLaw
     return countryLaws.find(law => law.id === id) || null;
 }
 
+/** En lag gäller en sektor när dess scope är sektorn eller täcker båda. */
+function lawCoversSector(law: NationalLaw, sector: Sector): boolean {
+    return law.scope === sector || law.scope === 'both' || sector === 'both';
+}
+
 /**
- * Get national law by EU framework (WAD or EAA)
+ * Get national law by EU framework (WAD or EAA).
+ *
+ * Intern #64 (M5): `scope` is optional for backwards compatibility, but callers
+ * should almost always pass it. Without it this returns the FIRST law carrying
+ * the framework — `getNationalLawByFramework('ADA', 'US')` therefore always
+ * yields Title II (public) even when the caller wanted the private-sector
+ * Title III. The engine was saved only by special-casing US and AU; the trap
+ * stayed live in the public API for every other caller, the EAA tracker included.
+ *
+ * Prefer {@link getNationalLawForSector} when the question is "which law applies
+ * to this country and sector" — framework is rarely the right question to ask.
  */
 export function getNationalLawByFramework(
     framework: LegalFramework,
-    country: Country = 'SE'
+    country: Country = 'SE',
+    scope?: Sector
 ): NationalLaw | null {
     const countryLaws = getNationalLaws(country);
-    return countryLaws.find(law => law.euFramework === framework) || null;
+    return countryLaws.find(law =>
+        law.euFramework === framework && (scope === undefined || lawCoversSector(law, scope))
+    ) || null;
+}
+
+/**
+ * The national law that applies to a country and sector.
+ *
+ * Intern #64 (M1 + M4): selection goes on country + scope + inForce, NEVER on
+ * `euFramework`. The old framework lookup had two failure modes:
+ *
+ *   - a law with `scope: 'both'` was invisible to the private track unless its
+ *     framework happened to be EAA. Norway's forskrift and Canada's ACA both
+ *     cover private sector, and both fell through to a lawless fallback phrase.
+ *   - a law whose framework is neither WAD nor EAA could never be selected at
+ *     all, however right it was for the country.
+ *
+ * `inForce: false` is excluded unconditionally. A statute that has not entered
+ * into force must never be rendered as current law in a document the customer
+ * signs off as their own.
+ *
+ * Sub-national laws are excluded: a province's statute is not the country's
+ * answer. Ontario's AODA stays in the data as a provincial law, but rendering
+ * it for "Canada" is factually wrong regardless of sector.
+ */
+export function getNationalLawForSector(country: Country, sector: Sector): NationalLaw | null {
+    const candidates = getNationalLaws(country).filter(law =>
+        law.inForce === true &&
+        law.jurisdiction !== 'subnational' &&
+        lawCoversSector(law, sector)
+    );
+    if (candidates.length === 0) return null;
+    // A statute written for exactly this sector is the more precise answer than
+    // one that happens to cover both, so prefer it when both exist.
+    return candidates.find(l => l.scope === sector) ?? candidates[0];
 }
 
 /**

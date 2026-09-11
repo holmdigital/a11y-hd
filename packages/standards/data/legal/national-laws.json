@@ -597,6 +597,7 @@
                 "fullName": "Accessibility for Ontarians with Disabilities Act, 2005",
                 "euFramework": "WAD",
                 "scope": "both",
+                "jurisdiction": "subnational",
                 "lawUrl": "https://www.ontario.ca/laws/statute/05a11",
                 "enforcement": {
                     "authority": "ca-ado",

@@ -1,10 +1,10 @@
 import { describe, it, expect } from 'vitest';
 import fs from 'fs';
 import path from 'path';
-import { generateStatementContent } from './statement-generator';
+import { generateStatementContent, resolveNationalLawReference } from './statement-generator';
 import type { ScanResult } from '../core/regulatory-scanner';
 import type { StatementMetadata } from './statement-generator';
-import { getEnforcementBody, getNationalLawByFramework } from '@holmdigital/standards';
+import { getEnforcementBody, getNationalLawByFramework, getNationalLaws } from '@holmdigital/standards';
 import type { Country } from '@holmdigital/standards';
 
 const TEMPLATES_DIR = path.join(__dirname, 'templates');
@@ -534,15 +534,80 @@ describe('US ADA — sector-aware national law routing', () => {
         expect(output).not.toMatch(/\{<national_law>\}/);
     });
 
-    it('should reference HHS Section 504 alongside ADA Title III for US private sector', async () => {
+    it('must NOT name HHS Section 504 for US private sector while it is not in force', async () => {
+        // Intern #64 (M4). This test previously asserted the opposite, and by
+        // doing so locked in the defect: Section 504's compliance date moved to
+        // 2027-05-11 and `inForce` went false, but the engine kept naming it as
+        // binding law. A statute that has not entered into force must never be
+        // rendered as current law in a document the customer signs off as their
+        // own. When `inForce` flips true the reference returns on its own.
         const output = await generateStatementContent(
             { ...mockResult, url: 'https://hospital.example.com' },
             'en-us',
             'md',
             { ...metadata, country: 'US', sector: 'private' }
         );
-        // Healthcare/HHS-funded private organisations need both references
         expect(output).toContain('ADA Title III');
-        expect(output).toContain('Section 504');
+        expect(output).not.toContain('Section 504');
+    });
+});
+
+/**
+ * Intern #64 — lagvalet går på land + scope + inForce, aldrig på euFramework.
+ */
+describe('Intern #64 — nationellt lagval', () => {
+    it('M4: ingen lag med inForce: false når kundtext, för något land eller sektor', () => {
+        // Junos uttryckliga krav: en spärr som failar om en ikraft-lös post
+        // renderas. Generell, inte bunden till Section 504 — nästa framtida lag
+        // fångas av samma test utan att någon behöver komma ihåg den.
+        const countries: Country[] = ['SE', 'NO', 'DK', 'FI', 'NL', 'DE', 'FR', 'ES', 'IE', 'IT', 'PT', 'PL', 'GB', 'US', 'CA', 'AU', 'EU'];
+        const leaks: string[] = [];
+        for (const country of countries) {
+            const notInForce = getNationalLaws(country).filter(l => l.inForce === false);
+            for (const sector of ['public', 'private'] as const) {
+                const rendered = resolveNationalLawReference(country, sector, 'en');
+                for (const law of notInForce) {
+                    if (rendered.includes(law.law) || rendered.includes(law.fullName)) {
+                        leaks.push(`${country}/${sector}: "${law.law}" (ikraft ${law.effectiveDate})`);
+                    }
+                }
+            }
+        }
+        expect(leaks, `Lag utan ikraftträdande i kundtext:\n${leaks.join('\n')}`).toEqual([]);
+    });
+
+    it('M1: Kanada får den federala lagen, aldrig Ontarios provinslag', () => {
+        for (const sector of ['public', 'private'] as const) {
+            const line = resolveNationalLawReference('CA', sector, 'en');
+            expect(line, sector).toContain('Accessible Canada Act');
+            // AODA gäller Ontario. Att rendera den för landet Kanada är sakligt
+            // fel oavsett sektor, hur rätt den än är för provinsen.
+            expect(line, sector).not.toContain('Ontarians');
+        }
+    });
+
+    it('M1: Norge privat får sin forskrift, inte en lagtom fallback-fras', () => {
+        // no-ikt har scope 'both'. Den var osynlig för privatspåret bara för att
+        // dess ramverk inte heter EAA — vi hade rätt lag i datan och använde den inte.
+        const line = resolveNationalLawReference('NO', 'private', 'en');
+        expect(line).toContain('universell utforming');
+    });
+
+    it('M5: getNationalLawByFramework respekterar scope när det anges', () => {
+        // Utan scope returneras första ramverksträffen, alltså alltid Title II.
+        expect(getNationalLawByFramework('ADA', 'US')?.scope).toBe('public');
+        expect(getNationalLawByFramework('ADA', 'US', 'private')?.id).toBe('us-ada-title-iii');
+        expect(getNationalLawByFramework('ADA', 'US', 'public')?.id).toBe('us-ada-title-ii');
+    });
+
+    it('inget land tappar sitt lagnamn av ändringen', () => {
+        // Regressionsvakt: fallback-frasen är rätt svar för länder utan lagdata,
+        // men den får inte börja gälla någon som tidigare fick ett lagnamn.
+        for (const country of ['SE', 'GB', 'US', 'AU', 'DE', 'FR'] as Country[]) {
+            for (const sector of ['public', 'private'] as const) {
+                const line = resolveNationalLawReference(country, sector, 'en');
+                expect(line.length, `${country}/${sector}`).toBeGreaterThan(0);
+            }
+        }
     });
 });
