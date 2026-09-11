@@ -122,9 +122,15 @@ describe('Locale-specific output verification', () => {
         ['fr', 'Analyse automatisée', 'partiellement conforme'],
         ['es', 'Análisis automatizado', 'parcialmente conforme'],
         ['nl', 'Geautomatiseerde controle', 'gedeeltelijk in overeenstemming'],
-        ['en-gb', 'Automated scan', 'partially compliant with the Public Sector Bodies'],
-        ['en-us', 'Automated scan', 'partially compliant with Section 508'],
-        ['en-ca', 'Automated scan', 'partially compliant with the Accessible Canada Act'],
+        // Intern #65: dessa tre hade tidigare ett lagnamn i sin förväntan, och det
+        // var defekten. Namnet stod i mallen i klartext, så testet gick grönt
+        // just för att mallen gick förbi lagvalet. Lagnamnet kommer nu ur datan
+        // via {<national_law>}, alltså ur metadata.country — som i den här
+        // fixturen är 'SE'. Rätt förväntan är därför samma neutrala fras som
+        // 'en' och 'en-au' redan har. Lagvalet per land täcks av egna tester.
+        ['en-gb', 'Automated scan', 'partially compliant'],
+        ['en-us', 'Automated scan', 'partially compliant'],
+        ['en-ca', 'Automated scan', 'partially compliant'],
     ];
 
     it.each(localeExpectations)(
@@ -609,5 +615,109 @@ describe('Intern #64 — nationellt lagval', () => {
                 expect(line.length, `${country}/${sector}`).toBeGreaterThan(0);
             }
         }
+    });
+});
+
+/**
+ * Intern #65 fynd 5 och 6 — ingen mall får hårdkoda ett lagnamn förbi lagvalet.
+ *
+ * Lagvalet var rätt sedan #64. Dokumentet sa ändå AODA för Kanada, eftersom
+ * en-ca.json bar lagnamnen i klartext och aldrig frågade lagvalet. Fixen var
+ * alltså byggd och osynlig precis där den spelade roll, och varken min
+ * matriskörning eller standards egna tester kunde se det: båda mätte lagvalet,
+ * inte det renderade dokumentet.
+ *
+ * Testet nedan mäter mallarna. Det sveper ALLA mallar mot ALLA lagnamn i datan,
+ * så en ny mall eller en ny lag fångas utan att någon behöver minnas det här.
+ */
+describe('Intern #65 — mallarna får inte hårdkoda lagnamn', () => {
+    /** Varje textfält i en mall som kan nå kundens dokument. */
+    function templateFields(file: string): Array<{ field: string; text: string }> {
+        const json = JSON.parse(fs.readFileSync(path.join(TEMPLATES_DIR, file), 'utf8'));
+        const out: Array<{ field: string; text: string }> = [];
+        if (typeof json.intro === 'string') out.push({ field: 'intro', text: json.intro });
+        for (const section of json.sections ?? []) {
+            if (typeof section.content === 'string') out.push({ field: `sections.${section.id}`, text: section.content });
+        }
+        return out;
+    }
+
+    /** Alla lagnamn datan känner till, långa nog att inte ge slumpträffar. */
+    const lawNames = [...new Set(
+        (['SE', 'NO', 'DK', 'FI', 'NL', 'DE', 'FR', 'ES', 'IE', 'IT', 'PT', 'PL', 'GB', 'US', 'CA', 'AU'] as Country[])
+            .flatMap(c => getNationalLaws(c))
+            .flatMap(l => [l.law, l.fullName])
+    )].filter(n => typeof n === 'string' && n.length > 12);
+
+    const templates = templateFiles;
+
+    it('sveper alla mallar: inget lagnamn ur datan står i klartext', () => {
+        const leaks: string[] = [];
+        for (const file of templates) {
+            for (const { field, text } of templateFields(file)) {
+                for (const name of lawNames) {
+                    if (text.includes(name)) leaks.push(`${file} [${field}] hårdkodar "${name}"`);
+                }
+            }
+        }
+        expect(leaks, `Mall som går förbi lagvalet:\n${leaks.join('\n')}`).toEqual([]);
+    });
+
+    it('sveper alla mallar: inga kända lagfragment som inte är exakta lagnamn', () => {
+        // Kanadas mall bar "the Accessibility for Ontarians with Disabilities Act"
+        // som fri text, alltså inte identiskt med något fält i datan. Exakt
+        // namnmatchning ensam hade missat det.
+        const FRAGMENTS = [
+            'Accessibility for Ontarians',
+            'Public Sector Bodies (Websites',
+            'Section 508 of the Rehabilitation Act',
+            'Accessible Canada Act',
+            'Americans with Disabilities Act',
+        ];
+        const leaks: string[] = [];
+        for (const file of templates) {
+            for (const { field, text } of templateFields(file)) {
+                for (const fragment of FRAGMENTS) {
+                    if (text.includes(fragment)) leaks.push(`${file} [${field}] hårdkodar "${fragment}"`);
+                }
+            }
+        }
+        expect(leaks, `Mall med lagnamn i klartext:\n${leaks.join('\n')}`).toEqual([]);
+    });
+
+    it('Kanada namnger den federala lagen i det renderade fältet, aldrig Ontarios', () => {
+        for (const sector of ['public', 'private'] as const) {
+            const line = resolveNationalLawReference('CA', sector, 'en-ca');
+            expect(line, sector).toContain('Accessible Canada Act');
+            expect(line, sector).not.toContain('Ontarians');
+        }
+    });
+
+    it('GB privat faller till fallback-frasen, inte till offentliga sektorns regelverk', () => {
+        // Storbritannien har ingen EAA-post. Rätt svar är fallbacken i #31,
+        // inte PSBAR 2018 som bara gäller offentlig sektor.
+        const priv = resolveNationalLawReference('GB', 'private', 'en-gb');
+        expect(priv).not.toContain('Public Sector Bodies');
+        expect(priv.trim().length, 'fallbacken får aldrig vara tom').toBeGreaterThan(0);
+        expect(resolveNationalLawReference('GB', 'public', 'en-gb')).toContain('Public Sector Bodies');
+    });
+
+    it('US skiljer sektorerna i alla fält, inte bara i intro', () => {
+        // en-us.json hade rätt intro men hårdkodad technical-sektion, så samma
+        // dokument kunde säga ADA Title III i ett stycke och Section 508 i nästa.
+        expect(resolveNationalLawReference('US', 'private', 'en-us')).toContain('Title III');
+        expect(resolveNationalLawReference('US', 'public', 'en-us')).toContain('Title II');
+    });
+
+    it('ingen mall renderar en tom lagrad för något land eller sektor', () => {
+        // Karins kontrollpunkt 2: saknas lag ska fallbacken slå in, aldrig tomt.
+        const countries: Country[] = ['SE', 'NO', 'DK', 'FI', 'NL', 'DE', 'FR', 'ES', 'IE', 'IT', 'PT', 'PL', 'GB', 'US', 'CA', 'AU', 'EU'];
+        const empties: string[] = [];
+        for (const country of countries) {
+            for (const sector of ['public', 'private'] as const) {
+                if (resolveNationalLawReference(country, sector, 'en').trim() === '') empties.push(`${country}/${sector}`);
+            }
+        }
+        expect(empties, `Tom lagrad:\n${empties.join('\n')}`).toEqual([]);
     });
 });
