@@ -41,14 +41,19 @@ const ENFORCEMENT_BODIES_FALLBACK: Record<Country, { wad: string; eaa: string }>
     SE: { wad: 'Agency for Digital Government (Digg)', eaa: 'Swedish Post and Telecom Authority (PTS)' },
     NO: { wad: 'Tilsynet for universell utforming av ikt (uu-tilsynet)', eaa: '' },
     DK: { wad: 'Agency for Digital Government (Digitaliseringsstyrelsen)', eaa: 'Danish Safety Technology Authority (Sikkerhedsstyrelsen)' },
-    FI: { wad: 'Regional State Administrative Agency for Southern Finland (AVI)', eaa: 'Finnish Transport and Communications Agency (Traficom)' },
+    // Intern #63 A2: AVI var fel. 12 § i lag 306/2019, efter ändringen 606/2024,
+    // ger Transport- och kommunikationsverket tillsyn över BÅDA kapitlen, alltså
+    // både offentliga (3 kap.) och privata (3 a kap.) digitala tjänster. Raden är
+    // död kod för Finland sedan derivationen, men en död rad med fel uppgift är
+    // en fälla för nästa läsare.
+    FI: { wad: 'Finnish Transport and Communications Agency (Traficom)', eaa: 'Finnish Transport and Communications Agency (Traficom)' },
     NL: { wad: 'Logius', eaa: 'Authority for Consumers and Markets (ACM)' },
     DE: { wad: 'Federal Monitoring Body for Accessibility of Information Technology (BFIT-Bund)', eaa: 'Federal Network Agency (Bundesnetzagentur)' },
     FR: { wad: 'DINUM (Direction interministérielle du numérique)', eaa: 'DGCCRF (Direction générale de la concurrence, de la consommation et de la répression des fraudes)' },
     ES: { wad: 'Ministry for Digital Transformation and the Civil Service (MPTFP)', eaa: 'Supervisory authority designated by the relevant autonomous community, or by Ceuta or Melilla (Ley 11/2023, art. 27.3)' },
     IE: { wad: 'National Disability Authority (NDA)', eaa: 'Competition and Consumer Protection Commission (CCPC)' },
     IT: { wad: 'Agency for Digital Italy (AgID)', eaa: 'Agency for Digital Italy (AgID)' },
-    PT: { wad: 'Administrative Modernization Agency (AMA)', eaa: 'Directorate-General for Consumer Affairs (DGAC)' },
+    PT: { wad: 'Administrative Modernization Agency (AMA)', eaa: 'Sector supervisory authority under Decreto-Lei n.º 82/2022, art. 28.º' },
     PL: { wad: 'Ministry of Digitization (Ministerstwo Cyfryzacji)', eaa: 'Office of Competition and Consumer Protection (UOKiK)' },
     GB: { wad: 'Equality and Human Rights Commission (EHRC)', eaa: 'Equality and Human Rights Commission (EHRC)' },
     US: { wad: 'Department of Justice (Civil Rights Division)', eaa: 'Department of Justice (Civil Rights Division)' },
@@ -125,6 +130,14 @@ const ENFORCEMENT_NO_SINGLE_AUTHORITY: Partial<Record<Country, { public?: string
     // Melilla, designates its own. The art. 28 unidad técnica coordinates and
     // advises those authorities; it does not supervise.
     ES: { private: 'Supervisory authority designated by the relevant autonomous community, or by Ceuta or Melilla (Ley 11/2023, art. 27.3)' },
+    // Decreto-Lei n.º 82/2022 artigo 28.º n.º 1 (Intern #63/#66, Juno, Diário da
+    // República 1.ª série N.º 234 read in full): Portugal has no single
+    // supervisory body either — fiscalização is split across nine sector
+    // authorities (ANACOM, ERC, AMT, ANAC, IMT, Banco de Portugal, CMVM, ASAE,
+    // the municipalities and IGAC). INR, I. P. is responsible for
+    // acompanhamento and monitorização, NOT fiscalização, and must never be
+    // named here as though it supervised.
+    PT: { private: 'Sector supervisory authority under Decreto-Lei n.º 82/2022, art. 28.º (nine bodies by sector; INR, I. P. monitors but does not supervise)' },
 };
 
 /**
@@ -668,8 +681,23 @@ export function getMaxSanction(country: Country = 'SE'): { law: string; amount: 
     // established. A law without a range must be skipped, never read as a zero
     // ceiling: that would understate a country's maximum exposure, which is the
     // one direction this function must never be wrong in.
+    //
+    // Intern #66: that filter had a hole, and the hole defeated its own purpose.
+    // It skipped only `sanctions === undefined`, while SIXTEEN entries carry a
+    // DECLARED `maxAmount: 0` meaning "no figure recorded". Seven countries
+    // therefore answered that their maximum exposure was literally zero: FI, NO,
+    // DK, GB, AU, PT and PL. A declared zero is a stronger false claim than a
+    // missing field, because it reads as a measured ceiling.
+    //
+    // A statute with a genuine zero maximum penalty does not exist, so treating
+    // 0 as "no stated ceiling" is safe and matches how the data actually uses it.
+    // This is a stopgap: the real fix is the `amounts` discriminated union with
+    // an explicit `maxStatus`, specced in Intern #63 and gated to the next major.
     const laws = getNationalLaws(country).filter(
-        (law): law is NationalLaw & { sanctions: Sanction } => law.sanctions !== undefined
+        (law): law is NationalLaw & { sanctions: Sanction } =>
+            law.sanctions !== undefined &&
+            typeof law.sanctions.maxAmount === 'number' &&
+            law.sanctions.maxAmount > 0
     );
     if (laws.length === 0) return null;
 

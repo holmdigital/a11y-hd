@@ -80,16 +80,16 @@
         "FI": [
             {
                 "id": "fi-wad",
-                "law": "Laki digitaalisten palvelujen saavutettavuudesta",
+                "law": "Laki digitaalisten palvelujen tarjoamisesta",
                 "fullName": "Lag om tillhandahållande av digitala tjänster (306/2019)",
                 "euFramework": "WAD",
                 "scope": "public",
-                "lawUrl": "https://www.finlex.fi/sv/laki/ajantasa/2019/20190306",
+                "lawUrl": "https://www.finlex.fi/sv/lagstiftning/2019/306#chp_3",
                 "enforcement": {
-                    "authority": "fi-avi",
-                    "authorityName": "Regionförvaltningsverket i Södra Finland (AVI)",
-                    "responsibility": "Tillsyn av offentliga webbplatser och appar.",
-                    "website": "https://saavutettavuusvaatimukset.fi"
+                    "authority": "fi-traficom",
+                    "authorityName": "Traficom",
+                    "responsibility": "Tillsynsmyndighet enligt 12 § i lag 306/2019 (ändrad 606/2024), som utövar tillsyn över både 3 kap. och 3 a kap., alltså offentliga och privata digitala tjänster.",
+                    "website": "https://www.traficom.fi"
                 },
                 "sanctions": {
                     "type": "Vitesföreläggande",
@@ -104,7 +104,7 @@
             {
                 "id": "fi-eaa",
                 "law": "EAA-implementering",
-                "fullName": "Lag om tillgänglighetskrav för produkter och tjänster (EAA)",
+                "fullName": "Lag om tillhandahållande av digitala tjänster (306/2019), 3 a kap. Vissa digitala tjänsters tillgänglighet",
                 "euFramework": "EAA",
                 "scope": "private",
                 "enforcement": {
@@ -141,14 +141,15 @@
                         "description": "Microenterprises providing services are exempt from accessibility requirements: organisations with fewer than 10 employees AND annual turnover or balance sheet at or below 2 million EUR. Both conditions must be met cumulatively. Microenterprises providing products are NOT exempt but qualify for relaxed obligations under EAA Annex IV.",
                         "legalBasis": "Directive (EU) 2019/882 Article 4(5); microenterprise definition per Commission Recommendation 2003/361/EC"
                     }
-                }
+                },
+                "lawUrl": "https://www.finlex.fi/sv/lagstiftning/2019/306#chp_3a"
             }
         ],
         "NO": [
             {
                 "id": "no-ikt",
                 "law": "Forskrift om universell utforming av IKT-løsninger",
-                "fullName": "Forskrift om universell utforming av informasjons- og kommunikasjonsteknologi (IKT)",
+                "fullName": "Forskrift om universell utforming av informasjons- og kommunikasjonsteknologiske (IKT)-løsninger",
                 "euFramework": "WAD",
                 "scope": "both",
                 "lawUrl": "https://lovdata.no/dokument/SF/forskrift/2013-06-21-732",
@@ -177,7 +178,7 @@
                 "fullName": "Lov om tilgængelighed af offentlige organers websteder og mobilapplikationer",
                 "euFramework": "WAD",
                 "scope": "public",
-                "lawUrl": "https://www.retsinformation.dk/eli/lta/2018/693",
+                "lawUrl": "https://www.retsinformation.dk/eli/lta/2018/692",
                 "enforcement": {
                     "authority": "dk-digst",
                     "authorityName": "Digitaliseringsstyrelsen",
@@ -197,7 +198,7 @@
             {
                 "id": "dk-eaa",
                 "law": "Lov om tilgængelighedskrav for produkter og tjenester",
-                "fullName": "Lov om tilgængelighedskrav for produkter og tjenester (Lovtidende A nr. 801, 8. juni 2022; ændret ved Lovtidende A nr. 637, 11. juni 2024) — gennemførelse af direktiv (EU) 2019/882",
+                "fullName": "Lov om tilgængelighedskrav for produkter og tjenester",
                 "euFramework": "EAA",
                 "scope": "private",
                 "inForce": true,
@@ -208,7 +209,8 @@
                     "responsibility": "Kontrolmyndighed for hovedparten af de omfattede produkter og tjenester (Sikkerhedsstyrelsens pressemeddelelse, 2025-06-25). Andre myndigheder kan vaere ansvarlige for enkelte omraader; hvilke er ikke belagt mod primaerkilde.",
                     "website": "https://www.sik.dk"
                 },
-                "note": "Intern #63 (Juno, 2026-09-10): `enforcement` and `sanctions` are deliberately absent — neither could be established against primary source. retsinformation.dk and sik.dk both return 403 Forbidden to automated retrieval, so the statute text was never opened. A search-result summary names Sikkerhedsstyrelsen as the control authority except for electronic communications and land, air and sea transport; that is an assertion, not a source, and must not be written into the data. Law name and publication references come from the EUR-Lex list of national implementing measures for Directive (EU) 2019/882. Opening the statute by hand is what unblocks these two fields."
+                "note": "Intern #63 (Juno, 2026-09-10): `enforcement` and `sanctions` are deliberately absent — neither could be established against primary source. retsinformation.dk and sik.dk both return 403 Forbidden to automated retrieval, so the statute text was never opened. A search-result summary names Sikkerhedsstyrelsen as the control authority except for electronic communications and land, air and sea transport; that is an assertion, not a source, and must not be written into the data. Law name and publication references come from the EUR-Lex list of national implementing measures for Directive (EU) 2019/882. Opening the statute by hand is what unblocks these two fields. Publikationsuppgifter flyttade hit ur fullName (Intern #63/#66, 2026-09-12): lagens egen datering är LOV nr 801 af 07/06/2022. Uppgifterna om Lovtidende A nr. 801 8. juni 2022 och ændring nr. 637 11. juni 2024 är INTE belagda mot primärkälla och stod tidigare i namnfältet.",
+                "lawUrl": "https://www.retsinformation.dk/eli/lta/2022/801"
             }
         ],
         "DE": [
@@ -239,7 +241,7 @@
             {
                 "id": "de-bfsg",
                 "law": "BFSG (Barrierefreiheitsstärkungsgesetz)",
-                "fullName": "Barrierefreiheitsstärkungsgesetz - EAA-implementering",
+                "fullName": "Gesetz zur Umsetzung der Richtlinie (EU) 2019/882 des Europäischen Parlaments und des Rates über die Barrierefreiheitsanforderungen für Produkte und Dienstleistungen",
                 "euFramework": "EAA",
                 "scope": "private",
                 "lawUrl": "https://www.gesetze-im-internet.de/bfsg/",
@@ -311,6 +313,7 @@
                 "fullName": "Exigences d'accessibilité applicables aux produits et services (transposition de la directive (UE) 2019/882), code de la consommation art. L. 412-13 et D. 412-57, arrêté du 9 octobre 2023",
                 "euFramework": "EAA",
                 "scope": "private",
+                "lawUrl": "https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000047284913",
                 "inForce": true,
                 "effectiveDate": "2025-06-28",
                 "enforcement": {
@@ -343,24 +346,26 @@
                     "currency": "EUR"
                 },
                 "inForce": true,
-                "effectiveDate": "2018-09-23"
+                "effectiveDate": "2018-09-23",
+                "lawUrl": "https://www.boe.es/eli/es/rd/2018/09/07/1112"
             },
             {
                 "id": "es-eaa",
                 "law": "Ley 11/2023",
-                "fullName": "Ley 11/2023, de 8 de mayo — trasposición de la Directiva (UE) 2019/882 (BOE núm. 110, de 9 de mayo de 2023, BOE-A-2023-11022)",
+                "fullName": "Ley 11/2023, de 8 de mayo, de trasposición de Directivas de la Unión Europea en materia de accesibilidad de determinados productos y servicios, migración de personas altamente cualificadas, tributaria y digitalización de actuaciones notariales y registrales",
                 "euFramework": "EAA",
                 "scope": "private",
                 "inForce": true,
                 "effectiveDate": "2025-06-28",
-                "note": "Intern #63 (Juno, 2026-09-10, BOE-A-2023-11022 read in full): `enforcement` is absent because Spain HAS no national supervisory authority for this — art. 27.3 assigns it to each autonomous community and to the cities of Ceuta and Melilla, each designating its own. The art. 28 \"unidad técnica de apoyo y coordinación\" is explicitly an advisory and coordinating body for those authorities, not a supervisory one, and must not be recorded as the authority. `sanctions` is absent because art. 30 gives the statute no penalty range of its own: breaches are penalised under the applicable sectoral legislation, and failing that, under Title III of RDL 1/2013. No euro figure may be written here; there is none to write. Neither absence is a gap to be filled later — it is what the law says."
+                "note": "Intern #63 (Juno, 2026-09-10, BOE-A-2023-11022 read in full): `enforcement` is absent because Spain HAS no national supervisory authority for this — art. 27.3 assigns it to each autonomous community and to the cities of Ceuta and Melilla, each designating its own. The art. 28 \"unidad técnica de apoyo y coordinación\" is explicitly an advisory and coordinating body for those authorities, not a supervisory one, and must not be recorded as the authority. `sanctions` is absent because art. 30 gives the statute no penalty range of its own: breaches are penalised under the applicable sectoral legislation, and failing that, under Title III of RDL 1/2013. No euro figure may be written here; there is none to write. Neither absence is a gap to be filled later — it is what the law says.",
+                "lawUrl": "https://www.boe.es/buscar/act.php?id=BOE-A-2023-11022"
             }
         ],
         "IE": [
             {
                 "id": "ie-wad",
                 "law": "S.I. No. 358/2020",
-                "fullName": "European Union (Accessibility of the Websites and Mobile Applications of Public Sector Bodies) Regulations 2020",
+                "fullName": "European Union (Accessibility of Websites and Mobile Applications of Public Sector Bodies) Regulations 2020",
                 "euFramework": "WAD",
                 "scope": "public",
                 "lawUrl": "https://www.irishstatutebook.ie/eli/2020/si/358/made/en/print",
@@ -430,10 +435,10 @@
             {
                 "id": "nl-wad",
                 "law": "Tijdelijk besluit digitale toegankelijkheid overheid",
-                "fullName": "Besluit av 30 juni 2018, houdende regels voor de toegankelijkheid av digitale overheidsdienstverlening",
+                "fullName": "Besluit van 3 mei 2018, houdende tijdelijke regels betreffende de toegankelijkheid van de websites en mobiele applicaties van overheidsinstanties (Tijdelijk besluit digitale toegankelijkheid overheid)",
                 "euFramework": "WAD",
                 "scope": "public",
-                "lawUrl": "https://wetten.overheid.nl/BWBR0040990/",
+                "lawUrl": "https://wetten.overheid.nl/BWBR0040936/",
                 "enforcement": {
                     "authority": "nl-bzk",
                     "authorityName": "Ministerie van Binnenlandse Zaken en Koninkrijksrelaties",
@@ -515,7 +520,7 @@
                 "fullName": "Section 508 of the Rehabilitation Act of 1973",
                 "euFramework": "WAD",
                 "scope": "public",
-                "lawUrl": "https://www.section508.gov/",
+                "lawUrl": "https://www.govinfo.gov/content/pkg/USCODE-2023-title29/html/USCODE-2023-title29-chap16-subchapV-sec794d.htm",
                 "enforcement": {
                     "authority": "us-gsa",
                     "authorityName": "General Services Administration (GSA)",
@@ -538,7 +543,7 @@
                 "fullName": "Americans with Disabilities Act Title II - Nondiscrimination on the Basis of Disability in State and Local Government Services (28 CFR Part 35)",
                 "euFramework": "ADA",
                 "scope": "public",
-                "lawUrl": "https://www.ada.gov/law-and-regs/title-ii-2024/",
+                "lawUrl": "https://www.ada.gov/law-and-regs/regulations/title-ii-2010-regulations/",
                 "enforcement": {
                     "authority": "us-doj",
                     "authorityName": "U.S. Department of Justice, Civil Rights Division",
@@ -572,10 +577,10 @@
             {
                 "id": "us-ada-title-iii",
                 "law": "ADA Title III",
-                "fullName": "Americans with Disabilities Act Title III - Nondiscrimination on the Basis of Disability in Public Accommodations and Commercial Facilities (28 CFR Part 36)",
+                "fullName": "Americans with Disabilities Act Title III - Nondiscrimination on the Basis of Disability by Public Accommodations and in Commercial Facilities (28 CFR Part 36)",
                 "euFramework": "ADA",
                 "scope": "private",
-                "lawUrl": "https://www.ada.gov/law-and-regs/title-iii-regulations/",
+                "lawUrl": "https://www.ada.gov/law-and-regs/regulations/title-iii-regulations/",
                 "enforcement": {
                     "authority": "us-doj",
                     "authorityName": "U.S. Department of Justice, Civil Rights Division",
@@ -597,7 +602,7 @@
             {
                 "id": "us-hhs-section-504",
                 "law": "Section 504 (HHS Final Rule)",
-                "fullName": "Section 504 of the Rehabilitation Act of 1973 — Nondiscrimination on the Basis of Disability in Programs or Activities Receiving Federal Financial Assistance (HHS Digital Accessibility Final Rule, 45 C.F.R. Part 84, 89 FR 40066)",
+                "fullName": "Section 504 of the Rehabilitation Act of 1973, Nondiscrimination on the Basis of Disability in Programs or Activities Receiving Federal Financial Assistance (45 C.F.R. Part 84, 89 FR 40066)",
                 "euFramework": "REHAB",
                 "scope": "private",
                 "lawUrl": "https://www.federalregister.gov/documents/2024/05/09/2024-09237/nondiscrimination-on-the-basis-of-disability-in-programs-or-activities-receiving-federal-financial",
@@ -660,7 +665,7 @@
             {
                 "id": "ca-aca",
                 "law": "Accessible Canada Act",
-                "fullName": "Accessible Canada Act (S.C. 2019, c. 10) — Accessible Canada Regulations (SOR/2021-241), ICT amendments registered and in force 2025-12-05",
+                "fullName": "Accessible Canada Act (S.C. 2019, c. 10)",
                 "euFramework": "ACA",
                 "scope": "both",
                 "lawUrl": "https://laws-lois.justice.gc.ca/eng/acts/A-0.6/",
@@ -701,7 +706,7 @@
                         "description": "Federally-regulated private sector ICT accessibility compliance deadline (broadcasting, telecom, federally-regulated banks and transport providers). Three years from the ICT amendments' in-force date."
                     }
                 },
-                "note": "The Accessible Canada Act (ACA) is the federal accessibility statute, complementary to but distinct from provincial laws like AODA (Ontario), AMA (Manitoba), and similar. The Accessible Canada Regulations (SOR/2021-241) were amended to add specific ICT/digital accessibility requirements; the ICT amendments were registered and came into force 2025-12-05. The technical standard is CAN/ASC-EN 301 549:2024, the Canadian adoption of the EN 301 549 family (WCAG 2.1 Level AA baseline). Tiered enforcement: the Accessibility Commissioner at CHRC has primary jurisdiction; sector-specific enforcement is split with CRTC (broadcasting + telecom) and the Canadian Transportation Agency (federally-regulated transport). For US-style federal-vs-state context: this is the Canadian federal layer, complementary to provincial AODA-style laws. Annual progress reports were due from regulated entities by 2026-06-01 (passed). Sources: https://www.chrc-ccdp.gc.ca/organizations/accessible-canada-act-responsibilities/accessibility-deadlines and https://www.canada.ca/en/employment-social-development/programs/accessible-canada/regulations-summary-act.html"
+                "note": "The Accessible Canada Act (ACA) is the federal accessibility statute, complementary to but distinct from provincial laws like AODA (Ontario), AMA (Manitoba), and similar. The Accessible Canada Regulations (SOR/2021-241) were amended to add specific ICT/digital accessibility requirements; the ICT amendments were registered and came into force 2025-12-05. The technical standard is CAN/ASC-EN 301 549:2024, the Canadian adoption of the EN 301 549 family (WCAG 2.1 Level AA baseline). Tiered enforcement: the Accessibility Commissioner at CHRC has primary jurisdiction; sector-specific enforcement is split with CRTC (broadcasting + telecom) and the Canadian Transportation Agency (federally-regulated transport). For US-style federal-vs-state context: this is the Canadian federal layer, complementary to provincial AODA-style laws. Annual progress reports were due from regulated entities by 2026-06-01 (passed). Sources: https://www.chrc-ccdp.gc.ca/organizations/accessible-canada-act-responsibilities/accessibility-deadlines and https://www.canada.ca/en/employment-social-development/programs/accessible-canada/regulations-summary-act.html Flyttat hit ur fullName (Intern #63/#66, 2026-09-12): Accessible Canada Regulations (SOR/2021-241), vars ICT-ändringar registrerades och trädde i kraft 2025-12-05. Lagens 1 § lyder \"This Act may be cited as the Accessible Canada Act\", alltså hör regleringen inte i namnfältet."
             }
         ],
         "AU": [
@@ -711,7 +716,7 @@
                 "fullName": "Disability Discrimination Act 1992 (Cth)",
                 "euFramework": "DDA",
                 "scope": "both",
-                "lawUrl": "https://www.legislation.gov.au/Details/C2016C00763",
+                "lawUrl": "https://www.legislation.gov.au/C2004A04426/latest",
                 "enforcement": {
                     "authority": "au-ahrc",
                     "authorityName": "Australian Human Rights Commission (AHRC)",
@@ -731,8 +736,8 @@
             },
             {
                 "id": "au-dta",
-                "law": "Digital Experience Policy — Digital Access Standard",
-                "fullName": "Australian Government Digital Experience Policy — Digital Access Standard",
+                "law": "Digital Experience Policy: Digital Access Standard",
+                "fullName": "Australian Government Digital Experience Policy: Digital Access Standard",
                 "euFramework": "DAS",
                 "scope": "public",
                 "lawUrl": "https://www.digital.gov.au/policy/digital-experience/digital-access-standard",
@@ -758,7 +763,7 @@
             {
                 "id": "it-wad",
                 "law": "Legge 4/2004",
-                "fullName": "Legge 9 gennaio 2004, n. 4 — Disposizioni per favorire e semplificare l'accesso degli utenti e, in particolare, delle persone con disabilità agli strumenti informatici",
+                "fullName": "Legge 9 gennaio 2004, n. 4, Disposizioni per favorire e semplificare l'accesso degli utenti e, in particolare, delle persone con disabilità agli strumenti informatici",
                 "euFramework": "WAD",
                 "scope": "public",
                 "enforcement": {
@@ -775,12 +780,13 @@
                     "currency": "EUR"
                 },
                 "inForce": true,
-                "effectiveDate": "2004-01-09"
+                "effectiveDate": "2004-01-09",
+                "lawUrl": "https://www.normattiva.it/uri-res/N2Ls?urn:nir:stato:legge:2004-01-09;4"
             },
             {
                 "id": "it-eaa",
                 "law": "D.Lgs. 82/2022",
-                "fullName": "Decreto Legislativo 27 maggio 2022, n. 82 — Recepimento della Direttiva (UE) 2019/882 (European Accessibility Act)",
+                "fullName": "Decreto Legislativo 27 maggio 2022, n. 82, Attuazione della direttiva (UE) 2019/882 del Parlamento europeo e del Consiglio, del 17 aprile 2019, sui requisiti di accessibilità dei prodotti e dei servizi",
                 "euFramework": "EAA",
                 "scope": "private",
                 "lawUrl": "https://www.normattiva.it/uri-res/N2Ls?urn:nir:stato:decreto.legislativo:2022-05-27;82",
@@ -826,7 +832,7 @@
             {
                 "id": "pt-wad",
                 "law": "DL 83/2018",
-                "fullName": "Decreto-Lei n.º 83/2018 de 19 de outubro — Acessibilidade dos sítios web e das aplicações móveis de organismos públicos",
+                "fullName": "Decreto-Lei n.º 83/2018 de 19 de outubro",
                 "euFramework": "WAD",
                 "scope": "public",
                 "enforcement": {
@@ -843,27 +849,16 @@
                     "currency": "EUR"
                 },
                 "inForce": true,
-                "effectiveDate": "2018-10-19"
+                "effectiveDate": "2018-10-19",
+                "lawUrl": "https://diariodarepublica.pt/dr/eli/dec-lei/83/2018/10/19/p/dre/pt/pdf",
+                "note": "Intern #63/#66 (Juno, 2026-09-12): beskrivningen \"Acessibilidade dos sítios web e das aplicações móveis de organismos públicos\" stod tidigare i fullName men kommer inte ur akten — 2018 års utgåva av Diário da República trycker ingen Sumário-rad, till skillnad från 2022 års. Att akten är rätt är belagt i artigo 1.º n.º 1, som transponerar direktiv (UE) 2016/2102."
             },
             {
                 "id": "pt-eaa",
-                "law": "DL 101-D/2023",
-                "fullName": "Decreto-Lei n.º 101-D/2023 de 14 de novembro — Transposição da Diretiva (UE) 2019/882 (EAA)",
+                "law": "Decreto-Lei n.º 82/2022",
+                "fullName": "Decreto-Lei n.º 82/2022 de 6 de dezembro, Transpõe a Diretiva (UE) 2019/882, relativa aos requisitos de acessibilidade de produtos e serviços",
                 "euFramework": "EAA",
                 "scope": "private",
-                "enforcement": {
-                    "authority": "pt-dgac",
-                    "authorityName": "Directorate-General for Consumer Affairs (DGAC)",
-                    "responsibility": "Market surveillance authority for EAA compliance in Portugal.",
-                    "website": "https://www.consumidor.gov.pt"
-                },
-                "sanctions": {
-                    "type": "Administrative",
-                    "description": "Administrative sanctions for non-compliance.",
-                    "minAmount": 0,
-                    "maxAmount": 0,
-                    "currency": "EUR"
-                },
                 "inForce": true,
                 "effectiveDate": "2025-06-28",
                 "exemptions": {
@@ -875,7 +870,9 @@
                         "description": "Microenterprises providing services are exempt from accessibility requirements: organisations with fewer than 10 employees AND annual turnover or balance sheet at or below 2 million EUR. Both conditions must be met cumulatively. Microenterprises providing products are NOT exempt but qualify for relaxed obligations under EAA Annex IV.",
                         "legalBasis": "Directive (EU) 2019/882 Article 4(5); microenterprise definition per Commission Recommendation 2003/361/EC"
                     }
-                }
+                },
+                "lawUrl": "https://files.diariodarepublica.pt/1s/2022/12/23400/0010900132.pdf",
+                "note": "Intern #63/#66 (Juno, 2026-09-12): posten pekade tidigare på Decreto-Lei n.º 101-D/2023, ett diploma DRE:s ELI-resolver inte lämnar ut på något av 168 prövade datum under 2023, och som det är EJ BELAGT att det existerar. Rätt akt är 82/2022, artigo 1.º. Tillsyn utelämnad med avsikt: artigo 28.º n.º 1 fördelar den på nio sektorsorgan (ANACOM, ERC, AMT, ANAC, IMT, Banco de Portugal, CMVM, ASAE, kommunerna, IGAC), och INR ansvarar för acompanhamento och monitorização, inte fiscalização. Sanktioner utelämnade: artigo 31.º n.º 2 anger fyra spann, varav de två för contraordenação muito grave har sitt tak i Decreto-Lei n.º 433/82 som inte är öppnad."
             }
         ],
         "PL": [
@@ -899,7 +896,8 @@
                     "currency": "PLN"
                 },
                 "inForce": true,
-                "effectiveDate": "2019-04-04"
+                "effectiveDate": "2019-04-04",
+                "lawUrl": "https://dziennikustaw.gov.pl/DU/2019/848"
             },
             {
                 "id": "pl-eaa",
@@ -931,7 +929,8 @@
                         "description": "Microenterprises providing services are exempt from accessibility requirements: organisations with fewer than 10 employees AND annual turnover or balance sheet at or below 2 million EUR. Both conditions must be met cumulatively. Microenterprises providing products are NOT exempt but qualify for relaxed obligations under EAA Annex IV.",
                         "legalBasis": "Directive (EU) 2019/882 Article 4(5); microenterprise definition per Commission Recommendation 2003/361/EC"
                     }
-                }
+                },
+                "lawUrl": "https://dziennikustaw.gov.pl/DU/2024/731"
             }
         ]
     }

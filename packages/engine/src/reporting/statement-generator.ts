@@ -175,7 +175,23 @@ export function resolveNationalLawReference(
     // Canada's ACA both fell through to a lawless fallback phrase. It also made
     // a province's statute the country's answer for Canada.
     const law = getNationalLawForSector(country, sector);
-    if (law) return `${law.fullName} (${law.law})`;
+    if (law) {
+        // Intern #63/#66: parentesen finns för att ge kortnamnet vid sidan av det
+        // långa. När fälten säger samma sak är den bara brus, och efter
+        // attesteringen gör de det för två poster: dk-eaa bär titeln i båda
+        // fälten, och ca-aca:s fullName är korttiteln plus lagrumsreferens.
+        // Utan den här grenen renderades titeln två gånger i rad i ett danskt
+        // kunddokument, och det syntes inte i någon datadiff.
+        const shortName = law.law.trim();
+        const longName = law.fullName.trim();
+        // Regeln är: parentesen faller när kortnamnet är ett PREFIX av det långa,
+        // för då bär den ingen ny information. Det täcker fler fall än de två som
+        // upptäcktes först: pt-eaa hade kortnamnet plus " de 6 de dezembro", och
+        // dk-wad har en förkortning som är ett rent prefix. DOS-lagen och DL
+        // 83/2018 är inga prefix och står därför kvar, vilket är hela poängen.
+        const redundant = longName === shortName || longName.startsWith(shortName);
+        return redundant ? longName : `${longName} (${shortName})`;
+    }
     // Intern #31: never empty — reword the sentence to be true without a law name.
     const langKey = lang.split('-')[0];
     return NATIONAL_LAW_FALLBACK[langKey] ?? NATIONAL_LAW_FALLBACK.en;

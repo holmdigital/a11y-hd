@@ -730,3 +730,43 @@ describe('Intern #65 — mallarna får inte hårdkoda lagnamn', () => {
         expect(empties, `Tom lagrad:\n${empties.join('\n')}`).toEqual([]);
     });
 });
+
+/**
+ * Intern #63/#66 — lagraden får aldrig säga samma namn två gånger.
+ *
+ * Efter Junos attestering bär dk-eaa titeln i både `law` och `fullName`, och
+ * ca-aca:s fullName är korttiteln plus lagrumsreferens. Renderingen
+ * `${fullName} (${law})` gav då "Lov om tilgængelighedskrav for produkter og
+ * tjenester (Lov om tilgængelighedskrav for produkter og tjenester)" i ett
+ * danskt kunddokument.
+ *
+ * Felet syntes inte i någon datadiff — båda fälten var var för sig korrekta
+ * mot primärkälla. Det syntes när dokumentet renderades. Det är precis vad
+ * livekörningsregeln i Intern #65 finns för, och testet nedan gör det
+ * mekaniskt i stället för att förlita sig på att någon läser.
+ */
+describe('Intern #63 — lagraden upprepar inte namnet', () => {
+    const COUNTRIES: Country[] = ['SE', 'NO', 'DK', 'FI', 'NL', 'DE', 'FR', 'ES', 'IE', 'IT', 'PT', 'PL', 'GB', 'US', 'CA', 'AU'];
+
+    it('ingen lagrad innehåller samma namn i både text och parentes', () => {
+        const repeats: string[] = [];
+        for (const country of COUNTRIES) {
+            for (const sector of ['public', 'private'] as const) {
+                const line = resolveNationalLawReference(country, sector, 'en');
+                const match = line.match(/^(.*) \((.+)\)$/);
+                if (!match) continue;
+                const [, head, tail] = match;
+                if (head.trim() === tail.trim() || head.trim().startsWith(tail.trim())) {
+                    repeats.push(`${country}/${sector}: "${line}"`);
+                }
+            }
+        }
+        expect(repeats, `Lagrad som upprepar namnet:\n${repeats.join('\n')}`).toEqual([]);
+    });
+
+    it('kortnamnet står kvar i parentes när det faktiskt skiljer sig', () => {
+        // Dedupliceringen får inte äta upp parentesen där den bär information.
+        expect(resolveNationalLawReference('SE', 'public', 'sv')).toContain('(DOS-lagen)');
+        expect(resolveNationalLawReference('PT', 'public', 'pt')).toContain('(DL 83/2018)');
+    });
+});
