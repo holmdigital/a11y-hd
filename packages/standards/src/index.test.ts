@@ -262,7 +262,13 @@ describe('Enforcement Bodies', () => {
 
         it('should work for Portugal', () => {
             expect(getEnforcementBody('PT')).toBe('Administrative Modernization Agency (AMA)');
-            expect(getEnforcementBody('PT', 'private')).toBe('Directorate-General for Consumer Affairs (DGAC)');
+            // Intern #63/#66: DGAC var ett påhittat huvudorgan. Decreto-Lei n.º
+            // 82/2022 artigo 28.º n.º 1 delar tillsynen på nio sektorsorgan, och INR
+            // ansvarar för acompanhamento och monitorização, inte fiscalização.
+            // Junos ord: fältet står tomt eller bär en fallback-fras, aldrig ett
+            // påhittat huvudorgan. Samma mönster som Spanien.
+            expect(getEnforcementBody('PT', 'private')).toContain('art. 28.º');
+            expect(getEnforcementBody('PT', 'private')).not.toContain('DGAC');
         });
 
         it('should work for Poland', () => {
@@ -295,7 +301,10 @@ describe('National Laws — IT, PT, PL', () => {
         expect(getNationalLawByFramework('WAD', 'IT')?.law).toBe('Legge 4/2004');
         expect(getNationalLawByFramework('EAA', 'IT')?.law).toBe('D.Lgs. 82/2022');
         expect(getNationalLawByFramework('WAD', 'PT')?.law).toBe('DL 83/2018');
-        expect(getNationalLawByFramework('EAA', 'PT')?.law).toBe('DL 101-D/2023');
+        // Intern #63/#66 F1: DL 101-D/2023 är ett diploma DRE:s ELI-resolver inte
+        // lämnar ut på något av 168 prövade datum under 2023, och som det är EJ
+        // BELAGT att det existerar. Rätt akt är 82/2022, belagt i artigo 1.º.
+        expect(getNationalLawByFramework('EAA', 'PT')?.law).toBe('Decreto-Lei n.º 82/2022');
         expect(getNationalLawByFramework('WAD', 'PL')?.law).toBe('Ustawa o dostępności cyfrowej');
         expect(getNationalLawByFramework('EAA', 'PL')?.law).toBe('Ustawa o dostępności produktów i usług');
     });
@@ -864,5 +873,96 @@ describe('Intern #63 — ENFORCEMENT_BODIES_DETAILED är härledd', () => {
         const dta = getNationalLaws('AU').find(l => l.id === 'au-dta');
         expect(dta?.euFramework).toBe('DAS');
         expect(getNationalLawByFramework('DDA', 'AU')?.id).toBe('au-dda');
+    });
+});
+
+/**
+ * Intern #63 avsnitt C — inga tankstreck i lagnamn som går ut till kund.
+ *
+ * Mejas spärr, med Junos motivering ordagrant:
+ *
+ *   U+2013 och U+2014 förekommer i dag bara som vår egen redaktionella skarv
+ *   mellan beteckning och titel, aldrig i en officiell titel. Bindestrecket
+ *   U+002D i `Decreto-Lei`, `101-D`, `Real Decreto-ley` och `EAA-implementering`
+ *   är däremot del av namnen och berörs inte av spärren.
+ *
+ * Fälten renderas via `${law.fullName} (${law.law})` i motorns
+ * statement-generator, alltså direkt in i ett dokument kunden lämnar ifrån sig
+ * som sitt eget.
+ *
+ * KÄND GRÄNS, medvetet inte lagad: spärren fångar inte U+002D. `de-bfsg.fullName`
+ * bar platshållaren "- EAA-implementering" med bindestreck och gick därför förbi
+ * det här testet (Intern #66 fynd 2). Att bredda spärren till U+002D är fel
+ * medicin — då faller `Decreto-Lei` och `101-D`, som är riktiga namn. Den luckan
+ * stängs av granskningsregistret, inte av ett slarvigare test.
+ */
+describe('Intern #63 — inga tankstreck i lagnamn', () => {
+    const EM_DASH = String.fromCharCode(0x2014);
+    const EN_DASH = String.fromCharCode(0x2013);
+    const ALL_COUNTRIES: Country[] = ['SE', 'NO', 'DK', 'FI', 'NL', 'DE', 'FR', 'ES', 'IE', 'IT', 'PT', 'PL', 'GB', 'US', 'CA', 'AU'];
+
+    it('inget law- eller fullName-fält bär U+2013 eller U+2014', () => {
+        const offenders: string[] = [];
+        for (const country of ALL_COUNTRIES) {
+            for (const law of getNationalLaws(country)) {
+                for (const field of ['law', 'fullName'] as const) {
+                    const value = law[field];
+                    if (typeof value !== 'string') continue;
+                    if (value.includes(EM_DASH)) offenders.push(`${law.id}.${field} bär U+2014`);
+                    if (value.includes(EN_DASH)) offenders.push(`${law.id}.${field} bär U+2013`);
+                }
+            }
+        }
+        expect(
+            offenders,
+            `Tankstreck i lagnamn som går ut till kund:\n${offenders.join('\n')}`
+        ).toEqual([]);
+    });
+
+    it('bindestreck i riktiga lagnamn rörs inte av spärren', () => {
+        // Regressionsvakt mot att någon breddar testet till U+002D. Dessa fyra är
+        // riktiga namn och MÅSTE fortsätta bära sitt bindestreck.
+        expect(getNationalLaws('PT').find(l => l.id === 'pt-wad')?.fullName).toContain('Decreto-Lei');
+        expect(getNationalLaws('PT').find(l => l.id === 'pt-eaa')?.law).toContain('Decreto-Lei');
+        expect(getNationalLaws('FI').find(l => l.id === 'fi-eaa')?.law).toBe('EAA-implementering');
+        expect(getNationalLaws('NO').find(l => l.id === 'no-ikt')?.fullName).toContain('(IKT)-løsninger');
+    });
+});
+
+/**
+ * Intern #66 — getMaxSanction får aldrig påstå ett nolltak.
+ *
+ * 4.0.0-filtret skippade bara sanctions === undefined. Sexton poster bär ett
+ * DEKLARERAT maxAmount: 0 som betyder "ingen siffra belagd", och sju länder
+ * svarade därför att deras maximala sanktionsexponering var noll: FI, NO, DK,
+ * GB, AU, PT och PL. En deklarerad nolla är ett starkare falskt påstående än
+ * ett saknat fält, eftersom den läses som ett mätt tak.
+ *
+ * Funktionens egen doc-kommentar sa redan att den aldrig får underskatta ett
+ * lands maxexponering. Filtret gjorde precis det.
+ */
+describe('Intern #66 — getMaxSanction påstår inget nolltak', () => {
+    const ALL: Country[] = ['SE', 'NO', 'DK', 'FI', 'NL', 'DE', 'FR', 'ES', 'IE', 'IT', 'PT', 'PL', 'GB', 'US', 'CA', 'AU'];
+
+    it('inget land rapporterar ett tak på noll', () => {
+        const zeros: string[] = [];
+        for (const country of ALL) {
+            const max = getMaxSanction(country);
+            if (max && max.amount <= 0) zeros.push(country + ": " + JSON.stringify(max));
+        }
+        expect(zeros, "Land som påstår nolltak:" + String.fromCharCode(10) + zeros.join(String.fromCharCode(10))).toEqual([]);
+    });
+
+    it('länder utan belagt tak svarar null, inte noll', () => {
+        // Sju länder saknar ett belagt tak i datan i dag. Rätt svar är null.
+        for (const country of ['FI', 'NO', 'DK', 'GB', 'AU', 'PT', 'PL'] as Country[]) {
+            expect(getMaxSanction(country), country + " borde sakna belagt tak").toBeNull();
+        }
+    });
+
+    it('länder med belagt tak svarar med siffran', () => {
+        expect(getMaxSanction('SE')?.amount).toBe(10000000);
+        expect(getMaxSanction('ES')?.amount).toBe(1000000);
+        expect(getMaxSanction('CA')?.amount).toBe(250000);
     });
 });

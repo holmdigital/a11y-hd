@@ -524,7 +524,17 @@ describe('AccessibilityStatement US national_law placeholder (generic en templat
         expect(html).not.toMatch(PLACEHOLDER_PATTERN);
     });
 
-    it('US private sector resolves to ADA Title III + HHS Section 504', () => {
+    it('US private sector resolves to ADA Title III, WITHOUT HHS Section 504', () => {
+        // Intern #63/#66: det här testet krävde tidigare att Section 504 nämndes,
+        // och låste därmed fast defekten. us-hhs-section-504 har inForce: false
+        // med ikraftträdande 2027-05-11, och en lag som inte trätt i kraft får
+        // aldrig namnges som bindande rätt i ett dokument kunden lämnar ifrån sig
+        // som sitt eget. Motorn rättades i Intern #64; den här komponenten gjorde
+        // det inte, så felet levde vidare i publicerad components 4.0.1.
+        //
+        // Tredje gången i det här repot ett test kodifierade felet det skulle
+        // skydda mot. Referensen kommer tillbaka av sig själv när inForce-vakten
+        // vänder flaggan 2027 — hand-återställ den inte.
         const { container } = render(
             <AccessibilityStatement
                 {...defaultProps}
@@ -534,10 +544,38 @@ describe('AccessibilityStatement US national_law placeholder (generic en templat
             />
         );
         const html = container.innerHTML;
-        // Private-sector US should reference ADA Title III AND HHS Section 504 (REHAB)
         expect(html).toMatch(/Americans with Disabilities Act.*Title III/i);
-        expect(html).toMatch(/Section 504|Rehabilitation Act/i);
+        expect(html).not.toMatch(/Section 504/i);
         expect(html).not.toMatch(PLACEHOLDER_PATTERN);
+    });
+
+    it('Intern #64 i components: inget land renderar tom lagrad, och Kanada får aldrig AODA', () => {
+        // Verifierat mot publicerad components 4.0.1 att detta var trasigt:
+        // CA public namngav Ontarios AODA som Kanadas lag, och CA, NO och GB
+        // privat renderade TOM STRÄNG i meningen "… uppfyller , eventuella kända".
+        const cases: Array<[string, 'public' | 'private']> = [
+            ['CA', 'public'], ['CA', 'private'],
+            ['NO', 'public'], ['NO', 'private'],
+            ['GB', 'public'], ['GB', 'private'],
+        ];
+        for (const [country, sector] of cases) {
+            const { container } = render(
+                <AccessibilityStatement
+                    {...defaultProps}
+                    locale="en"
+                    country={country as never}
+                    sector={sector}
+                />
+            );
+            const html = container.innerHTML;
+            expect(html, `${country}/${sector} lämnade platshållare kvar`).not.toMatch(PLACEHOLDER_PATTERN);
+            // Tom lagrad syns som "complies with ," eller "with  ," i utfallet.
+            expect(html, `${country}/${sector} renderade tom lagrad`).not.toMatch(/complies with\s*,/i);
+            if (country === 'CA') {
+                expect(html, `CA/${sector} namngav Ontarios provinslag`).not.toMatch(/Ontarians/i);
+                expect(html).toMatch(/Accessible Canada Act/i);
+            }
+        }
     });
 
     it('US locale=en does not leave an empty national_law substitution (previously broken)', () => {
