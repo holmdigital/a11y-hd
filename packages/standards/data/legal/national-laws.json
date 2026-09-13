@@ -103,7 +103,7 @@
             },
             {
                 "id": "fi-eaa",
-                "law": "EAA-implementering",
+                "law": "Lag om tillhandahållande av digitala tjänster (306/2019), 3 a kap.",
                 "fullName": "Lag om tillhandahållande av digitala tjänster (306/2019), 3 a kap. Vissa digitala tjänsters tillgänglighet",
                 "euFramework": "EAA",
                 "scope": "private",
@@ -174,8 +174,8 @@
         "DK": [
             {
                 "id": "dk-wad",
-                "law": "Lov om tilgængelighed",
-                "fullName": "Lov om tilgængelighed af offentlige organers websteder og mobilapplikationer",
+                "law": "Lov om tilgængelighed af offentlige organers websteder og mobilapplikationer",
+                "fullName": "Lov om tilgængelighed af offentlige organers websteder og mobilapplikationer (LOV nr 692 af 08/06/2018)",
                 "euFramework": "WAD",
                 "scope": "public",
                 "lawUrl": "https://www.retsinformation.dk/eli/lta/2018/692",
@@ -198,7 +198,7 @@
             {
                 "id": "dk-eaa",
                 "law": "Lov om tilgængelighedskrav for produkter og tjenester",
-                "fullName": "Lov om tilgængelighedskrav for produkter og tjenester",
+                "fullName": "Lov om tilgængelighedskrav for produkter og tjenester (LOV nr 801 af 07/06/2022)",
                 "euFramework": "EAA",
                 "scope": "private",
                 "inForce": true,
@@ -209,7 +209,7 @@
                     "responsibility": "Kontrolmyndighed for hovedparten af de omfattede produkter og tjenester (Sikkerhedsstyrelsens pressemeddelelse, 2025-06-25). Andre myndigheder kan vaere ansvarlige for enkelte omraader; hvilke er ikke belagt mod primaerkilde.",
                     "website": "https://www.sik.dk"
                 },
-                "note": "Intern #63 (Juno, 2026-09-10): `sanctions` is deliberately absent. (`enforcement` was added 2026-09-11 per Intern #63 and is present; the earlier wording claiming both were absent was stale.) CORRECTION 2026-09-13: the note previously said that retsinformation.dk and sik.dk both return 403 Forbidden so the statute was never opened. That is no longer true and must not be relied on — both answered HTTP 200 on 2026-09-12 and the full text was retrieved as a 422 kB PDF. The statute DOES name control authorities in § 45 (stk. 2-5) and a sanction TYPE in § 57 (\"Medmindre højere straf er forskyldt efter anden lovgivning, straffes med bøde den, der\"), with no amount stated. Whether `enforcement` and `sanctions` should now be completed from that text is Juno's ruling, not a mechanical fix — but the justification for leaving them empty can no longer be \"the source is unreachable\". A search-result summary names Sikkerhedsstyrelsen as the control authority except for electronic communications and land, air and sea transport; that is an assertion, not a source, and must not be written into the data. Law name and publication references come from the EUR-Lex list of national implementing measures for Directive (EU) 2019/882. Opening the statute by hand is what unblocks these two fields. Publikationsuppgifter flyttade hit ur fullName (Intern #63/#66, 2026-09-12): lagens egen datering är LOV nr 801 af 07/06/2022. Uppgifterna om Lovtidende A nr. 801 8. juni 2022 och ændring nr. 637 11. juni 2024 är INTE belagda mot primärkälla och stod tidigare i namnfältet.",
+                "note": "Intern #63 (Juno, 2026-09-10): `sanctions` is deliberately absent. (`enforcement` was added 2026-09-11 per Intern #63 and is present; the earlier wording claiming both were absent was stale.) CORRECTION 2026-09-13: the note previously said that retsinformation.dk and sik.dk both return 403 Forbidden so the statute was never opened. That is no longer true and must not be relied on — both answered HTTP 200 on 2026-09-12 and the full text was retrieved as a 422 kB PDF. The statute DOES name control authorities in § 45 (stk. 2-5) and a sanction TYPE in § 57 (\"Medmindre højere straf er forskyldt efter anden lovgivning, straffes med bøde den, der\"), with no amount stated. Whether `enforcement` and `sanctions` should now be completed from that text is Juno's ruling, not a mechanical fix — but the justification for leaving them empty can no longer be \"the source is unreachable\". A search-result summary names Sikkerhedsstyrelsen as the control authority except for electronic communications and land, air and sea transport; that is an assertion, not a source, and must not be written into the data. Law name and publication references come from the EUR-Lex list of national implementing measures for Directive (EU) 2019/882. Opening the statute by hand is what unblocks these two fields. Publikationsuppgifter flyttade hit ur fullName (Intern #63/#66, 2026-09-12): lagens egen datering är LOV nr 801 af 07/06/2022. Uppgifterna om Lovtidende A nr. 801 8. juni 2022 och ændring nr. 637 11. juni 2024 är INTE belagda mot primärkälla och stod tidigare i namnfältet. Lagen trädde enligt sin egen § 58 i kraft 28 juni 2022. Uppgifterna om Lovtidende A nr. 801 den 8 juni 2022 och ändringen genom nr. 637 den 11 juni 2024 är fortfarande OBELAGDA mot primärkälla.",
                 "lawUrl": "https://www.retsinformation.dk/eli/lta/2022/801"
             }
         ],
@@ -269,7 +269,8 @@
                         "description": "Microenterprises providing services are exempt from accessibility requirements: organisations with fewer than 10 employees AND annual turnover or balance sheet at or below 2 million EUR. Both conditions must be met cumulatively. Microenterprises providing products are NOT exempt but qualify for relaxed obligations under EAA Annex IV.",
                         "legalBasis": "Directive (EU) 2019/882 Article 4(5); microenterprise definition per Commission Recommendation 2003/361/EC"
                     }
-                }
+                },
+                "note": "Vollzitat (Intern #63, 2026-09-12): \"Barrierefreiheitsstärkungsgesetz vom 16. Juli 2021 (BGBl. I S. 2970), das zuletzt durch Artikel 32 des Gesetzes vom 6. Mai 2024 (BGBl. 2024 I Nr. 149) geändert worden ist\"."
             }
         ],
         "FR": [
@@ -352,12 +353,12 @@
             {
                 "id": "es-eaa",
                 "law": "Ley 11/2023",
-                "fullName": "Ley 11/2023, de 8 de mayo, de trasposición de Directivas de la Unión Europea en materia de accesibilidad de determinados productos y servicios, migración de personas altamente cualificadas, tributaria y digitalización de actuaciones notariales y registrales",
+                "fullName": "Ley 11/2023, de 8 de mayo, de trasposición de Directivas de la Unión Europea en materia de accesibilidad de determinados productos y servicios, migración de personas altamente cualificadas, tributaria y digitalización de actuaciones notariales y registrales; y por la que se modifica la Ley 12/2011, de 27 de mayo, sobre responsabilidad civil por daños nucleares o producidos por materiales radiactivos",
                 "euFramework": "EAA",
                 "scope": "private",
                 "inForce": true,
                 "effectiveDate": "2025-06-28",
-                "note": "Intern #63 (Juno, 2026-09-10, BOE-A-2023-11022 read in full): `enforcement` is absent because Spain HAS no national supervisory authority for this — art. 27.3 assigns it to each autonomous community and to the cities of Ceuta and Melilla, each designating its own. The art. 28 \"unidad técnica de apoyo y coordinación\" is explicitly an advisory and coordinating body for those authorities, not a supervisory one, and must not be recorded as the authority. `sanctions` is absent because art. 30 gives the statute no penalty range of its own: breaches are penalised under the applicable sectoral legislation, and failing that, under Title III of RDL 1/2013. No euro figure may be written here; there is none to write. Neither absence is a gap to be filled later — it is what the law says.",
+                "note": "Intern #63 (Juno, 2026-09-10, BOE-A-2023-11022 read in full): `enforcement` is absent because Spain HAS no national supervisory authority for this — art. 27.3 assigns it to each autonomous community and to the cities of Ceuta and Melilla, each designating its own. The art. 28 \"unidad técnica de apoyo y coordinación\" is explicitly an advisory and coordinating body for those authorities, not a supervisory one, and must not be recorded as the authority. `sanctions` is absent because art. 30 gives the statute no penalty range of its own: breaches are penalised under the applicable sectoral legislation, and failing that, under Title III of RDL 1/2013. No euro figure may be written here; there is none to write. Neither absence is a gap to be filled later — it is what the law says. Publicerad i BOE núm. 110, de 9 de mayo de 2023, BOE-A-2023-11022. Bara en del av lagen rör tillgänglighet: tillsyn och sanktioner ligger i capítulo XI, artículos 27 till 31.",
                 "lawUrl": "https://www.boe.es/buscar/act.php?id=BOE-A-2023-11022"
             }
         ],
@@ -511,6 +512,30 @@
                 },
                 "inForce": true,
                 "effectiveDate": "2018-09-23"
+            },
+            {
+                "id": "gb-eqa2010",
+                "law": "Equality Act 2010, s. 29",
+                "fullName": "Equality Act 2010, Part 3 (Services and public functions), section 29 (duty not to discriminate in the provision of services, including reasonable adjustments)",
+                "euFramework": "EAA",
+                "scope": "private",
+                "lawUrl": "https://www.legislation.gov.uk/ukpga/2010/15/section/29",
+                "enforcement": {
+                    "authority": "gb-ehrc",
+                    "authorityName": "Equality and Human Rights Commission (EHRC)",
+                    "responsibility": "Utredningsrätt och rätt att utfärda unlawful act notice enligt Equality Act 2006 ss. 20-21. Enskilda kan också föra civilrättslig talan direkt i county court eller sheriff court enligt Equality Act 2010 s. 114.",
+                    "website": "https://www.equalityhumanrights.com"
+                },
+                "sanctions": {
+                    "type": "Skadestånd efter domstolsprövning, inget lagfäst tak",
+                    "description": "Ingen administrativ bötesskala. County court (England och Wales) eller sheriff (Skottland) prövar krav enligt Equality Act 2010 s. 114 och kan döma ut skadestånd.",
+                    "minAmount": 0,
+                    "maxAmount": 0,
+                    "currency": "GBP"
+                },
+                "inForce": true,
+                "effectiveDate": "2010-10-01",
+                "note": "Intern #63 (Juno, 2026-09-12), levererad som klar att bygga. TVÅ FÖRBEHÅLL FRÅN HENNE SJÄLV: (1) effectiveDate är Equality Act 2010:s allmänna ikraftträdande, inte specifikt för s. 29, och bör dubbelkollas. (2) minAmount och maxAmount är 0/0 därför att lagen inte har något lagfäst tak — det är samma platshållarmönster som sexton andra poster bär, och getMaxSanction hoppar sedan Intern #66 över ett deklarerat nolltak i stället för att rapportera det som ett belagt tak. Rätt modellering är amounts-unionen med maxStatus, som är Karinspärrad till nästa major."
             }
         ],
         "US": [
@@ -577,7 +602,7 @@
             {
                 "id": "us-ada-title-iii",
                 "law": "ADA Title III",
-                "fullName": "Americans with Disabilities Act Title III - Nondiscrimination on the Basis of Disability by Public Accommodations and in Commercial Facilities (28 CFR Part 36)",
+                "fullName": "Americans with Disabilities Act Title III, Nondiscrimination on the Basis of Disability by Public Accommodations and in Commercial Facilities (28 CFR Part 36)",
                 "euFramework": "ADA",
                 "scope": "private",
                 "lawUrl": "https://www.ada.gov/law-and-regs/regulations/title-iii-regulations/",
@@ -601,8 +626,8 @@
             },
             {
                 "id": "us-hhs-section-504",
-                "law": "Section 504 (HHS Final Rule)",
-                "fullName": "Section 504 of the Rehabilitation Act of 1973, Nondiscrimination on the Basis of Disability in Programs or Activities Receiving Federal Financial Assistance (45 C.F.R. Part 84, 89 FR 40066)",
+                "law": "Section 504 of the Rehabilitation Act of 1973",
+                "fullName": "Section 504 of the Rehabilitation Act of 1973, Nondiscrimination on the Basis of Disability in Programs or Activities Receiving Federal Financial Assistance (45 C.F.R. Part 84)",
                 "euFramework": "REHAB",
                 "scope": "private",
                 "lawUrl": "https://www.federalregister.gov/documents/2024/05/09/2024-09237/nondiscrimination-on-the-basis-of-disability-in-programs-or-activities-receiving-federal-financial",
@@ -622,7 +647,7 @@
                 },
                 "inForce": false,
                 "effectiveDate": "2027-05-11",
-                "note": "Applies to private organizations — including hospitals, physician practices, federally qualified health centers, long-term care facilities, health plans, and research institutions — that receive federal financial assistance from the U.S. Department of Health and Human Services (HHS), directly or indirectly. HHS administers over 100 programs, making the scope extensive. Medicare Part B reimbursements are considered federal financial assistance triggering Section 504 obligations. Five content exemptions exist: archived content, pre-existing conventional documents, individualized password-protected documents, pre-existing social media posts, and third-party content not controlled by the recipient. Does NOT cover federal agencies (see us-508) or state/local governments (see us-ada-title-ii). Rule published 89 FR 40066 (May 9, 2024); general Section 504 obligations effective July 8, 2024; WCAG 2.1 AA technical standards enforcement begins at compliance deadlines (15+ employees: 2027-05-11; <15 employees: 2028-05-10 — see complianceDeadlines). `effectiveDate` reflects the WCAG benchmark in-force date for the large-entity tier (the primary enforcement trigger); `inForce` flips to true on that date. Compliance deadlines were extended by one year via HHS Interim Final Rule (2026-09266), published in the Federal Register on May 11, 2026, with a 60-day public comment window closing July 6, 2026 (docket HHS-OCR-2026-0004). Technical standards (WCAG 2.1 AA) and scope are unchanged.",
+                "note": "Applies to private organizations — including hospitals, physician practices, federally qualified health centers, long-term care facilities, health plans, and research institutions — that receive federal financial assistance from the U.S. Department of Health and Human Services (HHS), directly or indirectly. HHS administers over 100 programs, making the scope extensive. Medicare Part B reimbursements are considered federal financial assistance triggering Section 504 obligations. Five content exemptions exist: archived content, pre-existing conventional documents, individualized password-protected documents, pre-existing social media posts, and third-party content not controlled by the recipient. Does NOT cover federal agencies (see us-508) or state/local governments (see us-ada-title-ii). Rule published 89 FR 40066 (May 9, 2024); general Section 504 obligations effective July 8, 2024; WCAG 2.1 AA technical standards enforcement begins at compliance deadlines (15+ employees: 2027-05-11; <15 employees: 2028-05-10 — see complianceDeadlines). `effectiveDate` reflects the WCAG benchmark in-force date for the large-entity tier (the primary enforcement trigger); `inForce` flips to true on that date. Compliance deadlines were extended by one year via HHS Interim Final Rule (2026-09266), published in the Federal Register on May 11, 2026, with a 60-day public comment window closing July 6, 2026 (docket HHS-OCR-2026-0004). Technical standards (WCAG 2.1 AA) and scope are unchanged. Grundregeln är 89 FR 40066 av 2024-05-09, action \"Final rule.\" Förlängningen av efterlevnadsdatumen är 91 FR 25496 av 2026-05-11, action \"Interim final rule; request for comments.\" — samma dokument som dokumentnummer 2026-09266. Interim-lydelsen är alltså korrekt och ska inte ändras, men den dag en slutlig regel kommer blir den föråldrad samma dag och efterlevnadsdatumen måste läsas om.",
                 "complianceDeadlines": {
                     "largeEntity": {
                         "employeeThreshold": 15,
@@ -856,7 +881,7 @@
             {
                 "id": "pt-eaa",
                 "law": "Decreto-Lei n.º 82/2022",
-                "fullName": "Decreto-Lei n.º 82/2022 de 6 de dezembro, Transpõe a Diretiva (UE) 2019/882, relativa aos requisitos de acessibilidade de produtos e serviços",
+                "fullName": "Decreto-Lei n.º 82/2022 de 6 de dezembro",
                 "euFramework": "EAA",
                 "scope": "private",
                 "inForce": true,
@@ -872,7 +897,7 @@
                     }
                 },
                 "lawUrl": "https://files.diariodarepublica.pt/1s/2022/12/23400/0010900132.pdf",
-                "note": "Intern #63/#66 (Juno, 2026-09-12): posten pekade tidigare på Decreto-Lei n.º 101-D/2023, ett diploma DRE:s ELI-resolver inte lämnar ut på något av 168 prövade datum under 2023, och som det är EJ BELAGT att det existerar. Rätt akt är 82/2022, artigo 1.º. Tillsyn utelämnad med avsikt: artigo 28.º n.º 1 fördelar den på nio sektorsorgan (ANACOM, ERC, AMT, ANAC, IMT, Banco de Portugal, CMVM, ASAE, kommunerna, IGAC), och INR ansvarar för acompanhamento och monitorização, inte fiscalização. Sanktioner utelämnade: artigo 31.º n.º 2 anger fyra spann, varav de två för contraordenação muito grave har sitt tak i Decreto-Lei n.º 433/82 som inte är öppnad."
+                "note": "Intern #63/#66 (Juno, 2026-09-12): posten pekade tidigare på Decreto-Lei n.º 101-D/2023, ett diploma DRE:s ELI-resolver inte lämnar ut på något av 168 prövade datum under 2023, och som det är EJ BELAGT att det existerar. Rätt akt är 82/2022, artigo 1.º. Tillsyn utelämnad med avsikt: artigo 28.º n.º 1 fördelar den på nio sektorsorgan (ANACOM, ERC, AMT, ANAC, IMT, Banco de Portugal, CMVM, ASAE, kommunerna, IGAC), och INR ansvarar för acompanhamento och monitorização, inte fiscalização. Sanktioner utelämnade: artigo 31.º n.º 2 anger fyra spann, varav de två för contraordenação muito grave har sitt tak i Decreto-Lei n.º 433/82 som inte är öppnad. Sumário ordagrant: \"Transpõe a Diretiva (UE) 2019/882, relativa aos requisitos de acessibilidade de produtos e serviços.\" Flyttad hit ur fullName enligt lydelsetabellen 2026-09-12."
             }
         ],
         "PL": [
