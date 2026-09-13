@@ -132,12 +132,21 @@ const ENFORCEMENT_NO_SINGLE_AUTHORITY: Partial<Record<Country, { public?: string
     ES: { private: 'Supervisory authority designated by the relevant autonomous community, or by Ceuta or Melilla (Ley 11/2023, art. 27.3)' },
     // Decreto-Lei n.º 82/2022 artigo 28.º n.º 1 (Intern #63/#66, Juno, Diário da
     // República 1.ª série N.º 234 read in full): Portugal has no single
-    // supervisory body either — fiscalização is split across nine sector
-    // authorities (ANACOM, ERC, AMT, ANAC, IMT, Banco de Portugal, CMVM, ASAE,
+    // supervisory body either — fiscalização is split by sector under art.
+    // 28.º n.º 1 (ANACOM, ERC, AMT, ANAC, IMT, Banco de Portugal, CMVM, ASAE,
     // the municipalities and IGAC). INR, I. P. is responsible for
     // acompanhamento and monitorização, NOT fiscalização, and must never be
     // named here as though it supervised.
-    PT: { private: 'Sector supervisory authority under Decreto-Lei n.º 82/2022, art. 28.º (nine bodies by sector; INR, I. P. monitors but does not supervise)' },
+    //
+    // NO COUNT IS ASSERTED, deliberately. This string said "nine bodies by
+    // sector" and the comment above it listed TEN names — the number came from
+    // the source text handed to me (Intern #63, "nio sektorsorgan" followed by
+    // ten names) and I built it faithfully. Art. 28.º n.º 1 has nine alíneas,
+    // but alínea c) names two authorities, so "nine bodies" is wrong while
+    // "nine paragraphs" would be right. Rather than pick a number for a legal
+    // text I cannot read, the claim is dropped: naming the article is enough,
+    // and it cannot be wrong. Add a count back only with Juno's wording.
+    PT: { private: 'Sector supervisory authority designated by sector under Decreto-Lei n.º 82/2022, art. 28.º (INR, I. P. monitors but does not supervise)' },
 };
 
 /**
