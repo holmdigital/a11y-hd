@@ -1,5 +1,61 @@
 # @holmdigital/standards
 
+## 4.2.0
+
+### Minor Changes
+
+- 270f726: Intern #63 — lydelsetabellen från 2026-09-12 16:29, en ny brittisk post, och de två saknade uppslagsfunktionerna.
+
+  ## Jag missade en kommentar och byggde från en äldre version
+
+  Karins team postade _"Färdiga lydelser för alla femton poster. Skriv av, du behöver inte fråga."_ klockan 16:29, plus ett avgörande om `nl-eaa` och `au-dta` klockan 16:07. **Mitt bygge utgick från kommentarerna till och med 15:18.** Åtta av de femton lydelserna avvek därför från den beslutade.
+
+  Rättat nu, ordagrant efter tabellen:
+
+  | Post                                 | Ändring                                                                                                                                                           |
+  | ------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+  | `fi-eaa.law`                         | `EAA-implementering` → `Lag om tillhandahållande av digitala tjänster (306/2019), 3 a kap.` Platshållaren var rätt beteende när den skrevs, men lydelsen finns nu |
+  | `dk-wad.law`                         | Vår avkortning `Lov om tilgængelighed` → hela titeln. Danska lagar har inget officiellt kortnamn, och avkortningen läste som en titel utan att vara någon         |
+  | `dk-wad.fullName`, `dk-eaa.fullName` | LOV-citeringen tillagd                                                                                                                                            |
+  | `es-eaa.fullName`                    | Hela slutledet om Ley 12/2011 var avkortat                                                                                                                        |
+  | `pt-eaa.fullName`                    | Bara beteckningen; sumário till `note`                                                                                                                            |
+  | `us-ada-title-iii.fullName`          | Bindestreck → komma                                                                                                                                               |
+  | `us-hhs-section-504`                 | Vår etikett `(HHS Final Rule)` ut ur **båda** fälten; FR-citeringarna till `note`                                                                                 |
+
+  Junos linje för `law`-fältet, som gör att nästa land inte behöver frågas: **officiell korttitel när utgivaren publicerar en, annars hela titeln. Vi hittar aldrig på en förkortning och kortar aldrig en titel på egen hand.**
+
+  ## Ny post: `gb-eqa2010`
+
+  Brittisk privat sektor fick tidigare fallback-frasen, och jag rapporterade det som korrekt beteende. **Det var fel** — Juno hade levererat ett färdigt block för Equality Act 2010 s. 29, belagt mot primärkälla.
+
+  Två förbehåll hon själv reste följer med i postens `note`: `effectiveDate` är lagens allmänna ikraftträdande och inte specifikt för s. 29, och `minAmount`/`maxAmount` är 0/0 därför att lagen saknar lagfäst tak — samma platshållarmönster som sexton andra poster, som `getMaxSanction` numera hoppar över.
+
+  ## `findNationalLaw(id)` och `getAllNationalLaws()`
+
+  Punkt 4 i issuens ursprungsanalys, ospecad sedan dess och aldrig byggd. `getNationalLaw(id, country = 'SE')` defaultar till Sverige, så `getNationalLaw('de-bfsg')` returnerar **`null` i stället för ett fel** — en validering skriven som "finns lagrummet" underkänner varje utländsk rad, tyst.
+
+  `findNationalLaw(id)` tar inget land och kan därför inte glömma det; landet följer med i svaret. `getAllNationalLaws()` ger hela mängden med land påhängt. Båda additiva, därav minor. Ett test låser att id är unika över alla länder, annars är uppslag på id meningslöst.
+
+  ## Ett test jag själv skrev låste in en defekt
+
+  Spärren mot tankstreck hade en regressionsvakt som krävde `fi-eaa.law === 'EAA-implementering'`. Den var rätt när jag skrev den och blev fel samma dag lydelsen levererades — den som byggde rättelsen fick rött i sviten.
+
+  **Fjärde gången i det här repot ett test kodifierade felet det skulle skydda mot, och första gången jag skrev det själv.** Raden är vänd: den låser nu att **ingen** platshållare står i ett namnfält, vilket är den invariant som faktiskt ska hålla.
+
+### Patch Changes
+
+- f28dd03: Intern #66 — två påståenden jag inte kan belägga, borttagna.
+
+  **`ENFORCEMENT_NO_SINGLE_AUTHORITY.PT.private` påstod ett antal.** Strängen som når kundtext sa _"nine bodies by sector"_ medan kodkommentaren ovanför den räknade upp **tio** namn. Siffran kom ur underlaget jag fick — Junos text säger _"nio sektorsorgan"_ och listar sedan tio — och jag byggde den troget. Artigo 28.º n.º 1 har nio _alíneas_, men alínea c) namnger två myndigheter, så _"nine bodies"_ är fel medan _"nine paragraphs"_ hade varit rätt.
+
+  I stället för att välja en siffra i en lagtext jag inte kan läsa är påståendet borttaget. Att namnge artikeln räcker, och det kan inte bli fel. En siffra läggs tillbaka bara med Junos lydelse.
+
+  **`dk-eaa.note` hade blivit falsk.** Den sa att `retsinformation.dk` och `sik.dk` svarar 403 Forbidden och att lagtexten därför aldrig öppnats. Båda svarade 200, och hela texten hämtades som en 422 kB PDF. Noten sa också att `enforcement` är avsiktligt frånvarande, fast fältet lades in 2026-09-11.
+
+  Att lagen faktiskt namnger kontrollmyndigheter i § 45 och en sanktions**art** i § 57 står nu i noten. **Om** fälten ska fyllas är Junos avgörande, inte en mekanisk fix — men skälet att lämna dem tomma kan inte längre vara att källan är oåtkomlig. Noten var det som motiverade tomheten, och ett test låser den, så en inaktuell not höll ett fält stängt på fel grund.
+
+  Båda fynden kommer ur en oberoende granskning av mitt eget bygge, inte ur min egen genomläsning.
+
 ## 4.1.1
 
 ### Patch Changes
