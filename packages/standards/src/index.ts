@@ -674,6 +674,49 @@ export function getNationalLawForSector(country: Country, sector: Sector): Natio
 }
 
 /**
+ * Intern #63 punkt 4 — hitta en lagpost på id, oavsett land.
+ *
+ * `getNationalLaw(id, country = 'SE')` defaultar till Sverige, så
+ * `getNationalLaw('de-bfsg')` returnerar `null` i stället för ett fel: en
+ * validering skriven som "finns lagrummet, ja eller nej" som glömmer
+ * landparametern underkänner varje utländsk rad, tyst. Meja kallade det den
+ * enskilt mest sannolika buggen i en kommande tracker-koppling.
+ *
+ * Den här funktionen tar inget land och kan därför inte glömmas. Landet följer
+ * med i svaret, eftersom en anropare som slår upp på id nästan alltid behöver
+ * veta vilket land posten hörde till.
+ */
+export function findNationalLaw(id: string): (NationalLaw & { country: Country }) | null {
+    for (const [country, laws] of Object.entries(nationalLawsData.laws)) {
+        const match = (laws as NationalLaw[]).find(law => law.id === id);
+        if (match) return { ...match, country: country as Country };
+    }
+    return null;
+}
+
+/**
+ * Intern #63 punkt 4 — hela lagmängden, med land påhängt på varje post.
+ *
+ * Utan den här gick det inte att fråga paketet "ge mig alla lagar", till
+ * exempel för en rullgardinsmeny. Alternativet var att importera datafilen
+ * direkt via `exports`-blockets `"./data/*"`, men då kringgås den typade ytan
+ * och versionsgarantin.
+ *
+ * Ordningen följer datafilen: länderna i sin nyckelordning, lagarna i sin
+ * arrayordning. Förlita dig inte på den — `au-dda` före `au-dta` var precis en
+ * sådan tyst ordningsberoende som gav en latent bugg i
+ * `getNationalLawByFramework` (Intern #63, `au-dta.euFramework`).
+ */
+export function getAllNationalLaws(): Array<NationalLaw & { country: Country }> {
+    const out: Array<NationalLaw & { country: Country }> = [];
+    for (const [country, laws] of Object.entries(nationalLawsData.laws)) {
+        for (const law of laws as NationalLaw[]) {
+            out.push({ ...law, country: country as Country });
+        }
+    }
+    return out;
+}
+/**
  * Get sanctions information for a specific law
  */
 export function getSanctions(lawId: string, country: Country = 'SE'): Sanction | null {

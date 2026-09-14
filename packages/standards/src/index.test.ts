@@ -29,6 +29,9 @@ import {
     deriveEnforcementLaw,
     getNationalLaws,
     getMaxSanction,
+    findNationalLaw,
+    getNationalLaw,
+    getAllNationalLaws,
     generateRegulatoryReport,
 } from './index';
 import type { Country, ConvergenceRule } from './types';
@@ -924,7 +927,24 @@ describe('Intern #63 — inga tankstreck i lagnamn', () => {
         // riktiga namn och MÅSTE fortsätta bära sitt bindestreck.
         expect(getNationalLaws('PT').find(l => l.id === 'pt-wad')?.fullName).toContain('Decreto-Lei');
         expect(getNationalLaws('PT').find(l => l.id === 'pt-eaa')?.law).toContain('Decreto-Lei');
-        expect(getNationalLaws('FI').find(l => l.id === 'fi-eaa')?.law).toBe('EAA-implementering');
+        // HÄR LÅSTE JAG SJÄLV IN EN DEFEKT. Raden krävde tidigare att
+        // fi-eaa.law var "EAA-implementering". Den platshållaren var rätt
+        // beteende när jag skrev testet, men lydelsetabellen 2026-09-12 16:29
+        // gav posten sitt riktiga värde, och testet gjorde då rättelsen röd.
+        // Fjärde gången i det här repot ett test kodifierade felet det skulle
+        // skydda mot, och första gången det var jag som skrev det.
+        //
+        // Rätt invariant är den motsatta: ingen platshållare får stå i ett
+        // namnfält som går ut till kund.
+        const placeholders: string[] = [];
+        for (const country of ['SE', 'NO', 'DK', 'FI', 'NL', 'DE', 'FR', 'ES', 'IE', 'IT', 'PT', 'PL', 'GB', 'US', 'CA', 'AU'] as Country[]) {
+            for (const law of getNationalLaws(country)) {
+                for (const field of ['law', 'fullName'] as const) {
+                    if (law[field] && law[field].includes('EAA-implementering')) placeholders.push(law.id + '.' + field);
+                }
+            }
+        }
+        expect(placeholders, 'Platshållare i namnfält: ' + placeholders.join(', ')).toEqual([]);
         expect(getNationalLaws('NO').find(l => l.id === 'no-ikt')?.fullName).toContain('(IKT)-løsninger');
     });
 });
@@ -964,5 +984,45 @@ describe('Intern #66 — getMaxSanction påstår inget nolltak', () => {
         expect(getMaxSanction('SE')?.amount).toBe(10000000);
         expect(getMaxSanction('ES')?.amount).toBe(1000000);
         expect(getMaxSanction('CA')?.amount).toBe(250000);
+    });
+});
+
+/**
+ * Intern #63 punkt 4 — den landsblinda uppslagsfällan.
+ *
+ * getNationalLaw(id, country = "SE") returnerar null för varje utländsk post om
+ * anroparen glömmer landet. Meja kallade det den enskilt mest sannolika buggen i
+ * en tracker-koppling: en validering som frågar "finns lagrummet" underkänner
+ * varje utländsk rad, tyst och utan fel.
+ */
+describe('Intern #63 — findNationalLaw och getAllNationalLaws', () => {
+    it('fällan finns kvar och är dokumenterad: getNationalLaw utan land ger null', () => {
+        expect(getNationalLaw('de-bfsg')).toBeNull();
+        expect(getNationalLaw('pt-eaa')).toBeNull();
+        // Svenska poster fungerar, vilket är precis varför fällan är tyst.
+        expect(getNationalLaw('dos-lagen')?.id).toBe('dos-lagen');
+    });
+
+    it('findNationalLaw hittar över alla länder och bär landet i svaret', () => {
+        expect(findNationalLaw('de-bfsg')?.country).toBe('DE');
+        expect(findNationalLaw('pt-eaa')?.country).toBe('PT');
+        expect(findNationalLaw('gb-eqa2010')?.country).toBe('GB');
+        expect(findNationalLaw('finns-inte')).toBeNull();
+    });
+
+    it('getAllNationalLaws returnerar hela mängden med land på varje post', () => {
+        const all = getAllNationalLaws();
+        expect(all.length).toBeGreaterThan(30);
+        expect(all.every(l => typeof l.country === String.fromCharCode(115, 116, 114, 105, 110, 103))).toBe(true);
+        // Varje id ska gå att hitta igen med findNationalLaw.
+        for (const law of all) {
+            expect(findNationalLaw(law.id)?.country, law.id).toBe(law.country);
+        }
+    });
+
+    it('id är unika över alla länder, annars är uppslag på id meningslöst', () => {
+        const ids = getAllNationalLaws().map(l => l.id);
+        const dupes = ids.filter((id, i) => ids.indexOf(id) !== i);
+        expect(dupes, 'dubbletter: ' + dupes.join(', ')).toEqual([]);
     });
 });
