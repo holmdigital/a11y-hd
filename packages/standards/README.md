@@ -130,38 +130,40 @@ const seLaws = getNationalLaws('SE');
 
 // Get sanctions for a specific law
 const sanctions = getSanctions('lptt', 'SE');
-// { type: "Sanktionsavgift", maxAmount: 10000000, currency: "SEK" }
+// Returns the recorded range, or undefined where no amount is established.
 
 // Get maximum sanction for a country
 const maxSanction = getMaxSanction('DE');
-// { law: "BFSG", amount: 500000, currency: "EUR" }
+// Returns the highest recorded maximum, skipping laws with no established amount.
 
 // Get sector-specific EAA authorities
 const sectors = getSectorAuthorities('SE');
 // [{ authority: "Konsumentverket", responsibility: "Transport" }, ...]
 ```
 
-## Supported Countries & Maximum Sanctions
+## Supported Countries
 
-| Country | WAD Law | EAA Law | Max Sanction |
-|---------|---------|---------|--------------|
-| 🇸🇪 SE | DOS-lagen | LPTT | 1M SEK (Vite) / 10M SEK (EAA) |
-| 🇳🇱 NL | Digitoegankelijk | Warenwet | 900k EUR |
-| 🇩🇪 DE | BITV 2.0 | BFSG | 500k EUR |
-| 🇫🇷 FR | RGAA | - | 300k EUR |
-| 🇪🇸 ES | Real Decreto 1112/2018 | - | 1M EUR |
-| 🇮🇪 IE | S.I. 358/2020 | - | 60k EUR |
-| 🇳🇴 NO | IKT-forskrift | - | Daily fines |
-| 🇫🇮 FI | 306/2019 | EAA | Vite |
-| 🇩🇰 DK | Tilgængelighed | - | Fines |
-| 🇮🇹 IT | Legge 4/2004 | D.Lgs. 82/2022 | Up to 5% of turnover |
-| 🇵🇹 PT | DL 83/2018 | DL 101-D/2023 | 44k EUR |
-| 🇵🇱 PL | Ustawa o dostępności cyfrowej | Ustawa o dostępności produktów i usług | 100k PLN |
-| 🇬🇧 GB | PSBAR | - | Unlawful Act Notice |
-| 🇺🇸 US | Section 508 (federal, GSA) / ADA Title II (state+local, DOJ) | ADA Title III (private, DOJ) + Section 504 HHS (healthcare/HHS-funded, OCR) | Up to $150k/violation (Title III) + funding suspension (Section 504) + civil rights lawsuits |
-| 🇨🇦 CA | AODA (Ontario) | ACA (federal) | $100k per day |
-| 🇦🇺 AU | DDA 1992 | — (DDA covers both sectors) | Court-determined (AHRC complaint) |
+Sixteen countries: 🇸🇪 SE · 🇳🇴 NO · 🇩🇰 DK · 🇫🇮 FI · 🇳🇱 NL · 🇩🇪 DE · 🇫🇷 FR · 🇪🇸 ES · 🇮🇪 IE · 🇮🇹 IT · 🇵🇹 PT · 🇵🇱 PL · 🇬🇧 GB · 🇺🇸 US · 🇨🇦 CA · 🇦🇺 AU.
 
+Each country carries its WAD and/or EAA instrument in `data/legal/national-laws.json`.
+Use `getNationalLaws(country)` to enumerate them and `getNationalLawForSector(country, sector)`
+to select the one that applies to a given sector.
+
+### Why there is no sanctions column here
+
+This README used to publish a maximum sanction per country. Those figures were removed
+in Intern #70: several were wrong, and a wrong penalty figure in a published document is
+the kind of error that makes a reader act on it.
+
+Sanctions are not a single number per country. A statute may state a range, state a
+formula rather than an amount (Poland: the greater of ten average monthly salaries or
+10% of the previous year's turnover), state a type without any amount (France), state no
+penalty of its own at all, or have no ceiling (Denmark). Flattening that into one cell
+produced figures our own data does not support.
+
+**Read sanctions from the data, never from documentation:** `getSanctions(lawId, country)`
+returns what is recorded, and `undefined` where no amount is established. An absent value
+means "not established against primary source" — never "no penalty exists".
 ## API Reference
 
 ### Core Functions
