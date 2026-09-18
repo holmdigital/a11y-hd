@@ -14,6 +14,7 @@ import { generatePDF } from '../reporting/pdf-generator';
 import { generateStatement, generateStatementContent, StatementMetadata } from '../reporting/statement-generator';
 import { generateBadgeMarkdown, isBadgeWithheldByRobustness } from '../reporting/badge-generator';
 import { parseHydrationWait, InvalidOptionError, MAX_HYDRATION_WAIT_MS } from './parse-options';
+import { assertScanUrl, UnsupportedUrlError } from './url-guard.js';
 import { setLanguage, t } from '../i18n';
 import type { EnrichedReport } from '@holmdigital/standards';
 import { isPlainLanguageSupported } from '../reporting/plain-language-support';
@@ -81,14 +82,6 @@ function renderNoScriptAdvisory(noScript: NoScriptResult): void {
 /**
  * Validates URL format
  */
-function isValidUrl(urlString: string): boolean {
-    try {
-        const url = new URL(urlString);
-        return url.protocol === 'http:' || url.protocol === 'https:';
-    } catch {
-        return false;
-    }
-}
 
 const program = new Command();
 
@@ -227,8 +220,20 @@ program
             setLanguage('en');
         }
 
-        if (!isValidUrl(url)) {
-            // ... validation ...
+        // Intern #53 steg 1. Den här grinden stod tom sedan februari (912480e):
+        // `if (!isValidUrl(url)) { /* ... validation ... */ }`, alltså en
+        // kontroll som gjorde rätt och vars svar kastades bort. file:// gick
+        // rakt in i skanningen. Grinden kastar numera i stället för att
+        // returnera en boolean, så svaret kan inte tappas bort av en tom kropp
+        // igen — en anropare måste fånga felet eller krascha.
+        try {
+            assertScanUrl(url);
+        } catch (e) {
+            if (e instanceof UnsupportedUrlError) {
+                console.error(chalk.red(`Error: ${e.message}`));
+                process.exit(1);
+            }
+            throw e;
         }
 
         if (!options.json) {
