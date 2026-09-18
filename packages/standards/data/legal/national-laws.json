@@ -227,16 +227,9 @@
                     "responsibility": "Federal tillsyn av offentlig sektor.",
                     "website": "https://www.bfit-bund.de"
                 },
-                "sanctions": {
-                    "type": "Böter",
-                    "description": "Marknadskontroll sker på delstatsnivå (Länder) samt via federala myndigheter.",
-                    "minAmount": 0,
-                    "maxAmount": 500000,
-                    "currency": "EUR",
-                    "example": "Böter upp till 500 000 EUR för allvarliga brott mot EAA."
-                },
                 "inForce": true,
-                "effectiveDate": "2019-09-23"
+                "effectiveDate": "2019-09-23",
+                "note": "Intern #70: `sanctions` borttagen 2026-09-18. Posten bar ett tak pa 500 000 EUR och exempeltexten \"Boter upp till 500 000 EUR for allvarliga brott mot EAA\" — en EAA-sanktion hangd pa en WAD-forordning. BITV 2.0 har enligt Bevakning#7 noll traffar pa Bussgeld, Geldbusse, Ordnungswidrig och Sanktion. Falt utelamnat i stallet for gissat, samma monster som dk-eaa, fr-eaa, es-eaa och pt-eaa."
             },
             {
                 "id": "de-bfsg",

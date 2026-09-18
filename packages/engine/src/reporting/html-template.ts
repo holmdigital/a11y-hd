@@ -43,6 +43,17 @@ function formatDate(dateString: string): string {
 }
 
 /**
+ * Tillatna badge-klasser, Intern #75. Uppslag i stallet for konkatenering:
+ * en nyckel som inte finns ger tom strang, aldrig ett injicerat attribut.
+ */
+const RISK_BADGE_CLASS: Record<string, string> = {
+    critical: 'badge-critical',
+    high: 'badge-high',
+    medium: 'badge-medium',
+    low: 'badge-low',
+};
+
+/**
  * Escapa värden som ska in i HTML. Kodar även " och ' så att helpern är säker
  * även i attribut-kontext (intern#74), och String()-coercion gör den robust
  * mot undefined/null i stället för att kasta. Escapa alltid otillförlitliga
@@ -196,11 +207,11 @@ export function generateReportHTML(
         ${needsReviewReports.map(report => `
             <div class="violation-card">
                 <div class="violation-header">
-                    <div class="violation-title">${report.ruleId}</div>
+                    <div class="violation-title">${escapeHtml(report.ruleId)}</div>
                     <div><span class="badge">needs review</span></div>
                 </div>
                 <div class="violation-meta">
-                    WCAG ${report.wcagCriteria} • EN 301 549 ${report.en301549Criteria}
+                    WCAG ${escapeHtml(report.wcagCriteria)} • EN 301 549 ${escapeHtml(report.en301549Criteria)}
                 </div>
                 <div style="font-size: 0.95rem; color: #334155; line-height: 1.5;">
                     ${escapeHtml(report.holmdigitalInsight.reasoning)}
@@ -445,30 +456,37 @@ export function generateReportHTML(
         const bRisk = b.holmdigitalInsight.diggRisk.toLowerCase() as keyof typeof severityOrder;
         return (severityOrder[aRisk] ?? 4) - (severityOrder[bRisk] ?? 4);
     }).map(report => {
-        const riskClass = `badge-${report.holmdigitalInsight.diggRisk}`;
+        // Intern #75. Klassnamnet byggdes med `badge-${diggRisk}`, alltsa ren
+        // strangkonkatenering in i ett attribut. escapeHtml skyddar inte
+        // attributkontext pa samma satt som en textnod, sa ett ovantat varde
+        // kunde bryta ut ur class="". Uppslag i en fast tabell kan inte det:
+        // ett varde som inte star i tabellen ger en tom klass, inte ett nytt
+        // attribut. diggRisk ar i dag en fast vardemangd ur impactToRisk, men
+        // det ar just den sortens antagande som slutar galla i tysthet.
+        const riskClass = RISK_BADGE_CLASS[report.holmdigitalInsight.diggRisk?.toLowerCase() ?? ''] ?? '';
         return `
             <div class="violation-card">
                 <div class="violation-header">
-                    <div class="violation-title">${report.ruleId}</div>
+                    <div class="violation-title">${escapeHtml(report.ruleId)}</div>
                     <div>
-                        <span class="badge ${riskClass}">${report.holmdigitalInsight.diggRisk}</span>
+                        <span class="badge ${riskClass}">${escapeHtml(report.holmdigitalInsight.diggRisk)}</span>
                         ${sector === 'public' && report.legalContext?.appliesTo?.includes('WAD') ? '<span class="badge badge-wad">WAD</span>' : ''}
                         ${sector === 'private' && report.legalContext?.appliesTo?.includes('EAA') ? '<span class="badge badge-eaa">EAA</span>' : ''}
                     </div>
                 </div>
                 <div class="violation-meta">
-                    WCAG ${report.wcagCriteria} • EN 301 549 ${report.en301549Criteria}
-                    ${report.dosLagenReference ? `• ${report.dosLagenReference}` : ''}
-                    ${report.legalContext?.eaaDeadline ? `<br/><strong>⚠️ EAA Deadline:</strong> ${report.legalContext.eaaDeadline}` : ''}
+                    WCAG ${escapeHtml(report.wcagCriteria)} • EN 301 549 ${escapeHtml(report.en301549Criteria)}
+                    ${report.dosLagenReference ? `• ${escapeHtml(report.dosLagenReference)}` : ''}
+                    ${report.legalContext?.eaaDeadline ? `<br/><strong>⚠️ EAA Deadline:</strong> ${escapeHtml(report.legalContext.eaaDeadline)}` : ''}
                 </div>
                 <div style="font-size: 0.95rem; color: #334155; line-height: 1.5;">
                     ${escapeHtml(report.holmdigitalInsight.swedishInterpretation)}
-                    ${report.holmdigitalInsight.priorityRationale ? `<br/><br/><strong>Priority Rationale:</strong> ${report.holmdigitalInsight.priorityRationale}` : ''}
+                    ${report.holmdigitalInsight.priorityRationale ? `<br/><br/><strong>Priority Rationale:</strong> ${escapeHtml(report.holmdigitalInsight.priorityRationale)}` : ''}
                 </div>
                 ${report.remediation.component ? `
                 <div class="remediation-box">
                     <div class="remediation-title">${t('report.prescriptive_fix')}</div>
-                    <div class="remediation-text">${t('report.use')} <strong>${report.remediation.component}</strong>: ${escapeHtml(report.remediation.description)}</div>
+                    <div class="remediation-text">${t('report.use')} <strong>${escapeHtml(report.remediation.component)}</strong>: ${escapeHtml(report.remediation.description)}</div>
                 </div>
                 ` : ''}
             </div>
