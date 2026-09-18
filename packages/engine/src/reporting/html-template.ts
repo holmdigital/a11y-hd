@@ -42,11 +42,19 @@ function formatDate(dateString: string): string {
     });
 }
 
-function escapeHtml(str: string): string {
-    return str
+/**
+ * Escapa värden som ska in i HTML. Kodar även " och ' så att helpern är säker
+ * även i attribut-kontext (intern#74), och String()-coercion gör den robust
+ * mot undefined/null i stället för att kasta. Escapa alltid otillförlitliga
+ * värden (scan-URL, axe-härledd text) vid utskrift.
+ */
+function escapeHtml(value: unknown): string {
+    return String(value)
         .replace(/&/g, '&amp;')
         .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;');
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
 }
 
 /**
@@ -127,7 +135,7 @@ function inconclusiveReportHTML(result: ScanResult): string {
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>${t('report.title', { url: result.url })}</title>
+    <title>${t('report.title', { url: escapeHtml(result.url) })}</title>
     <style>
         body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f8fafc; color: #0f172a; margin: 0; padding: 3rem 1.5rem; }
         .wrap { max-width: 640px; margin: 0 auto; }
@@ -147,7 +155,7 @@ function inconclusiveReportHTML(result: ScanResult): string {
             <div class="icon">⚠️</div>
             <h1>${t('report.inconclusive_title')}</h1>
             <p>${t('report.inconclusive_detail')}</p>
-            <div class="page-title">${t('report.scan_target', { url: result.url })}<br/>${escapeHtml(result.metadata.pageTitle || 'N/A')}</div>
+            <div class="page-title">${t('report.scan_target', { url: escapeHtml(result.url) })}<br/>${escapeHtml(result.metadata.pageTitle || 'N/A')}</div>
         </div>
         <div class="footer">${t('report.footer', { version: getEngineVersion() })}</div>
     </div>
@@ -195,7 +203,7 @@ export function generateReportHTML(
                     WCAG ${report.wcagCriteria} • EN 301 549 ${report.en301549Criteria}
                 </div>
                 <div style="font-size: 0.95rem; color: #334155; line-height: 1.5;">
-                    ${report.holmdigitalInsight.reasoning}
+                    ${escapeHtml(report.holmdigitalInsight.reasoning)}
                 </div>
             </div>
             `).join('')}`;
@@ -206,7 +214,7 @@ export function generateReportHTML(
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>${t('report.title', { url: result.url })}</title>
+        <title>${t('report.title', { url: escapeHtml(result.url) })}</title>
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
         <style>
             @page {
@@ -376,7 +384,7 @@ export function generateReportHTML(
         <div class="header">
             <div class="brand">@HolmDigital/<span>engine</span></div>
             <div class="meta">
-                <div>${t('report.scan_target', { url: result.url })}</div>
+                <div>${t('report.scan_target', { url: escapeHtml(result.url) })}</div>
                 <div>${t('report.generated', { date: formatDate(result.timestamp) })}</div>
                 ${sector ? `<div style="margin-top: 0.25rem; font-size: 0.75rem; font-weight: 600; color: ${sector === 'private' ? '#7c3aed' : '#1d4ed8'};">${sector === 'private' ? 'Private sector (EAA)' : 'Public sector (WAD)'}</div>` : ''}
                 ${generateBadgeUrl(result.score) ? `<div style="margin-top: 0.5rem;"><img src="${generateBadgeUrl(result.score)}" alt="Accessibility Status: 100% Compliant" /></div>` : ''}
@@ -454,13 +462,13 @@ export function generateReportHTML(
                     ${report.legalContext?.eaaDeadline ? `<br/><strong>⚠️ EAA Deadline:</strong> ${report.legalContext.eaaDeadline}` : ''}
                 </div>
                 <div style="font-size: 0.95rem; color: #334155; line-height: 1.5;">
-                    ${report.holmdigitalInsight.swedishInterpretation}
+                    ${escapeHtml(report.holmdigitalInsight.swedishInterpretation)}
                     ${report.holmdigitalInsight.priorityRationale ? `<br/><br/><strong>Priority Rationale:</strong> ${report.holmdigitalInsight.priorityRationale}` : ''}
                 </div>
                 ${report.remediation.component ? `
                 <div class="remediation-box">
                     <div class="remediation-title">${t('report.prescriptive_fix')}</div>
-                    <div class="remediation-text">${t('report.use')} <strong>${report.remediation.component}</strong>: ${report.remediation.description}</div>
+                    <div class="remediation-text">${t('report.use')} <strong>${report.remediation.component}</strong>: ${escapeHtml(report.remediation.description)}</div>
                 </div>
                 ` : ''}
             </div>

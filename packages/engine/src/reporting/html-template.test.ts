@@ -444,3 +444,70 @@ describe('robusthetssektion utan JavaScript', () => {
         expect(html).toContain('vars skript aldrig kom fram');
     });
 });
+describe('generateReportHTML escaping (säkerhet, intern#74)', () => {
+    beforeAll(() => {
+        setLanguage('en');
+    });
+
+    const XSS_URL = 'https://evil.example/"><script>alert(1)</script>';
+    const XSS_TEXT = '<img src=x onerror=alert(1)>';
+    const XSS_ESCAPED = '&lt;img src=x onerror=alert(1)&gt;';
+
+    it('escapar scan-URL:en i utvecklarrapporten', () => {
+        const html = generateReportHTML({ ...EMPTY_RESULT, url: XSS_URL }, 'public');
+        expect(html).not.toContain('<script>alert(1)</script>');
+        expect(html).toContain('&lt;script&gt;');
+    });
+
+    it('escapar scan-URL:en i inconclusive-rapporten', () => {
+        const html = generateReportHTML(
+            { ...EMPTY_RESULT, url: XSS_URL, complianceStatus: 'INCONCLUSIVE' },
+            'public',
+        );
+        expect(html).not.toContain('<script>alert(1)</script>');
+        expect(html).toContain('&lt;script&gt;');
+    });
+
+    it('escapar axe-härledd text i utvecklarrapporten (swedishInterpretation + remediation.description)', () => {
+        const result: ScanResult = {
+            ...EMPTY_RESULT,
+            reports: [
+                {
+                    ruleId: 'all-img-alt',
+                    wcagCriteria: '1.1.1',
+                    en301549Criteria: '9.1.1.1',
+                    diggRisk: 'critical',
+                    remediation: { description: XSS_TEXT, technicalGuidance: 'x', component: 'Image' },
+                    holmdigitalInsight: { diggRisk: 'critical', reasoning: 'r', swedishInterpretation: XSS_TEXT },
+                } as unknown as ScanResult['reports'][number],
+            ],
+            stats: { passed: 0, critical: 1, high: 0, medium: 0, low: 0, total: 1 },
+            score: 0,
+            complianceStatus: 'FAIL',
+        };
+        const html = generateReportHTML(result, 'public');
+        expect(html).not.toContain(XSS_TEXT);
+        expect(html).toContain(XSS_ESCAPED);
+    });
+
+    it('escapar reasoning i needs-review-sektionen (cantTell)', () => {
+        const result: ScanResult = {
+            ...EMPTY_RESULT,
+            reports: [
+                {
+                    ruleId: 'color-contrast',
+                    wcagCriteria: '1.4.3',
+                    en301549Criteria: '9.1.4.3',
+                    cantTell: true,
+                    diggRisk: 'medium',
+                    remediation: { description: 'x', technicalGuidance: 'x', component: undefined },
+                    holmdigitalInsight: { diggRisk: 'medium', reasoning: XSS_TEXT },
+                } as unknown as ScanResult['reports'][number],
+            ],
+            complianceStatus: 'FAIL',
+        };
+        const html = generateReportHTML(result, 'public');
+        expect(html).not.toContain(XSS_TEXT);
+        expect(html).toContain(XSS_ESCAPED);
+    });
+});
