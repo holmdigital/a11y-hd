@@ -1,5 +1,49 @@
 # @holmdigital/engine
 
+## 3.3.12
+
+### Patch Changes
+
+- 67b6231: Intern #53 steg 1 — protokollgrinden i CLI:t stod tom, och därför öppen.
+
+  Kontrollen fanns. Den gjorde rätt. Den anropades på rätt ställe:
+
+  ```ts
+  if (!isValidUrl(url)) {
+    // ... validation ...
+  }
+  ```
+
+  Kroppen var tom. `isValidUrl` räknade ut rätt svar och svaret kastades bort, så `file:///etc/passwd` gick rakt in i skanningen. Enligt `git log -S` har det sett ut så sedan `912480e` i februari.
+
+  Det är värre än ingen kontroll alls: den som läser koden och letar efter validering hittar den och drar slutsatsen att den sker. **Vi gjorde precis det** — i Intern #74 rapporterade vi att ett protokoll-allowlist fanns i CLI-lagret. Det gjorde det inte.
+
+  Grinden ligger nu i en egen modul (`cli/url-guard.ts`, samma skäl som `parse-options.ts`: `index.ts` anropar `program.parse()` på modulnivå, så det som ska testas måste ligga utanför) och **kastar i stället för att returnera en boolean**. Ett kastat fel kan inte tappas bort av en tom if-sats — anroparen måste fånga det eller krascha, och båda utfallen är ärliga.
+
+  `http` och `https` släpps igenom. `file:`, `data:`, `javascript:`, `chrome:` och allt annat avvisas med ett fel som namnger schemat, och CLI:t avslutar med 1. Sju regressionstester, varav det som betyder något är att `file://` inte längre passerar.
+
+  **Spärren mot privata adresser och metadatatjänsten ingår INTE.** Den är steg 2 i #53, ett produktbeslut med opt-out (`--allow-private-hosts`) som kan bli en MAJOR, och den ska inte smygas in under en akut protokollfix.
+
+- 982d522: Intern #75 — escapa axe- och regeldatahärlett innehåll konsekvent i utvecklarrapporten.
+
+  Uppföljning på #74. Där var scan-URL:en, som är rå CLI-indata, en verklig sårbarhet. Under den fixen visade en PoC mot varje fält att ytterligare nio renderades rått i utvecklarrapporten, medan klarspråksrapporten redan escapade flera av dem. Samma malldrift, ett steg vidare.
+
+  **Inget av fälten är angriparstyrt i dag** — `ruleId` och `wcagCriteria`/`en301549Criteria` kommer ur axe-cores egen regelidentitet och taggmappning, `dosLagenReference` och `eaaDeadline` ur vår lagdata, `priorityRationale` ur vår i18n, och `remediation.component` är `undefined` från skannern. Det här är alltså en förebyggande åtgärd, inte en sårbarhetsfix.
+
+  Escapade: `report.ruleId` (båda sektionerna), `wcagCriteria`, `en301549Criteria`, `dosLagenReference`, `legalContext.eaaDeadline`, `holmdigitalInsight.priorityRationale`, `remediation.component`.
+
+  **`diggRisk` byggdes in i ett CSS-klassnamn** med `` `badge-${diggRisk}` ``, alltså ren strängkonkatenering in i ett attribut. `escapeHtml` skyddar inte attributkontext som en textnod, så ett oväntat värde kunde bryta ut ur `class=""`. Klassen slås nu upp i en fast tabell: en nyckel som inte finns ger tom sträng, aldrig ett nytt attribut.
+
+  **Det som gör ändringen värd mer än nio escapes: ett svep.** Ett nytt test läser mallfilen och underkänner varje `${report.x}`/`${result.x}` som inte går genom `escapeHtml` eller står i en uttrycklig undantagslista med skäl. Att escapa nio fält hjälper inte mot det tionde som läggs till om ett halvår, och just den glidningen är vad både #74 och #75 handlar om.
+
+  Två av mina egna testförsök var fel och är värda att nämna, eftersom båda felen är lätta att göra igen:
+
+  - Det första badge-testet letade efter substrängen `onmouseover=alert(1)` och "hittade sårbarheten" i korrekt escapad utdata. `escapeHtml` har ingen anledning att koda `=`, `(` eller blanksteg i en textnod — det som gör en payload ofarlig där är att citattecknen är kodade. Testet prövar nu strukturen i stället: klassattributet stängt och tomt, citattecknen kodade.
+  - Det första svepet sökte på `report.` i råtexten och träffade fjorton `t('report.x')`-anrop, eftersom i18n-nycklarna heter så. Det strippar nu stränglitteraler först.
+
+- Updated dependencies [982d522]
+  - @holmdigital/standards@4.2.1
+
 ## 3.3.11
 
 ### Patch Changes
