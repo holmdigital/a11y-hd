@@ -902,7 +902,7 @@ describe('Intern #82 — lagnamnsgrinden i motorn', () => {
                 fynd.push(...läckor(html, utanNamn, `${country}/${sector}/${EGET_SPRÅK[country]}/html`));
             }
             expect(fynd).toEqual([]);
-        });
+        }, 60_000); // 34 renderingar per land
     }
 
     it('lagplatsen visar namnet eller frasen för varje land och sektor', async () => {
