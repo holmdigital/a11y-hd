@@ -446,7 +446,26 @@ export async function generateStatementContent(
         };
 
 
-        const processText = (text: string) => {
+        /**
+         * Vilket alternativ ett valblock `{A / B / C}` ska ge.
+         *
+         * Mallarna har två SORTERS val, och de fick tidigare samma svar.
+         * Efterlevnadsvalet följer kundens utfall. Metodvalet i sektionen
+         * `testing` (självskattning / extern granskning / uppskattning utan
+         * granskning) beskriver hur utlåtandet togs fram, och det beror inte
+         * på utfallet. Med samma index skrev varje delvis förenlig kund
+         * "<verktyget> har gjort en oberoende granskning" och varje ej förenlig
+         * kund "vi har uppskattat tillgängligheten utan granskning", båda
+         * falska. Ett verktyg som kunden själv kör är en självskattning.
+         */
+        const choiceIndex = (kind: 'compliance' | 'method', parts: number): number => {
+            if (kind === 'method') return 0;
+            if (complianceLevel === 'partial') return 1;
+            if (complianceLevel === 'non-compliant') return parts > 2 ? 2 : 1;
+            return 0;
+        };
+
+        const processText = (text: string, kind: 'compliance' | 'method' = 'compliance') => {
             let processed = text;
             // Handle Conditionals [ ... ]
             processed = processed.replace(/\[([\s\S]*?)\]/g, (_match, content) => {
@@ -463,24 +482,28 @@ export async function generateStatementContent(
                 return content;
             });
 
-            // Substitute {<placeholder>} patterns first (before choice resolution)
+            // Platshållarna blir markörer INNAN valen löses, och får sina värden
+            // efteråt. Annars delas ett värde som innehåller "/" av valparsern:
+            // "Real Decreto 1112/2018" klipptes vid snedstrecket, och för en
+            // delvis förenlig kund blev meningen ett fragment av lagnamnet.
+            // Markören är ett tecken ur Unicodes privata område: varken "/",
+            // klamrar eller ett styrtecken, och förekommer inte i någon text.
+            const values: string[] = [];
             processed = processed.replace(/\{<[^>]+>\}/g, (match) => {
-                return substitutions[match] !== undefined ? substitutions[match] : match;
+                values.push(substitutions[match] !== undefined ? substitutions[match] : match);
+                return `\uE000${values.length - 1}\uE000`;
             });
 
             // Handle Choices { A / B / C }
             processed = processed.replace(/\{([^{}]*?)\}/g, (_match, content) => {
                 const parts = content.split('/');
                 if (parts.length >= 2) {
-                    let idx = 0;
-                    if (complianceLevel === 'partial') idx = 1;
-                    if (complianceLevel === 'non-compliant') idx = parts.length > 2 ? 2 : 1;
-                    return parts[idx].trim();
+                    return parts[choiceIndex(kind, parts.length)].trim();
                 }
                 return _match;
             });
 
-            return processed;
+            return processed.replace(/\uE000(\d+)\uE000/g, (_m, i) => values[Number(i)]);
         };
 
         const title = processText(template.title);
@@ -493,7 +516,7 @@ export async function generateStatementContent(
                 // tillsynsmyndighet. Annars renderas tomma hål (" har ansvaret …") och
                 // sektionen antyder en redogörelseplikt en privat aktör inte har.
                 if (s.id === 'enforcement' && enforcementBody === '') return null;
-                const body = processText(s.content).trim();
+                const body = processText(s.content, s.id === 'testing' ? 'method' : 'compliance').trim();
                 if (body === '') return null;                 // hoppa sektioner som blir tomma
                 // Intern #23: en section utan titel får aldrig rendera "## undefined".
                 return s.title ? `## ${s.title}\n\n${body}` : body;
