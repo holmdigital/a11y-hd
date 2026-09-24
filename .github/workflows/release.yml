@@ -163,3 +163,18 @@ jobs:
           dispatch_if_published "@holmdigital/engine"     "engine-release"     "engine"     "${WEB_WIKI} holmdigital/hetzner-project"
           dispatch_if_published "@holmdigital/standards"  "standards-release"  "standards"  "${WEB_WIKI}"
           dispatch_if_published "@holmdigital/components" "components-release" "components" "${WEB_WIKI}"
+
+          # Intern #69: livekörningen av den publicerade motorn körs i
+          # holmdigital/Intern, där verktyget och baslinjerna bor. Den är en
+          # rapport, inte en deploy, och får därför aldrig fälla ett släpp: saknar
+          # DISPATCH_TOKEN åtkomst till Intern blir det en varning, inte ett fel.
+          if grep -qxF "standards" "$PUBLISHED_FILE"; then
+            STANDARDS_VERSION=$(node -p "require('./packages/standards/package.json').version")
+            echo "Dispatching standards-release (${STANDARDS_VERSION}) to holmdigital/Intern for the live run"
+            curl -sf -X POST \
+              -H "Accept: application/vnd.github+json" \
+              -H "Authorization: token ${{ secrets.DISPATCH_TOKEN }}" \
+              "https://api.github.com/repos/holmdigital/Intern/dispatches" \
+              -d "{\"event_type\":\"standards-release\",\"client_payload\":{\"version\":\"${STANDARDS_VERSION}\"}}" \
+              || echo "::warning::Could not dispatch the live run to holmdigital/Intern. Check that DISPATCH_TOKEN has access to it, then start 'Livekörning efter standards-släpp' there by hand with version ${STANDARDS_VERSION}."
+          fi
