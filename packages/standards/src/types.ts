@@ -274,16 +274,58 @@ export interface StatementTool {
 }
 
 /**
- * Sanction information for accessibility violations
+ * Intern #70 (Meja's final model, 2026-09-24): one sanction a law provides,
+ * with its legal basis and source.
+ *
+ * Replaces the flat `Sanction`, which could not carry a source and forced
+ * every statute into one min/max range. Real statutes do not fit that:
+ * France has two separate ceilings for two kinds of violation, Italy a range
+ * plus a percentage, Ireland one level whose ceiling is set in another act,
+ * and Denmark a type of penalty with no ceiling at all.
+ *
+ * `legalBasis` and `sourceUrl` are required on every element, amount or not:
+ * the type of a penalty is a claim that needs a source too.
  */
-export interface Sanction {
+export interface SanctionRangeBase {
     type: string;
     description: string;
-    minAmount: number;
-    maxAmount: number;
     currency: string;
+    /** Who is liable, where the law sets different ceilings for them. */
+    liablePerson?: 'natural' | 'legal';
+    severity?: string;
+    /** When this element applies, in the law's own terms. */
+    condition?: string;
+    /**
+     * Where the ceiling comes from:
+     * - `stated`: this law states it, in `maxAmount` or the formula.
+     * - `elsewhere`: another instrument states it; any amount here is not the
+     *   operative ceiling.
+     * - `no-ceiling`: the law has no ceiling (a court decides, for example).
+     * - `not-established`: no ceiling has been established against primary
+     *   source. Never read this as "no ceiling".
+     */
+    cap: 'stated' | 'elsewhere' | 'no-ceiling' | 'not-established';
+    legalBasis: string;
+    sourceUrl: string;
     example?: string;
 }
+
+/**
+ * An amount or a formula. Poland's EAA act, for example, sets the penalty as
+ * a formula over salary and turnover rather than as an amount.
+ */
+export type SanctionRange =
+    | (SanctionRangeBase & {
+          kind: 'amount';
+          minAmount?: number;
+          maxAmount?: number;
+      })
+    | (SanctionRangeBase & {
+          kind: 'formula';
+          factor: number;
+          index?: string;
+          combine?: 'lesser-of' | 'greater-of';
+      });
 
 /**
  * Sector-specific authority
@@ -341,14 +383,15 @@ export interface NationalLaw {
      * Spain's Ley 11/2023 art. 30 carries no penalty range of its own; it defers
      * to the applicable sectoral legislation and then to Title III of RDL
      * 1/2013. France's sanction TYPE is established (a 5th-class contravention
-     * under art. R. 451-4 code de la consommation) but no amount is. `Sanction`
-     * demands `minAmount`/`maxAmount`, and an invented figure in a compliance
-     * product is worse than an honest absence.
+     * under art. R. 451-4 code de la consommation) but no amount is. An
+     * invented figure in a compliance product is worse than an honest absence.
      *
-     * `getMaxSanction()` skips laws without this field rather than reading a
-     * missing range as zero.
+     * Intern #70: one element or a list, each with its own legal basis and
+     * source. Read it through `getSanctions()`, which
+     * always returns a list. Absent means "not established against primary
+     * source", never "no penalty exists".
      */
-    sanctions?: Sanction;
+    sanctions?: SanctionRange | SanctionRange[];
     /**
      * Intern #82: who has verified which fields of this entry against primary
      * source. Generated from the review register in holmdigital/Intern and

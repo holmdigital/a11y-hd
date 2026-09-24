@@ -238,7 +238,8 @@ import type {
     NordicAuthority,
     StatementTool,
     NationalLaw,
-    Sanction,
+    SanctionRange,
+    SanctionRangeBase,
     SectorAuthority,
     StatutoryExemption,
     Attestation,
@@ -270,7 +271,8 @@ export type {
     NordicAuthority,
     StatementTool,
     NationalLaw,
-    Sanction,
+    SanctionRange,
+    SanctionRangeBase,
     SectorAuthority,
     StatutoryExemption,
     Attestation,
@@ -846,51 +848,43 @@ export function getAllNationalLaws(): Array<NationalLaw & { country: Country }> 
     return out;
 }
 /**
- * Get sanctions information for a specific law
+ * Sanktionerna en lag ger, alltid som en lista (Intern #70). Datan får bära ett
+ * ensamt element eller en lista; anroparen ska inte behöva skilja på dem.
+ * Returnerar null när lagen saknas eller inte har något belagt sanktionsfält,
+ * och null betyder "inte belagt mot primärkälla", aldrig "ingen sanktion".
  */
-export function getSanctions(lawId: string, country: Country = 'SE'): Sanction | null {
-    const law = getNationalLaw(lawId, country);
-    return law?.sanctions || null;
+export function getSanctions(lawId: string, country: Country = 'SE'): SanctionRange[] | null {
+    const s = getNationalLaw(lawId, country)?.sanctions;
+    return s ? somLista(s) : null;
 }
 
+const somLista = (s: SanctionRange | SanctionRange[]): SanctionRange[] => (Array.isArray(s) ? s : [s]);
+
 /**
- * Get maximum potential sanction amount for a country
+ * Landets högsta belagda sanktionstak, eller null.
+ *
+ * Funktionen får aldrig underskatta ett lands största exponering, eftersom det
+ * är den riktning ett fel skadar mest i. Därför räknas bara element där lagen
+ * själv anger taket: `kind: 'amount'`, `cap: 'stated'` och ett positivt
+ * `maxAmount`. Ett tak som står i en annan författning (`elsewhere`), en lag
+ * utan tak (`no-ceiling`) och ett tak som inte är belagt (`not-established`)
+ * räknas aldrig, och inte heller en formel, vars belopp beror på den som döms.
+ *
+ * Intern #63 och #66: före #70 läste funktionen ett platt min/max-fält, och
+ * sexton poster bar ett deklarerat nolltak som betydde "ingen siffra
+ * registrerad". Sju länder svarade då att deras största exponering var noll.
+ * `cap` säger nu uttryckligen vad ett saknat belopp betyder.
  */
 export function getMaxSanction(country: Country = 'SE'): { law: string; amount: number; currency: string } | null {
-    // Intern #63: `sanctions` is optional since 4.0.0 — Spain's EAA statute
-    // carries no penalty range of its own, and France's amount is not
-    // established. A law without a range must be skipped, never read as a zero
-    // ceiling: that would understate a country's maximum exposure, which is the
-    // one direction this function must never be wrong in.
-    //
-    // Intern #66: that filter had a hole, and the hole defeated its own purpose.
-    // It skipped only `sanctions === undefined`, while SIXTEEN entries carry a
-    // DECLARED `maxAmount: 0` meaning "no figure recorded". Seven countries
-    // therefore answered that their maximum exposure was literally zero: FI, NO,
-    // DK, GB, AU, PT and PL. A declared zero is a stronger false claim than a
-    // missing field, because it reads as a measured ceiling.
-    //
-    // A statute with a genuine zero maximum penalty does not exist, so treating
-    // 0 as "no stated ceiling" is safe and matches how the data actually uses it.
-    // This is a stopgap: the real fix is the `amounts` discriminated union with
-    // an explicit `maxStatus`, specced in Intern #63 and gated to the next major.
-    const laws = getNationalLaws(country).filter(
-        (law): law is NationalLaw & { sanctions: Sanction } =>
-            law.sanctions !== undefined &&
-            typeof law.sanctions.maxAmount === 'number' &&
-            law.sanctions.maxAmount > 0
-    );
-    if (laws.length === 0) return null;
-
-    const maxLaw = laws.reduce((max, current) =>
-        current.sanctions.maxAmount > max.sanctions.maxAmount ? current : max
-    );
-
-    return {
-        law: maxLaw.law,
-        amount: maxLaw.sanctions.maxAmount,
-        currency: maxLaw.sanctions.currency
-    };
+    let bäst: { law: string; amount: number; currency: string } | null = null;
+    for (const law of getNationalLaws(country)) {
+        for (const s of law.sanctions ? somLista(law.sanctions) : []) {
+            if (s.kind !== 'amount' || s.cap !== 'stated') continue;
+            if (typeof s.maxAmount !== 'number' || s.maxAmount <= 0) continue;
+            if (!bäst || s.maxAmount > bäst.amount) bäst = { law: law.law, amount: s.maxAmount, currency: s.currency };
+        }
+    }
+    return bäst;
 }
 
 /**
