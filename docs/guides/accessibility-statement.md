@@ -113,8 +113,6 @@ The component automatically includes:
 
 **Output includes:**
 - 📜 BFSG (EAA implementation)
-- ⚠️ EAA deadline: June 28, 2025
-- 💶 Sanctions up to 500,000 EUR
 
 ## Example: US State/Local Government (ADA Title II)
 
@@ -134,8 +132,6 @@ The component automatically includes:
 **Output includes:**
 - 📜 ADA Title II (28 CFR Part 35, DOJ Final Rule 2024-04-24) + Section 508 as parallel federal reference
 - 🏛️ U.S. Department of Justice, Civil Rights Division as enforcement authority
-- ⚠️ Compliance deadline: 2026-04-24 for entities serving 50,000+ population
-- 💵 Civil penalties up to $75k (first violation) / $150k (subsequent) + private lawsuits
 
 ## Example: US Private Sector (ADA Title III)
 

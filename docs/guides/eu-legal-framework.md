@@ -67,20 +67,11 @@ graph LR
 
 ## National Implementations
 
-| Country | WAD Law | EAA Law | Max Sanction |
-|---------|---------|---------|--------------|
-| 🇸🇪 SE | [DOS-lagen](https://www.riksdagen.se/sv/dokument-lagar/dokument/svensk-forfattningssamling/lag-20181937-om-tillganglighet-till-digital_sfs-2018-1937) | [LPTT](https://www.riksdagen.se/sv/dokument-lagar/dokument/svensk-forfattningssamling/lag-2023254-om-vissa-produkters-och-tjansters_sfs-2023-254) | 10M SEK |
-| 🇩🇪 DE | [BITV 2.0](https://www.gesetze-im-internet.de/bitv_2_0/) | [BFSG](https://www.gesetze-im-internet.de/bfsg/) | 500k EUR |
-| 🇫🇷 FR | [RGAA](https://www.legifrance.gouv.fr/loda/article_lc/LEGIARTI000037387342/) | - | 300k EUR |
-| 🇪🇸 ES | UNE 139803 | - | 1M EUR |
-| 🇮🇪 IE | [S.I. 358/2020](https://www.irishstatutebook.ie/eli/2020/si/358/made/en/print) | - | 60k EUR |
-| 🇳🇴 NO | [IKT-forskrift](https://lovdata.no/dokument/SF/forskrift/2013-06-21-732) | - | Daily fines |
-| 🇫🇮 FI | [306/2019](https://www.finlex.fi/sv/laki/ajantasa/2019/20190306) | - | Vite |
-| 🇩🇰 DK | [Tilgængelighed](https://www.retsinformation.dk/eli/lta/2018/693) | - | Fines |
-| 🇳🇱 NL | [Tijdelijk besluit digitale toegankelijkheid](https://wetten.overheid.nl/BWBR0040936/2018-07-01) | [Wet implementatie EU-richtlijn toegankelijkheid](https://www.eerstekamer.nl/wetsvoorstel/36461_implementatie) | 4.5M EUR |
-| 🇮🇹 IT | [D.Lgs. 106/2018](https://www.gazzettaufficiale.it/eli/id/2018/09/11/18G00133/sg) | D.Lgs. 82/2024 | 5% turnover |
-| 🇵🇹 PT | [Decreto-Lei n.o 83/2018](https://dre.pt/dre/detalhe/decreto-lei/83-2018-116734769) | DL 101-D/2023 | Fines |
-| 🇵🇱 PL | [Ustawa o dostepnosci cyfrowej](https://isap.sejm.gov.pl/isap.nsf/DocDetails.xsp?id=WDU20190000848) | Ustawa o dostępności produktów i usług | 10k PLN |
+The national laws for all sixteen supported countries live in `@holmdigital/standards`, in `data/legal/national-laws.json`, and are read through the API below. This guide deliberately does not repeat them.
+
+It used to carry a table of laws and maximum sanctions per country, and the table had drifted from the data. It named a Portuguese decree that does not exist and a Spanish technical standard in place of the Spanish regulation. It also gave sanction ceilings that are not in the laws, among them 500k EUR for Germany where the BFSG states 100,000, and 300k EUR for France where the law states 50,000. A hand-written copy of legal data goes stale in exactly this way, so there is now only one source.
+
+For the same reason there is no sanctions column anywhere in the documentation. A sanction is not one number per country: a law may state a range, a formula, a type without an amount, no penalty of its own, or no ceiling. Read it with `getSanctions(lawId, country)`. It returns `undefined` where no amount is established against primary source, which never means that no penalty exists.
 
 ## Using the API
 
@@ -95,15 +86,15 @@ import {
 
 // Get Swedish laws
 const seLaws = getNationalLaws('SE');
-// → [{ id: 'dos-lagen', law: 'DOS-lagen', ... }, { id: 'lptt', law: 'LPTT', ... }]
+// → [{ id: 'dos-lagen', law: 'DOS-lagen', ... }, { id: 'lptt', law: 'Tillgänglighetslagen / LPTT', ... }]
 
-// Get sanctions for a law
+// Get sanctions for a law (undefined where no amount is established)
 const sanctions = getSanctions('lptt', 'SE');
-// → { type: 'Sanktionsavgift', maxAmount: 10000000, currency: 'SEK' }
+// → { type: 'Sanktionsavgift', minAmount: 10000, maxAmount: 10000000, currency: 'SEK', ... }
 
-// Get the maximum sanction in a country
+// Get the maximum sanction in a country (null where no amount is established)
 const max = getMaxSanction('SE');
-// → { law: 'LPTT', amount: 10000000, currency: 'SEK' }
+// → { law: 'Tillgänglighetslagen / LPTT', amount: 10000000, currency: 'SEK' }
 ```
 
 ### Enforcement Body Lookup
@@ -113,7 +104,7 @@ const max = getMaxSanction('SE');
 import { getEnforcementBody } from '@holmdigital/standards';
 
 const body = getEnforcementBody('IT', 'public');
-// Output: "AgID - Agenzia per l'Italia Digitale"
+// Output: "Agency for Digital Italy (AgID)"
 ```
 
 ### Filter Rules by Framework
