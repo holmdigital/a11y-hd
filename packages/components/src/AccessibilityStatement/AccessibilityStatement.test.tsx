@@ -8,9 +8,30 @@
 import { render } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
 import { AccessibilityStatement } from './AccessibilityStatement';
-import { getAllNationalLaws, getEnforcementBody, getNationalLawByFramework, type Country } from '@holmdigital/standards';
+import {
+    getAllNationalLaws,
+    getEnforcementBody,
+    getNationalLawByFramework,
+    getNationalLawForSector,
+    getNationalLaws,
+    isNameAttested,
+    NATIONAL_LAW_FALLBACK,
+    type Country,
+    type NationalLaw,
+} from '@holmdigital/standards';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
+
+/**
+ * Intern #82: vad lagplatsen ska visa. Namnet om lagnamnet är attesterat,
+ * annars fallback-frasen på utlåtandets språk. Testerna följer registret i
+ * stället för att låsa dagens läge, så att ett land som tänds inte kräver att
+ * någon skriver om dem.
+ */
+const lagplatsen = (law: NationalLaw | null | undefined, locale: string): string =>
+    law && isNameAttested(law)
+        ? law.fullName
+        : NATIONAL_LAW_FALLBACK[locale.split('-')[0]] ?? NATIONAL_LAW_FALLBACK.en;
 
 const defaultProps = {
     country: 'SE' as const,
@@ -199,11 +220,15 @@ describe('AccessibilityStatement en-gb/en-us/en-ca jurisdiction content', () => 
         // provinslag (Intern #64) och är aldrig Kanadas svar. Motorns mallar
         // rättades i 3.3.8; komponentens, som CLI:ts HTML-utlåtanden renderas
         // med, rättades aldrig.
+        //
+        // Intern #82: med lagnamnsgrinden står den federala lagen där bara när
+        // dess namn är attesterat, annars fallback-frasen. Ontarios lag får
+        // aldrig stå där, attesterad eller inte.
         const { container } = render(
             <AccessibilityStatement {...defaultProps} locale="en-ca" country="CA" />
         );
         const html = container.innerHTML;
-        expect(html).toContain('Accessible Canada Act');
+        expect(html).toContain(lagplatsen(getNationalLawForSector('CA', 'public'), 'en-ca'));
         expect(html).not.toContain('Accessibility for Ontarians with Disabilities Act');
     });
 
@@ -379,7 +404,9 @@ describe('AccessibilityStatement national compliance - national law', () => {
             );
             const law = getNationalLawByFramework('WAD', country);
             expect(law).not.toBeNull();
-            expect(container.innerHTML).toContain(law!.fullName);
+            // Intern #82: namnet bara när det är attesterat, annars frasen.
+            expect(container.innerHTML).toContain(lagplatsen(law, locale));
+            if (!isNameAttested(law)) expect(container.innerHTML).not.toContain(law!.fullName);
         });
     });
 });
@@ -440,7 +467,9 @@ describe('AccessibilityStatement national compliance - national law (it/pt/pl)',
             );
             const law = getNationalLawByFramework('WAD', country);
             expect(law).not.toBeNull();
-            expect(container.innerHTML).toContain(law!.fullName);
+            // Intern #82: namnet bara när det är attesterat, annars frasen.
+            expect(container.innerHTML).toContain(lagplatsen(law, locale));
+            if (!isNameAttested(law)) expect(container.innerHTML).not.toContain(law!.fullName);
         });
     });
 });
@@ -581,7 +610,9 @@ describe('AccessibilityStatement US national_law placeholder (generic en templat
             />
         );
         const html = container.innerHTML;
-        expect(html).toMatch(/Americans with Disabilities Act.*Title III/i);
+        // Intern #82: Title III står där bara när dess namn är attesterat.
+        const titleIII = getNationalLaws('US').find(l => l.id === 'us-ada-title-iii');
+        expect(html).toContain(lagplatsen(titleIII, 'en'));
         expect(html).not.toMatch(/Section 504/i);
         expect(html).not.toMatch(PLACEHOLDER_PATTERN);
     });
@@ -610,7 +641,8 @@ describe('AccessibilityStatement US national_law placeholder (generic en templat
             expect(html, `${country}/${sector} renderade tom lagrad`).not.toMatch(/complies with\s*,/i);
             if (country === 'CA') {
                 expect(html, `CA/${sector} namngav Ontarios provinslag`).not.toMatch(/Ontarians/i);
-                expect(html).toMatch(/Accessible Canada Act/i);
+                // Intern #82: den federala lagen, eller frasen om namnet inte är attesterat.
+                expect(html).toContain(lagplatsen(getNationalLawForSector('CA', sector), 'en'));
             }
         }
     });
@@ -703,5 +735,66 @@ describe('AccessibilityStatement valblock', () => {
         }
         const hits = [...names].filter(n => TEMPLATE_BLOCK.includes(n));
         expect(hits).toEqual([]);
+    });
+});
+
+/**
+ * Intern #82 avsnitt 6, komponentdelen. För varje land, sektor och mall: en
+ * lagpost utan attesterat lagnamn får aldrig synas med namn, varken i
+ * lagplatsen eller någon annanstans i dokumentet. Och lagplatsen visar alltid
+ * något, namnet eller fallback-frasen.
+ */
+describe('Intern #82 — lagnamnsgrinden i komponenten', () => {
+    const SOURCE = readFileSync(join(__dirname, 'AccessibilityStatement.tsx'), 'utf-8');
+    const block = SOURCE.slice(SOURCE.indexOf('const TEMPLATES'), SOURCE.indexOf('\n};', SOURCE.indexOf('const TEMPLATES')));
+    const LOCALES = [...block.matchAll(/^ {4}'?([a-z-]+)'?: \{/gm)].map(m => m[1]);
+    const COUNTRIES = [...new Set(getAllNationalLaws().map(l => l.country))];
+    const SECTORS = ['public', 'private'] as const;
+    /**
+     * Känd krock, rapporterad till Juno 2026-09-24 i Intern #82: myndighetsraden
+     * för ES och PT privat citerar lagen med lagrum, eftersom tillsynen där inte
+     * har en enda myndighet. Specen säger både att myndigheten inte tystnar i
+     * det här bygget och att ingen mening får namnge lagen bakvägen. Undantaget
+     * gäller exakt de här citaten; varje annan förekomst av namnet fäller testet.
+     */
+    const MYNDIGHETSRADENS_LAGRUM: Record<string, string> = {
+        'es-eaa': 'Ley 11/2023, art. 27.3',
+        'pt-eaa': 'Decreto-Lei n.º 82/2022, art. 28.º',
+    };
+
+    it('hittar alla mallar och alla länder', () => {
+        expect(LOCALES.length).toBeGreaterThanOrEqual(16);
+        expect(COUNTRIES.length).toBeGreaterThanOrEqual(16);
+    });
+
+    for (const country of COUNTRIES) {
+        const utanNamn = getNationalLaws(country).filter(l => !isNameAttested(l));
+        it(`${country}: ingen lag utan attesterat lagnamn syns, i någon sektor eller mall`, () => {
+            for (const sector of SECTORS) {
+                for (const locale of LOCALES) {
+                    const html = render(
+                        <AccessibilityStatement {...defaultProps} locale={locale} country={country} sector={sector} />
+                    ).container.innerHTML;
+                    for (const lag of utanNamn) {
+                        const citat = MYNDIGHETSRADENS_LAGRUM[lag.id];
+                        const text = citat ? html.split(citat).join('') : html;
+                        expect(text, `${country}/${sector}/${locale} namngav ${lag.id}`).not.toContain(lag.fullName);
+                        expect(text, `${country}/${sector}/${locale} namngav ${lag.id}`).not.toContain(lag.law);
+                    }
+                    expect(html, `${country}/${sector}/${locale}`).not.toMatch(PLACEHOLDER_PATTERN);
+                }
+            }
+        });
+    }
+
+    it('lagplatsen visar namnet eller frasen för varje land och sektor, aldrig ingenting', () => {
+        for (const country of COUNTRIES.filter(c => c !== 'US')) {
+            for (const sector of SECTORS) {
+                const html = render(
+                    <AccessibilityStatement {...defaultProps} locale="en" country={country} sector={sector} />
+                ).container.innerHTML;
+                expect(html, `${country}/${sector}`).toContain(lagplatsen(getNationalLawForSector(country, sector), 'en'));
+            }
+        }
     });
 });
