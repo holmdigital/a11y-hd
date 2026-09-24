@@ -579,6 +579,82 @@ describe('National Laws — schema validation', () => {
     });
 });
 
+/**
+ * Datasvepet 2026-09-24: Intern #83 (Sverige), #63 (ikraftträdanden belagda
+ * 2026-09-14 men aldrig byggda), #70 (de-bfsg) och #88 (fr-rgaa).
+ *
+ * Värdena kommer ur Junos register med citat. Testerna intygar att datan bär
+ * dem, inte att de är rätt i sak; det senare är hennes.
+ */
+describe('Intern #83/#63/#70/#88 — datasvepet 2026-09-24', () => {
+    const lag = (id: string) => {
+        const hit = findNationalLaw(id);
+        if (!hit) throw new Error(`saknas: ${id}`);
+        return hit;
+    };
+
+    it('ikraftträdandet är lagens eget, inte direktivets frist eller lagens datum', () => {
+        expect(lag('dos-lagen').effectiveDate).toBe('2019-01-01');
+        expect(lag('de-bitv').effectiveDate).toBe('2011-09-22');
+        expect(lag('es-une').effectiveDate).toBe('2018-09-20');
+        expect(lag('it-wad').effectiveDate).toBe('2004-02-01');
+        expect(lag('pl-wad').effectiveDate).toBe('2019-05-23');
+        expect(lag('pt-wad').effectiveDate).toBe('2019-01-01');
+    });
+
+    it('dos-lagen bär sina fyra undantag, alla med lagrum, och inget mikroföretagsundantag', () => {
+        const ex = lag('dos-lagen').exemptions;
+        // Lagen binder offentliga aktörer; ett mikroföretagsundantag vore påhittat.
+        expect(ex?.microbusiness).toBeUndefined();
+        expect(ex?.statutory?.map(e => e.kind)).toEqual(['actor', 'content', 'disproportionate-burden', 'transitional']);
+        for (const e of ex?.statutory ?? []) {
+            expect(e.legalBasis).toContain('2018:1937');
+        }
+        // 8 § är ändrad genom Lag (2025:992); datan speglade inte det.
+        expect(ex?.statutory?.[0].legalBasis).toContain('2025:992');
+    });
+
+    it('lptt pekar ut Konsumentverket för transportsajter, inte PTS', () => {
+        const lptt = lag('lptt');
+        const konsumentverket = lptt.sectorAuthorities?.find(s => s.authority === 'Konsumentverket');
+        expect(konsumentverket?.responsibility).toContain('3 a-c');
+        expect(konsumentverket?.responsibility).toContain('31 §');
+        // PTS egna tjänsteområden saknades helt i listan.
+        expect(lptt.sectorAuthorities?.some(s => s.authority.startsWith('PTS'))).toBe(true);
+        expect(lptt.enforcement?.responsibility).toContain('Konsumentverket');
+    });
+
+    it('lptt:s mikroföretagsundantag vilar på svensk lag och skiljer tjänster från produkter', () => {
+        const mb = lag('lptt').exemptions?.microbusiness;
+        expect(mb?.legalBasis).toBe('Lag (2023:254) 2 §, 10 §');
+        expect(mb?.appliesTo).toBe('services');
+        expect(mb?.description).toContain('not a full exemption');
+    });
+
+    it('lptt:s frist till 2030 kan inte läsas som ett allmänt anstånd', () => {
+        const note = lag('lptt').note ?? '';
+        expect(note).toContain('27 June 2030');
+        expect(note).toContain('never be read as a general deferral');
+    });
+
+    it('de-bfsg: 100 000 EUR, inte de påhittade 500 000', () => {
+        const s = lag('de-bfsg').sanctions;
+        expect(s?.maxAmount).toBe(100000);
+        expect(s?.minAmount).toBe(0);
+        expect(s?.description).toContain('10,000');
+        expect(getMaxSanction('DE')?.amount).toBe(100000);
+    });
+
+    it('fr-rgaa: två tak ur art. 47-1, det högre i maxAmount och det lägre i texten', () => {
+        const s = lag('fr-rgaa').sanctions;
+        expect(s?.maxAmount).toBe(50000);
+        // 25 000 är ett eget tak för en annan överträdelse, aldrig ett golv.
+        expect(s?.minAmount).toBe(0);
+        expect(s?.description).toContain('25,000');
+        expect(lag('fr-rgaa').note).toContain('2023-09-08');
+    });
+});
+
 describe('plainLanguage encoding guard (D-10.1)', () => {
     const MOJIBAKE = /Ã/;
     const PLAIN_IDS = [
@@ -781,8 +857,10 @@ describe('Intern #63 — EAA-transponeringar FR, DK, ES', () => {
         // Alla tre länderna har nu minst en lag utan sanctions. Att läsa den som
         // ett nolltak skulle underskatta landets maxexponering — den enda
         // riktning den här funktionen inte får ha fel åt.
+        // Intern #88: fr-rgaa bar 300 000 EUR, ett tak som inte finns i lagen.
+        // Art. 47-1 ger 50 000 och 25 000; maxAmount bär det högre.
         const fr = getMaxSanction('FR');
-        expect(fr?.amount).toBe(300000);
+        expect(fr?.amount).toBe(50000);
         const es = getMaxSanction('ES');
         expect(es?.amount).toBe(1000000);
         for (const country of ['FR', 'DK', 'ES'] as const) {

@@ -23,7 +23,32 @@
                     "example": "Sanktioner har historiskt rört sig mellan 100 000 kr och uppåt mot 1 000 000 kr."
                 },
                 "inForce": true,
-                "effectiveDate": "2019-09-23"
+                "effectiveDate": "2019-01-01",
+                "exemptions": {
+                    "statutory": [
+                        {
+                            "kind": "actor",
+                            "description": "Public service broadcasters and certain non-governmental organisations are outside the Act. Since the amendment by Lag (2025:992), the provision refers to lagen (2025:986) om public service.",
+                            "legalBasis": "Lag (2018:1937) 8 §, as amended by Lag (2025:992)"
+                        },
+                        {
+                            "kind": "content",
+                            "description": "Seven types of content are outside the requirements, among them live broadcasts, maps not intended for navigation, third-party content outside the actor's control, reproductions from heritage collections and content relating to certain school activities.",
+                            "legalBasis": "Lag (2018:1937) 9 §"
+                        },
+                        {
+                            "kind": "disproportionate-burden",
+                            "description": "An actor may be exempted from the requirements in 10 and 11 §§ where meeting them would be unreasonably burdensome, assessed case by case.",
+                            "legalBasis": "Lag (2018:1937) 12 §"
+                        },
+                        {
+                            "kind": "transitional",
+                            "description": "11 § applies only to digital services first provided after 22 September 2020.",
+                            "legalBasis": "Lag (2018:1937), transitional provision 2"
+                        }
+                    ]
+                },
+                "note": "Entry into force (Intern #63/#83, Juno 2026-09-14): transitional provision 1 reads 'Denna lag träder i kraft den 1 januari 2019.' The earlier value 2019-09-23 was the Web Accessibility Directive's deadline for new websites and does not appear in the Act. Transitional provision 2 is carried in exemptions.statutory, not in this date."
             },
             {
                 "id": "lptt",
@@ -35,25 +60,29 @@
                 "enforcement": {
                     "authority": "se-pts",
                     "authorityName": "PTS (Post- och telestyrelsen)",
-                    "responsibility": "Marknadskontrollmyndighet och samordnare för övriga sektorsmyndigheter.",
+                    "responsibility": "Market surveillance authority for products (förordning (2023:676) 25 §) and supervisory authority for electronic communications, banking and e-commerce services (28 §), with a coordinating role. Supervision of the other services is split between four further authorities by service, see sectorAuthorities. For the websites, apps and e-tickets of passenger transport services the supervisory authority is Konsumentverket, not PTS (31 §).",
                     "website": "https://pts.se"
                 },
                 "sectorAuthorities": [
                     {
+                        "authority": "PTS (Post- och telestyrelsen)",
+                        "responsibility": "Electronic communications services, banking services and e-commerce services (lag (2023:254) 4 § first paragraph 1, 5 and 7; förordning (2023:676) 28 §), with a coordinating role."
+                    },
+                    {
                         "authority": "Konsumentverket",
-                        "responsibility": "Persontransporter (buss, tåg, flyg, båt)."
-                    },
-                    {
-                        "authority": "Mediemyndigheten",
-                        "responsibility": "Audiovisuella medietjänster (streaming)."
-                    },
-                    {
-                        "authority": "MTM",
-                        "responsibility": "E-böcker och programvara för e-böcker."
+                        "responsibility": "Passenger transport services: websites, services for mobile devices including mobile applications, and electronic tickets and ticketing services (lag (2023:254) 4 § first paragraph 3 a-c; förordning (2023:676) 31 §, first sentence)."
                     },
                     {
                         "authority": "Transportstyrelsen",
-                        "responsibility": "Teknisk utrustning inom transport."
+                        "responsibility": "The passenger transport service elements in lag (2023:254) 4 § first paragraph 3 d, 3 e and 4 (förordning (2023:676) 31 §, second sentence)."
+                    },
+                    {
+                        "authority": "Mediemyndigheten",
+                        "responsibility": "Audiovisual media services (förordning (2023:676) 29 §)."
+                    },
+                    {
+                        "authority": "Myndigheten för tillgängliga medier (MTM)",
+                        "responsibility": "E-books (förordning (2023:676) 30 §)."
                     }
                 ],
                 "sanctions": {
@@ -71,10 +100,11 @@
                         "revenueThreshold": 2000000,
                         "revenueCurrency": "EUR",
                         "appliesTo": "services",
-                        "description": "Microenterprises providing services are exempt from accessibility requirements: organisations with fewer than 10 employees AND annual turnover or balance sheet at or below 2 million EUR. Both conditions must be met cumulatively. Microenterprises providing products are NOT exempt but qualify for relaxed obligations under EAA Annex IV.",
-                        "legalBasis": "Directive (EU) 2019/882 Article 4(5); microenterprise definition per Commission Recommendation 2003/361/EC"
+                        "description": "Microenterprises are fully exempt from the requirements for services (10 §). A microenterprise has fewer than ten employees and an annual turnover or balance sheet total not exceeding EUR 2 million (2 §). For products the exemption only eases the documentation obligations; it is not a full exemption.",
+                        "legalBasis": "Lag (2023:254) 2 §, 10 §"
                     }
-                }
+                },
+                "note": "Other exemptions (Intern #83, Juno 2026-09-24), none of which covers a website as such: 7 § (fundamental alteration or disproportionate burden); transitional provision 2 (older content such as pre-recorded media, document formats and archives from before entry into force); transitional provision 3 (service providers may continue to use existing products in providing their services until 27 June 2030). Provision 3 concerns PRODUCTS used to provide a service, not the website, and must never be read as a general deferral to 2030."
             }
         ],
         "FI": [
@@ -168,7 +198,7 @@
                 },
                 "inForce": true,
                 "effectiveDate": "2014-07-01",
-                "note": "Norge är inte med i EU men följer direktiven via EES-avtalet."
+                "note": "Norge är inte med i EU men följer direktiven via EES-avtalet. Dates (Intern #63, Juno 2026-09-14): § 11 puts the regulation in force on 1 July 2013 ('trer i kraft 1. juli 2013') with a twelve-month period for new ICT solutions. effectiveDate carries the end of that period, 2014-07-01, the day the obligation starts to bind."
             }
         ],
         "DK": [
@@ -209,7 +239,7 @@
                     "responsibility": "Kontrolmyndighed for hovedparten af de omfattede produkter og tjenester (Sikkerhedsstyrelsens pressemeddelelse, 2025-06-25). Andre myndigheder kan vaere ansvarlige for enkelte omraader; hvilke er ikke belagt mod primaerkilde.",
                     "website": "https://www.sik.dk"
                 },
-                "note": "Intern #63 (Juno, 2026-09-10): `sanctions` is deliberately absent. (`enforcement` was added 2026-09-11 per Intern #63 and is present; the earlier wording claiming both were absent was stale.) CORRECTION 2026-09-13: the note previously said that retsinformation.dk and sik.dk both return 403 Forbidden so the statute was never opened. That is no longer true and must not be relied on — both answered HTTP 200 on 2026-09-12 and the full text was retrieved as a 422 kB PDF. The statute DOES name control authorities in § 45 (stk. 2-5) and a sanction TYPE in § 57 (\"Medmindre højere straf er forskyldt efter anden lovgivning, straffes med bøde den, der\"), with no amount stated. Whether `enforcement` and `sanctions` should now be completed from that text is Juno's ruling, not a mechanical fix — but the justification for leaving them empty can no longer be \"the source is unreachable\". A search-result summary names Sikkerhedsstyrelsen as the control authority except for electronic communications and land, air and sea transport; that is an assertion, not a source, and must not be written into the data. Law name and publication references come from the EUR-Lex list of national implementing measures for Directive (EU) 2019/882. Opening the statute by hand is what unblocks these two fields. Publikationsuppgifter flyttade hit ur fullName (Intern #63/#66, 2026-09-12): lagens egen datering är LOV nr 801 af 07/06/2022. Uppgifterna om Lovtidende A nr. 801 8. juni 2022 och ændring nr. 637 11. juni 2024 är INTE belagda mot primärkälla och stod tidigare i namnfältet. Lagen trädde enligt sin egen § 58 i kraft 28 juni 2022. Uppgifterna om Lovtidende A nr. 801 den 8 juni 2022 och ändringen genom nr. 637 den 11 juni 2024 är fortfarande OBELAGDA mot primärkälla.",
+                "note": "Intern #63 (Juno, 2026-09-10): `sanctions` is deliberately absent. (`enforcement` was added 2026-09-11 per Intern #63 and is present; the earlier wording claiming both were absent was stale.) CORRECTION 2026-09-13: the note previously said that retsinformation.dk and sik.dk both return 403 Forbidden so the statute was never opened. That is no longer true and must not be relied on — both answered HTTP 200 on 2026-09-12 and the full text was retrieved as a 422 kB PDF. The statute DOES name control authorities in § 45 (stk. 2-5) and a sanction TYPE in § 57 (\"Medmindre højere straf er forskyldt efter anden lovgivning, straffes med bøde den, der\"), with no amount stated. Whether `enforcement` and `sanctions` should now be completed from that text is Juno's ruling, not a mechanical fix — but the justification for leaving them empty can no longer be \"the source is unreachable\". A search-result summary names Sikkerhedsstyrelsen as the control authority except for electronic communications and land, air and sea transport; that is an assertion, not a source, and must not be written into the data. Law name and publication references come from the EUR-Lex list of national implementing measures for Directive (EU) 2019/882. Opening the statute by hand is what unblocks these two fields. Publikationsuppgifter flyttade hit ur fullName (Intern #63/#66, 2026-09-12): lagens egen datering är LOV nr 801 af 07/06/2022. Uppgifterna om Lovtidende A nr. 801 8. juni 2022 och ændring nr. 637 11. juni 2024 är INTE belagda mot primärkälla och stod tidigare i namnfältet. Lagen trädde enligt sin egen § 58 i kraft 28 juni 2022. Uppgifterna om Lovtidende A nr. 801 den 8 juni 2022 och ändringen genom nr. 637 den 11 juni 2024 är fortfarande OBELAGDA mot primärkälla. Formal entry into force (Intern #63, Juno 2026-09-14): 2022-06-28 (§ 58). effectiveDate carries the date of application, 2025-06-28, because it drives inForce.",
                 "lawUrl": "https://www.retsinformation.dk/eli/lta/2022/801"
             }
         ],
@@ -228,8 +258,8 @@
                     "website": "https://www.bfit-bund.de"
                 },
                 "inForce": true,
-                "effectiveDate": "2019-09-23",
-                "note": "Intern #70: `sanctions` borttagen 2026-09-18. Posten bar ett tak pa 500 000 EUR och exempeltexten \"Boter upp till 500 000 EUR for allvarliga brott mot EAA\" — en EAA-sanktion hangd pa en WAD-forordning. BITV 2.0 har enligt Bevakning#7 noll traffar pa Bussgeld, Geldbusse, Ordnungswidrig och Sanktion. Falt utelamnat i stallet for gissat, samma monster som dk-eaa, fr-eaa, es-eaa och pt-eaa."
+                "effectiveDate": "2011-09-22",
+                "note": "Intern #70: `sanctions` borttagen 2026-09-18. Posten bar ett tak pa 500 000 EUR och exempeltexten \"Boter upp till 500 000 EUR for allvarliga brott mot EAA\" — en EAA-sanktion hangd pa en WAD-forordning. BITV 2.0 har enligt Bevakning#7 noll traffar pa Bussgeld, Geldbusse, Ordnungswidrig och Sanktion. Falt utelamnat i stallet for gissat, samma monster som dk-eaa, fr-eaa, es-eaa och pt-eaa. Entry into force (Intern #63, Juno 2026-09-14): the ordinance's own footnote reads '(+++ Textnachweis ab: 22.9.2011 +++)'. The earlier value 2019-09-23 was the Web Accessibility Directive's deadline and does not appear in the text."
             },
             {
                 "id": "de-bfsg",
@@ -245,10 +275,10 @@
                     "website": "https://www.bmas.de"
                 },
                 "sanctions": {
-                    "type": "Böter",
-                    "description": "Allvarliga böter för brott mot tillgänglighetskrav.",
+                    "type": "Administrative fine (Geldbuße)",
+                    "description": "Up to EUR 100,000 for the offences in § 37(1) nos. 1, 7, 8, 9 and 10, among them offering or providing a service that does not meet the accessibility requirements (no. 8, § 14(1)); up to EUR 10,000 in all other cases, such as the information and labelling duties (nos. 2 to 6). The Act sets no minimum. It is a fine for an administrative offence (Ordnungswidrigkeit), not a criminal penalty.",
                     "minAmount": 0,
-                    "maxAmount": 500000,
+                    "maxAmount": 100000,
                     "currency": "EUR"
                 },
                 "inForce": true,
@@ -263,7 +293,7 @@
                         "legalBasis": "Directive (EU) 2019/882 Article 4(5); microenterprise definition per Commission Recommendation 2003/361/EC"
                     }
                 },
-                "note": "Vollzitat (Intern #63, 2026-09-12): \"Barrierefreiheitsstärkungsgesetz vom 16. Juli 2021 (BGBl. I S. 2970), das zuletzt durch Artikel 32 des Gesetzes vom 6. Mai 2024 (BGBl. 2024 I Nr. 149) geändert worden ist\"."
+                "note": "Vollzitat (Intern #63, 2026-09-12): \"Barrierefreiheitsstärkungsgesetz vom 16. Juli 2021 (BGBl. I S. 2970), das zuletzt durch Artikel 32 des Gesetzes vom 6. Mai 2024 (BGBl. 2024 I Nr. 149) geändert worden ist\". Formal entry into force (Intern #63, Juno 2026-09-14): 2021-07-23. effectiveDate carries the date of application, 2025-06-28, because it drives inForce. Sanctions (Intern #70, Juno 2026-09-15): § 37(2) reads 'Die Ordnungswidrigkeit kann in den Fällen des Absatzes 1 Nummer 1, 7, 8, 9 und 10 mit einer Geldbuße bis zu hunderttausend Euro und in den übrigen Fällen mit einer Geldbuße bis zu zehntausend Euro geahndet werden.' The earlier ceiling of EUR 500,000 is not in the Act. maxAmount carries the higher of the two ceilings; the two-element form arrives with the sanctions schema in Intern #70."
             }
         ],
         "FR": [
@@ -291,15 +321,15 @@
                     }
                 ],
                 "sanctions": {
-                    "type": "Böter",
-                    "description": "Böter per överträdelse för företag.",
+                    "type": "Administrative sanction (Arcom)",
+                    "description": "Up to EUR 50,000 for breach of the accessibility obligation in art. 47 I, and up to EUR 25,000 for breach of the obligations in art. 47 III and IV (accessibility declaration, multi-year plan and action plans). Imposed by Arcom after formal notice (mise en demeure).",
                     "minAmount": 0,
-                    "maxAmount": 300000,
+                    "maxAmount": 50000,
                     "currency": "EUR"
                 },
                 "inForce": true,
                 "effectiveDate": "2019-09-23",
-                "note": "Current authoritative version is RGAA 4.1.2 with DINUM as the supervisory authority for the French public sector. RGAA 5 is planned for publication late 2026 and will transfer the supervisory role from DINUM to Arcom and upgrade the technical baseline to WCAG 2.2 with explicit mobile-application and document-accessibility requirements. Existing declarations under RGAA 4.1.2 remain valid for 18 months after RGAA 5's publication (capped at 3 years from the declaration date). Until RGAA 5 is published, DINUM remains the correct authority — do not pre-emptively switch to Arcom."
+                "note": "Current authoritative version is RGAA 4.1.2 with DINUM as the supervisory authority for the French public sector. RGAA 5 is planned for publication late 2026 and will transfer the supervisory role from DINUM to Arcom and upgrade the technical baseline to WCAG 2.2 with explicit mobile-application and document-accessibility requirements. Existing declarations under RGAA 4.1.2 remain valid for 18 months after RGAA 5's publication (capped at 3 years from the declaration date). Until RGAA 5 is published, DINUM remains the correct authority — do not pre-emptively switch to Arcom. Sanctions (Intern #88/#70, Juno 2026-09-24): loi n° 2005-102 art. 47-1 reads 'Il ne peut excéder 50 000 € pour le non-respect de l'obligation d'accessibilité mentionnée au I de l'article 47, et 25 000 € pour celui des obligations mentionnées aux III et IV du même article.' In force since 2023-09-08 (Ordonnance n° 2023-859), so the sanction power is younger than this entry's effectiveDate. The earlier ceiling of EUR 300,000 is not in the law. maxAmount carries the higher of the two ceilings; the two-element form arrives with the sanctions schema in Intern #70."
             },
             {
                 "id": "fr-eaa",
@@ -340,8 +370,9 @@
                     "currency": "EUR"
                 },
                 "inForce": true,
-                "effectiveDate": "2018-09-23",
-                "lawUrl": "https://www.boe.es/eli/es/rd/2018/09/07/1112"
+                "effectiveDate": "2018-09-20",
+                "lawUrl": "https://www.boe.es/eli/es/rd/2018/09/07/1112",
+                "note": "Entry into force (Intern #63, Juno 2026-09-14): disposición final quinta puts entry into force on the day after publication in the Boletín Oficial del Estado, and BOE gives publication on 2018-09-19. The earlier value 2018-09-23 was the directive's date. The staggered application to websites and apps is not yet recorded here."
             },
             {
                 "id": "es-eaa",
@@ -351,7 +382,7 @@
                 "scope": "private",
                 "inForce": true,
                 "effectiveDate": "2025-06-28",
-                "note": "Intern #63 (Juno, 2026-09-10, BOE-A-2023-11022 read in full): `enforcement` is absent because Spain HAS no national supervisory authority for this — art. 27.3 assigns it to each autonomous community and to the cities of Ceuta and Melilla, each designating its own. The art. 28 \"unidad técnica de apoyo y coordinación\" is explicitly an advisory and coordinating body for those authorities, not a supervisory one, and must not be recorded as the authority. `sanctions` is absent because art. 30 gives the statute no penalty range of its own: breaches are penalised under the applicable sectoral legislation, and failing that, under Title III of RDL 1/2013. No euro figure may be written here; there is none to write. Neither absence is a gap to be filled later — it is what the law says. Publicerad i BOE núm. 110, de 9 de mayo de 2023, BOE-A-2023-11022. Bara en del av lagen rör tillgänglighet: tillsyn och sanktioner ligger i capítulo XI, artículos 27 till 31.",
+                "note": "Intern #63 (Juno, 2026-09-10, BOE-A-2023-11022 read in full): `enforcement` is absent because Spain HAS no national supervisory authority for this — art. 27.3 assigns it to each autonomous community and to the cities of Ceuta and Melilla, each designating its own. The art. 28 \"unidad técnica de apoyo y coordinación\" is explicitly an advisory and coordinating body for those authorities, not a supervisory one, and must not be recorded as the authority. `sanctions` is absent because art. 30 gives the statute no penalty range of its own: breaches are penalised under the applicable sectoral legislation, and failing that, under Title III of RDL 1/2013. No euro figure may be written here; there is none to write. Neither absence is a gap to be filled later — it is what the law says. Publicerad i BOE núm. 110, de 9 de mayo de 2023, BOE-A-2023-11022. Bara en del av lagen rör tillgänglighet: tillsyn och sanktioner ligger i capítulo XI, artículos 27 till 31. Formal entry into force (Intern #63, Juno 2026-09-14): 2023-05-09, the day after publication. effectiveDate carries the date of application, 2025-06-28, because it drives inForce.",
                 "lawUrl": "https://www.boe.es/buscar/act.php?id=BOE-A-2023-11022"
             }
         ],
@@ -798,8 +829,9 @@
                     "currency": "EUR"
                 },
                 "inForce": true,
-                "effectiveDate": "2004-01-09",
-                "lawUrl": "https://www.normattiva.it/uri-res/N2Ls?urn:nir:stato:legge:2004-01-09;4"
+                "effectiveDate": "2004-02-01",
+                "lawUrl": "https://www.normattiva.it/uri-res/N2Ls?urn:nir:stato:legge:2004-01-09;4",
+                "note": "Entry into force (Intern #63, Juno 2026-09-14): Gazzetta Ufficiale gives 'Entrata in vigore del provvedimento: 1/2/2004'. The earlier value 2004-01-09 was the date of the law, not its entry into force."
             },
             {
                 "id": "it-eaa",
@@ -843,7 +875,7 @@
                         "legalBasis": "Directive (EU) 2019/882 Article 4(5); microenterprise definition per Commission Recommendation 2003/361/EC"
                     }
                 },
-                "note": "Italy transposed the EAA via D.Lgs. 27 May 2022, n. 82 (in force 28 June 2025). Authority split: AgID supervises digital services (websites, e-commerce, banking, transport, electronic communications, e-books) under art. 21; MIMIT supervises products; AGCOM supervises only audiovisual media services under art. 31 D.Lgs. 208/2021. The complaint mechanism (any party can file a non-compliance report via AgID's portal) is NOT new — it was established by Legge n. 4/2004 (Legge Stanca) and D.Lgs. 82/2022. Two 2026 AgID acts further the framework: (1) Determinazione n. 38 del 4 marzo 2026 (4 March 2026, in force 24 March 2026 via Gazzetta Ufficiale) — Linee Guida sull'accessibilità dei servizi digitali, structured checklists for websites/web apps, documents/office files, and mobile apps, based on EN 301 549 V3.2.1 + WCAG 2.1 AA; shifts the compliance perspective from individual web pages to entire digital services. (2) Determinazione n. 84 del 15 maggio 2026 (15 May 2026, GU 23 May 2026) — Regolamento sulle procedure di accertamento delle violazioni e applicazione delle sanzioni; codifies the pre-istruttoria phase (notification → response window → remediation period → sanctioning proceedings only on persistent non-compliance). Mandatory for operators in: e-commerce, banking and financial services, transport, electronic communications, audiovisual media services, e-books. Guideline source: https://www.agid.gov.it/sites/agid/files/2026-03/Linee_Guida_accessibilit%C3%A0_dei_servizi_(EAA).pdf"
+                "note": "Italy transposed the EAA via D.Lgs. 27 May 2022, n. 82 (in force 28 June 2025). Authority split: AgID supervises digital services (websites, e-commerce, banking, transport, electronic communications, e-books) under art. 21; MIMIT supervises products; AGCOM supervises only audiovisual media services under art. 31 D.Lgs. 208/2021. The complaint mechanism (any party can file a non-compliance report via AgID's portal) is NOT new — it was established by Legge n. 4/2004 (Legge Stanca) and D.Lgs. 82/2022. Two 2026 AgID acts further the framework: (1) Determinazione n. 38 del 4 marzo 2026 (4 March 2026, in force 24 March 2026 via Gazzetta Ufficiale) — Linee Guida sull'accessibilità dei servizi digitali, structured checklists for websites/web apps, documents/office files, and mobile apps, based on EN 301 549 V3.2.1 + WCAG 2.1 AA; shifts the compliance perspective from individual web pages to entire digital services. (2) Determinazione n. 84 del 15 maggio 2026 (15 May 2026, GU 23 May 2026) — Regolamento sulle procedure di accertamento delle violazioni e applicazione delle sanzioni; codifies the pre-istruttoria phase (notification → response window → remediation period → sanctioning proceedings only on persistent non-compliance). Mandatory for operators in: e-commerce, banking and financial services, transport, electronic communications, audiovisual media services, e-books. Guideline source: https://www.agid.gov.it/sites/agid/files/2026-03/Linee_Guida_accessibilit%C3%A0_dei_servizi_(EAA).pdf Formal entry into force (Intern #63, Juno 2026-09-14): 2022-07-16. effectiveDate carries the date of application, 2025-06-28, because it drives inForce."
             }
         ],
         "PT": [
@@ -867,9 +899,9 @@
                     "currency": "EUR"
                 },
                 "inForce": true,
-                "effectiveDate": "2018-10-19",
+                "effectiveDate": "2019-01-01",
                 "lawUrl": "https://diariodarepublica.pt/dr/eli/dec-lei/83/2018/10/19/p/dre/pt/pdf",
-                "note": "Intern #63/#66 (Juno, 2026-09-12): beskrivningen \"Acessibilidade dos sítios web e das aplicações móveis de organismos públicos\" stod tidigare i fullName men kommer inte ur akten — 2018 års utgåva av Diário da República trycker ingen Sumário-rad, till skillnad från 2022 års. Att akten är rätt är belagt i artigo 1.º n.º 1, som transponerar direktiv (UE) 2016/2102."
+                "note": "Intern #63/#66 (Juno, 2026-09-12): beskrivningen \"Acessibilidade dos sítios web e das aplicações móveis de organismos públicos\" stod tidigare i fullName men kommer inte ur akten — 2018 års utgåva av Diário da República trycker ingen Sumário-rad, till skillnad från 2022 års. Att akten är rätt är belagt i artigo 1.º n.º 1, som transponerar direktiv (UE) 2016/2102. Entry into force (Intern #63, Juno 2026-09-14): artigo 20.º reads 'O presente decreto-lei entra em vigor no dia 1 de janeiro de 2019'. The earlier value 2018-10-19 was the date of the decree. The staggered production of effects is not yet recorded here."
             },
             {
                 "id": "pt-eaa",
@@ -890,7 +922,7 @@
                     }
                 },
                 "lawUrl": "https://files.diariodarepublica.pt/1s/2022/12/23400/0010900132.pdf",
-                "note": "Intern #63/#66 (Juno, 2026-09-12): posten pekade tidigare på Decreto-Lei n.º 101-D/2023, ett diploma DRE:s ELI-resolver inte lämnar ut på något av 168 prövade datum under 2023, och som det är EJ BELAGT att det existerar. Rätt akt är 82/2022, artigo 1.º. Tillsyn utelämnad med avsikt: artigo 28.º n.º 1 fördelar den på nio sektorsorgan (ANACOM, ERC, AMT, ANAC, IMT, Banco de Portugal, CMVM, ASAE, kommunerna, IGAC), och INR ansvarar för acompanhamento och monitorização, inte fiscalização. Sanktioner utelämnade: artigo 31.º n.º 2 anger fyra spann, varav de två för contraordenação muito grave har sitt tak i Decreto-Lei n.º 433/82 som inte är öppnad. Sumário ordagrant: \"Transpõe a Diretiva (UE) 2019/882, relativa aos requisitos de acessibilidade de produtos e serviços.\" Flyttad hit ur fullName enligt lydelsetabellen 2026-09-12."
+                "note": "Intern #63/#66 (Juno, 2026-09-12): posten pekade tidigare på Decreto-Lei n.º 101-D/2023, ett diploma DRE:s ELI-resolver inte lämnar ut på något av 168 prövade datum under 2023, och som det är EJ BELAGT att det existerar. Rätt akt är 82/2022, artigo 1.º. Tillsyn utelämnad med avsikt: artigo 28.º n.º 1 fördelar den på nio sektorsorgan (ANACOM, ERC, AMT, ANAC, IMT, Banco de Portugal, CMVM, ASAE, kommunerna, IGAC), och INR ansvarar för acompanhamento och monitorização, inte fiscalização. Sanktioner utelämnade: artigo 31.º n.º 2 anger fyra spann, varav de två för contraordenação muito grave har sitt tak i Decreto-Lei n.º 433/82 som inte är öppnad. Sumário ordagrant: \"Transpõe a Diretiva (UE) 2019/882, relativa aos requisitos de acessibilidade de produtos e serviços.\" Flyttad hit ur fullName enligt lydelsetabellen 2026-09-12. Formal entry into force (Intern #63, Juno 2026-09-14): 2022-12-06, the day after publication. effectiveDate carries the date of application, 2025-06-28, because it drives inForce."
             }
         ],
         "PL": [
@@ -914,8 +946,9 @@
                     "currency": "PLN"
                 },
                 "inForce": true,
-                "effectiveDate": "2019-04-04",
-                "lawUrl": "https://dziennikustaw.gov.pl/DU/2019/848"
+                "effectiveDate": "2019-05-23",
+                "lawUrl": "https://dziennikustaw.gov.pl/DU/2019/848",
+                "note": "Entry into force (Intern #63, Juno 2026-09-14): the Sejm ELI service gives entryIntoForce 2019-05-23 for Dz.U. 2019 poz. 848. The earlier value 2019-04-04 was the date of the act, not its entry into force."
             },
             {
                 "id": "pl-eaa",
