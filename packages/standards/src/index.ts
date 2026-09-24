@@ -803,6 +803,28 @@ export function resolveNationalLawReference(
 }
 
 /**
+ * Tillsynsavsnittets text när tillsynen är delad mellan flera myndigheter
+ * efter tjänstetyp (Intern #83, Karins beslut i #94 fråga 2). Motorn vet inte
+ * vilken tjänst kunden driver, så ett enda myndighetsnamn vore fel för en del
+ * kunder: för ett tåg- eller bussbolags webbplats är Konsumentverket
+ * tillsynsmyndighet enligt LPTT, inte PTS.
+ *
+ * Samma lagval som `resolveNationalLawReference` och samma grind. Texten
+ * namnger lagen, så den används bara när lagnamnet är attesterat; annars vore
+ * den en väg förbi grinden. Returnerar null när lagen saknar text på språket,
+ * och då gäller mallens tillsynsavsnitt som förut.
+ */
+export function getEnforcementStatementText(
+    country: Country,
+    sector: 'public' | 'private',
+    lang: string = 'en'
+): string | null {
+    const law = getNationalLawForSector(country, sector);
+    if (!law || law.inForce === false || !isNameAttested(law)) return null;
+    return law.enforcement?.statementText?.[lang.split('-')[0]] ?? null;
+}
+
+/**
  * Intern #63 punkt 4 — hitta en lagpost på id, oavsett land.
  *
  * `getNationalLaw(id, country = 'SE')` defaultar till Sverige, så

@@ -68,7 +68,10 @@
                     "authority": "se-pts",
                     "authorityName": "PTS (Post- och telestyrelsen)",
                     "responsibility": "Marknadskontrollmyndighet för produkter (28 § och 25 § förordning (2023:676)) samt tillsynsmyndighet för elektronisk kommunikation, banktjänster och e-handelstjänster (4 § första stycket 1, 5 och 7), med samordningsansvar för övriga sektorsmyndigheter.",
-                    "website": "https://pts.se"
+                    "website": "https://pts.se",
+                    "statementText": {
+                        "sv": "Tillsynen över lagen (2023:254) om vissa produkters och tjänsters tillgänglighet är uppdelad mellan flera myndigheter beroende på vilken tjänst som erbjuds: Post- och telestyrelsen ansvarar för elektronisk kommunikation, banktjänster och e-handelstjänster, Mediemyndigheten för audiovisuella medietjänster, Myndigheten för tillgängliga medier för e-böcker, och Konsumentverket respektive Transportstyrelsen för olika delar av persontransporttjänster."
+                    }
                 },
                 "sectorAuthorities": [
                     {

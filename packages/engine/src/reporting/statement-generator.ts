@@ -1,7 +1,13 @@
 import React from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { AccessibilityStatement, AccessibilityStatementProps } from '@holmdigital/components';
-import { Country, getEnforcementBody, getNationalLaws, resolveNationalLawReference } from '@holmdigital/standards';
+import {
+    Country,
+    getEnforcementBody,
+    getEnforcementStatementText,
+    getNationalLaws,
+    resolveNationalLawReference,
+} from '@holmdigital/standards';
 import { ScanResult } from '../core/regulatory-scanner';
 import fs from 'fs/promises';
 import path from 'path';
@@ -431,7 +437,11 @@ export async function generateStatementContent(
                 // sektionen antyder en redogörelseplikt en privat aktör inte har.
                 if (s.id === 'enforcement' && enforcementBody === '') return null;
                 if (s.sectors && !s.sectors.includes(sector)) return null;
-                const body = processText(s.content, s.id === 'testing' ? 'method' : 'compliance').trim();
+                // Intern #83 och #94 fråga 2: där tillsynen är delad efter
+                // tjänstetyp bär lagposten avsnittets text. Mallen kan bara
+                // namnge en myndighet, och det vore fel för en del kunder.
+                const delad = s.id === 'enforcement' ? getEnforcementStatementText(country, sector, lang) : null;
+                const body = (delad ?? processText(s.content, s.id === 'testing' ? 'method' : 'compliance')).trim();
                 if (body === '') return null;                 // hoppa sektioner som blir tomma
                 // Intern #23: en section utan titel får aldrig rendera "## undefined".
                 return s.title ? `## ${s.title}\n\n${body}` : body;
