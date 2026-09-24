@@ -40,6 +40,8 @@ function MyPage() {
 | `assessmentDate` | `Date` | | Date when the assessment was performed |
 | `evaluationMethod` | `string` | | Method used (e.g., "Automated Scan") |
 | `generatorTool` | `{ name: string, url: string }` | | Tool used to generate this statement |
+| `reviewMethod` | `'self-assessment' \| 'external-review' \| 'no-review'` | | How the assessment was made (default: self-assessment). See [Review Method](#review-method) |
+| `reviewer` | `{ name: string, url?: string }` | | Who performed the external review. Required with `reviewMethod="external-review"` |
 | `nonComplianceItems` | `string[]` | | Known issues |
 | `locale` | `'sv' \| 'en' \| 'en-gb' \| 'en-us' \| 'en-ca' \| 'en-au' \| 'no' \| 'fi' \| 'da' \| 'de' \| 'fr' \| 'es' \| 'nl' \| 'it' \| 'pt' \| 'pl'` | | Language (default: 'en') |
 | `logoUrl` | `string` | | URL or Data URI for organization logo |
@@ -60,6 +62,30 @@ When using the `@holmdigital/engine` CLI or a `.a11yrc` configuration file, the 
 | `--country` / `"country"` | `country` |
 | `--sector` / `"sector"` | `sector` |
 | `--publish-date` / `"publishDate"` | `publishDate` |
+| `--review-method` / `"reviewMethod"` | `reviewMethod` |
+| `--reviewer` / `"reviewer"` | `reviewer.name` |
+
+## Review Method
+
+The section on how the website was tested states one of three methods. The caller chooses it. It is never derived from the compliance level or the scan result.
+
+| `reviewMethod` | The statement says |
+| :--- | :--- |
+| omitted or `'self-assessment'` | The organisation has made a self-assessment (internal testing). This is the default, and a scan you run yourself is a self-assessment. |
+| `'external-review'` | The named reviewer has tested the website. Requires `reviewer` with a non-empty `name`. Without it, both the component and the engine throw an error. |
+| `'no-review'` | The accessibility has been estimated without testing. |
+
+The footer still credits the tool that generated the document (`generatorTool`), never the reviewer. `reviewer.url` is accepted but not rendered.
+
+```tsx
+<AccessibilityStatement
+  {...props}
+  reviewMethod="external-review"
+  reviewer={{ name: 'Example Audit AB' }}
+/>
+```
+
+From the CLI: `--review-method external-review --reviewer "Example Audit AB"`.
 
 ## What Gets Generated
 

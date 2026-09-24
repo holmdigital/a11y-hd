@@ -90,6 +90,7 @@ Options:
 - `--sector <type>` : `public` (WAD) or `private` (EAA). Default: `public`
 - `--org <name>` / `--email <email>` / `--phone <number>` : statement metadata
 - `--response-time <val>` / `--publish-date <date>` : statement metadata
+- `--review-method <method>` / `--reviewer <name>` : how the statement's assessment was made. Default `self-assessment`; `external-review` requires the reviewer's name
 - `--viewport <size>` : viewport (`mobile`, `tablet`, `desktop`, or `1024x768`)
 - `--generate-tests` : emit pseudo-code automation scripts for verification
 - `--invalid-https-cert` : allow self-signed certs ⚠️ (trusted environments only)

@@ -67,6 +67,8 @@ npx hd-a11y-scan <url> [options]
 | `--phone <number>` | Contact phone for the statement metadata |
 | `--response-time <val>` | Response time for the statement metadata |
 | `--publish-date <date>` | Publish date for the website (YYYY-MM-DD) |
+| `--review-method <method>` | How the statement's assessment was made: `self-assessment` (default), `external-review` (requires `--reviewer`) or `no-review` |
+| `--reviewer <name>` | Organisation that performed the external review, named in the statement |
 | `--country <code>` | Country code for enforcement body (`SE`, `NO`, `DE`, `IT`, `PT`, `PL`, `AU`, etc.) |
 | `--sector <type>` | Sector type: `public` (WAD) or `private` (EAA). Default: `public` |
 | `--viewport <size>` | Set viewport size (`mobile`, `tablet`, `desktop`, or custom `1024x768`) |
