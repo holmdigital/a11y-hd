@@ -125,15 +125,50 @@ jobs:
           # Dispatch only for packages ACTUALLY published in this run (recorded
           # by the publish step in $RUNNER_TEMP). This stops every master push
           # from re-dispatching and redeploying the downstream sites — dispatch
-          # fires only on a fresh publish. It also supersedes the old npm-view
-          # gate: we rely on the publish record, not registry visibility, so
-          # there is no propagation race to retry around.
+          # fires only on a fresh publish.
           PUBLISHED_FILE="$RUNNER_TEMP/freshly-published.txt"
 
           if [ ! -s "$PUBLISHED_FILE" ]; then
             echo "No packages were freshly published this run; nothing to dispatch."
             exit 0
           fi
+
+          # Intern #53 (Karins beslut 2026-09-20): vänta tills registryt SERVAR
+          # versionen innan någon mottagare får veta att den finns.
+          #
+          # Här stod tidigare att publiceringsposten ersatte den gamla
+          # npm view-grinden, "so there is no propagation race to retry around".
+          # Det var fel. Posten bevisar att VI publicerade, inte att npm levererar
+          # paketet än, och mottagaren kör `npm install <paket>@<version>` direkt.
+          # Tre motorsläpp i rad föll på ETARGET så (2026-09-12 och två gånger
+          # 2026-09-18), och produktionen stod kvar på en gammal motor utan
+          # XSS-fixen från #74 tills en deploy kördes om för hand.
+          #
+          # Kontrollen läser det förkortade paketdokumentet
+          # (application/vnd.npm.install-v1+json), alltså exakt det npm install
+          # läser, och kräver att versionen syns tre gånger i rad eftersom
+          # registryts CDN-noder kan ligga olika långt efter. Syns den aldrig
+          # fäller steget, i stället för att skicka en dispatch som ändå faller.
+          wait_until_served () {
+            local PKG_NAME="$1" VERSION="$2"
+            local URL="https://registry.npmjs.org/${PKG_NAME/\//%2f}"
+            local attempts="${REGISTRY_WAIT_ATTEMPTS:-40}" interval="${REGISTRY_WAIT_INTERVAL:-15}"
+            local seen=0 attempt
+            for attempt in $(seq 1 "$attempts"); do
+              if curl -sf -H "Accept: application/vnd.npm.install-v1+json" "$URL" \
+                  | node -e 'let s="";process.stdin.on("data",d=>s+=d).on("end",()=>{const v=JSON.parse(s).versions||{};process.exit(v[process.argv[1]]?0:1)})' "$VERSION"; then
+                seen=$((seen + 1))
+                echo "${PKG_NAME}@${VERSION} served by the registry (${seen}/3, attempt ${attempt})"
+                if [ "$seen" -ge 3 ]; then return 0; fi
+              else
+                seen=0
+                echo "${PKG_NAME}@${VERSION} not served yet (attempt ${attempt}/${attempts})"
+              fi
+              sleep "$interval"
+            done
+            echo "::error::${PKG_NAME}@${VERSION} was published but the registry never served it within $((attempts * interval))s. No dispatch sent; rerun this job once npm serves it."
+            return 1
+          }
 
           dispatch_if_published () {
             local PKG_NAME="$1" EVENT_TYPE="$2" PKG_DIR="$3" TARGETS="$4"
@@ -143,6 +178,7 @@ jobs:
             fi
             local VERSION
             VERSION=$(node -p "require('./packages/${PKG_DIR}/package.json').version")
+            wait_until_served "${PKG_NAME}" "${VERSION}"
             # Mållistan kommer som mellanslagsseparerad sträng, medveten
             # ociterad i for-loopen så ordlistan delas korrekt.
             for REPO in ${TARGETS}; do
