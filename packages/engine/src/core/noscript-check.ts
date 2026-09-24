@@ -20,7 +20,7 @@
  * Det är en separat robusthetsindikator, märkt som rekommendation.
  */
 
-import type { Browser } from 'puppeteer';
+import type { Browser, Page } from 'puppeteer';
 
 /**
  * Under denna täckningsgrad räknas sidan som i praktiken tom utan JS.
@@ -119,6 +119,11 @@ export interface NoScriptProbeOptions {
     userAgent?: string;
     viewport?: { width: number; height: number };
     timeout?: number;
+    /**
+     * Körs på sondens nya sida innan den navigerar. Skannern använder den för
+     * att ge sidan samma nätverksspärr som huvudsidan (Intern #53 steg 2).
+     */
+    preparePage?: (page: Page) => Promise<void>;
 }
 
 export interface NoScriptProbeMeasurement {
@@ -149,6 +154,7 @@ export async function probeWithoutJavaScript(
     const page = await browser.newPage();
 
     try {
+        if (options.preparePage) await options.preparePage(page);
         if (options.userAgent) await page.setUserAgent(options.userAgent);
         if (options.viewport) await page.setViewport(options.viewport);
 
