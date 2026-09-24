@@ -91,7 +91,13 @@ const RESPONSE_TIME_DEFAULT: Record<string, string> = {
 interface StatementTemplate {
     title: string;
     intro: string;
-    sections: Array<{ id?: string; title?: string; content: string }>;
+    /**
+     * `sectors`: rendera avsnittet bara för de här sektorerna. Saknas fältet
+     * gäller avsnittet båda. Intern #94 fråga 4: AU-mallens avsnitt om
+     * regeringens digitalpolicy beskriver en policy för federala myndigheter,
+     * och är sakligt fel i ett utlåtande från ett privat företag.
+     */
+    sections: Array<{ id?: string; title?: string; content: string; sectors?: Array<'public' | 'private'> }>;
 }
 
 /**
@@ -484,6 +490,7 @@ export async function generateStatementContent(
                 // tillsynsmyndighet. Annars renderas tomma hål (" har ansvaret …") och
                 // sektionen antyder en redogörelseplikt en privat aktör inte har.
                 if (s.id === 'enforcement' && enforcementBody === '') return null;
+                if (s.sectors && !s.sectors.includes(sector)) return null;
                 const body = processText(s.content).trim();
                 if (body === '') return null;                 // hoppa sektioner som blir tomma
                 // Intern #23: en section utan titel får aldrig rendera "## undefined".
