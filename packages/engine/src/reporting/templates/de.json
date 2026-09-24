@@ -20,12 +20,12 @@
         {
             "id": "enforcement",
             "title": "Durchsetzungsverfahren",
-            "content": "Die {<enforcement_body>} ist für die Überwachung der Anforderungen gemäß {<national_law>} zuständig. Wenn Sie auf unsere Benachrichtigungen oder Anfragen keine zufriedenstellende Antwort erhalten haben, können Sie sich an {<enforcement_body>} wenden.\n\nSie können auch eine Beschwerde bei {<enforcement_body>} einreichen, wenn Sie der Meinung sind, dass unsere Einschätzung einer unverhältnismäßigen Belastung überprüft werden sollte, wenn Sie Mängel in unserer Barrierefreiheitserklärung feststellen oder wenn Sie der Meinung sind, dass wir Ihren Antrag auf barrierefreie Bereitstellung von Inhalten nicht korrekt bearbeitet haben."
+            "content": "Die {<enforcement_body>} ist für die Überwachung der Einhaltung von {<national_law>} zuständig. Wenn Sie auf unsere Benachrichtigungen oder Anfragen keine zufriedenstellende Antwort erhalten haben, können Sie sich an {<enforcement_body>} wenden.\n\nSie können auch eine Beschwerde bei {<enforcement_body>} einreichen, wenn Sie der Meinung sind, dass unsere Einschätzung einer unverhältnismäßigen Belastung überprüft werden sollte, wenn Sie Mängel in unserer Barrierefreiheitserklärung feststellen oder wenn Sie der Meinung sind, dass wir Ihren Antrag auf barrierefreie Bereitstellung von Inhalten nicht korrekt bearbeitet haben."
         },
         {
             "id": "technical",
             "title": "Technische Informationen zur Barrierefreiheit der Website",
-            "content": "{Diese Website ist vollständig mit den Anforderungen gemäß {<national_law>} vereinbar./Diese Website ist wegen der folgenden Unvereinbarkeiten teilweise mit den Anforderungen gemäß {<national_law>} vereinbar./Diese Website ist nicht mit den Anforderungen gemäß {<national_law>} vereinbar.}"
+            "content": "{Diese Website ist vollständig mit {<national_law>} vereinbar./Diese Website ist wegen der folgenden Unvereinbarkeiten teilweise mit {<national_law>} vereinbar./Diese Website ist nicht mit {<national_law>} vereinbar.}"
         },
         {
             "id": "testing",
