@@ -10,6 +10,9 @@ export default defineConfig({
     test: {
         globals: true,
         environment: 'node',
+        // Intern #84: stoppa sviten om standards eller components är byggda
+        // före sin senaste källändring, i stället för att testa ett gammalt bygge.
+        globalSetup: ['./vitest.global-setup.ts'],
         include: ['src/**/*.test.ts', 'src/**/*.spec.ts'],
         coverage: {
             provider: 'v8',
