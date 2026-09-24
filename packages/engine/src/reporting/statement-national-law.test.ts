@@ -70,3 +70,33 @@ describe('generateStatementContent — private statement has no empty law slot (
         expect(resolveNationalLawReference(country, 'private', lang).trim()).not.toBe('');
     });
 });
+
+/**
+ * Intern #68 T4: Australien, båda sektorerna, i den mall vi levererar till
+ * Australien. Lagen ska stå där, aldrig fallback-frasen. Grenen som tidigare
+ * garanterade det är borttagen; nu är det den generella väljaren som gör det.
+ */
+describe('Intern #68 — AU renderar Disability Discrimination Act, aldrig fallback', () => {
+    const auResult = {
+        url: 'https://example.com.au',
+        timestamp: '2026-09-24T00:00:00Z',
+        metadata: {
+            engineVersion: 'x', axeCoreVersion: 'x', standardsVersion: 'x',
+            scanDuration: 1, pageTitle: 'Example', pageLanguage: 'en',
+        },
+        reports: [],
+        stats: { passed: 46, critical: 0, high: 0, medium: 0, low: 0, total: 0, needsReview: 0 },
+        score: 100,
+        complianceStatus: 'PASS',
+    } as unknown as ScanResult;
+
+    it.each(SECTORS)('en-au, %s', async (sector) => {
+        const ref = resolveNationalLawReference('AU', sector, 'en-au');
+        expect(ref).toBe('Disability Discrimination Act 1992 (Cth)');
+        const out = await generateStatementContent(auResult, 'en-au', 'md', {
+            organizationName: 'Testbolaget', contactEmail: 'test@example.com', country: 'AU', sector,
+        } as StatementMetadata);
+        expect(out).toContain('Disability Discrimination Act 1992 (Cth)');
+        expect(out).not.toContain('applicable accessibility requirements');
+    });
+});

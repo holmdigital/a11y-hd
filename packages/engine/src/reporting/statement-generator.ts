@@ -134,21 +134,12 @@ export function resolveNationalLawReference(
     const inForce = <T extends { inForce?: boolean }>(law: T | undefined | null): law is T =>
         !!law && law.inForce !== false;
 
-    if (country === 'AU') {
-        // AU keeps its own branch, and Juno ratified that 2026-09-11 (Intern
-        // #63) after reading both sources in full: the Disability
-        // Discrimination Act is the only legally binding instrument for
-        // Australia, public sector and private alike, and the Digital Access
-        // Standard (au-dta) is an internal Commonwealth policy with no
-        // third-party standing and no sanction beyond reporting to the DTA.
-        // Routing AU through the sector selector would silently switch the
-        // public track to au-dta, because that selector prefers an exact scope
-        // match and au-dta is scope 'public' while au-dda is 'both'.
-        // au-dta now carries euFramework 'DAS', so this lookup is unambiguous
-        // rather than dependent on the order of the JSON array.
-        const ddaLaw = getNationalLaws('AU').find(l => l.euFramework === 'DDA' && inForce(l));
-        return ddaLaw ? `${ddaLaw.fullName}` : 'Disability Discrimination Act 1992 (Cth)';
-    }
+    // Intern #68: Australia has no branch of its own any more. It had one only
+    // because the Digital Access Standard (scope 'public') won the sector
+    // selector's exact-scope preference over the Disability Discrimination Act
+    // (scope 'both'). With the Standard out of the law data, the selector below
+    // gives the Act in both sectors, and the branch's hardcoded fallback — a
+    // law name that bypassed selection entirely — is gone with it.
     if (country === 'US') {
         // US carries several parallel federal statutes rather than one, so it
         // keeps a dedicated branch: ADA split by scope, plus Section 508 on the

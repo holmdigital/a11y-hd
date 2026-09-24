@@ -479,13 +479,11 @@ export const AccessibilityStatement: React.FC<AccessibilityStatementProps> = ({
             // vidare i ett publicerat paket efter att de rättats i det andra.
             const inForce = (law?: { inForce?: boolean }): boolean => !!law && law.inForce !== false;
 
-            // AU: Juno avgjorde 2026-09-11 att au-dda är Australiens enda bindande
-            // instrument i båda sektorerna. Digital Access Standard är ett internt
-            // styrdokument utan talerätt och får aldrig vara huvudsvar.
-            if (country === 'AU') {
-                const ddaLaw = getNationalLaws('AU').find(l => l.euFramework === 'DDA' && inForce(l));
-                if (ddaLaw) return lawPhrase(ddaLaw);
-            }
+            // Intern #68: Australien har ingen egen gren längre. Den fanns bara
+            // för att Digital Access Standard (scope public) vann väljarens
+            // företräde för exakt scope över Disability Discrimination Act
+            // (scope both). Med standarden ute ur lagdatan ger väljaren nedan
+            // lagen i båda sektorerna.
 
             // US bär flera parallella federala författningar: ADA delad på scope,
             // Section 508 på offentliga sidan och HHS Section 504 på privata.
