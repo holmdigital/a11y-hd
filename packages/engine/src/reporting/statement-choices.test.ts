@@ -15,10 +15,10 @@
  * Testerna läser mallarna i stället för att räkna upp fraser per språk, så en
  * ny mall omfattas utan att någon behöver komma ihåg det.
  */
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, beforeAll, afterAll, vi } from 'vitest';
 import fs from 'fs';
 import path from 'path';
-import { generateStatementContent, resolveNationalLawReference } from './statement-generator';
+import { generateStatementContent, resolveNationalLawReference, type StatementMetadata } from './statement-generator';
 import type { ScanResult } from '../core/regulatory-scanner';
 import type { Country } from '@holmdigital/standards';
 
@@ -51,7 +51,7 @@ function resultFor(level: Level): ScanResult {
     } as unknown as ScanResult;
 }
 
-interface Template { title: string; intro: string; sections: Array<{ id?: string; content: string }> }
+interface Template { title: string; intro: string; sections: Array<{ id?: string; title?: string; content: string }> }
 const template = (lang: string): Template =>
     JSON.parse(fs.readFileSync(path.join(TEMPLATES_DIR, `${lang}.json`), 'utf8'));
 
@@ -118,6 +118,182 @@ describe('inget insatt värde klyvs av valparsern', () => {
             const whole = md.split(ORG).length - 1;
             expect(prefix).toBeGreaterThan(0);
             expect(whole).toBe(prefix);
+        });
+    }
+});
+
+/*
+ * Intern #95: metodvalet är anroparens uttalade val, `reviewMethod`.
+ *
+ * Efter #91 gav metodvalet alltid självskattningen, så "extern granskning" och
+ * "uppskattning utan granskning" gick inte att nå ens när de var sanna. Nu
+ * väljer anroparen. Invarianten från #91 står kvar: metoden läses aldrig ur
+ * efterlevnadsutfallet, och granskarens plats fylls aldrig med verktygets namn.
+ *
+ * HTML-utlåtandet renderas av komponenten, som har egna mallar och egna tester
+ * för dem. Här visas att motorn skickar valet dit.
+ */
+const REVIEWER = 'Granskaren AB';
+const ORG = 'Testorganisation';
+const METHODS = [undefined, 'self-assessment', 'external-review', 'no-review'] as const;
+type Method = typeof METHODS[number];
+const FORMATS = ['md', 'html'] as const;
+
+/** Vilket alternativ i metodblocket ett val ska ge. */
+const expectedIndex = (method: Method): number =>
+    method === 'external-review' ? 1 : method === 'no-review' ? 2 : 0;
+
+const placeholdersIn = (text: string): string[] => text.match(/\{<[^>]+>\}/g) ?? [];
+
+/** Granskarens plats: platshållaren som det andra alternativet har och det första saknar. */
+function reviewerSlots(options: string[]): Set<string> {
+    const own = new Set(placeholdersIn(options[0]));
+    return new Set(placeholdersIn(options[1]).filter(p => !own.has(p)));
+}
+
+/** Ett alternativ som det ska se ut i utlåtandet: granskaren på sin plats, organisationen på övriga. */
+const asRendered = (option: string, slots: Set<string>): string =>
+    option.replace(/\{<[^>]+>\}/g, p => (slots.has(p) ? REVIEWER : ORG)).trim();
+
+function methodOptions(lang: string): string[] {
+    const testing = template(lang).sections.find(s => s.id === 'testing');
+    if (!testing) throw new Error(`${lang} saknar sektionen testing`);
+    return choiceOptions(testing.content);
+}
+
+/** Första stycket i Markdown-utlåtandets metodsektion, alltså den valda meningen. */
+function methodText(md: string, lang: string): string {
+    const title = template(lang).sections.find(s => s.id === 'testing')?.title;
+    const body = title === undefined ? undefined : md.split(`## ${title}\n\n`)[1];
+    if (body === undefined) throw new Error(`ingen metodsektion i ${lang}`);
+    return body.split('\n\n')[0];
+}
+
+/**
+ * Texten mellan taggarna i ett HTML-utlåtande, som den står i markupen. Stycken
+ * räcker inte: komponenten gör ett block med "ring " till ett kontaktkort, och
+ * den norska och danska självskattningen ("egenevaluering (intern …") matchar.
+ */
+const textRuns = (html: string): string[] => html.split(/<[^>]*>/).map(s => s.trim()).filter(Boolean);
+
+const renderWith = (lang: string, level: Level, extra: StatementMetadata, format: 'md' | 'html' = 'md') =>
+    generateStatementContent(resultFor(level), lang, format, {
+        organizationName: ORG, contactEmail: 't@example.test', country: COUNTRY_FOR[lang], sector: 'public', ...extra,
+    });
+
+const EXTERNAL: StatementMetadata = { reviewMethod: 'external-review', reviewer: { name: REVIEWER } };
+
+describe('Intern #95: granskarens plats finns bara i metodvalets andra alternativ', () => {
+    // Tre alternativ, för att no-review väljer index 1 när blocket bara har två,
+    // och index 1 är den externa granskningen. Och granskarens plats bara där,
+    // för att den bara är ifylld när anroparen uttryckligen valt extern granskning.
+    it.each(LANGS)('%s', (lang) => {
+        const options = methodOptions(lang);
+        expect(options).toHaveLength(3);
+        const slots = [...reviewerSlots(options)];
+        expect(slots).toHaveLength(1);
+        expect(JSON.stringify(template(lang)).split(slots[0]).length - 1).toBe(1);
+    });
+});
+
+describe('Intern #95: uttalad extern granskning namnger granskaren, i varje mall', () => {
+    for (const lang of LANGS) {
+        const options = methodOptions(lang);
+        const [self, external, estimated] = options.map(literal);
+
+        it(`${lang} md: det andra alternativet, med granskarens namn`, async () => {
+            const md = await renderWith(lang, 'partial', EXTERNAL);
+            expect(methodText(md, lang)).toBe(asRendered(options[1], reviewerSlots(options)));
+            expect(md).toContain(REVIEWER);
+            expect(md).toContain(external);
+            expect(md).not.toContain(self);
+            expect(md).not.toContain(estimated);
+        });
+
+        it(`${lang} html: valet når komponenten och ersätter självskattningen`, async () => {
+            const own = textRuns(await renderWith(lang, 'partial', {}, 'html'));
+            const html = await renderWith(lang, 'partial', EXTERNAL, 'html');
+            const reviewed = textRuns(html);
+            const named = reviewed.filter(t => t.includes(REVIEWER));
+            expect(named).toHaveLength(1);
+            expect(reviewed).toHaveLength(own.length);
+            // Samma plats i utlåtandet utan val är självskattningen, och den ska vara borta.
+            const selfSentence = own[reviewed.indexOf(named[0])];
+            expect(selfSentence).not.toContain(REVIEWER);
+            expect(html).not.toContain(selfSentence);
+        });
+    }
+});
+
+describe('Intern #95: metodvalet följer reviewMethod, aldrig efterlevnadsutfallet', () => {
+    for (const lang of LANGS) {
+        const options = methodOptions(lang);
+        const slots = reviewerSlots(options);
+
+        it.each(METHODS)(`${lang}: reviewMethod %s ger samma metodtext på alla tre nivåer`, async (method) => {
+            // Granskaren skickas med i alla fall: ett namn ensamt väljer ingen metod.
+            const texts = await Promise.all(LEVELS.map(async level =>
+                methodText(await renderWith(lang, level, { reviewMethod: method, reviewer: { name: REVIEWER } }), lang)));
+            expect(texts).toEqual(LEVELS.map(() => asRendered(options[expectedIndex(method)], slots)));
+        });
+    }
+});
+
+describe('Intern #95: utan reviewMethod är utlåtandet oförändrat', () => {
+    // Datumet fryses så att två renderingar kan jämföras tecken för tecken.
+    beforeAll(() => {
+        vi.useFakeTimers({ toFake: ['Date'] });
+        vi.setSystemTime(new Date('2026-09-24T12:00:00Z'));
+    });
+    afterAll(() => {
+        vi.useRealTimers();
+    });
+
+    // Delvis förenlig är nivån där #91 slog till. Att metodtexten är densamma på
+    // alla nivåer visar blocket ovan, också för ett utelämnat val.
+    for (const lang of LANGS) {
+        it.each(FORMATS)(`${lang} %s: samma dokument som med 'self-assessment', och självskattningen`, async (format) => {
+            const omitted = await renderWith(lang, 'partial', {}, format);
+            expect(omitted).toBe(await renderWith(lang, 'partial', { reviewMethod: 'self-assessment' }, format));
+            if (format === 'md') {
+                const options = methodOptions(lang);
+                expect(methodText(omitted, lang)).toBe(asRendered(options[0], reviewerSlots(options)));
+            }
+        });
+    }
+});
+
+describe('Intern #95: extern granskning utan namngiven granskare är ett fel', () => {
+    const MISSING: Array<[string, StatementMetadata['reviewer']]> = [
+        ['utan reviewer', undefined],
+        ['med tomt namn', { name: '' }],
+        ['med bara blanksteg i namnet', { name: '   ' }],
+    ];
+
+    it.each(MISSING)('%s kastar i båda formaten, i stället för att skriva ett utlåtande', async (_label, reviewer) => {
+        for (const format of FORMATS) {
+            await expect(renderWith('sv', 'partial', { reviewMethod: 'external-review', reviewer }, format))
+                .rejects.toThrow(/reviewer/);
+        }
+    });
+
+    it('felet säger vad som ska skickas in, och vad som gäller annars', async () => {
+        const error = await renderWith('en', 'full', { reviewMethod: 'external-review' }).catch((e: unknown) => e);
+        expect(error).toBeInstanceOf(Error);
+        expect((error as Error).message).toContain("reviewer: { name: 'Example Audit AB' }");
+        expect((error as Error).message).toContain("'self-assessment'");
+    });
+});
+
+describe('Intern #95: sidfoten namnger verktyget som skrev dokumentet, aldrig granskaren', () => {
+    for (const lang of LANGS) {
+        it.each(FORMATS)(`${lang} %s`, async (format) => {
+            const out = await renderWith(lang, 'partial', EXTERNAL, format);
+            const footer = format === 'md'
+                ? out.slice(out.lastIndexOf('\n---\n'))
+                : (/<footer\b[\s\S]*?<\/footer>/.exec(out)?.[0] ?? '');
+            expect(footer).toContain('HolmDigital Regulatory Engine');
+            expect(footer).not.toContain(REVIEWER);
         });
     }
 });

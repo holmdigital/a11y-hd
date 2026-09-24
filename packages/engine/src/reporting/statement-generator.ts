@@ -19,6 +19,25 @@ export interface StatementMetadata {
     country?: string;
     sector?: 'public' | 'private';
     publishDate?: string | Date;
+    /**
+     * How the assessment behind the statement was made. An explicit choice by the
+     * caller, never derived from the scan result or the compliance level.
+     *
+     * - omitted or `'self-assessment'`: the organisation assessed its own website.
+     *   This is the default, and a scan the customer runs is a self-assessment.
+     * - `'external-review'`: an external party reviewed the website. Requires
+     *   `reviewer`, and the statement names that reviewer.
+     * - `'no-review'`: the accessibility was estimated without testing.
+     */
+    reviewMethod?: 'self-assessment' | 'external-review' | 'no-review';
+    /**
+     * Who performed the external review. Required when `reviewMethod` is
+     * `'external-review'`: generating the statement throws without a non-empty
+     * `name`. The statement names the reviewer by `name`; `url` is accepted for
+     * the same shape as `generatorTool` and is not rendered. The footer still
+     * credits the tool that generated the document, never the reviewer.
+     */
+    reviewer?: { name: string; url?: string };
 }
 
 /**
@@ -118,6 +137,22 @@ const NATIONAL_LAW_FALLBACK: Record<string, string> = {
 };
 
 /**
+ * Intern #95: platshållarna för den externa part som granskat webbplatsen. De
+ * står bara i metodvalets andra alternativ ("<granskaren> har granskat …").
+ *
+ * Listan täcker båda mallsatserna, motorns JSON och komponentens TEMPLATES, och
+ * komponenten bär samma lista. Platsen fylls ur `reviewer` och ALDRIG ur
+ * `generatorTool`: det är verktyget som skrev dokumentet, och när det namnet
+ * hamnade här påstod varje delvis förenlig kunds utlåtande att HolmDigital
+ * Regulatory Engine gjort en oberoende granskning (#91).
+ */
+const REVIEWER_PLACEHOLDERS = [
+    '{<extern aktör>}', '{<ekstern aktør>}', '{<ekstern aktor>}', '{<ulkoinen taho>}',
+    '{<externe partij>}', '{<externer Dritter>}', '{<tiers externe>}', '{<tercero externo>}',
+    '{<terza parte>}', '{<terceiro externo>}', '{<podmiot zewnętrzny>}', '{<third party>}',
+];
+
+/**
  * Resolve the human-readable national-law reference used in a statement's
  * "complies with …" sentence. Kept separate so it can be tested across every
  * country × sector (Intern #31). Never returns an empty string.
@@ -203,6 +238,20 @@ export async function generateStatementContent(
     format: 'html' | 'md' | 'markdown' = 'html',
     metadata?: StatementMetadata
 ): Promise<string> {
+    // Intern #95: en extern granskning måste säga vem som granskade. Utan ett
+    // namn finns inget sant att skriva i granskarens plats, och det var just där
+    // verktygets eget namn hamnade före #91. Därför ett fel och ingen default.
+    const reviewMethod = metadata?.reviewMethod;
+    const reviewerName = typeof metadata?.reviewer?.name === 'string' ? metadata.reviewer.name.trim() : '';
+    if (reviewMethod === 'external-review' && reviewerName === '') {
+        throw new Error(
+            "reviewMethod 'external-review' requires metadata.reviewer with a non-empty name: the organisation " +
+            "that performed the review, e.g. { reviewMethod: 'external-review', reviewer: { name: 'Example Audit AB' } }. " +
+            "The statement names it as the reviewer. Use 'self-assessment' (the default) if the statement is based " +
+            'on your own testing, such as this scan.'
+        );
+    }
+
     // 0. Load Template
     const templatePath = path.join(__dirname, 'templates', `${lang}.json`);
     let template: StatementTemplate;
@@ -307,6 +356,10 @@ export async function generateStatementContent(
             name: 'HolmDigital Regulatory Engine',
             url: 'https://holmdigital.se'
         },
+        // Intern #95: HTML-utlåtandet renderas av komponenten, så metodvalet och
+        // granskaren måste följa med dit. Annars gäller valet bara Markdown.
+        reviewMethod,
+        reviewer: metadata?.reviewer,
         logoUrl,
         // Placeholders make it obvious the consumer must supply real contact info.
         // Previous fallback leaked HolmDigital's own contact details into customer statements.
@@ -404,15 +457,10 @@ export async function generateStatementContent(
             '{<méthode>}': props.evaluationMethod || 'Automated Scan',
             '{<método>}': props.evaluationMethod || 'Automated Scan',
             '{<method>}': props.evaluationMethod || 'Automated Scan',
-            '{<extern aktör>}': props.generatorTool?.name || 'HolmDigital Engine',
-            '{<ekstern aktør>}': props.generatorTool?.name || 'HolmDigital Engine',
-            '{<ekstern aktor>}': props.generatorTool?.name || 'HolmDigital Engine',
-            '{<ulkoinen taho>}': props.generatorTool?.name || 'HolmDigital Engine',
-            '{<externe partij>}': props.generatorTool?.name || 'HolmDigital Engine',
-            '{<externer Dritter>}': props.generatorTool?.name || 'HolmDigital Engine',
-            '{<tiers externe>}': props.generatorTool?.name || 'HolmDigital Engine',
-            '{<tercero externo>}': props.generatorTool?.name || 'HolmDigital Engine',
-            '{<third party>}': props.generatorTool?.name || 'HolmDigital Engine',
+            // Intern #95: granskarens plats fylls bara ur reviewer, aldrig ur
+            // generatorTool. Den renderas bara när metodvalet är en uttalad
+            // extern granskning, och då är namnet kontrollerat ovan.
+            ...Object.fromEntries(REVIEWER_PLACEHOLDERS.map(p => [p, reviewerName])),
             '{<enforcement_body>}': (() => {
                 // US: statements for our customers are primarily about state/local gov (Title II)
                 // or private sector (Title III) — both enforced by DOJ. Override the default
@@ -457,9 +505,18 @@ export async function generateStatementContent(
          * "<verktyget> har gjort en oberoende granskning" och varje ej förenlig
          * kund "vi har uppskattat tillgängligheten utan granskning", båda
          * falska. Ett verktyg som kunden själv kör är en självskattning.
+         *
+         * Intern #95: metodvalet följer anroparens uttalade `reviewMethod` och
+         * ingenting annat. Utan val blir det självskattning, som förut. Den
+         * externa granskningen kräver en namngiven granskare, och utfallet
+         * läses fortfarande aldrig här.
          */
         const choiceIndex = (kind: 'compliance' | 'method', parts: number): number => {
-            if (kind === 'method') return 0;
+            if (kind === 'method') {
+                if (reviewMethod === 'external-review') return 1;
+                if (reviewMethod === 'no-review') return parts > 2 ? 2 : 1;
+                return 0;
+            }
             if (complianceLevel === 'partial') return 1;
             if (complianceLevel === 'non-compliant') return parts > 2 ? 2 : 1;
             return 0;

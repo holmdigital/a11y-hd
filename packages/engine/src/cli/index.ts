@@ -13,7 +13,7 @@ import { generateReportHTML } from '../reporting/html-template';
 import { generatePDF } from '../reporting/pdf-generator';
 import { generateStatement, generateStatementContent, StatementMetadata } from '../reporting/statement-generator';
 import { generateBadgeMarkdown, isBadgeWithheldByRobustness } from '../reporting/badge-generator';
-import { parseHydrationWait, InvalidOptionError, MAX_HYDRATION_WAIT_MS } from './parse-options';
+import { parseHydrationWait, parseReviewOptions, InvalidOptionError, MAX_HYDRATION_WAIT_MS } from './parse-options';
 import { assertScanUrl, UnsupportedUrlError } from './url-guard.js';
 import { setLanguage, t } from '../i18n';
 import type { EnrichedReport } from '@holmdigital/standards';
@@ -118,6 +118,8 @@ program
     .option('--country <code>', 'Country code for accessibility statement enforcement body')
     .option('--sector <type>', 'Sector type: public (WAD) or private (EAA)', 'public')
     .option('--publish-date <date>', 'Publish date for the website (YYYY-MM-DD)')
+    .option('--review-method <method>', 'How the statement assessment was made: self-assessment (default), external-review (requires --reviewer) or no-review')
+    .option('--reviewer <name>', 'Organisation that performed the external review, named in the statement (used with --review-method external-review)')
     .option('--light', 'Light scan: fast score-only mode (skips HTML validation and detailed legal mapping)')
     .option('--audience <mode>', 'Output audience: developer (default) or plain', 'developer')
     .option('--plain', 'Alias for --audience plain (klarspråksläge for non-technical recipients)')
@@ -133,12 +135,20 @@ program
         // Undefined här betyder "rör inte", inte "0". Commander camelCase:ar
         // --wait-for-hydration till waitForHydration.
         let waitForHydrationMs: number | undefined;
+        // Intern #95: granskningsmetoden kontrolleras här, före skanningen, så att
+        // ett felskrivet värde eller en extern granskning utan granskare inte
+        // upptäcks först när utlåtandet ska skrivas. CLI > config-fil.
+        let review: ReturnType<typeof parseReviewOptions> = {};
         try {
             waitForHydrationMs = cliOptions.waitForHydration !== undefined
                 ? parseHydrationWait(cliOptions.waitForHydration)
                 : (fileConfig.waitForHydrationMs !== undefined
                     ? parseHydrationWait(String(fileConfig.waitForHydrationMs))
                     : undefined);
+            review = parseReviewOptions(
+                cliOptions.reviewMethod || fileConfig.reviewMethod,
+                cliOptions.reviewer || fileConfig.reviewer
+            );
         } catch (e) {
             if (e instanceof InvalidOptionError) {
                 console.error(chalk.red(e.message));
@@ -170,6 +180,8 @@ program
             country: cliOptions.country || fileConfig.country,
             sector: cliOptions.sector || fileConfig.sector || 'public',
             publishDate: cliOptions.publishDate || fileConfig.publishDate,
+            reviewMethod: review.reviewMethod,
+            reviewer: review.reviewer,
             light: cliOptions.light ?? fileConfig.light ?? false,
             plain: cliOptions.plain ?? fileConfig.plain ?? false,
             // Commander camelCase:ar --noscript-check till noscriptCheck.
@@ -199,6 +211,8 @@ program
             country?: string;
             sector?: 'public' | 'private';
             publishDate?: string;
+            reviewMethod?: StatementMetadata['reviewMethod'];
+            reviewer?: StatementMetadata['reviewer'];
             light: boolean;
             plain: boolean;
             audience: 'developer' | 'plain';
@@ -308,7 +322,9 @@ program
                     responseTime: options.responseTime,
                     country: options.country,
                     sector: options.sector as 'public' | 'private',
-                    publishDate: options.publishDate
+                    publishDate: options.publishDate,
+                    reviewMethod: options.reviewMethod,
+                    reviewer: options.reviewer
                 };
 
                 if (options.statement.toLowerCase().endsWith('.pdf')) {

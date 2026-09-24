@@ -6,8 +6,9 @@
  * - 4.1.2 Name, Role, Value — semantic structure of the rendered statement
  */
 import { render } from '@testing-library/react';
+import { renderToStaticMarkup } from 'react-dom/server';
 import { describe, it, expect, vi } from 'vitest';
-import { AccessibilityStatement } from './AccessibilityStatement';
+import { AccessibilityStatement, type AccessibilityStatementProps } from './AccessibilityStatement';
 import { getAllNationalLaws, getEnforcementBody, getNationalLawByFramework, type Country } from '@holmdigital/standards';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
@@ -688,5 +689,114 @@ describe('AccessibilityStatement valblock', () => {
         }
         const hits = [...names].filter(n => TEMPLATE_BLOCK.includes(n));
         expect(hits).toEqual([]);
+    });
+
+    /**
+     * Intern #95: metodvalet är anroparens uttalade val, `reviewMethod`. Samma
+     * krav som i motorn, mot komponentens egna mallar: CLI:ts HTML-utlåtanden
+     * och webbplatser som använder komponenten renderas härifrån.
+     */
+    describe('granskningsmetod (Intern #95)', () => {
+        const REVIEWER = 'Granskaren AB';
+        const ORG = defaultProps.organizationName;
+        const METHODS = [undefined, 'self-assessment', 'external-review', 'no-review'] as const;
+        const expectedIndex = (method: typeof METHODS[number]): number =>
+            method === 'external-review' ? 1 : method === 'no-review' ? 2 : 0;
+        const placeholdersIn = (text: string): string[] => text.match(/\{<[^>]+>\}/g) ?? [];
+        /** Granskarens plats: platshållaren som det andra alternativet har och det första saknar. */
+        const reviewerSlots = (options: string[]): Set<string> => {
+            const own = new Set(placeholdersIn(options[0]));
+            return new Set(placeholdersIn(options[1]).filter(p => !own.has(p)));
+        };
+        /** Ett alternativ som det ska se ut: granskaren på sin plats, organisationen på övriga. */
+        const asRendered = (option: string, slots: Set<string>): string =>
+            option.replace(/\{<[^>]+>\}/g, p => (slots.has(p) ? REVIEWER : ORG)).trim();
+
+        it('varje metodblock har tre alternativ, och granskarens plats står bara i det andra', () => {
+            // Tre alternativ, för att no-review väljer index 1 när blocket bara har
+            // två, och index 1 är den externa granskningen. Och granskarens plats
+            // bara där, för att den bara fylls när extern granskning är uttalad.
+            const uses = new Map<string, number>();
+            for (const [locale, content] of testingContent) {
+                const options = choiceOptions(content);
+                expect(options, locale).toHaveLength(3);
+                const slots = [...reviewerSlots(options)];
+                expect(slots, locale).toHaveLength(1);
+                uses.set(slots[0], (uses.get(slots[0]) ?? 0) + 1);
+            }
+            for (const [slot, count] of uses) {
+                expect(TEMPLATE_BLOCK.split(slot).length - 1, slot).toBe(count);
+            }
+        });
+
+        for (const [locale, content] of testingContent) {
+            const options = choiceOptions(content);
+            const slots = reviewerSlots(options);
+            const sentences = options.map(o => asRendered(o, slots));
+
+            it(`${locale}: external-review ger det andra alternativet, med granskarens namn`, () => {
+                const { container } = render(
+                    <AccessibilityStatement {...defaultProps} locale={locale} reviewMethod="external-review" reviewer={{ name: REVIEWER }} />
+                );
+                const text = container.textContent ?? '';
+                expect(text).toContain(sentences[1]);
+                expect(text).toContain(REVIEWER);
+                expect(text).not.toContain(literal(options[0]));
+                expect(text).not.toContain(literal(options[2]));
+            });
+
+            it.each(METHODS)(`${locale}: reviewMethod %s ger samma metodtext på alla tre nivåer`, (method) => {
+                // Granskaren skickas med i alla fall: ett namn ensamt väljer ingen metod.
+                const chosen = LEVELS.map(level => {
+                    const { container, unmount } = render(
+                        <AccessibilityStatement {...defaultProps} locale={locale} complianceLevel={level} reviewMethod={method} reviewer={{ name: REVIEWER }} />
+                    );
+                    const text = container.textContent ?? '';
+                    unmount();
+                    return sentences.filter(s => text.includes(s));
+                });
+                expect(chosen).toEqual(LEVELS.map(() => [sentences[expectedIndex(method)]]));
+            });
+
+            it(`${locale}: utelämnad reviewMethod ger samma utlåtande som 'self-assessment', och självskattningen`, () => {
+                const omitted = renderToStaticMarkup(<AccessibilityStatement {...defaultProps} locale={locale} />);
+                expect(omitted).toBe(renderToStaticMarkup(
+                    <AccessibilityStatement {...defaultProps} locale={locale} reviewMethod="self-assessment" />
+                ));
+                const { container } = render(<AccessibilityStatement {...defaultProps} locale={locale} />);
+                expect(container.textContent).toContain(sentences[0]);
+            });
+        }
+
+        const MISSING: Array<[string, AccessibilityStatementProps['reviewer']]> = [
+            ['utan reviewer', undefined],
+            ['med tomt namn', { name: '' }],
+            ['med bara blanksteg i namnet', { name: '   ' }],
+        ];
+
+        it.each(MISSING)('external-review %s kastar i stället för att rendera', (_label, reviewer) => {
+            expect(() => renderToStaticMarkup(
+                <AccessibilityStatement {...defaultProps} reviewMethod="external-review" reviewer={reviewer} />
+            )).toThrow(/reviewer/);
+        });
+
+        it('sidfoten namnger verktyget som skrev dokumentet, aldrig granskaren', () => {
+            for (const locale of testingContent.keys()) {
+                const { container, unmount } = render(
+                    <AccessibilityStatement {...defaultProps} locale={locale} reviewMethod="external-review" reviewer={{ name: REVIEWER }} />
+                );
+                const footer = container.querySelector('footer')?.textContent ?? '';
+                expect(footer, locale).toContain(defaultProps.generatorTool.name);
+                expect(footer, locale).not.toContain(REVIEWER);
+                unmount();
+            }
+            // Utan generatorTool faller sidfoten på landets rekommenderade verktyg, inte på granskaren.
+            const { container } = render(
+                <AccessibilityStatement {...defaultProps} generatorTool={undefined} reviewMethod="external-review" reviewer={{ name: REVIEWER }} />
+            );
+            const footer = container.querySelector('footer')?.textContent ?? '';
+            expect(footer).not.toBe('');
+            expect(footer).not.toContain(REVIEWER);
+        });
     });
 });

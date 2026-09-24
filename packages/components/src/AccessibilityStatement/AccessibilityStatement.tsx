@@ -38,6 +38,21 @@ const NATIONAL_LAW_FALLBACK: Record<string, string> = {
     pl: 'obowiązujące wymagania dostępności',
 };
 
+/**
+ * Intern #95: platshållarna för den externa part som granskat webbplatsen. De
+ * står bara i metodvalets andra alternativ. Samma lista som motorns
+ * REVIEWER_PLACEHOLDERS, som täcker båda mallsatserna.
+ *
+ * Platsen fylls ur `reviewer` och ALDRIG ur `generatorTool`: det är verktyget
+ * som skrev dokumentet och det står i sidfoten. När det namnet hamnade här
+ * påstod utlåtandet att verktyget gjort en oberoende granskning (#91).
+ */
+const REVIEWER_PLACEHOLDERS = [
+    '{<extern aktör>}', '{<ekstern aktør>}', '{<ekstern aktor>}', '{<ulkoinen taho>}',
+    '{<externe partij>}', '{<externer Dritter>}', '{<tiers externe>}', '{<tercero externo>}',
+    '{<terza parte>}', '{<terceiro externo>}', '{<podmiot zewnętrzny>}', '{<third party>}',
+];
+
 /** Parentesen faller när kortnamnet inte bär ny information. Speglar motorn. */
 function lawPhrase(law: { law: string; fullName: string }): string {
     const shortName = law.law.trim();
@@ -99,6 +114,31 @@ export interface AccessibilityStatementProps {
     generatorTool?: {
         name: string;
         url: string;
+    };
+
+    /**
+     * (Valfritt) Hur bedömningen bakom utlåtandet gjordes. Ett uttryckligt val,
+     * aldrig härlett ur complianceLevel eller ur ett scanresultat.
+     *
+     * - utelämnad eller 'self-assessment': organisationen har bedömt sin egen
+     *   webbplats. Det är default, och en skanning som kunden kör själv är en
+     *   självskattning.
+     * - 'external-review': en extern part har granskat webbplatsen. Kräver
+     *   `reviewer`, och utlåtandet namnger granskaren.
+     * - 'no-review': tillgängligheten är uppskattad utan granskning.
+     */
+    reviewMethod?: 'self-assessment' | 'external-review' | 'no-review';
+
+    /**
+     * (Valfritt) Den som gjorde den externa granskningen. Krävs när reviewMethod
+     * är 'external-review': utan ett namn kastar komponenten ett fel. Utlåtandet
+     * namnger granskaren med `name`; `url` tas emot för samma form som
+     * generatorTool men renderas inte. Sidfoten namnger fortfarande verktyget
+     * som skrev dokumentet, aldrig granskaren.
+     */
+    reviewer?: {
+        name: string;
+        url?: string;
     };
 
     /**
@@ -411,6 +451,8 @@ export const AccessibilityStatement: React.FC<AccessibilityStatementProps> = ({
     assessmentDate,
     evaluationMethod,
     generatorTool,
+    reviewMethod,
+    reviewer,
     logoUrl,
     nonComplianceItems = [],
     locale = 'en',
@@ -420,6 +462,20 @@ export const AccessibilityStatement: React.FC<AccessibilityStatementProps> = ({
     badgeUrl,
     publishDate
 }) => {
+    // Intern #95: en extern granskning måste säga vem som granskade. Utan ett
+    // namn finns inget sant att skriva i granskarens plats. En ogiltig
+    // propkombination är ett programmeringsfel, men ett påstående i ett
+    // kunddokument om en granskning som ingen namngiven part gjort är värre.
+    const reviewerName = typeof reviewer?.name === 'string' ? reviewer.name.trim() : '';
+    if (reviewMethod === 'external-review' && reviewerName === '') {
+        throw new Error(
+            'AccessibilityStatement: reviewMethod="external-review" requires a reviewer prop with a non-empty name: ' +
+            "the organisation that performed the review, e.g. reviewer={{ name: 'Example Audit AB' }}. " +
+            "The statement names it as the reviewer. Use 'self-assessment' (the default) if the statement is " +
+            'based on your own testing.'
+        );
+    }
+
     // Localization & Template Logic
     const supportedLocales: Record<string, string> = {
         sv: 'sv', en: 'en', no: 'no', nb: 'no', dk: 'da',
@@ -460,8 +516,6 @@ export const AccessibilityStatement: React.FC<AccessibilityStatementProps> = ({
         '{<publish date>}': publishDate ? d(publishDate) : '[YOUR PUBLISH DATE]',
         '{<metod>}': evaluationMethod || 'Automated Scan',
         '{<method>}': evaluationMethod || 'Automated Scan',
-        '{<extern aktör>}': generatorTool?.name || 'HolmDigital Engine',
-        '{<third party>}': generatorTool?.name || 'HolmDigital Engine',
         '{<enforcement_body>}': enforcementBody,
         '{<national_law>}': (() => {
             // US has two ADA laws split by scope (Title II public / Title III private),
@@ -515,6 +569,11 @@ export const AccessibilityStatement: React.FC<AccessibilityStatementProps> = ({
         })(),
     };
 
+    // Intern #95: granskarens plats fylls bara ur reviewer, aldrig ur
+    // generatorTool. Den renderas bara när metodvalet är en uttalad extern
+    // granskning, och då är namnet kontrollerat ovan.
+    for (const placeholder of REVIEWER_PLACEHOLDERS) replacements[placeholder] = reviewerName;
+
     // Construct issue list string
     let issuesContent = '';
     if (nonComplianceItems.length > 0) {
@@ -545,7 +604,6 @@ export const AccessibilityStatement: React.FC<AccessibilityStatementProps> = ({
     replacements['{<svartid>}'] = responseTime || '';
     replacements['{<vurderingsdato>}'] = assessmentDate ? d(assessmentDate) : d(lastReviewDate);
     replacements['{<publiseringsdatum>}'] = publishDate ? d(publishDate) : '[YOUR PUBLISH DATE]';
-    replacements['{<ekstern aktor>}'] = generatorTool?.name || 'HolmDigital Engine';
     // NO placeholder bug fixes (4 missing mappings)
     replacements['{<e-postadresse>}'] = contactEmail;
     replacements['{<oppdateringsdato>}'] = d(lastReviewDate);
@@ -554,7 +612,6 @@ export const AccessibilityStatement: React.FC<AccessibilityStatementProps> = ({
 
     // DA-specific mappings
     replacements['{<e-mailadresse>}'] = contactEmail;
-    replacements['{<ekstern aktør>}'] = generatorTool?.name || 'HolmDigital Engine';
     replacements['{<offentliggørelsesdato>}'] = publishDate ? d(publishDate) : '[YOUR PUBLISH DATE]';
     replacements['{<opdateringsdato>}'] = d(lastReviewDate);
 
@@ -563,7 +620,6 @@ export const AccessibilityStatement: React.FC<AccessibilityStatementProps> = ({
     replacements['{<veröffentlichungsdatum>}'] = publishDate ? d(publishDate) : '[YOUR PUBLISH DATE]';
     replacements['{<aktualisierungsdatum>}'] = d(lastReviewDate);
     replacements['{<methode>}'] = evaluationMethod || 'Automated Scan';
-    replacements['{<externer Dritter>}'] = generatorTool?.name || 'HolmDigital Engine';
     replacements['{<mängel>}'] = issuesContent;
 
     // FR-specific mappings
@@ -571,7 +627,6 @@ export const AccessibilityStatement: React.FC<AccessibilityStatementProps> = ({
     replacements['{<date_publication>}'] = publishDate ? d(publishDate) : '[YOUR PUBLISH DATE]';
     replacements['{<date_mise_a_jour>}'] = d(lastReviewDate);
     replacements['{<méthode>}'] = evaluationMethod || 'Automated Scan';
-    replacements['{<tiers externe>}'] = generatorTool?.name || 'HolmDigital Engine';
     replacements['{<défauts>}'] = issuesContent;
     replacements['{<telefoonnummer>}'] = phoneNumber || '';
 
@@ -580,7 +635,6 @@ export const AccessibilityStatement: React.FC<AccessibilityStatementProps> = ({
     replacements['{<fecha_publicacion>}'] = publishDate ? d(publishDate) : '[YOUR PUBLISH DATE]';
     replacements['{<fecha_actualizacion>}'] = d(lastReviewDate);
     replacements['{<metodo>}'] = evaluationMethod || 'Automated Scan';
-    replacements['{<tercero externo>}'] = generatorTool?.name || 'HolmDigital Engine';
     replacements['{<deficiencias>}'] = issuesContent;
 
     // FI-specific mappings
@@ -588,7 +642,6 @@ export const AccessibilityStatement: React.FC<AccessibilityStatementProps> = ({
     replacements['{<julkaisupäivä>}'] = publishDate ? d(publishDate) : '[YOUR PUBLISH DATE]';
     replacements['{<päivityspäivä>}'] = d(lastReviewDate);
     replacements['{<metodi>}'] = evaluationMethod || 'Automated Scan';
-    replacements['{<ulkoinen taho>}'] = generatorTool?.name || 'HolmDigital Engine';
     replacements['{<puutteet>}'] = issuesContent;
     replacements['{<e-mailosoite>}'] = contactEmail;
     replacements['{<puhelinnumero>}'] = phoneNumber || '';
@@ -597,7 +650,6 @@ export const AccessibilityStatement: React.FC<AccessibilityStatementProps> = ({
     replacements['{<beoordelingsdatum>}'] = assessmentDate ? d(assessmentDate) : d(lastReviewDate);
     replacements['{<publicatiedatum>}'] = publishDate ? d(publishDate) : '[YOUR PUBLISH DATE]';
     replacements['{<updatedatum>}'] = d(lastReviewDate);
-    replacements['{<externe partij>}'] = generatorTool?.name || 'HolmDigital Engine';
     replacements['{<gebreken>}'] = issuesContent;
     replacements['{<e-mailadres>}'] = contactEmail;
 
@@ -606,7 +658,6 @@ export const AccessibilityStatement: React.FC<AccessibilityStatementProps> = ({
     replacements['{<data_pubblicazione>}'] = publishDate ? d(publishDate) : '[YOUR PUBLISH DATE]';
     replacements['{<data_aggiornamento>}'] = d(lastReviewDate);
     replacements['{<metodo_it>}'] = evaluationMethod || 'Automated Scan';
-    replacements['{<terza parte>}'] = generatorTool?.name || 'HolmDigital Engine';
     replacements['{<carenze>}'] = issuesContent;
 
     // PT-specific mappings
@@ -614,7 +665,6 @@ export const AccessibilityStatement: React.FC<AccessibilityStatementProps> = ({
     replacements['{<data_publicacao>}'] = publishDate ? d(publishDate) : '[YOUR PUBLISH DATE]';
     replacements['{<data_atualizacao>}'] = d(lastReviewDate);
     replacements['{<metodo_pt>}'] = evaluationMethod || 'Automated Scan';
-    replacements['{<terceiro externo>}'] = generatorTool?.name || 'HolmDigital Engine';
     replacements['{<deficiências>}'] = issuesContent;
 
     // PL-specific mappings
@@ -622,7 +672,6 @@ export const AccessibilityStatement: React.FC<AccessibilityStatementProps> = ({
     replacements['{<data_publikacji>}'] = publishDate ? d(publishDate) : '[YOUR PUBLISH DATE]';
     replacements['{<data_aktualizacji>}'] = d(lastReviewDate);
     replacements['{<metoda_pl>}'] = evaluationMethod || 'Automated Scan';
-    replacements['{<podmiot zewnętrzny>}'] = generatorTool?.name || 'HolmDigital Engine';
     replacements['{<braki>}'] = issuesContent;
 
     // AU-specific mappings
@@ -637,9 +686,18 @@ export const AccessibilityStatement: React.FC<AccessibilityStatementProps> = ({
      * tested …", alltså en extern granskning som aldrig gjordes, och varje ej
      * förenlig kund "we have estimated the accessibility without testing".
      * Ett verktyg som kunden själv kör är en självskattning.
+     *
+     * Intern #95: metodvalet följer anroparens uttalade `reviewMethod` och
+     * ingenting annat. Utan val blir det självskattning, som förut. Den externa
+     * granskningen kräver en namngiven granskare, och utfallet läses
+     * fortfarande aldrig här.
      */
     const choiceIndex = (kind: 'compliance' | 'method', parts: number): number => {
-        if (kind === 'method') return 0;
+        if (kind === 'method') {
+            if (reviewMethod === 'external-review') return 1;
+            if (reviewMethod === 'no-review') return parts > 2 ? 2 : 1;
+            return 0;
+        }
         if (complianceLevel === 'partial') return 1;
         if (complianceLevel === 'non-compliant') return parts > 2 ? 2 : 1;
         return 0;
