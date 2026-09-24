@@ -298,16 +298,6 @@
                     "responsibility": "Interministerial Digital Directorate — current supervisory authority for RGAA 4.1.2 compliance across French public sector digital services. Issues guidelines (référentiel), monitors declarations of accessibility, and coordinates the audit framework. Note: RGAA 5 (expected publication late 2026) will transfer this role to Arcom and introduce WCAG 2.2, mobile-app scope, and document requirements.",
                     "website": "https://www.numerique.gouv.fr"
                 },
-                "sectorAuthorities": [
-                    {
-                        "authority": "DGCCRF",
-                        "responsibility": "Konsumentskydd."
-                    },
-                    {
-                        "authority": "Banque de France",
-                        "responsibility": "Banktjänster."
-                    }
-                ],
                 "sanctions": {
                     "type": "Administrative sanction (Arcom)",
                     "description": "Up to EUR 50,000 for breach of the accessibility obligation in art. 47 I, and up to EUR 25,000 for breach of the obligations in art. 47 III and IV (accessibility declaration, multi-year plan and action plans). Imposed by Arcom after formal notice (mise en demeure).",

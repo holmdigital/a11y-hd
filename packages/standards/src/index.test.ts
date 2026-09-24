@@ -707,6 +707,14 @@ describe('Intern #83/#63/#70/#88 — datasvepet 2026-09-24', () => {
         expect(s?.description).toContain('25,000');
         expect(lag('fr-rgaa').note).toContain('2023-09-08');
     });
+
+    it('fr-rgaa bär inga sektorsmyndigheter; de hör till fr-eaa', () => {
+        // Juno 2026-09-24 (Intern #94 fråga 3): DGCCRF och Banque de France är
+        // privat sektor och konsumenträtt, inte RGAA. Fältet var dessutom på
+        // svenska. Bort, ingen översättning.
+        expect(lag('fr-rgaa').sectorAuthorities).toBeUndefined();
+        expect(lag('fr-eaa').enforcement?.authorityName).toContain('DGCCRF');
+    });
 });
 
 describe('plainLanguage encoding guard (D-10.1)', () => {

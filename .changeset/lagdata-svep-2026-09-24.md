@@ -26,6 +26,8 @@ Alla sex datum ligger bakåt i tiden, så `inForce` ändras inte för någon pos
 - `lptt.exemptions.microbusiness` vilar nu på svensk lag (2 §, 10 §) i stället för direktivet. Texten skiljer helt undantag för tjänster från en lättnad för produkter.
 - `lptt.note` säger att fristen till 2030-06-27 gäller produkter i tjänsteproduktionen och aldrig får läsas som ett allmänt anstånd.
 
+**Frankrike.** `fr-rgaa.sectorAuthorities` är **borttaget** (Intern #94 fråga 3, Juno). DGCCRF och Banque de France hör till privat sektor och konsumenträtt, alltså `fr-eaa`, som redan har DGCCRF som `enforcement`. Fältet stod dessutom på svenska. `fr-rgaa.enforcement` (DINUM) är oförändrat.
+
 **Sanktionstak.**
 
 - `dos-lagen` (Intern #83): spannet 100 000 till 1 000 000 SEK är **borttaget**, eftersom det inte finns i lagen. 19 § ger påpekande, föreläggande och vite, men inget belopp, och vitet bestäms i varje enskilt fall. Arten `Vitesföreläggande` står i `note` tills sanktionsschemat i #70 ger den ett fält. `getMaxSanction('SE')` ger oförändrat 10 000 000 SEK ur `lptt`.
