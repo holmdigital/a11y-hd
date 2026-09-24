@@ -754,30 +754,6 @@
                 "inForce": true,
                 "effectiveDate": "1993-03-01",
                 "note": "WCAG 2.2 Level AA is the AHRC-recommended benchmark since April 2025. Applies to both public and private sector."
-            },
-            {
-                "id": "au-dta",
-                "law": "Digital Experience Policy: Digital Access Standard",
-                "fullName": "Australian Government Digital Experience Policy: Digital Access Standard",
-                "euFramework": "DAS",
-                "scope": "public",
-                "lawUrl": "https://www.digital.gov.au/policy/digital-experience/digital-access-standard",
-                "enforcement": {
-                    "authority": "au-dta",
-                    "authorityName": "Digital Transformation Agency (DTA)",
-                    "responsibility": "Monitors compliance of Australian Federal Government digital services with WCAG 2.2 Level AA.",
-                    "website": "https://www.dta.gov.au"
-                },
-                "sanctions": {
-                    "type": "Agency Compliance Reporting",
-                    "description": "No financial sanctions. Non-compliant federal agencies are reported through DTA performance monitoring.",
-                    "minAmount": 0,
-                    "maxAmount": 0,
-                    "currency": "AUD"
-                },
-                "inForce": true,
-                "effectiveDate": "2025-01-01",
-                "note": "Applies to Australian Federal Government agencies only, not state/territory or private sector."
             }
         ],
         "IT": [

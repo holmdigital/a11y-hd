@@ -146,6 +146,11 @@ interface TemplateSection {
     id?: string;
     title: string;
     content: string;
+    /**
+     * Rendera avsnittet bara för de här sektorerna; saknas fältet gäller det
+     * båda. Samma fält som i motorns mallar (Intern #94 fråga 4).
+     */
+    sectors?: Array<'public' | 'private'>;
 }
 
 interface StatementTemplate {
@@ -319,7 +324,7 @@ const TEMPLATES: Record<string, StatementTemplate> = {
             { id: "reporting", title: "Reporting accessibility problems", content: "We are always working to improve the accessibility of this website. If you find a problem that is not listed on this page, or if you believe we are not meeting the requirements described here, please contact us.\n\nIf you are not satisfied with our response, you may lodge a complaint with the {<enforcement_body>} under the {<national_law>}. The AHRC complaint form is available at {<ahrc_url>}." },
             { id: "non-accessible", title: "Known accessibility barriers", content: "[\n{<issues>}\n]" },
             { id: "wcag-conformance", title: "Technical information about accessibility", content: "{This website is fully compliant with WCAG 2.2 Level AA./This website is partially compliant with WCAG 2.2 Level AA, due to the barriers listed above./This website is not compliant with WCAG 2.2 Level AA. The known barriers are listed above.}\n\nWCAG 2.2 Level AA is the standard recommended by the {<enforcement_body>} under the {<national_law>}." },
-            { id: "dta-policy", title: "Australian Government digital policy", content: "Federal government agencies are subject to the Digital Transformation Agency (DTA) Digital Experience Policy, which has included the Digital Inclusion Standard since 1 January 2025 for new services and 1 July 2025 for existing services. The Digital Inclusion Standard requires Commonwealth agencies to meet WCAG 2.2 Level AA.\n\nThis statement was prepared in accordance with best practice guidance from the DTA and the Australian Human Rights Commission (AHRC)." },
+            { id: "dta-policy", sectors: ["public"], title: "Australian Government digital policy", content: "Federal government agencies are subject to the Digital Transformation Agency (DTA) Digital Experience Policy, which has included the Digital Inclusion Standard since 1 January 2025 for new services and 1 July 2025 for existing services. The Digital Inclusion Standard requires Commonwealth agencies to meet WCAG 2.2 Level AA.\n\nThis statement was prepared in accordance with best practice guidance from the DTA and the Australian Human Rights Commission (AHRC)." },
             { id: "testing", title: "How we tested this website", content: "{We have performed a self-assessment (internal testing) of {<website>}./{<third party>} has tested {<website>}./We have estimated the accessibility without testing.}\n\nThe last assessment was made on {<assessment date>}.\n\n[Assessment method: {<method>}]\n\nThe statement was last updated on {<update date>}." }
         ]
     },
@@ -479,13 +484,11 @@ export const AccessibilityStatement: React.FC<AccessibilityStatementProps> = ({
             // vidare i ett publicerat paket efter att de rättats i det andra.
             const inForce = (law?: { inForce?: boolean }): boolean => !!law && law.inForce !== false;
 
-            // AU: Juno avgjorde 2026-09-11 att au-dda är Australiens enda bindande
-            // instrument i båda sektorerna. Digital Access Standard är ett internt
-            // styrdokument utan talerätt och får aldrig vara huvudsvar.
-            if (country === 'AU') {
-                const ddaLaw = getNationalLaws('AU').find(l => l.euFramework === 'DDA' && inForce(l));
-                if (ddaLaw) return lawPhrase(ddaLaw);
-            }
+            // Intern #68: Australien har ingen egen gren längre. Den fanns bara
+            // för att Digital Access Standard (scope public) vann väljarens
+            // företräde för exakt scope över Disability Discrimination Act
+            // (scope both). Med standarden ute ur lagdatan ger väljaren nedan
+            // lagen i båda sektorerna.
 
             // US bär flera parallella federala författningar: ADA delad på scope,
             // Section 508 på offentliga sidan och HHS Section 504 på privata.
@@ -696,6 +699,7 @@ export const AccessibilityStatement: React.FC<AccessibilityStatementProps> = ({
 
     const renderSections = (sections: TemplateSection[]) => {
         return sections.map((section, i) => {
+            if (section.sectors && !section.sectors.includes(sector)) return null;
             const content = renderTemplate(section.content, section.id === 'testing' ? 'method' : 'compliance');
             const trimmed = content.trim();
             if (!trimmed) return null;

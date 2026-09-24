@@ -272,6 +272,21 @@ describe('AccessibilityStatement en-au jurisdiction content', () => {
         expect(html).toContain('Digital Inclusion Standard');
     });
 
+    it('renders the DTA policy section for the public sector only', () => {
+        // Juno 2026-09-24 (Intern #94 fråga 4): policyn gäller federala
+        // myndigheter och ingen annan. Ett privat företag är varken "subject to"
+        // den eller en "Commonwealth agency", så avsnittet är sakligt fel där.
+        const { container } = render(
+            <AccessibilityStatement {...defaultProps} locale="en-au" country="AU" sector="private" />
+        );
+        const html = container.innerHTML;
+        expect(html).not.toContain('Australian Government digital policy');
+        expect(html).not.toContain('Digital Inclusion Standard');
+        expect(html).not.toContain('Commonwealth agencies');
+        // Resten av utlåtandet står kvar.
+        expect(html).toContain('Australian Human Rights Commission');
+    });
+
     it('renders en-au with voluntary framing (not mandatory statement language)', () => {
         const { container } = render(
             <AccessibilityStatement {...defaultProps} locale="en-au" country="AU" />

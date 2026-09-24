@@ -1,6 +1,6 @@
 
 import { describe, it, expect } from 'vitest';
-import { readFileSync } from 'fs';
+import { readFileSync, readdirSync, statSync } from 'fs';
 import { join } from 'path';
 import Ajv from 'ajv';
 import {
@@ -977,10 +977,10 @@ describe('Intern #63 — ENFORCEMENT_BODIES_DETAILED är härledd', () => {
         expect(ENFORCEMENT_BODIES_DETAILED.SE.eaa).toBe('PTS (Post- och telestyrelsen)');
     });
 
-    it('AU och US följer motorns egen routing, inte sektorsväljaren rakt av', () => {
-        // getNationalLawForSector('AU','public') ger au-dta på exakt scope-träff.
-        // Juno har avgjort att au-dda är Australiens enda bindande instrument i
-        // båda sektorerna, så härledningen måste spegla motorns AU-gren.
+    it('AU och US ger samma lag som motorns lagval', () => {
+        // US har kvar en egen gren (flera parallella federala lagar). AU går
+        // sedan Intern #68 genom den generella väljaren och landar ändå på
+        // au-dda i båda sektorerna.
         expect(deriveEnforcementLaw('AU', 'public')?.id).toBe('au-dda');
         expect(deriveEnforcementLaw('AU', 'private')?.id).toBe('au-dda');
         expect(deriveEnforcementLaw('US', 'public')?.id).toBe('us-508');
@@ -1008,13 +1008,56 @@ describe('Intern #63 — ENFORCEMENT_BODIES_DETAILED är härledd', () => {
         }
     });
 
-    it('au-dta har en egen ramverkskod, så DDA-uppslaget är entydigt', () => {
-        // Juno 2026-09-11: att tagga Digital Access Standard som DDA var sakligt
-        // fel OCH en latent bugg — getNationalLawByFramework returnerar första
-        // träffen, så en omsortering av JSON-arrayen hade tyst kunnat göra
-        // styrdokumentet till Australiens lag.
-        const dta = getNationalLaws('AU').find(l => l.id === 'au-dta');
-        expect(dta?.euFramework).toBe('DAS');
+});
+
+/**
+ * Intern #68 — Digital Access Standard ut ur lagdatan (MAJOR, Karin 2026-09-24).
+ *
+ * Junos regel: en post hör hemma här bara om ett bindande rättsligt instrument
+ * gör efterlevnaden obligatorisk och möjlig att göra gällande mot den som bär
+ * skyldigheten. Standarden är intern regeringspolicy.
+ */
+describe('Intern #68 — Australien har exakt en lag', () => {
+    // Id:t och ramverkskoden byggs ihop här, så att svepet nedan inte hittar
+    // testet självt.
+    const BORTTAGET_ID = ['au', 'dta'].join('-');
+    const BORTTAGEN_KOD = ['D', 'A', 'S'].join('');
+
+    it('T1: getNationalLawForSector ger au-dda i båda sektorerna', () => {
+        expect(getNationalLawForSector('AU', 'public')?.id).toBe('au-dda');
+        expect(getNationalLawForSector('AU', 'private')?.id).toBe('au-dda');
+    });
+
+    it('T2: getNationalLaws("AU") innehåller exakt en post', () => {
+        expect(getNationalLaws('AU').map(l => l.id)).toEqual(['au-dda']);
+    });
+
+    it('T3: varken id:t eller ramverkskoden lever kvar i paketet', () => {
+        // Källa, data, schema och dokumentation. CHANGELOG undantas: den är
+        // historik och ska säga vad som togs bort.
+        const root = join(__dirname, '..');
+        const filer: string[] = [];
+        const gå = (dir: string) => {
+            for (const namn of readdirSync(dir)) {
+                if (['node_modules', 'dist', 'CHANGELOG.md'].includes(namn)) continue;
+                const full = join(dir, namn);
+                if (statSync(full).isDirectory()) gå(full);
+                else if (/\.(ts|json|md)$/.test(namn)) filer.push(full);
+            }
+        };
+        gå(root);
+        const träffar = filer.filter(f => {
+            const text = readFileSync(f, 'utf8');
+            return text.includes(BORTTAGET_ID) || new RegExp(`['"]${BORTTAGEN_KOD}['"]`).test(text);
+        });
+        expect(träffar).toEqual([]);
+        expect(findNationalLaw(BORTTAGET_ID)).toBeNull();
+    });
+
+    it('T5: tillsynen följer samma lag som lagvalet, utan egen AU-gren', () => {
+        for (const sector of ['public', 'private'] as const) {
+            expect(deriveEnforcementLaw('AU', sector)?.id).toBe(getNationalLawForSector('AU', sector)?.id);
+        }
         expect(getNationalLawByFramework('DDA', 'AU')?.id).toBe('au-dda');
     });
 });
