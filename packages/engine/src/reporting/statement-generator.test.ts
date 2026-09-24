@@ -6,6 +6,7 @@ import type { ScanResult } from '../core/regulatory-scanner';
 import type { StatementMetadata } from './statement-generator';
 import {
     getEnforcementBody,
+    getEnforcementStatementText,
     getNationalLawByFramework,
     getNationalLawForSector,
     getNationalLaws,
@@ -485,8 +486,12 @@ describe('EAA sector support', () => {
             mockResult, 'sv', 'md',
             { ...metadata, country: 'SE', sector: 'private' }
         );
-        const eaaBody = getEnforcementBody('SE', 'private');
-        expect(output).toContain(eaaBody);
+        // Intern #83 och #94 fråga 2: tillsynen över LPTT är delad, så
+        // avsnittet anger fördelningen i stället för en ensam myndighet. PTS
+        // står där med sitt fulla namn, och den offentliga sektorns myndighet
+        // står aldrig där.
+        expect(output).toContain('Post- och telestyrelsen');
+        expect(output).not.toContain(getEnforcementBody('SE', 'public'));
     });
 
     it('should use EAA national law when sector is private for DE', async () => {
@@ -902,7 +907,7 @@ describe('Intern #82 — lagnamnsgrinden i motorn', () => {
                 fynd.push(...läckor(html, utanNamn, `${country}/${sector}/${EGET_SPRÅK[country]}/html`));
             }
             expect(fynd).toEqual([]);
-        });
+        }, 60_000); // 34 renderingar per land
     }
 
     it('lagplatsen visar namnet eller frasen för varje land och sektor', async () => {
@@ -913,5 +918,32 @@ describe('Intern #82 — lagnamnsgrinden i motorn', () => {
                 expect(out, `${country}/${sector}`).toContain(lagplatsen(getNationalLawForSector(country, sector), lang));
             }
         }
+    });
+});
+
+/**
+ * Intern #83 och Karins beslut i #94 fråga 2: tillsynen över LPTT är delad
+ * efter tjänstetyp, och motorn vet inte vilken tjänst kunden driver. Både
+ * Markdown och HTML anger därför fördelningen, med Karins text.
+ */
+describe('Intern #83 — delad tillsyn i svensk privat sektor', () => {
+    const se = { ...metadata, country: 'SE' as Country };
+
+    it.each(['md', 'html'] as const)('svensk privat sektor anger fördelningen (%s)', async (format) => {
+        const text = getEnforcementStatementText('SE', 'private', 'sv');
+        expect(text).toMatch(/^Tillsynen över lagen \(2023:254\)/);
+        const out = await generateStatementContent(mockResult, 'sv', format, { ...se, sector: 'private' });
+        expect(out).toContain(text!);
+        // Mallens mening pekade ut PTS för alla, också för ett bussbolag.
+        expect(out).not.toContain('Du kan anmäla till PTS');
+    });
+
+    it('offentlig sektor och andra språk behåller mallens tillsynsavsnitt', async () => {
+        const text = getEnforcementStatementText('SE', 'private', 'sv')!;
+        const offentlig = await generateStatementContent(mockResult, 'sv', 'md', { ...se, sector: 'public' });
+        expect(offentlig).not.toContain(text);
+        expect(offentlig).toContain(getEnforcementBody('SE', 'public'));
+        const engelska = await generateStatementContent(mockResult, 'en', 'md', { ...se, sector: 'private' });
+        expect(engelska).not.toContain(text);
     });
 });

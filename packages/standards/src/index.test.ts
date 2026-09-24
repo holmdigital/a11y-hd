@@ -36,6 +36,7 @@ import {
     isNameAttested,
     resolveNationalLawReference,
     NATIONAL_LAW_FALLBACK,
+    getEnforcementStatementText,
 } from './index';
 import type { Attestation, Country, ConvergenceRule, NationalLaw } from './types';
 import rulesSv from '../data/rules.sv.json';
@@ -734,6 +735,52 @@ describe('Intern #82 — lagnamnsgrinden', () => {
 });
 
 /**
+ * Intern #83 och Karins beslut i #94 fråga 2: myndighetsraden för svensk
+ * privat sektor anger hur tillsynen är fördelad, eftersom motorn inte vet
+ * vilken tjänst kunden driver. Texten är Karins, ordagrant.
+ */
+describe('Intern #83 — delad tillsyn i utlåtandet', () => {
+    const KARIN = 'Tillsynen över lagen (2023:254) om vissa produkters och tjänsters tillgänglighet är uppdelad mellan flera myndigheter beroende på vilken tjänst som erbjuds: Post- och telestyrelsen ansvarar för elektronisk kommunikation, banktjänster och e-handelstjänster, Mediemyndigheten för audiovisuella medietjänster, Myndigheten för tillgängliga medier för e-böcker, och Konsumentverket respektive Transportstyrelsen för olika delar av persontransporttjänster.';
+
+    it('svensk privat sektor får Karins text ordagrant', () => {
+        expect(getEnforcementStatementText('SE', 'private', 'sv')).toBe(KARIN);
+        // Karin: ingen paragrafhänvisning i löptexten.
+        expect(KARIN).not.toContain('§');
+    });
+
+    it('andra språk, andra sektorer och andra länder behåller mallens avsnitt', () => {
+        expect(getEnforcementStatementText('SE', 'private', 'en')).toBeNull();
+        expect(getEnforcementStatementText('SE', 'public', 'sv')).toBeNull();
+        expect(getEnforcementStatementText('DK', 'private', 'da')).toBeNull();
+    });
+
+    it('texten namnger lagen och går därför genom lagnamnsgrinden', () => {
+        const lptt = getNationalLaws('SE').find(l => l.id === 'lptt')!;
+        const spara = lptt.attestation;
+        try {
+            lptt.attestation = { ...spara!, attested: spara!.attested.filter(f => f !== 'lagnamn') };
+            expect(getEnforcementStatementText('SE', 'private', 'sv')).toBeNull();
+        } finally {
+            lptt.attestation = spara;
+        }
+    });
+
+    it('schemat godtar bara språkkoder med två bokstäver och tar inte tom text', () => {
+        const schema = JSON.parse(readFileSync(join(__dirname, '..', 'schema', 'national-laws-schema.json'), 'utf-8'));
+        const data = JSON.parse(readFileSync(join(__dirname, '..', 'data', 'legal', 'national-laws.json'), 'utf-8'));
+        const validera = (statementText: unknown): boolean => {
+            const kopia = structuredClone(data);
+            kopia.laws.SE.find((l: { id: string }) => l.id === 'lptt').enforcement.statementText = statementText;
+            return new Ajv({ allErrors: true }).compile(schema)(kopia) as boolean;
+        };
+        expect(validera({ sv: KARIN })).toBe(true);
+        expect(validera({ 'sv-SE': KARIN })).toBe(false);
+        expect(validera({ sv: '' })).toBe(false);
+        expect(validera({})).toBe(false);
+    });
+});
+
+/**
  * Datasvepet 2026-09-24: Intern #83 (Sverige), #63 (ikraftträdanden belagda
  * 2026-09-14 men aldrig byggda), #70 (de-bfsg) och #88 (fr-rgaa).
  *
@@ -800,6 +847,8 @@ describe('Intern #83/#63/#70/#88 — datasvepet 2026-09-24', () => {
             authorityName: 'PTS (Post- och telestyrelsen)',
             responsibility: 'Marknadskontrollmyndighet för produkter (28 § och 25 § förordning (2023:676)) samt tillsynsmyndighet för elektronisk kommunikation, banktjänster och e-handelstjänster (4 § första stycket 1, 5 och 7), med samordningsansvar för övriga sektorsmyndigheter.',
             website: 'https://pts.se',
+            // Utlåtandets text (Karins beslut i #94 fråga 2) prövas för sig.
+            statementText: expect.any(Object),
         });
         expect(lptt.sectorAuthorities?.map(s => s.authority)).toEqual(['Konsumentverket', 'Mediemyndigheten', 'MTM', 'Transportstyrelsen']);
     });

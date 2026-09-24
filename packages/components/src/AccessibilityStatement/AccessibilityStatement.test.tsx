@@ -11,6 +11,7 @@ import { AccessibilityStatement } from './AccessibilityStatement';
 import {
     getAllNationalLaws,
     getEnforcementBody,
+    getEnforcementStatementText,
     getNationalLawByFramework,
     getNationalLawForSector,
     getNationalLaws,
@@ -784,7 +785,7 @@ describe('Intern #82 — lagnamnsgrinden i komponenten', () => {
                     expect(html, `${country}/${sector}/${locale}`).not.toMatch(PLACEHOLDER_PATTERN);
                 }
             }
-        });
+        }, 60_000); // 32 renderingar per land
     }
 
     it('lagplatsen visar namnet eller frasen för varje land och sektor, aldrig ingenting', () => {
@@ -796,5 +797,36 @@ describe('Intern #82 — lagnamnsgrinden i komponenten', () => {
                 expect(html, `${country}/${sector}`).toContain(lagplatsen(getNationalLawForSector(country, sector), 'en'));
             }
         }
+    });
+});
+
+/**
+ * Intern #83 och Karins beslut i #94 fråga 2: tillsynen över LPTT är delad
+ * efter tjänstetyp, och komponenten vet inte vilken tjänst kunden driver.
+ * Tillsynsavsnittet anger därför fördelningen, med Karins text.
+ */
+describe('Intern #83 — delad tillsyn i svensk privat sektor', () => {
+    const KARIN = getEnforcementStatementText('SE', 'private', 'sv');
+
+    it('svensk privat sektor anger fördelningen, inte en ensam myndighet', () => {
+        expect(KARIN).toMatch(/^Tillsynen över lagen \(2023:254\)/);
+        const html = render(
+            <AccessibilityStatement {...defaultProps} locale="sv" country="SE" sector="private" />
+        ).container.innerHTML;
+        expect(html).toContain(KARIN!);
+        // Mallens mening pekade ut PTS för alla, också för ett bussbolag.
+        expect(html).not.toContain('Du kan anmäla till PTS');
+    });
+
+    it('offentlig sektor och andra språk behåller mallens tillsynsavsnitt', () => {
+        const offentlig = render(
+            <AccessibilityStatement {...defaultProps} locale="sv" country="SE" sector="public" />
+        ).container.innerHTML;
+        expect(offentlig).not.toContain(KARIN!);
+        expect(offentlig).toContain(getEnforcementBody('SE', 'public'));
+        const engelska = render(
+            <AccessibilityStatement {...defaultProps} locale="en" country="SE" sector="private" />
+        ).container.innerHTML;
+        expect(engelska).not.toContain(KARIN!);
     });
 });

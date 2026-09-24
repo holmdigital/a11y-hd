@@ -2,6 +2,7 @@ import React from 'react';
 import {
     getStatementToolsByCountry,
     getEnforcementBody,
+    getEnforcementStatementText,
     resolveNationalLawReference,
     type Country
 } from '@holmdigital/standards';
@@ -622,7 +623,10 @@ export const AccessibilityStatement: React.FC<AccessibilityStatementProps> = ({
     const renderSections = (sections: TemplateSection[]) => {
         return sections.map((section, i) => {
             if (section.sectors && !section.sectors.includes(sector)) return null;
-            const content = renderTemplate(section.content, section.id === 'testing' ? 'method' : 'compliance');
+            // Intern #83 och #94 fråga 2: där tillsynen är delad efter
+            // tjänstetyp bär lagposten avsnittets text. Samma som i motorn.
+            const delad = section.id === 'enforcement' ? getEnforcementStatementText(country, sector, effectiveLang) : null;
+            const content = delad ?? renderTemplate(section.content, section.id === 'testing' ? 'method' : 'compliance');
             const trimmed = content.trim();
             if (!trimmed) return null;
 
