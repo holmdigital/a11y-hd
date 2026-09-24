@@ -122,7 +122,21 @@
             "type": "object",
             "additionalProperties": false,
             "properties": {
-                "microbusiness": { "$ref": "#/definitions/MicrobusinessExemption" }
+                "microbusiness": { "$ref": "#/definitions/MicrobusinessExemption" },
+                "statutory": {
+                    "type": "array",
+                    "items": { "$ref": "#/definitions/StatutoryExemption" }
+                }
+            }
+        },
+        "StatutoryExemption": {
+            "type": "object",
+            "required": ["kind", "description", "legalBasis"],
+            "additionalProperties": false,
+            "properties": {
+                "kind": { "enum": ["actor", "content", "disproportionate-burden", "transitional"] },
+                "description": { "type": "string", "minLength": 1 },
+                "legalBasis": { "type": "string", "minLength": 1 }
             }
         },
         "MicrobusinessExemption": {

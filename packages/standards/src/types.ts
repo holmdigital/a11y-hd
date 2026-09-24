@@ -372,10 +372,38 @@ export interface NationalLaw {
         largeEntity?: ComplianceDeadlineEntry;
         smallEntity?: ComplianceDeadlineEntry;
     };
-    /** Statutory exemptions that remove an organisation from the law's scope entirely. */
+    /** Statutory exemptions and carve-outs the law itself grants. */
     exemptions?: {
         microbusiness?: MicrobusinessExemption;
+        /**
+         * Intern #83: every other exemption the statute grants, one per
+         * provision. `microbusiness` keeps its own slot because consumers
+         * compute with its thresholds; these are carried as cited text.
+         */
+        statutory?: StatutoryExemption[];
     };
+}
+
+/**
+ * One exemption granted by a provision of the law, other than the
+ * microbusiness exemption.
+ *
+ * Intern #83: DOS-lagen has no microbusiness exemption (it binds public
+ * actors), but four other carve-outs, and the data carried none of them.
+ */
+export interface StatutoryExemption {
+    /**
+     * What the provision carves out:
+     * - `actor`: an organisation or class of organisations is outside the law.
+     * - `content`: a type of content is outside the requirements.
+     * - `disproportionate-burden`: a case-by-case exemption the obliged party must claim.
+     * - `transitional`: a requirement applies only from a later date or to newer content.
+     */
+    kind: 'actor' | 'content' | 'disproportionate-burden' | 'transitional';
+    /** Human-readable summary of what the provision exempts (free text). */
+    description: string;
+    /** Citation to the provision granting the exemption. */
+    legalBasis: string;
 }
 
 /**
