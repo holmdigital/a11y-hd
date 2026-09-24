@@ -107,14 +107,14 @@ const NATIONAL_LAW_FALLBACK: Record<string, string> = {
     sv: 'gällande tillgänglighetskrav',
     no: 'gjeldende tilgjengelighetskrav',
     da: 'gældende tilgængelighedskrav',
-    fi: 'sovellettavat saavutettavuusvaatimukset',
-    de: 'die geltenden Barrierefreiheitsanforderungen',
+    fi: 'sovellettavan saavutettavuuslainsäädännön',
+    de: 'den geltenden Barrierefreiheitsanforderungen',
     nl: 'de geldende toegankelijkheidseisen',
     fr: "la réglementation d'accessibilité applicable",
     es: 'los requisitos de accesibilidad aplicables',
-    it: 'i requisiti di accessibilità applicabili',
-    pt: 'os requisitos de acessibilidade aplicáveis',
-    pl: 'obowiązujące wymagania dostępności',
+    it: 'requisiti di accessibilità applicabili',
+    pt: 'requisitos de acessibilidade aplicáveis',
+    pl: 'obowiązującymi wymaganiami dostępności',
 };
 
 /**
