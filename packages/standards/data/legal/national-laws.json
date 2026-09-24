@@ -14,14 +14,6 @@
                     "responsibility": "Granskar webbplatser, appar och tillgänglighetsredogörelser för offentliga aktörer.",
                     "website": "https://www.digg.se"
                 },
-                "sanctions": {
-                    "type": "Vitesföreläggande",
-                    "description": "Om brister inte åtgärdas efter tillsyn kan Digg förelägga aktören att vidta åtgärder vid vite.",
-                    "minAmount": 100000,
-                    "maxAmount": 1000000,
-                    "currency": "SEK",
-                    "example": "Sanktioner har historiskt rört sig mellan 100 000 kr och uppåt mot 1 000 000 kr."
-                },
                 "inForce": true,
                 "effectiveDate": "2019-01-01",
                 "exemptions": {
@@ -33,7 +25,7 @@
                         },
                         {
                             "kind": "content",
-                            "description": "Seven types of content are outside the requirements, among them live broadcasts, maps not intended for navigation, third-party content outside the actor's control, reproductions from heritage collections and content relating to certain school activities.",
+                            "description": "Five types of content are outside the requirements: (1) live broadcasts of time-based media; (2) maps not intended for navigation, where the item carries a qualification about essential information on the map content being provided accessibly in another way, which is part of item 2 and not a separate item; (3) digital services from a third party that are neither funded or developed by, nor under the control of, the public actor; (4) reproductions of items in heritage collections that cannot be made fully accessible without significant obstacles; (5) digital services in the school system or special forms of education, or in certain pedagogical care, unless they belong to the essential administrative functions of the activity. The paragraph also empowers the Government to issue further exemptions under Directive (EU) 2016/2102 Article 1(4)(a), (b), (g) and (h); that is a delegation, not a further content type.",
                             "legalBasis": "Lag (2018:1937) 9 §"
                         },
                         {
@@ -48,7 +40,7 @@
                         }
                     ]
                 },
-                "note": "Entry into force (Intern #63/#83, Juno 2026-09-14): transitional provision 1 reads 'Denna lag träder i kraft den 1 januari 2019.' The earlier value 2019-09-23 was the Web Accessibility Directive's deadline for new websites and does not appear in the Act. Transitional provision 2 is carried in exemptions.statutory, not in this date."
+                "note": "Entry into force (Intern #63/#83, Juno 2026-09-14): transitional provision 1 reads 'Denna lag träder i kraft den 1 januari 2019.' The earlier value 2019-09-23 was the Web Accessibility Directive's deadline for new websites and does not appear in the Act. Transitional provision 2 is carried in exemptions.statutory, not in this date. Sanctions (Intern #83, Karin's decision 2026-09-24; Juno 2026-09-14, re-verified 2026-09-24): type: 'Vitesföreläggande'. 19 § gives a remark (påpekande), then an injunction (föreläggande), and reads 'Ett nytt föreläggande om samma sak får förenas med vite.' The Act states no amount anywhere; the fine is set by the authority in each case under lagen (1985:206) om viten, and it is a forward-looking coercive measure, not a penalty for past conduct. The earlier range of 100,000 to 1,000,000 SEK is not in the Act, so the sanctions field is removed rather than filled with zeros. The type moves back into a field when the sanctions schema in Intern #70 lands."
             },
             {
                 "id": "lptt",
@@ -60,29 +52,25 @@
                 "enforcement": {
                     "authority": "se-pts",
                     "authorityName": "PTS (Post- och telestyrelsen)",
-                    "responsibility": "Market surveillance authority for products (förordning (2023:676) 25 §) and supervisory authority for electronic communications, banking and e-commerce services (28 §), with a coordinating role. Supervision of the other services is split between four further authorities by service, see sectorAuthorities. For the websites, apps and e-tickets of passenger transport services the supervisory authority is Konsumentverket, not PTS (31 §).",
+                    "responsibility": "Marknadskontrollmyndighet för produkter (28 § och 25 § förordning (2023:676)) samt tillsynsmyndighet för elektronisk kommunikation, banktjänster och e-handelstjänster (4 § första stycket 1, 5 och 7), med samordningsansvar för övriga sektorsmyndigheter.",
                     "website": "https://pts.se"
                 },
                 "sectorAuthorities": [
                     {
-                        "authority": "PTS (Post- och telestyrelsen)",
-                        "responsibility": "Electronic communications services, banking services and e-commerce services (lag (2023:254) 4 § first paragraph 1, 5 and 7; förordning (2023:676) 28 §), with a coordinating role."
-                    },
-                    {
                         "authority": "Konsumentverket",
-                        "responsibility": "Passenger transport services: websites, services for mobile devices including mobile applications, and electronic tickets and ticketing services (lag (2023:254) 4 § first paragraph 3 a-c; förordning (2023:676) 31 §, first sentence)."
-                    },
-                    {
-                        "authority": "Transportstyrelsen",
-                        "responsibility": "The passenger transport service elements in lag (2023:254) 4 § first paragraph 3 d, 3 e and 4 (förordning (2023:676) 31 §, second sentence)."
+                        "responsibility": "Persontransporttjänster: webbplatser, tjänster för mobila enheter samt tillhandahållande av elektroniska biljetter och elektroniska biljettförsäljningstjänster (4 § första stycket 3 a-c, 31 § första meningen)."
                     },
                     {
                         "authority": "Mediemyndigheten",
-                        "responsibility": "Audiovisual media services (förordning (2023:676) 29 §)."
+                        "responsibility": "Audiovisuella medietjänster (streaming)."
                     },
                     {
-                        "authority": "Myndigheten för tillgängliga medier (MTM)",
-                        "responsibility": "E-books (förordning (2023:676) 30 §)."
+                        "authority": "MTM",
+                        "responsibility": "E-böcker och programvara för e-böcker."
+                    },
+                    {
+                        "authority": "Transportstyrelsen",
+                        "responsibility": "Persontransporttjänster, resterande delar av 4 § första stycket 3 samt punkt 4 (31 § andra meningen)."
                     }
                 ],
                 "sanctions": {

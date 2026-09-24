@@ -614,14 +614,50 @@ describe('Intern #83/#63/#70/#88 — datasvepet 2026-09-24', () => {
         expect(ex?.statutory?.[0].legalBasis).toContain('2025:992');
     });
 
-    it('lptt pekar ut Konsumentverket för transportsajter, inte PTS', () => {
+    it('9 § har fem innehållstyper, inte sju', () => {
+        // Karins omverifiering 2026-09-24: paragrafen räknad ordagrant. Den
+        // sjätte och sjunde var regeringens delegation, inte innehållstyper.
+        const text = lag('dos-lagen').exemptions?.statutory?.find(e => e.kind === 'content')?.description ?? '';
+        expect(text).toMatch(/^Five types/);
+        for (const punkt of ['(1)', '(2)', '(3)', '(4)', '(5)']) expect(text).toContain(punkt);
+        expect(text).not.toContain('(6)');
+        expect(text).not.toMatch(/seven/i);
+        expect(text).toContain('delegation, not a further content type');
+    });
+
+    it('dos-lagen har inget sanktionsspann, bara arten i note', () => {
+        // Karin 2026-09-24: blocket bort nu, inte med #70. 19 § ger vite utan
+        // belopp; spannet 100 000 till 1 000 000 SEK fanns aldrig i lagen.
+        const dos = lag('dos-lagen');
+        expect(dos.sanctions).toBeUndefined();
+        expect(dos.note).toContain("type: 'Vitesföreläggande'");
+        expect(dos.note).toContain('Ett nytt föreläggande om samma sak får förenas med vite.');
+        // Sveriges tak kommer då ur lptt, oförändrat.
+        expect(getMaxSanction('SE')?.law).toBe(lag('lptt').law);
+    });
+
+    it('lptt följer den färdiga formen i #83 ordagrant', () => {
+        // Karin 2026-09-24 15:33: formen är tagen ordagrant ur registrets
+        // belagda not och ska inte tolkas. PTS egna tjänsteområden står i
+        // enforcement, inte som en egen rad i sectorAuthorities.
         const lptt = lag('lptt');
-        const konsumentverket = lptt.sectorAuthorities?.find(s => s.authority === 'Konsumentverket');
+        expect(lptt.enforcement).toEqual({
+            authority: 'se-pts',
+            authorityName: 'PTS (Post- och telestyrelsen)',
+            responsibility: 'Marknadskontrollmyndighet för produkter (28 § och 25 § förordning (2023:676)) samt tillsynsmyndighet för elektronisk kommunikation, banktjänster och e-handelstjänster (4 § första stycket 1, 5 och 7), med samordningsansvar för övriga sektorsmyndigheter.',
+            website: 'https://pts.se',
+        });
+        expect(lptt.sectorAuthorities?.map(s => s.authority)).toEqual(['Konsumentverket', 'Mediemyndigheten', 'MTM', 'Transportstyrelsen']);
+    });
+
+    it('lptt pekar ut Konsumentverket för transportsajter, inte PTS', () => {
+        // 4 § första stycket 3 a-c är webbplatser, appar och e-biljetter, alltså
+        // precis det motorn skannar.
+        const sa = lag('lptt').sectorAuthorities ?? [];
+        const konsumentverket = sa.find(s => s.authority === 'Konsumentverket');
         expect(konsumentverket?.responsibility).toContain('3 a-c');
-        expect(konsumentverket?.responsibility).toContain('31 §');
-        // PTS egna tjänsteområden saknades helt i listan.
-        expect(lptt.sectorAuthorities?.some(s => s.authority.startsWith('PTS'))).toBe(true);
-        expect(lptt.enforcement?.responsibility).toContain('Konsumentverket');
+        expect(konsumentverket?.responsibility).toContain('31 § första meningen');
+        expect(sa.find(s => s.authority === 'Transportstyrelsen')?.responsibility).toContain('31 § andra meningen');
     });
 
     it('lptt:s mikroföretagsundantag vilar på svensk lag och skiljer tjänster från produkter', () => {
