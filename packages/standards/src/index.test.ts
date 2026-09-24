@@ -645,6 +645,24 @@ describe('Intern #83/#63/#70/#88 — datasvepet 2026-09-24', () => {
         expect(getMaxSanction('DE')?.amount).toBe(100000);
     });
 
+    it('ca-aoda: spannet 200–100 000 är borta, och taken per dag står i note', () => {
+        // Intern #93: taken gäller PER DAG och per ansvarig. Ett platt
+        // maxAmount skulle underskatta en exponering som växer för varje dag.
+        const aoda = lag('ca-aoda');
+        expect(aoda.sanctions).toBeUndefined();
+        expect(aoda.note).toContain('$50,000 for each day');
+        expect(aoda.note).toContain('$100,000 for each day');
+        // Kanadas tak kommer då från den federala lagen, oförändrat.
+        expect(getMaxSanction('CA')?.amount).toBe(250000);
+    });
+
+    it('ca-aca: lagrummet är § 91(2), inte Part 6 i allmänhet', () => {
+        const s = lag('ca-aca').sanctions;
+        expect(s?.maxAmount).toBe(250000);
+        expect(s?.description).toContain('section 91(2)');
+        expect(s?.description).not.toContain('Part 6');
+    });
+
     it('fr-rgaa: två tak ur art. 47-1, det högre i maxAmount och det lägre i texten', () => {
         const s = lag('fr-rgaa').sanctions;
         expect(s?.maxAmount).toBe(50000);

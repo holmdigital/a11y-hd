@@ -701,15 +701,9 @@
                     "responsibility": "Oversight and enforcement of accessibility standards in Ontario.",
                     "website": "https://www.ontario.ca/page/accessibility-laws"
                 },
-                "sanctions": {
-                    "type": "Daily Fines",
-                    "description": "Significant fines for major violations, up to $100,000 per day for corporations.",
-                    "minAmount": 200,
-                    "maxAmount": 100000,
-                    "currency": "CAD"
-                },
                 "inForce": true,
-                "effectiveDate": "2005-06-13"
+                "effectiveDate": "2005-06-13",
+                "note": "Sanctions (Intern #93, Juno 2026-09-24): § 37(3) reads 'Every person who is guilty of an offence under this Act is liable on conviction, (a) to a fine of not more than $50,000 for each day or part of a day on which the offence occurs or continues to occur; or (b) if the person is a corporation, to a fine of not more than $100,000 for each day or part of a day on which the offence occurs or continues to occur.' The earlier range of 200 to 100,000 CAD is not in the Act. The field is removed rather than rewritten, because a single range cannot carry two per-day ceilings split by who is liable, and a flat maximum would understate an exposure that accrues per day. The two-element form, one per liable person, arrives with the sanctions schema in Intern #70."
             },
             {
                 "id": "ca-aca",
@@ -736,7 +730,7 @@
                 ],
                 "sanctions": {
                     "type": "Administrative Monetary Penalty",
-                    "description": "Accessibility Commissioner may impose administrative monetary penalties (AMPs) up to 250,000 CAD per violation under the Accessible Canada Act (Part 6). AMP amounts scale with severity, history of non-compliance, and the size/resources of the regulated entity. Persistent non-compliance can also trigger compliance orders, prosecution, and reputational sanctions via the public registry.",
+                    "description": "Accessibility Commissioner may impose administrative monetary penalties (AMPs) up to 250,000 CAD per violation under the Accessible Canada Act, section 91(2). AMP amounts scale with severity, history of non-compliance, and the size/resources of the regulated entity. Persistent non-compliance can also trigger compliance orders, prosecution, and reputational sanctions via the public registry.",
                     "minAmount": 0,
                     "maxAmount": 250000,
                     "currency": "CAD"
@@ -755,7 +749,7 @@
                         "description": "Federally-regulated private sector ICT accessibility compliance deadline (broadcasting, telecom, federally-regulated banks and transport providers). Three years from the ICT amendments' in-force date."
                     }
                 },
-                "note": "The Accessible Canada Act (ACA) is the federal accessibility statute, complementary to but distinct from provincial laws like AODA (Ontario), AMA (Manitoba), and similar. The Accessible Canada Regulations (SOR/2021-241) were amended to add specific ICT/digital accessibility requirements; the ICT amendments were registered and came into force 2025-12-05. The technical standard is CAN/ASC-EN 301 549:2024, the Canadian adoption of the EN 301 549 family (WCAG 2.1 Level AA baseline). Tiered enforcement: the Accessibility Commissioner at CHRC has primary jurisdiction; sector-specific enforcement is split with CRTC (broadcasting + telecom) and the Canadian Transportation Agency (federally-regulated transport). For US-style federal-vs-state context: this is the Canadian federal layer, complementary to provincial AODA-style laws. Annual progress reports were due from regulated entities by 2026-06-01 (passed). Sources: https://www.chrc-ccdp.gc.ca/organizations/accessible-canada-act-responsibilities/accessibility-deadlines and https://www.canada.ca/en/employment-social-development/programs/accessible-canada/regulations-summary-act.html Flyttat hit ur fullName (Intern #63/#66, 2026-09-12): Accessible Canada Regulations (SOR/2021-241), vars ICT-ändringar registrerades och trädde i kraft 2025-12-05. Lagens 1 § lyder \"This Act may be cited as the Accessible Canada Act\", alltså hör regleringen inte i namnfältet."
+                "note": "The Accessible Canada Act (ACA) is the federal accessibility statute, complementary to but distinct from provincial laws like AODA (Ontario), AMA (Manitoba), and similar. The Accessible Canada Regulations (SOR/2021-241) were amended to add specific ICT/digital accessibility requirements; the ICT amendments were registered and came into force 2025-12-05. The technical standard is CAN/ASC-EN 301 549:2024, the Canadian adoption of the EN 301 549 family (WCAG 2.1 Level AA baseline). Tiered enforcement: the Accessibility Commissioner at CHRC has primary jurisdiction; sector-specific enforcement is split with CRTC (broadcasting + telecom) and the Canadian Transportation Agency (federally-regulated transport). For US-style federal-vs-state context: this is the Canadian federal layer, complementary to provincial AODA-style laws. Annual progress reports were due from regulated entities by 2026-06-01 (passed). Sources: https://www.chrc-ccdp.gc.ca/organizations/accessible-canada-act-responsibilities/accessibility-deadlines and https://www.canada.ca/en/employment-social-development/programs/accessible-canada/regulations-summary-act.html Flyttat hit ur fullName (Intern #63/#66, 2026-09-12): Accessible Canada Regulations (SOR/2021-241), vars ICT-ändringar registrerades och trädde i kraft 2025-12-05. Lagens 1 § lyder \"This Act may be cited as the Accessible Canada Act\", alltså hör regleringen inte i namnfältet. Sanctions (Intern #70, Juno 2026-09-24): § 91(2) reads 'The maximum penalty in respect of a violation that may be fixed under regulations made under paragraph (1)(b) is $250,000.' The law makes no distinction between individuals and corporations. maxAmount 250000 is confirmed; the reference is § 91(2), not Part 6 as a whole."
             }
         ],
         "AU": [

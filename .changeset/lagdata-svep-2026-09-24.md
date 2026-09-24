@@ -2,7 +2,7 @@
 '@holmdigital/standards': minor
 ---
 
-Lagdatasvepet 2026-09-24: Sverige (Intern #83), sex ikraftträdanden (Intern #63), och två sanktionstak som inte fanns i lagen (Intern #70, #88).
+Lagdatasvepet 2026-09-24: Sverige (Intern #83), sex ikraftträdanden (Intern #63), och tre sanktionstak som inte fanns i lagen (Intern #70, #88, #93).
 
 **Minor, eftersom en typ tillkommer:** `NationalLaw.exemptions.statutory?: StatutoryExemption[]`, med `kind` (`actor`, `content`, `disproportionate-burden`, `transitional`), `description` och `legalBasis`. Typen `exemptions` rymde bara mikroföretagsundantaget, och DOS-lagen har inget sådant (den binder offentliga aktörer) men fyra andra undantag. Fältet är valfritt, så ingen befintlig konsument påverkas.
 
@@ -31,7 +31,10 @@ Alla sex datum ligger bakåt i tiden, så `inForce` ändras inte för någon pos
 - `de-bfsg`: 500 000 EUR → **100 000 EUR**. § 37 Abs. 2 ger 100 000 för bland annat tjänsteledet och 10 000 för övrigt.
 - `fr-rgaa`: 300 000 EUR → **50 000 EUR**. Art. 47-1 ger 50 000 för huvudkravet och 25 000 för deklarations- och plankraven.
 
-I båda fallen står det lägre taket i `description`. Taken är två separata belopp för olika överträdelser, inte ett spann, så `minAmount` förblir 0 och inte det lägre taket. Tvåelementsformen kommer med sanktionsschemat i #70. `getMaxSanction('DE')` och `getMaxSanction('FR')` ger nu 100 000 respektive 50 000.
+- `ca-aoda` (Intern #93): spannet 200–100 000 CAD är **borttaget**, eftersom det inte finns i lagen. § 37(3) ger 50 000 CAD per dag för en person och 100 000 CAD per dag för ett bolag, och båda taken står citerade i `note`. Här är borttagning rätt och inte ett högsta belopp: taken gäller per dag, så ett platt `maxAmount` skulle underskatta exponeringen.
+- `ca-aca` (Intern #70): lagrummet i `description` är nu § 91(2) i stället för "Part 6". Taket 250 000 CAD är bekräftat.
+
+För `de-bfsg` och `fr-rgaa` står det lägre taket i `description`. Taken är två separata belopp för olika överträdelser, inte ett spann, så `minAmount` förblir 0 och inte det lägre taket. Tvåelementsformen kommer med sanktionsschemat i #70. `getMaxSanction('DE')` och `getMaxSanction('FR')` ger nu 100 000 respektive 50 000.
 
 **Inget kunddokument ändras.** Motorn och komponenten läser varken `effectiveDate`, `exemptions`, `sectorAuthorities`, `responsibility` eller `sanctions`. Myndighetsraden i ett svenskt utlåtande för privat sektor säger därför fortfarande PTS, även för en transportkund. Att ändra det kräver ett formuleringsbeslut och ligger kvar i #83.
 
