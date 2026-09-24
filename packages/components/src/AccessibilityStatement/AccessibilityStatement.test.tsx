@@ -784,7 +784,7 @@ describe('Intern #82 — lagnamnsgrinden i komponenten', () => {
                     expect(html, `${country}/${sector}/${locale}`).not.toMatch(PLACEHOLDER_PATTERN);
                 }
             }
-        });
+        }, 60_000); // 32 renderingar per land
     }
 
     it('lagplatsen visar namnet eller frasen för varje land och sektor, aldrig ingenting', () => {
