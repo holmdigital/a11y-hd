@@ -17,6 +17,14 @@ updates:
       time: "06:00"
       timezone: "Europe/Stockholm"
     open-pull-requests-limit: 10
+    # Intern #89 fynd 1: utan den här raden skrev en MINOR-grupp (PR #109,
+    # 2026-07-28) om motorns react/react-dom från "^18.3.1 || ^19.0.0" till
+    # "^19.2.8", och en senare grupp (PR #191) ville göra "^19.3.0". Undantaget
+    # för React-majors längre ned stoppade inte det, eftersom det bara gäller
+    # majors. Ett spann som redan tillåter den nya versionen ska lämnas orört,
+    # och bara låsfilen ska uppdateras. För ett publicerat bibliotek är ett
+    # smalare spann en brytande ändring för konsumenterna.
+    versioning-strategy: increase-if-necessary
     commit-message:
       prefix: "chore(deps)"
       prefix-development: "chore(dev-deps)"
