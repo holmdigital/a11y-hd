@@ -4,8 +4,26 @@ import path from 'path';
 import { generateStatementContent, resolveNationalLawReference } from './statement-generator';
 import type { ScanResult } from '../core/regulatory-scanner';
 import type { StatementMetadata } from './statement-generator';
-import { getEnforcementBody, getNationalLawByFramework, getNationalLaws } from '@holmdigital/standards';
-import type { Country } from '@holmdigital/standards';
+import {
+    getEnforcementBody,
+    getNationalLawByFramework,
+    getNationalLawForSector,
+    getNationalLaws,
+    isNameAttested,
+    NATIONAL_LAW_FALLBACK,
+} from '@holmdigital/standards';
+import type { Country, NationalLaw } from '@holmdigital/standards';
+
+/**
+ * Intern #82: vad lagplatsen ska visa. Namnet om lagnamnet är attesterat,
+ * annars fallback-frasen på utlåtandets språk. Testerna följer registret i
+ * stället för att låsa dagens läge, så att ett land som tänds inte kräver att
+ * någon skriver om dem.
+ */
+const lagplatsen = (law: NationalLaw | null | undefined, lang: string): string =>
+    law && isNameAttested(law)
+        ? law.fullName
+        : NATIONAL_LAW_FALLBACK[lang.split('-')[0]] ?? NATIONAL_LAW_FALLBACK.en;
 
 const TEMPLATES_DIR = path.join(__dirname, 'templates');
 const templateFiles = fs.readdirSync(TEMPLATES_DIR).filter(f => f.endsWith('.json'));
@@ -319,9 +337,10 @@ describe('EU locale enforcement body and national law verification', () => {
             );
             const law = getNationalLawByFramework('WAD', countryCode as Country);
             if (law) {
-                expect(output).toContain(law.fullName);
+                // Intern #82: namnet bara när det är attesterat, annars frasen.
+                expect(output).toContain(lagplatsen(law, lang));
+                if (!isNameAttested(law)) expect(output).not.toContain(law.fullName);
             }
-            // If law is null, no assertion needed — substitution resolves to '' which is correct
         }
     );
 });
@@ -440,7 +459,12 @@ describe('New locale enforcement body and national law verification (it/pt/pl)',
             );
             const law = getNationalLawByFramework('WAD', countryCode as Country);
             if (law) {
-                expect(output).toContain(law.law);
+                // Intern #82: namnet bara när det är attesterat, annars frasen.
+                if (isNameAttested(law)) expect(output).toContain(law.law);
+                else {
+                    expect(output).toContain(lagplatsen(law, lang));
+                    expect(output).not.toContain(law.law);
+                }
             }
         }
     );
@@ -472,7 +496,10 @@ describe('EAA sector support', () => {
         );
         const eaaLaw = getNationalLawByFramework('EAA', 'DE');
         expect(eaaLaw).not.toBeNull();
-        expect(output).toContain(eaaLaw!.fullName);
+        // Intern #82: namnet bara när det är attesterat, annars frasen. Den
+        // offentliga sektorns lag får aldrig stå i dess ställe.
+        expect(output).toContain(lagplatsen(eaaLaw, 'de'));
+        expect(output).not.toContain(getNationalLawByFramework('WAD', 'DE')!.fullName);
     });
 
     it('should use WAD national law when sector is public for DE', async () => {
@@ -538,10 +565,11 @@ describe('US ADA — sector-aware national law routing', () => {
             'md',
             { ...metadata, country: 'US', sector: 'private' }
         );
-        expect(output).toContain('ADA Title III');
+        // Intern #82: Title III står där bara när dess namn är attesterat.
+        const titleIII = getNationalLaws('US').find(l => l.id === 'us-ada-title-iii');
+        if (isNameAttested(titleIII)) expect(output).toContain('ADA Title III');
+        else expect(output).toContain(lagplatsen(titleIII, 'en-us'));
         // ADA Title II must not be cited as primary law in private-sector statement.
-        // Note: the en-us template still has legacy Section 508 references in the
-        // technical-compliance status choice block (out-of-scope P2 cleanup).
         expect(output).not.toMatch(/ADA Title II[^I]/);
     });
 
@@ -593,7 +621,8 @@ describe('US ADA — sector-aware national law routing', () => {
             'md',
             { ...metadata, country: 'US', sector: 'private' }
         );
-        expect(output).toContain('ADA Title III');
+        const titleIII = getNationalLaws('US').find(l => l.id === 'us-ada-title-iii');
+        expect(output).toContain(isNameAttested(titleIII) ? 'ADA Title III' : lagplatsen(titleIII, 'en-us'));
         expect(output).not.toContain('Section 504');
     });
 });
@@ -625,7 +654,10 @@ describe('Intern #64 — nationellt lagval', () => {
     it('M1: Kanada får den federala lagen, aldrig Ontarios provinslag', () => {
         for (const sector of ['public', 'private'] as const) {
             const line = resolveNationalLawReference('CA', sector, 'en');
-            expect(line, sector).toContain('Accessible Canada Act');
+            // Lagvalet ger den federala lagen; grinden (Intern #82) avgör om
+            // dess namn skrivs ut eller frasen.
+            expect(getNationalLawForSector('CA', sector)?.id, sector).toBe('ca-aca');
+            expect(line, sector).toContain(lagplatsen(getNationalLawForSector('CA', sector), 'en'));
             // AODA gäller Ontario. Att rendera den för landet Kanada är sakligt
             // fel oavsett sektor, hur rätt den än är för provinsen.
             expect(line, sector).not.toContain('Ontarians');
@@ -635,8 +667,11 @@ describe('Intern #64 — nationellt lagval', () => {
     it('M1: Norge privat får sin forskrift, inte en lagtom fallback-fras', () => {
         // no-ikt har scope 'both'. Den var osynlig för privatspåret bara för att
         // dess ramverk inte heter EAA — vi hade rätt lag i datan och använde den inte.
-        const line = resolveNationalLawReference('NO', 'private', 'en');
-        expect(line).toContain('universell utforming');
+        // Regressionen gällde valet, så valet prövas direkt. Grinden (Intern #82)
+        // avgör sedan om forskriftens namn eller frasen skrivs ut.
+        const vald = getNationalLawForSector('NO', 'private');
+        expect(vald?.id).toBe('no-ikt');
+        expect(resolveNationalLawReference('NO', 'private', 'en')).toContain(lagplatsen(vald, 'en'));
     });
 
     it('M5: getNationalLawByFramework respekterar scope när det anges', () => {
@@ -728,7 +763,8 @@ describe('Intern #65 — mallarna får inte hårdkoda lagnamn', () => {
     it('Kanada namnger den federala lagen i det renderade fältet, aldrig Ontarios', () => {
         for (const sector of ['public', 'private'] as const) {
             const line = resolveNationalLawReference('CA', sector, 'en-ca');
-            expect(line, sector).toContain('Accessible Canada Act');
+            // Intern #82: den federala lagen, eller frasen om namnet inte är attesterat.
+            expect(line, sector).toContain(lagplatsen(getNationalLawForSector('CA', sector), 'en-ca'));
             expect(line, sector).not.toContain('Ontarians');
         }
     });
@@ -745,8 +781,16 @@ describe('Intern #65 — mallarna får inte hårdkoda lagnamn', () => {
     it('US skiljer sektorerna i alla fält, inte bara i intro', () => {
         // en-us.json hade rätt intro men hårdkodad technical-sektion, så samma
         // dokument kunde säga ADA Title III i ett stycke och Section 508 i nästa.
-        expect(resolveNationalLawReference('US', 'private', 'en-us')).toContain('Title III');
-        expect(resolveNationalLawReference('US', 'public', 'en-us')).toContain('Title II');
+        // Intern #82: varje sektor visar sin egen lag eller frasen, aldrig den andras.
+        const us = getNationalLaws('US');
+        const titleII = us.find(l => l.id === 'us-ada-title-ii');
+        const titleIII = us.find(l => l.id === 'us-ada-title-iii');
+        const privat = resolveNationalLawReference('US', 'private', 'en-us');
+        expect(privat).toContain(lagplatsen(titleIII, 'en-us'));
+        expect(privat).not.toContain(titleII!.fullName);
+        const offentlig = resolveNationalLawReference('US', 'public', 'en-us');
+        expect(offentlig).toContain(lagplatsen(titleII, 'en-us'));
+        expect(offentlig).not.toContain(titleIII!.fullName);
     });
 
     it('ingen mall renderar en tom lagrad för något land eller sektor', () => {
@@ -798,6 +842,76 @@ describe('Intern #63 — lagraden upprepar inte namnet', () => {
     it('kortnamnet står kvar i parentes när det faktiskt skiljer sig', () => {
         // Dedupliceringen får inte äta upp parentesen där den bär information.
         expect(resolveNationalLawReference('SE', 'public', 'sv')).toContain('(DOS-lagen)');
-        expect(resolveNationalLawReference('PT', 'public', 'pt')).toContain('(DL 83/2018)');
+        expect(resolveNationalLawReference('FR', 'public', 'fr')).toContain('(RGAA)');
+        // Intern #82: pt-wad har inget attesterat lagnamn än, och då skrivs
+        // varken namn eller parentes. Kontrollen tänds med landet.
+        const ptWad = getNationalLaws('PT').find(l => l.id === 'pt-wad');
+        if (isNameAttested(ptWad)) {
+            expect(resolveNationalLawReference('PT', 'public', 'pt')).toContain('(DL 83/2018)');
+        }
+    });
+});
+
+/**
+ * Intern #82 avsnitt 6, motordelen. För varje land, sektor och mall: en
+ * lagpost utan attesterat lagnamn får aldrig synas med namn, varken i
+ * lagplatsen eller någon annanstans i dokumentet.
+ */
+describe('Intern #82 — lagnamnsgrinden i motorn', () => {
+    const COUNTRIES: Country[] = ['SE', 'NO', 'DK', 'FI', 'NL', 'DE', 'FR', 'ES', 'IE', 'IT', 'PT', 'PL', 'GB', 'US', 'CA', 'AU'];
+    const LANGS = templateFiles.map(f => f.replace(/\.json$/, ''));
+    const EGET_SPRÅK: Record<string, string> = {
+        SE: 'sv', NO: 'no', DK: 'da', FI: 'fi', DE: 'de', FR: 'fr', NL: 'nl', ES: 'es',
+        IT: 'it', PT: 'pt', PL: 'pl', IE: 'en', GB: 'en-gb', US: 'en-us', CA: 'en-ca', AU: 'en-au',
+    };
+    /**
+     * Känd krock, rapporterad till Juno 2026-09-24 i Intern #82: myndighetsraden
+     * för ES och PT privat citerar lagen med lagrum, eftersom tillsynen där inte
+     * har en enda myndighet. Specen säger både att myndigheten inte tystnar i
+     * det här bygget och att ingen mening får namnge lagen bakvägen. Undantaget
+     * gäller exakt de här citaten; varje annan förekomst av namnet fäller testet.
+     */
+    const MYNDIGHETSRADENS_LAGRUM: Record<string, string> = {
+        'es-eaa': 'Ley 11/2023, art. 27.3',
+        'pt-eaa': 'Decreto-Lei n.º 82/2022, art. 28.º',
+    };
+    const läckor = (out: string, utanNamn: NationalLaw[], var_: string): string[] => {
+        const fynd: string[] = [];
+        for (const lag of utanNamn) {
+            const citat = MYNDIGHETSRADENS_LAGRUM[lag.id];
+            const text = citat ? out.split(citat).join('') : out;
+            if (text.includes(lag.fullName) || text.includes(lag.law)) fynd.push(`${var_} namngav ${lag.id}`);
+        }
+        return fynd;
+    };
+
+    it('mallarna finns för alla språk', () => {
+        expect(LANGS.length).toBeGreaterThanOrEqual(16);
+    });
+
+    for (const country of COUNTRIES) {
+        it(`${country}: ingen lag utan attesterat lagnamn syns, i någon sektor eller mall`, async () => {
+            const utanNamn = getNationalLaws(country).filter(l => !isNameAttested(l));
+            const fynd: string[] = [];
+            for (const sector of ['public', 'private'] as const) {
+                for (const lang of LANGS) {
+                    const out = await generateStatementContent(mockResult, lang, 'md', { ...metadata, country, sector });
+                    fynd.push(...läckor(out, utanNamn, `${country}/${sector}/${lang}/md`));
+                }
+                const html = await generateStatementContent(mockResult, EGET_SPRÅK[country], 'html', { ...metadata, country, sector });
+                fynd.push(...läckor(html, utanNamn, `${country}/${sector}/${EGET_SPRÅK[country]}/html`));
+            }
+            expect(fynd).toEqual([]);
+        }, 60_000); // 34 renderingar per land
+    }
+
+    it('lagplatsen visar namnet eller frasen för varje land och sektor', async () => {
+        for (const country of COUNTRIES.filter(c => c !== 'US')) {
+            for (const sector of ['public', 'private'] as const) {
+                const lang = EGET_SPRÅK[country];
+                const out = await generateStatementContent(mockResult, lang, 'md', { ...metadata, country, sector });
+                expect(out, `${country}/${sector}`).toContain(lagplatsen(getNationalLawForSector(country, sector), lang));
+            }
+        }
     });
 });

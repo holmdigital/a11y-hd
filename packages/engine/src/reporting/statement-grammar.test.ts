@@ -17,21 +17,12 @@
 import { describe, it, expect } from 'vitest';
 import fs from 'fs';
 import path from 'path';
+import { NATIONAL_LAW_FALLBACK } from '@holmdigital/standards';
 
 const TEMPLATES_DIR = path.join(__dirname, 'templates');
 const COMPONENT = path.join(__dirname, '..', '..', '..', 'components', 'src', 'AccessibilityStatement', 'AccessibilityStatement.tsx');
 const ENGINE = path.join(__dirname, 'statement-generator.ts');
 const SLOT = '{<national_law>}';
-
-/** Fallback-kartan ur källan, så att testet läser det som faktiskt byggs. */
-function fallbackMap(file: string): Record<string, string> {
-    const src = fs.readFileSync(file, 'utf8');
-    const start = src.indexOf('const NATIONAL_LAW_FALLBACK');
-    const block = src.slice(start, src.indexOf('};', start));
-    const map: Record<string, string> = {};
-    for (const m of block.matchAll(/^\s+(\w+):\s*(['"])(.*)\2,\s*$/gm)) map[m[1]] = m[3];
-    return map;
-}
 
 /** Alla texter per språk: motorns JSON-mall och komponentens inbyggda mall. */
 function templateTexts(): Array<{ lang: string; set: 'md' | 'html'; text: string }> {
@@ -101,7 +92,7 @@ describe('lagplatsen i utlåtandena', () => {
         const words = texts.filter(t => t.lang === 'pl').flatMap(t => wordsBeforeSlot(t.text));
         expect(words.length).toBeGreaterThan(0);
         expect(new Set(words)).toEqual(new Set(['z']));
-        expect(fallbackMap(ENGINE).pl).toMatch(/^obowiązującymi /);
+        expect(NATIONAL_LAW_FALLBACK.pl).toMatch(/^obowiązującymi /);
     });
 
     it('fi: varje lagplats styr genitiv, och fallbacken står i genitiv', () => {
@@ -115,14 +106,20 @@ describe('lagplatsen i utlåtandena', () => {
             return out;
         });
         expect(new Set(after)).toEqual(new Set(['mukainen', 'vaatimukset', 'valvonnasta']));
-        expect(fallbackMap(ENGINE).fi).toMatch(/n$/);
+        expect(NATIONAL_LAW_FALLBACK.fi).toMatch(/n$/);
     });
 });
 
 describe('fallback-fraserna', () => {
-    it('är ordagrant identiska i motorn och komponenten', () => {
-        const engine = fallbackMap(ENGINE);
-        expect(Object.keys(engine).length).toBeGreaterThanOrEqual(12);
-        expect(fallbackMap(COMPONENT)).toEqual(engine);
+    // Intern #82: fraserna och lagvalet bor i @holmdigital/standards. Motorn och
+    // komponenten bar varsin kopia, och kopiorna gled isär en gång (Intern
+    // #63/#66). Det här testet fäller en ny lokal kopia i någon av dem.
+    it('finns bara i standards, aldrig som en kopia i motorn eller komponenten', () => {
+        expect(Object.keys(NATIONAL_LAW_FALLBACK).length).toBeGreaterThanOrEqual(12);
+        for (const file of [ENGINE, COMPONENT]) {
+            const src = fs.readFileSync(file, 'utf8');
+            expect(src, path.basename(file)).not.toMatch(/const NATIONAL_LAW_FALLBACK/);
+            expect(src, path.basename(file)).toMatch(/resolveNationalLawReference[\s\S]*?from '@holmdigital\/standards'/);
+        }
     });
 });

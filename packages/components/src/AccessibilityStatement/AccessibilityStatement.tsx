@@ -2,8 +2,7 @@ import React from 'react';
 import {
     getStatementToolsByCountry,
     getEnforcementBody,
-    getNationalLawForSector,
-    getNationalLaws,
+    resolveNationalLawReference,
     type Country
 } from '@holmdigital/standards';
 import { BADGE_LABELS, UPDATED_LABEL, FOOTER_TEXT } from './locale-chrome';
@@ -11,41 +10,6 @@ import { BADGE_LABELS, UPDATED_LABEL, FOOTER_TEXT } from './locale-chrome';
 /**
  * Props för AccessibilityStatement-komponenten
  */
-/**
- * Intern #63/#66: fallback-fras när inget lagrum finns för land och sektor.
- *
- * Ordagrant samma strängar som motorns NATIONAL_LAW_FALLBACK. De MÅSTE vara
- * identiska — ett utlåtande ska inte säga olika saker beroende på om det
- * genererades av CLI:t eller av den här komponenten.
- *
- * Före den här kartan returnerade komponenten tom sträng, så meningen "…
- * uppfyller , eventuella kända tillgänglighetsproblem" gick ut till kanadensisk,
- * norsk och brittisk privat sektor. Det är samma fel som Intern #31 stängde för
- * motorn 2026-08-25, som aldrig lagades här.
- */
-const NATIONAL_LAW_FALLBACK: Record<string, string> = {
-    en: 'applicable accessibility requirements',
-    sv: 'gällande tillgänglighetskrav',
-    no: 'gjeldende tilgjengelighetskrav',
-    da: 'gældende tilgængelighedskrav',
-    fi: 'sovellettavan saavutettavuuslainsäädännön',
-    de: 'den geltenden Barrierefreiheitsanforderungen',
-    nl: 'de geldende toegankelijkheidseisen',
-    fr: "la réglementation d'accessibilité applicable",
-    es: 'los requisitos de accesibilidad aplicables',
-    it: 'requisiti di accessibilità applicabili',
-    pt: 'requisitos de acessibilidade aplicáveis',
-    pl: 'obowiązującymi wymaganiami dostępności',
-};
-
-/** Parentesen faller när kortnamnet inte bär ny information. Speglar motorn. */
-function lawPhrase(law: { law: string; fullName: string }): string {
-    const shortName = law.law.trim();
-    const longName = law.fullName.trim();
-    return longName === shortName || longName.startsWith(shortName)
-        ? longName
-        : `${longName} (${shortName})`;
-}
 export interface AccessibilityStatementProps {
     /**
      * Landskod (SE, NO, DK, FI, DE, FR, ES, IE)
@@ -468,54 +432,12 @@ export const AccessibilityStatement: React.FC<AccessibilityStatementProps> = ({
         '{<extern aktör>}': generatorTool?.name || 'HolmDigital Engine',
         '{<third party>}': generatorTool?.name || 'HolmDigital Engine',
         '{<enforcement_body>}': enforcementBody,
-        '{<national_law>}': (() => {
-            // US has two ADA laws split by scope (Title II public / Title III private),
-            // Section 508 as parallel federal-agency framework, and HHS Section 504
-            // (REHAB) for HHS-funded private organisations. Mirrors engine's
-            // statement-generator.ts US branch.
-            // Intern #63/#66: den här grenen bar hela defektuppsättningen från
-            // Intern #64, som lagades i motorn men aldrig här. Verifierat mot
-            // components 4.0.1: CA public namngav Ontarios AODA som Kanadas lag,
-            // CA/NO/GB privat renderade TOM STRÄNG, och US privat namngav
-            // Section 504 som bindande lag trots inForce: false till 2027-05-11.
-            //
-            // Logiken speglar nu motorns statement-generator.ts exakt. Håll dem
-            // i synk: att de divergerade är hela skälet till att felen levde
-            // vidare i ett publicerat paket efter att de rättats i det andra.
-            const inForce = (law?: { inForce?: boolean }): boolean => !!law && law.inForce !== false;
-
-            // Intern #68: Australien har ingen egen gren längre. Den fanns bara
-            // för att Digital Access Standard (scope public) vann väljarens
-            // företräde för exakt scope över Disability Discrimination Act
-            // (scope both). Med standarden ute ur lagdatan ger väljaren nedan
-            // lagen i båda sektorerna.
-
-            // US bär flera parallella federala författningar: ADA delad på scope,
-            // Section 508 på offentliga sidan och HHS Section 504 på privata.
-            if (country === 'US') {
-                const usLaws = getNationalLaws('US');
-                const adaLaw = usLaws.find(l => l.euFramework === 'ADA' && l.scope === sector && inForce(l));
-                if (adaLaw) {
-                    if (sector === 'public') {
-                        const s508 = usLaws.find(l => l.id === 'us-508' && inForce(l));
-                        return s508 ? `${lawPhrase(adaLaw)} & ${lawPhrase(s508)}` : lawPhrase(adaLaw);
-                    }
-                    // inForce-filtret är det som håller Section 504 ute till 2027.
-                    const hhs504 = usLaws.find(l => l.euFramework === 'REHAB' && l.scope === 'private' && inForce(l));
-                    return hhs504 ? `${lawPhrase(adaLaw)} & ${lawPhrase(hhs504)}` : lawPhrase(adaLaw);
-                }
-            }
-
-            // Allt annat går på land + scope + inForce, aldrig på euFramework.
-            // getNationalLawForSector utesluter också subnationella lagar, vilket
-            // är det som håller Ontarios AODA ute från Kanadas landsnyckel.
-            const law = getNationalLawForSector(country, sector);
-            if (law) return lawPhrase(law);
-
-            // Aldrig tom sträng. Intern #31.
-            const langKey = effectiveLang.split('-')[0];
-            return NATIONAL_LAW_FALLBACK[langKey] ?? NATIONAL_LAW_FALLBACK.en;
-        })(),
+        // Intern #82: lagvalet, lagnamnsgrinden och fallback-fraserna bor i
+        // @holmdigital/standards, och motorn använder samma funktion. Den här
+        // grenen var en ordagrann kopia av motorns, och kopiorna har glidit
+        // isär en gång redan: komponenten bar hela Intern #64:s defektuppsättning
+        // efter att motorn lagats (Intern #63/#66).
+        '{<national_law>}': resolveNationalLawReference(country, sector, effectiveLang),
     };
 
     // Construct issue list string

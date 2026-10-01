@@ -1,7 +1,7 @@
 import React from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { AccessibilityStatement, AccessibilityStatementProps } from '@holmdigital/components';
-import { Country, getEnforcementBody, getNationalLawForSector, getNationalLaws } from '@holmdigital/standards';
+import { Country, getEnforcementBody, getNationalLaws, resolveNationalLawReference } from '@holmdigital/standards';
 import { ScanResult } from '../core/regulatory-scanner';
 import fs from 'fs/promises';
 import path from 'path';
@@ -101,98 +101,15 @@ interface StatementTemplate {
 }
 
 /**
- * Language-keyed fallback for the national-law slot when the data has no naming law.
- * Intern #31: a statement must NEVER render an empty law reference. When a country has
- * no matching national law (e.g. an EAA transposition not yet in the data, or a country
- * that legitimately has no EAA post), the "complies with …" sentence is reworded to be
- * true WITHOUT naming a law — never by inventing one and never by claiming an EU
- * directive is a country's national law. Naming the real law is #32 (Juno's wording).
+ * Lagreferensen i utlåtandets "uppfyller …"-mening, för land och sektor.
+ *
+ * Intern #82: lagvalet och fallback-fraserna bor i @holmdigital/standards, och
+ * både motorn och komponenten använder samma funktion. Två kopior av samma
+ * logik har glidit isär en gång redan (Intern #63/#66), och lagnamnsgrinden
+ * hade annars behövt byggas och hållas lika på två ställen. Funktionen
+ * återexporteras här så att motorns publika API är oförändrat.
  */
-const NATIONAL_LAW_FALLBACK: Record<string, string> = {
-    en: 'applicable accessibility requirements',
-    sv: 'gällande tillgänglighetskrav',
-    no: 'gjeldende tilgjengelighetskrav',
-    da: 'gældende tilgængelighedskrav',
-    fi: 'sovellettavan saavutettavuuslainsäädännön',
-    de: 'den geltenden Barrierefreiheitsanforderungen',
-    nl: 'de geldende toegankelijkheidseisen',
-    fr: "la réglementation d'accessibilité applicable",
-    es: 'los requisitos de accesibilidad aplicables',
-    it: 'requisiti di accessibilità applicabili',
-    pt: 'requisitos de acessibilidade aplicáveis',
-    pl: 'obowiązującymi wymaganiami dostępności',
-};
-
-/**
- * Resolve the human-readable national-law reference used in a statement's
- * "complies with …" sentence. Kept separate so it can be tested across every
- * country × sector (Intern #31). Never returns an empty string.
- */
-export function resolveNationalLawReference(
-    country: Country,
-    sector: 'public' | 'private',
-    lang: string = 'en'
-): string {
-    // Intern #64 (M4): a statute that has not entered into force must never be
-    // rendered as current law. `inForce` was declared in the type and read
-    // nowhere, so `us-hhs-section-504` (effective 2027-05-11) was named as
-    // binding law to US private-sector customers today.
-    const inForce = <T extends { inForce?: boolean }>(law: T | undefined | null): law is T =>
-        !!law && law.inForce !== false;
-
-    // Intern #68: Australia has no branch of its own any more. It had one only
-    // because the Digital Access Standard (scope 'public') won the sector
-    // selector's exact-scope preference over the Disability Discrimination Act
-    // (scope 'both'). With the Standard out of the law data, the selector below
-    // gives the Act in both sectors, and the branch's hardcoded fallback — a
-    // law name that bypassed selection entirely — is gone with it.
-    if (country === 'US') {
-        // US carries several parallel federal statutes rather than one, so it
-        // keeps a dedicated branch: ADA split by scope, plus Section 508 on the
-        // public side and HHS Section 504 on the private side. The `inForce`
-        // filter is what removes Section 504 until 2027.
-        const usLaws = getNationalLaws('US').filter(inForce);
-        const adaLaw = usLaws.find(l => l.euFramework === 'ADA' && l.scope === sector);
-        if (adaLaw) {
-            if (sector === 'public') {
-                const s508 = usLaws.find(l => l.id === 'us-508');
-                return s508
-                    ? `${adaLaw.fullName} (${adaLaw.law}) & ${s508.fullName} (${s508.law})`
-                    : `${adaLaw.fullName} (${adaLaw.law})`;
-            }
-            const hhs504 = usLaws.find(l => l.euFramework === 'REHAB' && l.scope === 'private');
-            return hhs504
-                ? `${adaLaw.fullName} (${adaLaw.law}) & ${hhs504.fullName} (${hhs504.law})`
-                : `${adaLaw.fullName} (${adaLaw.law})`;
-        }
-    }
-    // Intern #64 (M1): country + scope + inForce, never `euFramework`. The old
-    // lookup asked for EAA on the private track, so a law with scope 'both'
-    // whose framework was not EAA became invisible — Norway's forskrift and
-    // Canada's ACA both fell through to a lawless fallback phrase. It also made
-    // a province's statute the country's answer for Canada.
-    const law = getNationalLawForSector(country, sector);
-    if (law) {
-        // Intern #63/#66: parentesen finns för att ge kortnamnet vid sidan av det
-        // långa. När fälten säger samma sak är den bara brus, och efter
-        // attesteringen gör de det för två poster: dk-eaa bär titeln i båda
-        // fälten, och ca-aca:s fullName är korttiteln plus lagrumsreferens.
-        // Utan den här grenen renderades titeln två gånger i rad i ett danskt
-        // kunddokument, och det syntes inte i någon datadiff.
-        const shortName = law.law.trim();
-        const longName = law.fullName.trim();
-        // Regeln är: parentesen faller när kortnamnet är ett PREFIX av det långa,
-        // för då bär den ingen ny information. Det täcker fler fall än de två som
-        // upptäcktes först: pt-eaa hade kortnamnet plus " de 6 de dezembro", och
-        // dk-wad har en förkortning som är ett rent prefix. DOS-lagen och DL
-        // 83/2018 är inga prefix och står därför kvar, vilket är hela poängen.
-        const redundant = longName === shortName || longName.startsWith(shortName);
-        return redundant ? longName : `${longName} (${shortName})`;
-    }
-    // Intern #31: never empty — reword the sentence to be true without a law name.
-    const langKey = lang.split('-')[0];
-    return NATIONAL_LAW_FALLBACK[langKey] ?? NATIONAL_LAW_FALLBACK.en;
-}
+export { resolveNationalLawReference };
 
 export async function generateStatementContent(
     result: ScanResult,

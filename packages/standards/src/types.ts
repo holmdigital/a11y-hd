@@ -349,6 +349,16 @@ export interface NationalLaw {
      * missing range as zero.
      */
     sanctions?: Sanction;
+    /**
+     * Intern #82: who has verified which fields of this entry against primary
+     * source. Generated from the review register in holmdigital/Intern and
+     * never edited by hand here.
+     *
+     * A statement names this law only when `attested` contains `'lagnamn'`;
+     * otherwise it renders the neutral fallback phrase. Absent means the same
+     * as an empty `attested`: nobody has vouched for the name.
+     */
+    attestation?: Attestation;
     inForce: boolean;
     effectiveDate: string;
     note?: string;
@@ -379,6 +389,44 @@ export interface NationalLaw {
         statutory?: StatutoryExemption[];
     };
 }
+
+/**
+ * Intern #65/#66/#82. A statement of what a named reviewer has verified, not a
+ * status.
+ *
+ * Juno: the entry certifies that the named reviewer, in the given session,
+ * opened the sources in `sources` and can quote them verbatim, and that every
+ * field in `attested` is backed by a quotation. It does NOT certify that the
+ * entry exists, that it is built, that fields not listed are correct, or that
+ * the name in the data is right.
+ */
+export interface Attestation {
+    attestedBy: string;
+    /** The review session. Today the register records a date, used as proxy. */
+    session: string;
+    sources: string[];
+    /** Verified fields. An empty list is valid and means the gate stays shut. */
+    attested: AttestableField[];
+    notAttested: AttestableField[];
+    /** What was reviewed. Only `'law-entry'` can open the law-name gate. */
+    subject: 'law-entry' | 'enforcement-key' | 'no-entry';
+}
+
+/**
+ * The fields a review can cover. A union rather than free text: a misspelling
+ * must fail the type check instead of silently reading as "not reviewed".
+ */
+export type AttestableField =
+    | 'lagnamn'
+    | 'lagrum'
+    | 'tillsynsmyndighet'
+    | 'sanktionsart'
+    | 'sanktionsbelopp'
+    | 'ikrafttradande'
+    | 'scope'
+    | 'jurisdiktion'
+    | 'tillsynsordning'
+    | 'sanktionsordning';
 
 /**
  * One exemption granted by a provision of the law, other than the

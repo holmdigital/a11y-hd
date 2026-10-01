@@ -33,8 +33,11 @@ import {
     getNationalLaw,
     getAllNationalLaws,
     generateRegulatoryReport,
+    isNameAttested,
+    resolveNationalLawReference,
+    NATIONAL_LAW_FALLBACK,
 } from './index';
-import type { Country, ConvergenceRule } from './types';
+import type { Attestation, Country, ConvergenceRule, NationalLaw } from './types';
 import rulesSv from '../data/rules.sv.json';
 import rulesEn from '../data/rules.en.json';
 import rulesDe from '../data/rules.de.json';
@@ -576,6 +579,157 @@ describe('National Laws — schema validation', () => {
             throw new Error(`national-laws.json failed schema validation:\n${summary}`);
         }
         expect(valid).toBe(true);
+    });
+});
+
+/**
+ * Intern #82 — lagnamnsgrinden, avsnitt 6 i specen (standards-delen).
+ *
+ * Ett lagnamn skrivs ut bara om lagpostens attestation har 'lagnamn' i
+ * attested. Testerna intygar att grinden läser det och inget annat, och att
+ * den sitter på varje väg som kan returnera ett namn. De intygar inte att en
+ * registerrad är riktig; det är Junos.
+ */
+describe('Intern #82 — lagnamnsgrinden', () => {
+    const schema = JSON.parse(readFileSync(join(__dirname, '..', 'schema', 'national-laws-schema.json'), 'utf-8'));
+    const data = JSON.parse(readFileSync(join(__dirname, '..', 'data', 'legal', 'national-laws.json'), 'utf-8'));
+    const giltig: Attestation = {
+        attestedBy: 'Juno', session: '2026-09-24', sources: ['riksdagen.se'],
+        attested: ['lagnamn'], notAttested: [], subject: 'law-entry',
+    };
+    /** Validerar hela datafilen med blocket insatt på en post. */
+    const validera = (attestation: unknown): boolean => {
+        const kopia = structuredClone(data);
+        kopia.laws.SE[0].attestation = attestation;
+        return new Ajv({ allErrors: true }).compile(schema)(kopia) as boolean;
+    };
+    const SEKTORER = ['public', 'private'] as const;
+    const LÄNDER = Object.keys(data.laws) as Country[];
+    const iKraft = (l?: NationalLaw | null): l is NationalLaw => !!l && l.inForce !== false;
+    /** Lagarna motorn väljer för land och sektor, före grinden. Speglar resolvern. */
+    const valda = (country: Country, sector: 'public' | 'private'): NationalLaw[] => {
+        if (country === 'US') {
+            const us = getNationalLaws('US').filter(iKraft);
+            const ada = us.find(l => l.euFramework === 'ADA' && l.scope === sector);
+            if (ada) {
+                const följe = sector === 'public'
+                    ? us.find(l => l.id === 'us-508')
+                    : us.find(l => l.euFramework === 'REHAB' && l.scope === 'private');
+                return [ada, följe].filter(iKraft);
+            }
+        }
+        const lag = getNationalLawForSector(country, sector);
+        return lag ? [lag] : [];
+    };
+
+    it('schemat godkänner ett attestation-block, också med tom attested', () => {
+        expect(validera(giltig)).toBe(true);
+        // En tom lista är en spärr, inte ett fel. Specen: sätt inte minItems.
+        expect(validera({ ...giltig, attested: [] })).toBe(true);
+    });
+
+    it('schemat avvisar ett okänt värde i attested och ett okänt fält', () => {
+        // En felstavning ska falla, inte tyst läsas som "ej granskat".
+        expect(validera({ ...giltig, attested: ['lagnam'] })).toBe(false);
+        expect(validera({ ...giltig, note: 'interna anteckningar' })).toBe(false);
+    });
+
+    it('schemat avvisar ett block som saknar ett obligatoriskt fält', () => {
+        for (const fält of ['attestedBy', 'session', 'sources', 'attested', 'notAttested', 'subject'] as const) {
+            const utan: Record<string, unknown> = { ...giltig };
+            delete utan[fält];
+            expect(validera(utan), fält).toBe(false);
+        }
+    });
+
+    it('attested och notAttested är disjunkta i varje post', () => {
+        for (const lag of getAllNationalLaws()) {
+            const a = lag.attestation;
+            if (!a) continue;
+            expect(a.attested.filter(f => a.notAttested.includes(f)), lag.id).toEqual([]);
+        }
+    });
+
+    it('en tom attested, ett saknat block och ingen post ger alla false', () => {
+        expect(isNameAttested({ attestation: { ...giltig, attested: [] } })).toBe(false);
+        expect(isNameAttested({})).toBe(false);
+        expect(isNameAttested(null)).toBe(false);
+        expect(isNameAttested({ attestation: giltig })).toBe(true);
+    });
+
+    it('en granskning av en myndighetsnyckel eller av en post som inte finns öppnar aldrig grinden', () => {
+        for (const subject of ['enforcement-key', 'no-entry'] as const) {
+            expect(isNameAttested({ attestation: { ...giltig, subject } }), subject).toBe(false);
+        }
+    });
+
+    it('för varje land och sektor: bara attesterade namn skrivs ut, annars fallback-frasen', () => {
+        for (const country of LÄNDER) {
+            for (const sector of SEKTORER) {
+                const rad = resolveNationalLawReference(country, sector, 'sv');
+                const lagar = valda(country, sector);
+                const intygade = lagar.filter(isNameAttested);
+                const ej = lagar.filter(l => !isNameAttested(l));
+                if (intygade.length === 0) {
+                    expect(rad, `${country}/${sector}`).toBe(NATIONAL_LAW_FALLBACK.sv);
+                }
+                for (const l of intygade) expect(rad, `${country}/${sector} ${l.id}`).toContain(l.fullName);
+                for (const l of ej) expect(rad, `${country}/${sector} ${l.id}`).not.toContain(l.fullName);
+            }
+        }
+    });
+
+    it('fallback-frasen följer språket och är aldrig tom', () => {
+        const utan = LÄNDER.flatMap(c => SEKTORER.map(s => [c, s] as const))
+            .find(([c, s]) => !valda(c, s).some(isNameAttested));
+        expect(utan, 'minst en kombination ska rendera fallback i dag').toBeDefined();
+        const [c, s] = utan!;
+        for (const lang of Object.keys(NATIONAL_LAW_FALLBACK)) {
+            expect(resolveNationalLawReference(c, s, lang)).toBe(NATIONAL_LAW_FALLBACK[lang]);
+        }
+        expect(resolveNationalLawReference(c, s, 'en-gb')).toBe(NATIONAL_LAW_FALLBACK.en);
+        expect(resolveNationalLawReference(c, s, 'xx')).toBe(NATIONAL_LAW_FALLBACK.en);
+        for (const fras of Object.values(NATIONAL_LAW_FALLBACK)) expect(fras.trim()).not.toBe('');
+    });
+
+    it('US: varje lag i kombinationen prövas för sig, i alla fyra lägen', () => {
+        // Specen: samtliga fyra US-kombinationer. Grinden sätts per post och
+        // återställs efteråt; datan är delad mellan testerna.
+        const us = getNationalLaws('US');
+        const ada = us.find(l => l.id === 'us-ada-title-ii')!;
+        const s508 = us.find(l => l.id === 'us-508')!;
+        const spara = [ada.attestation, s508.attestation];
+        const sätt = (lag: NationalLaw, på: boolean) => {
+            lag.attestation = { ...giltig, attested: på ? ['lagnamn'] : [] };
+        };
+        try {
+            for (const [a, b] of [[true, true], [true, false], [false, true], [false, false]] as const) {
+                sätt(ada, a);
+                sätt(s508, b);
+                const rad = resolveNationalLawReference('US', 'public', 'en');
+                const läge = `ADA ${a ? 'på' : 'av'}, 508 ${b ? 'på' : 'av'}`;
+                expect(rad.includes(ada.fullName), läge).toBe(a);
+                expect(rad.includes(s508.fullName), läge).toBe(b);
+                expect(rad.includes(' & '), läge).toBe(a && b);
+                if (!a && !b) expect(rad, läge).toBe(NATIONAL_LAW_FALLBACK.en);
+            }
+        } finally {
+            ada.attestation = spara[0];
+            s508.attestation = spara[1];
+        }
+    });
+
+    it('en lag som inte trätt i kraft namnges aldrig, också när dess namn är attesterat', () => {
+        const hhs = getNationalLaws('US').find(l => l.id === 'us-hhs-section-504')!;
+        const spara = hhs.attestation;
+        try {
+            hhs.attestation = giltig;
+            if (hhs.inForce === false) {
+                expect(resolveNationalLawReference('US', 'private', 'en')).not.toContain(hhs.fullName);
+            }
+        } finally {
+            hhs.attestation = spara;
+        }
     });
 });
 
