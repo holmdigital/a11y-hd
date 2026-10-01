@@ -4,7 +4,7 @@
 
 Lagdatasvepet 2026-09-24: Sverige (Intern #83), sex ikraftträdanden (Intern #63), och fyra sanktionsbelopp som inte fanns i lagen (Intern #83, #70, #88, #93).
 
-**Minor, eftersom en typ tillkommer:** `NationalLaw.exemptions.statutory?: StatutoryExemption[]`, med `kind` (`actor`, `content`, `disproportionate-burden`, `transitional`), `description` och `legalBasis`. Typen `exemptions` rymde bara mikroföretagsundantaget, och DOS-lagen har inget sådant (den binder offentliga aktörer) men fyra andra undantag. Fältet är valfritt, så ingen befintlig konsument påverkas.
+**Minor, eftersom en typ tillkommer:** `NationalLaw.exemptions.statutory?: StatutoryExemption[]`, med `kind` (`actor`, `content`, `navigation-maps`, `disproportionate-burden`, `transitional`), `description` och `legalBasis`. Typen `exemptions` rymde bara mikroföretagsundantaget, och DOS-lagen har inget sådant (den binder offentliga aktörer) men fem andra undantag. Fältet är valfritt, så ingen befintlig konsument påverkas.
 
 **Ikraftträdanden.** Sex poster bar direktivets frist eller lagens datum i stället för lagens eget ikraftträdande:
 
@@ -21,7 +21,7 @@ Alla sex datum ligger bakåt i tiden, så `inForce` ändras inte för någon pos
 
 **Sverige.**
 
-- `dos-lagen.exemptions.statutory` har fyra poster: 8 § med ändringen genom Lag (2025:992), som datan inte speglade, 9 § med dess fem innehållstyper, 12 § och övergångsbestämmelse 2.
+- `dos-lagen.exemptions.statutory` har fem poster: 8 § med ändringen genom Lag (2025:992), som datan inte speglade, 9 § första stycket med dess fem innehållstyper, 9 § andra stycket, 12 § och övergångsbestämmelse 2. Andra stycket är ett eget undantag för kartor som ÄR avsedda för navigering, med villkoret att väsentlig information görs tillgänglig på annat sätt. Det är alltså inte ett villkor på punkt 2, som undantar kartor som inte är avsedda för navigering utan villkor (Karin 2026-09-28, Intern #83, ordagrant ur riksdagen.se).
 - `lptt.enforcement` och `lptt.sectorAuthorities` följer den färdiga formen i #83 ordagrant. PTS beskrivning säger nu att PTS är marknadskontrollmyndighet för produkter och själv tillsynsmyndighet för elektronisk kommunikation, banktjänster och e-handel. Webbplatser, appar och e-biljetter för persontransport ligger hos **Konsumentverket, inte PTS**, och Transportstyrelsen har resten av persontransporten. Raderna för Mediemyndigheten och MTM är orörda.
 - `lptt.exemptions.microbusiness` vilar nu på svensk lag (2 §, 10 §) i stället för direktivet. Texten skiljer helt undantag för tjänster från en lättnad för produkter.
 - `lptt.note` säger att fristen till 2030-06-27 gäller produkter i tjänsteproduktionen och aldrig får läsas som ett allmänt anstånd.
