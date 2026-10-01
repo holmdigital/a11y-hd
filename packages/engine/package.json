@@ -49,7 +49,6 @@
         "dev": "tsup --watch",
         "test": "vitest",
         "test:ci": "vitest run",
-        "test:integration": "vitest run --config vitest.integration.config.ts",
         "lint": "eslint src",
         "typecheck": "tsc --noEmit",
         "prepublishOnly": "npm run verify",
