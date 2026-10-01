@@ -224,7 +224,7 @@
                 "enforcement": {
                     "authority": "de-bfit",
                     "authorityName": "BFIT-Bund (Zentralstelle für barrierefreie Informationstechnik)",
-                    "responsibility": "Federal tillsyn av offentlig sektor.",
+                    "responsibility": "Federal oversight of the public sector.",
                     "website": "https://www.bfit-bund.de"
                 },
                 "inForce": true,
@@ -463,7 +463,7 @@
                 },
                 "sanctions": {
                     "type": "Bestuurlijke boete",
-                    "description": "Boetes bij overtreding van de Warenwet eller EAA-voorschriften.",
+                    "description": "Boetes bij overtreding van de Warenwet of EAA-voorschriften.",
                     "minAmount": 0,
                     "maxAmount": 900000,
                     "currency": "EUR"
