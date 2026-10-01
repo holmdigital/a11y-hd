@@ -25,8 +25,13 @@
                         },
                         {
                             "kind": "content",
-                            "description": "Five types of content are outside the requirements: (1) live broadcasts of time-based media; (2) maps not intended for navigation, where the item carries a qualification about essential information on the map content being provided accessibly in another way, which is part of item 2 and not a separate item; (3) digital services from a third party that are neither funded or developed by, nor under the control of, the public actor; (4) reproductions of items in heritage collections that cannot be made fully accessible without significant obstacles; (5) digital services in the school system or special forms of education, or in certain pedagogical care, unless they belong to the essential administrative functions of the activity. The paragraph also empowers the Government to issue further exemptions under Directive (EU) 2016/2102 Article 1(4)(a), (b), (g) and (h); that is a delegation, not a further content type.",
-                            "legalBasis": "Lag (2018:1937) 9 §"
+                            "description": "Five types of content are outside the requirements: (1) live broadcasts of time-based media; (2) maps not intended for navigation, with no further condition; (3) digital services from a third party that are neither funded or developed by, nor under the control of, the public actor; (4) reproductions of items in heritage collections that cannot be made fully accessible without significant obstacles; (5) digital services in the school system or special forms of education, or in certain pedagogical care, unless they belong to the essential administrative functions of the activity. The paragraph also empowers the Government to issue further exemptions under Directive (EU) 2016/2102 Article 1(4)(a), (b), (g) and (h); that is a delegation, not a further content type.",
+                            "legalBasis": "Lag (2018:1937) 9 § första stycket"
+                        },
+                        {
+                            "kind": "navigation-maps",
+                            "description": "A separate exemption, not a qualification on item 2 above: maps intended for navigation are outside the requirements too, but only where essential information about their content is provided in an accessible digital way by other means.",
+                            "legalBasis": "Lag (2018:1937) 9 § andra stycket"
                         },
                         {
                             "kind": "disproportionate-burden",
