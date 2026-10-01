@@ -94,3 +94,11 @@ updates:
       github-actions-security:
         applies-to: security-updates
         patterns: ["*"]
+    ignore:
+      # changesets/action v2 kräver Changesets CLI v3 och vägrar köra mot v2.
+      # PR #170 lyfte den från v1.9.0 till v2.1.2 med kommentaren "# v1"
+      # orörd, och Release-jobbet föll ("Changesets CLI v2 is not supported").
+      # Actionen och CLI:t (@changesets/cli, se #203) måste lyftas i samma PR.
+      # Ta bort undantaget när CLI v3 är inne.
+      - dependency-name: "changesets/action"
+        update-types: ["version-update:semver-major"]
