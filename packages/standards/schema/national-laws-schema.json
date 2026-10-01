@@ -62,7 +62,13 @@
                 "authority": { "type": "string" },
                 "authorityName": { "type": "string" },
                 "responsibility": { "type": "string" },
-                "website": { "type": "string", "pattern": "^https?://" }
+                "website": { "type": "string", "pattern": "^https?://" },
+                "statementText": {
+                    "type": "object",
+                    "minProperties": 1,
+                    "propertyNames": { "pattern": "^[a-z]{2}$" },
+                    "additionalProperties": { "type": "string", "minLength": 1 }
+                }
             }
         },
         "SectorAuthority": {
