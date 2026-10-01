@@ -452,10 +452,13 @@ export interface StatutoryExemption {
      * What the provision carves out:
      * - `actor`: an organisation or class of organisations is outside the law.
      * - `content`: a type of content is outside the requirements.
+     * - `navigation-maps`: maps intended for navigation, exempt only where essential
+     *   information about them is provided accessibly by other means (DOS-lagen
+     *   9 § andra stycket: a separate exemption, not a qualification on item 2).
      * - `disproportionate-burden`: a case-by-case exemption the obliged party must claim.
      * - `transitional`: a requirement applies only from a later date or to newer content.
      */
-    kind: 'actor' | 'content' | 'disproportionate-burden' | 'transitional';
+    kind: 'actor' | 'content' | 'navigation-maps' | 'disproportionate-burden' | 'transitional';
     /** Human-readable summary of what the provision exempts (free text). */
     description: string;
     /** Citation to the provision granting the exemption. */

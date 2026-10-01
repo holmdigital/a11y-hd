@@ -803,11 +803,11 @@ describe('Intern #83/#63/#70/#88 — datasvepet 2026-09-24', () => {
         expect(lag('pt-wad').effectiveDate).toBe('2019-01-01');
     });
 
-    it('dos-lagen bär sina fyra undantag, alla med lagrum, och inget mikroföretagsundantag', () => {
+    it('dos-lagen bär sina fem undantag, alla med lagrum, och inget mikroföretagsundantag', () => {
         const ex = lag('dos-lagen').exemptions;
         // Lagen binder offentliga aktörer; ett mikroföretagsundantag vore påhittat.
         expect(ex?.microbusiness).toBeUndefined();
-        expect(ex?.statutory?.map(e => e.kind)).toEqual(['actor', 'content', 'disproportionate-burden', 'transitional']);
+        expect(ex?.statutory?.map(e => e.kind)).toEqual(['actor', 'content', 'navigation-maps', 'disproportionate-burden', 'transitional']);
         for (const e of ex?.statutory ?? []) {
             expect(e.legalBasis).toContain('2018:1937');
         }
@@ -824,6 +824,22 @@ describe('Intern #83/#63/#70/#88 — datasvepet 2026-09-24', () => {
         expect(text).not.toContain('(6)');
         expect(text).not.toMatch(/seven/i);
         expect(text).toContain('delegation, not a further content type');
+    });
+
+    it('9 § andra stycket är ett eget undantag, inte ett villkor på punkt 2', () => {
+        // Karin 2026-09-28 (Intern #83), tredje rättelsen av samma fält: punkt 2
+        // undantar kartor som INTE är avsedda för navigering, utan villkor. Andra
+        // stycket gäller den motsatta karttypen och har ett eget villkor.
+        const st = lag('dos-lagen').exemptions?.statutory ?? [];
+        const content = st.find(e => e.kind === 'content');
+        const nav = st.find(e => e.kind === 'navigation-maps');
+        expect(content?.description).toContain('(2) maps not intended for navigation, with no further condition;');
+        expect(content?.description).not.toMatch(/essential information/);
+        expect(content?.legalBasis).toBe('Lag (2018:1937) 9 § första stycket');
+        expect(nav?.description).toMatch(/^A separate exemption, not a qualification on item 2/);
+        expect(nav?.description).toContain('maps intended for navigation');
+        expect(nav?.description).toContain('essential information');
+        expect(nav?.legalBasis).toBe('Lag (2018:1937) 9 § andra stycket');
     });
 
     it('dos-lagen har inget sanktionsspann, bara arten i note', () => {
