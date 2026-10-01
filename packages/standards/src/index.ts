@@ -81,22 +81,21 @@ const ENFORCEMENT_BODIES_FALLBACK: Record<Country, { wad: string; eaa: string }>
 /**
  * Which law's `enforcement` answers for a country and sector.
  *
- * Mirrors `resolveNationalLawReference()`'s own AU/US routing in the engine
+ * Mirrors `resolveNationalLawReference()`'s own US routing in the engine
  * EXACTLY, so this constant can never contradict the law a statement names.
  *
- * Do NOT replace the AU and US branches with a plain `getNationalLawForSector()`
- * call. AU's candidates prefer `au-dta` (scope 'public') over `au-dda`
- * (scope 'both') because the selector prefers an exact scope match, and Juno
- * ruled 2026-09-11 that `au-dda` is the only binding instrument for Australia
- * in either sector. US carries several parallel federal statutes where
- * `us-508` and `us-ada-title-ii` are both scope 'public', so a generic
- * selector picks whichever sits first in the JSON array rather than whichever
- * was intended.
+ * Do NOT replace the US branch with a plain `getNationalLawForSector()` call.
+ * US carries several parallel federal statutes where `us-508` and
+ * `us-ada-title-ii` are both scope 'public', so a generic selector picks
+ * whichever sits first in the JSON array rather than whichever was intended.
+ *
+ * Intern #68: Australia no longer needs a branch. It had one only because the
+ * Digital Access Standard entry (scope 'public') won the selector's
+ * exact-scope preference over `au-dda` (scope 'both'); with the Standard out
+ * of the law data, the generic selector gives `au-dda` in both sectors on its
+ * own. Two hand-kept mirrors that could drift apart are gone.
  */
 export function deriveEnforcementLaw(country: Country, sector: Sector): NationalLaw | null {
-    if (country === 'AU') {
-        return getNationalLaws('AU').find(l => l.euFramework === 'DDA' && l.inForce !== false) ?? null;
-    }
     if (country === 'US') {
         // Public goes to Section 508 (GSA), private to ADA Title III (DOJ).
         //
@@ -703,9 +702,9 @@ export function findNationalLaw(id: string): (NationalLaw & { country: Country }
  * och versionsgarantin.
  *
  * Ordningen följer datafilen: länderna i sin nyckelordning, lagarna i sin
- * arrayordning. Förlita dig inte på den — `au-dda` före `au-dta` var precis en
- * sådan tyst ordningsberoende som gav en latent bugg i
- * `getNationalLawByFramework` (Intern #63, `au-dta.euFramework`).
+ * arrayordning. Förlita dig inte på den: att två australiska poster låg i en
+ * viss ordning var precis en sådan tyst ordningsberoende som gav en latent bugg
+ * i `getNationalLawByFramework` (Intern #63).
  */
 export function getAllNationalLaws(): Array<NationalLaw & { country: Country }> {
     const out: Array<NationalLaw & { country: Country }> = [];
