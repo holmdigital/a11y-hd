@@ -152,6 +152,18 @@ function App() {
 }
 ```
 
+### Toast labels in the language of your page
+
+`ToastProvider` renders a region that holds the toasts, and a close button on each toast. Their accessible names default to English ("Notifications" and "Close"). Set them in the language of your page, so that screen readers pronounce them correctly (WCAG 3.1.2 Language of Parts):
+
+```tsx
+<ToastProvider ariaLabel="Aviseringar" closeLabel="Stäng">
+  <App />
+</ToastProvider>
+```
+
+The empty region does not catch taps or clicks. Only the toasts themselves do.
+
 ## Compliance Features
 
 - **High Contrast**: Default styles meet WCAG AA requirements.

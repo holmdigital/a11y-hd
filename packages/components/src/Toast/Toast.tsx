@@ -135,13 +135,42 @@ interface ToastContextType {
     removeToast: (id: string) => void;
 }
 
+export interface ToastProviderProps {
+    children: React.ReactNode;
+    /**
+     * Accessible name of the region that holds the toasts. Set it in the
+     * language of the page (WCAG 3.1.2 Language of Parts).
+     * @default 'Notifications'
+     */
+    ariaLabel?: string;
+    /**
+     * Accessible name of each toast's close button. Set it in the language
+     * of the page.
+     * @default 'Close'
+     */
+    closeLabel?: string;
+}
+
+interface ToastLabels {
+    ariaLabel: string;
+    closeLabel: string;
+}
+
+const DEFAULT_LABELS: ToastLabels = { ariaLabel: 'Notifications', closeLabel: 'Close' };
+
+const ToastLabelsContext = createContext<ToastLabels>(DEFAULT_LABELS);
+
 const ToastContext = createContext<ToastContextType | undefined>(undefined);
 
 const DEFAULT_DURATION_MS = 5000;
 // Reading-rate heuristic: ~4.2 chars/sec at 200 wpm, average word length 5 = 1000ms per ~24 chars.
 const MIN_READING_DURATION_MS = (text: string) => Math.max(DEFAULT_DURATION_MS, text.length * 50);
 
-export const ToastProvider = ({ children }: { children: React.ReactNode }) => {
+export const ToastProvider = ({
+    children,
+    ariaLabel = DEFAULT_LABELS.ariaLabel,
+    closeLabel = DEFAULT_LABELS.closeLabel,
+}: ToastProviderProps) => {
     const [toasts, setToasts] = useState<Toast[]>([]);
     const idCounter = useRef(0);
 
@@ -171,8 +200,10 @@ export const ToastProvider = ({ children }: { children: React.ReactNode }) => {
 
     return (
         <ToastContext.Provider value={{ toasts, addToast, removeToast }}>
-            {children}
-            <ToastViewport />
+            <ToastLabelsContext.Provider value={{ ariaLabel, closeLabel }}>
+                {children}
+                <ToastViewport />
+            </ToastLabelsContext.Provider>
         </ToastContext.Provider>
     );
 };
@@ -187,12 +218,16 @@ export const useToast = () => {
 
 const ToastViewport = () => {
     const { toasts, removeToast } = useToast();
+    const { ariaLabel } = useContext(ToastLabelsContext);
 
+    // pointer-events-none: the region spans the bottom of the viewport even
+    // when it is empty, and must not swallow taps or clicks meant for the page
+    // underneath. Each toast turns pointer events back on.
     return (
         <div
-            className="fixed bottom-0 right-0 z-50 p-4 w-full md:max-w-sm flex flex-col gap-2"
+            className="fixed bottom-0 right-0 z-50 p-4 w-full md:max-w-sm flex flex-col gap-2 pointer-events-none"
             role="region"
-            aria-label="Notifications"
+            aria-label={ariaLabel}
         >
             {toasts.map((toast) => (
                 <ToastItem key={toast.id} toast={toast} onRemove={removeToast} />
@@ -211,6 +246,7 @@ const ToastItem = ({ toast, onRemove }: { toast: Toast; onRemove: (id: string) =
             : toast.duration ?? MIN_READING_DURATION_MS(toast.title + (toast.description ?? ''));
 
     const [paused, setPaused] = useState(false);
+    const { closeLabel } = useContext(ToastLabelsContext);
 
     useEffect(() => {
         if (effectiveDuration === Infinity || paused) return;
@@ -240,7 +276,7 @@ const ToastItem = ({ toast, onRemove }: { toast: Toast; onRemove: (id: string) =
             onFocus={() => setPaused(true)}
             onBlur={() => setPaused(false)}
             className={`
-                flex items-start gap-3 p-4 rounded-lg shadow-lg border transition-all animate-in slide-in-from-right-full fade-in duration-300
+                pointer-events-auto flex items-start gap-3 p-4 rounded-lg shadow-lg border transition-all animate-in slide-in-from-right-full fade-in duration-300
                 ${bgColors[type]}
             `}
         >
@@ -264,7 +300,7 @@ const ToastItem = ({ toast, onRemove }: { toast: Toast; onRemove: (id: string) =
                 type="button"
                 onClick={() => onRemove(id)}
                 className="text-slate-400 hover:text-slate-900 transition-colors"
-                aria-label="Close"
+                aria-label={closeLabel}
             >
                 <CloseIconOrGlyph />
             </button>

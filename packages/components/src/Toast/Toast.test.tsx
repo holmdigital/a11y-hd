@@ -128,3 +128,43 @@ describe('lucide-react fallback (PUB-06)', () => {
         expect(screen.getByTestId(testId)).toHaveAttribute('aria-hidden', 'true');
     });
 });
+
+describe('Toast: region and close button labels (WCAG 3.1.2, 4.1.2)', () => {
+    afterEach(() => { cleanup(); });
+
+    const renderWith = (props: { ariaLabel?: string; closeLabel?: string }) =>
+        render(
+            <ToastProvider {...props}>
+                <Trigger type="info" title="Saved" />
+            </ToastProvider>
+        );
+
+    it('keeps the English defaults when no labels are given (backwards compatible)', () => {
+        const { getByText } = renderWith({});
+        expect(screen.getByRole('region', { name: 'Notifications' })).not.toBeNull();
+        fireEvent.click(getByText('Trigger'));
+        expect(screen.getByRole('button', { name: 'Close' })).not.toBeNull();
+    });
+
+    it('uses ariaLabel as the accessible name of the region', () => {
+        renderWith({ ariaLabel: 'Aviseringar' });
+        expect(screen.getByRole('region', { name: 'Aviseringar' })).not.toBeNull();
+        expect(screen.queryByRole('region', { name: 'Notifications' })).toBeNull();
+    });
+
+    it('uses closeLabel as the accessible name of the close button', () => {
+        const { getByText } = renderWith({ closeLabel: 'Stäng' });
+        fireEvent.click(getByText('Trigger'));
+        expect(screen.getByRole('button', { name: 'Stäng' })).not.toBeNull();
+        expect(screen.queryByRole('button', { name: 'Close' })).toBeNull();
+    });
+
+    it('lets pointer events through the empty region, but not through a toast', () => {
+        const { getByText } = renderWith({});
+        const region = screen.getByRole('region', { name: 'Notifications' });
+        expect(region.className).toContain('pointer-events-none');
+        fireEvent.click(getByText('Trigger'));
+        const toast = screen.getByRole('status');
+        expect(toast.className).toContain('pointer-events-auto');
+    });
+});
