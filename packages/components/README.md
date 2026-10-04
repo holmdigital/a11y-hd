@@ -162,7 +162,7 @@ function App() {
 </ToastProvider>
 ```
 
-The empty region does not catch taps or clicks. Only the toasts themselves do.
+The empty region does not catch taps or clicks. Only the toasts themselves do. This uses the Tailwind classes `pointer-events-none` and `pointer-events-auto`, so your Tailwind `content` setting must include the package's `dist`, for example `./node_modules/@holmdigital/components/dist/**/*.{js,mjs}`. Otherwise the classes are not generated and the empty region catches taps again.
 
 ## Compliance Features
 

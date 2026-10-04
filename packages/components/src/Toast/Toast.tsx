@@ -151,14 +151,8 @@ export interface ToastProviderProps {
     closeLabel?: string;
 }
 
-interface ToastLabels {
-    ariaLabel: string;
-    closeLabel: string;
-}
-
-const DEFAULT_LABELS: ToastLabels = { ariaLabel: 'Notifications', closeLabel: 'Close' };
-
-const ToastLabelsContext = createContext<ToastLabels>(DEFAULT_LABELS);
+const DEFAULT_ARIA_LABEL = 'Notifications';
+const DEFAULT_CLOSE_LABEL = 'Close';
 
 const ToastContext = createContext<ToastContextType | undefined>(undefined);
 
@@ -168,8 +162,8 @@ const MIN_READING_DURATION_MS = (text: string) => Math.max(DEFAULT_DURATION_MS, 
 
 export const ToastProvider = ({
     children,
-    ariaLabel = DEFAULT_LABELS.ariaLabel,
-    closeLabel = DEFAULT_LABELS.closeLabel,
+    ariaLabel = DEFAULT_ARIA_LABEL,
+    closeLabel = DEFAULT_CLOSE_LABEL,
 }: ToastProviderProps) => {
     const [toasts, setToasts] = useState<Toast[]>([]);
     const idCounter = useRef(0);
@@ -200,10 +194,8 @@ export const ToastProvider = ({
 
     return (
         <ToastContext.Provider value={{ toasts, addToast, removeToast }}>
-            <ToastLabelsContext.Provider value={{ ariaLabel, closeLabel }}>
-                {children}
-                <ToastViewport />
-            </ToastLabelsContext.Provider>
+            {children}
+            <ToastViewport ariaLabel={ariaLabel} closeLabel={closeLabel} />
         </ToastContext.Provider>
     );
 };
@@ -216,9 +208,8 @@ export const useToast = () => {
     return context;
 };
 
-const ToastViewport = () => {
+const ToastViewport = ({ ariaLabel, closeLabel }: { ariaLabel: string; closeLabel: string }) => {
     const { toasts, removeToast } = useToast();
-    const { ariaLabel } = useContext(ToastLabelsContext);
 
     // pointer-events-none: the region spans the bottom of the viewport even
     // when it is empty, and must not swallow taps or clicks meant for the page
@@ -230,13 +221,21 @@ const ToastViewport = () => {
             aria-label={ariaLabel}
         >
             {toasts.map((toast) => (
-                <ToastItem key={toast.id} toast={toast} onRemove={removeToast} />
+                <ToastItem key={toast.id} toast={toast} onRemove={removeToast} closeLabel={closeLabel} />
             ))}
         </div>
     );
 };
 
-const ToastItem = ({ toast, onRemove }: { toast: Toast; onRemove: (id: string) => void }) => {
+const ToastItem = ({
+    toast,
+    onRemove,
+    closeLabel,
+}: {
+    toast: Toast;
+    onRemove: (id: string) => void;
+    closeLabel: string;
+}) => {
     const { id, type = 'info' } = toast;
     const isUrgent = type === 'error' || type === 'warning';
     // Errors stick by default — WCAG 2.2.1 requires the user be able to read them.
@@ -246,7 +245,6 @@ const ToastItem = ({ toast, onRemove }: { toast: Toast; onRemove: (id: string) =
             : toast.duration ?? MIN_READING_DURATION_MS(toast.title + (toast.description ?? ''));
 
     const [paused, setPaused] = useState(false);
-    const { closeLabel } = useContext(ToastLabelsContext);
 
     useEffect(() => {
         if (effectiveDuration === Infinity || paused) return;
