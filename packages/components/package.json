@@ -2,7 +2,7 @@
     "name": "@holmdigital/components",
     "author": "Holm Digital AB",
     "license": "MIT",
-    "version": "4.0.2",
+    "version": "4.1.0",
     "private": false,
     "engines": {
         "node": ">=22.22.0"
