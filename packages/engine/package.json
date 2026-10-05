@@ -89,7 +89,7 @@
         "axe-core": "^4.13.0",
         "chalk": "^6.0.0",
         "commander": "^15.0.0",
-        "cosmiconfig": "^9.0.2",
+        "cosmiconfig": "^10.0.1",
         "html-validate": "11.16.0",
         "ora": "^9.4.1",
         "puppeteer": "25.6.0",
