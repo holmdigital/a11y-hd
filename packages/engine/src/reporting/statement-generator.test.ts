@@ -190,6 +190,37 @@ describe('TLD country detection for en-* locales', () => {
     });
 });
 
+/**
+ * Intern #94 fråga 4 (Juno 2026-09-24): AU-mallens avsnitt om regeringens
+ * digitalpolicy beskriver en policy för federala myndigheter och ingen annan.
+ * I ett utlåtande från ett privat företag är det sakligt fel, oavsett datumen.
+ */
+describe('Avsnitt som bara gäller en sektor', () => {
+    const au = { ...metadata, country: 'AU' as Country };
+
+    it.each(['md', 'html'] as const)('AU-policyavsnittet renderas bara för offentlig sektor (%s)', async (format) => {
+        const offentlig = await generateStatementContent(mockResult, 'en-au', format, { ...au, sector: 'public' });
+        const privat = await generateStatementContent(mockResult, 'en-au', format, { ...au, sector: 'private' });
+        expect(offentlig).toContain('Digital Inclusion Standard');
+        for (const text of ['Australian Government digital policy', 'Digital Inclusion Standard', 'Commonwealth agencies']) {
+            expect(privat).not.toContain(text);
+        }
+        // Resten av utlåtandet står kvar.
+        expect(privat).toContain('Australian Human Rights Commission');
+    });
+
+    it('varje sektorsbegränsning i mallarna nämner bara giltiga sektorer', () => {
+        for (const file of templateFiles) {
+            const template = JSON.parse(fs.readFileSync(path.join(TEMPLATES_DIR, file), 'utf-8'));
+            for (const s of template.sections) {
+                if (s.sectors === undefined) continue;
+                expect(Array.isArray(s.sectors) && s.sectors.length > 0, `${file}:${s.id}`).toBe(true);
+                for (const sector of s.sectors) expect(['public', 'private'], `${file}:${s.id}`).toContain(sector);
+            }
+        }
+    });
+});
+
 describe('TLD detection — extended country coverage', () => {
     it('should detect .de TLD as DE country', async () => {
         const deResult = { ...mockResult, url: 'https://example.de' };
