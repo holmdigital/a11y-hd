@@ -4,6 +4,7 @@ import { readFileSync } from 'fs';
 import { join } from 'path';
 import Ajv from 'ajv';
 import {
+    isComplianceTierInForce,
     getEN301549Mapping,
     getDOSLagenReference,
     getICTManualChecklist,
@@ -469,11 +470,30 @@ describe('National Laws — US HHS Section 504', () => {
         expect(law).toBeDefined();
         expect(law?.euFramework).toBe('REHAB');
         expect(law?.scope).toBe('private');
-        // effectiveDate reflects the WCAG benchmark in-force date for the large-entity tier
-        // (HHS IFR 2026-09266 extended this from 2026-05-11 to 2027-05-11); inForce flips
-        // to true on that date — drift-guard test validates the relationship.
-        expect(law?.inForce).toBe(false);
-        expect(law?.effectiveDate).toBe('2027-05-11');
+        // inForce är flaggan för regelns grundnivå: 45 CFR 84.84(a), effective 2024-07-08
+        // (89 FR 40066). WCAG-datumen per nivå ligger i complianceDeadlines och testas nedan.
+        expect(law?.inForce).toBe(true);
+        expect(law?.effectiveDate).toBe('2024-07-08');
+    });
+
+    it('resolves WCAG tier deadlines at runtime without flipping inForce for the entry', () => {
+        const law = getNationalLaw('us-hhs-section-504', 'US');
+        expect(law).not.toBeNull();
+        if (!law) return;
+        // Före båda datumen: ingen WCAG-nivå är gällande, men regelns grundnivå gäller redan.
+        const before = new Date('2027-05-10T12:00:00Z');
+        expect(isComplianceTierInForce(law, 'largeEntity', before)).toBe(false);
+        expect(isComplianceTierInForce(law, 'smallEntity', before)).toBe(false);
+        expect(law.inForce).toBe(true);
+        // 15 eller fler anställda: gäller från 2027-05-11, färre än 15 först från 2028-05-10.
+        const largeDay = new Date('2027-05-11T12:00:00Z');
+        expect(isComplianceTierInForce(law, 'largeEntity', largeDay)).toBe(true);
+        expect(isComplianceTierInForce(law, 'smallEntity', largeDay)).toBe(false);
+        const smallDayBefore = new Date('2028-05-09T12:00:00Z');
+        expect(isComplianceTierInForce(law, 'smallEntity', smallDayBefore)).toBe(false);
+        const smallDay = new Date('2028-05-10T12:00:00Z');
+        expect(isComplianceTierInForce(law, 'smallEntity', smallDay)).toBe(true);
+        expect(law.inForce).toBe(true);
     });
 
     it('should have tiered compliance deadlines for HHS Section 504', () => {
