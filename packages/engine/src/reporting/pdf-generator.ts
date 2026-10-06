@@ -1,14 +1,23 @@
 
 import puppeteer from 'puppeteer';
+import { chromeLaunchArgs, explainLaunchFailure, type LaunchPolicy } from '../core/browser-launch';
 
 /**
- * Generera en PDF från HTML-innehåll
+ * Generera en PDF från HTML-innehåll.
+ *
+ * Intern #53 steg 2: sandboxen är på här också, med samma uttryckliga
+ * opt-out som skannern (`sandbox: false` eller PUPPETEER_ARGS).
  */
-export async function generatePDF(htmlContent: string, outputPath: string): Promise<void> {
-    const browser = await puppeteer.launch({
-        headless: true,
-        args: ['--no-sandbox', '--disable-setuid-sandbox']
-    });
+export async function generatePDF(htmlContent: string, outputPath: string, policy: LaunchPolicy = {}): Promise<void> {
+    let browser;
+    try {
+        browser = await puppeteer.launch({
+            headless: true,
+            args: chromeLaunchArgs(policy)
+        });
+    } catch (e) {
+        throw explainLaunchFailure(e, policy);
+    }
 
     try {
         const page = await browser.newPage();
