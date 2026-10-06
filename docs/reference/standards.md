@@ -159,6 +159,31 @@ const all = getStatementTools();
 const ptTools = getStatementToolsByCountry('PT');
 ```
 
+### 7. Check Whether a Compliance Tier Is in Force
+Find out at runtime whether one WCAG deadline tier (`largeEntity` or `smallEntity`) in a law's `complianceDeadlines` has taken effect. The result depends on the date you pass in, so it is never stored.
+
+```typescript
+import { getNationalLaws, isComplianceTierInForce } from '@holmdigital/standards';
+
+const hhs = getNationalLaws('US').find(l => l.id === 'us-hhs-section-504');
+
+// 15 or more employees: WCAG 2.1 AA deadline 2027-05-11
+isComplianceTierInForce(hhs, 'largeEntity', new Date('2027-06-01T12:00:00Z'));  // true
+isComplianceTierInForce(hhs, 'smallEntity', new Date('2027-06-01T12:00:00Z'));  // false
+
+// Fewer than 15 employees: WCAG 2.1 AA deadline 2028-05-10
+isComplianceTierInForce(hhs, 'smallEntity', new Date('2028-05-10T12:00:00Z'));  // true
+```
+
+**Parameters**
+- `law`: a `NationalLaw` object, for example from `getNationalLaws('US')`.
+- `tier`: `ComplianceTier`, which is `'largeEntity' | 'smallEntity'`.
+- `today`: optional `Date`. Defaults to `new Date()` (now). The comparison uses the UTC calendar date.
+
+**Returns:** `boolean`. `true` when the tier's `deadline` is on or before `today`. `false` when the deadline is later, or when the tier has no deadline.
+
+This is how the HHS Section 504 entry (`us-hhs-section-504`) reports its WCAG 2.1 AA deadlines per tier. The entry's `inForce` flag marks the basic rule, which has been in force since `effectiveDate` (2024-07-08). It does not say that the WCAG requirement applies. Use this function, or read `complianceDeadlines` directly, to check the WCAG dates.
+
 ---
 
 ## 💡 Why use this package?
