@@ -632,11 +632,11 @@
                 },
                 "sanctions": {
                     "type": "Funding Suspension / Termination / Private Lawsuit",
-                    "description": "HHS OCR may suspend or terminate federal financial assistance for non-compliant recipients. Section 504 also provides a private right of action — individuals with disabilities may file lawsuits for injunctive relief and compensatory damages. No fixed statutory cap on damages; amounts vary by circuit and case. OCR may also initiate compliance investigations and require remediation plans.",
+                    "description": "HHS may suspend, terminate, or refuse federal financial assistance only after, among other things, an express finding on the record, after an opportunity for a hearing, and only for the particular program in which the noncompliance has been found. HHS may also refer the matter to the Department of Justice (45 C.F.R. §§ 84.98, 80.8). After a finding of discrimination, the recipient must take the remedial action that the OCR Director deems necessary (45 C.F.R. § 84.6(a)). Individuals can also enforce Section 504 through a private right of action. Injunctive relief, compensatory damages, and attorneys' fees (29 U.S.C. 794a(b)) may be available. Punitive damages are not available (Barnes v. Gorman, 536 U.S. 181 (2002)), and neither are damages for emotional distress (Cummings v. Premier Rehab Keller, 596 U.S. 212 (2022)).",
                     "minAmount": 0,
                     "maxAmount": 0,
                     "currency": "USD",
-                    "example": "Loss of Medicare/Medicaid funding is the primary financial risk for healthcare organizations. Private Section 504 lawsuits have resulted in settlements and injunctions requiring full WCAG compliance with monitoring periods."
+                    "example": "HHS has stated that noncompliance could lead to \"a significant increase in litigation\" and that a court may allow individuals to \"obtain injunctive relief and attorneys' fees\" from recipients (91 FR 25499)."
                 },
                 "inForce": true,
                 "effectiveDate": "2024-07-08",
