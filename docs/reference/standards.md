@@ -182,7 +182,9 @@ isComplianceTierInForce(hhs, 'smallEntity', new Date('2028-05-10T12:00:00Z'));  
 
 **Returns:** `boolean`. `true` when the tier's `deadline` is on or before `today`. `false` when the deadline is later, or when the tier has no deadline.
 
-This is how the HHS Section 504 entry (`us-hhs-section-504`) reports its WCAG 2.1 AA deadlines per tier. The entry's `inForce` flag marks the basic rule, which has been in force since `effectiveDate` (2024-07-08). It does not say that the WCAG requirement applies. Use this function, or read `complianceDeadlines` directly, to check the WCAG dates.
+`true` only means that the tier's date has passed. It does not mean that the requirement applies to whoever uses this package. 45 CFR Part 84 applies only to recipients of federal financial assistance from HHS (45 CFR 84.2(a): "This part applies to each recipient of Federal financial assistance from the Department"). Whether an organization is such a recipient is outside what the function checks.
+
+This is how the HHS Section 504 entry (`us-hhs-section-504`) reports its WCAG 2.1 AA deadlines per tier. The entry's `inForce` flag marks that the revised HHS Section 504 regulations (the 2024 final rule) took effect on `effectiveDate` (2024-07-08). It does not say that the WCAG requirement applies, and like the tier check it only applies to recipients of HHS federal financial assistance (45 CFR 84.2(a)). Use this function, or read `complianceDeadlines` directly, to check the WCAG dates.
 
 ---
 

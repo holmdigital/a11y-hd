@@ -13,9 +13,11 @@ Avgör vid körning om en nivå i `law.complianceDeadlines` (`'largeEntity'` ell
 ### 2. `us-hhs-section-504`: `inForce` och `effectiveDate`
 
 - `inForce`: `false` → `true`.
-- `effectiveDate`: `"2027-05-11"` → `"2024-07-08"` (grundregelns ikraftträdande, 45 CFR 84.84(a), 89 FR 40066).
+- `effectiveDate`: `"2027-05-11"` → `"2024-07-08"` (dagen då de reviderade HHS-föreskrifterna för Section 504 trädde i kraft, 45 CFR 84.84(a), 89 FR 40066).
 
 **Konsumentvarning:** `inForce` betyder nu grundregelns status, inte att WCAG-kravet gäller. Den som läser `inForce` för att avgöra om WCAG-kravet gäller på ett visst datum får fel svar. Använd `isComplianceTierInForce` eller `complianceDeadlines` för WCAG-datumen.
+
+**Vem det gäller:** "gällande" och `true` i den här noten betyder bara att ett datum har passerat. De betyder inte att kravet gäller den som använder paketet. 45 CFR Part 84 gäller bara mottagare av federalt ekonomiskt stöd från HHS (45 CFR 84.2(a): "This part applies to each recipient of Federal financial assistance from the Department").
 
 ### 3. WCAG-datumen är oförändrade
 
