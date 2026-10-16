@@ -29,6 +29,7 @@
         },
         {
             "id": "dta-policy",
+            "sectors": ["public"],
             "title": "Australian Government digital policy",
             "content": "Federal government agencies are subject to the Digital Transformation Agency (DTA) Digital Experience Policy, which has included the Digital Inclusion Standard since 1 January 2025 for new services and 1 July 2025 for existing services. The Digital Inclusion Standard requires Commonwealth agencies to meet WCAG 2.2 Level AA.\n\nThis statement was prepared in accordance with best practice guidance from the DTA and the Australian Human Rights Commission (AHRC)."
         },

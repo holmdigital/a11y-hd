@@ -38,6 +38,18 @@ The **Americans with Disabilities Act of 1990 (ADA)** is the primary US framewor
 **Enforcement:** General Services Administration (GSA) via Section508.gov
 Not affected by the 2024 ADA final rule. Our CLI maps `--country US --sector public` to **ADA Title II + Section 508** and `--sector private` to **ADA Title III**.
 
+## Outside EU: Australia
+
+The **Disability Discrimination Act 1992 (Cth)** is the only binding instrument in the law data for Australia, for the public and private sector alike. Complaints go to the Australian Human Rights Commission (AHRC); unresolved complaints can proceed to the Federal Court.
+
+### Government policy is not law
+
+Federal agencies also work under the Digital Transformation Agency's **Digital Experience Policy**. The policy document that concerns accessibility is the **Digital Inclusion Standard**. The policy is mandatory inside the Australian Government's own investment oversight, but it is not a statute: no third party can rely on it, no supervisory authority outside the DTA enforces it, and there is no route to a court.
+
+It is therefore deliberately **not** in `national-laws.json`, and no function that selects a law will ever return it. From standards 5.0.0 the data follows one rule: an entry belongs there only if a binding legal instrument makes compliance mandatory and enforceable against the party that bears the obligation. A document that contains requirements, is called a standard and is described as mandatory by its publisher does not meet that rule on its own.
+
+Earlier versions carried an entry for the Digital Access Standard, a different policy document within the same framework, which concerns reducing the number of entry points to government services rather than accessibility. It was removed in 5.0.0.
+
 ## Visual Overview
 
 ### Does WAD or EAA apply?
