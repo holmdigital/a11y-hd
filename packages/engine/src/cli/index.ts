@@ -111,6 +111,8 @@ program
     .option('--api-key <key>', 'API key for HolmDigital Cloud')
     .option('--cloud-url <url>', 'Cloud API URL')
     .option('--invalid-https-cert', 'Allow scanning on pages with invalid https certificate')
+    .option('--allow-private-hosts', 'Allow private and internal addresses such as localhost, 10.x and 192.168.x (blocked by default, for the page and every request it makes)')
+    .option('--no-sandbox', 'Disable the Chrome sandbox. Only for pages you trust; needed when running as root or where user namespaces are restricted')
     .option('--email <email>', 'Contact email for accessibility statement')
     .option('--phone <number>', 'Contact phone number for accessibility statement')
     .option('--org <name>', 'Organization name for accessibility statement')
@@ -162,6 +164,11 @@ program
             apiKey: cliOptions.apiKey || fileConfig.apiKey,
             cloudUrl: cliOptions.cloudUrl || fileConfig.cloudUrl || 'https://cloud.holmdigital.se',
             invalidHttpsCert: cliOptions.invalidHttpsCert ?? fileConfig.invalidHttpsCert ?? false,
+            // Intern #53 steg 2: spärren och sandboxen är på som standard.
+            allowPrivateHosts: cliOptions.allowPrivateHosts ?? fileConfig.allowPrivateHosts ?? false,
+            // Commander sätter sandbox: true som standard för en --no-sandbox-flagga,
+            // så CLI-värdet kan bara säga nej. Config-filen får också säga nej.
+            sandbox: cliOptions.sandbox === false ? false : fileConfig.sandbox !== false,
             // Metadata for accessibility statement
             email: cliOptions.email || fileConfig.email,
             phone: cliOptions.phone || fileConfig.phone,
@@ -192,6 +199,8 @@ program
             apiKey?: string;
             cloudUrl: string;
             invalidHttpsCert: boolean;
+            allowPrivateHosts: boolean;
+            sandbox: boolean;
             email?: string;
             phone?: string;
             org?: string;
@@ -270,6 +279,8 @@ program
                 silent: options.json || options.light,
                 severityThreshold: options.threshold as 'critical' | 'high' | 'medium' | 'low',
                 invalidHttpsCert: options.invalidHttpsCert,
+                allowPrivateHosts: options.allowPrivateHosts,
+                sandbox: options.sandbox,
                 light: options.light,
                 noScriptCheck: options.noScriptCheck,
                 waitForHydrationMs: options.waitForHydrationMs
@@ -287,7 +298,7 @@ program
                 const html = options.audience === 'plain'
                     ? generateReportHTML(result, options.sector as 'public' | 'private', 'plain', plainFallbackFrom)
                     : generateReportHTML(result, options.sector as 'public' | 'private');
-                await generatePDF(html, options.pdf);
+                await generatePDF(html, options.pdf, { sandbox: options.sandbox });
                 if (spinner) spinner.succeed(t('cli.pdf_saved', { path: options.pdf }));
             }
 
