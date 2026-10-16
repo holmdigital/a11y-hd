@@ -8,7 +8,9 @@
 import { render } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
 import { AccessibilityStatement } from './AccessibilityStatement';
-import { getEnforcementBody, getNationalLawByFramework, type Country } from '@holmdigital/standards';
+import { getAllNationalLaws, getEnforcementBody, getNationalLawByFramework, type Country } from '@holmdigital/standards';
+import { readFileSync } from 'node:fs';
+import { join } from 'node:path';
 
 const defaultProps = {
     country: 'SE' as const,
@@ -190,13 +192,33 @@ describe('AccessibilityStatement en-gb/en-us/en-ca jurisdiction content', () => 
         expect(html).toContain('Americans with Disabilities Act');
     });
 
-    it('renders en-ca with ACA/AODA legislation references', () => {
+    it('renders en-ca with the Accessible Canada Act and never Ontario\'s AODA as Canada\'s law', () => {
+        // Det här testet krävde tidigare AODA, och passerade DÄRFÖR att mallen
+        // hårdkodade "the Accessible Canada Act and the Accessibility for
+        // Ontarians with Disabilities Act" förbi lagvalet. AODA är en
+        // provinslag (Intern #64) och är aldrig Kanadas svar. Motorns mallar
+        // rättades i 3.3.8; komponentens, som CLI:ts HTML-utlåtanden renderas
+        // med, rättades aldrig.
         const { container } = render(
             <AccessibilityStatement {...defaultProps} locale="en-ca" country="CA" />
         );
         const html = container.innerHTML;
         expect(html).toContain('Accessible Canada Act');
-        expect(html).toContain('Accessibility for Ontarians with Disabilities Act');
+        expect(html).not.toContain('Accessibility for Ontarians with Disabilities Act');
+    });
+
+    it('renders en-gb private sector without the public-sector regulations', () => {
+        const { container } = render(
+            <AccessibilityStatement {...defaultProps} locale="en-gb" country="GB" sector="private" />
+        );
+        expect(container.innerHTML).not.toContain('Public Sector Bodies');
+    });
+
+    it('renders en-us private sector without Section 508, which binds federal agencies only', () => {
+        const { container } = render(
+            <AccessibilityStatement {...defaultProps} locale="en-us" country="US" sector="private" />
+        );
+        expect(container.innerHTML).not.toContain('Section 508');
     });
 
     it('renders generic en with national law name (not generic "accessibility regulations")', () => {
@@ -591,5 +613,80 @@ describe('AccessibilityStatement US national_law placeholder (generic en templat
         // Pre-fix output rendered "complies with  ()" with empty law name.
         expect(html).not.toMatch(/complies with\s*\(\s*\)/);
         expect(html).not.toMatch(/complies with\s*\.\s/);
+    });
+});
+
+/**
+ * Utlåtandets valblock `{A / B / C}`, samma fel som i motorn och av samma skäl:
+ * komponenten bär en egen kopia av mallarna och av tolkningen. CLI:ts
+ * HTML-utlåtanden renderas med den här komponenten, så felen nådde också dem.
+ *
+ * Mallarna läses ur källfilen i stället för att fraser räknas upp per språk,
+ * så en ny mall omfattas utan att någon behöver komma ihåg det.
+ */
+describe('AccessibilityStatement valblock', () => {
+    const SOURCE = readFileSync(join(__dirname, 'AccessibilityStatement.tsx'), 'utf8');
+    const TEMPLATE_BLOCK = SOURCE.slice(SOURCE.indexOf('const TEMPLATES'), SOURCE.indexOf('\n};', SOURCE.indexOf('const TEMPLATES')));
+    const LEVELS = ['full', 'partial', 'non-compliant'] as const;
+
+    /** locale → råinnehållet i sektionen `testing`, som JS-strängen lyder. */
+    const testingContent = new Map<string, string>();
+    const keys = [...TEMPLATE_BLOCK.matchAll(/^ {4}'?([a-z-]+)'?: \{/gm)];
+    keys.forEach((k, i) => {
+        const chunk = TEMPLATE_BLOCK.slice(k.index, keys[i + 1]?.index ?? TEMPLATE_BLOCK.length);
+        const m = /id: "testing", title: "(?:[^"\\]|\\.)*", content: "((?:[^"\\]|\\.)*)"/.exec(chunk);
+        if (m) testingContent.set(k[1], JSON.parse(`"${m[1].replace(/\\'/g, "'")}"`));
+    });
+
+    const choiceOptions = (text: string): string[] => {
+        const m = /\{((?:[^{}]|\{<[^>]+>\})*\/(?:[^{}]|\{<[^>]+>\})*)\}/.exec(text);
+        if (!m) throw new Error(`inget valblock i: ${text.slice(0, 80)}`);
+        return m[1].split('/');
+    };
+    const literal = (option: string): string =>
+        option.split(/\{<[^>]+>\}/).map(s => s.trim()).sort((a, b) => b.length - a.length)[0];
+
+    it('hittar metodsektionen i varje mall', () => {
+        expect(testingContent.size).toBe(keys.length);
+        expect(keys.length).toBeGreaterThanOrEqual(16);
+    });
+
+    for (const [locale, content] of testingContent) {
+        const [self, external, estimated] = choiceOptions(content).map(literal);
+        it.each(LEVELS)(`${locale}: %s ger självskattningen, aldrig extern granskning eller uppskattning`, (level) => {
+            const { container } = render(
+                <AccessibilityStatement {...defaultProps} locale={locale} complianceLevel={level} />
+            );
+            const text = container.textContent ?? '';
+            expect(text).toContain(self);
+            expect(text).not.toContain(external);
+            if (estimated) expect(text).not.toContain(estimated);
+        });
+    }
+
+    it.each(LEVELS)('ett organisationsnamn med snedstreck återges helt i varje mall, %s', (level) => {
+        const org = 'Region Testlän / Förvaltning 1/2';
+        for (const locale of testingContent.keys()) {
+            const { container, unmount } = render(
+                <AccessibilityStatement {...defaultProps} locale={locale} complianceLevel={level} organizationName={org} />
+            );
+            const text = container.textContent ?? '';
+            const prefix = text.split('Region Testlän').length - 1;
+            expect(prefix, locale).toBeGreaterThan(0);
+            expect(text.split(org).length - 1, locale).toBe(prefix);
+            unmount();
+        }
+    });
+
+    it('ingen mall namnger en lag förbi lagvalet', () => {
+        // Samma svep som motorn fick i 3.3.8. Ett lagnamn i mallen går förbi
+        // {<national_law>} och därmed förbi lagvalet: GB privat fick
+        // regleringen för offentlig sektor och US privat Section 508.
+        const names = new Set<string>();
+        for (const law of getAllNationalLaws()) {
+            for (const n of [law.law, law.fullName]) if (n.trim().length >= 8) names.add(n.trim());
+        }
+        const hits = [...names].filter(n => TEMPLATE_BLOCK.includes(n));
+        expect(hits).toEqual([]);
     });
 });

@@ -273,39 +273,39 @@ const TEMPLATES: Record<string, StatementTemplate> = {
     },
     'en-gb': {
         title: "Accessibility of {<website>}",
-        intro: "This website is run by {<organisation>}. We want as many people as possible to be able to use it, and this document describes how {<website>} complies with the Public Sector Bodies (Websites and Mobile Applications) (No. 2) Accessibility Regulations 2018, any known accessibility issues, and how you can report problems so that we can fix them.",
+        intro: "This website is run by {<organisation>}. We want as many people as possible to be able to use it, and this document describes how {<website>} complies with {<national_law>}, any known accessibility issues, and how you can report problems so that we can fix them.",
         sections: [
             { id: "how-accessible", title: "How accessible is the website?", content: "{There are no known accessibility issues with this website./We know some parts of this website aren't fully accessible. See the section on non-accessible content below for more information./We know some parts of this website aren't fully accessible. See the section on non-accessible content below for more information.}" },
             { id: "what-to-do", title: "What to do if you can't access parts of this website?", content: "If you need content from this website that is not accessible for you, but is not within the scope of the accessibility regulations as described below, please contact us.\n\n[Our normal response time is {<response time>}.]\n\n[You can also contact us in the following ways:\n\n* email {<email address>}\n* call {<telephone number>}]" },
             { id: "reporting", title: "Reporting accessibility problems with this website", content: "We're always looking to improve the accessibility of this website. If you find any problems that aren't listed on this page or if we're not meeting the requirements of the accessibility regulations, contact us and let us know about the problem." },
-            { id: "enforcement", title: "Enforcement procedure", content: "The {<enforcement_body>} is responsible for enforcing the Public Sector Bodies (Websites and Mobile Applications) (No. 2) Accessibility Regulations 2018. If you are not happy with how we respond to your complaint, contact the {<enforcement_body>}.\n\nYou can also contact the {<enforcement_body>} if you think our accessibility statement does not accurately reflect our website's accessibility, if you believe we have not properly responded to your request for accessible content, or if you disagree with our assessment of what constitutes a disproportionate burden." },
-            { id: "technical", title: "Technical information about this website's accessibility", content: "{This website is fully compliant with the Public Sector Bodies (Websites and Mobile Applications) (No. 2) Accessibility Regulations 2018./This website is partially compliant with the Public Sector Bodies (Websites and Mobile Applications) (No. 2) Accessibility Regulations 2018, due to the non-compliances listed below./This website is not compliant with the Public Sector Bodies (Websites and Mobile Applications) (No. 2) Accessibility Regulations 2018. The non-accessible sections are listed below.}" },
+            { id: "enforcement", title: "Enforcement procedure", content: "The {<enforcement_body>} is responsible for enforcing {<national_law>}. If you are not happy with how we respond to your complaint, contact the {<enforcement_body>}.\n\nYou can also contact the {<enforcement_body>} if you think our accessibility statement does not accurately reflect our website's accessibility, if you believe we have not properly responded to your request for accessible content, or if you disagree with our assessment of what constitutes a disproportionate burden." },
+            { id: "technical", title: "Technical information about this website's accessibility", content: "{This website is fully compliant with {<national_law>}./This website is partially compliant with {<national_law>}, due to the non-compliances listed below./This website is not compliant with {<national_law>}. The non-accessible sections are listed below.}" },
             { id: "non-accessible", title: "Non-accessible content", content: "The content described below is, in one way or another, not fully accessible.\n\n[\n### Non-compliance with the accessibility regulations\n\n{<issues>}\n]" },
             { id: "testing", title: "How we tested this website", content: "{We have performed a self-assessment (internal testing) of {<website>}./{<third party>} has tested {<website>}./We have estimated the accessibility without testing.}\n\nThe last assessment was made on {<assessment date>}.\n\n[Assessment method: {<method>}]\n\nThe website was published on {<publish date>}.\n\nThe statement was last updated on {<update date>}." }
         ]
     },
     'en-us': {
         title: "Accessibility of {<website>}",
-        intro: "This website is run by {<organisation>}. We want as many people as possible to be able to use it, and this document describes how {<website>} complies with Section 508 of the Rehabilitation Act, any known accessibility issues, and how you can report problems so that we can fix them.",
+        intro: "This website is run by {<organisation>}. We want as many people as possible to be able to use it, and this document describes how {<website>} complies with {<national_law>}, any known accessibility issues, and how you can report problems so that we can fix them.",
         sections: [
             { id: "how-accessible", title: "How accessible is the website?", content: "{There are no known accessibility issues with this website./We know some parts of this website aren't fully accessible. See the section on non-accessible content below for more information./We know some parts of this website aren't fully accessible. See the section on non-accessible content below for more information.}" },
             { id: "what-to-do", title: "What to do if you can't access parts of this website?", content: "If you need content from this website that is not accessible for you, but is not within the scope of the accessibility regulations as described below, please contact us.\n\n[Our normal response time is {<response time>}.]\n\n[You can also contact us in the following ways:\n\n* email {<email address>}\n* call {<telephone number>}]" },
             { id: "reporting", title: "Reporting accessibility problems with this website", content: "We're always looking to improve the accessibility of this website. If you find any problems that aren't listed on this page or if we're not meeting the requirements of the accessibility regulations, contact us and let us know about the problem." },
-            { id: "enforcement", title: "Enforcement procedure", content: "The {<enforcement_body>} is responsible for enforcing web accessibility under Section 508 of the Rehabilitation Act and the Americans with Disabilities Act (ADA). If you experience accessibility issues on our website, you can file a complaint with the {<enforcement_body>}.\n\nYou may also file a complaint if you believe our accessibility statement does not accurately reflect our website's accessibility or if your request for accessible content has not been properly addressed." },
-            { id: "technical", title: "Technical information about this website's accessibility", content: "{This website is fully compliant with Section 508 of the Rehabilitation Act./This website is partially compliant with Section 508 of the Rehabilitation Act, due to the non-compliances listed below./This website is not compliant with Section 508 of the Rehabilitation Act. The non-accessible sections are listed below.}" },
+            { id: "enforcement", title: "Enforcement procedure", content: "The {<enforcement_body>} is responsible for enforcing {<national_law>}. If you experience accessibility issues on our website, you can file a complaint with the {<enforcement_body>}.\n\nYou may also file a complaint if you believe our accessibility statement does not accurately reflect our website's accessibility or if your request for accessible content has not been properly addressed." },
+            { id: "technical", title: "Technical information about this website's accessibility", content: "{This website is fully compliant with {<national_law>}./This website is partially compliant with {<national_law>}, due to the non-compliances listed below./This website is not compliant with {<national_law>}. The non-accessible sections are listed below.}" },
             { id: "non-accessible", title: "Non-accessible content", content: "The content described below is, in one way or another, not fully accessible.\n\n[\n### Non-compliance with the accessibility regulations\n\n{<issues>}\n]" },
             { id: "testing", title: "How we tested this website", content: "{We have performed a self-assessment (internal testing) of {<website>}./{<third party>} has tested {<website>}./We have estimated the accessibility without testing.}\n\nThe last assessment was made on {<assessment date>}.\n\n[Assessment method: {<method>}]\n\nThe website was published on {<publish date>}.\n\nThe statement was last updated on {<update date>}." }
         ]
     },
     'en-ca': {
         title: "Accessibility of {<website>}",
-        intro: "This website is run by {<organisation>}. We want as many people as possible to be able to use it, and this document describes how {<website>} complies with the Accessible Canada Act and the Accessibility for Ontarians with Disabilities Act, any known accessibility issues, and how you can report problems so that we can fix them.",
+        intro: "This website is run by {<organisation>}. We want as many people as possible to be able to use it, and this document describes how {<website>} complies with {<national_law>}, any known accessibility issues, and how you can report problems so that we can fix them.",
         sections: [
             { id: "how-accessible", title: "How accessible is the website?", content: "{There are no known accessibility issues with this website./We know some parts of this website aren't fully accessible. See the section on non-accessible content below for more information./We know some parts of this website aren't fully accessible. See the section on non-accessible content below for more information.}" },
             { id: "what-to-do", title: "What to do if you can't access parts of this website?", content: "If you need content from this website that is not accessible for you, but is not within the scope of the accessibility regulations as described below, please contact us.\n\n[Our normal response time is {<response time>}.]\n\n[You can also contact us in the following ways:\n\n* email {<email address>}\n* call {<telephone number>}]" },
             { id: "reporting", title: "Reporting accessibility problems with this website", content: "We're always looking to improve the accessibility of this website. If you find any problems that aren't listed on this page or if we're not meeting the requirements of the accessibility regulations, contact us and let us know about the problem." },
-            { id: "enforcement", title: "Enforcement procedure", content: "The {<enforcement_body>} is responsible for enforcing the Accessible Canada Act. If you experience accessibility issues on our website, you can file a complaint with the {<enforcement_body>}.\n\nYou may also file a complaint if you believe our accessibility statement does not accurately reflect our website's accessibility, if you disagree with our assessment of what constitutes an undue burden, or if your request for accessible content has not been properly addressed." },
-            { id: "technical", title: "Technical information about this website's accessibility", content: "{This website is fully compliant with the Accessible Canada Act and the Accessibility for Ontarians with Disabilities Act./This website is partially compliant with the Accessible Canada Act and the Accessibility for Ontarians with Disabilities Act, due to the non-compliances listed below./This website is not compliant with the Accessible Canada Act and the Accessibility for Ontarians with Disabilities Act. The non-accessible sections are listed below.}" },
+            { id: "enforcement", title: "Enforcement procedure", content: "The {<enforcement_body>} is responsible for enforcing {<national_law>}. If you experience accessibility issues on our website, you can file a complaint with the {<enforcement_body>}.\n\nYou may also file a complaint if you believe our accessibility statement does not accurately reflect our website's accessibility, if you disagree with our assessment of what constitutes an undue burden, or if your request for accessible content has not been properly addressed." },
+            { id: "technical", title: "Technical information about this website's accessibility", content: "{This website is fully compliant with {<national_law>}./This website is partially compliant with {<national_law>}, due to the non-compliances listed below./This website is not compliant with {<national_law>}. The non-accessible sections are listed below.}" },
             { id: "non-accessible", title: "Non-accessible content", content: "The content described below is, in one way or another, not fully accessible.\n\n[\n### Non-compliance with the accessibility regulations\n\n{<issues>}\n]" },
             { id: "testing", title: "How we tested this website", content: "{We have performed a self-assessment (internal testing) of {<website>}./{<third party>} has tested {<website>}./We have estimated the accessibility without testing.}\n\nThe last assessment was made on {<assessment date>}.\n\n[Assessment method: {<method>}]\n\nThe website was published on {<publish date>}.\n\nThe statement was last updated on {<update date>}." }
         ]
@@ -628,7 +628,24 @@ export const AccessibilityStatement: React.FC<AccessibilityStatementProps> = ({
     // AU-specific mappings
     replacements['{<ahrc_url>}'] = 'https://humanrights.gov.au/complaints';
 
-    const renderTemplate = (tmpl: string) => {
+    /**
+     * Vilket alternativ ett valblock `{A / B / C}` ska ge. Speglar motorn.
+     *
+     * Efterlevnadsvalet följer kundens utfall. Metodvalet i sektionen
+     * `testing` beskriver hur utlåtandet togs fram och beror inte på utfallet.
+     * Med samma index fick varje delvis förenlig kund texten "<verktyget> has
+     * tested …", alltså en extern granskning som aldrig gjordes, och varje ej
+     * förenlig kund "we have estimated the accessibility without testing".
+     * Ett verktyg som kunden själv kör är en självskattning.
+     */
+    const choiceIndex = (kind: 'compliance' | 'method', parts: number): number => {
+        if (kind === 'method') return 0;
+        if (complianceLevel === 'partial') return 1;
+        if (complianceLevel === 'non-compliant') return parts > 2 ? 2 : 1;
+        return 0;
+    };
+
+    const renderTemplate = (tmpl: string, kind: 'compliance' | 'method' = 'compliance') => {
         let text = tmpl;
 
         // 1. Handle Conditional Blocks [ ... ] using Regex
@@ -655,29 +672,31 @@ export const AccessibilityStatement: React.FC<AccessibilityStatementProps> = ({
             return '\n' + content.trim() + '\n';
         });
 
-        // 2. Variable Substitution
-        for (const [key, value] of Object.entries(replacements)) {
-            text = text.replaceAll(key, value);
-        }
+        // 2. Platshållarna blir markörer INNAN valen löses, och får sina värden
+        // efteråt. Annars delas ett värde som innehåller "/" av valparsern:
+        // "Real Decreto 1112/2018" klipptes vid snedstrecket, och för en delvis
+        // förenlig kund blev meningen ett fragment av lagnamnet.
+        const values: string[] = [];
+        text = text.replace(/\{<[^>]+>\}/g, (match) => {
+            values.push(replacements[match] !== undefined ? replacements[match] : match);
+            return `\uE000${values.length - 1}\uE000`;
+        });
 
         // 3. Handle Choices { A / B / C }
         text = text.replace(/\{([^{}]*?)\}/g, (_match, content) => {
             const parts = content.split('/');
             if (parts.length >= 2) {
-                let idx = 0;
-                if (complianceLevel === 'partial') idx = 1;
-                if (complianceLevel === 'non-compliant') idx = parts.length > 2 ? 2 : 1;
-                return parts[idx].trim();
+                return parts[choiceIndex(kind, parts.length)].trim();
             }
             return _match; // Return as is if not a choice block
         });
 
-        return text;
+        return text.replace(/\uE000(\d+)\uE000/g, (_m, i) => values[Number(i)]);
     };
 
     const renderSections = (sections: TemplateSection[]) => {
         return sections.map((section, i) => {
-            const content = renderTemplate(section.content);
+            const content = renderTemplate(section.content, section.id === 'testing' ? 'method' : 'compliance');
             const trimmed = content.trim();
             if (!trimmed) return null;
 
