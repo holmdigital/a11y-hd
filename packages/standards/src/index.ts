@@ -673,6 +673,28 @@ export function getNationalLawForSector(country: Country, sector: Sector): Natio
     return candidates.find(l => l.scope === sector) ?? candidates[0];
 }
 
+/** Nivåer i `NationalLaw.complianceDeadlines`. */
+export type ComplianceTier = 'largeEntity' | 'smallEntity';
+
+/**
+ * Är en nivå av en lags `complianceDeadlines` gällande på `today`?
+ *
+ * Datumet avgörs vid körning. `law.inForce` är flaggan för regelns grundnivå och
+ * ändras aldrig av ett nivådatum. Ett nivådatum gör bara den nivån gällande, och
+ * ingen kod får slå om hela posten till gällande på ett datum (Juno, 2026-10-06).
+ *
+ * Jämförelsen sker på UTC-datum, eftersom `deadline` är ett kalenderdatum.
+ */
+export function isComplianceTierInForce(
+    law: NationalLaw,
+    tier: ComplianceTier,
+    today: Date = new Date()
+): boolean {
+    const deadline = law.complianceDeadlines?.[tier]?.deadline;
+    if (!deadline) return false;
+    return today.toISOString().slice(0, 10) >= deadline;
+}
+
 /**
  * Intern #63 punkt 4 — hitta en lagpost på id, oavsett land.
  *
