@@ -45,9 +45,13 @@ All three are published from this repository via GitHub Actions using npm Truste
 
 ## A note on how the scanner runs
 
-`@holmdigital/engine` drives a headless Chromium (Puppeteer) to render the page it scans. Two consequences are worth stating plainly, because they are properties of the design rather than bugs:
+`@holmdigital/engine` drives a headless Chromium (Puppeteer) to render the page it scans. The scanner renders whatever page you point it at, including any script on it, so treat scanning an untrusted URL the way you would treat visiting it in a browser.
 
-- **The scanner renders whatever page you point it at**, including any script on it. Treat scanning an untrusted URL the way you would treat visiting it in a browser.
-- **The CLI performs no URL allow-listing.** It will request whatever address you give it, including private and link-local addresses. That is appropriate for a tool you run yourself against your own site. If you ever run the engine **server-side on URLs supplied by someone else**, you must add your own egress restrictions — otherwise it becomes a request-forgery surface into your internal network.
+Since engine 4.0.0 two defences are on by default:
+
+- **Private and internal addresses are blocked.** This covers loopback, 10/8, 172.16/12, 192.168/16, 100.64/10, link-local including the cloud metadata service at 169.254.169.254, multicast, and their IPv6 equivalents. The check applies to the address you give and to every request the page makes, redirects included. Host names are resolved and the resulting addresses are checked, and a lookup that fails is blocked. To scan your own local development server, pass `--allow-private-hosts` (library: `allowPrivateHosts: true`).
+- **Chromium's sandbox is on.** Chrome cannot use it when running as root or where unprivileged user namespaces are restricted, as on some CI runners. There you must disable it explicitly with `--no-sandbox` (library: `sandbox: false`, or `PUPPETEER_ARGS="--no-sandbox"`). Only do that for pages you trust.
+
+The address check is a layer, not a complete boundary. The engine resolves a host before the browser does, and the answer can change in between (DNS rebinding). WebSocket connections also do not pass through the check. If you run the engine **server-side on URLs supplied by someone else**, keep your own network egress restrictions in place as well.
 
 If you find a way to escape those documented boundaries, we do want to hear about it.
