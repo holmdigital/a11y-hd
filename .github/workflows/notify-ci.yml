@@ -1,0 +1,58 @@
+# Notis till ntfy om byggen (2026-10-10). Samma mall i alla holmdigital-repon.
+#
+# - Misslyckad körning på standardgrenen (push, release, schema, manuell) -> ämnet vi,
+#   hög prioritet. PR-körningar och Dependabot ger ingen notis; GitHub visar dem i PR:en.
+# - Lyckad driftsättning (listan i villkoret nedan) -> vi-brus, låg prioritet.
+# - Avbrutna körningar (cancelled) ger ingen notis: de är nästan alltid ersatta av en
+#   nyare körning via concurrency.
+#
+# Token: hemligheten NTFY_CI_TOKEN, ntfy-användaren ci-github (bara skrivrätt på vi och
+# vi-brus), en token per repo med etiketten gha-notis-<repo>. Händelsedata (commit-text
+# m.m.) läses bara via miljövariabler och jq, aldrig som skriptkod.
+name: Notis om bygge
+
+on:
+  workflow_run:
+    workflows: ["CI", "Release", "Release Wiki", "Typecheck matrix (React 18 / 19)", "CodeQL", "Notify on Release"]
+    types: [completed]
+
+permissions: {}
+
+jobs:
+  notis:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    if: >-
+      github.event.workflow_run.head_branch == github.event.repository.default_branch &&
+      github.event.workflow_run.event != 'pull_request' &&
+      (contains(fromJSON('["failure","timed_out","startup_failure"]'), github.event.workflow_run.conclusion) ||
+       (github.event.workflow_run.conclusion == 'success' && contains(fromJSON('["Release Wiki"]'), github.event.workflow_run.name)))
+    steps:
+      - name: Skicka notis till ntfy
+        env:
+          NTFY_TOKEN: ${{ secrets.NTFY_CI_TOKEN }}
+          REPO: ${{ github.event.repository.name }}
+          WF: ${{ github.event.workflow_run.name }}
+          CONCLUSION: ${{ github.event.workflow_run.conclusion }}
+          RUN_URL: ${{ github.event.workflow_run.html_url }}
+          EVENT: ${{ github.event.workflow_run.event }}
+          ACTOR: ${{ github.event.workflow_run.triggering_actor.login }}
+          SHA: ${{ github.event.workflow_run.head_sha }}
+          COMMIT_MSG: ${{ github.event.workflow_run.head_commit.message }}
+        run: |
+          set -euo pipefail
+          if [ "$CONCLUSION" = "success" ]; then
+            topic=vi-brus; prio=2; tag=white_check_mark; title="$REPO: $WF klar"
+          else
+            topic=vi; prio=4; tag=x; title="$REPO: $WF misslyckades"
+          fi
+          first_line=$(printf '%s\n' "$COMMIT_MSG" | head -n1 | cut -c1-120)
+          message=$(printf 'Utfall: %s\nStartad av: %s (%s)\nCommit: %s %s' \
+            "$CONCLUSION" "$ACTOR" "$EVENT" "${SHA:0:7}" "$first_line")
+          jq -n --arg topic "$topic" --arg title "$title" --arg message "$message" \
+                --arg tag "$tag" --arg click "$RUN_URL" --argjson priority "$prio" \
+            '{topic:$topic, title:$title, message:$message, tags:[$tag], click:$click, priority:$priority}' |
+          curl -fsS --retry 3 -m 15 -o /dev/null \
+            -H "Authorization: Bearer $NTFY_TOKEN" \
+            -H "Content-Type: application/json" \
+            --data-binary @- https://notify.holmdigital.se/

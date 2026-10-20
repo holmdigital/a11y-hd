@@ -95,13 +95,16 @@ describe('efterlevnadsvalet följer utfallet, också med snedstreck i lagnamnet'
         expect(law).toContain('/');
     });
 
-    it.each(LEVELS)('sv/SE privat, %s: meningen bär hela lagnamnet och rätt utfall', async (level) => {
+    it.each(LEVELS)('sv/SE privat, %s: meningen bär hela lagnamnet, alltid delvis förenlig', async (level) => {
         const md = await generateStatementContent(resultFor(level), 'sv', 'md', {
             organizationName: 'Testorganisation', contactEmail: 't@example.test', country: 'SE', sector: 'private',
         });
         const technical = template('sv').sections.find(s => s.id === 'technical')!;
         const options = choiceOptions(technical.content);
-        const chosen = LEVELS.indexOf(level);
+        // Juno H1 (Intern #128, 2026-10-20, e79f16d): complianceLevel kan aldrig
+        // bli "helt" eller "inte förenlig" ur en ren skanning, oavsett level här.
+        // Index 1 (delvis förenlig) är det enda möjliga utfallet.
+        const chosen = 1;
         expect(md).toContain(literal(options[chosen]));
         options.forEach((o, i) => { if (i !== chosen) expect(md).not.toContain(literal(o)); });
         expect(md).toContain(`förenlig med ${law}`);

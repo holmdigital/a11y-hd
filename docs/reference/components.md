@@ -1,5 +1,5 @@
 # 📚 Component Library Catalog
-> **Last Updated:** 2026-03-07
+> **Last Updated:** 2026-10-04
 
 This document serves as a complete directory of all components available in `@holmdigital/components`. All components are built with accessibility (WCAG 2.1 AA & EN 301 549) as a first-class citizen.
 
@@ -452,8 +452,8 @@ import { MultiSelect } from '@holmdigital/components';
 
 **Usage:**
 ```tsx
-// 1. Wrap app in Provider
-<ToastProvider>
+// 1. Wrap app in Provider. Set the labels in the language of your page.
+<ToastProvider ariaLabel="Notifications" closeLabel="Close">
   <App />
 </ToastProvider>
 
@@ -468,6 +468,18 @@ const save = () => {
   });
 };
 ```
+
+**`ToastProvider` props:**
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `ariaLabel` | `string` | `'Notifications'` | Accessible name of the region that holds the toasts. Set it in the language of the page (WCAG 3.1.2). |
+| `closeLabel` | `string` | `'Close'` | Accessible name of the close button on each toast. |
+
+**Built-in Accessibility Features:**
+*   **Status messages:** `role="status"` with `aria-live="polite"` for info and success, `role="alert"` with `aria-live="assertive"` for warning and error (WCAG 4.1.3).
+*   **Timing:** error toasts stay until dismissed, and auto-dismiss pauses on hover and focus (WCAG 2.2.1).
+*   **Pointer events:** the empty region lets taps and clicks through to the page. Only the toasts themselves catch them.
 
 ### 24. Tooltip
 **[Source Code](../../packages/components/src/Tooltip)** | Status: ✅ Available

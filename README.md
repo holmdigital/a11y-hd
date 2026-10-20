@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="https://raw.githubusercontent.com/holmdigital/.github/main/profile/assets/banner.svg" width="100%" alt="Holm Digital AB. Accessibility testing in the language of the law: WCAG 2.2, EN 301 549, EAA and 17 jurisdictions.">
+</p>
+
 # Holm Digital Accessibility Ecosystem
 
 > WCAG and EN 301 549 accessibility testing that maps every failure to national law and the right enforcement body, across 17 jurisdictions.
@@ -7,7 +11,11 @@
 [![license](https://img.shields.io/npm/l/@holmdigital/engine.svg)](./LICENSE)
 [![types](https://img.shields.io/npm/types/@holmdigital/standards.svg)](https://www.npmjs.com/package/@holmdigital/standards)
 
-Most scanners (axe, Pa11y, Lighthouse) tell you **what** is broken. This ecosystem also tells you **which law** you are breaking and **who enforces it**: it maps each WCAG 2.1/2.2 failure to EN 301 549 and the relevant national accessibility law, and routes it to the correct enforcement body, for both public sector (WAD) and private sector (EAA) sites. Open source, MIT licensed, ~11k+ downloads across the package family.
+Most scanners (axe, Pa11y, Lighthouse) tell you **what** is broken. This ecosystem also tells you **which law** you are breaking and **who enforces it**: it maps each WCAG 2.1/2.2 failure to EN 301 549 and the relevant national accessibility law, and routes it to the correct enforcement body, for both public sector (WAD) and private sector (EAA) sites. Open source, MIT licensed.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/holmdigital/.github/main/profile/assets/downloads.svg" width="100%" alt="Live npm download count across all three a11y-hd packages (engine, standards, components), recalculated every 6 hours. See https://github.com/holmdigital/.github/blob/main/profile/README.md for the current total.">
+</p>
 
 ## Quick start (10 seconds, no install)
 

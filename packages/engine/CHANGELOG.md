@@ -1,5 +1,41 @@
 # @holmdigital/engine
 
+## 3.3.13
+
+### Patch Changes
+
+- 4f6ef65: Bevakning #8: `html-validate` 11.5.6 till 11.16.0, med belagd nolldrift i utfallet.
+
+  Beroendet var exakt pinnat utan caret, alltså avsiktligt fruset, eftersom dess fynd
+  renderas för kund i CLI:ns avsnitt "Structural HTML Issues" och som `htmlErrorsCount`
+  i HTML-rapporten. En bump får därför inte göras utan att utfallet jämförs först.
+
+  **Verifiering, före och efter.** Motorns exakta konfiguration
+  (`src/core/html-validator.ts` rad 20 till 31) kördes mot samma elva hämtade sidor
+  (referenssetet holmdigital.se plus webperf topp 10 offentlig sektor) med båda
+  versionerna. Samma bytes in i båda, så sidbrus är uteslutet:
+
+  - 924 fynd totalt i båda versionerna
+  - 26 regler i båda, identisk regeluppsättning
+  - 0 av 11 sidor med någon skillnad, per regel och per antal
+
+  **Den nya `aria`-optionen ändrar ingenting för oss.** Optionen saknas helt i 11.5.6
+  och har `"default": "1.2"` i 11.16.0, läst i paketets eget konfigurationsschema
+  (`dist/schema/config.json`), inte i changelogen. ARIA 1.2 är det beteende vi redan
+  hade, så 1.3 kräver ett aktivt val vi inte har gjort.
+
+  Scoren berörs inte i något fall: den räknas enbart på axe-härledda fynd
+  (`src/core/regulatory-scanner.ts` rad 852 till 860), aldrig på html-validate.
+
+- 370e035: React 18 stöds igen (Intern #89, fynd 1).
+
+  Motorn har `react` och `react-dom` som körberoenden, eftersom HTML-utlåtandet renderas med `renderToStaticMarkup`. Spannet var `^18.3.1 || ^19.0.0`, men en Dependabot-grupp för minor och patch (PR #109, 2026-07-28) skrev om det till `^19.2.8` utan changeset. Varje motorversion sedan dess har därför stängt ute React 18, trots att motorn renderar korrekt med React 18.3.1. Det är verifierat 2026-09-24 med de packade paketen i ett rent projekt.
+
+  Spannet är nu återställt till `^18.3.1 || ^19.0.0`, och ett test låser det. Grundorsaken är också rättad. Dependabot höjde spann även när den nya versionen redan rymdes i dem, och undantaget för React-majors stoppade inte det, eftersom det bara gäller majors. Med `versioning-strategy: increase-if-necessary` lämnas ett spann som redan tillåter versionen orört, och bara låsfilen uppdateras.
+
+- Updated dependencies [94022ff]
+  - @holmdigital/standards@4.2.2
+
 ## 3.3.12
 
 ### Patch Changes

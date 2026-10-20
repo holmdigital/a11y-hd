@@ -45,7 +45,7 @@
                     },
                     {
                         "authority": "Mediemyndigheten",
-                        "responsibility": "Audiovisuella medietjänster (streaming)."
+                        "responsibility": "Tjänster som ger åtkomst till audiovisuella medietjänster (förordning (2023:676) 29 §)."
                     },
                     {
                         "authority": "MTM",
@@ -53,7 +53,7 @@
                     },
                     {
                         "authority": "Transportstyrelsen",
-                        "responsibility": "Teknisk utrustning inom transport."
+                        "responsibility": "Reseinformation och självbetjäningsterminaler (förordning (2023:676) 31 § andra stycket)."
                     }
                 ],
                 "sanctions": {
@@ -224,7 +224,7 @@
                 "enforcement": {
                     "authority": "de-bfit",
                     "authorityName": "BFIT-Bund (Zentralstelle für barrierefreie Informationstechnik)",
-                    "responsibility": "Federal tillsyn av offentlig sektor.",
+                    "responsibility": "Federal oversight of the public sector.",
                     "website": "https://www.bfit-bund.de"
                 },
                 "inForce": true,
@@ -463,7 +463,7 @@
                 },
                 "sanctions": {
                     "type": "Bestuurlijke boete",
-                    "description": "Boetes bij overtreding van de Warenwet eller EAA-voorschriften.",
+                    "description": "Boetes bij overtreding van de Warenwet of EAA-voorschriften.",
                     "minAmount": 0,
                     "maxAmount": 900000,
                     "currency": "EUR"
