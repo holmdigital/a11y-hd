@@ -1,7 +1,7 @@
 import React from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { AccessibilityStatement, AccessibilityStatementProps } from '@holmdigital/components';
-import { Country, getEnforcementBody, getNationalLawForSector, getNationalLaws } from '@holmdigital/standards';
+import { Country, getEnforcementBody, getNationalLawForSector, getNationalLaws, getSectorAuthorities } from '@holmdigital/standards';
 import { ScanResult } from '../core/regulatory-scanner';
 import fs from 'fs/promises';
 import path from 'path';
@@ -197,6 +197,39 @@ export function resolveNationalLawReference(
     return NATIONAL_LAW_FALLBACK[langKey] ?? NATIONAL_LAW_FALLBACK.en;
 }
 
+/**
+ * Juno H3/H4 (2026-10-08): the generic Swedish "enforcement" section in
+ * sv.json is written for DOS-lagen (public sector, WAD) and is wrong for the
+ * private sector in two ways documented against primary source:
+ *
+ * 1. "oskäligt betungande", "tillgänglighetsredogörelse" and "begäran om
+ *    tillgängliggörande" are DOS-lagen concepts (10-12 §§). They get zero
+ *    hits in lagen (2023:254) or förordningen (2023:676), so rendering them
+ *    for a private customer claims DOS-lagen rights that law does not give.
+ * 2. It names PTS as though it were the sole supervisor. PTS is the market
+ *    surveillance authority and coordinator; actual tillsyn is split by
+ *    service type across five authorities (förordning (2023:676) 28-31 §§).
+ *
+ * Public-sector DOS-lagen wording is correct and kept as-is, with the link to
+ * Digg's own anmälan procedure added (MDFFS 2019:2 6 § requires "en länk till
+ * det förfarande för anmälningar som myndigheten tillhandahåller").
+ *
+ * Scoped to SE only — no other country's enforcement template has been
+ * reviewed for the same defect, and this must not change their output.
+ */
+function resolveSwedishEnforcementContent(
+    sector: 'public' | 'private',
+    enforcementBody: string,
+    nationalLaw: string
+): string {
+    if (sector === 'private') {
+        const authorities = getSectorAuthorities('SE');
+        const list = authorities.map(a => `* ${a.authority}: ${a.responsibility}`).join('\n');
+        return `${enforcementBody} är en av flera tillsynsmyndigheter för ${nationalLaw}. PTS är marknadskontrollmyndighet och samordnare; tillsynen i övrigt är delad utifrån vilken typ av tjänst det gäller:\n\n${list}\n\nOm du tycker att vi inte uppfyller lagens krav kan du anmäla det till den myndighet som ansvarar för den typen av tjänst.`;
+    }
+    return `${enforcementBody} har ansvaret för tillsyn över ${nationalLaw}. Du kan anmäla till ${enforcementBody} om du tycker att vår digitala service har brister i tillgänglighet.\n\nDu kan också anmäla till ${enforcementBody} om du tycker att vår bedömning av vad som är oskäligt betungande ska granskas, om du tycker att vår tillgänglighetsredogörelse har brister eller om du tycker att vi inte har hanterat din begäran om tillgängliggörande korrekt.\n\nDu kan anmäla direkt till Digg via tjänsten för anmälan om bristande tillgänglighet: https://www.digg.se/tdosanmalan`;
+}
+
 export async function generateStatementContent(
     result: ScanResult,
     lang: string = 'en',
@@ -216,14 +249,24 @@ export async function generateStatementContent(
         );
     }
 
-    // 1. Determine compliance level
-    let complianceLevel: AccessibilityStatementProps['complianceLevel'] = 'full';
-
-    if (result.stats.critical > 0 || (result.legalSummary && result.legalSummary.eaaDeadlineViolations > 0)) {
-        complianceLevel = 'non-compliant'; // Critical issues or legal blockers
-    } else if (result.score < 100) {
-        complianceLevel = 'partial'; // Some issues, but no critical ones
-    }
+    // 1. Determine compliance level.
+    //
+    // Juno H1 (2026-10-08): genomförandebeslut (EU) 2018/1523 fotnot iii kräver
+    // att samtliga krav i standarden, UNDANTAGSLÖST, är uppfyllda för "helt
+    // förenlig"; fotnot viii kräver att DE FLESTA kraven INTE är uppfyllda för
+    // "inte förenlig". En automatiserad skanning kan aldrig ensam styrka något
+    // av ytterlägena: den täcker inte alla krav (kan därför aldrig bevisa
+    // "helt"), och `eaaDeadlineViolations` räknade tidigare varje fynd med ett
+    // EAA-deadline-taggat lagrum — inklusive enstaka low/best-practice-fynd —
+    // som grund för "inte förenlig", vilket satte den statusen på en bråkdel av
+    // kraven i stället för "de flesta". Statusen sätts därför alltid till
+    // "delvis förenlig" från en ren skanning; "helt" och "inte förenlig" kräver
+    // en människas manuella granskning och kan inte komma ur den här funktionen.
+    // Cast, not an annotated const: an annotated `const x: Union = 'partial'` still gets
+    // narrowed by control flow to the literal `'partial'`, which makes the `=== 'full'` /
+    // `=== 'non-compliant'` checks below fail to typecheck (TS2367, no overlap) even though
+    // they guard real behavior for callers that branch on this value.
+    const complianceLevel = 'partial' as AccessibilityStatementProps['complianceLevel'];
 
     // 2. Extract known issues (non-compliant items).
     // Needs review (cantTell) exkluderas: de är inte bekräftade brister och får
@@ -463,9 +506,23 @@ export async function generateStatementContent(
                 return content;
             });
 
-            // Substitute {<placeholder>} patterns first (before choice resolution)
+            // Substitute {<placeholder>} patterns first (before choice resolution).
+            //
+            // A substituted value can itself contain a literal "/" — EU law
+            // citations are routinely written "nr/år" (FI: "(306/2019)", DK:
+            // "08/06/2018") and SE's private-sector law carries "Tillgänglighets-
+            // lagen / LPTT". The choice step below splits on "/", so an
+            // unprotected value collided with the template's own delimiter and
+            // corrupted the "is this site compliant" sentence for every country
+            // whose national-law text contains one — found verifying the H3 fix
+            // (2026-10-08), pre-existing and unrelated to it. Slashes coming from
+            // substituted values are parked behind a sentinel here and restored
+            // after the choice step runs, so only the template's OWN delimiters
+            // are ever split on.
+            const SLASH_SENTINEL = '\u0000SLASH\u0000';
             processed = processed.replace(/\{<[^>]+>\}/g, (match) => {
-                return substitutions[match] !== undefined ? substitutions[match] : match;
+                const value = substitutions[match];
+                return value !== undefined ? value.replace(/\//g, SLASH_SENTINEL) : match;
             });
 
             // Handle Choices { A / B / C }
@@ -480,6 +537,8 @@ export async function generateStatementContent(
                 return _match;
             });
 
+            processed = processed.split(SLASH_SENTINEL).join('/');
+
             return processed;
         };
 
@@ -493,7 +552,12 @@ export async function generateStatementContent(
                 // tillsynsmyndighet. Annars renderas tomma hål (" har ansvaret …") och
                 // sektionen antyder en redogörelseplikt en privat aktör inte har.
                 if (s.id === 'enforcement' && enforcementBody === '') return null;
-                const body = processText(s.content).trim();
+                // Juno H3/H4: Swedish enforcement wording is sector-specific and
+                // cannot come from the generic template — see
+                // resolveSwedishEnforcementContent() above.
+                const body = (s.id === 'enforcement' && country === 'SE' && lang === 'sv')
+                    ? resolveSwedishEnforcementContent(sector, enforcementBody, substitutions['{<national_law>}'] ?? '').trim()
+                    : processText(s.content).trim();
                 if (body === '') return null;                 // hoppa sektioner som blir tomma
                 // Intern #23: en section utan titel får aldrig rendera "## undefined".
                 return s.title ? `## ${s.title}\n\n${body}` : body;
