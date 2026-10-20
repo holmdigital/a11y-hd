@@ -1,7 +1,7 @@
 import React from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { AccessibilityStatement, AccessibilityStatementProps } from '@holmdigital/components';
-import { Country, getEnforcementBody, getNationalLawForSector, getNationalLaws, getSectorAuthorities } from '@holmdigital/standards';
+import { Country, getEnforcementBody, getNationalLawForSector, getNationalLaws } from '@holmdigital/standards';
 import { ScanResult } from '../core/regulatory-scanner';
 import fs from 'fs/promises';
 import path from 'path';
@@ -208,11 +208,19 @@ export function resolveNationalLawReference(
  *    for a private customer claims DOS-lagen rights that law does not give.
  * 2. It names PTS as though it were the sole supervisor. PTS is the market
  *    surveillance authority and coordinator; actual tillsyn is split by
- *    service type across five authorities (förordning (2023:676) 28-31 §§).
+ *    service type across five authorities (förordning (2023:676) 28-31 §§),
+ *    and PTS is itself also the sector authority for three of them — a
+ *    four-row list that omits PTS's own row makes it look like PTS has no
+ *    service-level responsibility at all (Juno B3, Intern #128, 2026-10-20).
  *
  * Public-sector DOS-lagen wording is correct and kept as-is, with the link to
  * Digg's own anmälan procedure added (MDFFS 2019:2 6 § requires "en länk till
  * det förfarande för anmälningar som myndigheten tillhandahåller").
+ *
+ * Private-sector wording is Karin's own, decided in Intern#94 fråga 2
+ * alternativ (a) and carried verbatim from Intern#83: it replaces the whole
+ * section rather than listing authorities dynamically, because the engine
+ * cannot determine which specific service type the customer offers.
  *
  * Scoped to SE only — no other country's enforcement template has been
  * reviewed for the same defect, and this must not change their output.
@@ -223,9 +231,7 @@ function resolveSwedishEnforcementContent(
     nationalLaw: string
 ): string {
     if (sector === 'private') {
-        const authorities = getSectorAuthorities('SE');
-        const list = authorities.map(a => `* ${a.authority}: ${a.responsibility}`).join('\n');
-        return `${enforcementBody} är en av flera tillsynsmyndigheter för ${nationalLaw}. PTS är marknadskontrollmyndighet och samordnare; tillsynen i övrigt är delad utifrån vilken typ av tjänst det gäller:\n\n${list}\n\nOm du tycker att vi inte uppfyller lagens krav kan du anmäla det till den myndighet som ansvarar för den typen av tjänst.`;
+        return 'Tillsynen över lagen (2023:254) om vissa produkters och tjänsters tillgänglighet är uppdelad mellan flera myndigheter beroende på vilken tjänst som erbjuds: Post- och telestyrelsen ansvarar för elektronisk kommunikation, banktjänster och e-handelstjänster, Mediemyndigheten för audiovisuella medietjänster, Myndigheten för tillgängliga medier för e-böcker, och Konsumentverket respektive Transportstyrelsen för olika delar av persontransporttjänster.';
     }
     return `${enforcementBody} har ansvaret för tillsyn över ${nationalLaw}. Du kan anmäla till ${enforcementBody} om du tycker att vår digitala service har brister i tillgänglighet.\n\nDu kan också anmäla till ${enforcementBody} om du tycker att vår bedömning av vad som är oskäligt betungande ska granskas, om du tycker att vår tillgänglighetsredogörelse har brister eller om du tycker att vi inte har hanterat din begäran om tillgängliggörande korrekt.\n\nDu kan anmäla direkt till Digg via tjänsten för anmälan om bristande tillgänglighet: https://www.digg.se/tdosanmalan`;
 }
