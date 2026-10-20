@@ -770,3 +770,31 @@ describe('Intern #63 — lagraden upprepar inte namnet', () => {
         expect(resolveNationalLawReference('PT', 'public', 'pt')).toContain('(DL 83/2018)');
     });
 });
+
+describe('Intern #128 (Juno B1) — "testing"-sektionens metodval följer inte complianceLevel', () => {
+    // complianceLevel är sedan H1 alltid 'partial' (aldrig 'full'/'non-compliant') ur en ren
+    // skanning. Valtexten delar samma {A/B/C}-syntax som används för att välja status i
+    // "technical"-sektionen, och råkade därför återanvända complianceLevel som index: varje
+    // utlåtande påstod "oberoende granskning" (index 1), även om detta bara är en
+    // automatiserad självskanning. Se packages/engine/src/reporting/statement-generator.ts,
+    // sectionId === 'testing' i choice-resolutionen.
+    const resultWithIssues: ScanResult = mockResult;
+    const resultWithoutIssues: ScanResult = {
+        ...mockResult,
+        reports: [],
+        stats: { ...mockResult.stats, high: 0, total: 45 },
+    };
+
+    it.each([
+        ['sv', 'en självskattning (intern testning)', ['oberoende granskning', 'uppskattat tillgängligheten utan granskning']],
+        ['en', 'self-assessment (internal testing)', ['has tested', 'estimated the accessibility without testing']],
+    ])('%s: utlåtandet säger självskattning, aldrig oberoende granskning eller ingen testning', async (lang, expectedPhrase, forbiddenPhrases) => {
+        for (const result of [resultWithIssues, resultWithoutIssues]) {
+            const output = await generateStatementContent(result, lang, 'md', metadata);
+            expect(output).toContain(expectedPhrase);
+            for (const forbidden of forbiddenPhrases) {
+                expect(output).not.toContain(forbidden);
+            }
+        }
+    });
+});

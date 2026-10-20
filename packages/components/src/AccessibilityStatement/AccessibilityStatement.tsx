@@ -628,7 +628,7 @@ export const AccessibilityStatement: React.FC<AccessibilityStatementProps> = ({
     // AU-specific mappings
     replacements['{<ahrc_url>}'] = 'https://humanrights.gov.au/complaints';
 
-    const renderTemplate = (tmpl: string) => {
+    const renderTemplate = (tmpl: string, sectionId?: string) => {
         let text = tmpl;
 
         // 1. Handle Conditional Blocks [ ... ] using Regex
@@ -664,6 +664,18 @@ export const AccessibilityStatement: React.FC<AccessibilityStatementProps> = ({
         text = text.replace(/\{([^{}]*?)\}/g, (_match, content) => {
             const parts = content.split('/');
             if (parts.length >= 2) {
+                // Juno B1 (Intern #128, 2026-10-20): the "testing" section's choice
+                // picks between self-assessment / third-party review / no testing.
+                // This component only ever renders output from a pure automated scan,
+                // so it is always self-assessment and testing always happened. Picking
+                // this by complianceLevel claimed "independent review" (index 1) for
+                // every statement once complianceLevel became permanently 'partial'.
+                // Pinned to the self-assessment branch regardless of compliance
+                // outcome; only the "technical" (compliance status) choice reads
+                // complianceLevel.
+                if (sectionId === 'testing') {
+                    return parts[0].trim();
+                }
                 let idx = 0;
                 if (complianceLevel === 'partial') idx = 1;
                 if (complianceLevel === 'non-compliant') idx = parts.length > 2 ? 2 : 1;
@@ -677,7 +689,7 @@ export const AccessibilityStatement: React.FC<AccessibilityStatementProps> = ({
 
     const renderSections = (sections: TemplateSection[]) => {
         return sections.map((section, i) => {
-            const content = renderTemplate(section.content);
+            const content = renderTemplate(section.content, section.id);
             const trimmed = content.trim();
             if (!trimmed) return null;
 

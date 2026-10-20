@@ -593,3 +593,32 @@ describe('AccessibilityStatement US national_law placeholder (generic en templat
         expect(html).not.toMatch(/complies with\s*\.\s/);
     });
 });
+
+describe('Intern #128 (Juno B1) — "testing"-sektionens metodval följer inte complianceLevel', () => {
+    // Samma bugg som i motorn (statement-generator.test.ts): metodvalet delade
+    // complianceLevel som index med status-choicen, så komponenten påstod "oberoende
+    // granskning" (index 1) så fort complianceLevel var 'partial', vilket motorn sedan
+    // H1 alltid skickar in. Den här komponenten renderar HTML/PDF-vägen, som inte täcktes
+    // av motorns markdown-fix.
+    (['full', 'partial', 'non-compliant'] as const).forEach((level) => {
+        it(`sv: self-assessment-texten visas vid complianceLevel="${level}", aldrig oberoende granskning eller ingen testning`, () => {
+            const { container } = render(
+                <AccessibilityStatement {...defaultProps} locale="sv" complianceLevel={level} />
+            );
+            const html = container.innerHTML;
+            expect(html).toContain('en självskattning (intern testning)');
+            expect(html).not.toContain('oberoende granskning');
+            expect(html).not.toContain('uppskattat tillgängligheten utan granskning');
+        });
+
+        it(`en: self-assessment text shows at complianceLevel="${level}", never independent review or no testing`, () => {
+            const { container } = render(
+                <AccessibilityStatement {...defaultProps} locale="en" complianceLevel={level} />
+            );
+            const html = container.innerHTML;
+            expect(html).toContain('self-assessment (internal testing)');
+            expect(html).not.toContain('has tested');
+            expect(html).not.toContain('estimated the accessibility without testing');
+        });
+    });
+});

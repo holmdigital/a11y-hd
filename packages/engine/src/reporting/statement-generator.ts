@@ -489,7 +489,7 @@ export async function generateStatementContent(
         };
 
 
-        const processText = (text: string) => {
+        const processText = (text: string, sectionId?: string) => {
             let processed = text;
             // Handle Conditionals [ ... ]
             processed = processed.replace(/\[([\s\S]*?)\]/g, (_match, content) => {
@@ -529,6 +529,18 @@ export async function generateStatementContent(
             processed = processed.replace(/\{([^{}]*?)\}/g, (_match, content) => {
                 const parts = content.split('/');
                 if (parts.length >= 2) {
+                    // Juno B1 (Intern #128, 2026-10-20): the "testing" section's choice
+                    // picks between self-assessment / third-party review / no testing.
+                    // This function only ever runs a pure automated scan, so it is
+                    // always self-assessment and testing always happened — picking this
+                    // by complianceLevel claimed "independent review" (index 1) for
+                    // every statement once complianceLevel became permanently 'partial'.
+                    // Pinned to the self-assessment branch regardless of compliance
+                    // outcome; only the "technical" (compliance status) choice reads
+                    // complianceLevel.
+                    if (sectionId === 'testing') {
+                        return parts[0].trim();
+                    }
                     let idx = 0;
                     if (complianceLevel === 'partial') idx = 1;
                     if (complianceLevel === 'non-compliant') idx = parts.length > 2 ? 2 : 1;
@@ -557,7 +569,7 @@ export async function generateStatementContent(
                 // resolveSwedishEnforcementContent() above.
                 const body = (s.id === 'enforcement' && country === 'SE' && lang === 'sv')
                     ? resolveSwedishEnforcementContent(sector, enforcementBody, substitutions['{<national_law>}'] ?? '').trim()
-                    : processText(s.content).trim();
+                    : processText(s.content, s.id).trim();
                 if (body === '') return null;                 // hoppa sektioner som blir tomma
                 // Intern #23: en section utan titel får aldrig rendera "## undefined".
                 return s.title ? `## ${s.title}\n\n${body}` : body;
