@@ -25,23 +25,30 @@ describe('Intern #56 — gren 1: formellt lagkrav', () => {
         expect(line).toBe('Lagkrav: DOS-lagen (2018:1937), 10 §. WCAG AA 1.4.3 (Contrast (Minimum)), EN 301 549 9.1.4.3.');
     });
 
-    it('privat sektor citerar LPTT och gissar ALDRIG en EN 301 549-version', () => {
+    it('privat sektor: Junos H5-lydelse, 9 § som presumtion, aldrig som eget lagkrav', () => {
         const line = klarsprakLegalLine(DOS_REF, {
             sector: 'private', ruleId: 'color-contrast', wcagCriteria: '1.4.3', en301549Criteria: '9.1.4.3'
         });
-        expect(line).toContain('lagen om vissa produkters och tjänsters tillgänglighet (2023:254), 6 och 9 §§');
+        expect(line).toContain('lagen (2023:254) 4 §');
+        expect(line).toContain('mikroföretag (10 §)');
+        expect(line).toContain('6 § och förordningen (2023:676) bilaga 2 punkt 3');
         expect(line).toContain('WCAG AA 1.4.3 (Contrast (Minimum))');
-        expect(line).toContain('inte verifierad');
-        // Junos öppna punkt: versionen är inte belagd mot primärkälla.
-        expect(line).not.toMatch(/EN 301 549 V\d/);
+        expect(line).toContain('presumtion enligt 9 §');
+        expect(line).toContain('Lagen nämner inte WCAG');
+        // Juno H5 (Intern #128): "6 och 9 §§" som samlat lagkrav är borta — 9 §
+        // är en presumtionsregel, inte ett eget krav.
+        expect(line).not.toContain('6 och 9 §§');
         expect(line).not.toContain('DOS-lagen');
     });
 
     it('color-contrast behandlas som lagkrav, ALDRIG som god praxis', () => {
         // Exakt fällan Juno varnade för när man generaliserar från region/heading-order.
+        // Privat sektor inleds sedan H5 inte längre med "Lagkrav:" (Junos egen
+        // lydelse börjar "Lagkrav om tjänsten omfattas av..."), så kontrollen
+        // är bredare: ordet "Lagkrav" måste finnas, "god praxis" aldrig.
         for (const sector of ['public', 'private'] as const) {
             const line = klarsprakLegalLine(DOS_REF, { sector, ruleId: 'color-contrast', wcagCriteria: '1.4.3' });
-            expect(line).toContain('Lagkrav:');
+            expect(line).toContain('Lagkrav');
             expect(line).not.toContain('god praxis');
         }
     });
@@ -80,20 +87,32 @@ describe('Intern #56 — gren 2: god praxis, samma text för båda sektorerna', 
     });
 });
 
-describe('Intern #56 — gren 3: riktigt kriterium, ännu inte bindande', () => {
-    it('target-size skiljs från god praxis och från lagkrav', () => {
-        const line = klarsprakLegalLine(NOT_YET_REF, { ruleId: 'target-size', wcagCriteria: '2.5.8' });
+describe('Intern #56 / Juno H6 (Intern #128) — gren 3: riktigt kriterium, ännu inte bindande', () => {
+    it('target-size skiljs från god praxis och från lagkrav, offentlig sektor', () => {
+        const line = klarsprakLegalLine(NOT_YET_REF, { sector: 'public', ruleId: 'target-size', wcagCriteria: '2.5.8' });
         expect(line).toContain('Ännu inte lagkrav');
         expect(line).toContain('WCAG AA 2.5.8 (Target Size (Minimum))');
-        expect(line).toContain('30 november 2026');
+        expect(line).toContain('DOS-lagen (2018:1937)');
+        expect(line).toContain('MDFFS 2019:2 5 §');
         // Får inte förväxlas med gren 2: detta ÄR ett framgångskriterium.
         expect(line).not.toContain('god praxis');
+        // Juno H6: det påhittade/missvisande datumet är borta.
+        expect(line).not.toContain('30 november 2026');
     });
 
-    it('samma text oavsett sektor', () => {
+    it('privat sektor hänvisar till lagen (2023:254) och EU:s officiella tidning, inte MDFFS', () => {
+        const line = klarsprakLegalLine(NOT_YET_REF, { sector: 'private', ruleId: 'target-size', wcagCriteria: '2.5.8' });
+        expect(line).toContain('lagen (2023:254)');
+        expect(line).toContain('presumtion enligt 9 §');
+        expect(line).toContain('direktiv (EU) 2019/882');
+        expect(line).not.toContain('MDFFS');
+        expect(line).not.toContain('30 november 2026');
+    });
+
+    it('Juno H6: sektorerna skiljer sig nu (tidigare samma text, vilket dolde att lagarna blir bindande på olika sätt)', () => {
         const pub = klarsprakLegalLine(NOT_YET_REF, { sector: 'public', ruleId: 'target-size', wcagCriteria: '2.5.8' });
         const priv = klarsprakLegalLine(NOT_YET_REF, { sector: 'private', ruleId: 'target-size', wcagCriteria: '2.5.8' });
-        expect(pub).toBe(priv);
+        expect(pub).not.toBe(priv);
     });
 });
 
