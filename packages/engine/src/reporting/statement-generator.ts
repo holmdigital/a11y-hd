@@ -495,7 +495,26 @@ export async function generateStatementContent(
         };
 
 
-        const processText = (text: string, sectionId?: string) => {
+        /**
+         * Vilket alternativ ett valblock `{A / B / C}` ska ge.
+         *
+         * Mallarna har två SORTERS val, och de fick tidigare samma svar.
+         * Efterlevnadsvalet följer kundens utfall. Metodvalet i sektionen
+         * `testing` (självskattning / extern granskning / uppskattning utan
+         * granskning) beskriver hur utlåtandet togs fram, och det beror inte
+         * på utfallet. Med samma index skrev varje delvis förenlig kund
+         * "<verktyget> har gjort en oberoende granskning" och varje ej förenlig
+         * kund "vi har uppskattat tillgängligheten utan granskning", båda
+         * falska. Ett verktyg som kunden själv kör är en självskattning.
+         */
+        const choiceIndex = (kind: 'compliance' | 'method', parts: number): number => {
+            if (kind === 'method') return 0;
+            if (complianceLevel === 'partial') return 1;
+            if (complianceLevel === 'non-compliant') return parts > 2 ? 2 : 1;
+            return 0;
+        };
+
+        const processText = (text: string, kind: 'compliance' | 'method' = 'compliance') => {
             let processed = text;
             // Handle Conditionals [ ... ]
             processed = processed.replace(/\[([\s\S]*?)\]/g, (_match, content) => {
@@ -512,52 +531,28 @@ export async function generateStatementContent(
                 return content;
             });
 
-            // Substitute {<placeholder>} patterns first (before choice resolution).
-            //
-            // A substituted value can itself contain a literal "/" — EU law
-            // citations are routinely written "nr/år" (FI: "(306/2019)", DK:
-            // "08/06/2018") and SE's private-sector law carries "Tillgänglighets-
-            // lagen / LPTT". The choice step below splits on "/", so an
-            // unprotected value collided with the template's own delimiter and
-            // corrupted the "is this site compliant" sentence for every country
-            // whose national-law text contains one — found verifying the H3 fix
-            // (2026-10-08), pre-existing and unrelated to it. Slashes coming from
-            // substituted values are parked behind a sentinel here and restored
-            // after the choice step runs, so only the template's OWN delimiters
-            // are ever split on.
-            const SLASH_SENTINEL = '\u0000SLASH\u0000';
+            // Platshållarna blir markörer INNAN valen löses, och får sina värden
+            // efteråt. Annars delas ett värde som innehåller "/" av valparsern:
+            // "Real Decreto 1112/2018" klipptes vid snedstrecket, och för en
+            // delvis förenlig kund blev meningen ett fragment av lagnamnet.
+            // Markören är ett tecken ur Unicodes privata område: varken "/",
+            // klamrar eller ett styrtecken, och förekommer inte i någon text.
+            const values: string[] = [];
             processed = processed.replace(/\{<[^>]+>\}/g, (match) => {
-                const value = substitutions[match];
-                return value !== undefined ? value.replace(/\//g, SLASH_SENTINEL) : match;
+                values.push(substitutions[match] !== undefined ? substitutions[match] : match);
+                return `\uE000${values.length - 1}\uE000`;
             });
 
             // Handle Choices { A / B / C }
             processed = processed.replace(/\{([^{}]*?)\}/g, (_match, content) => {
                 const parts = content.split('/');
                 if (parts.length >= 2) {
-                    // Juno B1 (Intern #128, 2026-10-20): the "testing" section's choice
-                    // picks between self-assessment / third-party review / no testing.
-                    // This function only ever runs a pure automated scan, so it is
-                    // always self-assessment and testing always happened — picking this
-                    // by complianceLevel claimed "independent review" (index 1) for
-                    // every statement once complianceLevel became permanently 'partial'.
-                    // Pinned to the self-assessment branch regardless of compliance
-                    // outcome; only the "technical" (compliance status) choice reads
-                    // complianceLevel.
-                    if (sectionId === 'testing') {
-                        return parts[0].trim();
-                    }
-                    let idx = 0;
-                    if (complianceLevel === 'partial') idx = 1;
-                    if (complianceLevel === 'non-compliant') idx = parts.length > 2 ? 2 : 1;
-                    return parts[idx].trim();
+                    return parts[choiceIndex(kind, parts.length)].trim();
                 }
                 return _match;
             });
 
-            processed = processed.split(SLASH_SENTINEL).join('/');
-
-            return processed;
+            return processed.replace(/\uE000(\d+)\uE000/g, (_m, i) => values[Number(i)]);
         };
 
         const title = processText(template.title);
@@ -575,7 +570,7 @@ export async function generateStatementContent(
                 // resolveSwedishEnforcementContent() above.
                 const body = (s.id === 'enforcement' && country === 'SE' && lang === 'sv')
                     ? resolveSwedishEnforcementContent(sector, enforcementBody, substitutions['{<national_law>}'] ?? '').trim()
-                    : processText(s.content, s.id).trim();
+                    : processText(s.content, s.id === 'testing' ? 'method' : 'compliance').trim();
                 if (body === '') return null;                 // hoppa sektioner som blir tomma
                 // Intern #23: en section utan titel får aldrig rendera "## undefined".
                 return s.title ? `## ${s.title}\n\n${body}` : body;
