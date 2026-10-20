@@ -35,17 +35,17 @@
                 "enforcement": {
                     "authority": "se-pts",
                     "authorityName": "PTS (Post- och telestyrelsen)",
-                    "responsibility": "Marknadskontrollmyndighet och samordnare för övriga sektorsmyndigheter.",
+                    "responsibility": "Marknadskontrollmyndighet för produkter (28 § och 25 § förordning (2023:676)) samt tillsynsmyndighet för elektronisk kommunikation, banktjänster och e-handelstjänster (4 § första stycket 1, 5 och 7), med samordningsansvar för övriga sektorsmyndigheter.",
                     "website": "https://pts.se"
                 },
                 "sectorAuthorities": [
                     {
                         "authority": "Konsumentverket",
-                        "responsibility": "Persontransporter (buss, tåg, flyg, båt)."
+                        "responsibility": "Persontransporttjänster: webbplatser, tjänster för mobila enheter samt tillhandahållande av elektroniska biljetter och elektroniska biljettförsäljningstjänster (4 § första stycket 3 a-c, 31 § första meningen)."
                     },
                     {
                         "authority": "Mediemyndigheten",
-                        "responsibility": "Tjänster som ger åtkomst till audiovisuella medietjänster (förordning (2023:676) 29 §)."
+                        "responsibility": "Audiovisuella medietjänster (streaming)."
                     },
                     {
                         "authority": "MTM",
@@ -53,7 +53,7 @@
                     },
                     {
                         "authority": "Transportstyrelsen",
-                        "responsibility": "Reseinformation och självbetjäningsterminaler (förordning (2023:676) 31 § andra stycket)."
+                        "responsibility": "Persontransporttjänster, resterande delar av 4 § första stycket 3 samt punkt 4 (31 § andra meningen)."
                     }
                 ],
                 "sanctions": {

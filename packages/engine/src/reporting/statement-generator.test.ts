@@ -425,13 +425,18 @@ describe('EAA sector support', () => {
         expect(output).toContain(eaaBody);
     });
 
-    it('should use EAA enforcement body when sector is private for SE', async () => {
+    it('should name PTS among the enforcement bodies when sector is private for SE', async () => {
+        // SE private doesn't interpolate the full `enforcementBody` string
+        // (Juno B3, Intern #128 / #83 / #94 fråga 2): the section lists five
+        // authorities by service type instead of naming one sole supervisor,
+        // so it reads "Post- och telestyrelsen", not the registry's full
+        // "PTS (Post- och telestyrelsen)" form. See the dedicated coverage in
+        // "Intern #83/#94 fråga 2 (Juno B3)" below.
         const output = await generateStatementContent(
             mockResult, 'sv', 'md',
             { ...metadata, country: 'SE', sector: 'private' }
         );
-        const eaaBody = getEnforcementBody('SE', 'private');
-        expect(output).toContain(eaaBody);
+        expect(output).toContain('Post- och telestyrelsen');
     });
 
     it('should use EAA national law when sector is private for DE', async () => {
@@ -796,5 +801,37 @@ describe('Intern #128 (Juno B1) — "testing"-sektionens metodval följer inte c
                 expect(output).not.toContain(forbidden);
             }
         }
+    });
+});
+
+describe('Intern #83/#94 fråga 2 (Juno B3) — svensk privat sektors tillsynstext', () => {
+    // Karins ordagranna, godkända text (Intern#94 fråga 2 alternativ a, carried
+    // in Intern#83): avsnittet ersätts helt, listar alla fem myndigheterna
+    // inklusive PTS egen rad, och innehåller inga DOS-lagen-begrepp.
+    const KARINS_TEXT = 'Tillsynen över lagen (2023:254) om vissa produkters och tjänsters tillgänglighet är uppdelad mellan flera myndigheter beroende på vilken tjänst som erbjuds: Post- och telestyrelsen ansvarar för elektronisk kommunikation, banktjänster och e-handelstjänster, Mediemyndigheten för audiovisuella medietjänster, Myndigheten för tillgängliga medier för e-böcker, och Konsumentverket respektive Transportstyrelsen för olika delar av persontransporttjänster.';
+
+    it('SE privat: avsnittet är exakt Karins text, ordagrant', async () => {
+        const output = await generateStatementContent(mockResult, 'sv', 'md', { ...metadata, country: 'SE', sector: 'private' });
+        expect(output).toContain(KARINS_TEXT);
+    });
+
+    it('SE privat: PTS egen rad finns med (B3, tidigare en fyrradslista utan PTS)', async () => {
+        const output = await generateStatementContent(mockResult, 'sv', 'md', { ...metadata, country: 'SE', sector: 'private' });
+        expect(output).toContain('Post- och telestyrelsen ansvarar för elektronisk kommunikation, banktjänster och e-handelstjänster');
+    });
+
+    it('SE privat: inga DOS-lagen-begrepp kvar', async () => {
+        const output = await generateStatementContent(mockResult, 'sv', 'md', { ...metadata, country: 'SE', sector: 'private' });
+        expect(output).not.toContain('oskäligt betungande');
+        expect(output).not.toContain('tillgänglighetsredogörelse har brister');
+        expect(output).not.toContain('begäran om tillgängliggörande');
+        expect(output).not.toContain('samordnare; tillsynen i övrigt är delad');
+    });
+
+    it('SE offentlig: oförändrad, DOS-lagens text och Digg-länken står kvar', async () => {
+        const output = await generateStatementContent(mockResult, 'sv', 'md', { ...metadata, country: 'SE', sector: 'public' });
+        expect(output).toContain('oskäligt betungande');
+        expect(output).toContain('https://www.digg.se/tdosanmalan');
+        expect(output).not.toContain(KARINS_TEXT);
     });
 });
