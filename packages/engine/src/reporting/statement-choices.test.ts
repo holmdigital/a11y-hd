@@ -101,9 +101,19 @@ describe('efterlevnadsvalet följer utfallet, också med snedstreck i lagnamnet'
         });
         const technical = template('sv').sections.find(s => s.id === 'technical')!;
         const options = choiceOptions(technical.content);
-        // Juno H1 (Intern #128, 2026-10-20, e79f16d): complianceLevel kan aldrig
-        // bli "helt" eller "inte förenlig" ur en ren skanning, oavsett level här.
-        // Index 1 (delvis förenlig) är det enda möjliga utfallet.
+        // Dagens (ofullständiga) beteende: complianceLevel är hårdkodat till
+        // 'partial' i generateStatementContent, oavsett vad `level` här sätter
+        // på det inkommande scanresultatet, så index 1 (delvis förenlig) är
+        // det enda möjliga utfallet att observera just nu.
+        //
+        // Juno har INTE attesterat detta som korrekt lydelse (hennes
+        // 2026-10-20-uppföljning, Intern #128, fil
+        // juno-h1-status-fall-a-b-2026-10-20.md): att alltid säga "delvis
+        // förenlig" är fortfarande fel, bara mindre fel än det publicerade
+        // 3.3.13. Rätt beteende kräver ett fjärde complianceLevel-tillstånd
+        // ("ingen status vald", kunden väljer själv) och är ett separat,
+        // avgränsat arbete, inte gjort än. Det här testet låser bara fast
+        // nuvarande kod tills dess, och ska skrivas om när det arbetet landar.
         const chosen = 1;
         expect(md).toContain(literal(options[chosen]));
         options.forEach((o, i) => { if (i !== chosen) expect(md).not.toContain(literal(o)); });
