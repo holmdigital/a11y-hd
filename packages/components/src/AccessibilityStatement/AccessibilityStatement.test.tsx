@@ -690,3 +690,59 @@ describe('AccessibilityStatement valblock', () => {
         expect(hits).toEqual([]);
     });
 });
+
+describe('Intern #128 (Juno B2) — svensk tillsynstext i HTML/PDF-vägen', () => {
+    // Samma H3/H4/B3-fynd som motorn fick fixat i statement-generator.ts,
+    // men den här komponenten (som renderar CLI:ts HTML- och PDF-utlåtanden)
+    // hade aldrig fått motsvarande fix. Se resolveSwedishEnforcementContent()
+    // i AccessibilityStatement.tsx.
+    const KARINS_TEXT = 'Tillsynen över lagen (2023:254) om vissa produkters och tjänsters tillgänglighet är uppdelad mellan flera myndigheter beroende på vilken tjänst som erbjuds: Post- och telestyrelsen ansvarar för elektronisk kommunikation, banktjänster och e-handelstjänster, Mediemyndigheten för audiovisuella medietjänster, Myndigheten för tillgängliga medier för e-böcker, och Konsumentverket respektive Transportstyrelsen för olika delar av persontransporttjänster.';
+
+    it('SE privat: avsnittet är exakt Karins text, ordagrant', () => {
+        const { container } = render(
+            <AccessibilityStatement {...defaultProps} locale="sv" country="SE" sector="private" />
+        );
+        expect(container.textContent).toContain(KARINS_TEXT);
+    });
+
+    it('SE privat: inga DOS-lagen-begrepp och ingen "PTS ensam"-framing kvar', () => {
+        const { container } = render(
+            <AccessibilityStatement {...defaultProps} locale="sv" country="SE" sector="private" />
+        );
+        const text = container.textContent ?? '';
+        expect(text).not.toContain('oskäligt betungande');
+        expect(text).not.toContain('tillgänglighetsredogörelse har brister');
+        expect(text).not.toContain('begäran om tillgängliggörande');
+    });
+
+    it('SE offentlig: DOS-lagens text står kvar, med Digg-länken (H4)', () => {
+        const { container } = render(
+            <AccessibilityStatement {...defaultProps} locale="sv" country="SE" sector="public" />
+        );
+        const text = container.textContent ?? '';
+        expect(text).toContain('oskäligt betungande');
+        expect(text).toContain('https://www.digg.se/tdosanmalan');
+        expect(text).not.toContain(KARINS_TEXT);
+    });
+
+    it('SE privat, "technical"-avsnittet: lagnamnet med snedstreck klyvs inte (Juno B2, löst av PR 207s markörskydd)', () => {
+        // Juno flaggade i B2 att statusmeningen för SE privat blev bara
+        // "LPTT)." i HTML/PDF innan #207s markörbaserade platshållarskydd
+        // mergades. Det skyddet är generellt (inte SE-specifikt), det här
+        // testet bekräftar att det faktiskt täcker fallet hon pekade ut.
+        const { container } = render(
+            <AccessibilityStatement {...defaultProps} locale="sv" country="SE" sector="private" />
+        );
+        const text = container.textContent ?? '';
+        expect(text).toContain('Tillgänglighetslagen / LPTT');
+        expect(text).not.toContain('LPTT).');
+    });
+
+    it('icke-svensk SE-rendering (annat språk) och andra länder är orörda', () => {
+        const se_en = render(<AccessibilityStatement {...defaultProps} locale="en" country="SE" sector="private" />);
+        expect(se_en.container.textContent).not.toContain(KARINS_TEXT);
+
+        const de = render(<AccessibilityStatement {...defaultProps} locale="de" country="DE" sector="private" />);
+        expect(de.container.textContent).not.toContain(KARINS_TEXT);
+    });
+});

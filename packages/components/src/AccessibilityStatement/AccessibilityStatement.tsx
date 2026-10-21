@@ -390,6 +390,38 @@ const formatDiggDate = (date: Date, locale: string) => {
 };
 
 /**
+ * Juno B2 (Intern #128, 2026-10-20): the generic "Tillsyn" section in the sv
+ * TEMPLATES block above is written for DOS-lagen (public sector, WAD) and is
+ * wrong for private sector, the same two defects already fixed on the
+ * markdown path (`resolveSwedishEnforcementContent` in
+ * packages/engine/src/reporting/statement-generator.ts, Juno H3/H4/B3) but
+ * never ported to this component, which renders the CLI's HTML and PDF
+ * statements:
+ *
+ * 1. "oskäligt betungande", "tillgänglighetsredogörelse" and "begäran om
+ *    tillgängliggörande" are DOS-lagen concepts (10-12 §§), zero hits in
+ *    lagen (2023:254) or förordningen (2023:676).
+ * 2. PTS was named as the sole supervisor, when tillsyn is split across five
+ *    authorities and PTS itself doesn't cover most service types.
+ *
+ * Public-sector DOS-lagen wording is correct and gets the same Digg anmälan
+ * link as the engine (MDFFS 2019:2 6 §). Private-sector wording is Karin's
+ * own, decided in Intern#94 fråga 2 alternativ (a), carried verbatim from
+ * Intern#83 — kept byte-identical to the engine's copy; if one changes, the
+ * other must too, until the two render paths share one source (deferred,
+ * see the a11y-hd#216/#217 discussion in Intern#82).
+ *
+ * Scoped to SE only — no other country's enforcement template has been
+ * reviewed for the same defect.
+ */
+function resolveSwedishEnforcementContent(sector: 'public' | 'private', enforcementBody: string, nationalLaw: string): string {
+    if (sector === 'private') {
+        return 'Tillsynen över lagen (2023:254) om vissa produkters och tjänsters tillgänglighet är uppdelad mellan flera myndigheter beroende på vilken tjänst som erbjuds: Post- och telestyrelsen ansvarar för elektronisk kommunikation, banktjänster och e-handelstjänster, Mediemyndigheten för audiovisuella medietjänster, Myndigheten för tillgängliga medier för e-böcker, och Konsumentverket respektive Transportstyrelsen för olika delar av persontransporttjänster.';
+    }
+    return `${enforcementBody} har ansvaret för tillsyn över ${nationalLaw}. Du kan anmäla till ${enforcementBody} om du tycker att vår digitala service har brister i tillgänglighet.\n\nDu kan också anmäla till ${enforcementBody} om du tycker att vår bedömning av vad som är oskäligt betungande ska granskas, om du tycker att vår tillgänglighetsredogörelse har brister eller om du tycker att vi inte har hanterat din begäran om tillgängliggörande korrekt.\n\nDu kan anmäla direkt till Digg via tjänsten för anmälan om bristande tillgänglighet: https://www.digg.se/tdosanmalan`;
+}
+
+/**
  * Tillgänglighetsredogörelse-komponent
  * 
  * Genererar en juridiskt korrekt tillgänglighetsredogörelse 
@@ -696,7 +728,12 @@ export const AccessibilityStatement: React.FC<AccessibilityStatementProps> = ({
 
     const renderSections = (sections: TemplateSection[]) => {
         return sections.map((section, i) => {
-            const content = renderTemplate(section.content, section.id === 'testing' ? 'method' : 'compliance');
+            // Juno H3/H4/B3/B2: Swedish enforcement wording is sector-specific
+            // and cannot come from the generic template — see
+            // resolveSwedishEnforcementContent() above.
+            const content = (section.id === 'enforcement' && country === 'SE' && effectiveLang === 'sv')
+                ? resolveSwedishEnforcementContent(sector, enforcementBody, replacements['{<national_law>}'])
+                : renderTemplate(section.content, section.id === 'testing' ? 'method' : 'compliance');
             const trimmed = content.trim();
             if (!trimmed) return null;
 
