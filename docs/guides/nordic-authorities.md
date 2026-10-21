@@ -12,16 +12,16 @@ Quick reference for accessibility enforcement authorities across supported count
 
 ### PTS - Private Sector (EAA)
 **Full name:** Post- och telestyrelsen  
-**Responsibility:** Market surveillance for EAA/LPTT  
+**Responsibility:** Market surveillance for products, plus sector authority for electronic communications, banking and e-commerce services; coordinates with the other sector authorities below  
 **Website:** https://pts.se
 
-**Sector Authorities under PTS:**
+**Other sector authorities** (tillsyn is split by service type — PTS is one of five authorities, not the sole or parent authority):
 | Authority | Sector |
 |-----------|--------|
-| Konsumentverket | Transport (trains, buses, flights) |
-| Mediemyndigheten | Streaming services |
-| MTM | E-books |
-| Transportstyrelsen | Transport equipment |
+| Konsumentverket | Passenger transport services: websites, mobile apps, electronic ticketing |
+| Mediemyndigheten | Audiovisual media services (streaming) |
+| MTM | E-books and e-book software |
+| Transportstyrelsen | Passenger transport services: remaining parts not covered by Konsumentverket |
 
 ## Norway 🇳🇴
 

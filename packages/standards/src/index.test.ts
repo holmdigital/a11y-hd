@@ -139,6 +139,18 @@ describe('EU Legal Framework', () => {
         expect(seAuthorities.every(a => a.country === 'SE')).toBe(true);
     });
 
+    it('H7 (Intern #128): se-pts names the real law, not a fabricated one, and is not framed as EAA\'s sole SE supervisor', () => {
+        const pts = getNordicAuthority('se-pts');
+        expect(pts).toBeDefined();
+        // "Lag om tillgänglighetskrav för produkter och tjänster" doesn't exist
+        // as a Swedish law name — the real one is lagen (2023:254).
+        expect(pts?.nationalLaw).toContain('2023:254');
+        expect(pts?.nationalLaw).not.toContain('Lag om tillgänglighetskrav för produkter och tjänster');
+        // PTS's own site says "en av flera tillsynsmyndigheter", never the sole
+        // EAA supervisor in Sweden.
+        expect(pts?.comment).not.toMatch(/^Ansvarar för tillsyn av EAA i Sverige/);
+    });
+
     it('should get statement tools', () => {
         const tools = getStatementTools();
         expect(tools.length).toBeGreaterThan(0);
