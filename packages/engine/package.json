@@ -103,7 +103,7 @@
         "@types/react": "^19.2.18",
         "@types/react-dom": "^19.2.7",
         "@types/ws": "^8.5.13",
-        "tsup": "^8.3.5",
+        "tsup": "^9.0.0",
         "typescript": "^6.0.3",
         "vitest": "^4.1.10"
     }
