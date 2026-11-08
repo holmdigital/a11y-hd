@@ -159,6 +159,33 @@ const all = getStatementTools();
 const ptTools = getStatementToolsByCountry('PT');
 ```
 
+### 7. Check Whether a Compliance Tier Is in Force
+Find out at runtime whether one WCAG deadline tier (`largeEntity` or `smallEntity`) in a law's `complianceDeadlines` has taken effect. The result depends on the date you pass in, so it is never stored.
+
+```typescript
+import { getNationalLaws, isComplianceTierInForce } from '@holmdigital/standards';
+
+const hhs = getNationalLaws('US').find(l => l.id === 'us-hhs-section-504');
+
+// 15 or more employees: WCAG 2.1 AA deadline 2027-05-11
+isComplianceTierInForce(hhs, 'largeEntity', new Date('2027-06-01T12:00:00Z'));  // true
+isComplianceTierInForce(hhs, 'smallEntity', new Date('2027-06-01T12:00:00Z'));  // false
+
+// Fewer than 15 employees: WCAG 2.1 AA deadline 2028-05-10
+isComplianceTierInForce(hhs, 'smallEntity', new Date('2028-05-10T12:00:00Z'));  // true
+```
+
+**Parameters**
+- `law`: a `NationalLaw` object, for example from `getNationalLaws('US')`.
+- `tier`: `ComplianceTier`, which is `'largeEntity' | 'smallEntity'`.
+- `today`: optional `Date`. Defaults to `new Date()` (now). The comparison uses the UTC calendar date.
+
+**Returns:** `boolean`. `true` when the tier's `deadline` is on or before `today`. `false` when the deadline is later, or when the tier has no deadline.
+
+`true` only means that the tier's date has passed. It does not mean that the requirement applies to whoever uses this package. 45 CFR Part 84 applies only to recipients of federal financial assistance from HHS (45 CFR 84.2(a): "This part applies to each recipient of Federal financial assistance from the Department"). Whether an organization is such a recipient is outside what the function checks.
+
+This is how the HHS Section 504 entry (`us-hhs-section-504`) reports its WCAG 2.1 AA deadlines per tier. The entry's `inForce` flag marks that the revised HHS Section 504 regulations (the 2024 final rule) took effect on `effectiveDate` (2024-07-08). It does not say that the WCAG requirement applies, and like the tier check it only applies to recipients of HHS federal financial assistance (45 CFR 84.2(a)). Use this function, or read `complianceDeadlines` directly, to check the WCAG dates.
+
 ---
 
 ## 💡 Why use this package?
