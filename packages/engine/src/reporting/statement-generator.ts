@@ -1,7 +1,13 @@
 import React from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { AccessibilityStatement, AccessibilityStatementProps } from '@holmdigital/components';
-import { Country, getEnforcementBody, getNationalLaws, resolveNationalLawReference } from '@holmdigital/standards';
+import {
+    Country,
+    getEnforcementBody,
+    getEnforcementStatementText,
+    getNationalLaws,
+    resolveNationalLawReference,
+} from '@holmdigital/standards';
 import { ScanResult } from '../core/regulatory-scanner';
 import fs from 'fs/promises';
 import path from 'path';
@@ -131,22 +137,19 @@ export { resolveNationalLawReference };
  * Digg's own anmälan procedure added (MDFFS 2019:2 6 § requires "en länk till
  * det förfarande för anmälningar som myndigheten tillhandahåller").
  *
- * Private-sector wording is Karin's own, decided in Intern#94 fråga 2
- * alternativ (a) and carried verbatim from Intern#83: it replaces the whole
- * section rather than listing authorities dynamically, because the engine
- * cannot determine which specific service type the customer offers.
+ * Private-sector wording (Karin's own, Intern#94 fråga 2 alternativ (a),
+ * Intern#83) is not here: it lives on the law record,
+ * `lptt.enforcement.statementText.sv`, and is read through
+ * getEnforcementStatementText() so it passes the law-name gate (Intern #82).
+ * This function only handles the public sector.
  *
  * Scoped to SE only — no other country's enforcement template has been
  * reviewed for the same defect, and this must not change their output.
  */
 function resolveSwedishEnforcementContent(
-    sector: 'public' | 'private',
     enforcementBody: string,
     nationalLaw: string
 ): string {
-    if (sector === 'private') {
-        return 'Tillsynen över lagen (2023:254) om vissa produkters och tjänsters tillgänglighet är uppdelad mellan flera myndigheter beroende på vilken tjänst som erbjuds: Post- och telestyrelsen ansvarar för elektronisk kommunikation, banktjänster och e-handelstjänster, Mediemyndigheten för audiovisuella medietjänster, Myndigheten för tillgängliga medier för e-böcker, och Konsumentverket respektive Transportstyrelsen för olika delar av persontransporttjänster.';
-    }
     return `${enforcementBody} har ansvaret för tillsyn över ${nationalLaw}. Du kan anmäla till ${enforcementBody} om du tycker att vår digitala service har brister i tillgänglighet.\n\nDu kan också anmäla till ${enforcementBody} om du tycker att vår bedömning av vad som är oskäligt betungande ska granskas, om du tycker att vår tillgänglighetsredogörelse har brister eller om du tycker att vi inte har hanterat din begäran om tillgängliggörande korrekt.\n\nDu kan anmäla direkt till Digg via tjänsten för anmälan om bristande tillgänglighet: https://www.digg.se/tdosanmalan`;
 }
 
@@ -480,12 +483,16 @@ export async function generateStatementContent(
                 // sektionen antyder en redogörelseplikt en privat aktör inte har.
                 if (s.id === 'enforcement' && enforcementBody === '') return null;
                 if (s.sectors && !s.sectors.includes(sector)) return null;
-                // Juno H3/H4: Swedish enforcement wording is sector-specific and
-                // cannot come from the generic template — see
-                // resolveSwedishEnforcementContent() above.
-                const body = (s.id === 'enforcement' && country === 'SE' && lang === 'sv')
-                    ? resolveSwedishEnforcementContent(sector, enforcementBody, substitutions['{<national_law>}'] ?? '').trim()
-                    : processText(s.content, s.id === 'testing' ? 'method' : 'compliance').trim();
+                // Intern #83 och #94 fråga 2: där tillsynen är delad efter
+                // tjänstetyp bär lagposten avsnittets text. Mallen kan bara
+                // namnge en myndighet, och det vore fel för en del kunder.
+                // Juno H3/H4: svensk offentlig sektor får DOS-lagens text med
+                // Digg-länken, se resolveSwedishEnforcementContent() ovan.
+                const delad = s.id === 'enforcement' ? getEnforcementStatementText(country, sector, lang) : null;
+                const body = (delad
+                    ?? (s.id === 'enforcement' && country === 'SE' && lang === 'sv' && sector === 'public'
+                        ? resolveSwedishEnforcementContent(enforcementBody, substitutions['{<national_law>}'] ?? '')
+                        : processText(s.content, s.id === 'testing' ? 'method' : 'compliance'))).trim();
                 if (body === '') return null;                 // hoppa sektioner som blir tomma
                 // Intern #23: en section utan titel får aldrig rendera "## undefined".
                 return s.title ? `## ${s.title}\n\n${body}` : body;

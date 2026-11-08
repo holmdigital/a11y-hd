@@ -2,6 +2,7 @@ import React from 'react';
 import {
     getStatementToolsByCountry,
     getEnforcementBody,
+    getEnforcementStatementText,
     resolveNationalLawReference,
     type Country
 } from '@holmdigital/standards';
@@ -374,19 +375,16 @@ const formatDiggDate = (date: Date, locale: string) => {
  *    authorities and PTS itself doesn't cover most service types.
  *
  * Public-sector DOS-lagen wording is correct and gets the same Digg anmälan
- * link as the engine (MDFFS 2019:2 6 §). Private-sector wording is Karin's
- * own, decided in Intern#94 fråga 2 alternativ (a), carried verbatim from
- * Intern#83 — kept byte-identical to the engine's copy; if one changes, the
- * other must too, until the two render paths share one source (deferred,
- * see the a11y-hd#216/#217 discussion in Intern#82).
+ * link as the engine (MDFFS 2019:2 6 §). Private-sector wording (Karin's
+ * own, Intern#94 fråga 2 alternativ (a), Intern#83) lives on the law record,
+ * `lptt.enforcement.statementText.sv`, and both render paths read it through
+ * getEnforcementStatementText(), so it passes the law-name gate (Intern #82).
+ * This function only handles the public sector.
  *
  * Scoped to SE only — no other country's enforcement template has been
  * reviewed for the same defect.
  */
-function resolveSwedishEnforcementContent(sector: 'public' | 'private', enforcementBody: string, nationalLaw: string): string {
-    if (sector === 'private') {
-        return 'Tillsynen över lagen (2023:254) om vissa produkters och tjänsters tillgänglighet är uppdelad mellan flera myndigheter beroende på vilken tjänst som erbjuds: Post- och telestyrelsen ansvarar för elektronisk kommunikation, banktjänster och e-handelstjänster, Mediemyndigheten för audiovisuella medietjänster, Myndigheten för tillgängliga medier för e-böcker, och Konsumentverket respektive Transportstyrelsen för olika delar av persontransporttjänster.';
-    }
+function resolveSwedishEnforcementContent(enforcementBody: string, nationalLaw: string): string {
     return `${enforcementBody} har ansvaret för tillsyn över ${nationalLaw}. Du kan anmäla till ${enforcementBody} om du tycker att vår digitala service har brister i tillgänglighet.\n\nDu kan också anmäla till ${enforcementBody} om du tycker att vår bedömning av vad som är oskäligt betungande ska granskas, om du tycker att vår tillgänglighetsredogörelse har brister eller om du tycker att vi inte har hanterat din begäran om tillgängliggörande korrekt.\n\nDu kan anmäla direkt till Digg via tjänsten för anmälan om bristande tillgänglighet: https://www.digg.se/tdosanmalan`;
 }
 
@@ -654,12 +652,15 @@ export const AccessibilityStatement: React.FC<AccessibilityStatementProps> = ({
     const renderSections = (sections: TemplateSection[]) => {
         return sections.map((section, i) => {
             if (section.sectors && !section.sectors.includes(sector)) return null;
-            // Juno H3/H4/B3/B2: Swedish enforcement wording is sector-specific
-            // and cannot come from the generic template — see
-            // resolveSwedishEnforcementContent() above.
-            const content = (section.id === 'enforcement' && country === 'SE' && effectiveLang === 'sv')
-                ? resolveSwedishEnforcementContent(sector, enforcementBody, replacements['{<national_law>}'])
-                : renderTemplate(section.content, section.id === 'testing' ? 'method' : 'compliance');
+            // Intern #83 och #94 fråga 2: där tillsynen är delad efter
+            // tjänstetyp bär lagposten avsnittets text. Samma som i motorn.
+            // Juno H3/H4/B2: svensk offentlig sektor får DOS-lagens text med
+            // Digg-länken, se resolveSwedishEnforcementContent() ovan.
+            const delad = section.id === 'enforcement' ? getEnforcementStatementText(country, sector, effectiveLang) : null;
+            const content = delad
+                ?? ((section.id === 'enforcement' && country === 'SE' && effectiveLang === 'sv' && sector === 'public')
+                    ? resolveSwedishEnforcementContent(enforcementBody, replacements['{<national_law>}'])
+                    : renderTemplate(section.content, section.id === 'testing' ? 'method' : 'compliance'));
             const trimmed = content.trim();
             if (!trimmed) return null;
 

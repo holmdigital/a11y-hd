@@ -333,6 +333,18 @@ export interface NationalLaw {
         authorityName: string;
         responsibility: string;
         website: string;
+        /**
+         * Intern #83 and #94 question 2: the text of a statement's supervision
+         * section, keyed by language, for a law whose supervision is split
+         * between authorities by type of service. The engine cannot tell which
+         * service a customer runs, so a single authority name would be wrong
+         * for some customers. Worded by the team, never by the builder.
+         *
+         * Read through `getEnforcementStatementText()`, which applies law
+         * selection and the law-name gate. A language without an entry keeps
+         * the template's supervision section.
+         */
+        statementText?: Record<string, string>;
     };
     sectorAuthorities?: SectorAuthority[];
     /**
