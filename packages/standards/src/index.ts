@@ -241,6 +241,7 @@ import type {
     NationalLaw,
     Sanction,
     SectorAuthority,
+    StatutoryExemption,
 } from './types';
 
 export type {
@@ -270,6 +271,7 @@ export type {
     NationalLaw,
     Sanction,
     SectorAuthority,
+    StatutoryExemption,
 };
 
 function getData(lang: string = 'en'): ConvergenceRule[] {
