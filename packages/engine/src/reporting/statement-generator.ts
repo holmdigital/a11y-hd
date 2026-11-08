@@ -1,7 +1,13 @@
 import React from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { AccessibilityStatement, AccessibilityStatementProps } from '@holmdigital/components';
-import { Country, getEnforcementBody, getNationalLawForSector, getNationalLaws } from '@holmdigital/standards';
+import {
+    Country,
+    getEnforcementBody,
+    getEnforcementStatementText,
+    getNationalLaws,
+    resolveNationalLawReference,
+} from '@holmdigital/standards';
 import { ScanResult } from '../core/regulatory-scanner';
 import fs from 'fs/promises';
 import path from 'path';
@@ -19,6 +25,25 @@ export interface StatementMetadata {
     country?: string;
     sector?: 'public' | 'private';
     publishDate?: string | Date;
+    /**
+     * How the assessment behind the statement was made. An explicit choice by the
+     * caller, never derived from the scan result or the compliance level.
+     *
+     * - omitted or `'self-assessment'`: the organisation assessed its own website.
+     *   This is the default, and a scan the customer runs is a self-assessment.
+     * - `'external-review'`: an external party reviewed the website. Requires
+     *   `reviewer`, and the statement names that reviewer.
+     * - `'no-review'`: the accessibility was estimated without testing.
+     */
+    reviewMethod?: 'self-assessment' | 'external-review' | 'no-review';
+    /**
+     * Who performed the external review. Required when `reviewMethod` is
+     * `'external-review'`: generating the statement throws without a non-empty
+     * `name`. The statement names the reviewer by `name`; `url` is accepted for
+     * the same shape as `generatorTool` and is not rendered. The footer still
+     * credits the tool that generated the document, never the reviewer.
+     */
+    reviewer?: { name: string; url?: string };
 }
 
 /**
@@ -91,111 +116,41 @@ const RESPONSE_TIME_DEFAULT: Record<string, string> = {
 interface StatementTemplate {
     title: string;
     intro: string;
-    sections: Array<{ id?: string; title?: string; content: string }>;
+    /**
+     * `sectors`: rendera avsnittet bara för de här sektorerna. Saknas fältet
+     * gäller avsnittet båda. Intern #94 fråga 4: AU-mallens avsnitt om
+     * regeringens digitalpolicy beskriver en policy för federala myndigheter,
+     * och är sakligt fel i ett utlåtande från ett privat företag.
+     */
+    sections: Array<{ id?: string; title?: string; content: string; sectors?: Array<'public' | 'private'> }>;
 }
 
 /**
- * Language-keyed fallback for the national-law slot when the data has no naming law.
- * Intern #31: a statement must NEVER render an empty law reference. When a country has
- * no matching national law (e.g. an EAA transposition not yet in the data, or a country
- * that legitimately has no EAA post), the "complies with …" sentence is reworded to be
- * true WITHOUT naming a law — never by inventing one and never by claiming an EU
- * directive is a country's national law. Naming the real law is #32 (Juno's wording).
+ * Lagreferensen i utlåtandets "uppfyller …"-mening, för land och sektor.
+ *
+ * Intern #82: lagvalet och fallback-fraserna bor i @holmdigital/standards, och
+ * både motorn och komponenten använder samma funktion. Två kopior av samma
+ * logik har glidit isär en gång redan (Intern #63/#66), och lagnamnsgrinden
+ * hade annars behövt byggas och hållas lika på två ställen. Funktionen
+ * återexporteras här så att motorns publika API är oförändrat.
  */
-const NATIONAL_LAW_FALLBACK: Record<string, string> = {
-    en: 'applicable accessibility requirements',
-    sv: 'gällande tillgänglighetskrav',
-    no: 'gjeldende tilgjengelighetskrav',
-    da: 'gældende tilgængelighedskrav',
-    fi: 'sovellettavat saavutettavuusvaatimukset',
-    de: 'die geltenden Barrierefreiheitsanforderungen',
-    nl: 'de geldende toegankelijkheidseisen',
-    fr: "la réglementation d'accessibilité applicable",
-    es: 'los requisitos de accesibilidad aplicables',
-    it: 'i requisiti di accessibilità applicabili',
-    pt: 'os requisitos de acessibilidade aplicáveis',
-    pl: 'obowiązujące wymagania dostępności',
-};
+export { resolveNationalLawReference };
 
 /**
- * Resolve the human-readable national-law reference used in a statement's
- * "complies with …" sentence. Kept separate so it can be tested across every
- * country × sector (Intern #31). Never returns an empty string.
+ * Intern #95: platshållarna för den externa part som granskat webbplatsen. De
+ * står bara i metodvalets andra alternativ ("<granskaren> har granskat …").
+ *
+ * Listan täcker båda mallsatserna, motorns JSON och komponentens TEMPLATES, och
+ * komponenten bär samma lista. Platsen fylls ur `reviewer` och ALDRIG ur
+ * `generatorTool`: det är verktyget som skrev dokumentet, och när det namnet
+ * hamnade här påstod varje delvis förenlig kunds utlåtande att HolmDigital
+ * Regulatory Engine gjort en oberoende granskning (#91).
  */
-export function resolveNationalLawReference(
-    country: Country,
-    sector: 'public' | 'private',
-    lang: string = 'en'
-): string {
-    // Intern #64 (M4): a statute that has not entered into force must never be
-    // rendered as current law. `inForce` was declared in the type and read
-    // nowhere, so `us-hhs-section-504` (effective 2027-05-11) was named as
-    // binding law to US private-sector customers today.
-    const inForce = <T extends { inForce?: boolean }>(law: T | undefined | null): law is T =>
-        !!law && law.inForce !== false;
-
-    if (country === 'AU') {
-        // AU keeps its own branch, and Juno ratified that 2026-09-11 (Intern
-        // #63) after reading both sources in full: the Disability
-        // Discrimination Act is the only legally binding instrument for
-        // Australia, public sector and private alike, and the Digital Access
-        // Standard (au-dta) is an internal Commonwealth policy with no
-        // third-party standing and no sanction beyond reporting to the DTA.
-        // Routing AU through the sector selector would silently switch the
-        // public track to au-dta, because that selector prefers an exact scope
-        // match and au-dta is scope 'public' while au-dda is 'both'.
-        // au-dta now carries euFramework 'DAS', so this lookup is unambiguous
-        // rather than dependent on the order of the JSON array.
-        const ddaLaw = getNationalLaws('AU').find(l => l.euFramework === 'DDA' && inForce(l));
-        return ddaLaw ? `${ddaLaw.fullName}` : 'Disability Discrimination Act 1992 (Cth)';
-    }
-    if (country === 'US') {
-        // US carries several parallel federal statutes rather than one, so it
-        // keeps a dedicated branch: ADA split by scope, plus Section 508 on the
-        // public side and HHS Section 504 on the private side. The `inForce`
-        // filter is what removes Section 504 until 2027.
-        const usLaws = getNationalLaws('US').filter(inForce);
-        const adaLaw = usLaws.find(l => l.euFramework === 'ADA' && l.scope === sector);
-        if (adaLaw) {
-            if (sector === 'public') {
-                const s508 = usLaws.find(l => l.id === 'us-508');
-                return s508
-                    ? `${adaLaw.fullName} (${adaLaw.law}) & ${s508.fullName} (${s508.law})`
-                    : `${adaLaw.fullName} (${adaLaw.law})`;
-            }
-            const hhs504 = usLaws.find(l => l.euFramework === 'REHAB' && l.scope === 'private');
-            return hhs504
-                ? `${adaLaw.fullName} (${adaLaw.law}) & ${hhs504.fullName} (${hhs504.law})`
-                : `${adaLaw.fullName} (${adaLaw.law})`;
-        }
-    }
-    // Intern #64 (M1): country + scope + inForce, never `euFramework`. The old
-    // lookup asked for EAA on the private track, so a law with scope 'both'
-    // whose framework was not EAA became invisible — Norway's forskrift and
-    // Canada's ACA both fell through to a lawless fallback phrase. It also made
-    // a province's statute the country's answer for Canada.
-    const law = getNationalLawForSector(country, sector);
-    if (law) {
-        // Intern #63/#66: parentesen finns för att ge kortnamnet vid sidan av det
-        // långa. När fälten säger samma sak är den bara brus, och efter
-        // attesteringen gör de det för två poster: dk-eaa bär titeln i båda
-        // fälten, och ca-aca:s fullName är korttiteln plus lagrumsreferens.
-        // Utan den här grenen renderades titeln två gånger i rad i ett danskt
-        // kunddokument, och det syntes inte i någon datadiff.
-        const shortName = law.law.trim();
-        const longName = law.fullName.trim();
-        // Regeln är: parentesen faller när kortnamnet är ett PREFIX av det långa,
-        // för då bär den ingen ny information. Det täcker fler fall än de två som
-        // upptäcktes först: pt-eaa hade kortnamnet plus " de 6 de dezembro", och
-        // dk-wad har en förkortning som är ett rent prefix. DOS-lagen och DL
-        // 83/2018 är inga prefix och står därför kvar, vilket är hela poängen.
-        const redundant = longName === shortName || longName.startsWith(shortName);
-        return redundant ? longName : `${longName} (${shortName})`;
-    }
-    // Intern #31: never empty — reword the sentence to be true without a law name.
-    const langKey = lang.split('-')[0];
-    return NATIONAL_LAW_FALLBACK[langKey] ?? NATIONAL_LAW_FALLBACK.en;
-}
+const REVIEWER_PLACEHOLDERS = [
+    '{<extern aktör>}', '{<ekstern aktør>}', '{<ekstern aktor>}', '{<ulkoinen taho>}',
+    '{<externe partij>}', '{<externer Dritter>}', '{<tiers externe>}', '{<tercero externo>}',
+    '{<terza parte>}', '{<terceiro externo>}', '{<podmiot zewnętrzny>}', '{<third party>}',
+];
 
 /**
  * Juno H3/H4 (2026-10-08): the generic Swedish "enforcement" section in
@@ -217,22 +172,19 @@ export function resolveNationalLawReference(
  * Digg's own anmälan procedure added (MDFFS 2019:2 6 § requires "en länk till
  * det förfarande för anmälningar som myndigheten tillhandahåller").
  *
- * Private-sector wording is Karin's own, decided in Intern#94 fråga 2
- * alternativ (a) and carried verbatim from Intern#83: it replaces the whole
- * section rather than listing authorities dynamically, because the engine
- * cannot determine which specific service type the customer offers.
+ * Private-sector wording (Karin's own, Intern#94 fråga 2 alternativ (a),
+ * Intern#83) is not here: it lives on the law record,
+ * `lptt.enforcement.statementText.sv`, and is read through
+ * getEnforcementStatementText() so it passes the law-name gate (Intern #82).
+ * This function only handles the public sector.
  *
  * Scoped to SE only — no other country's enforcement template has been
  * reviewed for the same defect, and this must not change their output.
  */
 function resolveSwedishEnforcementContent(
-    sector: 'public' | 'private',
     enforcementBody: string,
     nationalLaw: string
 ): string {
-    if (sector === 'private') {
-        return 'Tillsynen över lagen (2023:254) om vissa produkters och tjänsters tillgänglighet är uppdelad mellan flera myndigheter beroende på vilken tjänst som erbjuds: Post- och telestyrelsen ansvarar för elektronisk kommunikation, banktjänster och e-handelstjänster, Mediemyndigheten för audiovisuella medietjänster, Myndigheten för tillgängliga medier för e-böcker, och Konsumentverket respektive Transportstyrelsen för olika delar av persontransporttjänster.';
-    }
     return `${enforcementBody} har ansvaret för tillsyn över ${nationalLaw}. Du kan anmäla till ${enforcementBody} om du tycker att vår digitala service har brister i tillgänglighet.\n\nDu kan också anmäla till ${enforcementBody} om du tycker att vår bedömning av vad som är oskäligt betungande ska granskas, om du tycker att vår tillgänglighetsredogörelse har brister eller om du tycker att vi inte har hanterat din begäran om tillgängliggörande korrekt.\n\nDu kan anmäla direkt till Digg via tjänsten för anmälan om bristande tillgänglighet: https://www.digg.se/tdosanmalan`;
 }
 
@@ -242,6 +194,20 @@ export async function generateStatementContent(
     format: 'html' | 'md' | 'markdown' = 'html',
     metadata?: StatementMetadata
 ): Promise<string> {
+    // Intern #95: en extern granskning måste säga vem som granskade. Utan ett
+    // namn finns inget sant att skriva i granskarens plats, och det var just där
+    // verktygets eget namn hamnade före #91. Därför ett fel och ingen default.
+    const reviewMethod = metadata?.reviewMethod;
+    const reviewerName = typeof metadata?.reviewer?.name === 'string' ? metadata.reviewer.name.trim() : '';
+    if (reviewMethod === 'external-review' && reviewerName === '') {
+        throw new Error(
+            "reviewMethod 'external-review' requires metadata.reviewer with a non-empty name: the organisation " +
+            "that performed the review, e.g. { reviewMethod: 'external-review', reviewer: { name: 'Example Audit AB' } }. " +
+            "The statement names it as the reviewer. Use 'self-assessment' (the default) if the statement is based " +
+            'on your own testing, such as this scan.'
+        );
+    }
+
     // 0. Load Template
     const templatePath = path.join(__dirname, 'templates', `${lang}.json`);
     let template: StatementTemplate;
@@ -356,6 +322,10 @@ export async function generateStatementContent(
             name: 'HolmDigital Regulatory Engine',
             url: 'https://holmdigital.se'
         },
+        // Intern #95: HTML-utlåtandet renderas av komponenten, så metodvalet och
+        // granskaren måste följa med dit. Annars gäller valet bara Markdown.
+        reviewMethod,
+        reviewer: metadata?.reviewer,
         logoUrl,
         // Placeholders make it obvious the consumer must supply real contact info.
         // Previous fallback leaked HolmDigital's own contact details into customer statements.
@@ -453,15 +423,10 @@ export async function generateStatementContent(
             '{<méthode>}': props.evaluationMethod || 'Automated Scan',
             '{<método>}': props.evaluationMethod || 'Automated Scan',
             '{<method>}': props.evaluationMethod || 'Automated Scan',
-            '{<extern aktör>}': props.generatorTool?.name || 'HolmDigital Engine',
-            '{<ekstern aktør>}': props.generatorTool?.name || 'HolmDigital Engine',
-            '{<ekstern aktor>}': props.generatorTool?.name || 'HolmDigital Engine',
-            '{<ulkoinen taho>}': props.generatorTool?.name || 'HolmDigital Engine',
-            '{<externe partij>}': props.generatorTool?.name || 'HolmDigital Engine',
-            '{<externer Dritter>}': props.generatorTool?.name || 'HolmDigital Engine',
-            '{<tiers externe>}': props.generatorTool?.name || 'HolmDigital Engine',
-            '{<tercero externo>}': props.generatorTool?.name || 'HolmDigital Engine',
-            '{<third party>}': props.generatorTool?.name || 'HolmDigital Engine',
+            // Intern #95: granskarens plats fylls bara ur reviewer, aldrig ur
+            // generatorTool. Den renderas bara när metodvalet är en uttalad
+            // extern granskning, och då är namnet kontrollerat ovan.
+            ...Object.fromEntries(REVIEWER_PLACEHOLDERS.map(p => [p, reviewerName])),
             '{<enforcement_body>}': (() => {
                 // US: statements for our customers are primarily about state/local gov (Title II)
                 // or private sector (Title III) — both enforced by DOJ. Override the default
@@ -506,9 +471,18 @@ export async function generateStatementContent(
          * "<verktyget> har gjort en oberoende granskning" och varje ej förenlig
          * kund "vi har uppskattat tillgängligheten utan granskning", båda
          * falska. Ett verktyg som kunden själv kör är en självskattning.
+         *
+         * Intern #95: metodvalet följer anroparens uttalade `reviewMethod` och
+         * ingenting annat. Utan val blir det självskattning, som förut. Den
+         * externa granskningen kräver en namngiven granskare, och utfallet
+         * läses fortfarande aldrig här.
          */
         const choiceIndex = (kind: 'compliance' | 'method', parts: number): number => {
-            if (kind === 'method') return 0;
+            if (kind === 'method') {
+                if (reviewMethod === 'external-review') return 1;
+                if (reviewMethod === 'no-review') return parts > 2 ? 2 : 1;
+                return 0;
+            }
             if (complianceLevel === 'partial') return 1;
             if (complianceLevel === 'non-compliant') return parts > 2 ? 2 : 1;
             return 0;
@@ -565,12 +539,17 @@ export async function generateStatementContent(
                 // tillsynsmyndighet. Annars renderas tomma hål (" har ansvaret …") och
                 // sektionen antyder en redogörelseplikt en privat aktör inte har.
                 if (s.id === 'enforcement' && enforcementBody === '') return null;
-                // Juno H3/H4: Swedish enforcement wording is sector-specific and
-                // cannot come from the generic template — see
-                // resolveSwedishEnforcementContent() above.
-                const body = (s.id === 'enforcement' && country === 'SE' && lang === 'sv')
-                    ? resolveSwedishEnforcementContent(sector, enforcementBody, substitutions['{<national_law>}'] ?? '').trim()
-                    : processText(s.content, s.id === 'testing' ? 'method' : 'compliance').trim();
+                if (s.sectors && !s.sectors.includes(sector)) return null;
+                // Intern #83 och #94 fråga 2: där tillsynen är delad efter
+                // tjänstetyp bär lagposten avsnittets text. Mallen kan bara
+                // namnge en myndighet, och det vore fel för en del kunder.
+                // Juno H3/H4: svensk offentlig sektor får DOS-lagens text med
+                // Digg-länken, se resolveSwedishEnforcementContent() ovan.
+                const delad = s.id === 'enforcement' ? getEnforcementStatementText(country, sector, lang) : null;
+                const body = (delad
+                    ?? (s.id === 'enforcement' && country === 'SE' && lang === 'sv' && sector === 'public'
+                        ? resolveSwedishEnforcementContent(enforcementBody, substitutions['{<national_law>}'] ?? '')
+                        : processText(s.content, s.id === 'testing' ? 'method' : 'compliance'))).trim();
                 if (body === '') return null;                 // hoppa sektioner som blir tomma
                 // Intern #23: en section utan titel får aldrig rendera "## undefined".
                 return s.title ? `## ${s.title}\n\n${body}` : body;

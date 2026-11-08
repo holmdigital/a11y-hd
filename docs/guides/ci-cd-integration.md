@@ -49,6 +49,8 @@ Options:
   --phone <num>      Contact phone for metadata
   --response-time <v> Expected response time for metadata
   --publish-date <d> Website publish date (YYYY-MM-DD)
+  --review-method <m> "self-assessment" (default), "external-review" or "no-review"
+  --reviewer <name>  External reviewer named in the statement
   --viewport <size>  "mobile", "desktop", or "1024x768"
   --lang <code>      Language: "en", "sv", "no", "fi", "da", etc.
   --generate-tests   Generate Pseudo-Automation tests (experimental)

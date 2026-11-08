@@ -1,9 +1,10 @@
 
 import { describe, it, expect } from 'vitest';
-import { readFileSync } from 'fs';
+import { readFileSync, readdirSync, statSync } from 'fs';
 import { join } from 'path';
 import Ajv from 'ajv';
 import {
+    isComplianceTierInForce,
     getEN301549Mapping,
     getDOSLagenReference,
     getICTManualChecklist,
@@ -33,8 +34,12 @@ import {
     getNationalLaw,
     getAllNationalLaws,
     generateRegulatoryReport,
+    isNameAttested,
+    resolveNationalLawReference,
+    NATIONAL_LAW_FALLBACK,
+    getEnforcementStatementText,
 } from './index';
-import type { Country, ConvergenceRule } from './types';
+import type { Attestation, Country, ConvergenceRule, NationalLaw } from './types';
 import rulesSv from '../data/rules.sv.json';
 import rulesEn from '../data/rules.en.json';
 import rulesDe from '../data/rules.de.json';
@@ -481,11 +486,30 @@ describe('National Laws — US HHS Section 504', () => {
         expect(law).toBeDefined();
         expect(law?.euFramework).toBe('REHAB');
         expect(law?.scope).toBe('private');
-        // effectiveDate reflects the WCAG benchmark in-force date for the large-entity tier
-        // (HHS IFR 2026-09266 extended this from 2026-05-11 to 2027-05-11); inForce flips
-        // to true on that date — drift-guard test validates the relationship.
-        expect(law?.inForce).toBe(false);
-        expect(law?.effectiveDate).toBe('2027-05-11');
+        // inForce är flaggan för regelns grundnivå: 45 CFR 84.84(a), effective 2024-07-08
+        // (89 FR 40066). WCAG-datumen per nivå ligger i complianceDeadlines och testas nedan.
+        expect(law?.inForce).toBe(true);
+        expect(law?.effectiveDate).toBe('2024-07-08');
+    });
+
+    it('resolves WCAG tier deadlines at runtime without flipping inForce for the entry', () => {
+        const law = getNationalLaw('us-hhs-section-504', 'US');
+        expect(law).not.toBeNull();
+        if (!law) return;
+        // Före båda datumen: ingen WCAG-nivå är gällande, men regelns grundnivå gäller redan.
+        const before = new Date('2027-05-10T12:00:00Z');
+        expect(isComplianceTierInForce(law, 'largeEntity', before)).toBe(false);
+        expect(isComplianceTierInForce(law, 'smallEntity', before)).toBe(false);
+        expect(law.inForce).toBe(true);
+        // 15 eller fler anställda: gäller från 2027-05-11, färre än 15 först från 2028-05-10.
+        const largeDay = new Date('2027-05-11T12:00:00Z');
+        expect(isComplianceTierInForce(law, 'largeEntity', largeDay)).toBe(true);
+        expect(isComplianceTierInForce(law, 'smallEntity', largeDay)).toBe(false);
+        const smallDayBefore = new Date('2028-05-09T12:00:00Z');
+        expect(isComplianceTierInForce(law, 'smallEntity', smallDayBefore)).toBe(false);
+        const smallDay = new Date('2028-05-10T12:00:00Z');
+        expect(isComplianceTierInForce(law, 'smallEntity', smallDay)).toBe(true);
+        expect(law.inForce).toBe(true);
     });
 
     it('should have tiered compliance deadlines for HHS Section 504', () => {
@@ -588,6 +612,359 @@ describe('National Laws — schema validation', () => {
             throw new Error(`national-laws.json failed schema validation:\n${summary}`);
         }
         expect(valid).toBe(true);
+    });
+});
+
+/**
+ * Intern #82 — lagnamnsgrinden, avsnitt 6 i specen (standards-delen).
+ *
+ * Ett lagnamn skrivs ut bara om lagpostens attestation har 'lagnamn' i
+ * attested. Testerna intygar att grinden läser det och inget annat, och att
+ * den sitter på varje väg som kan returnera ett namn. De intygar inte att en
+ * registerrad är riktig; det är Junos.
+ */
+describe('Intern #82 — lagnamnsgrinden', () => {
+    const schema = JSON.parse(readFileSync(join(__dirname, '..', 'schema', 'national-laws-schema.json'), 'utf-8'));
+    const data = JSON.parse(readFileSync(join(__dirname, '..', 'data', 'legal', 'national-laws.json'), 'utf-8'));
+    const giltig: Attestation = {
+        attestedBy: 'Juno', session: '2026-09-24', sources: ['riksdagen.se'],
+        attested: ['lagnamn'], notAttested: [], subject: 'law-entry',
+    };
+    /** Validerar hela datafilen med blocket insatt på en post. */
+    const validera = (attestation: unknown): boolean => {
+        const kopia = structuredClone(data);
+        kopia.laws.SE[0].attestation = attestation;
+        return new Ajv({ allErrors: true }).compile(schema)(kopia) as boolean;
+    };
+    const SEKTORER = ['public', 'private'] as const;
+    const LÄNDER = Object.keys(data.laws) as Country[];
+    const iKraft = (l?: NationalLaw | null): l is NationalLaw => !!l && l.inForce !== false;
+    /** Lagarna motorn väljer för land och sektor, före grinden. Speglar resolvern. */
+    const valda = (country: Country, sector: 'public' | 'private'): NationalLaw[] => {
+        if (country === 'US') {
+            const us = getNationalLaws('US').filter(iKraft);
+            const ada = us.find(l => l.euFramework === 'ADA' && l.scope === sector);
+            if (ada) {
+                const följe = sector === 'public'
+                    ? us.find(l => l.id === 'us-508')
+                    : us.find(l => l.euFramework === 'REHAB' && l.scope === 'private');
+                return [ada, följe].filter(iKraft);
+            }
+        }
+        const lag = getNationalLawForSector(country, sector);
+        return lag ? [lag] : [];
+    };
+
+    it('schemat godkänner ett attestation-block, också med tom attested', () => {
+        expect(validera(giltig)).toBe(true);
+        // En tom lista är en spärr, inte ett fel. Specen: sätt inte minItems.
+        expect(validera({ ...giltig, attested: [] })).toBe(true);
+    });
+
+    it('schemat avvisar ett okänt värde i attested och ett okänt fält', () => {
+        // En felstavning ska falla, inte tyst läsas som "ej granskat".
+        expect(validera({ ...giltig, attested: ['lagnam'] })).toBe(false);
+        expect(validera({ ...giltig, note: 'interna anteckningar' })).toBe(false);
+    });
+
+    it('schemat avvisar ett block som saknar ett obligatoriskt fält', () => {
+        for (const fält of ['attestedBy', 'session', 'sources', 'attested', 'notAttested', 'subject'] as const) {
+            const utan: Record<string, unknown> = { ...giltig };
+            delete utan[fält];
+            expect(validera(utan), fält).toBe(false);
+        }
+    });
+
+    it('attested och notAttested är disjunkta i varje post', () => {
+        for (const lag of getAllNationalLaws()) {
+            const a = lag.attestation;
+            if (!a) continue;
+            expect(a.attested.filter(f => a.notAttested.includes(f)), lag.id).toEqual([]);
+        }
+    });
+
+    it('en tom attested, ett saknat block och ingen post ger alla false', () => {
+        expect(isNameAttested({ attestation: { ...giltig, attested: [] } })).toBe(false);
+        expect(isNameAttested({})).toBe(false);
+        expect(isNameAttested(null)).toBe(false);
+        expect(isNameAttested({ attestation: giltig })).toBe(true);
+    });
+
+    it('en granskning av en myndighetsnyckel eller av en post som inte finns öppnar aldrig grinden', () => {
+        for (const subject of ['enforcement-key', 'no-entry'] as const) {
+            expect(isNameAttested({ attestation: { ...giltig, subject } }), subject).toBe(false);
+        }
+    });
+
+    it('för varje land och sektor: bara attesterade namn skrivs ut, annars fallback-frasen', () => {
+        for (const country of LÄNDER) {
+            for (const sector of SEKTORER) {
+                const rad = resolveNationalLawReference(country, sector, 'sv');
+                const lagar = valda(country, sector);
+                const intygade = lagar.filter(isNameAttested);
+                const ej = lagar.filter(l => !isNameAttested(l));
+                if (intygade.length === 0) {
+                    expect(rad, `${country}/${sector}`).toBe(NATIONAL_LAW_FALLBACK.sv);
+                }
+                for (const l of intygade) expect(rad, `${country}/${sector} ${l.id}`).toContain(l.fullName);
+                for (const l of ej) expect(rad, `${country}/${sector} ${l.id}`).not.toContain(l.fullName);
+            }
+        }
+    });
+
+    it('fallback-frasen följer språket och är aldrig tom', () => {
+        const utan = LÄNDER.flatMap(c => SEKTORER.map(s => [c, s] as const))
+            .find(([c, s]) => !valda(c, s).some(isNameAttested));
+        expect(utan, 'minst en kombination ska rendera fallback i dag').toBeDefined();
+        const [c, s] = utan!;
+        for (const lang of Object.keys(NATIONAL_LAW_FALLBACK)) {
+            expect(resolveNationalLawReference(c, s, lang)).toBe(NATIONAL_LAW_FALLBACK[lang]);
+        }
+        expect(resolveNationalLawReference(c, s, 'en-gb')).toBe(NATIONAL_LAW_FALLBACK.en);
+        expect(resolveNationalLawReference(c, s, 'xx')).toBe(NATIONAL_LAW_FALLBACK.en);
+        for (const fras of Object.values(NATIONAL_LAW_FALLBACK)) expect(fras.trim()).not.toBe('');
+    });
+
+    it('US: varje lag i kombinationen prövas för sig, i alla fyra lägen', () => {
+        // Specen: samtliga fyra US-kombinationer. Grinden sätts per post och
+        // återställs efteråt; datan är delad mellan testerna.
+        const us = getNationalLaws('US');
+        const ada = us.find(l => l.id === 'us-ada-title-ii')!;
+        const s508 = us.find(l => l.id === 'us-508')!;
+        const spara = [ada.attestation, s508.attestation];
+        const sätt = (lag: NationalLaw, på: boolean) => {
+            lag.attestation = { ...giltig, attested: på ? ['lagnamn'] : [] };
+        };
+        try {
+            for (const [a, b] of [[true, true], [true, false], [false, true], [false, false]] as const) {
+                sätt(ada, a);
+                sätt(s508, b);
+                const rad = resolveNationalLawReference('US', 'public', 'en');
+                const läge = `ADA ${a ? 'på' : 'av'}, 508 ${b ? 'på' : 'av'}`;
+                expect(rad.includes(ada.fullName), läge).toBe(a);
+                expect(rad.includes(s508.fullName), läge).toBe(b);
+                expect(rad.includes(' & '), läge).toBe(a && b);
+                if (!a && !b) expect(rad, läge).toBe(NATIONAL_LAW_FALLBACK.en);
+            }
+        } finally {
+            ada.attestation = spara[0];
+            s508.attestation = spara[1];
+        }
+    });
+
+    it('en lag som inte trätt i kraft namnges aldrig, också när dess namn är attesterat', () => {
+        const hhs = getNationalLaws('US').find(l => l.id === 'us-hhs-section-504')!;
+        const spara = hhs.attestation;
+        try {
+            hhs.attestation = giltig;
+            if (hhs.inForce === false) {
+                expect(resolveNationalLawReference('US', 'private', 'en')).not.toContain(hhs.fullName);
+            }
+        } finally {
+            hhs.attestation = spara;
+        }
+    });
+});
+
+/**
+ * Intern #83 och Karins beslut i #94 fråga 2: myndighetsraden för svensk
+ * privat sektor anger hur tillsynen är fördelad, eftersom motorn inte vet
+ * vilken tjänst kunden driver. Texten är Karins, ordagrant.
+ */
+describe('Intern #83 — delad tillsyn i utlåtandet', () => {
+    const KARIN = 'Tillsynen över lagen (2023:254) om vissa produkters och tjänsters tillgänglighet är uppdelad mellan flera myndigheter beroende på vilken tjänst som erbjuds: Post- och telestyrelsen ansvarar för elektronisk kommunikation, banktjänster och e-handelstjänster, Mediemyndigheten för audiovisuella medietjänster, Myndigheten för tillgängliga medier för e-böcker, och Konsumentverket respektive Transportstyrelsen för olika delar av persontransporttjänster.';
+
+    it('svensk privat sektor får Karins text ordagrant', () => {
+        expect(getEnforcementStatementText('SE', 'private', 'sv')).toBe(KARIN);
+        // Karin: ingen paragrafhänvisning i löptexten.
+        expect(KARIN).not.toContain('§');
+    });
+
+    it('andra språk, andra sektorer och andra länder behåller mallens avsnitt', () => {
+        expect(getEnforcementStatementText('SE', 'private', 'en')).toBeNull();
+        expect(getEnforcementStatementText('SE', 'public', 'sv')).toBeNull();
+        expect(getEnforcementStatementText('DK', 'private', 'da')).toBeNull();
+    });
+
+    it('texten namnger lagen och går därför genom lagnamnsgrinden', () => {
+        const lptt = getNationalLaws('SE').find(l => l.id === 'lptt')!;
+        const spara = lptt.attestation;
+        try {
+            lptt.attestation = { ...spara!, attested: spara!.attested.filter(f => f !== 'lagnamn') };
+            expect(getEnforcementStatementText('SE', 'private', 'sv')).toBeNull();
+        } finally {
+            lptt.attestation = spara;
+        }
+    });
+
+    it('schemat godtar bara språkkoder med två bokstäver och tar inte tom text', () => {
+        const schema = JSON.parse(readFileSync(join(__dirname, '..', 'schema', 'national-laws-schema.json'), 'utf-8'));
+        const data = JSON.parse(readFileSync(join(__dirname, '..', 'data', 'legal', 'national-laws.json'), 'utf-8'));
+        const validera = (statementText: unknown): boolean => {
+            const kopia = structuredClone(data);
+            kopia.laws.SE.find((l: { id: string }) => l.id === 'lptt').enforcement.statementText = statementText;
+            return new Ajv({ allErrors: true }).compile(schema)(kopia) as boolean;
+        };
+        expect(validera({ sv: KARIN })).toBe(true);
+        expect(validera({ 'sv-SE': KARIN })).toBe(false);
+        expect(validera({ sv: '' })).toBe(false);
+        expect(validera({})).toBe(false);
+    });
+});
+
+/**
+ * Datasvepet 2026-09-24: Intern #83 (Sverige), #63 (ikraftträdanden belagda
+ * 2026-09-14 men aldrig byggda), #70 (de-bfsg) och #88 (fr-rgaa).
+ *
+ * Värdena kommer ur Junos register med citat. Testerna intygar att datan bär
+ * dem, inte att de är rätt i sak; det senare är hennes.
+ */
+describe('Intern #83/#63/#70/#88 — datasvepet 2026-09-24', () => {
+    const lag = (id: string) => {
+        const hit = findNationalLaw(id);
+        if (!hit) throw new Error(`saknas: ${id}`);
+        return hit;
+    };
+
+    it('ikraftträdandet är lagens eget, inte direktivets frist eller lagens datum', () => {
+        expect(lag('dos-lagen').effectiveDate).toBe('2019-01-01');
+        expect(lag('de-bitv').effectiveDate).toBe('2011-09-22');
+        expect(lag('es-une').effectiveDate).toBe('2018-09-20');
+        expect(lag('it-wad').effectiveDate).toBe('2004-02-01');
+        expect(lag('pl-wad').effectiveDate).toBe('2019-05-23');
+        expect(lag('pt-wad').effectiveDate).toBe('2019-01-01');
+    });
+
+    it('dos-lagen bär sina fem undantag, alla med lagrum, och inget mikroföretagsundantag', () => {
+        const ex = lag('dos-lagen').exemptions;
+        // Lagen binder offentliga aktörer; ett mikroföretagsundantag vore påhittat.
+        expect(ex?.microbusiness).toBeUndefined();
+        expect(ex?.statutory?.map(e => e.kind)).toEqual(['actor', 'content', 'navigation-maps', 'disproportionate-burden', 'transitional']);
+        for (const e of ex?.statutory ?? []) {
+            expect(e.legalBasis).toContain('2018:1937');
+        }
+        // 8 § är ändrad genom Lag (2025:992); datan speglade inte det.
+        expect(ex?.statutory?.[0].legalBasis).toContain('2025:992');
+    });
+
+    it('9 § har fem innehållstyper, inte sju', () => {
+        // Karins omverifiering 2026-09-24: paragrafen räknad ordagrant. Den
+        // sjätte och sjunde var regeringens delegation, inte innehållstyper.
+        const text = lag('dos-lagen').exemptions?.statutory?.find(e => e.kind === 'content')?.description ?? '';
+        expect(text).toMatch(/^Five types/);
+        for (const punkt of ['(1)', '(2)', '(3)', '(4)', '(5)']) expect(text).toContain(punkt);
+        expect(text).not.toContain('(6)');
+        expect(text).not.toMatch(/seven/i);
+        expect(text).toContain('delegation, not a further content type');
+    });
+
+    it('9 § andra stycket är ett eget undantag, inte ett villkor på punkt 2', () => {
+        // Karin 2026-09-28 (Intern #83), tredje rättelsen av samma fält: punkt 2
+        // undantar kartor som INTE är avsedda för navigering, utan villkor. Andra
+        // stycket gäller den motsatta karttypen och har ett eget villkor.
+        const st = lag('dos-lagen').exemptions?.statutory ?? [];
+        const content = st.find(e => e.kind === 'content');
+        const nav = st.find(e => e.kind === 'navigation-maps');
+        expect(content?.description).toContain('(2) maps not intended for navigation, with no further condition;');
+        expect(content?.description).not.toMatch(/essential information/);
+        expect(content?.legalBasis).toBe('Lag (2018:1937) 9 § första stycket');
+        expect(nav?.description).toMatch(/^A separate exemption, not a qualification on item 2/);
+        expect(nav?.description).toContain('maps intended for navigation');
+        expect(nav?.description).toContain('essential information');
+        expect(nav?.legalBasis).toBe('Lag (2018:1937) 9 § andra stycket');
+    });
+
+    it('dos-lagen har inget sanktionsspann, bara arten i note', () => {
+        // Karin 2026-09-24: blocket bort nu, inte med #70. 19 § ger vite utan
+        // belopp; spannet 100 000 till 1 000 000 SEK fanns aldrig i lagen.
+        const dos = lag('dos-lagen');
+        expect(dos.sanctions).toBeUndefined();
+        expect(dos.note).toContain("type: 'Vitesföreläggande'");
+        expect(dos.note).toContain('Ett nytt föreläggande om samma sak får förenas med vite.');
+        // Sveriges tak kommer då ur lptt, oförändrat.
+        expect(getMaxSanction('SE')?.law).toBe(lag('lptt').law);
+    });
+
+    it('lptt följer den färdiga formen i #83 ordagrant', () => {
+        // Karin 2026-09-24 15:33: formen är tagen ordagrant ur registrets
+        // belagda not och ska inte tolkas. PTS egna tjänsteområden står i
+        // enforcement, inte som en egen rad i sectorAuthorities.
+        const lptt = lag('lptt');
+        expect(lptt.enforcement).toEqual({
+            authority: 'se-pts',
+            authorityName: 'PTS (Post- och telestyrelsen)',
+            responsibility: 'Marknadskontrollmyndighet för produkter (28 § och 25 § förordning (2023:676)) samt tillsynsmyndighet för elektronisk kommunikation, banktjänster och e-handelstjänster (4 § första stycket 1, 5 och 7), med samordningsansvar för övriga sektorsmyndigheter.',
+            website: 'https://pts.se',
+            // Utlåtandets text (Karins beslut i #94 fråga 2) prövas för sig.
+            statementText: expect.any(Object),
+        });
+        expect(lptt.sectorAuthorities?.map(s => s.authority)).toEqual(['Konsumentverket', 'Mediemyndigheten', 'MTM', 'Transportstyrelsen']);
+    });
+
+    it('lptt pekar ut Konsumentverket för transportsajter, inte PTS', () => {
+        // 4 § första stycket 3 a-c är webbplatser, appar och e-biljetter, alltså
+        // precis det motorn skannar.
+        const sa = lag('lptt').sectorAuthorities ?? [];
+        const konsumentverket = sa.find(s => s.authority === 'Konsumentverket');
+        expect(konsumentverket?.responsibility).toContain('3 a-c');
+        expect(konsumentverket?.responsibility).toContain('31 § första meningen');
+        expect(sa.find(s => s.authority === 'Transportstyrelsen')?.responsibility).toContain('31 § andra meningen');
+    });
+
+    it('lptt:s mikroföretagsundantag vilar på svensk lag och skiljer tjänster från produkter', () => {
+        const mb = lag('lptt').exemptions?.microbusiness;
+        expect(mb?.legalBasis).toBe('Lag (2023:254) 2 §, 10 §');
+        expect(mb?.appliesTo).toBe('services');
+        expect(mb?.description).toContain('not a full exemption');
+    });
+
+    it('lptt:s frist till 2030 kan inte läsas som ett allmänt anstånd', () => {
+        const note = lag('lptt').note ?? '';
+        expect(note).toContain('27 June 2030');
+        expect(note).toContain('never be read as a general deferral');
+    });
+
+    it('de-bfsg: 100 000 EUR, inte de påhittade 500 000', () => {
+        const s = lag('de-bfsg').sanctions;
+        expect(s?.maxAmount).toBe(100000);
+        expect(s?.minAmount).toBe(0);
+        expect(s?.description).toContain('10,000');
+        expect(getMaxSanction('DE')?.amount).toBe(100000);
+    });
+
+    it('ca-aoda: spannet 200–100 000 är borta, och taken per dag står i note', () => {
+        // Intern #93: taken gäller PER DAG och per ansvarig. Ett platt
+        // maxAmount skulle underskatta en exponering som växer för varje dag.
+        const aoda = lag('ca-aoda');
+        expect(aoda.sanctions).toBeUndefined();
+        expect(aoda.note).toContain('$50,000 for each day');
+        expect(aoda.note).toContain('$100,000 for each day');
+        // Kanadas tak kommer då från den federala lagen, oförändrat.
+        expect(getMaxSanction('CA')?.amount).toBe(250000);
+    });
+
+    it('ca-aca: lagrummet är § 91(2), inte Part 6 i allmänhet', () => {
+        const s = lag('ca-aca').sanctions;
+        expect(s?.maxAmount).toBe(250000);
+        expect(s?.description).toContain('section 91(2)');
+        expect(s?.description).not.toContain('Part 6');
+    });
+
+    it('fr-rgaa: två tak ur art. 47-1, det högre i maxAmount och det lägre i texten', () => {
+        const s = lag('fr-rgaa').sanctions;
+        expect(s?.maxAmount).toBe(50000);
+        // 25 000 är ett eget tak för en annan överträdelse, aldrig ett golv.
+        expect(s?.minAmount).toBe(0);
+        expect(s?.description).toContain('25,000');
+        expect(lag('fr-rgaa').note).toContain('2023-09-08');
+    });
+
+    it('fr-rgaa bär inga sektorsmyndigheter; de hör till fr-eaa', () => {
+        // Juno 2026-09-24 (Intern #94 fråga 3): DGCCRF och Banque de France är
+        // privat sektor och konsumenträtt, inte RGAA. Fältet var dessutom på
+        // svenska. Bort, ingen översättning.
+        expect(lag('fr-rgaa').sectorAuthorities).toBeUndefined();
+        expect(lag('fr-eaa').enforcement?.authorityName).toContain('DGCCRF');
     });
 });
 
@@ -793,8 +1170,10 @@ describe('Intern #63 — EAA-transponeringar FR, DK, ES', () => {
         // Alla tre länderna har nu minst en lag utan sanctions. Att läsa den som
         // ett nolltak skulle underskatta landets maxexponering — den enda
         // riktning den här funktionen inte får ha fel åt.
+        // Intern #88: fr-rgaa bar 300 000 EUR, ett tak som inte finns i lagen.
+        // Art. 47-1 ger 50 000 och 25 000; maxAmount bär det högre.
         const fr = getMaxSanction('FR');
-        expect(fr?.amount).toBe(300000);
+        expect(fr?.amount).toBe(50000);
         const es = getMaxSanction('ES');
         expect(es?.amount).toBe(1000000);
         for (const country of ['FR', 'DK', 'ES'] as const) {
@@ -849,10 +1228,10 @@ describe('Intern #63 — ENFORCEMENT_BODIES_DETAILED är härledd', () => {
         expect(ENFORCEMENT_BODIES_DETAILED.SE.eaa).toBe('PTS (Post- och telestyrelsen)');
     });
 
-    it('AU och US följer motorns egen routing, inte sektorsväljaren rakt av', () => {
-        // getNationalLawForSector('AU','public') ger au-dta på exakt scope-träff.
-        // Juno har avgjort att au-dda är Australiens enda bindande instrument i
-        // båda sektorerna, så härledningen måste spegla motorns AU-gren.
+    it('AU och US ger samma lag som motorns lagval', () => {
+        // US har kvar en egen gren (flera parallella federala lagar). AU går
+        // sedan Intern #68 genom den generella väljaren och landar ändå på
+        // au-dda i båda sektorerna.
         expect(deriveEnforcementLaw('AU', 'public')?.id).toBe('au-dda');
         expect(deriveEnforcementLaw('AU', 'private')?.id).toBe('au-dda');
         expect(deriveEnforcementLaw('US', 'public')?.id).toBe('us-508');
@@ -880,13 +1259,56 @@ describe('Intern #63 — ENFORCEMENT_BODIES_DETAILED är härledd', () => {
         }
     });
 
-    it('au-dta har en egen ramverkskod, så DDA-uppslaget är entydigt', () => {
-        // Juno 2026-09-11: att tagga Digital Access Standard som DDA var sakligt
-        // fel OCH en latent bugg — getNationalLawByFramework returnerar första
-        // träffen, så en omsortering av JSON-arrayen hade tyst kunnat göra
-        // styrdokumentet till Australiens lag.
-        const dta = getNationalLaws('AU').find(l => l.id === 'au-dta');
-        expect(dta?.euFramework).toBe('DAS');
+});
+
+/**
+ * Intern #68 — Digital Access Standard ut ur lagdatan (MAJOR, Karin 2026-09-24).
+ *
+ * Junos regel: en post hör hemma här bara om ett bindande rättsligt instrument
+ * gör efterlevnaden obligatorisk och möjlig att göra gällande mot den som bär
+ * skyldigheten. Standarden är intern regeringspolicy.
+ */
+describe('Intern #68 — Australien har exakt en lag', () => {
+    // Id:t och ramverkskoden byggs ihop här, så att svepet nedan inte hittar
+    // testet självt.
+    const BORTTAGET_ID = ['au', 'dta'].join('-');
+    const BORTTAGEN_KOD = ['D', 'A', 'S'].join('');
+
+    it('T1: getNationalLawForSector ger au-dda i båda sektorerna', () => {
+        expect(getNationalLawForSector('AU', 'public')?.id).toBe('au-dda');
+        expect(getNationalLawForSector('AU', 'private')?.id).toBe('au-dda');
+    });
+
+    it('T2: getNationalLaws("AU") innehåller exakt en post', () => {
+        expect(getNationalLaws('AU').map(l => l.id)).toEqual(['au-dda']);
+    });
+
+    it('T3: varken id:t eller ramverkskoden lever kvar i paketet', () => {
+        // Källa, data, schema och dokumentation. CHANGELOG undantas: den är
+        // historik och ska säga vad som togs bort.
+        const root = join(__dirname, '..');
+        const filer: string[] = [];
+        const gå = (dir: string) => {
+            for (const namn of readdirSync(dir)) {
+                if (['node_modules', 'dist', 'CHANGELOG.md'].includes(namn)) continue;
+                const full = join(dir, namn);
+                if (statSync(full).isDirectory()) gå(full);
+                else if (/\.(ts|json|md)$/.test(namn)) filer.push(full);
+            }
+        };
+        gå(root);
+        const träffar = filer.filter(f => {
+            const text = readFileSync(f, 'utf8');
+            return text.includes(BORTTAGET_ID) || new RegExp(`['"]${BORTTAGEN_KOD}['"]`).test(text);
+        });
+        expect(träffar).toEqual([]);
+        expect(findNationalLaw(BORTTAGET_ID)).toBeNull();
+    });
+
+    it('T5: tillsynen följer samma lag som lagvalet, utan egen AU-gren', () => {
+        for (const sector of ['public', 'private'] as const) {
+            expect(deriveEnforcementLaw('AU', sector)?.id).toBe(getNationalLawForSector('AU', sector)?.id);
+        }
         expect(getNationalLawByFramework('DDA', 'AU')?.id).toBe('au-dda');
     });
 });

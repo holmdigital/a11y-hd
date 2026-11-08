@@ -81,22 +81,21 @@ const ENFORCEMENT_BODIES_FALLBACK: Record<Country, { wad: string; eaa: string }>
 /**
  * Which law's `enforcement` answers for a country and sector.
  *
- * Mirrors `resolveNationalLawReference()`'s own AU/US routing in the engine
+ * Mirrors `resolveNationalLawReference()`'s own US routing in the engine
  * EXACTLY, so this constant can never contradict the law a statement names.
  *
- * Do NOT replace the AU and US branches with a plain `getNationalLawForSector()`
- * call. AU's candidates prefer `au-dta` (scope 'public') over `au-dda`
- * (scope 'both') because the selector prefers an exact scope match, and Juno
- * ruled 2026-09-11 that `au-dda` is the only binding instrument for Australia
- * in either sector. US carries several parallel federal statutes where
- * `us-508` and `us-ada-title-ii` are both scope 'public', so a generic
- * selector picks whichever sits first in the JSON array rather than whichever
- * was intended.
+ * Do NOT replace the US branch with a plain `getNationalLawForSector()` call.
+ * US carries several parallel federal statutes where `us-508` and
+ * `us-ada-title-ii` are both scope 'public', so a generic selector picks
+ * whichever sits first in the JSON array rather than whichever was intended.
+ *
+ * Intern #68: Australia no longer needs a branch. It had one only because the
+ * Digital Access Standard entry (scope 'public') won the selector's
+ * exact-scope preference over `au-dda` (scope 'both'); with the Standard out
+ * of the law data, the generic selector gives `au-dda` in both sectors on its
+ * own. Two hand-kept mirrors that could drift apart are gone.
  */
 export function deriveEnforcementLaw(country: Country, sector: Sector): NationalLaw | null {
-    if (country === 'AU') {
-        return getNationalLaws('AU').find(l => l.euFramework === 'DDA' && l.inForce !== false) ?? null;
-    }
     if (country === 'US') {
         // Public goes to Section 508 (GSA), private to ADA Title III (DOJ).
         //
@@ -241,6 +240,9 @@ import type {
     NationalLaw,
     Sanction,
     SectorAuthority,
+    StatutoryExemption,
+    Attestation,
+    AttestableField,
 } from './types';
 
 export type {
@@ -270,6 +272,9 @@ export type {
     NationalLaw,
     Sanction,
     SectorAuthority,
+    StatutoryExemption,
+    Attestation,
+    AttestableField,
 };
 
 function getData(lang: string = 'en'): ConvergenceRule[] {
@@ -673,6 +678,174 @@ export function getNationalLawForSector(country: Country, sector: Sector): Natio
     return candidates.find(l => l.scope === sector) ?? candidates[0];
 }
 
+/** Nivåer i `NationalLaw.complianceDeadlines`. */
+export type ComplianceTier = 'largeEntity' | 'smallEntity';
+
+/**
+ * Är en nivå av en lags `complianceDeadlines` gällande på `today`?
+ *
+ * Datumet avgörs vid körning. `law.inForce` är flaggan för regelns grundnivå och
+ * ändras aldrig av ett nivådatum. Ett nivådatum gör bara den nivån gällande, och
+ * ingen kod får slå om hela posten till gällande på ett datum (Juno, 2026-10-06).
+ *
+ * Jämförelsen sker på UTC-datum, eftersom `deadline` är ett kalenderdatum.
+ */
+export function isComplianceTierInForce(
+    law: NationalLaw,
+    tier: ComplianceTier,
+    today: Date = new Date()
+): boolean {
+    const deadline = law.complianceDeadlines?.[tier]?.deadline;
+    if (!deadline) return false;
+    return today.toISOString().slice(0, 10) >= deadline;
+}
+
+/**
+ * Intern #82 — lagnamnsgrinden.
+ *
+ * Ett lagnamn skrivs ut bara om någon gått i god för just det namnet mot
+ * primärkälla (Karin 2026-09-12), annars fallback-frasen. Grinden läser
+ * `attested` och inget annat. `attestation !== undefined` räcker INTE: ett
+ * block med tom `attested` är en spärr, inte ett godkännande. Och bara en
+ * granskning av själva lagposten kan öppna den; en granskning av en
+ * myndighetsnyckel eller av en post som inte finns kan det aldrig.
+ */
+export function isNameAttested(law?: Pick<NationalLaw, 'attestation'> | null): boolean {
+    const a = law?.attestation;
+    return a?.subject === 'law-entry' && a.attested.includes('lagnamn');
+}
+
+/**
+ * Språknycklad fallback för lagplatsen i ett utlåtande.
+ *
+ * Intern #31: ett utlåtande får ALDRIG rendera en tom lagreferens. När ingen
+ * lag kan namnges skrivs meningen om så att den är sann utan lagnamn, aldrig
+ * genom att hitta på ett och aldrig genom att kalla ett EU-direktiv för ett
+ * lands nationella lag.
+ *
+ * Intern #82: flyttad hit från motorn, där komponenten bar en ordagrann kopia.
+ * Två kopior av samma logik gled isär en gång redan (Intern #63/#66, där
+ * komponenten bar hela #64:s defektuppsättning efter att motorn lagats), och
+ * grinden hade annars behövt byggas två gånger och hållas lika för hand.
+ *
+ * Varje fras står i den form lagplatsens meningar kräver (a11y-hd#213): dativ
+ * på tyska, instrumentalis på polska, genitiv på finska, och utan artikel på
+ * italienska och portugisiska, där mallen redan har prepositionen. Den finska
+ * frasen betyder "tillämplig tillgänglighetslagstiftning", eftersom genitiv av
+ * "tillämpliga tillgänglighetskrav" gav "kraven i kraven" i en av meningarna.
+ * Juno godkände den 2026-09-24 (Intern #94 fråga 5), med förbehållet att en
+ * modersmålstalare ser över den innan grinden tänds för Finland.
+ */
+export const NATIONAL_LAW_FALLBACK: Readonly<Record<string, string>> = Object.freeze({
+    en: 'applicable accessibility requirements',
+    sv: 'gällande tillgänglighetskrav',
+    no: 'gjeldende tilgjengelighetskrav',
+    da: 'gældende tilgængelighedskrav',
+    fi: 'sovellettavan saavutettavuuslainsäädännön',
+    de: 'den geltenden Barrierefreiheitsanforderungen',
+    nl: 'de geldende toegankelijkheidseisen',
+    fr: "la réglementation d'accessibilité applicable",
+    es: 'los requisitos de accesibilidad aplicables',
+    it: 'requisiti di accessibilità applicabili',
+    pt: 'requisitos de acessibilidade aplicáveis',
+    pl: 'obowiązującymi wymaganiami dostępności',
+});
+
+/**
+ * Intern #63/#66: parentesen finns för att ge kortnamnet vid sidan av det
+ * långa, och faller när kortnamnet är ett PREFIX av det långa, för då bär den
+ * ingen ny information. `dk-eaa` bär titeln i båda fälten och `ca-aca`:s
+ * fullName är korttiteln plus lagrumsreferens; utan regeln renderades titeln
+ * två gånger i rad i ett danskt kunddokument, och det syntes inte i någon
+ * datadiff. DOS-lagen och DL 83/2018 är inga prefix och står därför kvar.
+ *
+ * Intern #82: motorns US-gren gick förbi regeln och skrev "Section 508 of the
+ * Rehabilitation Act of 1973 (Section 508)", medan komponenten skrev samma rad
+ * utan parentes. Nu går varje namnväg genom den här funktionen.
+ */
+function lawPhrase(law: NationalLaw): string {
+    const shortName = law.law.trim();
+    const longName = law.fullName.trim();
+    return longName === shortName || longName.startsWith(shortName)
+        ? longName
+        : `${longName} (${shortName})`;
+}
+
+/**
+ * Lagreferensen i ett utlåtandes "uppfyller …"-mening, för land och sektor.
+ * Returnerar aldrig tom sträng.
+ *
+ * Varje väg som kan returnera ett lagnamn går genom lagnamnsgrinden
+ * (`isNameAttested`), också särfallet för US. Faller en enda väg igenom
+ * grinden är den verkningslös; det är samma felklass som mallarna som gick
+ * förbi lagvalet i Intern #64.
+ *
+ * Används av både motorn och komponenten, så ett utlåtande säger samma sak
+ * oavsett vilket verktyg som genererade det.
+ */
+export function resolveNationalLawReference(
+    country: Country,
+    sector: 'public' | 'private',
+    lang: string = 'en'
+): string {
+    // Intern #64 (M4): en författning som inte trätt i kraft får aldrig
+    // renderas som gällande rätt. `us-hhs-section-504` (ikraft 2027-05-11)
+    // namngavs som bindande lag för amerikansk privat sektor.
+    const inForce = (law: NationalLaw | undefined | null): law is NationalLaw =>
+        !!law && law.inForce !== false;
+    const named = (laws: Array<NationalLaw | undefined | null>): string | null => {
+        const vouched = laws.filter((l): l is NationalLaw => inForce(l) && isNameAttested(l));
+        return vouched.length > 0 ? vouched.map(lawPhrase).join(' & ') : null;
+    };
+
+    // Intern #68: Australien har ingen egen gren längre. Den fanns bara för att
+    // Digital Access Standard (scope 'public') vann väljarens företräde för
+    // exakt scope över Disability Discrimination Act (scope 'both'). Med
+    // standarden borta ur datan ger väljaren nedan lagen i båda sektorerna.
+    let phrase: string | null;
+    if (country === 'US' && getNationalLaws('US').some(l => l.euFramework === 'ADA' && l.scope === sector && inForce(l))) {
+        // US bär flera parallella federala författningar: ADA delad på scope,
+        // Section 508 på offentliga sidan och HHS Section 504 på privata.
+        // Varje lag i kombinationen prövas mot grinden var för sig, så en
+        // obelagd lag faller bort utan att dra med sig en belagd.
+        const usLaws = getNationalLaws('US').filter(inForce);
+        const adaLaw = usLaws.find(l => l.euFramework === 'ADA' && l.scope === sector);
+        const companion = sector === 'public'
+            ? usLaws.find(l => l.id === 'us-508')
+            : usLaws.find(l => l.euFramework === 'REHAB' && l.scope === 'private');
+        phrase = named([adaLaw, companion]);
+    } else {
+        // Intern #64 (M1): land + scope + inForce, aldrig `euFramework`.
+        phrase = named([getNationalLawForSector(country, sector)]);
+    }
+    if (phrase) return phrase;
+
+    const langKey = lang.split('-')[0];
+    return NATIONAL_LAW_FALLBACK[langKey] ?? NATIONAL_LAW_FALLBACK.en;
+}
+
+/**
+ * Tillsynsavsnittets text när tillsynen är delad mellan flera myndigheter
+ * efter tjänstetyp (Intern #83, Karins beslut i #94 fråga 2). Motorn vet inte
+ * vilken tjänst kunden driver, så ett enda myndighetsnamn vore fel för en del
+ * kunder: för ett tåg- eller bussbolags webbplats är Konsumentverket
+ * tillsynsmyndighet enligt LPTT, inte PTS.
+ *
+ * Samma lagval som `resolveNationalLawReference` och samma grind. Texten
+ * namnger lagen, så den används bara när lagnamnet är attesterat; annars vore
+ * den en väg förbi grinden. Returnerar null när lagen saknar text på språket,
+ * och då gäller mallens tillsynsavsnitt som förut.
+ */
+export function getEnforcementStatementText(
+    country: Country,
+    sector: 'public' | 'private',
+    lang: string = 'en'
+): string | null {
+    const law = getNationalLawForSector(country, sector);
+    if (!law || law.inForce === false || !isNameAttested(law)) return null;
+    return law.enforcement?.statementText?.[lang.split('-')[0]] ?? null;
+}
+
 /**
  * Intern #63 punkt 4 — hitta en lagpost på id, oavsett land.
  *
@@ -703,9 +876,9 @@ export function findNationalLaw(id: string): (NationalLaw & { country: Country }
  * och versionsgarantin.
  *
  * Ordningen följer datafilen: länderna i sin nyckelordning, lagarna i sin
- * arrayordning. Förlita dig inte på den — `au-dda` före `au-dta` var precis en
- * sådan tyst ordningsberoende som gav en latent bugg i
- * `getNationalLawByFramework` (Intern #63, `au-dta.euFramework`).
+ * arrayordning. Förlita dig inte på den: att två australiska poster låg i en
+ * viss ordning var precis en sådan tyst ordningsberoende som gav en latent bugg
+ * i `getNationalLawByFramework` (Intern #63).
  */
 export function getAllNationalLaws(): Array<NationalLaw & { country: Country }> {
     const out: Array<NationalLaw & { country: Country }> = [];

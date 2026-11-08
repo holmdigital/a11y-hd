@@ -13,7 +13,7 @@ import { generateReportHTML } from '../reporting/html-template';
 import { generatePDF } from '../reporting/pdf-generator';
 import { generateStatement, generateStatementContent, StatementMetadata } from '../reporting/statement-generator';
 import { generateBadgeMarkdown, isBadgeWithheldByRobustness } from '../reporting/badge-generator';
-import { parseHydrationWait, InvalidOptionError, MAX_HYDRATION_WAIT_MS } from './parse-options';
+import { parseHydrationWait, parseReviewOptions, InvalidOptionError, MAX_HYDRATION_WAIT_MS } from './parse-options';
 import { assertScanUrl, UnsupportedUrlError } from './url-guard.js';
 import { setLanguage, t } from '../i18n';
 import type { EnrichedReport } from '@holmdigital/standards';
@@ -111,6 +111,8 @@ program
     .option('--api-key <key>', 'API key for HolmDigital Cloud')
     .option('--cloud-url <url>', 'Cloud API URL')
     .option('--invalid-https-cert', 'Allow scanning on pages with invalid https certificate')
+    .option('--allow-private-hosts', 'Allow private and internal addresses such as localhost, 10.x and 192.168.x (blocked by default, for the page and every request it makes)')
+    .option('--no-sandbox', 'Disable the Chrome sandbox. Only for pages you trust; needed when running as root or where user namespaces are restricted')
     .option('--email <email>', 'Contact email for accessibility statement')
     .option('--phone <number>', 'Contact phone number for accessibility statement')
     .option('--org <name>', 'Organization name for accessibility statement')
@@ -118,6 +120,8 @@ program
     .option('--country <code>', 'Country code for accessibility statement enforcement body')
     .option('--sector <type>', 'Sector type: public (WAD) or private (EAA)', 'public')
     .option('--publish-date <date>', 'Publish date for the website (YYYY-MM-DD)')
+    .option('--review-method <method>', 'How the statement assessment was made: self-assessment (default), external-review (requires --reviewer) or no-review')
+    .option('--reviewer <name>', 'Organisation that performed the external review, named in the statement (used with --review-method external-review)')
     .option('--light', 'Light scan: fast score-only mode (skips HTML validation and detailed legal mapping)')
     .option('--audience <mode>', 'Output audience: developer (default) or plain', 'developer')
     .option('--plain', 'Alias for --audience plain (klarspråksläge for non-technical recipients)')
@@ -133,12 +137,20 @@ program
         // Undefined här betyder "rör inte", inte "0". Commander camelCase:ar
         // --wait-for-hydration till waitForHydration.
         let waitForHydrationMs: number | undefined;
+        // Intern #95: granskningsmetoden kontrolleras här, före skanningen, så att
+        // ett felskrivet värde eller en extern granskning utan granskare inte
+        // upptäcks först när utlåtandet ska skrivas. CLI > config-fil.
+        let review: ReturnType<typeof parseReviewOptions> = {};
         try {
             waitForHydrationMs = cliOptions.waitForHydration !== undefined
                 ? parseHydrationWait(cliOptions.waitForHydration)
                 : (fileConfig.waitForHydrationMs !== undefined
                     ? parseHydrationWait(String(fileConfig.waitForHydrationMs))
                     : undefined);
+            review = parseReviewOptions(
+                cliOptions.reviewMethod || fileConfig.reviewMethod,
+                cliOptions.reviewer || fileConfig.reviewer
+            );
         } catch (e) {
             if (e instanceof InvalidOptionError) {
                 console.error(chalk.red(e.message));
@@ -162,6 +174,11 @@ program
             apiKey: cliOptions.apiKey || fileConfig.apiKey,
             cloudUrl: cliOptions.cloudUrl || fileConfig.cloudUrl || 'https://cloud.holmdigital.se',
             invalidHttpsCert: cliOptions.invalidHttpsCert ?? fileConfig.invalidHttpsCert ?? false,
+            // Intern #53 steg 2: spärren och sandboxen är på som standard.
+            allowPrivateHosts: cliOptions.allowPrivateHosts ?? fileConfig.allowPrivateHosts ?? false,
+            // Commander sätter sandbox: true som standard för en --no-sandbox-flagga,
+            // så CLI-värdet kan bara säga nej. Config-filen får också säga nej.
+            sandbox: cliOptions.sandbox === false ? false : fileConfig.sandbox !== false,
             // Metadata for accessibility statement
             email: cliOptions.email || fileConfig.email,
             phone: cliOptions.phone || fileConfig.phone,
@@ -170,6 +187,8 @@ program
             country: cliOptions.country || fileConfig.country,
             sector: cliOptions.sector || fileConfig.sector || 'public',
             publishDate: cliOptions.publishDate || fileConfig.publishDate,
+            reviewMethod: review.reviewMethod,
+            reviewer: review.reviewer,
             light: cliOptions.light ?? fileConfig.light ?? false,
             plain: cliOptions.plain ?? fileConfig.plain ?? false,
             // Commander camelCase:ar --noscript-check till noscriptCheck.
@@ -192,6 +211,8 @@ program
             apiKey?: string;
             cloudUrl: string;
             invalidHttpsCert: boolean;
+            allowPrivateHosts: boolean;
+            sandbox: boolean;
             email?: string;
             phone?: string;
             org?: string;
@@ -199,6 +220,8 @@ program
             country?: string;
             sector?: 'public' | 'private';
             publishDate?: string;
+            reviewMethod?: StatementMetadata['reviewMethod'];
+            reviewer?: StatementMetadata['reviewer'];
             light: boolean;
             plain: boolean;
             audience: 'developer' | 'plain';
@@ -270,6 +293,8 @@ program
                 silent: options.json || options.light,
                 severityThreshold: options.threshold as 'critical' | 'high' | 'medium' | 'low',
                 invalidHttpsCert: options.invalidHttpsCert,
+                allowPrivateHosts: options.allowPrivateHosts,
+                sandbox: options.sandbox,
                 light: options.light,
                 noScriptCheck: options.noScriptCheck,
                 waitForHydrationMs: options.waitForHydrationMs
@@ -287,7 +312,7 @@ program
                 const html = options.audience === 'plain'
                     ? generateReportHTML(result, options.sector as 'public' | 'private', 'plain', plainFallbackFrom)
                     : generateReportHTML(result, options.sector as 'public' | 'private');
-                await generatePDF(html, options.pdf);
+                await generatePDF(html, options.pdf, { sandbox: options.sandbox });
                 if (spinner) spinner.succeed(t('cli.pdf_saved', { path: options.pdf }));
             }
 
@@ -308,7 +333,9 @@ program
                     responseTime: options.responseTime,
                     country: options.country,
                     sector: options.sector as 'public' | 'private',
-                    publishDate: options.publishDate
+                    publishDate: options.publishDate,
+                    reviewMethod: options.reviewMethod,
+                    reviewer: options.reviewer
                 };
 
                 if (options.statement.toLowerCase().endsWith('.pdf')) {

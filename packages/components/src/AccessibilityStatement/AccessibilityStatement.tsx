@@ -2,8 +2,8 @@ import React from 'react';
 import {
     getStatementToolsByCountry,
     getEnforcementBody,
-    getNationalLawForSector,
-    getNationalLaws,
+    getEnforcementStatementText,
+    resolveNationalLawReference,
     type Country
 } from '@holmdigital/standards';
 import { BADGE_LABELS, UPDATED_LABEL, FOOTER_TEXT } from './locale-chrome';
@@ -12,40 +12,20 @@ import { BADGE_LABELS, UPDATED_LABEL, FOOTER_TEXT } from './locale-chrome';
  * Props för AccessibilityStatement-komponenten
  */
 /**
- * Intern #63/#66: fallback-fras när inget lagrum finns för land och sektor.
+ * Intern #95: platshållarna för den externa part som granskat webbplatsen. De
+ * står bara i metodvalets andra alternativ. Samma lista som motorns
+ * REVIEWER_PLACEHOLDERS, som täcker båda mallsatserna.
  *
- * Ordagrant samma strängar som motorns NATIONAL_LAW_FALLBACK. De MÅSTE vara
- * identiska — ett utlåtande ska inte säga olika saker beroende på om det
- * genererades av CLI:t eller av den här komponenten.
- *
- * Före den här kartan returnerade komponenten tom sträng, så meningen "…
- * uppfyller , eventuella kända tillgänglighetsproblem" gick ut till kanadensisk,
- * norsk och brittisk privat sektor. Det är samma fel som Intern #31 stängde för
- * motorn 2026-08-25, som aldrig lagades här.
+ * Platsen fylls ur `reviewer` och ALDRIG ur `generatorTool`: det är verktyget
+ * som skrev dokumentet och det står i sidfoten. När det namnet hamnade här
+ * påstod utlåtandet att verktyget gjort en oberoende granskning (#91).
  */
-const NATIONAL_LAW_FALLBACK: Record<string, string> = {
-    en: 'applicable accessibility requirements',
-    sv: 'gällande tillgänglighetskrav',
-    no: 'gjeldende tilgjengelighetskrav',
-    da: 'gældende tilgængelighedskrav',
-    fi: 'sovellettavat saavutettavuusvaatimukset',
-    de: 'die geltenden Barrierefreiheitsanforderungen',
-    nl: 'de geldende toegankelijkheidseisen',
-    fr: "la réglementation d'accessibilité applicable",
-    es: 'los requisitos de accesibilidad aplicables',
-    it: 'i requisiti di accessibilità applicabili',
-    pt: 'os requisitos de acessibilidade aplicáveis',
-    pl: 'obowiązujące wymagania dostępności',
-};
+const REVIEWER_PLACEHOLDERS = [
+    '{<extern aktör>}', '{<ekstern aktør>}', '{<ekstern aktor>}', '{<ulkoinen taho>}',
+    '{<externe partij>}', '{<externer Dritter>}', '{<tiers externe>}', '{<tercero externo>}',
+    '{<terza parte>}', '{<terceiro externo>}', '{<podmiot zewnętrzny>}', '{<third party>}',
+];
 
-/** Parentesen faller när kortnamnet inte bär ny information. Speglar motorn. */
-function lawPhrase(law: { law: string; fullName: string }): string {
-    const shortName = law.law.trim();
-    const longName = law.fullName.trim();
-    return longName === shortName || longName.startsWith(shortName)
-        ? longName
-        : `${longName} (${shortName})`;
-}
 export interface AccessibilityStatementProps {
     /**
      * Landskod (SE, NO, DK, FI, DE, FR, ES, IE)
@@ -102,6 +82,31 @@ export interface AccessibilityStatementProps {
     };
 
     /**
+     * (Valfritt) Hur bedömningen bakom utlåtandet gjordes. Ett uttryckligt val,
+     * aldrig härlett ur complianceLevel eller ur ett scanresultat.
+     *
+     * - utelämnad eller 'self-assessment': organisationen har bedömt sin egen
+     *   webbplats. Det är default, och en skanning som kunden kör själv är en
+     *   självskattning.
+     * - 'external-review': en extern part har granskat webbplatsen. Kräver
+     *   `reviewer`, och utlåtandet namnger granskaren.
+     * - 'no-review': tillgängligheten är uppskattad utan granskning.
+     */
+    reviewMethod?: 'self-assessment' | 'external-review' | 'no-review';
+
+    /**
+     * (Valfritt) Den som gjorde den externa granskningen. Krävs när reviewMethod
+     * är 'external-review': utan ett namn kastar komponenten ett fel. Utlåtandet
+     * namnger granskaren med `name`; `url` tas emot för samma form som
+     * generatorTool men renderas inte. Sidfoten namnger fortfarande verktyget
+     * som skrev dokumentet, aldrig granskaren.
+     */
+    reviewer?: {
+        name: string;
+        url?: string;
+    };
+
+    /**
      * (Valfritt) URL eller Base64-sträng för logotyp
      */
     logoUrl?: string;
@@ -146,6 +151,11 @@ interface TemplateSection {
     id?: string;
     title: string;
     content: string;
+    /**
+     * Rendera avsnittet bara för de här sektorerna; saknas fältet gäller det
+     * båda. Samma fält som i motorns mallar (Intern #94 fråga 4).
+     */
+    sectors?: Array<'public' | 'private'>;
 }
 
 interface StatementTemplate {
@@ -211,22 +221,22 @@ const TEMPLATES: Record<string, StatementTemplate> = {
     },
     de: {
         title: "Barrierefreiheitserklärung für {<webbplats>}",
-        intro: "{<organisation>} ist bemüht, ihre Website im Einklang mit den nationalen Rechtsvorschriften zur Umsetzung der {<national_law>} barrierefrei zugänglich zu machen. Diese Erklärung zur Barrierefreiheit gilt für {<webbplats>}.",
+        intro: "{<organisation>} ist bemüht, ihre Website im Einklang mit {<national_law>} barrierefrei zugänglich zu machen. Diese Erklärung zur Barrierefreiheit gilt für {<webbplats>}.",
         sections: [
-            { id: "how-accessible", title: "Stand der Vereinbarkeit mit den Anforderungen", content: "{Diese Website ist vollständig mit der {<national_law>} vereinbar./Diese Website ist wegen der folgenden Unvereinbarkeiten teilweise mit der {<national_law>} vereinbar./Diese Website ist nicht mit der {<national_law>} vereinbar. Die nicht barrierefreien Inhalte sind nachstehend aufgeführt.}" },
+            { id: "how-accessible", title: "Stand der Vereinbarkeit mit den Anforderungen", content: "{Diese Website ist vollständig mit {<national_law>} vereinbar./Diese Website ist wegen der folgenden Unvereinbarkeiten teilweise mit {<national_law>} vereinbar./Diese Website ist nicht mit {<national_law>} vereinbar. Die nicht barrierefreien Inhalte sind nachstehend aufgeführt.}" },
             { id: "what-to-do", title: "Nicht barrierefreie Inhalte", content: "Die nachstehend aufgeführten Inhalte sind aus den folgenden Gründen nicht barrierefrei:\n\n[\n**Unvereinbarkeit mit den Barrierefreiheitsanforderungen**\n\n{<mängel>}\n]\n\n[Unsere normale Antwortzeit beträgt {<svarstid>}.]\n\n[Sie können uns auch wie folgt kontaktieren:\n\n* E-Mail an {<e-mailadresse>}\n* Telefon {<telefonnummer>}]" },
             { id: "reporting", title: "Feedback und Kontaktangaben", content: "Wir bemühen uns, die Barrierefreiheit unserer Website stetig zu verbessern. Wenn Sie Mängel bei der Einhaltung der Barrierefreiheitsanforderungen feststellen oder Informationen über von der Richtlinie ausgenommene Inhalte benötigen, können Sie uns kontaktieren." },
-            { id: "enforcement", title: "Durchsetzungsverfahren", content: "Die {<enforcement_body>} ist für die Überwachung der {<national_law>} zuständig. Wenn Sie auf unsere Benachrichtigungen oder Anfragen keine zufriedenstellende Antwort erhalten haben, können Sie sich an {<enforcement_body>} wenden.\n\nSie können auch eine Beschwerde bei {<enforcement_body>} einreichen, wenn Sie der Meinung sind, dass unsere Einschätzung einer unverhältnismäßigen Belastung überprüft werden sollte, wenn Sie Mängel in unserer Barrierefreiheitserklärung feststellen oder wenn Sie der Meinung sind, dass wir Ihren Antrag auf barrierefreie Bereitstellung von Inhalten nicht korrekt bearbeitet haben." },
-            { id: "technical", title: "Technische Informationen zur Barrierefreiheit der Website", content: "{Diese Website ist vollständig mit der {<national_law>} vereinbar./Diese Website ist wegen der folgenden Unvereinbarkeiten teilweise mit der {<national_law>} vereinbar./Diese Website ist nicht mit der {<national_law>} vereinbar.}" },
+            { id: "enforcement", title: "Durchsetzungsverfahren", content: "Die {<enforcement_body>} ist für die Überwachung der Einhaltung von {<national_law>} zuständig. Wenn Sie auf unsere Benachrichtigungen oder Anfragen keine zufriedenstellende Antwort erhalten haben, können Sie sich an {<enforcement_body>} wenden.\n\nSie können auch eine Beschwerde bei {<enforcement_body>} einreichen, wenn Sie der Meinung sind, dass unsere Einschätzung einer unverhältnismäßigen Belastung überprüft werden sollte, wenn Sie Mängel in unserer Barrierefreiheitserklärung feststellen oder wenn Sie der Meinung sind, dass wir Ihren Antrag auf barrierefreie Bereitstellung von Inhalten nicht korrekt bearbeitet haben." },
+            { id: "technical", title: "Technische Informationen zur Barrierefreiheit der Website", content: "{Diese Website ist vollständig mit {<national_law>} vereinbar./Diese Website ist wegen der folgenden Unvereinbarkeiten teilweise mit {<national_law>} vereinbar./Diese Website ist nicht mit {<national_law>} vereinbar.}" },
             { id: "testing", title: "Erstellung dieser Erklärung zur Barrierefreiheit", content: "{Wir haben eine Selbstbewertung (interner Test) der Website {<webbplats>} durchgeführt./Ein {<externer Dritter>} hat eine unabhängige Prüfung der Website {<webbplats>} durchgeführt./Wir haben die Barrierefreiheit ohne Prüfung geschätzt.}\n\nDie letzte Bewertung wurde am {<bewertungsdatum>} vorgenommen.\n\n[Bewertungsmethode: {<methode>}]\n\nDie Website wurde am {<veröffentlichungsdatum>} veröffentlicht.\n\nDie Erklärung wurde zuletzt am {<aktualisierungsdatum>} aktualisiert." }
         ]
     },
     fr: {
         title: "Déclaration d'accessibilité pour {<webbplats>}",
-        intro: "{<organisation>} s'engage à rendre son site internet accessible conformément à la {<national_law>}. Cette déclaration d'accessibilité s'applique à {<webbplats>}.",
+        intro: "{<organisation>} s'engage à rendre son site internet accessible conformément à {<national_law>}. Cette déclaration d'accessibilité s'applique à {<webbplats>}.",
         sections: [
-            { id: "how-accessible", title: "État de conformité", content: "{Ce site est totalement conforme avec la {<national_law>}./Ce site est partiellement conforme avec la {<national_law>} en raison des non-conformités énumérées ci-dessous./Ce site n'est pas conforme avec la {<national_law>}. Les contenus non accessibles sont énumérés ci-dessous.}" },
-            { id: "what-to-do", title: "Contenus non accessibles", content: "Les contenus listés ci-dessous ne sont pas accessibles pour les raisons suivantes :\n\n[\n**Non-conformité avec la {<national_law>}**\n\n{<défauts>}\n]\n\n[Notre délai de réponse habituel est de {<svarstid>}.]\n\n[Vous pouvez également nous contacter des manières suivantes :\n\n* envoyer un e-mail à {<e-mailadresse>}\n* appeler le {<telefoonnummer>}]" },
+            { id: "how-accessible", title: "État de conformité", content: "{Ce site est totalement conforme avec {<national_law>}./Ce site est partiellement conforme avec {<national_law>} en raison des non-conformités énumérées ci-dessous./Ce site n'est pas conforme avec {<national_law>}. Les contenus non accessibles sont énumérés ci-dessous.}" },
+            { id: "what-to-do", title: "Contenus non accessibles", content: "Les contenus listés ci-dessous ne sont pas accessibles pour les raisons suivantes :\n\n[\n**Non-conformité avec {<national_law>}**\n\n{<défauts>}\n]\n\n[Notre délai de réponse habituel est de {<svarstid>}.]\n\n[Vous pouvez également nous contacter des manières suivantes :\n\n* envoyer un e-mail à {<e-mailadresse>}\n* appeler le {<telefoonnummer>}]" },
             { id: "reporting", title: "Retour d'information et contact", content: "Nous nous efforçons d'améliorer constamment l'accessibilité de notre site. Si vous constatez un défaut de conformité, vous pouvez nous contacter pour nous en informer." },
             { id: "enforcement", title: "Voies de recours", content: "Le {<enforcement_body>} est responsable du contrôle de la conformité aux exigences d'accessibilité. Si vous ne recevez pas de réponse satisfaisante à votre signalement, vous pouvez contacter {<enforcement_body>}.\n\nVous pouvez également déposer une plainte auprès de {<enforcement_body>} si vous estimez que notre évaluation de la charge disproportionnée doit être revue, si vous constatez des défauts dans notre déclaration d'accessibilité ou si vous estimez que nous n'avons pas traité correctement votre demande de mise en accessibilité." },
             { id: "technical", title: "Informations techniques sur l'accessibilité du site", content: "{Ce site est totalement conforme./Ce site est partiellement conforme en raison des défauts décrits ci-dessous./Ce site n'est pas conforme.}" },
@@ -235,9 +245,9 @@ const TEMPLATES: Record<string, StatementTemplate> = {
     },
     es: {
         title: "Declaración de accesibilidad para {<webbplats>}",
-        intro: "{<organisation>} se ha comprometido a hacer accesible su sitio web de conformidad con la {<national_law>}. Esta declaración de accesibilidad se aplica a {<webbplats>}.",
+        intro: "{<organisation>} se ha comprometido a hacer accesible su sitio web de conformidad con {<national_law>}. Esta declaración de accesibilidad se aplica a {<webbplats>}.",
         sections: [
-            { id: "how-accessible", title: "Situación de cumplimiento", content: "{Este sitio web es plenamente conforme con la {<national_law>}./Este sitio web es parcialmente conforme con la {<national_law>} debido a las faltas de conformidad que se indican a continuación./Este sitio web no es conforme con la {<national_law>}. Los contenidos no accesibles se indican a continuación.}" },
+            { id: "how-accessible", title: "Situación de cumplimiento", content: "{Este sitio web es plenamente conforme con {<national_law>}./Este sitio web es parcialmente conforme con {<national_law>} debido a las faltas de conformidad que se indican a continuación./Este sitio web no es conforme con {<national_law>}. Los contenidos no accesibles se indican a continuación.}" },
             { id: "what-to-do", title: "Contenido no accesible", content: "El contenido que se recoge a continuación no es accesible por los siguientes motivos:\n\n[\n**Falta de conformidad con el estándar**\n\n{<deficiencias>}\n]\n\n[Nuestro tiempo de respuesta normal es de {<svarstid>}.]\n\n[También puede contactar con nosotros de las siguientes maneras:\n\n* enviar un correo electrónico a {<e-mailadresse>}\n* llamar al {<telefoonnummer>}]" },
             { id: "reporting", title: "Mecanismo de comunicación y datos de contacto", content: "Nos esforzamos por mejorar constantemente la accesibilidad de nuestro sitio web. Si encuentra algún problema de accesibilidad, puede ponerse en contacto con nosotros para informarnos." },
             { id: "enforcement", title: "Procedimiento de aplicación", content: "El {<enforcement_body>} es responsable de supervisar los requisitos de accesibilidad. Si no ha recibido una respuesta satisfactoria a su notificación, puede ponerse en contacto con {<enforcement_body>}.\n\nTambién puede presentar una reclamación ante {<enforcement_body>} si considera que nuestra evaluación de lo que constituye una carga desproporcionada debe ser revisada, si encuentra deficiencias en nuestra declaración de accesibilidad o si considera que no hemos gestionado correctamente su solicitud de accesibilidad." },
@@ -260,13 +270,13 @@ const TEMPLATES: Record<string, StatementTemplate> = {
     },
     nl: {
         title: "Toegankelijkheidsverklaring voor {<webbplats>}",
-        intro: "{<organisation>} is verantwoordelijk voor deze website. Wij willen dat iedereen onze website kan gebruiken. In dit document wordt beschreven hoe {<webbplats>} voldoet aan de {<national_law>}, welke toegankelijkheidsproblemen bekend zijn en hoe u eventuele gebreken aan ons kunt melden, zodat we deze kunnen verhelpen.",
+        intro: "{<organisation>} is verantwoordelijk voor deze website. Wij willen dat iedereen onze website kan gebruiken. In dit document wordt beschreven hoe {<webbplats>} voldoet aan {<national_law>}, welke toegankelijkheidsproblemen bekend zijn en hoe u eventuele gebreken aan ons kunt melden, zodat we deze kunnen verhelpen.",
         sections: [
             { id: "how-accessible", title: "Hoe toegankelijk is de website?", content: "{Er zijn geen toegankelijkheidsproblemen bekend bij deze website./Wij zijn ervan op de hoogte dat delen van de website niet volledig toegankelijk zijn. Zie de sectie over inhoud die niet toegankelijk is hieronder voor meer informatie./Wij zijn ervan op de hoogte dat delen van de website niet volledig toegankelijk zijn. Zie de sectie over inhoud die niet toegankelijk is hieronder voor meer informatie.}" },
             { id: "what-to-do", title: "Wat kunt u doen als u delen van de website niet kunt gebruiken?", content: "Als u inhoud van {<webbplats>} nodig heeft die voor u niet toegankelijk is, maar die buiten het toepassingsgebied van de wet valt zoals hieronder beschreven, kunt u dit aan ons melden.\n\n[De reactietijd is normaal gesproken {<svarstid>}.]\n\n[U kunt ook op de volgende manieren contact met ons opnemen:\n\n* stuur een e-mail naar {<e-mailadres>}\n* bel naar {<telefoonnummer>}]" },
             { id: "reporting", title: "Meld toegankelijkheidsproblemen", content: "Wij streven er voortdurend naar de toegankelijkheid van onze website te verbeteren. Als u problemen tegenkomt die niet op deze pagina worden vermeld, of als u van mening bent dat wij niet aan de wettelijke eisen voldoen, laat het ons dan weten, zodat we op de hoogte zijn van het probleem." },
-            { id: "enforcement", title: "Handhavingsprocedure", content: "{<enforcement_body>} is verantwoordelijk voor het toezicht op de naleving van de {<national_law>}. U kunt een klacht indienen bij {<enforcement_body>} als u van mening bent dat onze digitale dienstverlening gebreken vertoont op het gebied van toegankelijkheid.\n\nU kunt ook een klacht indienen bij {<enforcement_body>} als u vindt dat ons oordeel over wat een onevenredige last is, moet worden herzien, als u vindt dat onze toegankelijkheidsverklaring gebreken vertoont of als u vindt dat wij uw verzoek om toegankelijkmaking niet correct hebben behandeld." },
-            { id: "technical", title: "Technische informatie over de toegankelijkheid van de website", content: "{Deze website is volledig in overeenstemming met de {<national_law>}./Deze website is gedeeltelijk in overeenstemming met de {<national_law>}, vanwege de hieronder beschreven gebreken./Deze website is niet in overeenstemming met de {<national_law>}. De niet-toegankelijke delen worden hieronder beschreven.}" },
+            { id: "enforcement", title: "Handhavingsprocedure", content: "{<enforcement_body>} is verantwoordelijk voor het toezicht op de naleving van {<national_law>}. U kunt een klacht indienen bij {<enforcement_body>} als u van mening bent dat onze digitale dienstverlening gebreken vertoont op het gebied van toegankelijkheid.\n\nU kunt ook een klacht indienen bij {<enforcement_body>} als u vindt dat ons oordeel over wat een onevenredige last is, moet worden herzien, als u vindt dat onze toegankelijkheidsverklaring gebreken vertoont of als u vindt dat wij uw verzoek om toegankelijkmaking niet correct hebben behandeld." },
+            { id: "technical", title: "Technische informatie over de toegankelijkheid van de website", content: "{Deze website is volledig in overeenstemming met {<national_law>}./Deze website is gedeeltelijk in overeenstemming met {<national_law>}, vanwege de hieronder beschreven gebreken./Deze website is niet in overeenstemming met {<national_law>}. De niet-toegankelijke delen worden hieronder beschreven.}" },
             { id: "non-accessible", title: "Inhoud die niet toegankelijk is", content: "De hieronder beschreven inhoud is op de een of andere manier niet volledig toegankelijk.\n\n[\n**Niet-naleving van de wettelijke eisen**\n\n{<gebreken>}\n]" },
             { id: "testing", title: "Hoe wij de website hebben getest", content: "{Wij hebben een zelfevaluatie (interne test) uitgevoerd van {<webbplats>}./{<externe partij>} heeft een onafhankelijke controle uitgevoerd van {<webbplats>}./Wij hebben de toegankelijkheid ingeschat zonder te testen.}\n\nDe laatste beoordeling is uitgevoerd op {<beoordelingsdatum>}.\n\n[Beoordelingsmethode: {<methode>}]\n\nDe website is gepubliceerd op {<publicatiedatum>}.\n\nDe verklaring is voor het laatst bijgewerkt op {<updatedatum>}." }
         ]
@@ -319,31 +329,31 @@ const TEMPLATES: Record<string, StatementTemplate> = {
             { id: "reporting", title: "Reporting accessibility problems", content: "We are always working to improve the accessibility of this website. If you find a problem that is not listed on this page, or if you believe we are not meeting the requirements described here, please contact us.\n\nIf you are not satisfied with our response, you may lodge a complaint with the {<enforcement_body>} under the {<national_law>}. The AHRC complaint form is available at {<ahrc_url>}." },
             { id: "non-accessible", title: "Known accessibility barriers", content: "[\n{<issues>}\n]" },
             { id: "wcag-conformance", title: "Technical information about accessibility", content: "{This website is fully compliant with WCAG 2.2 Level AA./This website is partially compliant with WCAG 2.2 Level AA, due to the barriers listed above./This website is not compliant with WCAG 2.2 Level AA. The known barriers are listed above.}\n\nWCAG 2.2 Level AA is the standard recommended by the {<enforcement_body>} under the {<national_law>}." },
-            { id: "dta-policy", title: "Australian Government digital policy", content: "Federal government agencies are subject to the Digital Transformation Agency (DTA) Digital Experience Policy, which has included the Digital Inclusion Standard since 1 January 2025 for new services and 1 July 2025 for existing services. The Digital Inclusion Standard requires Commonwealth agencies to meet WCAG 2.2 Level AA.\n\nThis statement was prepared in accordance with best practice guidance from the DTA and the Australian Human Rights Commission (AHRC)." },
+            { id: "dta-policy", sectors: ["public"], title: "Australian Government digital policy", content: "Federal government agencies are subject to the Digital Transformation Agency (DTA) Digital Experience Policy, which has included the Digital Inclusion Standard since 1 January 2025 for new services and 1 July 2025 for existing services. The Digital Inclusion Standard requires Commonwealth agencies to meet WCAG 2.2 Level AA.\n\nThis statement was prepared in accordance with best practice guidance from the DTA and the Australian Human Rights Commission (AHRC)." },
             { id: "testing", title: "How we tested this website", content: "{We have performed a self-assessment (internal testing) of {<website>}./{<third party>} has tested {<website>}./We have estimated the accessibility without testing.}\n\nThe last assessment was made on {<assessment date>}.\n\n[Assessment method: {<method>}]\n\nThe statement was last updated on {<update date>}." }
         ]
     },
     it: {
         title: "Dichiarazione di accessibilità per {<webbplats>}",
-        intro: "{<organisation>} si impegna a rendere accessibile il proprio sito web ai sensi della {<national_law>}. La presente dichiarazione di accessibilità si applica a {<webbplats>}.",
+        intro: "{<organisation>} si impegna a rendere accessibile il proprio sito web in conformità con {<national_law>}. La presente dichiarazione di accessibilità si applica a {<webbplats>}.",
         sections: [
-            { id: "how-accessible", title: "Stato di conformità", content: "{Questo sito web è pienamente conforme alla {<national_law>}./Questo sito web è parzialmente conforme alla {<national_law>} a causa delle non conformità elencate di seguito./Questo sito web non è conforme alla {<national_law>}. I contenuti non accessibili sono elencati di seguito.}" },
-            { id: "what-to-do", title: "Contenuti non accessibili", content: "I contenuti elencati di seguito non sono accessibili per i seguenti motivi:\n\n[\n**Non conformità alla {<national_law>}**\n\n{<carenze>}\n]\n\n[Il nostro tempo di risposta abituale è di {<svarstid>}.]\n\n[È anche possibile contattarci nei seguenti modi:\n\n* inviare un'e-mail a {<e-mailadresse>}\n* chiamare il {<telefoonnummer>}]" },
+            { id: "how-accessible", title: "Stato di conformità", content: "{Questo sito web è pienamente conforme a {<national_law>}./Questo sito web è parzialmente conforme a {<national_law>} a causa delle non conformità elencate di seguito./Questo sito web non è conforme a {<national_law>}. I contenuti non accessibili sono elencati di seguito.}" },
+            { id: "what-to-do", title: "Contenuti non accessibili", content: "I contenuti elencati di seguito non sono accessibili per i seguenti motivi:\n\n[\n**Non conformità a {<national_law>}**\n\n{<carenze>}\n]\n\n[Il nostro tempo di risposta abituale è di {<svarstid>}.]\n\n[È anche possibile contattarci nei seguenti modi:\n\n* inviare un'e-mail a {<e-mailadresse>}\n* chiamare il {<telefoonnummer>}]" },
             { id: "reporting", title: "Meccanismo di feedback e dati di contatto", content: "Ci impegniamo a migliorare costantemente l'accessibilità del nostro sito web. Se riscontri problemi di accessibilità, puoi contattarci per segnalarceli." },
             { id: "enforcement", title: "Procedura di applicazione", content: "{<enforcement_body>} è responsabile del controllo dei requisiti di accessibilità. Se non hai ricevuto una risposta soddisfacente alla tua segnalazione, puoi contattare {<enforcement_body>}.\n\nPuoi anche presentare un reclamo a {<enforcement_body>} se ritieni che la nostra valutazione di ciò che costituisce un onere sproporzionato debba essere rivista, se riscontri carenze nella nostra dichiarazione di accessibilità o se ritieni che non abbiamo gestito correttamente la tua richiesta di accessibilità." },
-            { id: "technical", title: "Informazioni tecniche sull'accessibilità del sito web", content: "{Questo sito web è pienamente conforme alla {<national_law>}./Questo sito web è parzialmente conforme alla {<national_law>} a causa delle non conformità descritte di seguito./Questo sito web non è conforme alla {<national_law>}.}" },
+            { id: "technical", title: "Informazioni tecniche sull'accessibilità del sito web", content: "{Questo sito web è pienamente conforme a {<national_law>}./Questo sito web è parzialmente conforme a {<national_law>} a causa delle non conformità descritte di seguito./Questo sito web non è conforme a {<national_law>}.}" },
             { id: "testing", title: "Preparazione della presente dichiarazione di accessibilità", content: "{Abbiamo effettuato una valutazione interna (test interno) del sito web {<webbplats>}./{<terza parte>} ha effettuato un audit indipendente del sito web {<webbplats>}./Abbiamo stimato l'accessibilità senza effettuare test.}\n\nL'ultima valutazione è stata effettuata il {<data_valutazione>}.\n\n[Metodo di valutazione: {<metodo_it>}]\n\nIl sito web è stato pubblicato il {<data_pubblicazione>}.\n\nLa dichiarazione è stata aggiornata per l'ultima volta il {<data_aggiornamento>}." }
         ]
     },
     pt: {
         title: "Declaração de acessibilidade para {<webbplats>}",
-        intro: "{<organisation>} compromete-se a tornar o seu sítio web acessível em conformidade com a {<national_law>}. A presente declaração de acessibilidade aplica-se a {<webbplats>}.",
+        intro: "{<organisation>} compromete-se a tornar o seu sítio web acessível em conformidade com {<national_law>}. A presente declaração de acessibilidade aplica-se a {<webbplats>}.",
         sections: [
-            { id: "how-accessible", title: "Estado de conformidade", content: "{Este sítio web está plenamente em conformidade com a {<national_law>}./Este sítio web está parcialmente em conformidade com a {<national_law>} devido às não conformidades enumeradas abaixo./Este sítio web não está em conformidade com a {<national_law>}. Os conteúdos não acessíveis estão enumerados abaixo.}" },
-            { id: "what-to-do", title: "Conteúdo não acessível", content: "O conteúdo abaixo descrito não é acessível pelos seguintes motivos:\n\n[\n**Não conformidade com a {<national_law>}**\n\n{<deficiências>}\n]\n\n[O nosso tempo de resposta habitual é de {<svarstid>}.]\n\n[Também pode contactar-nos das seguintes formas:\n\n* enviar um e-mail para {<e-mailadresse>}\n* ligar para {<telefoonnummer>}]" },
+            { id: "how-accessible", title: "Estado de conformidade", content: "{Este sítio web está plenamente em conformidade com {<national_law>}./Este sítio web está parcialmente em conformidade com {<national_law>} devido às não conformidades enumeradas abaixo./Este sítio web não está em conformidade com {<national_law>}. Os conteúdos não acessíveis estão enumerados abaixo.}" },
+            { id: "what-to-do", title: "Conteúdo não acessível", content: "O conteúdo abaixo descrito não é acessível pelos seguintes motivos:\n\n[\n**Não conformidade com {<national_law>}**\n\n{<deficiências>}\n]\n\n[O nosso tempo de resposta habitual é de {<svarstid>}.]\n\n[Também pode contactar-nos das seguintes formas:\n\n* enviar um e-mail para {<e-mailadresse>}\n* ligar para {<telefoonnummer>}]" },
             { id: "reporting", title: "Mecanismo de feedback e contacto", content: "Esforçamo-nos por melhorar continuamente a acessibilidade do nosso sítio web. Se encontrar problemas de acessibilidade, pode contactar-nos para nos informar." },
             { id: "enforcement", title: "Procedimento de execução", content: "{<enforcement_body>} é responsável pela supervisão dos requisitos de acessibilidade. Se não tiver recebido uma resposta satisfatória à sua notificação, pode contactar {<enforcement_body>}.\n\nTambém pode apresentar uma reclamação a {<enforcement_body>} se considerar que a nossa avaliação do que constitui um encargo desproporcionado deve ser revista, se encontrar deficiências na nossa declaração de acessibilidade ou se considerar que não tratámos corretamente o seu pedido de acessibilidade." },
-            { id: "technical", title: "Informações técnicas sobre a acessibilidade do sítio web", content: "{Este sítio web está plenamente em conformidade com a {<national_law>}./Este sítio web está parcialmente em conformidade com a {<national_law>} devido às deficiências descritas abaixo./Este sítio web não está em conformidade com a {<national_law>}.}" },
+            { id: "technical", title: "Informações técnicas sobre a acessibilidade do sítio web", content: "{Este sítio web está plenamente em conformidade com {<national_law>}./Este sítio web está parcialmente em conformidade com {<national_law>} devido às deficiências descritas abaixo./Este sítio web não está em conformidade com {<national_law>}.}" },
             { id: "testing", title: "Elaboração da presente declaração de acessibilidade", content: "{Realizámos uma autoavaliação (teste interno) do sítio web {<webbplats>}./{<terceiro externo>} realizou uma auditoria independente do sítio web {<webbplats>}./Estimámos a acessibilidade sem realizar testes.}\n\nA última avaliação foi realizada em {<data_avaliacao>}.\n\n[Método de avaliação: {<metodo_pt>}]\n\nO sítio web foi publicado em {<data_publicacao>}.\n\nA declaração foi atualizada pela última vez em {<data_atualizacao>}." }
         ]
     },
@@ -405,19 +415,16 @@ const formatDiggDate = (date: Date, locale: string) => {
  *    authorities and PTS itself doesn't cover most service types.
  *
  * Public-sector DOS-lagen wording is correct and gets the same Digg anmälan
- * link as the engine (MDFFS 2019:2 6 §). Private-sector wording is Karin's
- * own, decided in Intern#94 fråga 2 alternativ (a), carried verbatim from
- * Intern#83 — kept byte-identical to the engine's copy; if one changes, the
- * other must too, until the two render paths share one source (deferred,
- * see the a11y-hd#216/#217 discussion in Intern#82).
+ * link as the engine (MDFFS 2019:2 6 §). Private-sector wording (Karin's
+ * own, Intern#94 fråga 2 alternativ (a), Intern#83) lives on the law record,
+ * `lptt.enforcement.statementText.sv`, and both render paths read it through
+ * getEnforcementStatementText(), so it passes the law-name gate (Intern #82).
+ * This function only handles the public sector.
  *
  * Scoped to SE only — no other country's enforcement template has been
  * reviewed for the same defect.
  */
-function resolveSwedishEnforcementContent(sector: 'public' | 'private', enforcementBody: string, nationalLaw: string): string {
-    if (sector === 'private') {
-        return 'Tillsynen över lagen (2023:254) om vissa produkters och tjänsters tillgänglighet är uppdelad mellan flera myndigheter beroende på vilken tjänst som erbjuds: Post- och telestyrelsen ansvarar för elektronisk kommunikation, banktjänster och e-handelstjänster, Mediemyndigheten för audiovisuella medietjänster, Myndigheten för tillgängliga medier för e-böcker, och Konsumentverket respektive Transportstyrelsen för olika delar av persontransporttjänster.';
-    }
+function resolveSwedishEnforcementContent(enforcementBody: string, nationalLaw: string): string {
     return `${enforcementBody} har ansvaret för tillsyn över ${nationalLaw}. Du kan anmäla till ${enforcementBody} om du tycker att vår digitala service har brister i tillgänglighet.\n\nDu kan också anmäla till ${enforcementBody} om du tycker att vår bedömning av vad som är oskäligt betungande ska granskas, om du tycker att vår tillgänglighetsredogörelse har brister eller om du tycker att vi inte har hanterat din begäran om tillgängliggörande korrekt.\n\nDu kan anmäla direkt till Digg via tjänsten för anmälan om bristande tillgänglighet: https://www.digg.se/tdosanmalan`;
 }
 
@@ -443,6 +450,8 @@ export const AccessibilityStatement: React.FC<AccessibilityStatementProps> = ({
     assessmentDate,
     evaluationMethod,
     generatorTool,
+    reviewMethod,
+    reviewer,
     logoUrl,
     nonComplianceItems = [],
     locale = 'en',
@@ -452,6 +461,20 @@ export const AccessibilityStatement: React.FC<AccessibilityStatementProps> = ({
     badgeUrl,
     publishDate
 }) => {
+    // Intern #95: en extern granskning måste säga vem som granskade. Utan ett
+    // namn finns inget sant att skriva i granskarens plats. En ogiltig
+    // propkombination är ett programmeringsfel, men ett påstående i ett
+    // kunddokument om en granskning som ingen namngiven part gjort är värre.
+    const reviewerName = typeof reviewer?.name === 'string' ? reviewer.name.trim() : '';
+    if (reviewMethod === 'external-review' && reviewerName === '') {
+        throw new Error(
+            'AccessibilityStatement: reviewMethod="external-review" requires a reviewer prop with a non-empty name: ' +
+            "the organisation that performed the review, e.g. reviewer={{ name: 'Example Audit AB' }}. " +
+            "The statement names it as the reviewer. Use 'self-assessment' (the default) if the statement is " +
+            'based on your own testing.'
+        );
+    }
+
     // Localization & Template Logic
     const supportedLocales: Record<string, string> = {
         sv: 'sv', en: 'en', no: 'no', nb: 'no', dk: 'da',
@@ -492,60 +515,19 @@ export const AccessibilityStatement: React.FC<AccessibilityStatementProps> = ({
         '{<publish date>}': publishDate ? d(publishDate) : '[YOUR PUBLISH DATE]',
         '{<metod>}': evaluationMethod || 'Automated Scan',
         '{<method>}': evaluationMethod || 'Automated Scan',
-        '{<extern aktör>}': generatorTool?.name || 'HolmDigital Engine',
-        '{<third party>}': generatorTool?.name || 'HolmDigital Engine',
         '{<enforcement_body>}': enforcementBody,
-        '{<national_law>}': (() => {
-            // US has two ADA laws split by scope (Title II public / Title III private),
-            // Section 508 as parallel federal-agency framework, and HHS Section 504
-            // (REHAB) for HHS-funded private organisations. Mirrors engine's
-            // statement-generator.ts US branch.
-            // Intern #63/#66: den här grenen bar hela defektuppsättningen från
-            // Intern #64, som lagades i motorn men aldrig här. Verifierat mot
-            // components 4.0.1: CA public namngav Ontarios AODA som Kanadas lag,
-            // CA/NO/GB privat renderade TOM STRÄNG, och US privat namngav
-            // Section 504 som bindande lag trots inForce: false till 2027-05-11.
-            //
-            // Logiken speglar nu motorns statement-generator.ts exakt. Håll dem
-            // i synk: att de divergerade är hela skälet till att felen levde
-            // vidare i ett publicerat paket efter att de rättats i det andra.
-            const inForce = (law?: { inForce?: boolean }): boolean => !!law && law.inForce !== false;
-
-            // AU: Juno avgjorde 2026-09-11 att au-dda är Australiens enda bindande
-            // instrument i båda sektorerna. Digital Access Standard är ett internt
-            // styrdokument utan talerätt och får aldrig vara huvudsvar.
-            if (country === 'AU') {
-                const ddaLaw = getNationalLaws('AU').find(l => l.euFramework === 'DDA' && inForce(l));
-                if (ddaLaw) return lawPhrase(ddaLaw);
-            }
-
-            // US bär flera parallella federala författningar: ADA delad på scope,
-            // Section 508 på offentliga sidan och HHS Section 504 på privata.
-            if (country === 'US') {
-                const usLaws = getNationalLaws('US');
-                const adaLaw = usLaws.find(l => l.euFramework === 'ADA' && l.scope === sector && inForce(l));
-                if (adaLaw) {
-                    if (sector === 'public') {
-                        const s508 = usLaws.find(l => l.id === 'us-508' && inForce(l));
-                        return s508 ? `${lawPhrase(adaLaw)} & ${lawPhrase(s508)}` : lawPhrase(adaLaw);
-                    }
-                    // inForce-filtret är det som håller Section 504 ute till 2027.
-                    const hhs504 = usLaws.find(l => l.euFramework === 'REHAB' && l.scope === 'private' && inForce(l));
-                    return hhs504 ? `${lawPhrase(adaLaw)} & ${lawPhrase(hhs504)}` : lawPhrase(adaLaw);
-                }
-            }
-
-            // Allt annat går på land + scope + inForce, aldrig på euFramework.
-            // getNationalLawForSector utesluter också subnationella lagar, vilket
-            // är det som håller Ontarios AODA ute från Kanadas landsnyckel.
-            const law = getNationalLawForSector(country, sector);
-            if (law) return lawPhrase(law);
-
-            // Aldrig tom sträng. Intern #31.
-            const langKey = effectiveLang.split('-')[0];
-            return NATIONAL_LAW_FALLBACK[langKey] ?? NATIONAL_LAW_FALLBACK.en;
-        })(),
+        // Intern #82: lagvalet, lagnamnsgrinden och fallback-fraserna bor i
+        // @holmdigital/standards, och motorn använder samma funktion. Den här
+        // grenen var en ordagrann kopia av motorns, och kopiorna har glidit
+        // isär en gång redan: komponenten bar hela Intern #64:s defektuppsättning
+        // efter att motorn lagats (Intern #63/#66).
+        '{<national_law>}': resolveNationalLawReference(country, sector, effectiveLang),
     };
+
+    // Intern #95: granskarens plats fylls bara ur reviewer, aldrig ur
+    // generatorTool. Den renderas bara när metodvalet är en uttalad extern
+    // granskning, och då är namnet kontrollerat ovan.
+    for (const placeholder of REVIEWER_PLACEHOLDERS) replacements[placeholder] = reviewerName;
 
     // Construct issue list string
     let issuesContent = '';
@@ -577,7 +559,6 @@ export const AccessibilityStatement: React.FC<AccessibilityStatementProps> = ({
     replacements['{<svartid>}'] = responseTime || '';
     replacements['{<vurderingsdato>}'] = assessmentDate ? d(assessmentDate) : d(lastReviewDate);
     replacements['{<publiseringsdatum>}'] = publishDate ? d(publishDate) : '[YOUR PUBLISH DATE]';
-    replacements['{<ekstern aktor>}'] = generatorTool?.name || 'HolmDigital Engine';
     // NO placeholder bug fixes (4 missing mappings)
     replacements['{<e-postadresse>}'] = contactEmail;
     replacements['{<oppdateringsdato>}'] = d(lastReviewDate);
@@ -586,7 +567,6 @@ export const AccessibilityStatement: React.FC<AccessibilityStatementProps> = ({
 
     // DA-specific mappings
     replacements['{<e-mailadresse>}'] = contactEmail;
-    replacements['{<ekstern aktør>}'] = generatorTool?.name || 'HolmDigital Engine';
     replacements['{<offentliggørelsesdato>}'] = publishDate ? d(publishDate) : '[YOUR PUBLISH DATE]';
     replacements['{<opdateringsdato>}'] = d(lastReviewDate);
 
@@ -595,7 +575,6 @@ export const AccessibilityStatement: React.FC<AccessibilityStatementProps> = ({
     replacements['{<veröffentlichungsdatum>}'] = publishDate ? d(publishDate) : '[YOUR PUBLISH DATE]';
     replacements['{<aktualisierungsdatum>}'] = d(lastReviewDate);
     replacements['{<methode>}'] = evaluationMethod || 'Automated Scan';
-    replacements['{<externer Dritter>}'] = generatorTool?.name || 'HolmDigital Engine';
     replacements['{<mängel>}'] = issuesContent;
 
     // FR-specific mappings
@@ -603,7 +582,6 @@ export const AccessibilityStatement: React.FC<AccessibilityStatementProps> = ({
     replacements['{<date_publication>}'] = publishDate ? d(publishDate) : '[YOUR PUBLISH DATE]';
     replacements['{<date_mise_a_jour>}'] = d(lastReviewDate);
     replacements['{<méthode>}'] = evaluationMethod || 'Automated Scan';
-    replacements['{<tiers externe>}'] = generatorTool?.name || 'HolmDigital Engine';
     replacements['{<défauts>}'] = issuesContent;
     replacements['{<telefoonnummer>}'] = phoneNumber || '';
 
@@ -612,7 +590,6 @@ export const AccessibilityStatement: React.FC<AccessibilityStatementProps> = ({
     replacements['{<fecha_publicacion>}'] = publishDate ? d(publishDate) : '[YOUR PUBLISH DATE]';
     replacements['{<fecha_actualizacion>}'] = d(lastReviewDate);
     replacements['{<metodo>}'] = evaluationMethod || 'Automated Scan';
-    replacements['{<tercero externo>}'] = generatorTool?.name || 'HolmDigital Engine';
     replacements['{<deficiencias>}'] = issuesContent;
 
     // FI-specific mappings
@@ -620,7 +597,6 @@ export const AccessibilityStatement: React.FC<AccessibilityStatementProps> = ({
     replacements['{<julkaisupäivä>}'] = publishDate ? d(publishDate) : '[YOUR PUBLISH DATE]';
     replacements['{<päivityspäivä>}'] = d(lastReviewDate);
     replacements['{<metodi>}'] = evaluationMethod || 'Automated Scan';
-    replacements['{<ulkoinen taho>}'] = generatorTool?.name || 'HolmDigital Engine';
     replacements['{<puutteet>}'] = issuesContent;
     replacements['{<e-mailosoite>}'] = contactEmail;
     replacements['{<puhelinnumero>}'] = phoneNumber || '';
@@ -629,7 +605,6 @@ export const AccessibilityStatement: React.FC<AccessibilityStatementProps> = ({
     replacements['{<beoordelingsdatum>}'] = assessmentDate ? d(assessmentDate) : d(lastReviewDate);
     replacements['{<publicatiedatum>}'] = publishDate ? d(publishDate) : '[YOUR PUBLISH DATE]';
     replacements['{<updatedatum>}'] = d(lastReviewDate);
-    replacements['{<externe partij>}'] = generatorTool?.name || 'HolmDigital Engine';
     replacements['{<gebreken>}'] = issuesContent;
     replacements['{<e-mailadres>}'] = contactEmail;
 
@@ -638,7 +613,6 @@ export const AccessibilityStatement: React.FC<AccessibilityStatementProps> = ({
     replacements['{<data_pubblicazione>}'] = publishDate ? d(publishDate) : '[YOUR PUBLISH DATE]';
     replacements['{<data_aggiornamento>}'] = d(lastReviewDate);
     replacements['{<metodo_it>}'] = evaluationMethod || 'Automated Scan';
-    replacements['{<terza parte>}'] = generatorTool?.name || 'HolmDigital Engine';
     replacements['{<carenze>}'] = issuesContent;
 
     // PT-specific mappings
@@ -646,7 +620,6 @@ export const AccessibilityStatement: React.FC<AccessibilityStatementProps> = ({
     replacements['{<data_publicacao>}'] = publishDate ? d(publishDate) : '[YOUR PUBLISH DATE]';
     replacements['{<data_atualizacao>}'] = d(lastReviewDate);
     replacements['{<metodo_pt>}'] = evaluationMethod || 'Automated Scan';
-    replacements['{<terceiro externo>}'] = generatorTool?.name || 'HolmDigital Engine';
     replacements['{<deficiências>}'] = issuesContent;
 
     // PL-specific mappings
@@ -654,7 +627,6 @@ export const AccessibilityStatement: React.FC<AccessibilityStatementProps> = ({
     replacements['{<data_publikacji>}'] = publishDate ? d(publishDate) : '[YOUR PUBLISH DATE]';
     replacements['{<data_aktualizacji>}'] = d(lastReviewDate);
     replacements['{<metoda_pl>}'] = evaluationMethod || 'Automated Scan';
-    replacements['{<podmiot zewnętrzny>}'] = generatorTool?.name || 'HolmDigital Engine';
     replacements['{<braki>}'] = issuesContent;
 
     // AU-specific mappings
@@ -669,9 +641,18 @@ export const AccessibilityStatement: React.FC<AccessibilityStatementProps> = ({
      * tested …", alltså en extern granskning som aldrig gjordes, och varje ej
      * förenlig kund "we have estimated the accessibility without testing".
      * Ett verktyg som kunden själv kör är en självskattning.
+     *
+     * Intern #95: metodvalet följer anroparens uttalade `reviewMethod` och
+     * ingenting annat. Utan val blir det självskattning, som förut. Den externa
+     * granskningen kräver en namngiven granskare, och utfallet läses
+     * fortfarande aldrig här.
      */
     const choiceIndex = (kind: 'compliance' | 'method', parts: number): number => {
-        if (kind === 'method') return 0;
+        if (kind === 'method') {
+            if (reviewMethod === 'external-review') return 1;
+            if (reviewMethod === 'no-review') return parts > 2 ? 2 : 1;
+            return 0;
+        }
         if (complianceLevel === 'partial') return 1;
         if (complianceLevel === 'non-compliant') return parts > 2 ? 2 : 1;
         return 0;
@@ -728,12 +709,16 @@ export const AccessibilityStatement: React.FC<AccessibilityStatementProps> = ({
 
     const renderSections = (sections: TemplateSection[]) => {
         return sections.map((section, i) => {
-            // Juno H3/H4/B3/B2: Swedish enforcement wording is sector-specific
-            // and cannot come from the generic template — see
-            // resolveSwedishEnforcementContent() above.
-            const content = (section.id === 'enforcement' && country === 'SE' && effectiveLang === 'sv')
-                ? resolveSwedishEnforcementContent(sector, enforcementBody, replacements['{<national_law>}'])
-                : renderTemplate(section.content, section.id === 'testing' ? 'method' : 'compliance');
+            if (section.sectors && !section.sectors.includes(sector)) return null;
+            // Intern #83 och #94 fråga 2: där tillsynen är delad efter
+            // tjänstetyp bär lagposten avsnittets text. Samma som i motorn.
+            // Juno H3/H4/B2: svensk offentlig sektor får DOS-lagens text med
+            // Digg-länken, se resolveSwedishEnforcementContent() ovan.
+            const delad = section.id === 'enforcement' ? getEnforcementStatementText(country, sector, effectiveLang) : null;
+            const content = delad
+                ?? ((section.id === 'enforcement' && country === 'SE' && effectiveLang === 'sv' && sector === 'public')
+                    ? resolveSwedishEnforcementContent(enforcementBody, replacements['{<national_law>}'])
+                    : renderTemplate(section.content, section.id === 'testing' ? 'method' : 'compliance'));
             const trimmed = content.trim();
             if (!trimmed) return null;
 

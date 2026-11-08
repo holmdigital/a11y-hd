@@ -13,20 +13,16 @@ export type TestComplexity = 'simple' | 'moderate' | 'complex';
 /**
  * The regulatory family a national law belongs to.
  *
- * `DAS` (Intern #63, Juno 2026-09-11) is Australia's Digital Access Standard.
- * It was tagged `DDA`, sharing the Disability Discrimination Act's code, and
- * that was wrong twice over. Substantively: the Standard is an internal
- * Commonwealth policy under the Digital Experience Policy / Investment
- * Oversight Framework, with no connection to discrimination law, no third-party
- * standing and no sanction beyond reporting to the DTA. Structurally:
- * `getNationalLawByFramework()` returns the FIRST array match, so
- * `getNationalLawByFramework('DDA', 'AU')` worked only because `au-dda`
- * happens to sit before `au-dta` in the JSON. Re-sorting the array, or adding
- * an AU entry earlier, would have silently started returning the Standard as
- * Australia's law — exactly what the AU branch in `statement-generator.ts`
- * exists to prevent. A distinct code removes the risk structurally.
+ * Intern #68 (5.0.0): the Digital Access Standard's framework code is removed,
+ * together with the only entry that carried it. Juno's rule, which applies
+ * going forward: an entry belongs in `national-laws.json` only if a binding
+ * legal instrument makes compliance mandatory and enforceable against the
+ * party that bears the obligation. The Standard is an internal Commonwealth
+ * policy: binding on agencies through their own government's investment
+ * oversight, but with no statute, no third-party standing, no supervisory
+ * authority outside the DTA and no route to a court.
  */
-export type LegalFramework = 'WAD' | 'EAA' | 'DDA' | 'ADA' | 'REHAB' | 'ACA' | 'DAS';
+export type LegalFramework = 'WAD' | 'EAA' | 'DDA' | 'ADA' | 'REHAB' | 'ACA';
 export type Sector = 'public' | 'private' | 'both';
 export type Country = 'SE' | 'NO' | 'DK' | 'FI' | 'NL' | 'DE' | 'FR' | 'ES' | 'IE' | 'IT' | 'PT' | 'PL' | 'GB' | 'US' | 'CA' | 'AU' | 'EU';
 
@@ -337,6 +333,18 @@ export interface NationalLaw {
         authorityName: string;
         responsibility: string;
         website: string;
+        /**
+         * Intern #83 and #94 question 2: the text of a statement's supervision
+         * section, keyed by language, for a law whose supervision is split
+         * between authorities by type of service. The engine cannot tell which
+         * service a customer runs, so a single authority name would be wrong
+         * for some customers. Worded by the team, never by the builder.
+         *
+         * Read through `getEnforcementStatementText()`, which applies law
+         * selection and the law-name gate. A language without an entry keeps
+         * the template's supervision section.
+         */
+        statementText?: Record<string, string>;
     };
     sectorAuthorities?: SectorAuthority[];
     /**
@@ -353,6 +361,16 @@ export interface NationalLaw {
      * missing range as zero.
      */
     sanctions?: Sanction;
+    /**
+     * Intern #82: who has verified which fields of this entry against primary
+     * source. Generated from the review register in holmdigital/Intern and
+     * never edited by hand here.
+     *
+     * A statement names this law only when `attested` contains `'lagnamn'`;
+     * otherwise it renders the neutral fallback phrase. Absent means the same
+     * as an empty `attested`: nobody has vouched for the name.
+     */
+    attestation?: Attestation;
     inForce: boolean;
     effectiveDate: string;
     note?: string;
@@ -372,10 +390,79 @@ export interface NationalLaw {
         largeEntity?: ComplianceDeadlineEntry;
         smallEntity?: ComplianceDeadlineEntry;
     };
-    /** Statutory exemptions that remove an organisation from the law's scope entirely. */
+    /** Statutory exemptions and carve-outs the law itself grants. */
     exemptions?: {
         microbusiness?: MicrobusinessExemption;
+        /**
+         * Intern #83: every other exemption the statute grants, one per
+         * provision. `microbusiness` keeps its own slot because consumers
+         * compute with its thresholds; these are carried as cited text.
+         */
+        statutory?: StatutoryExemption[];
     };
+}
+
+/**
+ * Intern #65/#66/#82. A statement of what a named reviewer has verified, not a
+ * status.
+ *
+ * Juno: the entry certifies that the named reviewer, in the given session,
+ * opened the sources in `sources` and can quote them verbatim, and that every
+ * field in `attested` is backed by a quotation. It does NOT certify that the
+ * entry exists, that it is built, that fields not listed are correct, or that
+ * the name in the data is right.
+ */
+export interface Attestation {
+    attestedBy: string;
+    /** The review session. Today the register records a date, used as proxy. */
+    session: string;
+    sources: string[];
+    /** Verified fields. An empty list is valid and means the gate stays shut. */
+    attested: AttestableField[];
+    notAttested: AttestableField[];
+    /** What was reviewed. Only `'law-entry'` can open the law-name gate. */
+    subject: 'law-entry' | 'enforcement-key' | 'no-entry';
+}
+
+/**
+ * The fields a review can cover. A union rather than free text: a misspelling
+ * must fail the type check instead of silently reading as "not reviewed".
+ */
+export type AttestableField =
+    | 'lagnamn'
+    | 'lagrum'
+    | 'tillsynsmyndighet'
+    | 'sanktionsart'
+    | 'sanktionsbelopp'
+    | 'ikrafttradande'
+    | 'scope'
+    | 'jurisdiktion'
+    | 'tillsynsordning'
+    | 'sanktionsordning';
+
+/**
+ * One exemption granted by a provision of the law, other than the
+ * microbusiness exemption.
+ *
+ * Intern #83: DOS-lagen has no microbusiness exemption (it binds public
+ * actors), but four other carve-outs, and the data carried none of them.
+ */
+export interface StatutoryExemption {
+    /**
+     * What the provision carves out:
+     * - `actor`: an organisation or class of organisations is outside the law.
+     * - `content`: a type of content is outside the requirements.
+     * - `navigation-maps`: maps intended for navigation, exempt only where essential
+     *   information about them is provided accessibly by other means (DOS-lagen
+     *   9 § andra stycket: a separate exemption, not a qualification on item 2).
+     * - `disproportionate-burden`: a case-by-case exemption the obliged party must claim.
+     * - `transitional`: a requirement applies only from a later date or to newer content.
+     */
+    kind: 'actor' | 'content' | 'navigation-maps' | 'disproportionate-burden' | 'transitional';
+    /** Human-readable summary of what the provision exempts (free text). */
+    description: string;
+    /** Citation to the provision granting the exemption. */
+    legalBasis: string;
 }
 
 /**
