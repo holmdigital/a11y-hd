@@ -757,16 +757,26 @@ export const NATIONAL_LAW_FALLBACK: Readonly<Record<string, string>> = Object.fr
  * ingen ny information. `dk-eaa` bär titeln i båda fälten och `ca-aca`:s
  * fullName är korttiteln plus lagrumsreferens; utan regeln renderades titeln
  * två gånger i rad i ett danskt kunddokument, och det syntes inte i någon
- * datadiff. DOS-lagen och DL 83/2018 är inga prefix och står därför kvar.
+ * datadiff. DOS-lagen är inget prefix och står därför kvar.
+ *
+ * Intern #146: parentesen faller också när det långa namnet redan bär
+ * kortnamnet inom parentes. Nederländernas opschrift avslutas med
+ * citeertiteln, "Besluit van 3 mei 2018, … (Tijdelijk besluit digitale
+ * toegankelijkheid overheid)", och utan regeln hade nl-wad skrivit
+ * citeertiteln två gånger så fort lagnamnet attesterades. Grinden dolde det:
+ * ett oattesterat namn renderas aldrig, så inget test såg raden.
  *
  * Intern #82: motorns US-gren gick förbi regeln och skrev "Section 508 of the
  * Rehabilitation Act of 1973 (Section 508)", medan komponenten skrev samma rad
  * utan parentes. Nu går varje namnväg genom den här funktionen.
  */
-function lawPhrase(law: NationalLaw): string {
+/** @internal Exporterad för testerna, som prövar varje post utan lagnamnsgrinden. */
+export function lawPhrase(law: Pick<NationalLaw, 'law' | 'fullName'>): string {
     const shortName = law.law.trim();
     const longName = law.fullName.trim();
-    return longName === shortName || longName.startsWith(shortName)
+    return longName === shortName
+        || longName.startsWith(shortName)
+        || longName.includes(`(${shortName})`)
         ? longName
         : `${longName} (${shortName})`;
 }

@@ -720,8 +720,8 @@
             },
             {
                 "id": "nl-eaa",
-                "law": "Warenwetbesluit toegankelijkheidseisen producten en diensten",
-                "fullName": "Implementatie van de Richtlijn (EU) 2019/882 (EAA)",
+                "law": "Implementatiewet toegankelijkheidsvoorschriften producten en diensten",
+                "fullName": "Wet van 8 april 2024 tot wijziging van diverse wetten ter implementatie van Richtlijn (EU) 2019/882 van het Europees Parlement en de Raad van 17 april 2019 betreffende de toegankelijkheidsvoorschriften voor producten en diensten (Implementatiewet toegankelijkheidsvoorschriften producten en diensten)",
                 "euFramework": "EAA",
                 "scope": "private",
                 "enforcement": {
@@ -763,7 +763,9 @@
                         "sanktionsbelopp"
                     ],
                     "subject": "law-entry"
-                }
+                },
+                "lawUrl": "https://wetten.overheid.nl/BWBR0049571/",
+                "note": "Källkontroll 2026-11-09 (Intern #146): det tidigare namnet \"Warenwetbesluit toegankelijkheidseisen producten en diensten\" finns inte, och fullName var ingen titel. Implementatiewet (BWBR0049571, Stb. 2024, 87, rättelse 87-n1) ändrar flera lagar. Warenwetbesluit toegankelijkheidsvoorschriften 2024 (BWBR0049688) gäller bara produkter. Kraven för e-handelstjänster står i Burgerlijk Wetboek Boek 6, afdeling 2ab, art. 230fa-230fd, som Implementatiewet art. IV införde. Vilket instrument ett utlåtande för webb och e-handel ska namnge avgör Juno. Lagnamnet är ännu inte bekräftat."
             }
         ],
         "GB": [
@@ -1270,8 +1272,8 @@
         "PT": [
             {
                 "id": "pt-wad",
-                "law": "DL 83/2018",
-                "fullName": "Decreto-Lei n.º 83/2018 de 19 de outubro",
+                "law": "Decreto-Lei n.º 83/2018",
+                "fullName": "Decreto-Lei n.º 83/2018, de 19 de outubro",
                 "euFramework": "WAD",
                 "scope": "public",
                 "enforcement": {
@@ -1289,8 +1291,8 @@
                 },
                 "inForce": true,
                 "effectiveDate": "2019-01-01",
-                "lawUrl": "https://diariodarepublica.pt/dr/eli/dec-lei/83/2018/10/19/p/dre/pt/pdf",
-                "note": "Intern #63/#66 (Juno, 2026-09-12): beskrivningen \"Acessibilidade dos sítios web e das aplicações móveis de organismos públicos\" stod tidigare i fullName men kommer inte ur akten — 2018 års utgåva av Diário da República trycker ingen Sumário-rad, till skillnad från 2022 års. Att akten är rätt är belagt i artigo 1.º n.º 1, som transponerar direktiv (UE) 2016/2102. Entry into force (Intern #63, Juno 2026-09-14): artigo 20.º reads 'O presente decreto-lei entra em vigor no dia 1 de janeiro de 2019'. The earlier value 2018-10-19 was the date of the decree. The staggered production of effects is not yet recorded here.",
+                "lawUrl": "https://data.dre.pt/eli/dec-lei/83/2018/10/19/p/dre/pt/pdf",
+                "note": "Intern #63/#66 (Juno, 2026-09-12): beskrivningen \"Acessibilidade dos sítios web e das aplicações móveis de organismos públicos\" stod tidigare i fullName men kommer inte ur akten — 2018 års utgåva av Diário da República trycker ingen Sumário-rad, till skillnad från 2022 års. Att akten är rätt är belagt i artigo 1.º n.º 1, som transponerar direktiv (UE) 2016/2102. Entry into force (Intern #63, Juno 2026-09-14): artigo 20.º reads 'O presente decreto-lei entra em vigor no dia 1 de janeiro de 2019'. The earlier value 2018-10-19 was the date of the decree. The staggered production of effects is not yet recorded here. Källkontroll 2026-11-09 (Intern #146): lawUrl via diariodarepublica.pt/dr/eli/... gav felsidan; ELI-adressen på data.dre.pt leder till PDF:en. \"DL 83/2018\" står inte i akten, så den officiella formen används.",
                 "attestation": {
                     "attestedBy": "Juno",
                     "session": "2026-09-12",
@@ -1308,7 +1310,7 @@
             {
                 "id": "pt-eaa",
                 "law": "Decreto-Lei n.º 82/2022",
-                "fullName": "Decreto-Lei n.º 82/2022 de 6 de dezembro",
+                "fullName": "Decreto-Lei n.º 82/2022, de 6 de dezembro",
                 "euFramework": "EAA",
                 "scope": "private",
                 "inForce": true,
