@@ -83,7 +83,7 @@ The national laws for all sixteen supported countries live in `@holmdigital/stan
 
 It used to carry a table of laws and maximum sanctions per country, and the table had drifted from the data. It named a Portuguese decree that does not exist and a Spanish technical standard in place of the Spanish regulation. It also gave sanction ceilings that are not in the laws, among them 500k EUR for Germany where the BFSG states 100,000, and 300k EUR for France where the law states 50,000. A hand-written copy of legal data goes stale in exactly this way, so there is now only one source.
 
-For the same reason there is no sanctions column anywhere in the documentation. A sanction is not one number per country: a law may state a range, a formula, a type without an amount, no penalty of its own, or no ceiling. Read it with `getSanctions(lawId, country)`. It returns `undefined` where no amount is established against primary source, which never means that no penalty exists.
+For the same reason there is no sanctions column anywhere in the documentation. A sanction is not one number per country: a law may state a range, a formula, a type without an amount, no penalty of its own, or no ceiling. Read it with `getSanctions(lawId, country)`. It returns a list with one element per sanction the law provides, each with its own `legalBasis`, `sourceUrl` and `cap`, and `null` where nothing is established against primary source, which never means that no penalty exists.
 
 ## Using the API
 
@@ -100,13 +100,15 @@ import {
 const seLaws = getNationalLaws('SE');
 // → [{ id: 'dos-lagen', law: 'DOS-lagen', ... }, { id: 'lptt', law: 'Tillgänglighetslagen / LPTT', ... }]
 
-// Get sanctions for a law (undefined where no amount is established)
+// Get sanctions for a law: always a list, or null where nothing is established
 const sanctions = getSanctions('lptt', 'SE');
-// → { type: 'Sanktionsavgift', minAmount: 10000, maxAmount: 10000000, currency: 'SEK', ... }
+// → [{ kind: 'amount', type: 'Sanktionsavgift', minAmount: 10000, maxAmount: 10000000,
+//      currency: 'SEK', cap: 'stated', legalBasis: '… 37 § och 39 §', sourceUrl: 'https://…' }]
 
-// Get the maximum sanction in a country (null where no amount is established)
+// Get the highest flat ceiling in a country (null where none is established)
 const max = getMaxSanction('SE');
-// → { law: 'Tillgänglighetslagen / LPTT', amount: 10000000, currency: 'SEK' }
+// → { lawId: 'lptt', amount: 10000000, currency: 'SEK', legalBasis: '…', sourceUrl: '…', uncounted: 1 }
+// uncounted: 1 is the dos-lagen fine, which has no ceiling, so 10,000,000 SEK is a floor.
 ```
 
 ### Enforcement Body Lookup

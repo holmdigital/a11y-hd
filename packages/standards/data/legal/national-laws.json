@@ -45,7 +45,7 @@
                         }
                     ]
                 },
-                "note": "Entry into force (Intern #63/#83, Juno 2026-09-14): transitional provision 1 reads 'Denna lag träder i kraft den 1 januari 2019.' The earlier value 2019-09-23 was the Web Accessibility Directive's deadline for new websites and does not appear in the Act. Transitional provision 2 is carried in exemptions.statutory, not in this date. Sanctions (Intern #83, Karin's decision 2026-09-24; Juno 2026-09-14, re-verified 2026-09-24): type: 'Vitesföreläggande'. 19 § gives a remark (påpekande), then an injunction (föreläggande), and reads 'Ett nytt föreläggande om samma sak får förenas med vite.' The Act states no amount anywhere; the fine is set by the authority in each case under lagen (1985:206) om viten, and it is a forward-looking coercive measure, not a penalty for past conduct. The earlier range of 100,000 to 1,000,000 SEK is not in the Act, so the sanctions field is removed rather than filled with zeros. The type moves back into a field when the sanctions schema in Intern #70 lands.",
+                "note": "Entry into force (Intern #63/#83, Juno 2026-09-14): transitional provision 1 reads 'Denna lag träder i kraft den 1 januari 2019.' The earlier value 2019-09-23 was the Web Accessibility Directive's deadline for new websites and does not appear in the Act. Transitional provision 2 is carried in exemptions.statutory, not in this date. Sanctions (Intern #83, Karin's decision 2026-09-24; Juno 2026-09-14, re-verified 2026-09-24): type: 'Vitesföreläggande'. 19 § gives a remark (påpekande), then an injunction (föreläggande), and reads 'Ett nytt föreläggande om samma sak får förenas med vite.' The Act states no amount anywhere; the fine is set by the authority in each case under lagen (1985:206) om viten, and it is a forward-looking coercive measure, not a penalty for past conduct. The earlier range of 100,000 to 1,000,000 SEK is not in the Act, so the sanctions field is removed rather than filled with zeros. Since Intern #70 the type is back in the sanctions field with cap 'no-ceiling' (Karin 2026-09-28; source check 2026-11-09, Intern #146: neither 19 § nor lagen (1985:206) om viten, 3–4 §§, sets a ceiling).",
                 "attestation": {
                     "attestedBy": "Juno",
                     "session": "2026-09-12",
@@ -60,6 +60,16 @@
                     ],
                     "notAttested": [],
                     "subject": "law-entry"
+                },
+                "sanctions": {
+                    "kind": "amount",
+                    "type": "Vitesföreläggande",
+                    "currency": "SEK",
+                    "description": "19 § tredje stycket: 'Ett nytt föreläggande om samma sak får förenas med vite.' Lagen anger inget belopp. Vitet fastställs enligt 3 § lagen (1985:206) om viten 'till ett belopp som med hänsyn till vad som är känt om adressatens ekonomiska förhållanden och till omständigheterna i övrigt kan antas förmå honom att följa det föreläggande som är förenat med vitet'. Varken dos-lagen, förordning (2018:1938) eller viteslagen anger ett högsta belopp.",
+                    "condition": "Tillsynsmyndigheten har först försökt åstadkomma rättelse genom påpekanden eller liknande förfaranden (19 § första stycket) och därefter förelagt den offentliga aktören att vidta åtgärder (andra stycket). Bara ett nytt föreläggande om samma sak får förenas med vite.",
+                    "cap": "no-ceiling",
+                    "legalBasis": "Lag (2018:1937) om tillgänglighet till digital offentlig service, 19 §; lag (1985:206) om viten, 3 §",
+                    "sourceUrl": "https://www.riksdagen.se/sv/dokument-och-lagar/dokument/svensk-forfattningssamling/lag-20181937-om-tillganglighet-till-digital_sfs-2018-1937/"
                 }
             },
             {
@@ -100,7 +110,7 @@
                     "kind": "amount",
                     "type": "Sanktionsavgift",
                     "currency": "SEK",
-                    "description": "Sanktionsavgiften bestäms med hänsyn till allvaret och omfattningen av åsidosättandet samt till omständigheterna i övrigt. I ringa fall ska någon sanktionsavgift inte beslutas.",
+                    "description": "Sanktionsavgiften får tas ut med ett belopp som bestäms med hänsyn till allvaret och omfattningen av åsidosättandet samt till omständigheterna i övrigt (39 § första stycket). I ringa fall ska någon sanktionsavgift inte beslutas (37 § andra stycket). Om det finns särskilda skäl eller om det annars är påkallat med hänsyn till omständigheterna får sanktionsavgiften sättas ned helt eller delvis (39 § andra stycket).",
                     "minAmount": 10000,
                     "maxAmount": 10000000,
                     "cap": "stated",
@@ -378,22 +388,22 @@
                         "kind": "amount",
                         "type": "Geldbuße",
                         "currency": "EUR",
-                        "description": "Fine for an administrative offence (Ordnungswidrigkeit), not a criminal penalty. Covers, among others, offering or providing a service that does not meet the accessibility requirements (no. 8, § 14(1)). The Act sets no minimum.",
+                        "description": "Fine for an administrative offence (Ordnungswidrigkeit), not a criminal penalty. Covers § 37(1) nos. 1, 7, 8, 9 and 10, among them no. 8: offering or providing a service contrary to § 14(1), that is, a service that does not meet the accessibility requirements or whose information under Annex 3 no. 1 has not been prepared and made accessible. The BFSG sets no minimum; OWiG § 17(1) sets a general minimum of EUR 5. Under OWiG § 17(2) the ceiling for negligent conduct is half the stated ceiling, and under § 17(4) the ceiling may be exceeded to absorb the economic benefit.",
                         "condition": "Offences under § 37(1) nos. 1, 7, 8, 9 and 10.",
                         "maxAmount": 100000,
                         "cap": "stated",
-                        "legalBasis": "Barrierefreiheitsstärkungsgesetz (BFSG), § 37(2)",
+                        "legalBasis": "Barrierefreiheitsstärkungsgesetz (BFSG), § 37(1) and (2); Gesetz über Ordnungswidrigkeiten (OWiG), § 17",
                         "sourceUrl": "https://www.gesetze-im-internet.de/bfsg/__37.html"
                     },
                     {
                         "kind": "amount",
                         "type": "Geldbuße",
                         "currency": "EUR",
-                        "description": "Fine for an administrative offence (Ordnungswidrigkeit), not a criminal penalty. Covers the other offences, such as the information and labelling duties (nos. 2 to 6). The Act sets no minimum.",
-                        "condition": "All other offences under § 37(1).",
+                        "description": "Fine for an administrative offence (Ordnungswidrigkeit), not a criminal penalty. Covers § 37(1) nos. 2 to 6: information, labelling and documentation duties, and the duty to give information or documents to the authority. The BFSG sets no minimum; OWiG § 17(1) sets a general minimum of EUR 5. Under OWiG § 17(2) the ceiling for negligent conduct is half the stated ceiling, and under § 17(4) the ceiling may be exceeded to absorb the economic benefit.",
+                        "condition": "§ 37(1) nos. 2 to 6.",
                         "maxAmount": 10000,
                         "cap": "stated",
-                        "legalBasis": "Barrierefreiheitsstärkungsgesetz (BFSG), § 37(2)",
+                        "legalBasis": "Barrierefreiheitsstärkungsgesetz (BFSG), § 37(1) and (2); Gesetz über Ordnungswidrigkeiten (OWiG), § 17",
                         "sourceUrl": "https://www.gesetze-im-internet.de/bfsg/__37.html"
                     }
                 ],
@@ -448,23 +458,23 @@
                         "kind": "amount",
                         "type": "Administrative sanction (Arcom)",
                         "currency": "EUR",
-                        "description": "Imposed by Arcom after formal notice (mise en demeure).",
-                        "condition": "Breach of the accessibility obligation in art. 47 I. Arcom has had this power since 2023-09-08.",
+                        "description": "Imposed by Arcom after formal notice (mise en demeure). The amount takes into account the nature, seriousness and duration of the breach and any previous breaches. If the same breach persists six months after a sanction, a new sanction may be imposed (art. 47-1 III).",
+                        "condition": "Breach of the accessibility obligation in art. 47 I by the persons in art. 47 I 1° to 3° (art. 47-1 I 1°). Companies in art. 47 I 4° can be sanctioned only for III and IV (art. 47-1 I 2°). Arcom has had this power since 2023-09-08.",
                         "maxAmount": 50000,
                         "cap": "stated",
                         "legalBasis": "Loi n° 2005-102 du 11 février 2005, art. 47-1",
-                        "sourceUrl": "https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000048050174"
+                        "sourceUrl": "https://www.legifrance.gouv.fr/loda/article_lc/LEGIARTI000048050174"
                     },
                     {
                         "kind": "amount",
                         "type": "Administrative sanction (Arcom)",
                         "currency": "EUR",
-                        "description": "Imposed by Arcom after formal notice (mise en demeure).",
-                        "condition": "Breach of the obligations in art. 47 III and IV (accessibility declaration, multi-year plan and action plans). Arcom has had this power since 2023-09-08.",
+                        "description": "Imposed by Arcom after formal notice (mise en demeure). The amount takes into account the nature, seriousness and duration of the breach and any previous breaches. If the same breach persists six months after a sanction, a new sanction may be imposed (art. 47-1 III).",
+                        "condition": "Breach of the obligations in art. 47 III and IV: the accessibility declaration, the multi-year plan and the annual action plans (III), and the conformity statement on the home page, access to those documents and a way for users to report breaches (IV). Applies to all persons in art. 47 I. Arcom has had this power since 2023-09-08.",
                         "maxAmount": 25000,
                         "cap": "stated",
                         "legalBasis": "Loi n° 2005-102 du 11 février 2005, art. 47-1",
-                        "sourceUrl": "https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000048050174"
+                        "sourceUrl": "https://www.legifrance.gouv.fr/loda/article_lc/LEGIARTI000048050174"
                     }
                 ],
                 "inForce": true,
@@ -646,11 +656,12 @@
                         "kind": "amount",
                         "type": "Class A fine or imprisonment",
                         "currency": "EUR",
-                        "description": "On summary conviction: a class A fine, or imprisonment for a term not exceeding 6 months, or both. The class A ceiling is set in the Fines Act 2010, not in these Regulations.",
+                        "description": "On summary conviction: a class A fine, or imprisonment for a term not exceeding 6 months, or both (reg. 32(6)(a)). A class A fine is 'a fine not exceeding €5,000' (Fines Act 2010, s. 3), which applies to enactments made after the Act's commencement on 4 January 2011 (s. 4(1)).",
                         "condition": "Summary conviction.",
-                        "cap": "elsewhere",
-                        "legalBasis": "S.I. No. 636/2023, regulation 32(6)(a)",
-                        "sourceUrl": "https://www.irishstatutebook.ie/eli/2023/si/636/made/en/print"
+                        "cap": "stated",
+                        "legalBasis": "S.I. No. 636/2023, regulation 32(6)(a); Fines Act 2010 (No. 8 of 2010), sections 3 and 4(1)",
+                        "sourceUrl": "https://www.irishstatutebook.ie/eli/2010/act/8/enacted/en/print",
+                        "maxAmount": 5000
                     },
                     {
                         "kind": "amount",
@@ -767,7 +778,7 @@
                     "subject": "law-entry"
                 },
                 "lawUrl": "https://wetten.overheid.nl/BWBR0049571/",
-                "note": "Källkontroll 2026-11-09 (Intern #146): det tidigare namnet \"Warenwetbesluit toegankelijkheidseisen producten en diensten\" finns inte, och fullName var ingen titel. Implementatiewet (BWBR0049571, Stb. 2024, 87, rättelse 87-n1) ändrar flera lagar. Warenwetbesluit toegankelijkheidsvoorschriften 2024 (BWBR0049688) gäller bara produkter. Kraven för e-handelstjänster står i Burgerlijk Wetboek Boek 6, afdeling 2ab, art. 230fa-230fd, som Implementatiewet art. IV införde. Vilket instrument ett utlåtande för webb och e-handel ska namnge avgör Juno. Lagnamnet är ännu inte bekräftat.Sanctions (Intern #70, 2026-09-24): removed, because the amount is not attested against primary source and the sanctions schema requires a legal basis and a source for every element. An absent field means \"not established\", never \"no penalty\". The earlier record, verbatim: {\"type\":\"Bestuurlijke boete\",\"description\":\"Boetes bij overtreding van de Warenwet of EAA-voorschriften.\",\"minAmount\":0,\"maxAmount\":900000,\"currency\":\"EUR\"}."
+                "note": "Källkontroll 2026-11-09 (Intern #146): det tidigare namnet \"Warenwetbesluit toegankelijkheidseisen producten en diensten\" finns inte, och fullName var ingen titel. Implementatiewet (BWBR0049571, Stb. 2024, 87, rättelse 87-n1) ändrar flera lagar. Warenwetbesluit toegankelijkheidsvoorschriften 2024 (BWBR0049688) gäller bara produkter. Kraven för e-handelstjänster står i Burgerlijk Wetboek Boek 6, afdeling 2ab, art. 230fa-230fd, som Implementatiewet art. IV införde. Vilket instrument ett utlåtande för webb och e-handel ska namnge avgör Juno. Lagnamnet är ännu inte bekräftat.Sanctions (Intern #70, 2026-09-24): removed, because the amount is not attested against primary source and the sanctions schema requires a legal basis and a source for every element. An absent field means \"not established\", never \"no penalty\". The earlier record, verbatim: {\"type\":\"Bestuurlijke boete\",\"description\":\"Boetes bij overtreding van de Warenwet of EAA-voorschriften.\",\"minAmount\":0,\"maxAmount\":900000,\"currency\":\"EUR\"}. Decision 2026-11-09 (Daniel in Karin's place, Intern #146): the 900,000 is removed now rather than kept until Intern #67, because it is not attested and the entry's law name was found wrong; it is written on the right instrument when #67 is built."
             }
         ],
         "GB": [
@@ -816,12 +827,12 @@
                 },
                 "sanctions": {
                     "kind": "amount",
-                    "type": "Skadestånd efter domstolsprövning",
+                    "type": "Damages after court proceedings",
                     "currency": "GBP",
-                    "description": "Ingen administrativ bötesskala. County court (England och Wales) eller sheriff (Skottland) prövar krav enligt Equality Act 2010 s. 114 och kan döma ut skadestånd.",
+                    "description": "No administrative fine. The county court (England and Wales) or the sheriff (Scotland) determines claims for a contravention of Part 3 (s. 114(1)) and may grant any remedy the High Court could grant in tort; an award of damages may include compensation for injured feelings (s. 119(2) and (4)). The Act sets no ceiling on damages.",
                     "cap": "no-ceiling",
-                    "legalBasis": "Equality Act 2010, section 114",
-                    "sourceUrl": "https://www.legislation.gov.uk/ukpga/2010/15/section/114"
+                    "legalBasis": "Equality Act 2010, sections 114 and 119",
+                    "sourceUrl": "https://www.legislation.gov.uk/ukpga/2010/15/part/9/chapter/2"
                 },
                 "inForce": true,
                 "effectiveDate": "2010-10-01",
@@ -932,7 +943,7 @@
                 },
                 "inForce": true,
                 "effectiveDate": "1992-01-26",
-                "note": "No final DOJ rule for web accessibility under Title III as of 2026-04. DOJ enforcement and private litigation under Title III frequently cite WCAG 2.0/2.1 Level AA as the technical reference in settlements and consent decrees (e.g. Robles v. Domino's Pizza, Gil v. Winn-Dixie), but no single standard is formally mandated by regulation — practice varies between circuits. Legal exposure is primarily through private lawsuits for injunctive relief (42 U.S.C. § 12188). NPRM for web accessibility was published 2024; final rule pending. Sanctions (Intern #70, 2026-09-24): the amounts are attested (28 CFR § 36.504(a)(3): USD 75,000 for a first violation and USD 150,000 for a subsequent one, with the applicable amount for penalties assessed after 2016-08-01 set in 28 CFR 85.5), but the register records no source address for the reading, and whether the ceiling counts as stated here or elsewhere awaits Juno (#70 question 2). The field returns when both are settled. The earlier record, verbatim: {\"type\":\"Lawsuit / Civil Penalties / Injunctive Relief\",\"description\":\"Private plaintiffs can file lawsuits under 42 U.S.C. § 12188 (injunctive relief only — no damages in federal court; state laws may allow additional damages). DOJ can seek civil monetary penalties per 28 CFR § 36.504 — statutory base amounts are $75,000 (first violation) / $150,000 (subsequent), annually inflation-adjusted per 28 CFR Part 85 (Federal Civil Penalties Inflation Adjustment Act). Consult the latest Federal Register inflation adjustment notice for current amounts.\",\"minAmount\":75000,\"maxAmount\":150000,\"currency\":\"USD\",\"example\":\"Thousands of ADA Title III web accessibility lawsuits filed annually. Notable settlements include Domino's Pizza, Winn-Dixie, and major retail chains.\"}.",
+                "note": "No final DOJ rule for web accessibility under Title III as of 2026-04. DOJ enforcement and private litigation under Title III frequently cite WCAG 2.0/2.1 Level AA as the technical reference in settlements and consent decrees (e.g. Robles v. Domino's Pizza, Gil v. Winn-Dixie), but no single standard is formally mandated by regulation — practice varies between circuits. Legal exposure is primarily through private lawsuits for injunctive relief (42 U.S.C. § 12188). NPRM for web accessibility was published 2024; final rule pending. Sanctions (Intern #70, 2026-09-24): the amounts are attested (28 CFR § 36.504(a)(3): USD 75,000 for a first violation and USD 150,000 for a subsequent one, with the applicable amount for penalties assessed after 2016-08-01 set in 28 CFR 85.5), and the field is back with cap 'elsewhere' (Juno and Karin 2026-09-28; source check 2026-11-09, Intern #146). The source is 36.504 rather than 85.5, because the base amounts stand only in 36.504; the current amounts from 85.5 are in each description. The earlier record, verbatim: {\"type\":\"Lawsuit / Civil Penalties / Injunctive Relief\",\"description\":\"Private plaintiffs can file lawsuits under 42 U.S.C. § 12188 (injunctive relief only — no damages in federal court; state laws may allow additional damages). DOJ can seek civil monetary penalties per 28 CFR § 36.504 — statutory base amounts are $75,000 (first violation) / $150,000 (subsequent), annually inflation-adjusted per 28 CFR Part 85 (Federal Civil Penalties Inflation Adjustment Act). Consult the latest Federal Register inflation adjustment notice for current amounts.\",\"minAmount\":75000,\"maxAmount\":150000,\"currency\":\"USD\",\"example\":\"Thousands of ADA Title III web accessibility lawsuits filed annually. Notable settlements include Domino's Pizza, Winn-Dixie, and major retail chains.\"}.",
                 "attestation": {
                     "attestedBy": "Juno",
                     "session": "2026-09-12",
@@ -948,7 +959,31 @@
                         "lagnamn"
                     ],
                     "subject": "law-entry"
-                }
+                },
+                "sanctions": [
+                    {
+                        "kind": "amount",
+                        "type": "Civil penalty (Attorney General action)",
+                        "currency": "USD",
+                        "condition": "First violation occurring on or after 2014-04-28. For civil penalties assessed after 2016-08-01 for a violation occurring after 2015-11-02, the ceiling is the applicable amount in 28 CFR 85.5, not this amount.",
+                        "description": "A court may 'to vindicate the public interest, assess a civil penalty' (28 CFR 36.504(a)(3)(i)). Under 28 CFR 85.5 the ceiling for penalties assessed after 2025-07-03 is USD 118,225 for a first violation; DOJ made no adjustment for 2026 (91 FR 43405, 2026-07-15).",
+                        "maxAmount": 75000,
+                        "cap": "elsewhere",
+                        "legalBasis": "28 CFR 36.504(a)(3)(i); 28 CFR 85.5",
+                        "sourceUrl": "https://www.law.cornell.edu/cfr/text/28/36.504"
+                    },
+                    {
+                        "kind": "amount",
+                        "type": "Civil penalty (Attorney General action)",
+                        "currency": "USD",
+                        "condition": "Subsequent violation occurring on or after 2014-04-28. For civil penalties assessed after 2016-08-01 for a violation occurring after 2015-11-02, the ceiling is the applicable amount in 28 CFR 85.5, not this amount.",
+                        "description": "A court may 'to vindicate the public interest, assess a civil penalty' (28 CFR 36.504(a)(3)(ii)). Under 28 CFR 85.5 the ceiling for penalties assessed after 2025-07-03 is USD 236,451 for a subsequent violation; DOJ made no adjustment for 2026 (91 FR 43405, 2026-07-15).",
+                        "maxAmount": 150000,
+                        "cap": "elsewhere",
+                        "legalBasis": "28 CFR 36.504(a)(3)(ii); 28 CFR 85.5",
+                        "sourceUrl": "https://www.law.cornell.edu/cfr/text/28/36.504"
+                    }
+                ]
             },
             {
                 "id": "us-hhs-section-504",
@@ -1009,7 +1044,7 @@
                 },
                 "inForce": true,
                 "effectiveDate": "2005-06-13",
-                "note": "Sanctions (Intern #93, Juno 2026-09-24): § 37(3) reads 'Every person who is guilty of an offence under this Act is liable on conviction, (a) to a fine of not more than $50,000 for each day or part of a day on which the offence occurs or continues to occur; or (b) if the person is a corporation, to a fine of not more than $100,000 for each day or part of a day on which the offence occurs or continues to occur.' The earlier range of 200 to 100,000 CAD is not in the Act. The field is removed rather than rewritten, because a single range cannot carry two per-day ceilings split by who is liable, and a flat maximum would understate an exposure that accrues per day. The two-element form, one per liable person, arrives with the sanctions schema in Intern #70.",
+                "note": "Sanctions (Intern #93, Juno 2026-09-24): § 37(3) reads 'Every person who is guilty of an offence under this Act is liable on conviction, (a) to a fine of not more than $50,000 for each day or part of a day on which the offence occurs or continues to occur; or (b) if the person is a corporation, to a fine of not more than $100,000 for each day or part of a day on which the offence occurs or continues to occur.' The earlier range of 200 to 100,000 CAD is not in the Act. The field is removed rather than rewritten, because a single range cannot carry two per-day ceilings split by who is liable, and a flat maximum would understate an exposure that accrues per day. Since Intern #70 (Karin 2026-09-28; source check 2026-11-09, Intern #146) the field carries the offence fines per day, split by corporation or not as the Act does (an unincorporated organization is not a natural person), the director or officer fine in s. 37(5), and the administrative penalties in O. Reg. 191/11, s. 83. O. Reg. 429/07 was revoked on 2016-07-01.",
                 "attestation": {
                     "attestedBy": "Juno",
                     "session": "2026-09-11",
@@ -1026,7 +1061,98 @@
                     ],
                     "notAttested": [],
                     "subject": "law-entry"
-                }
+                },
+                "sanctions": [
+                    {
+                        "kind": "amount",
+                        "type": "Fine on conviction (offence)",
+                        "currency": "CAD",
+                        "liablePerson": "non-corporation",
+                        "period": "day",
+                        "condition": "A person guilty of an offence under s. 37(1): furnishing false or misleading information in an accessibility report or to a director, failing to comply with an order of a director or the Tribunal, or contravening s. 20(8) or s. 37(2).",
+                        "description": "'… to a fine of not more than $50,000 for each day or part of a day on which the offence occurs or continues to occur' (s. 37(3)(a)). A fine on conviction, not an administrative penalty.",
+                        "maxAmount": 50000,
+                        "cap": "stated",
+                        "legalBasis": "Accessibility for Ontarians with Disabilities Act, 2005, S.O. 2005, c. 11, s. 37(1) and (3)(a)",
+                        "sourceUrl": "https://www.ontario.ca/laws/statute/05a11"
+                    },
+                    {
+                        "kind": "amount",
+                        "type": "Fine on conviction (offence)",
+                        "currency": "CAD",
+                        "liablePerson": "corporation",
+                        "period": "day",
+                        "condition": "A person guilty of an offence under s. 37(1): furnishing false or misleading information in an accessibility report or to a director, failing to comply with an order of a director or the Tribunal, or contravening s. 20(8) or s. 37(2).",
+                        "description": "'… if the person is a corporation, to a fine of not more than $100,000 for each day or part of a day on which the offence occurs or continues to occur' (s. 37(3)(b)). A fine on conviction, not an administrative penalty.",
+                        "maxAmount": 100000,
+                        "cap": "stated",
+                        "legalBasis": "Accessibility for Ontarians with Disabilities Act, 2005, S.O. 2005, c. 11, s. 37(1) and (3)(b)",
+                        "sourceUrl": "https://www.ontario.ca/laws/statute/05a11"
+                    },
+                    {
+                        "kind": "amount",
+                        "type": "Fine on conviction (offence)",
+                        "currency": "CAD",
+                        "liablePerson": "director-or-officer",
+                        "period": "day",
+                        "condition": "A director or officer of a corporation who has a duty under s. 37(4) and fails to carry it out.",
+                        "description": "'… is guilty of an offence and on conviction is liable to a fine of not more than $50,000 for each day or part of a day on which the offence occurs or continues to occur' (s. 37(5)).",
+                        "maxAmount": 50000,
+                        "cap": "stated",
+                        "legalBasis": "Accessibility for Ontarians with Disabilities Act, 2005, S.O. 2005, c. 11, s. 37(4) and (5)",
+                        "sourceUrl": "https://www.ontario.ca/laws/statute/05a11"
+                    },
+                    {
+                        "kind": "amount",
+                        "type": "Administrative penalty",
+                        "currency": "CAD",
+                        "liablePerson": "non-corporation",
+                        "condition": "Ordered by a director under s. 21(3) para. 3 of the Act and determined under O. Reg. 191/11, s. 83(1), from the contravention history and the impact of the contravention.",
+                        "description": "Schedule 2 of O. Reg. 191/11 sets CAD 200 to 2,000 for an individual or unincorporated organization, by contravention history and impact.",
+                        "maxAmount": 2000,
+                        "cap": "stated",
+                        "legalBasis": "Accessibility for Ontarians with Disabilities Act, 2005, S.O. 2005, c. 11, s. 21(3); O. Reg. 191/11 (Integrated Accessibility Standards), s. 83(1) and Schedule 2",
+                        "sourceUrl": "https://www.ontario.ca/laws/regulation/110191"
+                    },
+                    {
+                        "kind": "amount",
+                        "type": "Administrative penalty",
+                        "currency": "CAD",
+                        "liablePerson": "corporation",
+                        "condition": "Ordered by a director under s. 21(3) para. 3 of the Act and determined under O. Reg. 191/11, s. 83(1), from the contravention history and the impact of the contravention.",
+                        "description": "Schedule 3 of O. Reg. 191/11 sets CAD 500 to 15,000 for a corporation, by contravention history and impact.",
+                        "maxAmount": 15000,
+                        "cap": "stated",
+                        "legalBasis": "Accessibility for Ontarians with Disabilities Act, 2005, S.O. 2005, c. 11, s. 21(3); O. Reg. 191/11 (Integrated Accessibility Standards), s. 83(1) and Schedule 3",
+                        "sourceUrl": "https://www.ontario.ca/laws/regulation/110191"
+                    },
+                    {
+                        "kind": "amount",
+                        "type": "Administrative penalty (daily)",
+                        "currency": "CAD",
+                        "liablePerson": "non-corporation",
+                        "period": "day",
+                        "condition": "Where both the impact of the contravention and the contravention history are determined to be major.",
+                        "description": "The director may treat the penalty under Schedule 2 as a daily penalty to a maximum of $50,000 for an individual or unincorporated organization (O. Reg. 191/11, s. 83(1) para. 5 ii).",
+                        "maxAmount": 50000,
+                        "cap": "stated",
+                        "legalBasis": "Accessibility for Ontarians with Disabilities Act, 2005, S.O. 2005, c. 11, s. 21(3); O. Reg. 191/11, s. 83(1) para. 5",
+                        "sourceUrl": "https://www.ontario.ca/laws/regulation/110191"
+                    },
+                    {
+                        "kind": "amount",
+                        "type": "Administrative penalty (daily)",
+                        "currency": "CAD",
+                        "liablePerson": "corporation",
+                        "period": "day",
+                        "condition": "Where both the impact of the contravention and the contravention history are determined to be major.",
+                        "description": "The director may treat the penalty under Schedule 3 as a daily penalty to a maximum of $100,000 for a corporation (O. Reg. 191/11, s. 83(1) para. 5 i).",
+                        "maxAmount": 100000,
+                        "cap": "stated",
+                        "legalBasis": "Accessibility for Ontarians with Disabilities Act, 2005, S.O. 2005, c. 11, s. 21(3); O. Reg. 191/11, s. 83(1) para. 5",
+                        "sourceUrl": "https://www.ontario.ca/laws/regulation/110191"
+                    }
+                ]
             },
             {
                 "id": "ca-aca",
@@ -1055,11 +1181,12 @@
                     "kind": "amount",
                     "type": "Administrative Monetary Penalty",
                     "currency": "CAD",
-                    "description": "A penalty fixed in accordance with regulations made under section 91(1) (section 77). The maximum for a violation is CAD 250,000, with no distinction between individuals and corporations.",
+                    "description": "A violation is liable to a warning or to a penalty fixed in accordance with regulations made under s. 91(1) (s. 77). The maximum penalty for a violation that may be fixed is CAD 250,000 (s. 91(2)). A violation committed or continued on more than one day constitutes a separate violation for each day (s. 88). The Accessible Canada Regulations (SOR/2021-241), Schedule 2, set three scales by classification and number of violations: a person other than a regulated entity (up to CAD 62,500), a small business (up to CAD 125,000) and a regulated entity other than a small business (up to CAD 250,000).",
                     "maxAmount": 250000,
                     "cap": "stated",
-                    "legalBasis": "Accessible Canada Act (S.C. 2019, c. 10), sections 77 and 91(2)",
-                    "sourceUrl": "https://laws-lois.justice.gc.ca/eng/acts/A-0.6/page-7.html"
+                    "legalBasis": "Accessible Canada Act (S.C. 2019, c. 10), sections 77, 88 and 91(2); Accessible Canada Regulations (SOR/2021-241), Schedule 2",
+                    "sourceUrl": "https://laws-lois.justice.gc.ca/eng/acts/A-0.6/FullText.html",
+                    "period": "day"
                 },
                 "inForce": true,
                 "effectiveDate": "2025-12-05",
@@ -1192,7 +1319,7 @@
                         "kind": "amount",
                         "type": "Sanzione amministrativa pecuniaria",
                         "currency": "EUR",
-                        "description": "For an economic operator that contravenes art. 3, art. 6(1) to (8), art. 8(1) to (7), art. 9(1) to (4), art. 10 or art. 12(1) to (4).",
+                        "description": "Unless the act constitutes a crime, and outside the exemptions in art. 3(3) and art. 13(1), an economic operator that contravenes art. 3, 6(1) to (8), 8(1) to (7), 9(1) to (4), 10 or 12(1) to (4) is liable to an administrative fine of EUR 5,000 to 40,000, taking into account the extent of the non-conformity, the number of non-conforming units and the number of users affected.",
                         "minAmount": 5000,
                         "maxAmount": 40000,
                         "cap": "stated",
@@ -1203,12 +1330,35 @@
                         "kind": "amount",
                         "type": "Sanzione amministrativa pecuniaria",
                         "currency": "EUR",
-                        "description": "For an economic operator that does not comply with what the supervisory authority has ordered under art. 18(4) and art. 21(4).",
+                        "description": "Unless the act constitutes a crime, an economic operator that does not comply with what the supervisory authority has ordered under art. 18(4) and art. 21(4).",
                         "minAmount": 2500,
                         "maxAmount": 30000,
                         "cap": "stated",
                         "legalBasis": "Decreto Legislativo 27 maggio 2022, n. 82, art. 24, comma 2",
                         "sourceUrl": "https://www.gazzettaufficiale.it/eli/gu/2022/07/01/152/sg/pdf"
+                    },
+                    {
+                        "kind": "amount",
+                        "type": "Sanzione amministrativa pecuniaria",
+                        "currency": "EUR",
+                        "description": "Unless the act constitutes a crime, an economic operator that does not provide the required cooperation for the activities in art. 6(9), 7(1), 8(8), 9(5), 11, 12(5) and 13(3) and (4), unless it refuses with reasons because the information could reveal its own liability for a punitive administrative offence or a crime.",
+                        "minAmount": 2500,
+                        "maxAmount": 30000,
+                        "cap": "stated",
+                        "legalBasis": "Decreto Legislativo 27 maggio 2022, n. 82, art. 24, comma 3",
+                        "sourceUrl": "https://www.gazzettaufficiale.it/eli/gu/2022/07/01/152/sg/pdf"
+                    },
+                    {
+                        "kind": "formula",
+                        "type": "Sanzione amministrativa pecuniaria (AgID)",
+                        "currency": "EUR",
+                        "condition": "Applies 'in ogni caso' to the entities in art. 3(1-bis) of legge 4/2004: legal entities other than public bodies that offer services to the public through websites or mobile applications, with an average turnover over the last three years above EUR 500 million. AgID first sets a deadline to remedy the infringements; the fine applies if that warning is not complied with.",
+                        "description": "'… l'AgID applica la sanzione amministrativa pecuniaria fino al 5 per cento del fatturato' (legge 4/2004, art. 9, comma 1-bis), applied to these entities by D.Lgs. 82/2022, art. 24, comma 1, second sentence.",
+                        "factor": 0.05,
+                        "index": "turnover (fatturato)",
+                        "cap": "stated",
+                        "legalBasis": "Decreto Legislativo 27 maggio 2022, n. 82, art. 24, comma 1, secondo periodo; legge 9 gennaio 2004, n. 4, art. 9, comma 1-bis (introduced by D.L. 76/2020, art. 29, converted by L. 120/2020)",
+                        "sourceUrl": "https://www.normattiva.it/uri-res/N2Ls?urn:nir:stato:legge:2004-01-09;4~art9"
                     }
                 ],
                 "inForce": true,
@@ -1223,7 +1373,7 @@
                         "legalBasis": "Directive (EU) 2019/882 Article 4(5); microenterprise definition per Commission Recommendation 2003/361/EC"
                     }
                 },
-                "note": "Italy transposed the EAA via D.Lgs. 27 May 2022, n. 82 (in force 28 June 2025). Authority split: AgID supervises digital services (websites, e-commerce, banking, transport, electronic communications, e-books) under art. 21; MIMIT supervises products; AGCOM supervises only audiovisual media services under art. 31 D.Lgs. 208/2021. The complaint mechanism (any party can file a non-compliance report via AgID's portal) is NOT new — it was established by Legge n. 4/2004 (Legge Stanca) and D.Lgs. 82/2022. Two 2026 AgID acts further the framework: (1) Determinazione n. 38 del 4 marzo 2026 (4 March 2026, in force 24 March 2026 via Gazzetta Ufficiale) — Linee Guida sull'accessibilità dei servizi digitali, structured checklists for websites/web apps, documents/office files, and mobile apps, based on EN 301 549 V3.2.1 + WCAG 2.1 AA; shifts the compliance perspective from individual web pages to entire digital services. (2) Determinazione n. 84 del 15 maggio 2026 (15 May 2026, GU 23 May 2026) — Regolamento sulle procedure di accertamento delle violazioni e applicazione delle sanzioni; codifies the pre-istruttoria phase (notification → response window → remediation period → sanctioning proceedings only on persistent non-compliance). Mandatory for operators in: e-commerce, banking and financial services, transport, electronic communications, audiovisual media services, e-books. Guideline source: https://www.agid.gov.it/sites/agid/files/2026-03/Linee_Guida_accessibilit%C3%A0_dei_servizi_(EAA).pdf Formal entry into force (Intern #63, Juno 2026-09-14): 2022-07-16. effectiveDate carries the date of application, 2025-06-28, because it drives inForce. Sanctions (Intern #70, 2026-09-24): written in the sanctions schema from Juno's attestation, with a legal basis and a source for every element. The earlier record, verbatim: {\"type\":\"Sanzione amministrativa\",\"description\":\"Two distinct sanction ranges under D.Lgs. 82/2022: (1) substantive violation (non-compliance with accessibility requirements): 5,000–40,000 EUR per breach — this is the primary range exposed in minAmount/maxAmount; (2) non-cooperation / failure to comply with AgID orders during the pre-istruttoria phase: 2,500–30,000 EUR. Amounts within each range scale with severity, duration, and recurrence. AgID applies sanctions only after the pre-istruttoria response window has expired without remediation. Microenterprises providing services (under 10 employees AND ≤2M EUR turnover) are exempt — see exemptions.microbusiness.\",\"minAmount\":5000,\"maxAmount\":40000,\"currency\":\"EUR\"}.",
+                "note": "Italy transposed the EAA via D.Lgs. 27 May 2022, n. 82 (in force 28 June 2025). Authority split: AgID supervises digital services (websites, e-commerce, banking, transport, electronic communications, e-books) under art. 21; MIMIT supervises products; AGCOM supervises only audiovisual media services under art. 31 D.Lgs. 208/2021. The complaint mechanism (any party can file a non-compliance report via AgID's portal) is NOT new — it was established by Legge n. 4/2004 (Legge Stanca) and D.Lgs. 82/2022. Two 2026 AgID acts further the framework: (1) Determinazione n. 38 del 4 marzo 2026 (4 March 2026, in force 24 March 2026 via Gazzetta Ufficiale) — Linee Guida sull'accessibilità dei servizi digitali, structured checklists for websites/web apps, documents/office files, and mobile apps, based on EN 301 549 V3.2.1 + WCAG 2.1 AA; shifts the compliance perspective from individual web pages to entire digital services. (2) Determinazione n. 84 del 15 maggio 2026 (15 May 2026, GU 23 May 2026) — Regolamento sulle procedure di accertamento delle violazioni e applicazione delle sanzioni; codifies the pre-istruttoria phase (notification → response window → remediation period → sanctioning proceedings only on persistent non-compliance). Mandatory for operators in: e-commerce, banking and financial services, transport, electronic communications, audiovisual media services, e-books. Guideline source: https://www.agid.gov.it/sites/agid/files/2026-03/Linee_Guida_accessibilit%C3%A0_dei_servizi_(EAA).pdf Formal entry into force (Intern #63, Juno 2026-09-14): 2022-07-16. effectiveDate carries the date of application, 2025-06-28, because it drives inForce. Sanctions (Intern #70, 2026-09-24): written in the sanctions schema from Juno's attestation, with a legal basis and a source for every element. The earlier record, verbatim: {\"type\":\"Sanzione amministrativa\",\"description\":\"Two distinct sanction ranges under D.Lgs. 82/2022: (1) substantive violation (non-compliance with accessibility requirements): 5,000–40,000 EUR per breach — this is the primary range exposed in minAmount/maxAmount; (2) non-cooperation / failure to comply with AgID orders during the pre-istruttoria phase: 2,500–30,000 EUR. Amounts within each range scale with severity, duration, and recurrence. AgID applies sanctions only after the pre-istruttoria response window has expired without remediation. Microenterprises providing services (under 10 employees AND ≤2M EUR turnover) are exempt — see exemptions.microbusiness.\",\"minAmount\":5000,\"maxAmount\":40000,\"currency\":\"EUR\"}. Sanctions (source check 2026-11-09, Intern #146): art. 24 comma 3 and the five-per-cent branch are added. The branch Juno could not place (Intern #70 question 4) is legge 4/2004, art. 9, comma 1-bis, which art. 24, comma 1, second sentence applies to the entities in art. 3(1-bis) of that law. Art. 24, comma 4 excludes acts within public procurement procedures under D.Lgs. 50/2016. Art. 24 is unchanged since 2022-07-16.",
                 "attestation": {
                     "attestedBy": "Juno",
                     "session": "2026-09-12",

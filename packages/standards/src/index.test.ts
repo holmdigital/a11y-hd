@@ -849,6 +849,66 @@ describe('Intern #70 — sanktionsschemat', () => {
         }
     });
 
+    it('schemat tar inte ett tak som säger emot sig självt (granskningen 2026-11-09)', () => {
+        // stated utan belopp hade getMaxSanction hoppat över i tysthet, och
+        // no-ceiling eller not-established med ett belopp säger emot sig självt.
+        const utanBelopp: Record<string, unknown> = { ...giltigt };
+        delete utanBelopp.maxAmount;
+        expect(validera(utanBelopp)).toBe(false);
+        expect(validera({ ...giltigt, cap: 'no-ceiling' })).toBe(false);
+        expect(validera({ ...giltigt, cap: 'not-established' })).toBe(false);
+        expect(validera({ ...utanBelopp, cap: 'no-ceiling' })).toBe(true);
+        expect(validera({ ...giltigt, cap: 'elsewhere' })).toBe(true);
+        expect(validera({ ...giltigt, sourceUrl: 'https://' })).toBe(false);
+        expect(validera({ ...giltigt, period: 'day' })).toBe(true);
+        expect(validera({ ...giltigt, period: 'week' })).toBe(false);
+        expect(validera({ ...giltigt, liablePerson: 'corporation' })).toBe(true);
+    });
+
+    it('i datan är min aldrig över max, och varje land har en valuta', () => {
+        const valutor = new Map<string, Set<string>>();
+        for (const law of getAllNationalLaws()) {
+            for (const e of element(law)) {
+                if (e.kind === 'amount' && typeof e.minAmount === 'number' && typeof e.maxAmount === 'number') {
+                    expect(e.minAmount, law.id).toBeLessThanOrEqual(e.maxAmount);
+                }
+                const land = law.country ?? '';
+                valutor.set(land, (valutor.get(land) ?? new Set()).add(e.currency));
+            }
+        }
+        for (const [land, v] of valutor) expect([...v], land).toHaveLength(1);
+    });
+
+    it('källkontrollen 2026-11-09 står i datan', () => {
+        const [summariskt, åtal] = getSanctions('ie-eaa', 'IE') ?? [];
+        expect(summariskt?.kind === 'amount' && summariskt.maxAmount).toBe(5000);
+        expect(summariskt?.legalBasis).toContain('Fines Act 2010');
+        expect(åtal?.kind === 'amount' && åtal.maxAmount).toBe(60000);
+
+        const it = getSanctions('it-eaa', 'IT') ?? [];
+        expect(it.map(e => e.legalBasis.match(/comma \d/)?.[0])).toEqual(['comma 1', 'comma 2', 'comma 3', 'comma 1']);
+        const formel = it.find(e => e.kind === 'formula');
+        expect(formel?.kind === 'formula' && formel.factor).toBe(0.05);
+        expect(formel?.legalBasis).toContain('art. 9, comma 1-bis');
+
+        const ada = getSanctions('us-ada-title-iii', 'US') ?? [];
+        expect(ada.map(e => [e.cap, e.kind === 'amount' && e.maxAmount])).toEqual([['elsewhere', 75000], ['elsewhere', 150000]]);
+        expect(ada.every(e => e.legalBasis.includes('85.5') && e.description.includes('2026'))).toBe(true);
+
+        const [aca] = getSanctions('ca-aca', 'CA') ?? [];
+        expect(aca?.period).toBe('day');
+        expect(aca?.sourceUrl).toContain('FullText.html');
+
+        for (const e of getSanctions('fr-rgaa', 'FR') ?? []) expect(e.sourceUrl).toContain('/loda/');
+        expect(getSanctions('gb-eqa2010', 'GB')?.[0].legalBasis).toContain('119');
+    });
+
+    it('getSanctions lämnar ut en kopia, inte paketets data', () => {
+        const [första] = getSanctions('lptt', 'SE')!;
+        första.description = 'ändrad';
+        expect(getSanctions('lptt', 'SE')![0].description).not.toBe('ändrad');
+    });
+
     it('schemat tar inte ett nolltak, en okänd cap, en osäker källa eller ett okänt fält', () => {
         // Intern #66: sexton poster bar ett deklarerat nolltak som betydde
         // "ingen siffra registrerad". Nu säger cap det i stället.
@@ -901,14 +961,30 @@ describe('Intern #70 — sanktionsschemat', () => {
         } finally {
             bfsg.sanctions = spara;
         }
-        // Det summariska ledet i ie-eaa har sitt tak i Fines Act 2010 och räknas inte.
-        expect(getMaxSanction('IE')?.amount).toBe(60000);
+        // Det summariska ledet i ie-eaa har sitt tak i Fines Act 2010 s. 3
+        // (€5 000) sedan källkontrollen 2026-11-09; åtalsledet är högre.
+        expect(getMaxSanction('IE')).toMatchObject({ lawId: 'ie-eaa', amount: 60000, uncounted: 0 });
     });
 
     it('de borttagna posterna bär det gamla fältet ordagrant i note', () => {
-        const borttagna = getAllNationalLaws().filter(l => !l.sanctions && (l.note ?? '').includes('Sanctions (Intern #70'));
-        expect(borttagna.length).toBeGreaterThanOrEqual(18);
-        for (const l of borttagna) expect(l.note, l.id).toContain('The earlier record, verbatim:');
+        // Granskningen 2026-11-09: en exakt lista i stället för ">= 18", som
+        // hade blivit rött av fel skäl när us-ada-title-iii fick tillbaka sitt
+        // fält, och en kontroll av att posten efter "verbatim:" är läsbar JSON
+        // i den gamla formen, inte bara att frasen finns.
+        const borttagna = getAllNationalLaws()
+            .filter(l => !l.sanctions && (l.note ?? '').includes('Sanctions (Intern #70'))
+            .map(l => l.id)
+            .sort();
+        expect(borttagna).toEqual([
+            'au-dda', 'dk-wad', 'es-une', 'fi-eaa', 'fi-wad', 'gb-psbar', 'ie-wad', 'it-wad', 'nl-eaa',
+            'nl-wad', 'no-ikt', 'pl-eaa', 'pl-wad', 'pt-wad', 'us-508', 'us-ada-title-ii', 'us-hhs-section-504',
+        ]);
+        for (const l of getAllNationalLaws().filter(x => (x.note ?? '').includes('The earlier record, verbatim:'))) {
+            const efter = l.note!.split('The earlier record, verbatim: ')[1] ?? '';
+            const json = efter.slice(0, efter.lastIndexOf('}') + 1);
+            const gammal = JSON.parse(json) as Record<string, unknown>;
+            expect(typeof gammal.type, l.id).toBe('string');
+        }
     });
 });
 
@@ -974,15 +1050,18 @@ describe('Intern #83/#63/#70/#88 — datasvepet 2026-09-24', () => {
         expect(nav?.legalBasis).toBe('Lag (2018:1937) 9 § andra stycket');
     });
 
-    it('dos-lagen har inget sanktionsspann, bara arten i note', () => {
-        // Karin 2026-09-24: blocket bort nu, inte med #70. 19 § ger vite utan
-        // belopp; spannet 100 000 till 1 000 000 SEK fanns aldrig i lagen.
-        const dos = lag('dos-lagen');
-        expect(dos.sanctions).toBeUndefined();
-        expect(dos.note).toContain("type: 'Vitesföreläggande'");
-        expect(dos.note).toContain('Ett nytt föreläggande om samma sak får förenas med vite.');
-        // Sveriges tak kommer då ur lptt, oförändrat.
-        expect(getMaxSanction('SE')?.law).toBe(lag('lptt').law);
+    it('dos-lagen bär vitet utan tak (Karin 2026-09-28: no-ceiling)', () => {
+        // 19 § ger vite utan belopp, och varken lagen eller viteslagen (1985:206)
+        // sätter ett tak. Spannet 100 000 till 1 000 000 SEK fanns aldrig i lagen.
+        const [vite, ...fler] = getSanctions('dos-lagen', 'SE') ?? [];
+        expect(fler).toEqual([]);
+        expect(vite?.type).toBe('Vitesföreläggande');
+        expect(vite?.cap).toBe('no-ceiling');
+        expect(vite?.kind === 'amount' && vite.maxAmount).toBeUndefined();
+        expect(vite?.description).toContain('Ett nytt föreläggande om samma sak får förenas med vite.');
+        expect(vite?.legalBasis).toContain('(1985:206)');
+        // Sveriges platta tak kommer ur lptt, och vitet utan tak räknas i uncounted.
+        expect(getMaxSanction('SE')).toMatchObject({ lawId: 'lptt', amount: 10000000, uncounted: 1 });
     });
 
     it('lptt följer den färdiga formen i #83 ordagrant', () => {
@@ -1032,15 +1111,21 @@ describe('Intern #83/#63/#70/#88 — datasvepet 2026-09-24', () => {
         expect(getMaxSanction('DE')?.amount).toBe(100000);
     });
 
-    it('ca-aoda: spannet 200–100 000 är borta, och taken per dag står i note', () => {
-        // Intern #93: taken gäller PER DAG och per ansvarig. Ett platt
-        // maxAmount skulle underskatta en exponering som växer för varje dag.
-        const aoda = lag('ca-aoda');
-        expect(aoda.sanctions).toBeUndefined();
-        expect(aoda.note).toContain('$50,000 for each day');
-        expect(aoda.note).toContain('$100,000 for each day');
-        // Kanadas tak kommer då från den federala lagen, oförändrat.
-        expect(getMaxSanction('CA')?.amount).toBe(250000);
+    it('ca-aoda: böterna per dag delas efter corporation eller inte, som lagen gör', () => {
+        // Intern #93 och Karin 2026-09-28: taken gäller PER DAG. Källkontrollen
+        // 2026-11-09: 37(3)(a) gäller alla som inte är corporation, även en
+        // unincorporated organization, så `natural` hade varit fel.
+        const s = getSanctions('ca-aoda', 'CA') ?? [];
+        const brott = s.filter(e => e.type.startsWith('Fine on conviction'));
+        expect(brott.map(e => [e.liablePerson, e.kind === 'amount' && e.maxAmount, e.period])).toEqual([
+            ['non-corporation', 50000, 'day'],
+            ['corporation', 100000, 'day'],
+            ['director-or-officer', 50000, 'day'],
+        ]);
+        expect(s.some(e => e.liablePerson === 'natural' || e.liablePerson === 'legal')).toBe(false);
+        // O. Reg. 191/11 s. 83: Schedule 2 och 3, och dagssanktionen när båda bedömningarna är major.
+        expect(s.filter(e => e.type.startsWith('Administrative')).map(e => [e.liablePerson, e.kind === 'amount' && e.maxAmount, e.period ?? null]))
+            .toEqual([['non-corporation', 2000, null], ['corporation', 15000, null], ['non-corporation', 50000, 'day'], ['corporation', 100000, 'day']]);
     });
 
     it('ca-aca: lagrummet är § 91(2), inte Part 6 i allmänhet', () => {
@@ -1519,13 +1604,35 @@ describe('Intern #66 — getMaxSanction påstår inget nolltak', () => {
         }
     });
 
-    it('länder med belagt tak svarar med siffran', () => {
-        expect(getMaxSanction('SE')?.amount).toBe(10000000);
-        expect(getMaxSanction('DE')?.amount).toBe(100000);
-        expect(getMaxSanction('FR')?.amount).toBe(50000);
-        expect(getMaxSanction('IE')?.amount).toBe(60000);
-        expect(getMaxSanction('IT')?.amount).toBe(40000);
-        expect(getMaxSanction('CA')?.amount).toBe(250000);
+    it('länder med belagt tak svarar med siffran, och uncounted säger när det bara är ett golv', () => {
+        expect(getMaxSanction('SE')).toMatchObject({ amount: 10000000, uncounted: 1 }); // dos-lagen, no-ceiling
+        expect(getMaxSanction('DE')).toMatchObject({ amount: 100000, uncounted: 0 });
+        expect(getMaxSanction('FR')).toMatchObject({ amount: 50000, uncounted: 0 });
+        expect(getMaxSanction('IE')).toMatchObject({ amount: 60000, uncounted: 0 });
+        expect(getMaxSanction('IT')).toMatchObject({ amount: 40000, uncounted: 1 }); // femprocentsformeln
+        // Kanada: ACA och AODA tar ut sina tak per dag och räknas aldrig som
+        // platta tak. Kvar blir AODA:s administrativa tak på 15 000, ett golv.
+        expect(getMaxSanction('CA')).toMatchObject({ lawId: 'ca-aoda', amount: 15000, uncounted: 6 });
+    });
+
+    it('ett tak per dag räknas aldrig som ett platt tak (Karin 2026-09-28)', () => {
+        const bfsg = getNationalLaws('DE').find(l => l.id === 'de-bfsg')!;
+        const spara = bfsg.sanctions;
+        try {
+            const [högsta, lägsta] = Array.isArray(spara) ? spara : [spara!];
+            bfsg.sanctions = [{ ...högsta, period: 'day' }, lägsta];
+            expect(getMaxSanction('DE')).toMatchObject({ amount: 10000, uncounted: 1 });
+        } finally {
+            bfsg.sanctions = spara;
+        }
+    });
+
+    it('svaret bär lagens id, lagrum och källa, inte lagens namn', () => {
+        // Intern #146: lagens namn hade gått förbi lagnamnsgrinden.
+        const se = getMaxSanction('SE')!;
+        expect(se).not.toHaveProperty('law');
+        expect(se.legalBasis).toContain('39 §');
+        expect(se.sourceUrl).toMatch(/^https:\/\/www\.riksdagen\.se\//);
     });
 });
 

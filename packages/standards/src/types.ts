@@ -290,8 +290,20 @@ export interface SanctionRangeBase {
     type: string;
     description: string;
     currency: string;
-    /** Who is liable, where the law sets different ceilings for them. */
-    liablePerson?: 'natural' | 'legal';
+    /**
+     * Who is liable, where the law sets different ceilings for them, in the
+     * law's own categories. Ontario's AODA divides by corporation or not, and
+     * an unincorporated organization is not a natural person, so `natural` and
+     * `legal` cannot carry it (Intern #70, källkontroll 2026-11-09).
+     */
+    liablePerson?: 'natural' | 'legal' | 'corporation' | 'non-corporation' | 'director-or-officer';
+    /**
+     * The amount applies per day or part of a day on which the violation
+     * occurs or continues. A daily ceiling is not a ceiling on the exposure, so
+     * `getMaxSanction` never counts such an element (Karin, Intern #70,
+     * 2026-09-28).
+     */
+    period?: 'day';
     severity?: string;
     /** When this element applies, in the law's own terms. */
     condition?: string;
@@ -326,6 +338,24 @@ export type SanctionRange =
           index?: string;
           combine?: 'lesser-of' | 'greater-of';
       });
+
+/**
+ * A country's highest attested flat ceiling, from `getMaxSanction`.
+ *
+ * `amount` is a floor on the exposure, never the exposure itself, whenever
+ * `uncounted` is above zero: the country also has penalties without a flat
+ * ceiling (per day, no ceiling, a ceiling in another act, a formula or one
+ * not established), and those can exceed `amount`.
+ */
+export interface MaxSanction {
+    lawId: string;
+    amount: number;
+    currency: string;
+    legalBasis: string;
+    sourceUrl: string;
+    /** Sanction elements in the country that `amount` does not cover. */
+    uncounted: number;
+}
 
 /**
  * Sector-specific authority

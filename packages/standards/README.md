@@ -133,9 +133,12 @@ const sanctions = getSanctions('lptt', 'SE');
 // [{ kind: 'amount', type: 'Sanktionsavgift', minAmount: 10000, maxAmount: 10000000,
 //    currency: 'SEK', cap: 'stated', legalBasis: '… 37 § och 39 §', sourceUrl: 'https://…' }]
 
-// Get the highest ceiling a law in the country states itself
-const maxSanction = getMaxSanction('DE');
-// { law: 'BFSG (Barrierefreiheitsstärkungsgesetz)', amount: 100000, currency: 'EUR' }
+// Get the highest flat ceiling a law in the country states itself
+const maxSanction = getMaxSanction('SE');
+// { lawId: 'lptt', amount: 10000000, currency: 'SEK', legalBasis: '… 37 § och 39 §',
+//   sourceUrl: 'https://…', uncounted: 1 }
+// uncounted > 0: the country also has penalties without a flat ceiling (here the
+// dos-lagen fine, which has no ceiling), so `amount` is a floor, not the exposure.
 
 // Get sector-specific EAA authorities
 const sectors = getSectorAuthorities('SE');
@@ -169,8 +172,16 @@ established against primary source. `null` never means "no penalty exists".
 Each element carries its own `legalBasis` and `sourceUrl`, and `cap` says where its ceiling
 comes from: `stated` in this law, `elsewhere` in another instrument, `no-ceiling` where a
 court decides, or `not-established`. An element is an `amount` (an optional `minAmount`
-and `maxAmount`) or a `formula` (a `factor` over an `index`). `getMaxSanction(country)`
-counts only ceilings the law states itself, so it never understates a country's exposure.
+and `maxAmount`) or a `formula` (a `factor` over an `index`). An element with
+`period: 'day'` applies per day or part of a day, and `liablePerson` follows the law's own
+categories (`natural`, `legal`, `corporation`, `non-corporation`, `director-or-officer`).
+
+`getMaxSanction(country)` returns the highest flat ceiling a law in the country states
+itself: `cap: 'stated'`, a positive `maxAmount` and no `period`. Everything else is counted
+in `uncounted`: a ceiling per day, in another instrument, no ceiling, one not established,
+or a formula. When `uncounted` is above zero, `amount` is a floor on the exposure, never the
+exposure itself. Sweden, for example, returns 10,000,000 SEK from LPTT with `uncounted: 1`,
+because the fine under dos-lagen has no ceiling.
 ## API Reference
 
 ### Core Functions
@@ -216,7 +227,7 @@ counts only ceilings the law states itself, so it never understates a country's 
 | `getNationalLawByFramework(framework, country?)` | Get law by WAD/EAA/DDA |
 | `getEnforcementBody(country, sector?)` | Get enforcement authority name |
 | `getSanctions(lawId, country?)` | Sanctions a law provides, as a list, or `null` where none is established |
-| `getMaxSanction(country?)` | Highest ceiling a law in the country states itself, or `null` |
+| `getMaxSanction(country?)` | Highest flat ceiling a law in the country states itself, with `uncounted` for penalties it does not cover, or `null` |
 | `getSectorAuthorities(country?)` | Get EAA sector authorities |
 | `getDatabaseStats(lang?)` | Get rule counts and coverage stats |
 

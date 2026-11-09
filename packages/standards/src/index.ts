@@ -240,6 +240,7 @@ import type {
     NationalLaw,
     SanctionRange,
     SanctionRangeBase,
+    MaxSanction,
     SectorAuthority,
     StatutoryExemption,
     Attestation,
@@ -273,6 +274,7 @@ export type {
     NationalLaw,
     SanctionRange,
     SanctionRangeBase,
+    MaxSanction,
     SectorAuthority,
     StatutoryExemption,
     Attestation,
@@ -909,36 +911,57 @@ export function getAllNationalLaws(): Array<NationalLaw & { country: Country }> 
  */
 export function getSanctions(lawId: string, country: Country = 'SE'): SanctionRange[] | null {
     const s = getNationalLaw(lawId, country)?.sanctions;
-    return s ? somLista(s) : null;
+    // En kopia: den som anropar ska inte kunna ändra i paketets data.
+    return s ? somLista(s).map((e) => structuredClone(e)) : null;
 }
 
 const somLista = (s: SanctionRange | SanctionRange[]): SanctionRange[] => (Array.isArray(s) ? s : [s]);
 
+/** Ett element som har ett platt tak, angivet i lagen själv. */
+const harPlattTak = (s: SanctionRange): s is Extract<SanctionRange, { kind: 'amount' }> & { maxAmount: number } =>
+    s.kind === 'amount'
+    && s.cap === 'stated'
+    && s.period === undefined
+    && typeof s.maxAmount === 'number'
+    && s.maxAmount > 0;
+
 /**
- * Landets högsta belagda sanktionstak, eller null.
+ * Landets högsta belagda platta sanktionstak, eller null om landet inget har.
  *
- * Funktionen får aldrig underskatta ett lands största exponering, eftersom det
- * är den riktning ett fel skadar mest i. Därför räknas bara element där lagen
- * själv anger taket: `kind: 'amount'`, `cap: 'stated'` och ett positivt
- * `maxAmount`. Ett tak som står i en annan författning (`elsewhere`), en lag
- * utan tak (`no-ceiling`) och ett tak som inte är belagt (`not-established`)
- * räknas aldrig, och inte heller en formel, vars belopp beror på den som döms.
+ * Bara element där lagen själv anger ett platt tak räknas: `kind: 'amount'`,
+ * `cap: 'stated'`, ett positivt `maxAmount` och ingen `period`. Allt annat
+ * räknas i `uncounted`: ett tak per dag (Karin, Intern #70, 2026-09-28: "Ett
+ * dagligt tak är inte samma sak som ett tak på exponeringen"), ett tak i en
+ * annan författning, en lag utan tak, ett tak som inte är belagt och en formel.
+ *
+ * `amount` är därför ett golv för exponeringen, aldrig exponeringen, när
+ * `uncounted` är större än noll. Före källkontrollen 2026-11-09 lovade
+ * funktionen att aldrig underskatta, men Sverige svarade 10 000 000 SEK fast
+ * dos-lagens vite saknar tak, och Kanada 250 000 CAD fast AODA tar 100 000 CAD
+ * per dag. Flaggan gör golvet synligt i stället för att ge sken av ett tak.
  *
  * Intern #63 och #66: före #70 läste funktionen ett platt min/max-fält, och
  * sexton poster bar ett deklarerat nolltak som betydde "ingen siffra
- * registrerad". Sju länder svarade då att deras största exponering var noll.
- * `cap` säger nu uttryckligen vad ett saknat belopp betyder.
+ * registrerad". `cap` säger nu uttryckligen vad ett saknat belopp betyder.
+ *
+ * Intern #146: svaret bär `lawId`, `legalBasis` och `sourceUrl`, inte lagens
+ * namn, som annars hade gått förbi lagnamnsgrinden.
  */
-export function getMaxSanction(country: Country = 'SE'): { law: string; amount: number; currency: string } | null {
-    let bäst: { law: string; amount: number; currency: string } | null = null;
+export function getMaxSanction(country: Country = 'SE'): MaxSanction | null {
+    let bäst: Omit<MaxSanction, 'uncounted'> | null = null;
+    let uncounted = 0;
     for (const law of getNationalLaws(country)) {
         for (const s of law.sanctions ? somLista(law.sanctions) : []) {
-            if (s.kind !== 'amount' || s.cap !== 'stated') continue;
-            if (typeof s.maxAmount !== 'number' || s.maxAmount <= 0) continue;
-            if (!bäst || s.maxAmount > bäst.amount) bäst = { law: law.law, amount: s.maxAmount, currency: s.currency };
+            if (!harPlattTak(s)) {
+                uncounted++;
+                continue;
+            }
+            if (!bäst || s.maxAmount > bäst.amount) {
+                bäst = { lawId: law.id, amount: s.maxAmount, currency: s.currency, legalBasis: s.legalBasis, sourceUrl: s.sourceUrl };
+            }
         }
     }
-    return bäst;
+    return bäst ? { ...bäst, uncounted } : null;
 }
 
 /**

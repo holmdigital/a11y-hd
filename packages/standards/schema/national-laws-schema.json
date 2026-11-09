@@ -97,16 +97,27 @@
                         "type": { "type": "string", "minLength": 1 },
                         "description": { "type": "string", "minLength": 1 },
                         "currency": { "type": "string", "pattern": "^[A-Z]{3}$" },
-                        "liablePerson": { "enum": ["natural", "legal"] },
+                        "liablePerson": { "enum": ["natural", "legal", "corporation", "non-corporation", "director-or-officer"] },
+                        "period": { "const": "day" },
                         "severity": { "type": "string", "minLength": 1 },
                         "condition": { "type": "string", "minLength": 1 },
                         "cap": { "enum": ["stated", "elsewhere", "no-ceiling", "not-established"] },
                         "legalBasis": { "type": "string", "minLength": 1 },
-                        "sourceUrl": { "type": "string", "pattern": "^https://" },
+                        "sourceUrl": { "type": "string", "pattern": "^https://[^/\\s]+\\.[^/\\s]+" },
                         "example": { "type": "string", "minLength": 1 },
                         "minAmount": { "type": "number", "minimum": 0 },
                         "maxAmount": { "type": "number", "exclusiveMinimum": 0 }
-                    }
+                    },
+                    "allOf": [
+                        {
+                            "if": { "properties": { "cap": { "const": "stated" } }, "required": ["cap"] },
+                            "then": { "required": ["maxAmount"] }
+                        },
+                        {
+                            "if": { "properties": { "cap": { "enum": ["no-ceiling", "not-established"] } }, "required": ["cap"] },
+                            "then": { "not": { "required": ["maxAmount"] } }
+                        }
+                    ]
                 },
                 {
                     "type": "object",
@@ -117,12 +128,13 @@
                         "type": { "type": "string", "minLength": 1 },
                         "description": { "type": "string", "minLength": 1 },
                         "currency": { "type": "string", "pattern": "^[A-Z]{3}$" },
-                        "liablePerson": { "enum": ["natural", "legal"] },
+                        "liablePerson": { "enum": ["natural", "legal", "corporation", "non-corporation", "director-or-officer"] },
+                        "period": { "const": "day" },
                         "severity": { "type": "string", "minLength": 1 },
                         "condition": { "type": "string", "minLength": 1 },
                         "cap": { "enum": ["stated", "elsewhere", "no-ceiling", "not-established"] },
                         "legalBasis": { "type": "string", "minLength": 1 },
-                        "sourceUrl": { "type": "string", "pattern": "^https://" },
+                        "sourceUrl": { "type": "string", "pattern": "^https://[^/\\s]+\\.[^/\\s]+" },
                         "example": { "type": "string", "minLength": 1 },
                         "factor": { "type": "number", "exclusiveMinimum": 0 },
                         "index": { "type": "string", "minLength": 1 },
