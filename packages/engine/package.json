@@ -92,7 +92,7 @@
         "cosmiconfig": "^9.0.2",
         "html-validate": "11.16.0",
         "ora": "^9.4.1",
-        "puppeteer": "25.6.0",
+        "puppeteer": "25.16.0",
         "react": "^18.3.1 || ^19.0.0",
         "react-dom": "^18.3.1 || ^19.0.0",
         "ws": "^8.21.1"
