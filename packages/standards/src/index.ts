@@ -240,6 +240,7 @@ import type {
     NationalLaw,
     SanctionRange,
     SanctionRangeBase,
+    SanctionMeasure,
     SectorAuthority,
     StatutoryExemption,
     Attestation,
@@ -273,6 +274,7 @@ export type {
     NationalLaw,
     SanctionRange,
     SanctionRangeBase,
+    SanctionMeasure,
     SectorAuthority,
     StatutoryExemption,
     Attestation,
@@ -917,12 +919,16 @@ const somLista = (s: SanctionRange | SanctionRange[]): SanctionRange[] => (Array
 /**
  * Landets högsta belagda sanktionstak, eller null.
  *
- * Funktionen får aldrig underskatta ett lands största exponering, eftersom det
- * är den riktning ett fel skadar mest i. Därför räknas bara element där lagen
- * själv anger taket: `kind: 'amount'`, `cap: 'stated'` och ett positivt
- * `maxAmount`. Ett tak som står i en annan författning (`elsewhere`), en lag
- * utan tak (`no-ceiling`) och ett tak som inte är belagt (`not-established`)
- * räknas aldrig, och inte heller en formel, vars belopp beror på den som döms.
+ * Funktionen ger det högsta tak per överträdelse eller beslut som en lag själv
+ * anger: `kind: 'amount'`, `cap: 'stated'` och ett positivt `maxAmount`. Det
+ * är INTE landets största exponering (Juno, PR #219, 2026-11-08). Den räknar
+ * inte formler (till exempel upp till 5 % av omsättningen för stora bolag i
+ * Italien), en överträdelse som blir en ny överträdelse varje dag (Accessible
+ * Canada Act s. 88) eller regler som låter ett angivet tak överskridas
+ * (`exceedableUnder`, till exempel OWiG § 17(4) i Tyskland). Ett tak i en
+ * annan författning (`elsewhere`), en lag utan tak (`no-ceiling`), ett tak som
+ * inte är belagt (`not-established`) och en åtgärd som inte är ett belopp
+ * (`kind: 'measure'`) räknas aldrig.
  *
  * Intern #63 och #66: före #70 läste funktionen ett platt min/max-fält, och
  * sexton poster bar ett deklarerat nolltak som betydde "ingen siffra

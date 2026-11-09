@@ -305,14 +305,29 @@ export interface SanctionRangeBase {
      *   source. Never read this as "no ceiling".
      */
     cap: 'stated' | 'elsewhere' | 'no-ceiling' | 'not-established';
+    /**
+     * The provision that lets the stated ceiling be exceeded, where one exists
+     * (Germany: § 17(4) OWiG, the fine should exceed the economic benefit).
+     * Absent means no such provision has been recorded, not that none exists.
+     */
+    exceedableUnder?: string;
     legalBasis: string;
     sourceUrl: string;
     example?: string;
 }
 
 /**
- * An amount or a formula. Poland's EAA act, for example, sets the penalty as
- * a formula over salary and turnover rather than as an amount.
+ * A sanction that is not a sum of money, such as suspending or terminating
+ * federal financial assistance (US, HHS Section 504) or an order. It has no
+ * currency and no ceiling, and it is never counted as an amount.
+ */
+export type SanctionMeasure = Omit<SanctionRangeBase, 'currency' | 'cap' | 'exceedableUnder'> & {
+    kind: 'measure';
+};
+
+/**
+ * An amount, a formula or a measure. Poland's EAA act, for example, sets the
+ * penalty as a formula over salary and turnover rather than as an amount.
  */
 export type SanctionRange =
     | (SanctionRangeBase & {
@@ -325,7 +340,8 @@ export type SanctionRange =
           factor: number;
           index?: string;
           combine?: 'lesser-of' | 'greater-of';
-      });
+      })
+    | SanctionMeasure;
 
 /**
  * Sector-specific authority

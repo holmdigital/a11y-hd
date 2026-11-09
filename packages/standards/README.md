@@ -169,7 +169,10 @@ established against primary source. `null` never means "no penalty exists".
 Each element carries its own `legalBasis` and `sourceUrl`, and `cap` says where its ceiling
 comes from: `stated` in this law, `elsewhere` in another instrument, `no-ceiling` where the
 law sets no ceiling, or `not-established`. An element is an `amount` (an optional `minAmount`
-and `maxAmount`) or a `formula` (a `factor` over an `index`). `getMaxSanction(country)`
+and `maxAmount`), a `formula` (a `factor` over an `index`) or a `measure`, a sanction that
+is not a sum of money (US: suspending federal financial assistance), with no currency and no
+`cap`. `exceedableUnder` names the provision that lets a stated ceiling be exceeded (Germany:
+§ 17(4) OWiG). `getMaxSanction(country)`
 returns the highest ceiling per violation or decision that a law states itself. It is not a
 country's maximum exposure: it does not count formula ceilings (for example up to 5% of
 turnover for large companies in Italy), a violation that becomes a new violation each day

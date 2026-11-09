@@ -41,7 +41,7 @@ import {
     NATIONAL_LAW_FALLBACK,
     getEnforcementStatementText,
 } from './index';
-import type { Attestation, Country, ConvergenceRule, NationalLaw } from './types';
+import type { Attestation, Country, ConvergenceRule, NationalLaw, SanctionRange } from './types';
 import rulesSv from '../data/rules.sv.json';
 import rulesEn from '../data/rules.en.json';
 import rulesDe from '../data/rules.de.json';
@@ -822,15 +822,39 @@ describe('Intern #70 — sanktionsschemat', () => {
         expect(validera({ ...formel, maxAmount: 1000 })).toBe(false);
     });
 
-    it('varje element vilar på en attesterad sanktionsart, och varje belopp på ett attesterat belopp', () => {
+    it('en åtgärd är inget belopp: ingen valuta, inget tak, inga belopp', () => {
+        // Meja-beslutet 2026-11-09 (Karin): HHS indragna statsbidrag är ingen
+        // penningsanktion, och inget cap-värde passade (Juno, PR #219, 4.1).
+        const åtgärd = { kind: 'measure', type: 'Indraget stöd', description: 'Test.', legalBasis: '80.8', sourceUrl: 'https://example.org/lag' };
+        expect(validera(åtgärd)).toBe(true);
+        expect(validera({ ...åtgärd, currency: 'USD' })).toBe(false);
+        expect(validera({ ...åtgärd, cap: 'no-ceiling' })).toBe(false);
+        expect(validera({ ...åtgärd, maxAmount: 1000 })).toBe(false);
+        for (const fält of ['legalBasis', 'sourceUrl']) {
+            const utan: Record<string, unknown> = { ...åtgärd };
+            delete utan[fält];
+            expect(validera(utan), fält).toBe(false);
+        }
+    });
+
+    it('exceedableUnder får stå på belopp och formel, inte vara tom', () => {
+        expect(validera({ ...giltigt, exceedableUnder: 'OWiG § 17(4)' })).toBe(true);
+        expect(validera({ ...giltigt, exceedableUnder: '' })).toBe(false);
+    });
+
+    it('varje element vilar på en attesterad sanktionsart, och varje påstående om taket på ett attesterat belopp', () => {
         // Specens ansvarsgräns: inget belopp kan skrivas utan belägg. Belägget
         // är attesteringen, som genereras ur registret och inte redigeras här.
+        //
+        // Meja-beslutet 2026-11-09 (Karin, efter Juno i PR #219): `stated`,
+        // `elsewhere` och `no-ceiling` är också påståenden om taket. Bara
+        // `not-established` och en åtgärd får stå utan attesterat belopp.
         for (const lag of getAllNationalLaws()) {
             const attested = lag.attestation?.attested ?? [];
             for (const e of element(lag)) {
                 expect(attested, `${lag.id}: ${e.type}`).toContain('sanktionsart');
-                const harBelopp = e.kind === 'formula' || e.minAmount !== undefined || e.maxAmount !== undefined;
-                if (harBelopp) expect(attested, `${lag.id}: ${e.type}`).toContain('sanktionsbelopp');
+                const påstårTak = e.kind !== 'measure' && e.cap !== 'not-established';
+                if (påstårTak) expect(attested, `${lag.id}: ${e.type}`).toContain('sanktionsbelopp');
             }
         }
     });
@@ -847,7 +871,7 @@ describe('Intern #70 — sanktionsschemat', () => {
         const bfsg = getNationalLaws('DE').find(l => l.id === 'de-bfsg')!;
         const spara = bfsg.sanctions;
         try {
-            const [högsta, lägsta] = element(bfsg);
+            const [högsta, lägsta] = element(bfsg) as Extract<SanctionRange, { kind: 'amount' }>[];
             bfsg.sanctions = [{ ...högsta, cap: 'elsewhere' }, lägsta];
             expect(getMaxSanction('DE')?.amount).toBe(10000);
             bfsg.sanctions = [{ ...högsta, cap: 'not-established' }, { ...lägsta, cap: 'no-ceiling' }];
@@ -872,17 +896,25 @@ describe('Intern #70 — sanktionsschemat', () => {
         const ada = getSanctions('us-ada-title-iii', 'US')!;
         expect(ada).toHaveLength(2);
         for (const e of ada) {
-            expect(e.cap).toBe('elsewhere');
+            expect(e.kind === 'amount' ? e.cap : null).toBe('elsewhere');
             expect(e.kind === 'amount' ? e.maxAmount : undefined).toBeUndefined();
         }
-        // us-hhs-section-504: den signerade sanktionen, utan tak och utan belopp.
+        // us-hhs-section-504: den signerade sanktionen i två element, en åtgärd
+        // (indraget stöd) och enskild talan utan tak.
         const hhs = getSanctions('us-hhs-section-504', 'US')!;
-        expect(hhs).toHaveLength(1);
-        expect(hhs[0].cap).toBe('no-ceiling');
+        expect(hhs.map(e => e.kind)).toEqual(['measure', 'amount']);
+        const talan = hhs[1];
+        expect(talan.kind === 'amount' ? talan.cap : null).toBe('no-ceiling');
         expect(getMaxSanction('US')).toBeNull();
         // it-eaa: upp till 5 % av omsättningen är en formel och räknas inte i getMaxSanction.
         const it = getSanctions('it-eaa', 'IT')!;
-        expect(it.some(e => e.kind === 'formula' && e.factor === 0.05)).toBe(true);
+        // Procentsatsen står i lag 4/2004, alltså elsewhere (Meja-beslutet 2026-11-09).
+        expect(it.some(e => e.kind === 'formula' && e.factor === 0.05 && e.cap === 'elsewhere')).toBe(true);
+        // de-bfsg: taket är angivet men får överskridas, och räknas ändå per överträdelse.
+        for (const e of getSanctions('de-bfsg', 'DE')!) {
+            expect(e.kind === 'amount' ? e.exceedableUnder : null).toMatch(/§ 17\(4\)/);
+        }
+        expect(getMaxSanction('DE')?.amount).toBe(100000);
         expect(getMaxSanction('IT')?.amount).toBe(40000);
     });
 });
