@@ -719,6 +719,13 @@ export const AccessibilityStatement: React.FC<AccessibilityStatementProps> = ({
                 ?? ((section.id === 'enforcement' && country === 'SE' && effectiveLang === 'sv' && sector === 'public')
                     ? resolveSwedishEnforcementContent(enforcementBody, replacements['{<national_law>}'])
                     : renderTemplate(section.content, section.id === 'testing' ? 'method' : 'compliance'));
+            // Intern #23 (motorn) och #146 (här): finns ingen tillsynsmyndighet
+            // och ingen text för delad tillsyn utelämnas hela avsnittet. Annars
+            // renderas tomma hål i kundtext, som "Tilsyn har ansvaret for tilsyn
+            // med …" och "Du kan klage til hvis du mener …" i privat norsk
+            // sektor. Motorn hade regeln, men HTML-utlåtandet renderas här, så
+            // kunderna såg hålen ändå.
+            if (section.id === 'enforcement' && !delad && enforcementBody.trim() === '') return null;
             const trimmed = content.trim();
             if (!trimmed) return null;
 
