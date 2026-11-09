@@ -996,3 +996,36 @@ describe('Intern #83 — delad tillsyn i svensk privat sektor', () => {
         expect(engelska).not.toContain(KARIN!);
     });
 });
+
+/**
+ * Intern #146: privat norsk sektor har ingen tillsynsmyndighet. Motorn
+ * utelämnade redan avsnittet (Intern #23), men HTML-utlåtandet renderas av
+ * den här komponenten, som skrev "Tilsyn har ansvaret for tilsyn med …" och
+ * "Du kan klage til hvis du mener …" med ett tomt namn. Livekörningen i Intern
+ * hittade det först när utplockningen av myndighetsnamnet lagades.
+ */
+describe('AccessibilityStatement — tillsynsavsnittet utan myndighet', () => {
+    it('privat norsk sektor får inget tillsynsavsnitt med tomma hål', () => {
+        expect(getEnforcementBody('NO', 'private')).toBe('');
+        const { container } = render(
+            <AccessibilityStatement {...defaultProps} locale="no" country="NO" sector="private" />
+        );
+        const text = container.textContent ?? '';
+        expect(text).not.toContain('har ansvaret for tilsyn');
+        expect(text).not.toMatch(/klage til\s+hvis/);
+    });
+
+    it('offentlig norsk sektor behåller avsnittet med UU-tilsynet', () => {
+        const { container } = render(
+            <AccessibilityStatement {...defaultProps} locale="no" country="NO" sector="public" />
+        );
+        expect(container.textContent ?? '').toContain('UU-tilsynet har ansvaret for tilsyn');
+    });
+
+    it('privat svensk sektor behåller texten för delad tillsyn', () => {
+        const { container } = render(
+            <AccessibilityStatement {...defaultProps} locale="sv" country="SE" sector="private" />
+        );
+        expect(container.textContent ?? '').toContain('uppdelad mellan flera myndigheter');
+    });
+});
