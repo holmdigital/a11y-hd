@@ -66,10 +66,16 @@ updates:
       # en breaking change som kräver changeset + major-bump, inte
       # chore(deps). Se stängd PR #87. Minor/patch inom 18.x/19.x
       # fortsätter grupperas som vanligt.
+      #
+      # react och react-dom undantas helt, inte bara för majors. Grupp-PR:erna
+      # följer inte versioning-strategy (#237 och #253, 2026-11: axe-core
+      # ^4.13.0 blev ^4.14.0 trots increase-if-necessary) och skrev om engines
+      # "^18.3.1 || ^19.0.0" till "^19.3.1". Policytestet i engine stoppar det,
+      # men då faller hela gruppen och alla andra bumpar fastnar med den. React
+      # höjs i stället för hand: `npm update react react-dom` uppdaterar bara
+      # lockfilen, och spannen står kvar.
       - dependency-name: "react"
-        update-types: ["version-update:semver-major"]
       - dependency-name: "react-dom"
-        update-types: ["version-update:semver-major"]
       - dependency-name: "@types/react"
         update-types: ["version-update:semver-major"]
       - dependency-name: "@types/react-dom"
