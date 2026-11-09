@@ -101,20 +101,36 @@ export function klarsprakLegalLine(
         return `Ingen lagkrav, varken DOS-lagen eller lagen om vissa produkters och tjänsters tillgänglighet. ${opts?.ruleId ?? 'Regeln'} är god praxis (axe-core taggar den best-practice) och rekommenderas för bättre struktur, men ingår inte i lagens golv.`;
     }
 
-    // Gren 3 — riktigt WCAG 2.2-kriterium som ännu inte är bindande. Samma text
-    // oavsett sektor. Skiljs från gren 2: detta ÄR ett framgångskriterium.
+    // Gren 3 — riktigt WCAG 2.2-kriterium som ännu inte är bindande. Skiljs
+    // från gren 2: detta ÄR ett framgångskriterium.
+    //
+    // Juno H6 (Intern #128, 2026-10-10): "väntat 30 november 2026" var EN 301
+    // 549 V4.1.1:s egen tillkännagivandefrist (datum för nationella
+    // standardiseringsorgan att tillkännage standarden), inte ett datum då
+    // kriteriet faktiskt blir bindande. MDFFS 2019:2 5 § pekar fortfarande på
+    // V3.2.1, och en EU-publicering ändrar inte föreskriften av sig själv.
+    // Lagen (2023:254) ger i sin tur bara presumtion enligt 9 §, aldrig ett
+    // bindande krav i sig. Datumet är borttaget; sektorerna skiljer sig här
+    // (till skillnad från tidigare) eftersom de två lagarna blir bindande på
+    // olika sätt.
     if (isNotYetLaw) {
         const phrase = criterionPhrase(level, opts?.wcagCriteria ?? '', title);
-        return `Ännu inte lagkrav, varken DOS-lagen eller lagen om vissa produkters och tjänsters tillgänglighet. ${phrase} tillkom i WCAG 2.2 och blir bindande i båda lagarna när EN 301 549 V4.x refereras i EU:s officiella tidning, väntat 30 november 2026.`;
+        if (opts?.sector === 'private') {
+            return `Ännu inte lagkrav enligt lagen (2023:254) om vissa produkters och tjänsters tillgänglighet. ${phrase} tillkom i WCAG 2.2. Det ger presumtion enligt 9 § när en harmoniserad standard som omfattar kriteriet har offentliggjorts i Europeiska unionens officiella tidning under direktiv (EU) 2019/882.`;
+        }
+        return `Ännu inte lagkrav enligt DOS-lagen (2018:1937). ${phrase} tillkom i WCAG 2.2. Det blir bindande när MDFFS 2019:2 5 § ändras till en version av EN 301 549 som omfattar kriteriet.`;
     }
 
     // Gren 1 — formellt lagkrav. Här, och bara här, skiljer sig sektorerna.
     const phrase = criterionPhrase(level, opts?.wcagCriteria ?? '', title);
     if (opts?.sector === 'private') {
-        // Juno kunde INTE belägga vilken EN 301 549-version som är citerad för
-        // lag 2023:254 mot primärkälla — harmoniseringen verkar pågå. Raden går
-        // därför ut med markeringen kvar, aldrig med ett gissat versionsnummer.
-        return `Lagkrav: lagen om vissa produkters och tjänsters tillgänglighet (2023:254), 6 och 9 §§. ${phrase}. EN 301 549-version för denna lag är inte verifierad.`;
+        // Juno H5 (Intern #128, 2026-10-10): 9 § är en presumtionsregel ("ska
+        // förutsättas överensstämma"), inte ett eget lagkrav — varken lagen,
+        // förordningen eller PTSFS 2024:6 nämner WCAG eller EN 301 549. Den
+        // tidigare lydelsen ("6 och 9 §§" som lagkrav) slog ihop kravet (6 §)
+        // och presumtionsregeln (9 §) som om båda vore skyldigheter. Lydelsen
+        // nedan är Junos egna, ordagranna förslag ur #128.
+        return `Lagkrav om tjänsten omfattas av lagen (2023:254) 4 § och inte tillhandahålls av ett mikroföretag (10 §): webbplatser och appar ska vara uppfattningsbara, hanterbara, begripliga och robusta (6 § och förordningen (2023:676) bilaga 2 punkt 3). Lagen nämner inte WCAG. ${phrase} är ett vedertaget sätt att visa detta, men ger presumtion enligt 9 § först när en harmoniserad standard som omfattar kriteriet har offentliggjorts i Europeiska unionens officiella tidning.`;
     }
     const en = opts?.en301549Criteria && opts.en301549Criteria !== 'N/A' && opts.en301549Criteria !== 'Unknown'
         ? `, EN 301 549 ${opts.en301549Criteria}`

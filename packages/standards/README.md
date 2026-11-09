@@ -167,10 +167,15 @@ returns a list of elements, one per sanction the law provides, and `null` where 
 established against primary source. `null` never means "no penalty exists".
 
 Each element carries its own `legalBasis` and `sourceUrl`, and `cap` says where its ceiling
-comes from: `stated` in this law, `elsewhere` in another instrument, `no-ceiling` where a
-court decides, or `not-established`. An element is an `amount` (an optional `minAmount`
+comes from: `stated` in this law, `elsewhere` in another instrument, `no-ceiling` where the
+law sets no ceiling, or `not-established`. An element is an `amount` (an optional `minAmount`
 and `maxAmount`) or a `formula` (a `factor` over an `index`). `getMaxSanction(country)`
-counts only ceilings the law states itself, so it never understates a country's exposure.
+returns the highest ceiling per violation or decision that a law states itself. It is not a
+country's maximum exposure: it does not count formula ceilings (for example up to 5% of
+turnover for large companies in Italy), a violation that becomes a new violation each day
+(section 88 of the Accessible Canada Act), or general rules that let a stated maximum be
+exceeded (§ 17(4) OWiG in Germany).
+
 ## API Reference
 
 ### Core Functions

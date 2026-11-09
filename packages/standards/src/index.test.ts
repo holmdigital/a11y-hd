@@ -4,6 +4,7 @@ import { readFileSync, readdirSync, statSync } from 'fs';
 import { join } from 'path';
 import Ajv from 'ajv';
 import {
+    isComplianceTierInForce,
     getEN301549Mapping,
     getDOSLagenReference,
     getICTManualChecklist,
@@ -35,8 +36,10 @@ import {
     getAllNationalLaws,
     generateRegulatoryReport,
     isNameAttested,
+    lawPhrase,
     resolveNationalLawReference,
     NATIONAL_LAW_FALLBACK,
+    getEnforcementStatementText,
 } from './index';
 import type { Attestation, Country, ConvergenceRule, NationalLaw } from './types';
 import rulesSv from '../data/rules.sv.json';
@@ -141,6 +144,18 @@ describe('EU Legal Framework', () => {
         const seAuthorities = getNordicAuthoritiesByCountry('SE');
         expect(seAuthorities.length).toBeGreaterThan(0);
         expect(seAuthorities.every(a => a.country === 'SE')).toBe(true);
+    });
+
+    it('H7 (Intern #128): se-pts names the real law, not a fabricated one, and is not framed as EAA\'s sole SE supervisor', () => {
+        const pts = getNordicAuthority('se-pts');
+        expect(pts).toBeDefined();
+        // "Lag om tillgänglighetskrav för produkter och tjänster" doesn't exist
+        // as a Swedish law name — the real one is lagen (2023:254).
+        expect(pts?.nationalLaw).toContain('2023:254');
+        expect(pts?.nationalLaw).not.toContain('Lag om tillgänglighetskrav för produkter och tjänster');
+        // PTS's own site says "en av flera tillsynsmyndigheter", never the sole
+        // EAA supervisor in Sweden.
+        expect(pts?.comment).not.toMatch(/^Ansvarar för tillsyn av EAA i Sverige/);
     });
 
     it('should get statement tools', () => {
@@ -307,7 +322,7 @@ describe('National Laws — IT, PT, PL', () => {
     it('should have correct law identifiers', () => {
         expect(getNationalLawByFramework('WAD', 'IT')?.law).toBe('Legge 4/2004');
         expect(getNationalLawByFramework('EAA', 'IT')?.law).toBe('D.Lgs. 82/2022');
-        expect(getNationalLawByFramework('WAD', 'PT')?.law).toBe('DL 83/2018');
+        expect(getNationalLawByFramework('WAD', 'PT')?.law).toBe('Decreto-Lei n.º 83/2018');
         // Intern #63/#66 F1: DL 101-D/2023 är ett diploma DRE:s ELI-resolver inte
         // lämnar ut på något av 168 prövade datum under 2023, och som det är EJ
         // BELAGT att det existerar. Rätt akt är 82/2022, belagt i artigo 1.º.
@@ -473,11 +488,30 @@ describe('National Laws — US HHS Section 504', () => {
         expect(law).toBeDefined();
         expect(law?.euFramework).toBe('REHAB');
         expect(law?.scope).toBe('private');
-        // effectiveDate reflects the WCAG benchmark in-force date for the large-entity tier
-        // (HHS IFR 2026-09266 extended this from 2026-05-11 to 2027-05-11); inForce flips
-        // to true on that date — drift-guard test validates the relationship.
-        expect(law?.inForce).toBe(false);
-        expect(law?.effectiveDate).toBe('2027-05-11');
+        // inForce är flaggan för regelns grundnivå: 45 CFR 84.84(a), effective 2024-07-08
+        // (89 FR 40066). WCAG-datumen per nivå ligger i complianceDeadlines och testas nedan.
+        expect(law?.inForce).toBe(true);
+        expect(law?.effectiveDate).toBe('2024-07-08');
+    });
+
+    it('resolves WCAG tier deadlines at runtime without flipping inForce for the entry', () => {
+        const law = getNationalLaw('us-hhs-section-504', 'US');
+        expect(law).not.toBeNull();
+        if (!law) return;
+        // Före båda datumen: ingen WCAG-nivå är gällande, men regelns grundnivå gäller redan.
+        const before = new Date('2027-05-10T12:00:00Z');
+        expect(isComplianceTierInForce(law, 'largeEntity', before)).toBe(false);
+        expect(isComplianceTierInForce(law, 'smallEntity', before)).toBe(false);
+        expect(law.inForce).toBe(true);
+        // 15 eller fler anställda: gäller från 2027-05-11, färre än 15 först från 2028-05-10.
+        const largeDay = new Date('2027-05-11T12:00:00Z');
+        expect(isComplianceTierInForce(law, 'largeEntity', largeDay)).toBe(true);
+        expect(isComplianceTierInForce(law, 'smallEntity', largeDay)).toBe(false);
+        const smallDayBefore = new Date('2028-05-09T12:00:00Z');
+        expect(isComplianceTierInForce(law, 'smallEntity', smallDayBefore)).toBe(false);
+        const smallDay = new Date('2028-05-10T12:00:00Z');
+        expect(isComplianceTierInForce(law, 'smallEntity', smallDay)).toBe(true);
+        expect(law.inForce).toBe(true);
     });
 
     it('should have tiered compliance deadlines for HHS Section 504', () => {
@@ -827,8 +861,75 @@ describe('Intern #70 — sanktionsschemat', () => {
 
     it('de borttagna posterna bär det gamla fältet ordagrant i note', () => {
         const borttagna = getAllNationalLaws().filter(l => !l.sanctions && (l.note ?? '').includes('Sanctions (Intern #70'));
-        expect(borttagna.length).toBeGreaterThanOrEqual(18);
+        // Arton vid utkastet. Junos granskning 2026-11-08 lade tillbaka
+        // us-ada-title-iii och us-hhs-section-504, så sexton är kvar.
+        expect(borttagna.length).toBeGreaterThanOrEqual(16);
         for (const l of borttagna) expect(l.note, l.id).toContain('The earlier record, verbatim:');
+    });
+
+    it('Junos granskning 2026-11-08: tak i annan författning, formler och tak som saknas räknas inte', () => {
+        // us-ada-title-iii: taket står i 28 CFR 85.5 och justeras, alltså elsewhere och inget fast belopp.
+        const ada = getSanctions('us-ada-title-iii', 'US')!;
+        expect(ada).toHaveLength(2);
+        for (const e of ada) {
+            expect(e.cap).toBe('elsewhere');
+            expect(e.kind === 'amount' ? e.maxAmount : undefined).toBeUndefined();
+        }
+        // us-hhs-section-504: den signerade sanktionen, utan tak och utan belopp.
+        const hhs = getSanctions('us-hhs-section-504', 'US')!;
+        expect(hhs).toHaveLength(1);
+        expect(hhs[0].cap).toBe('no-ceiling');
+        expect(getMaxSanction('US')).toBeNull();
+        // it-eaa: upp till 5 % av omsättningen är en formel och räknas inte i getMaxSanction.
+        const it = getSanctions('it-eaa', 'IT')!;
+        expect(it.some(e => e.kind === 'formula' && e.factor === 0.05)).toBe(true);
+        expect(getMaxSanction('IT')?.amount).toBe(40000);
+    });
+});
+
+/**
+ * Intern #83 och Karins beslut i #94 fråga 2: myndighetsraden för svensk
+ * privat sektor anger hur tillsynen är fördelad, eftersom motorn inte vet
+ * vilken tjänst kunden driver. Texten är Karins, ordagrant.
+ */
+describe('Intern #83 — delad tillsyn i utlåtandet', () => {
+    const KARIN = 'Tillsynen över lagen (2023:254) om vissa produkters och tjänsters tillgänglighet är uppdelad mellan flera myndigheter beroende på vilken tjänst som erbjuds: Post- och telestyrelsen ansvarar för elektronisk kommunikation, banktjänster och e-handelstjänster, Mediemyndigheten för audiovisuella medietjänster, Myndigheten för tillgängliga medier för e-böcker, och Konsumentverket respektive Transportstyrelsen för olika delar av persontransporttjänster.';
+
+    it('svensk privat sektor får Karins text ordagrant', () => {
+        expect(getEnforcementStatementText('SE', 'private', 'sv')).toBe(KARIN);
+        // Karin: ingen paragrafhänvisning i löptexten.
+        expect(KARIN).not.toContain('§');
+    });
+
+    it('andra språk, andra sektorer och andra länder behåller mallens avsnitt', () => {
+        expect(getEnforcementStatementText('SE', 'private', 'en')).toBeNull();
+        expect(getEnforcementStatementText('SE', 'public', 'sv')).toBeNull();
+        expect(getEnforcementStatementText('DK', 'private', 'da')).toBeNull();
+    });
+
+    it('texten namnger lagen och går därför genom lagnamnsgrinden', () => {
+        const lptt = getNationalLaws('SE').find(l => l.id === 'lptt')!;
+        const spara = lptt.attestation;
+        try {
+            lptt.attestation = { ...spara!, attested: spara!.attested.filter(f => f !== 'lagnamn') };
+            expect(getEnforcementStatementText('SE', 'private', 'sv')).toBeNull();
+        } finally {
+            lptt.attestation = spara;
+        }
+    });
+
+    it('schemat godtar bara språkkoder med två bokstäver och tar inte tom text', () => {
+        const schema = JSON.parse(readFileSync(join(__dirname, '..', 'schema', 'national-laws-schema.json'), 'utf-8'));
+        const data = JSON.parse(readFileSync(join(__dirname, '..', 'data', 'legal', 'national-laws.json'), 'utf-8'));
+        const validera = (statementText: unknown): boolean => {
+            const kopia = structuredClone(data);
+            kopia.laws.SE.find((l: { id: string }) => l.id === 'lptt').enforcement.statementText = statementText;
+            return new Ajv({ allErrors: true }).compile(schema)(kopia) as boolean;
+        };
+        expect(validera({ sv: KARIN })).toBe(true);
+        expect(validera({ 'sv-SE': KARIN })).toBe(false);
+        expect(validera({ sv: '' })).toBe(false);
+        expect(validera({})).toBe(false);
     });
 });
 
@@ -915,6 +1016,8 @@ describe('Intern #83/#63/#70/#88 — datasvepet 2026-09-24', () => {
             authorityName: 'PTS (Post- och telestyrelsen)',
             responsibility: 'Marknadskontrollmyndighet för produkter (28 § och 25 § förordning (2023:676)) samt tillsynsmyndighet för elektronisk kommunikation, banktjänster och e-handelstjänster (4 § första stycket 1, 5 och 7), med samordningsansvar för övriga sektorsmyndigheter.',
             website: 'https://pts.se',
+            // Utlåtandets text (Karins beslut i #94 fråga 2) prövas för sig.
+            statementText: expect.any(Object),
         });
         expect(lptt.sectorAuthorities?.map(s => s.authority)).toEqual(['Konsumentverket', 'Mediemyndigheten', 'MTM', 'Transportstyrelsen']);
     });
@@ -1484,5 +1587,34 @@ describe('Intern #63 — findNationalLaw och getAllNationalLaws', () => {
         const ids = getAllNationalLaws().map(l => l.id);
         const dupes = ids.filter((id, i) => ids.indexOf(id) !== i);
         expect(dupes, 'dubbletter: ' + dupes.join(', ')).toEqual([]);
+    });
+});
+
+/**
+ * Intern #146: lagnamnsgrinden visar fallback-frasen för varje oattesterat
+ * namn, så testerna som går via resolveNationalLawReference ser aldrig hur
+ * en sådan post skulle renderas. nl-wad hade därför en dold dubbelparentes
+ * som hade nått kunddokumentet samma dag som Juno attesterade namnet. Pröva
+ * därför frasen för VARJE post, attesterad eller inte.
+ */
+describe('Intern #146 — lagfrasen upprepar inte namnet, oavsett attestering', () => {
+    it('ingen post ger samma namn två gånger i frasen', () => {
+        const repeats: string[] = [];
+        for (const law of getAllNationalLaws()) {
+            const phrase = lawPhrase(law);
+            // Felet är samma parentes två gånger, "… (X) (X)". Att kortnamnet
+            // ingår i en längre beteckning, som RGAA i "(RGAA 4.1.2) (RGAA)",
+            // är avsiktligt och prövas i motorns test.
+            const paren = `(${law.law.trim()})`;
+            const count = phrase.split(paren).length - 1;
+            if (count > 1) repeats.push(`${law.id}: "${phrase}"`);
+        }
+        expect(repeats, `Lagfras som upprepar namnet: ${repeats.join(' | ')}`).toEqual([]);
+    });
+
+    it('nl-wad skriver citeertiteln en gång', () => {
+        const nlWad = getNationalLaws('NL').find((l) => l.id === 'nl-wad');
+        expect(nlWad).toBeDefined();
+        expect(lawPhrase(nlWad!)).toBe(nlWad!.fullName.trim());
     });
 });

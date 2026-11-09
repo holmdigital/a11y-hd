@@ -1,5 +1,238 @@
 # @holmdigital/engine
 
+## 4.0.2
+
+### Patch Changes
+
+- a9e0b93: `metadata.standardsVersion` blev `"unknown"` för alla som laddar motorn som ESM, till exempel scan-servern på Hetzner.
+
+  `getStandardsVersion()` anropade en bar `require.resolve`. I ESM-bygget finns ingen `require`, och tsups ersättning kastar `Dynamic require ... is not supported`. Felet fångades och versionen blev `"unknown"`. CJS-bygget och testerna, som kör källan, påverkades inte, så det syntes inte förrän i en skanning från scan-servern.
+
+  Uppslaget går nu via `createRequire(import.meta.url)`, som fungerar i båda byggena. tsups `shims: true` ger `import.meta.url` även i CJS. Ett nytt test kör `dist/index.mjs` och `dist/index.js` i en vanlig Node-process. ESM-fallet körs med `--input-type=module`, eftersom en vanlig `node -e` har en global `require` som döljer felet. Testet är rött mot 4.0.1:s bygge och grönt efter rättningen.
+
+## 4.0.1
+
+### Patch Changes
+
+- 4536c78: Puppeteer 25.6.0 → 25.16.0, verifierat neutralt före bumpen. Rättar zod-sårbarheten GHSA-mrhx-c7xc-m3w5 (hög) för alla som installerar motorn.
+
+  **Varför.** Puppeteer 25.6.0 drar in `chromium-bidi` 17.0.2, som kräver `zod@^3.24.1`. Zod 3 har ingen rättad version (första rättade är 4.6.6), så larmet följde med till alla konsumenter: wikin, holmdigital.se och scan-servern. Det går inte att rätta med en override hos konsumenterna utan att tvinga in zod 4 i ett paket som kräver zod 3. I Puppeteer 25.16.0 kräver `chromium-bidi` 157.0.8090-0 i stället `zod@^4.6.5`, och lockfilen löser det till 4.6.7.
+
+  **Kontrollkörning enligt rutinen från Intern #25.** Samma åtta referenssajter skannades med 25.6.0 (Chrome 151.0.7922.77) och 25.16.0 (Chrome 156.0.8078.47): domstol.se, scb.se, pensionsmyndigheten.se, jo.se, kriminalvarden.se, mucf.se, apotea.se (cookie-tung e-handel) och zeppelin-cat.se (carousel-tung). Jämförelsen gällde score, complianceStatus, regeluppsättning, WCAG-kriteriemappning och antal felnoder.
+
+  **Noll skillnader på alla åtta.** Apotea ger 65/FAIL med sju regelträffar och Zeppelin 65/FAIL med fyra regelträffar i båda versionerna.
+
+  Den exakta pinnen ligger kvar. Lockfilen rör bara Puppeteer och dess egna beroenden.
+
+## 4.0.0
+
+### Major Changes
+
+- 5a84fca: Intern #53 steg 2: motorn spärrar privata och interna adresser som standard, och Chromes sandbox är på.
+
+  Motorn renderar per definition främmande sidor med deras JavaScript. Den stängde av Chromes sandbox ovillkorligt och hämtade allt den pekades på, inklusive `localhost`, interna nät och molnets metadatatjänst på `169.254.169.254`. Karins beslut 2026-09-18 var säkert som standard, med uttrycklig opt-out.
+
+  **Brytande ändringar, därav major:**
+
+  - **Privata och interna adresser spärras.** Det gäller loopback, 10/8, 172.16/12, 192.168/16, 100.64/10, länklokala adresser inklusive metadatatjänsten, multicast och motsvarande för IPv6. Spärren prövar startadressen innan någon webbläsare startar. Den prövar också **varje förfrågan sidan gör**, omdirigeringar och resurser inräknade, så att en publik sida inte kan leda skannern in i ett internt nät. Värdnamn slås upp och de adresser de ger prövas, och ett misslyckat uppslag spärras. Att skanna `http://localhost:3000` ger nu ett fel som säger vad som ska göras: `--allow-private-hosts` i CLI:t, eller `allowPrivateHosts: true` i biblioteket.
+  - **Sandboxen är på**, i både skannern och PDF-generatorn. Chrome kan inte använda den som root, eller där användarnamnrymder är begränsade, till exempel i en container utan USER eller på vissa CI-runners. Där stänger man av den uttryckligen med `--no-sandbox` (biblioteket: `sandbox: false`). Felmeddelandet säger det i stället för att bara återge Chromes text.
+
+  **`PUPPETEER_ARGS` läses nu.** Flaggorna läggs till Chromes startargument. Scan-serverns container sätter redan `PUPPETEER_ARGS="--no-sandbox …"`, som ingen kod läste tidigare. En uppgradering där bryter därför inte driften.
+
+  **Nytt i resultatet:** `metadata.blockedPrivateRequests` anger hur många förfrågningar spärren avbröt, och sätts bara när antalet är större än noll.
+
+  **Migrering:** en CI som skannar ett lokalt bygge behöver i regel båda flaggorna:
+
+  ```
+  npx hd-a11y-scan http://localhost:3000 --ci --allow-private-hosts --no-sandbox
+  ```
+
+  **Gränser, dokumenterade i SECURITY.md:** spärren är ett lager, inte hela skyddet. Svaret på DNS-uppslaget kan ändras mellan motorns uppslag och webbläsarens (DNS rebinding), och WebSocket-anslutningar går inte genom Puppeteers request interception. Den som kör motorn server-side på främmande adresser behöver fortfarande nätverksisolering.
+
+  Verifierat med riktig Chrome:
+
+  - En lokal adress spärras med beskedet och exit 1.
+  - Med `--allow-private-hosts` skannas den med sandboxen på, och med `--no-sandbox` fungerar den också.
+  - example.com och holmdigital.se ger samma poäng som med publicerad 3.3.12, också i en full skanning med `--noscript-check`.
+
+### Minor Changes
+
+- e92c075: Intern #82: lagnamnsgrinden. Ett utlåtande namnger en lag bara om någon har gått i god för just det namnet mot primärkälla. Annars skriver det fallback-frasen, till exempel "gällande tillgänglighetskrav" (Karins beslut 2026-09-12).
+
+  **Det här ser kunden.** Meningen som namnger lagen skriver i stället fallback-frasen på utlåtandets språk i 18 av 32 kombinationer av land och sektor:
+
+  | Land                   | Sektor som får fallback-frasen |
+  | ---------------------- | ------------------------------ |
+  | NO, DK, FI, NL, PT, CA | båda                           |
+  | DE, ES, IT, GB, US     | privat                         |
+  | IE                     | offentlig                      |
+
+  I övriga 14 kombinationer står lagens namn kvar som i dag: SE, FR, PL och AU i båda sektorerna, DE, ES, IT, GB och US i offentlig sektor, och IE i privat. Inget annat i utlåtandet ändras. Myndighetsraden står kvar, eftersom tillsynsmyndighetens namn har en egen registerkategori och tystas inte i det här bygget.
+
+  **Ett land tänds** när Juno lägger `lagnamn` i `bekraftat` för landets poster i registret i holmdigital/Intern och generatorn där körs. Diffen visar då `"lagnamn"` i `attested`, en rad per post. Det finns ingen annan väg in, ingen landflagga och inget fält som sätts för hand.
+
+  **En rad byter form i motorns utlåtanden för US offentlig sektor.** Motorn skrev "Section 508 of the Rehabilitation Act of 1973 (Section 508)" och gick förbi regeln att parentesen faller när kortnamnet redan står först. Komponenten skrev raden utan parentes. Nu används samma funktion överallt, och parentesen faller.
+
+  **Nytt i standards:**
+
+  - `NationalLaw.attestation?: Attestation`, med `attestedBy`, `session`, `sources`, `attested`, `notAttested` och `subject`. Blocket genereras ur registret och redigeras aldrig för hand här. `attested` och `notAttested` är listor av typen `AttestableField`, en union, så att en felstavning fäller typkontrollen i stället för att tyst läsas som "ej granskat". Schemat har `additionalProperties: false` och ingen `minItems` på `attested`, eftersom en tom lista är en giltig spärr.
+  - `isNameAttested(law)` är grinden. Den läser `attested` och inget annat, och bara `subject: 'law-entry'` kan öppna den.
+  - `resolveNationalLawReference(country, sector, lang)` och `NATIONAL_LAW_FALLBACK` har flyttat hit från motorn och komponenten. Båda bar varsin kopia, och kopiorna har glidit isär en gång redan (Intern #63/#66). Grinden sitter på varje väg som kan returnera ett namn, också US-grenen, där varje lag i kombinationen prövas för sig.
+  - `sources` bär registrets källtext. Standardlistan över källor per land och anteckningarna om hur en källa nåddes ingår inte (Intern #94 fråga 1).
+
+  Motorn återexporterar `resolveNationalLawReference`, så dess publika API är oförändrat.
+
+- 18097bc: Tillgänglighetsutlåtandet kan nu säga hur bedömningen gjordes. Det nya fältet `reviewMethod` har tre värden:
+
+  - `self-assessment`: organisationen har bedömt sin egen webbplats. Det är default.
+  - `external-review`: en extern part har granskat webbplatsen, och utlåtandet namnger den.
+  - `no-review`: tillgängligheten är uppskattad utan granskning.
+
+  **Vad kunden ser.** Ingenting ändras om anroparen inte sätter fältet. Utlåtandet säger då att organisationen gjort en självskattning, precis som i dag och byte för byte. Med `external-review` står granskarens namn i avsnittet om hur webbplatsen testats, till exempel "Granskaren AB har gjort en oberoende granskning av Testkommunen." Valet läses bara ur fältet, aldrig ur efterlevnadsutfallet eller scanresultatet.
+
+  Fälten finns i motorns `StatementMetadata` och i komponentens `AccessibilityStatementProps`. Motorn skickar dem vidare till komponenten, så HTML- och Markdown-utlåtanden säger samma sak. CLI:t har två nya flaggor, `--review-method` och `--reviewer`, och nycklarna `reviewMethod` och `reviewer` i config-filen. Ett okänt värde, eller en extern granskning utan granskare, stoppas innan skanningen börjar.
+
+  **Två avsteg från kravspecen. Båda finns för att utlåtandet inte ska påstå något falskt.**
+
+  1. **Granskaren har ett eget fält, `reviewer: { name, url? }`.** Kravspecen föreslog att återanvända `generatorTool`. Men `generatorTool` styr också sidfoten ("Genererad med hjälp av …"). Med granskaren där skulle sidfoten påstå att dokumentet genererats med granskaren. Sidfoten namnger därför verktyget som förut. Granskarens plats i texten fylls bara från `reviewer`, aldrig från `generatorTool`. `url` tas emot men renderas inte.
+  2. **Extern granskning utan namngiven granskare är ett fel.** Motorn och komponenten kastar ett fel när `reviewMethod` är `external-review` och `reviewer.name` saknas eller är tomt. Med verktyget som standardvärde hade utlåtandet sagt "HolmDigital Regulatory Engine har gjort en oberoende granskning", alltså exakt felet i Intern #91.
+
+  Nya tester läser alla mallar i båda mallsatserna, så en ny mall omfattas automatiskt. Mot den gamla koden fäller de 68 utlåtandetester i motorn och 51 i komponenten.
+
+### Patch Changes
+
+- 0538933: Intern #68: Australiens Digital Access Standard är borttagen ur lagdatan, eftersom intern regeringspolicy inte är ett lagrum.
+
+  **Regeln som gäller framåt (Juno):** en post hör hemma i `national-laws.json` bara om ett bindande rättsligt instrument gör efterlevnaden obligatorisk och möjlig att göra gällande mot den som bär skyldigheten. Digital Access Standard är obligatorisk inom den australiska regeringens egen investeringsstyrning. Standarden har däremot ingen författning, ingen tredjepartsrätt, ingen tillsynsmyndighet utanför DTA och ingen domstolsväg.
+
+  **Brytande ändringar, därav major:**
+
+  - Posten `au-dta` finns inte längre. `getNationalLaws('AU')` ger nu en post, `au-dda`, och `getNationalLaw('au-dta', 'AU')` ger `null`.
+  - `'DAS'` är borttagen ur `LegalFramework` och ur schemats `euFramework`. Kod som anropar `getNationalLawByFramework('DAS', …)` eller har ett uttömmande `switch` över `LegalFramework` med ett `'DAS'`-fall går inte längre att kompilera. Ta bort fallet. `getLegalFramework('DAS')` gav redan `null`.
+
+  **Lagen i utlåtandet ändras inte.** Utlåtandet för Australien namngav redan Disability Discrimination Act 1992 i båda sektorerna. Det kom tidigare från en egen AU-gren i standards (`deriveEnforcementLaw`), i motorn (`resolveNationalLawReference`) och i komponenten. Grenarna fanns bara för att standarden, med scope `public`, annars vann väljarens företräde för exakt scope. Nu är de borttagna, och den generella väljaren ger samma lag, så tre handhållna speglar som kunde glida isär är borta. Med motorns gren försvann också dess hårdkodade reservtext med lagnamnet, en namnväg som gick förbi lagvalet.
+
+  Digital Inclusion Standard, som är det dokument som faktiskt rör tillgänglighet, beskrivs i `docs/guides/eu-legal-framework.md` och finns inte i datan.
+
+  **Det här ändras i kunddokumenten: avsnittet "Australian Government digital policy" visas bara för offentlig sektor** (Intern #94 fråga 4, Juno). Avsnittet beskriver en policy för federala myndigheter och ingen annan. Ett privat företag är varken "subject to" policyn eller en "Commonwealth agency", så i ett privat utlåtande var avsnittet sakligt fel, oavsett datumen. Ett australiskt utlåtande för privat sektor saknar nu avsnittet, och resten är oförändrat. Offentlig sektor är oförändrad.
+
+  Mallarna har fått ett valfritt fält per avsnitt, `sectors`, som begränsar avsnittet till de angivna sektorerna. Det finns i både motorns mallar och komponentens, och ett avsnitt utan fältet gäller båda sektorerna som förut. Datumen i avsnittet (1 januari och 1 juli 2025) är belagda sedan tidigare men inte omverifierade den här omgången. Juno kontrollerar dem mot primärkällan när den svarar.
+
+- f998d58: Intern #83, Karins beslut i #94 fråga 2: ett svenskt utlåtande för privat sektor anger hur tillsynen över LPTT är fördelad, i stället för att peka ut PTS för alla.
+
+  **Det här ser kunden.** Tillsynsavsnittet i ett svenskt utlåtande för privat sektor lyder nu, ordagrant som Karin skrev det:
+
+  > Tillsynen över lagen (2023:254) om vissa produkters och tjänsters tillgänglighet är uppdelad mellan flera myndigheter beroende på vilken tjänst som erbjuds: Post- och telestyrelsen ansvarar för elektronisk kommunikation, banktjänster och e-handelstjänster, Mediemyndigheten för audiovisuella medietjänster, Myndigheten för tillgängliga medier för e-böcker, och Konsumentverket respektive Transportstyrelsen för olika delar av persontransporttjänster.
+
+  Förut stod där att PTS har ansvaret för tillsynen och att kunden kan anmäla till PTS. För ett buss-, tåg-, flyg- eller rederibolags webbplats är Konsumentverket tillsynsmyndighet, så meningen var fel för dem. Motorn vet inte vilken tjänst kunden driver, och därför anger avsnittet fördelningen.
+
+  **Texten ersätter hela avsnittet.** Mallens två meningar om att anmäla till PTS och dess stycke om oskäligt betungande krav, tillgänglighetsredogörelsen och begäran om tillgängliggörande står inte längre i ett svenskt utlåtande för privat sektor. Det stycket hör till DOS-lagen och offentlig sektor.
+
+  **Oförändrat:** offentlig sektor, alla andra länder och svensk privat sektor på andra språk än svenska. Det finns bara en svensk text än.
+
+  **Nytt i standards:** `enforcement.statementText`, en språknycklad text för en lag vars tillsyn är delad efter tjänstetyp, och `getEnforcementStatementText(country, sector, lang)`. Funktionen har samma lagval som `resolveNationalLawReference` och samma lagnamnsgrind. Texten namnger lagen, så den används bara när lagnamnet är attesterat; annars vore den en väg förbi grinden. Motorn och komponenten läser den på samma sätt.
+
+- c300588: Utlåtandet: ingen artikel framför lagnamnet, och fallback-fraser som passar sin mening (Intern #82, förberedelse).
+
+  Flera mallar hade en artikel framför lagplatsen, till exempel "con la", "com a", "mit der", "met de" och "alla". För lagnamn med annat genus gav det fel redan i dag:
+
+  - "con la Real Decreto 1112/2018"
+  - "em conformidade com a Decreto-Lei n.º 83/2018"
+  - "mit der Gesetz zur Umsetzung …"
+  - i komponentens tyska inledning "im Einklang mit den nationalen Rechtsvorschriften zur Umsetzung der BITV 2.0", där BITV 2.0 är den nationella lagen och inte något som genomförs
+
+  Med fallback-frasen, som bär sin egen artikel, blev meningen obegriplig: "con la los requisitos", "avec la la réglementation". Lagnamnsgrinden i #82 kommer att visa fallbacken i ungefär hälften av alla kombinationer av land och sektor.
+
+  **Vad kunden ser nu:**
+
+  - **HTML-utlåtanden på franska, spanska, nederländska, italienska och portugisiska** har ingen artikel framför lagnamnet. Det är samma meningsbyggnad som Markdown-mallarna redan hade.
+  - **Tyska, båda formaten:** "im Einklang mit …", "mit … vereinbar" och "für die Überwachung der Einhaltung von … zuständig".
+  - **Fallback-fraserna**, som visas när ingen lag kan namnges, står nu i den form deras mening kräver:
+    - tyska: dativ, "den geltenden Barrierefreiheitsanforderungen"
+    - polska: instrumentalis, "obowiązującymi wymaganiami dostępności"
+    - finska: genitiv, "sovellettavan saavutettavuuslainsäädännön"
+    - italienska och portugisiska: utan artikel, så att "a i" och "de os" inte kan uppstå
+
+    Ingen rad visar fallbacken i dag, så den ändringen syns först när grinden i #82 tänds.
+
+  Ett nytt test läser båda mallsamlingarna. Det fäller varje artikel direkt före lagplatsen på de sex språken, kräver instrumentalis för polska och genitiv för finska, och kräver att motorns och komponentens fallback-fraser är ordagrant identiska. Det kravet stod tidigare bara i en kommentar. Mot de gamla mallarna fäller testet 8 av 10.
+
+- 318cc77: Tillgänglighetsutlåtandet: tre fel i hur mallens val `{A / B / C}` löstes. Alla tre har funnits i publicerade versioner och når kunddokument, både i CLI:ts Markdown- och HTML-utlåtanden och i komponenten på webbplatser.
+
+  **1. Utlåtandet påstod en granskning som aldrig gjorts.** Sektionen om hur webbplatsen testats har ett eget val: självskattning, extern granskning eller uppskattning utan granskning. Det valet löstes på kundens efterlevnadsutfall, precis som valet om hur väl webbplatsen uppfyller kraven.
+
+  - En kund som var **delvis förenlig** fick "HolmDigital Engine har gjort en oberoende granskning av …", alltså en extern granskning som aldrig ägde rum. Det gällde alla 16 språk.
+  - En kund som **inte var förenlig** fick "Vi har uppskattat tillgängligheten utan granskning", fast en automatisk granskning just hade gjorts.
+
+  Metodvalet ger nu alltid självskattning, eftersom ett verktyg som kunden själv kör är en självskattning.
+
+  **2. Lagnamn med snedstreck klövs.** Värdena byttes in i mallen innan valen löstes, och valparsern delar på "/". Ett lagnamn som "Real Decreto 1112/2018" eller "(Tillgänglighetslagen / LPTT)" delades därför mitt i. Så här blev det för svensk privat sektor:
+
+  | Kundens utfall  | Före rättelsen                               |
+  | --------------- | -------------------------------------------- |
+  | Förenlig        | Lagnamnet klipptes av                        |
+  | Delvis förenlig | Meningen blev "LPTT)."                       |
+  | Inte förenlig   | Kunden fick meningen för **delvis** förenlig |
+
+  Samma fel fanns för Spanien, Portugal, Irland, Finland, Tyskland (privat), Nederländerna (privat) och för varje organisationsnamn som innehåller "/". Värdena byts nu in först efter att valen lösts.
+
+  **3. Komponentens engelska mallar gick förbi lagvalet (bara `@holmdigital/components`).** Mallarna för en-gb, en-us och en-ca hårdkodade lagnamn, samma fel som motorns mallar rättades för i 3.3.8. Den rättelsen nådde aldrig komponenten, och CLI:ts HTML-utlåtanden renderas med komponenten. Följden var:
+
+  - Brittisk privat sektor fick regleringen för offentlig sektor.
+  - Amerikansk privat sektor fick Section 508, som bara gäller federala myndigheter.
+  - Kanada fick Ontarios AODA som landets lag.
+
+  Mallarna använder nu `{<national_law>}` som resten.
+
+  Ett komponenttest krävde att AODA skulle stå i det kanadensiska utlåtandet, och det passerade just därför att mallen gick förbi lagvalet. Testet är nu omvänt. Nya tester läser mallarna i stället för att räkna upp fraser per språk, så en ny mall omfattas automatiskt. Mot den gamla koden fäller de 37 komponenttester och alla metodtester för delvis och ej förenlig i motorn.
+
+- Updated dependencies [9bdf720]
+- Updated dependencies [0538933]
+- Updated dependencies [e92c075]
+- Updated dependencies [f998d58]
+- Updated dependencies [18097bc]
+- Updated dependencies [c29822b]
+- Updated dependencies [c300588]
+- Updated dependencies [318cc77]
+  - @holmdigital/standards@5.0.0
+  - @holmdigital/components@4.2.0
+
+## 3.3.13
+
+### Patch Changes
+
+- 4f6ef65: Bevakning #8: `html-validate` 11.5.6 till 11.16.0, med belagd nolldrift i utfallet.
+
+  Beroendet var exakt pinnat utan caret, alltså avsiktligt fruset, eftersom dess fynd
+  renderas för kund i CLI:ns avsnitt "Structural HTML Issues" och som `htmlErrorsCount`
+  i HTML-rapporten. En bump får därför inte göras utan att utfallet jämförs först.
+
+  **Verifiering, före och efter.** Motorns exakta konfiguration
+  (`src/core/html-validator.ts` rad 20 till 31) kördes mot samma elva hämtade sidor
+  (referenssetet holmdigital.se plus webperf topp 10 offentlig sektor) med båda
+  versionerna. Samma bytes in i båda, så sidbrus är uteslutet:
+
+  - 924 fynd totalt i båda versionerna
+  - 26 regler i båda, identisk regeluppsättning
+  - 0 av 11 sidor med någon skillnad, per regel och per antal
+
+  **Den nya `aria`-optionen ändrar ingenting för oss.** Optionen saknas helt i 11.5.6
+  och har `"default": "1.2"` i 11.16.0, läst i paketets eget konfigurationsschema
+  (`dist/schema/config.json`), inte i changelogen. ARIA 1.2 är det beteende vi redan
+  hade, så 1.3 kräver ett aktivt val vi inte har gjort.
+
+  Scoren berörs inte i något fall: den räknas enbart på axe-härledda fynd
+  (`src/core/regulatory-scanner.ts` rad 852 till 860), aldrig på html-validate.
+
+- 370e035: React 18 stöds igen (Intern #89, fynd 1).
+
+  Motorn har `react` och `react-dom` som körberoenden, eftersom HTML-utlåtandet renderas med `renderToStaticMarkup`. Spannet var `^18.3.1 || ^19.0.0`, men en Dependabot-grupp för minor och patch (PR #109, 2026-07-28) skrev om det till `^19.2.8` utan changeset. Varje motorversion sedan dess har därför stängt ute React 18, trots att motorn renderar korrekt med React 18.3.1. Det är verifierat 2026-09-24 med de packade paketen i ett rent projekt.
+
+  Spannet är nu återställt till `^18.3.1 || ^19.0.0`, och ett test låser det. Grundorsaken är också rättad. Dependabot höjde spann även när den nya versionen redan rymdes i dem, och undantaget för React-majors stoppade inte det, eftersom det bara gäller majors. Med `versioning-strategy: increase-if-necessary` lämnas ett spann som redan tillåter versionen orört, och bara låsfilen uppdateras.
+
+- Updated dependencies [94022ff]
+  - @holmdigital/standards@4.2.2
+
 ## 3.3.12
 
 ### Patch Changes

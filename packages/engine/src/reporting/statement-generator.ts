@@ -1,7 +1,13 @@
 import React from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { AccessibilityStatement, AccessibilityStatementProps } from '@holmdigital/components';
-import { Country, getEnforcementBody, getNationalLaws, resolveNationalLawReference } from '@holmdigital/standards';
+import {
+    Country,
+    getEnforcementBody,
+    getEnforcementStatementText,
+    getNationalLaws,
+    resolveNationalLawReference,
+} from '@holmdigital/standards';
 import { ScanResult } from '../core/regulatory-scanner';
 import fs from 'fs/promises';
 import path from 'path';
@@ -19,6 +25,25 @@ export interface StatementMetadata {
     country?: string;
     sector?: 'public' | 'private';
     publishDate?: string | Date;
+    /**
+     * How the assessment behind the statement was made. An explicit choice by the
+     * caller, never derived from the scan result or the compliance level.
+     *
+     * - omitted or `'self-assessment'`: the organisation assessed its own website.
+     *   This is the default, and a scan the customer runs is a self-assessment.
+     * - `'external-review'`: an external party reviewed the website. Requires
+     *   `reviewer`, and the statement names that reviewer.
+     * - `'no-review'`: the accessibility was estimated without testing.
+     */
+    reviewMethod?: 'self-assessment' | 'external-review' | 'no-review';
+    /**
+     * Who performed the external review. Required when `reviewMethod` is
+     * `'external-review'`: generating the statement throws without a non-empty
+     * `name`. The statement names the reviewer by `name`; `url` is accepted for
+     * the same shape as `generatorTool` and is not rendered. The footer still
+     * credits the tool that generated the document, never the reviewer.
+     */
+    reviewer?: { name: string; url?: string };
 }
 
 /**
@@ -111,12 +136,78 @@ interface StatementTemplate {
  */
 export { resolveNationalLawReference };
 
+/**
+ * Intern #95: platshållarna för den externa part som granskat webbplatsen. De
+ * står bara i metodvalets andra alternativ ("<granskaren> har granskat …").
+ *
+ * Listan täcker båda mallsatserna, motorns JSON och komponentens TEMPLATES, och
+ * komponenten bär samma lista. Platsen fylls ur `reviewer` och ALDRIG ur
+ * `generatorTool`: det är verktyget som skrev dokumentet, och när det namnet
+ * hamnade här påstod varje delvis förenlig kunds utlåtande att HolmDigital
+ * Regulatory Engine gjort en oberoende granskning (#91).
+ */
+const REVIEWER_PLACEHOLDERS = [
+    '{<extern aktör>}', '{<ekstern aktør>}', '{<ekstern aktor>}', '{<ulkoinen taho>}',
+    '{<externe partij>}', '{<externer Dritter>}', '{<tiers externe>}', '{<tercero externo>}',
+    '{<terza parte>}', '{<terceiro externo>}', '{<podmiot zewnętrzny>}', '{<third party>}',
+];
+
+/**
+ * Juno H3/H4 (2026-10-08): the generic Swedish "enforcement" section in
+ * sv.json is written for DOS-lagen (public sector, WAD) and is wrong for the
+ * private sector in two ways documented against primary source:
+ *
+ * 1. "oskäligt betungande", "tillgänglighetsredogörelse" and "begäran om
+ *    tillgängliggörande" are DOS-lagen concepts (10-12 §§). They get zero
+ *    hits in lagen (2023:254) or förordningen (2023:676), so rendering them
+ *    for a private customer claims DOS-lagen rights that law does not give.
+ * 2. It names PTS as though it were the sole supervisor. PTS is the market
+ *    surveillance authority and coordinator; actual tillsyn is split by
+ *    service type across five authorities (förordning (2023:676) 28-31 §§),
+ *    and PTS is itself also the sector authority for three of them — a
+ *    four-row list that omits PTS's own row makes it look like PTS has no
+ *    service-level responsibility at all (Juno B3, Intern #128, 2026-10-20).
+ *
+ * Public-sector DOS-lagen wording is correct and kept as-is, with the link to
+ * Digg's own anmälan procedure added (MDFFS 2019:2 6 § requires "en länk till
+ * det förfarande för anmälningar som myndigheten tillhandahåller").
+ *
+ * Private-sector wording (Karin's own, Intern#94 fråga 2 alternativ (a),
+ * Intern#83) is not here: it lives on the law record,
+ * `lptt.enforcement.statementText.sv`, and is read through
+ * getEnforcementStatementText() so it passes the law-name gate (Intern #82).
+ * This function only handles the public sector.
+ *
+ * Scoped to SE only — no other country's enforcement template has been
+ * reviewed for the same defect, and this must not change their output.
+ */
+function resolveSwedishEnforcementContent(
+    enforcementBody: string,
+    nationalLaw: string
+): string {
+    return `${enforcementBody} har ansvaret för tillsyn över ${nationalLaw}. Du kan anmäla till ${enforcementBody} om du tycker att vår digitala service har brister i tillgänglighet.\n\nDu kan också anmäla till ${enforcementBody} om du tycker att vår bedömning av vad som är oskäligt betungande ska granskas, om du tycker att vår tillgänglighetsredogörelse har brister eller om du tycker att vi inte har hanterat din begäran om tillgängliggörande korrekt.\n\nDu kan anmäla direkt till Digg via tjänsten för anmälan om bristande tillgänglighet: https://www.digg.se/tdosanmalan`;
+}
+
 export async function generateStatementContent(
     result: ScanResult,
     lang: string = 'en',
     format: 'html' | 'md' | 'markdown' = 'html',
     metadata?: StatementMetadata
 ): Promise<string> {
+    // Intern #95: en extern granskning måste säga vem som granskade. Utan ett
+    // namn finns inget sant att skriva i granskarens plats, och det var just där
+    // verktygets eget namn hamnade före #91. Därför ett fel och ingen default.
+    const reviewMethod = metadata?.reviewMethod;
+    const reviewerName = typeof metadata?.reviewer?.name === 'string' ? metadata.reviewer.name.trim() : '';
+    if (reviewMethod === 'external-review' && reviewerName === '') {
+        throw new Error(
+            "reviewMethod 'external-review' requires metadata.reviewer with a non-empty name: the organisation " +
+            "that performed the review, e.g. { reviewMethod: 'external-review', reviewer: { name: 'Example Audit AB' } }. " +
+            "The statement names it as the reviewer. Use 'self-assessment' (the default) if the statement is based " +
+            'on your own testing, such as this scan.'
+        );
+    }
+
     // 0. Load Template
     const templatePath = path.join(__dirname, 'templates', `${lang}.json`);
     let template: StatementTemplate;
@@ -130,14 +221,24 @@ export async function generateStatementContent(
         );
     }
 
-    // 1. Determine compliance level
-    let complianceLevel: AccessibilityStatementProps['complianceLevel'] = 'full';
-
-    if (result.stats.critical > 0 || (result.legalSummary && result.legalSummary.eaaDeadlineViolations > 0)) {
-        complianceLevel = 'non-compliant'; // Critical issues or legal blockers
-    } else if (result.score < 100) {
-        complianceLevel = 'partial'; // Some issues, but no critical ones
-    }
+    // 1. Determine compliance level.
+    //
+    // Juno H1 (2026-10-08): genomförandebeslut (EU) 2018/1523 fotnot iii kräver
+    // att samtliga krav i standarden, UNDANTAGSLÖST, är uppfyllda för "helt
+    // förenlig"; fotnot viii kräver att DE FLESTA kraven INTE är uppfyllda för
+    // "inte förenlig". En automatiserad skanning kan aldrig ensam styrka något
+    // av ytterlägena: den täcker inte alla krav (kan därför aldrig bevisa
+    // "helt"), och `eaaDeadlineViolations` räknade tidigare varje fynd med ett
+    // EAA-deadline-taggat lagrum — inklusive enstaka low/best-practice-fynd —
+    // som grund för "inte förenlig", vilket satte den statusen på en bråkdel av
+    // kraven i stället för "de flesta". Statusen sätts därför alltid till
+    // "delvis förenlig" från en ren skanning; "helt" och "inte förenlig" kräver
+    // en människas manuella granskning och kan inte komma ur den här funktionen.
+    // Cast, not an annotated const: an annotated `const x: Union = 'partial'` still gets
+    // narrowed by control flow to the literal `'partial'`, which makes the `=== 'full'` /
+    // `=== 'non-compliant'` checks below fail to typecheck (TS2367, no overlap) even though
+    // they guard real behavior for callers that branch on this value.
+    const complianceLevel = 'partial' as AccessibilityStatementProps['complianceLevel'];
 
     // 2. Extract known issues (non-compliant items).
     // Needs review (cantTell) exkluderas: de är inte bekräftade brister och får
@@ -221,6 +322,10 @@ export async function generateStatementContent(
             name: 'HolmDigital Regulatory Engine',
             url: 'https://holmdigital.se'
         },
+        // Intern #95: HTML-utlåtandet renderas av komponenten, så metodvalet och
+        // granskaren måste följa med dit. Annars gäller valet bara Markdown.
+        reviewMethod,
+        reviewer: metadata?.reviewer,
         logoUrl,
         // Placeholders make it obvious the consumer must supply real contact info.
         // Previous fallback leaked HolmDigital's own contact details into customer statements.
@@ -318,15 +423,10 @@ export async function generateStatementContent(
             '{<méthode>}': props.evaluationMethod || 'Automated Scan',
             '{<método>}': props.evaluationMethod || 'Automated Scan',
             '{<method>}': props.evaluationMethod || 'Automated Scan',
-            '{<extern aktör>}': props.generatorTool?.name || 'HolmDigital Engine',
-            '{<ekstern aktør>}': props.generatorTool?.name || 'HolmDigital Engine',
-            '{<ekstern aktor>}': props.generatorTool?.name || 'HolmDigital Engine',
-            '{<ulkoinen taho>}': props.generatorTool?.name || 'HolmDigital Engine',
-            '{<externe partij>}': props.generatorTool?.name || 'HolmDigital Engine',
-            '{<externer Dritter>}': props.generatorTool?.name || 'HolmDigital Engine',
-            '{<tiers externe>}': props.generatorTool?.name || 'HolmDigital Engine',
-            '{<tercero externo>}': props.generatorTool?.name || 'HolmDigital Engine',
-            '{<third party>}': props.generatorTool?.name || 'HolmDigital Engine',
+            // Intern #95: granskarens plats fylls bara ur reviewer, aldrig ur
+            // generatorTool. Den renderas bara när metodvalet är en uttalad
+            // extern granskning, och då är namnet kontrollerat ovan.
+            ...Object.fromEntries(REVIEWER_PLACEHOLDERS.map(p => [p, reviewerName])),
             '{<enforcement_body>}': (() => {
                 // US: statements for our customers are primarily about state/local gov (Title II)
                 // or private sector (Title III) — both enforced by DOJ. Override the default
@@ -371,9 +471,18 @@ export async function generateStatementContent(
          * "<verktyget> har gjort en oberoende granskning" och varje ej förenlig
          * kund "vi har uppskattat tillgängligheten utan granskning", båda
          * falska. Ett verktyg som kunden själv kör är en självskattning.
+         *
+         * Intern #95: metodvalet följer anroparens uttalade `reviewMethod` och
+         * ingenting annat. Utan val blir det självskattning, som förut. Den
+         * externa granskningen kräver en namngiven granskare, och utfallet
+         * läses fortfarande aldrig här.
          */
         const choiceIndex = (kind: 'compliance' | 'method', parts: number): number => {
-            if (kind === 'method') return 0;
+            if (kind === 'method') {
+                if (reviewMethod === 'external-review') return 1;
+                if (reviewMethod === 'no-review') return parts > 2 ? 2 : 1;
+                return 0;
+            }
             if (complianceLevel === 'partial') return 1;
             if (complianceLevel === 'non-compliant') return parts > 2 ? 2 : 1;
             return 0;
@@ -431,7 +540,16 @@ export async function generateStatementContent(
                 // sektionen antyder en redogörelseplikt en privat aktör inte har.
                 if (s.id === 'enforcement' && enforcementBody === '') return null;
                 if (s.sectors && !s.sectors.includes(sector)) return null;
-                const body = processText(s.content, s.id === 'testing' ? 'method' : 'compliance').trim();
+                // Intern #83 och #94 fråga 2: där tillsynen är delad efter
+                // tjänstetyp bär lagposten avsnittets text. Mallen kan bara
+                // namnge en myndighet, och det vore fel för en del kunder.
+                // Juno H3/H4: svensk offentlig sektor får DOS-lagens text med
+                // Digg-länken, se resolveSwedishEnforcementContent() ovan.
+                const delad = s.id === 'enforcement' ? getEnforcementStatementText(country, sector, lang) : null;
+                const body = (delad
+                    ?? (s.id === 'enforcement' && country === 'SE' && lang === 'sv' && sector === 'public'
+                        ? resolveSwedishEnforcementContent(enforcementBody, substitutions['{<national_law>}'] ?? '')
+                        : processText(s.content, s.id === 'testing' ? 'method' : 'compliance'))).trim();
                 if (body === '') return null;                 // hoppa sektioner som blir tomma
                 // Intern #23: en section utan titel får aldrig rendera "## undefined".
                 return s.title ? `## ${s.title}\n\n${body}` : body;

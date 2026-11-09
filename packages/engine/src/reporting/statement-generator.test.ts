@@ -6,6 +6,7 @@ import type { ScanResult } from '../core/regulatory-scanner';
 import type { StatementMetadata } from './statement-generator';
 import {
     getEnforcementBody,
+    getEnforcementStatementText,
     getNationalLawByFramework,
     getNationalLawForSector,
     getNationalLaws,
@@ -480,13 +481,23 @@ describe('EAA sector support', () => {
         expect(output).toContain(eaaBody);
     });
 
-    it('should use EAA enforcement body when sector is private for SE', async () => {
+    it('should name PTS among the enforcement bodies when sector is private for SE', async () => {
+        // SE private doesn't interpolate the full `enforcementBody` string
+        // (Juno B3, Intern #128 / #83 / #94 fråga 2): the section lists five
+        // authorities by service type instead of naming one sole supervisor,
+        // so it reads "Post- och telestyrelsen", not the registry's full
+        // "PTS (Post- och telestyrelsen)" form. See the dedicated coverage in
+        // "Intern #83/#94 fråga 2 (Juno B3)" below.
         const output = await generateStatementContent(
             mockResult, 'sv', 'md',
             { ...metadata, country: 'SE', sector: 'private' }
         );
-        const eaaBody = getEnforcementBody('SE', 'private');
-        expect(output).toContain(eaaBody);
+        // Intern #83 och #94 fråga 2: tillsynen över LPTT är delad, så
+        // avsnittet anger fördelningen i stället för en ensam myndighet. PTS
+        // står där med sitt fulla namn, och den offentliga sektorns myndighet
+        // står aldrig där.
+        expect(output).toContain('Post- och telestyrelsen');
+        expect(output).not.toContain(getEnforcementBody('SE', 'public'));
     });
 
     it('should use EAA national law when sector is private for DE', async () => {
@@ -845,9 +856,12 @@ describe('Intern #63 — lagraden upprepar inte namnet', () => {
         expect(resolveNationalLawReference('FR', 'public', 'fr')).toContain('(RGAA)');
         // Intern #82: pt-wad har inget attesterat lagnamn än, och då skrivs
         // varken namn eller parentes. Kontrollen tänds med landet.
+        // Intern #146: kortnamnet är nu den officiella formen "Decreto-Lei
+        // n.º 83/2018", som är ett prefix av det långa, så parentesen faller.
         const ptWad = getNationalLaws('PT').find(l => l.id === 'pt-wad');
         if (isNameAttested(ptWad)) {
-            expect(resolveNationalLawReference('PT', 'public', 'pt')).toContain('(DL 83/2018)');
+            expect(resolveNationalLawReference('PT', 'public', 'pt')).toContain('Decreto-Lei n.º 83/2018, de 19 de outubro');
+            expect(resolveNationalLawReference('PT', 'public', 'pt')).not.toContain('(Decreto-Lei');
         }
     });
 });
@@ -913,5 +927,92 @@ describe('Intern #82 — lagnamnsgrinden i motorn', () => {
                 expect(out, `${country}/${sector}`).toContain(lagplatsen(getNationalLawForSector(country, sector), lang));
             }
         }
+    });
+});
+
+describe('Intern #128 (Juno B1) — "testing"-sektionens metodval följer inte complianceLevel', () => {
+    // complianceLevel är sedan H1 alltid 'partial' (aldrig 'full'/'non-compliant') ur en ren
+    // skanning. Valtexten delar samma {A/B/C}-syntax som används för att välja status i
+    // "technical"-sektionen, och råkade därför återanvända complianceLevel som index: varje
+    // utlåtande påstod "oberoende granskning" (index 1), även om detta bara är en
+    // automatiserad självskanning. Se packages/engine/src/reporting/statement-generator.ts,
+    // sectionId === 'testing' i choice-resolutionen.
+    const resultWithIssues: ScanResult = mockResult;
+    const resultWithoutIssues: ScanResult = {
+        ...mockResult,
+        reports: [],
+        stats: { ...mockResult.stats, high: 0, total: 45 },
+    };
+
+    it.each([
+        ['sv', 'en självskattning (intern testning)', ['oberoende granskning', 'uppskattat tillgängligheten utan granskning']],
+        ['en', 'self-assessment (internal testing)', ['has tested', 'estimated the accessibility without testing']],
+    ])('%s: utlåtandet säger självskattning, aldrig oberoende granskning eller ingen testning', async (lang, expectedPhrase, forbiddenPhrases) => {
+        for (const result of [resultWithIssues, resultWithoutIssues]) {
+            const output = await generateStatementContent(result, lang, 'md', metadata);
+            expect(output).toContain(expectedPhrase);
+            for (const forbidden of forbiddenPhrases) {
+                expect(output).not.toContain(forbidden);
+            }
+        }
+    });
+});
+
+describe('Intern #83/#94 fråga 2 (Juno B3) — svensk privat sektors tillsynstext', () => {
+    // Karins ordagranna, godkända text (Intern#94 fråga 2 alternativ a, carried
+    // in Intern#83): avsnittet ersätts helt, listar alla fem myndigheterna
+    // inklusive PTS egen rad, och innehåller inga DOS-lagen-begrepp.
+    const KARINS_TEXT = 'Tillsynen över lagen (2023:254) om vissa produkters och tjänsters tillgänglighet är uppdelad mellan flera myndigheter beroende på vilken tjänst som erbjuds: Post- och telestyrelsen ansvarar för elektronisk kommunikation, banktjänster och e-handelstjänster, Mediemyndigheten för audiovisuella medietjänster, Myndigheten för tillgängliga medier för e-böcker, och Konsumentverket respektive Transportstyrelsen för olika delar av persontransporttjänster.';
+
+    it('SE privat: avsnittet är exakt Karins text, ordagrant', async () => {
+        const output = await generateStatementContent(mockResult, 'sv', 'md', { ...metadata, country: 'SE', sector: 'private' });
+        expect(output).toContain(KARINS_TEXT);
+    });
+
+    it('SE privat: PTS egen rad finns med (B3, tidigare en fyrradslista utan PTS)', async () => {
+        const output = await generateStatementContent(mockResult, 'sv', 'md', { ...metadata, country: 'SE', sector: 'private' });
+        expect(output).toContain('Post- och telestyrelsen ansvarar för elektronisk kommunikation, banktjänster och e-handelstjänster');
+    });
+
+    it('SE privat: inga DOS-lagen-begrepp kvar', async () => {
+        const output = await generateStatementContent(mockResult, 'sv', 'md', { ...metadata, country: 'SE', sector: 'private' });
+        expect(output).not.toContain('oskäligt betungande');
+        expect(output).not.toContain('tillgänglighetsredogörelse har brister');
+        expect(output).not.toContain('begäran om tillgängliggörande');
+        expect(output).not.toContain('samordnare; tillsynen i övrigt är delad');
+    });
+
+    it('SE offentlig: oförändrad, DOS-lagens text och Digg-länken står kvar', async () => {
+        const output = await generateStatementContent(mockResult, 'sv', 'md', { ...metadata, country: 'SE', sector: 'public' });
+        expect(output).toContain('oskäligt betungande');
+        expect(output).toContain('https://www.digg.se/tdosanmalan');
+        expect(output).not.toContain(KARINS_TEXT);
+    });
+});
+
+/**
+ * Intern #83 och Karins beslut i #94 fråga 2: tillsynen över LPTT är delad
+ * efter tjänstetyp, och motorn vet inte vilken tjänst kunden driver. Både
+ * Markdown och HTML anger därför fördelningen, med Karins text.
+ */
+describe('Intern #83 — delad tillsyn i svensk privat sektor', () => {
+    const se = { ...metadata, country: 'SE' as Country };
+
+    it.each(['md', 'html'] as const)('svensk privat sektor anger fördelningen (%s)', async (format) => {
+        const text = getEnforcementStatementText('SE', 'private', 'sv');
+        expect(text).toMatch(/^Tillsynen över lagen \(2023:254\)/);
+        const out = await generateStatementContent(mockResult, 'sv', format, { ...se, sector: 'private' });
+        expect(out).toContain(text!);
+        // Mallens mening pekade ut PTS för alla, också för ett bussbolag.
+        expect(out).not.toContain('Du kan anmäla till PTS');
+    });
+
+    it('offentlig sektor och andra språk behåller mallens tillsynsavsnitt', async () => {
+        const text = getEnforcementStatementText('SE', 'private', 'sv')!;
+        const offentlig = await generateStatementContent(mockResult, 'sv', 'md', { ...se, sector: 'public' });
+        expect(offentlig).not.toContain(text);
+        expect(offentlig).toContain(getEnforcementBody('SE', 'public'));
+        const engelska = await generateStatementContent(mockResult, 'en', 'md', { ...se, sector: 'private' });
+        expect(engelska).not.toContain(text);
     });
 });

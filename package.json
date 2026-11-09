@@ -13,7 +13,9 @@
         "react-dom": "^19.2.7",
         "@types/react": "^19.2.0",
         "@types/react-dom": "^19.2.0",
-        "esbuild": "^0.28.1"
+        "esbuild": "^0.28.1",
+        "minimatch": "^11.0.1",
+        "glob": "^14.0.3"
     },
     "scripts": {
         "build": "npm run build -w @holmdigital/standards && npm run build -w @holmdigital/components && npm run build -w @holmdigital/engine",
@@ -32,13 +34,13 @@
         "@eslint/js": "^10.0.1",
         "@storybook/addon-a11y": "^10.6.0",
         "@storybook/react-vite": "^10.6.0",
-        "@types/node": "^26.6.1",
-        "@typescript-eslint/eslint-plugin": "^8.70.0",
+        "@types/node": "^26.6.2",
+        "@typescript-eslint/eslint-plugin": "^8.70.1",
         "@typescript-eslint/parser": "^8.18.1",
-        "eslint": "^10.10.0",
+        "eslint": "^10.11.0",
         "eslint-plugin-react-hooks": "^7.1.1",
         "globals": "^17.12.0",
-        "prettier": "^3.9.8",
+        "prettier": "^3.9.9",
         "publint": "^0.3.24",
         "rimraf": "^6.1.3",
         "typescript": "^6.0.3",

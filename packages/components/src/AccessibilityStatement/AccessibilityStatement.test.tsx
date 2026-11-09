@@ -6,11 +6,13 @@
  * - 4.1.2 Name, Role, Value — semantic structure of the rendered statement
  */
 import { render } from '@testing-library/react';
+import { renderToStaticMarkup } from 'react-dom/server';
 import { describe, it, expect, vi } from 'vitest';
-import { AccessibilityStatement } from './AccessibilityStatement';
+import { AccessibilityStatement, type AccessibilityStatementProps } from './AccessibilityStatement';
 import {
     getAllNationalLaws,
     getEnforcementBody,
+    getEnforcementStatementText,
     getNationalLawByFramework,
     getNationalLawForSector,
     getNationalLaws,
@@ -736,6 +738,171 @@ describe('AccessibilityStatement valblock', () => {
         const hits = [...names].filter(n => TEMPLATE_BLOCK.includes(n));
         expect(hits).toEqual([]);
     });
+
+    /**
+     * Intern #95: metodvalet är anroparens uttalade val, `reviewMethod`. Samma
+     * krav som i motorn, mot komponentens egna mallar: CLI:ts HTML-utlåtanden
+     * och webbplatser som använder komponenten renderas härifrån.
+     */
+    describe('granskningsmetod (Intern #95)', () => {
+        const REVIEWER = 'Granskaren AB';
+        const ORG = defaultProps.organizationName;
+        const METHODS = [undefined, 'self-assessment', 'external-review', 'no-review'] as const;
+        const expectedIndex = (method: typeof METHODS[number]): number =>
+            method === 'external-review' ? 1 : method === 'no-review' ? 2 : 0;
+        const placeholdersIn = (text: string): string[] => text.match(/\{<[^>]+>\}/g) ?? [];
+        /** Granskarens plats: platshållaren som det andra alternativet har och det första saknar. */
+        const reviewerSlots = (options: string[]): Set<string> => {
+            const own = new Set(placeholdersIn(options[0]));
+            return new Set(placeholdersIn(options[1]).filter(p => !own.has(p)));
+        };
+        /** Ett alternativ som det ska se ut: granskaren på sin plats, organisationen på övriga. */
+        const asRendered = (option: string, slots: Set<string>): string =>
+            option.replace(/\{<[^>]+>\}/g, p => (slots.has(p) ? REVIEWER : ORG)).trim();
+
+        it('varje metodblock har tre alternativ, och granskarens plats står bara i det andra', () => {
+            // Tre alternativ, för att no-review väljer index 1 när blocket bara har
+            // två, och index 1 är den externa granskningen. Och granskarens plats
+            // bara där, för att den bara fylls när extern granskning är uttalad.
+            const uses = new Map<string, number>();
+            for (const [locale, content] of testingContent) {
+                const options = choiceOptions(content);
+                expect(options, locale).toHaveLength(3);
+                const slots = [...reviewerSlots(options)];
+                expect(slots, locale).toHaveLength(1);
+                uses.set(slots[0], (uses.get(slots[0]) ?? 0) + 1);
+            }
+            for (const [slot, count] of uses) {
+                expect(TEMPLATE_BLOCK.split(slot).length - 1, slot).toBe(count);
+            }
+        });
+
+        for (const [locale, content] of testingContent) {
+            const options = choiceOptions(content);
+            const slots = reviewerSlots(options);
+            const sentences = options.map(o => asRendered(o, slots));
+
+            it(`${locale}: external-review ger det andra alternativet, med granskarens namn`, () => {
+                const { container } = render(
+                    <AccessibilityStatement {...defaultProps} locale={locale} reviewMethod="external-review" reviewer={{ name: REVIEWER }} />
+                );
+                const text = container.textContent ?? '';
+                expect(text).toContain(sentences[1]);
+                expect(text).toContain(REVIEWER);
+                expect(text).not.toContain(literal(options[0]));
+                expect(text).not.toContain(literal(options[2]));
+            });
+
+            it.each(METHODS)(`${locale}: reviewMethod %s ger samma metodtext på alla tre nivåer`, (method) => {
+                // Granskaren skickas med i alla fall: ett namn ensamt väljer ingen metod.
+                const chosen = LEVELS.map(level => {
+                    const { container, unmount } = render(
+                        <AccessibilityStatement {...defaultProps} locale={locale} complianceLevel={level} reviewMethod={method} reviewer={{ name: REVIEWER }} />
+                    );
+                    const text = container.textContent ?? '';
+                    unmount();
+                    return sentences.filter(s => text.includes(s));
+                });
+                expect(chosen).toEqual(LEVELS.map(() => [sentences[expectedIndex(method)]]));
+            });
+
+            it(`${locale}: utelämnad reviewMethod ger samma utlåtande som 'self-assessment', och självskattningen`, () => {
+                const omitted = renderToStaticMarkup(<AccessibilityStatement {...defaultProps} locale={locale} />);
+                expect(omitted).toBe(renderToStaticMarkup(
+                    <AccessibilityStatement {...defaultProps} locale={locale} reviewMethod="self-assessment" />
+                ));
+                const { container } = render(<AccessibilityStatement {...defaultProps} locale={locale} />);
+                expect(container.textContent).toContain(sentences[0]);
+            });
+        }
+
+        const MISSING: Array<[string, AccessibilityStatementProps['reviewer']]> = [
+            ['utan reviewer', undefined],
+            ['med tomt namn', { name: '' }],
+            ['med bara blanksteg i namnet', { name: '   ' }],
+        ];
+
+        it.each(MISSING)('external-review %s kastar i stället för att rendera', (_label, reviewer) => {
+            expect(() => renderToStaticMarkup(
+                <AccessibilityStatement {...defaultProps} reviewMethod="external-review" reviewer={reviewer} />
+            )).toThrow(/reviewer/);
+        });
+
+        it('sidfoten namnger verktyget som skrev dokumentet, aldrig granskaren', () => {
+            for (const locale of testingContent.keys()) {
+                const { container, unmount } = render(
+                    <AccessibilityStatement {...defaultProps} locale={locale} reviewMethod="external-review" reviewer={{ name: REVIEWER }} />
+                );
+                const footer = container.querySelector('footer')?.textContent ?? '';
+                expect(footer, locale).toContain(defaultProps.generatorTool.name);
+                expect(footer, locale).not.toContain(REVIEWER);
+                unmount();
+            }
+            // Utan generatorTool faller sidfoten på landets rekommenderade verktyg, inte på granskaren.
+            const { container } = render(
+                <AccessibilityStatement {...defaultProps} generatorTool={undefined} reviewMethod="external-review" reviewer={{ name: REVIEWER }} />
+            );
+            const footer = container.querySelector('footer')?.textContent ?? '';
+            expect(footer).not.toBe('');
+            expect(footer).not.toContain(REVIEWER);
+        });
+    });
+});
+
+describe('Intern #128 (Juno B2) — svensk tillsynstext i HTML/PDF-vägen', () => {
+    // Samma H3/H4/B3-fynd som motorn fick fixat i statement-generator.ts,
+    // men den här komponenten (som renderar CLI:ts HTML- och PDF-utlåtanden)
+    // hade aldrig fått motsvarande fix. Se resolveSwedishEnforcementContent()
+    // i AccessibilityStatement.tsx.
+    const KARINS_TEXT = 'Tillsynen över lagen (2023:254) om vissa produkters och tjänsters tillgänglighet är uppdelad mellan flera myndigheter beroende på vilken tjänst som erbjuds: Post- och telestyrelsen ansvarar för elektronisk kommunikation, banktjänster och e-handelstjänster, Mediemyndigheten för audiovisuella medietjänster, Myndigheten för tillgängliga medier för e-böcker, och Konsumentverket respektive Transportstyrelsen för olika delar av persontransporttjänster.';
+
+    it('SE privat: avsnittet är exakt Karins text, ordagrant', () => {
+        const { container } = render(
+            <AccessibilityStatement {...defaultProps} locale="sv" country="SE" sector="private" />
+        );
+        expect(container.textContent).toContain(KARINS_TEXT);
+    });
+
+    it('SE privat: inga DOS-lagen-begrepp och ingen "PTS ensam"-framing kvar', () => {
+        const { container } = render(
+            <AccessibilityStatement {...defaultProps} locale="sv" country="SE" sector="private" />
+        );
+        const text = container.textContent ?? '';
+        expect(text).not.toContain('oskäligt betungande');
+        expect(text).not.toContain('tillgänglighetsredogörelse har brister');
+        expect(text).not.toContain('begäran om tillgängliggörande');
+    });
+
+    it('SE offentlig: DOS-lagens text står kvar, med Digg-länken (H4)', () => {
+        const { container } = render(
+            <AccessibilityStatement {...defaultProps} locale="sv" country="SE" sector="public" />
+        );
+        const text = container.textContent ?? '';
+        expect(text).toContain('oskäligt betungande');
+        expect(text).toContain('https://www.digg.se/tdosanmalan');
+        expect(text).not.toContain(KARINS_TEXT);
+    });
+
+    it('SE privat, "technical"-avsnittet: lagnamnet med snedstreck klyvs inte (Juno B2, löst av PR 207s markörskydd)', () => {
+        // Juno flaggade i B2 att statusmeningen för SE privat blev bara
+        // "LPTT)." i HTML/PDF innan #207s markörbaserade platshållarskydd
+        // mergades. Det skyddet är generellt (inte SE-specifikt), det här
+        // testet bekräftar att det faktiskt täcker fallet hon pekade ut.
+        const { container } = render(
+            <AccessibilityStatement {...defaultProps} locale="sv" country="SE" sector="private" />
+        );
+        const text = container.textContent ?? '';
+        expect(text).toContain('Tillgänglighetslagen / LPTT');
+        expect(text).not.toContain('LPTT).');
+    });
+
+    it('icke-svensk SE-rendering (annat språk) och andra länder är orörda', () => {
+        const se_en = render(<AccessibilityStatement {...defaultProps} locale="en" country="SE" sector="private" />);
+        expect(se_en.container.textContent).not.toContain(KARINS_TEXT);
+
+        const de = render(<AccessibilityStatement {...defaultProps} locale="de" country="DE" sector="private" />);
+        expect(de.container.textContent).not.toContain(KARINS_TEXT);
+    });
 });
 
 /**
@@ -796,5 +963,69 @@ describe('Intern #82 — lagnamnsgrinden i komponenten', () => {
                 expect(html, `${country}/${sector}`).toContain(lagplatsen(getNationalLawForSector(country, sector), 'en'));
             }
         }
+    });
+});
+
+/**
+ * Intern #83 och Karins beslut i #94 fråga 2: tillsynen över LPTT är delad
+ * efter tjänstetyp, och komponenten vet inte vilken tjänst kunden driver.
+ * Tillsynsavsnittet anger därför fördelningen, med Karins text.
+ */
+describe('Intern #83 — delad tillsyn i svensk privat sektor', () => {
+    const KARIN = getEnforcementStatementText('SE', 'private', 'sv');
+
+    it('svensk privat sektor anger fördelningen, inte en ensam myndighet', () => {
+        expect(KARIN).toMatch(/^Tillsynen över lagen \(2023:254\)/);
+        const html = render(
+            <AccessibilityStatement {...defaultProps} locale="sv" country="SE" sector="private" />
+        ).container.innerHTML;
+        expect(html).toContain(KARIN!);
+        // Mallens mening pekade ut PTS för alla, också för ett bussbolag.
+        expect(html).not.toContain('Du kan anmäla till PTS');
+    });
+
+    it('offentlig sektor och andra språk behåller mallens tillsynsavsnitt', () => {
+        const offentlig = render(
+            <AccessibilityStatement {...defaultProps} locale="sv" country="SE" sector="public" />
+        ).container.innerHTML;
+        expect(offentlig).not.toContain(KARIN!);
+        expect(offentlig).toContain(getEnforcementBody('SE', 'public'));
+        const engelska = render(
+            <AccessibilityStatement {...defaultProps} locale="en" country="SE" sector="private" />
+        ).container.innerHTML;
+        expect(engelska).not.toContain(KARIN!);
+    });
+});
+
+/**
+ * Intern #146: privat norsk sektor har ingen tillsynsmyndighet. Motorn
+ * utelämnade redan avsnittet (Intern #23), men HTML-utlåtandet renderas av
+ * den här komponenten, som skrev "Tilsyn har ansvaret for tilsyn med …" och
+ * "Du kan klage til hvis du mener …" med ett tomt namn. Livekörningen i Intern
+ * hittade det först när utplockningen av myndighetsnamnet lagades.
+ */
+describe('AccessibilityStatement — tillsynsavsnittet utan myndighet', () => {
+    it('privat norsk sektor får inget tillsynsavsnitt med tomma hål', () => {
+        expect(getEnforcementBody('NO', 'private')).toBe('');
+        const { container } = render(
+            <AccessibilityStatement {...defaultProps} locale="no" country="NO" sector="private" />
+        );
+        const text = container.textContent ?? '';
+        expect(text).not.toContain('har ansvaret for tilsyn');
+        expect(text).not.toMatch(/klage til\s+hvis/);
+    });
+
+    it('offentlig norsk sektor behåller avsnittet med UU-tilsynet', () => {
+        const { container } = render(
+            <AccessibilityStatement {...defaultProps} locale="no" country="NO" sector="public" />
+        );
+        expect(container.textContent ?? '').toContain('UU-tilsynet har ansvaret for tilsyn');
+    });
+
+    it('privat svensk sektor behåller texten för delad tillsyn', () => {
+        const { container } = render(
+            <AccessibilityStatement {...defaultProps} locale="sv" country="SE" sector="private" />
+        );
+        expect(container.textContent ?? '').toContain('uppdelad mellan flera myndigheter');
     });
 });

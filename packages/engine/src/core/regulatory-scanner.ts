@@ -9,8 +9,11 @@ import type { RegulatoryReport, EnrichedReport, ConvergenceRule } from '@holmdig
 import { VirtualDOMBuilder } from './virtual-dom';
 import { HtmlValidator, ValidationResult } from './html-validator';
 import { evaluateNoScriptCoverage, probeWithoutJavaScript, NoScriptResult } from './noscript-check';
+import { assertPublicHost, guardPage, PrivateHostError, type BlockedRequest } from './network-guard';
+import { chromeLaunchArgs, explainLaunchFailure, type LaunchPolicy } from './browser-launch';
 
 import { readFileSync } from 'node:fs';
+import { createRequire } from 'node:module';
 
 /**
  * Intern #30: pick the mapped rule for an axe violation by its WCAG CRITERION,
@@ -187,7 +190,12 @@ export function getStandardsVersion(): string {
         // Try to find @holmdigital/standards package.json via require.resolve.
         // Intern #43: standards `exports` måste exponera "./package.json", annars
         // faller detta på ERR_PACKAGE_PATH_NOT_EXPORTED och versionen blir 'unknown'.
-        const stdPath = require.resolve('@holmdigital/standards/package.json');
+        //
+        // createRequire, inte en bar `require`: i ESM-bygget finns ingen `require`,
+        // och tsups ersättning kastar "Dynamic require ... is not supported", så
+        // versionen blev 'unknown' för alla ESM-konsumenter (t.ex. scan-servern).
+        // tsups `shims: true` ger import.meta.url även i CJS-bygget.
+        const stdPath = createRequire(import.meta.url).resolve('@holmdigital/standards/package.json');
         const pkg = JSON.parse(readFileSync(stdPath, 'utf-8'));
         return pkg.version;
     } catch {
@@ -216,6 +224,19 @@ export interface ScannerOptions {
     light?: boolean; // Skip HTML validation + Virtual DOM for faster scan
     waitForHydrationMs?: number; // Extra settle efter networkidle så SPA hinner hydrera (default 2500, 0 = av)
     noScriptCheck?: boolean; // Opt-in robusthetskontroll utan JS (rådgivande, påverkar aldrig score)
+    /**
+     * Intern #53 steg 2. Standard: false. Privata och interna adresser
+     * (loopback, 10/8, 172.16/12, 192.168/16, länklokalt och molnets
+     * metadatatjänst med flera) spärras, både startadressen och varje
+     * förfrågan sidan gör, omdirigeringar inräknade. Slå på bara för att
+     * skanna din egen lokala utvecklingsserver.
+     */
+    allowPrivateHosts?: boolean;
+    /**
+     * Intern #53 steg 2. Chromes sandbox, standard på. Stäng av bara för
+     * sidor du litar på, och bara där Chrome inte kan använda den.
+     */
+    sandbox?: boolean;
 }
 
 export interface ScanMetadata {
@@ -231,6 +252,12 @@ export interface ScanMetadata {
      * riktiga innehållet. Rådgivande — påverkar aldrig score/stats/compliance.
      */
     interstitialSuspected?: boolean;
+    /**
+     * Intern #53 steg 2: antal förfrågningar sidan gjorde till privata eller
+     * interna adresser, som spärren avbröt. Bara satt när det är fler än noll.
+     * Sidan kan då se annorlunda ut än för en besökare på ett internt nät.
+     */
+    blockedPrivateRequests?: number;
 }
 
 export interface ScanResult {
@@ -278,6 +305,7 @@ export interface ScanResult {
 
 export class RegulatoryScanner {
     private browser: Browser | null = null;
+    private blockedRequests: () => BlockedRequest[] = () => [];
     private options: ScannerOptions;
     private htmlValidator: HtmlValidator;
 
@@ -320,6 +348,12 @@ export class RegulatoryScanner {
         let passedCount = 0;
 
         try {
+            // Intern #53 steg 2: pröva startadressen innan någon webbläsare
+            // startar. Den skannas aldrig om den pekar på en spärrad adress.
+            if (!this.options.allowPrivateHosts) {
+                await assertPublicHost(this.options.url);
+            }
+
             await this.initBrowser();
             const page = await this.getPage();
 
@@ -338,6 +372,13 @@ export class RegulatoryScanner {
                     });
                     break; // Success
                 } catch (e) {
+                    // Spärren avbröt navigeringen, typiskt en omdirigering till en
+                    // intern adress. Ett nytt försök ger samma svar, så avbryt
+                    // direkt med samma besked som för en privat startadress.
+                    const stopped = this.blockedRequests()[0];
+                    if (stopped && e instanceof Error && e.message.includes('ERR_BLOCKED_BY_CLIENT')) {
+                        throw new PrivateHostError(this.options.url, stopped.host, `${stopped.reason}, reached during navigation (for example through a redirect)`);
+                    }
                     retries--;
                     if (retries === 0) throw e;
                     this.log(`Navigation failed, retrying... (${retries} attempts left)`);
@@ -452,6 +493,11 @@ export class RegulatoryScanner {
 
             const scanDuration = Date.now() - startTime;
             const result = this.generateResultPackage(allReports, passedCount, scanDuration, pageTitle, pageLanguage, interstitialSuspected);
+            const blockedCount = this.blockedRequests().length;
+            if (blockedCount > 0) {
+                result.metadata.blockedPrivateRequests = blockedCount;
+                this.log(`Spärrade ${blockedCount} förfrågningar till privata eller interna adresser (Intern #53).`);
+            }
             // Intern #43: html-validering och noscript-sonden mätte också vänta-
             // sidan, inte det riktiga innehållet — häng inte på dem på ett
             // INCONCLUSIVE-resultat.
@@ -471,20 +517,27 @@ export class RegulatoryScanner {
     }
 
     private async initBrowser() {
-        this.browser = await puppeteer.launch({
-            headless: this.options.headless,
-            args: [
-                '--no-sandbox',
-                '--disable-setuid-sandbox',
-                '--disable-blink-features=AutomationControlled', // Gömmer att det är en robot
-                ...(this.options.invalidHttpsCert ? ['--ignore-certificate-errors', '--allow-insecure-localhost'] : [])
-            ]
-        });
+        const policy: LaunchPolicy = {
+            sandbox: this.options.sandbox,
+            invalidHttpsCert: this.options.invalidHttpsCert,
+            extraArgs: ['--disable-blink-features=AutomationControlled'], // Gömmer att det är en robot
+        };
+        try {
+            this.browser = await puppeteer.launch({
+                headless: this.options.headless,
+                args: chromeLaunchArgs(policy),
+            });
+        } catch (e) {
+            throw explainLaunchFailure(e, policy);
+        }
     }
 
     private async getPage(): Promise<Page> {
         if (!this.browser) throw new Error('Browser not initialized');
         const page = await this.browser.newPage();
+        if (!this.options.allowPrivateHosts) {
+            this.blockedRequests = await guardPage(page);
+        }
         // Sätt en riktig User Agent för att undvika att bli blockad eller få en "lite"-version
         await page.setUserAgent(SCAN_USER_AGENT);
         return page;
@@ -515,7 +568,11 @@ export class RegulatoryScanner {
                 // vi skulle mäta två olika sidor, inte JS-effekten.
                 url: this.options.url,
                 userAgent: SCAN_USER_AGENT,
-                viewport: this.options.viewport
+                viewport: this.options.viewport,
+                // Sondens sida får samma spärr som huvudsidan.
+                preparePage: this.options.allowPrivateHosts
+                    ? undefined
+                    : async (probePage) => { await guardPage(probePage); }
             });
 
             return evaluateNoScriptCoverage(

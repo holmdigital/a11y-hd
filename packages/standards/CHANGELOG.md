@@ -1,5 +1,142 @@
 # @holmdigital/standards
 
+## 5.1.0
+
+### Minor Changes
+
+- aed787c: Intern #146: lagdata kontrollerad mot primärkälla. nl-eaa och pt-wad är rättade, och en dold dubbelparentes i lagfrasen är borta.
+
+  **Data (`national-laws.json`)**
+  - **nl-eaa:** det tidigare namnet "Warenwetbesluit toegankelijkheidseisen producten en diensten" finns inte, och `fullName` ("Implementatie van de Richtlijn (EU) 2019/882 (EAA)") var ingen titel.
+    - `law` är nu citeertiteln "Implementatiewet toegankelijkheidsvoorschriften producten en diensten".
+    - `fullName` är opschrift, ordagrant från wetten.overheid.nl.
+    - `lawUrl` är nu `https://wetten.overheid.nl/BWBR0049571/`. Posten hade ingen länk tidigare.
+    - En `note` förklarar att Warenwetbesluit toegankelijkheidsvoorschriften 2024 (BWBR0049688) bara gäller produkter, och att kraven för e-handel står i BW 6:230fa–230fd. Vilket instrument ett utlåtande ska namnge avgör Juno.
+  - **pt-wad:**
+    - `lawUrl` ledde till felsidan på diariodarepublica.pt. Den pekar nu på ELI-adressen `https://data.dre.pt/eli/dec-lei/83/2018/10/19/p/dre/pt/pdf`, som leder till PDF:en.
+    - `law` "DL 83/2018" står inte i akten. Den officiella formen "Decreto-Lei n.º 83/2018" används i stället.
+    - `fullName` har fått kommatecknet som i portalens rubrik: "…, de 19 de outubro".
+  - **pt-eaa:** samma kommatecken: "Decreto-Lei n.º 82/2022, de 6 de dezembro".
+
+  Inget av namnen är attesterat än, så lagnamnsgrinden visar fortfarande fallback-frasen för NL och PT. Kunddokumenten ändras inte förrän Juno attesterar.
+
+  **Kod: `lawPhrase` tappar parentesen även när det långa namnet redan bär kortnamnet inom parentes.** Nederländernas opschrift avslutas med citeertiteln, så nl-wad hade skrivit "… (Tijdelijk besluit digitale toegankelijkheid overheid) (Tijdelijk besluit digitale toegankelijkheid overheid)" samma dag som namnet attesterades.
+
+  Grinden dolde felet: ett oattesterat namn renderas aldrig, så inget test såg raden. `lawPhrase` exporteras nu, och ett nytt test prövar frasen för **varje** post, attesterad eller inte. Testet var rött för nl-wad och nl-eaa före rättningen.
+
+## 5.0.0
+
+### Major Changes
+
+- 0538933: Intern #68: Australiens Digital Access Standard är borttagen ur lagdatan, eftersom intern regeringspolicy inte är ett lagrum.
+
+  **Regeln som gäller framåt (Juno):** en post hör hemma i `national-laws.json` bara om ett bindande rättsligt instrument gör efterlevnaden obligatorisk och möjlig att göra gällande mot den som bär skyldigheten. Digital Access Standard är obligatorisk inom den australiska regeringens egen investeringsstyrning. Standarden har däremot ingen författning, ingen tredjepartsrätt, ingen tillsynsmyndighet utanför DTA och ingen domstolsväg.
+
+  **Brytande ändringar, därav major:**
+
+  - Posten `au-dta` finns inte längre. `getNationalLaws('AU')` ger nu en post, `au-dda`, och `getNationalLaw('au-dta', 'AU')` ger `null`.
+  - `'DAS'` är borttagen ur `LegalFramework` och ur schemats `euFramework`. Kod som anropar `getNationalLawByFramework('DAS', …)` eller har ett uttömmande `switch` över `LegalFramework` med ett `'DAS'`-fall går inte längre att kompilera. Ta bort fallet. `getLegalFramework('DAS')` gav redan `null`.
+
+  **Lagen i utlåtandet ändras inte.** Utlåtandet för Australien namngav redan Disability Discrimination Act 1992 i båda sektorerna. Det kom tidigare från en egen AU-gren i standards (`deriveEnforcementLaw`), i motorn (`resolveNationalLawReference`) och i komponenten. Grenarna fanns bara för att standarden, med scope `public`, annars vann väljarens företräde för exakt scope. Nu är de borttagna, och den generella väljaren ger samma lag, så tre handhållna speglar som kunde glida isär är borta. Med motorns gren försvann också dess hårdkodade reservtext med lagnamnet, en namnväg som gick förbi lagvalet.
+
+  Digital Inclusion Standard, som är det dokument som faktiskt rör tillgänglighet, beskrivs i `docs/guides/eu-legal-framework.md` och finns inte i datan.
+
+  **Det här ändras i kunddokumenten: avsnittet "Australian Government digital policy" visas bara för offentlig sektor** (Intern #94 fråga 4, Juno). Avsnittet beskriver en policy för federala myndigheter och ingen annan. Ett privat företag är varken "subject to" policyn eller en "Commonwealth agency", så i ett privat utlåtande var avsnittet sakligt fel, oavsett datumen. Ett australiskt utlåtande för privat sektor saknar nu avsnittet, och resten är oförändrat. Offentlig sektor är oförändrad.
+
+  Mallarna har fått ett valfritt fält per avsnitt, `sectors`, som begränsar avsnittet till de angivna sektorerna. Det finns i både motorns mallar och komponentens, och ett avsnitt utan fältet gäller båda sektorerna som förut. Datumen i avsnittet (1 januari och 1 juli 2025) är belagda sedan tidigare men inte omverifierade den här omgången. Juno kontrollerar dem mot primärkällan när den svarar.
+
+### Minor Changes
+
+- 9bdf720: HHS Section 504 (`us-hhs-section-504`) is now marked `inForce: true` with `effectiveDate: "2024-07-08"`, the date the revised HHS Section 504 regulations took effect. The WCAG 2.1 AA dates stay in `complianceDeadlines` (15+ employees: 2027-05-11, fewer than 15: 2028-05-10) and are no longer read as a whole-entry flag. Use the new `isComplianceTierInForce(law, tier, today?)` to check whether a tier's WCAG deadline has passed. `true` only means that the date has passed, not that the requirement applies to whoever uses the package: 45 CFR Part 84 applies only to recipients of federal financial assistance from HHS (45 CFR 84.2(a)). The WCAG citation changes from 45 CFR 84.85 to 84.84(b).
+- e92c075: Intern #82: lagnamnsgrinden. Ett utlåtande namnger en lag bara om någon har gått i god för just det namnet mot primärkälla. Annars skriver det fallback-frasen, till exempel "gällande tillgänglighetskrav" (Karins beslut 2026-09-12).
+
+  **Det här ser kunden.** Meningen som namnger lagen skriver i stället fallback-frasen på utlåtandets språk i 18 av 32 kombinationer av land och sektor:
+
+  | Land                   | Sektor som får fallback-frasen |
+  | ---------------------- | ------------------------------ |
+  | NO, DK, FI, NL, PT, CA | båda                           |
+  | DE, ES, IT, GB, US     | privat                         |
+  | IE                     | offentlig                      |
+
+  I övriga 14 kombinationer står lagens namn kvar som i dag: SE, FR, PL och AU i båda sektorerna, DE, ES, IT, GB och US i offentlig sektor, och IE i privat. Inget annat i utlåtandet ändras. Myndighetsraden står kvar, eftersom tillsynsmyndighetens namn har en egen registerkategori och tystas inte i det här bygget.
+
+  **Ett land tänds** när Juno lägger `lagnamn` i `bekraftat` för landets poster i registret i holmdigital/Intern och generatorn där körs. Diffen visar då `"lagnamn"` i `attested`, en rad per post. Det finns ingen annan väg in, ingen landflagga och inget fält som sätts för hand.
+
+  **En rad byter form i motorns utlåtanden för US offentlig sektor.** Motorn skrev "Section 508 of the Rehabilitation Act of 1973 (Section 508)" och gick förbi regeln att parentesen faller när kortnamnet redan står först. Komponenten skrev raden utan parentes. Nu används samma funktion överallt, och parentesen faller.
+
+  **Nytt i standards:**
+
+  - `NationalLaw.attestation?: Attestation`, med `attestedBy`, `session`, `sources`, `attested`, `notAttested` och `subject`. Blocket genereras ur registret och redigeras aldrig för hand här. `attested` och `notAttested` är listor av typen `AttestableField`, en union, så att en felstavning fäller typkontrollen i stället för att tyst läsas som "ej granskat". Schemat har `additionalProperties: false` och ingen `minItems` på `attested`, eftersom en tom lista är en giltig spärr.
+  - `isNameAttested(law)` är grinden. Den läser `attested` och inget annat, och bara `subject: 'law-entry'` kan öppna den.
+  - `resolveNationalLawReference(country, sector, lang)` och `NATIONAL_LAW_FALLBACK` har flyttat hit från motorn och komponenten. Båda bar varsin kopia, och kopiorna har glidit isär en gång redan (Intern #63/#66). Grinden sitter på varje väg som kan returnera ett namn, också US-grenen, där varje lag i kombinationen prövas för sig.
+  - `sources` bär registrets källtext. Standardlistan över källor per land och anteckningarna om hur en källa nåddes ingår inte (Intern #94 fråga 1).
+
+  Motorn återexporterar `resolveNationalLawReference`, så dess publika API är oförändrat.
+
+- f998d58: Intern #83, Karins beslut i #94 fråga 2: ett svenskt utlåtande för privat sektor anger hur tillsynen över LPTT är fördelad, i stället för att peka ut PTS för alla.
+
+  **Det här ser kunden.** Tillsynsavsnittet i ett svenskt utlåtande för privat sektor lyder nu, ordagrant som Karin skrev det:
+
+  > Tillsynen över lagen (2023:254) om vissa produkters och tjänsters tillgänglighet är uppdelad mellan flera myndigheter beroende på vilken tjänst som erbjuds: Post- och telestyrelsen ansvarar för elektronisk kommunikation, banktjänster och e-handelstjänster, Mediemyndigheten för audiovisuella medietjänster, Myndigheten för tillgängliga medier för e-böcker, och Konsumentverket respektive Transportstyrelsen för olika delar av persontransporttjänster.
+
+  Förut stod där att PTS har ansvaret för tillsynen och att kunden kan anmäla till PTS. För ett buss-, tåg-, flyg- eller rederibolags webbplats är Konsumentverket tillsynsmyndighet, så meningen var fel för dem. Motorn vet inte vilken tjänst kunden driver, och därför anger avsnittet fördelningen.
+
+  **Texten ersätter hela avsnittet.** Mallens två meningar om att anmäla till PTS och dess stycke om oskäligt betungande krav, tillgänglighetsredogörelsen och begäran om tillgängliggörande står inte längre i ett svenskt utlåtande för privat sektor. Det stycket hör till DOS-lagen och offentlig sektor.
+
+  **Oförändrat:** offentlig sektor, alla andra länder och svensk privat sektor på andra språk än svenska. Det finns bara en svensk text än.
+
+  **Nytt i standards:** `enforcement.statementText`, en språknycklad text för en lag vars tillsyn är delad efter tjänstetyp, och `getEnforcementStatementText(country, sector, lang)`. Funktionen har samma lagval som `resolveNationalLawReference` och samma lagnamnsgrind. Texten namnger lagen, så den används bara när lagnamnet är attesterat; annars vore den en väg förbi grinden. Motorn och komponenten läser den på samma sätt.
+
+- c29822b: Lagdatasvepet 2026-09-24: Sverige (Intern #83), sex ikraftträdanden (Intern #63), och fyra sanktionsbelopp som inte fanns i lagen (Intern #83, #70, #88, #93).
+
+  **Minor, eftersom en typ tillkommer:** `NationalLaw.exemptions.statutory?: StatutoryExemption[]`, med `kind` (`actor`, `content`, `navigation-maps`, `disproportionate-burden`, `transitional`), `description` och `legalBasis`. Typen `exemptions` rymde bara mikroföretagsundantaget, och DOS-lagen har inget sådant (den binder offentliga aktörer) men fem andra undantag. Fältet är valfritt, så ingen befintlig konsument påverkas.
+
+  **Ikraftträdanden.** Sex poster bar direktivets frist eller lagens datum i stället för lagens eget ikraftträdande:
+
+  | Post        | Före       | Efter      |
+  | ----------- | ---------- | ---------- |
+  | `dos-lagen` | 2019-09-23 | 2019-01-01 |
+  | `de-bitv`   | 2019-09-23 | 2011-09-22 |
+  | `es-une`    | 2018-09-23 | 2018-09-20 |
+  | `it-wad`    | 2004-01-09 | 2004-02-01 |
+  | `pl-wad`    | 2019-04-04 | 2019-05-23 |
+  | `pt-wad`    | 2018-10-19 | 2019-01-01 |
+
+  Alla sex datum ligger bakåt i tiden, så `inForce` ändras inte för någon post. `no-ikt` behåller 2014-07-01, som är efterlevnadsfristen. `note` förklarar nu båda datumen. Fem EAA-poster har fått sitt formella ikraftträdande i `note`, eftersom `effectiveDate` bär tillämplighetsdagen.
+
+  **Sverige.**
+
+  - `dos-lagen.exemptions.statutory` har fem poster: 8 § med ändringen genom Lag (2025:992), som datan inte speglade, 9 § första stycket med dess fem innehållstyper, 9 § andra stycket, 12 § och övergångsbestämmelse 2. Andra stycket är ett eget undantag för kartor som ÄR avsedda för navigering, med villkoret att väsentlig information görs tillgänglig på annat sätt. Det är alltså inte ett villkor på punkt 2, som undantar kartor som inte är avsedda för navigering utan villkor (Karin 2026-09-28, Intern #83, ordagrant ur riksdagen.se).
+  - `lptt.enforcement` och `lptt.sectorAuthorities` följer den färdiga formen i #83 ordagrant. PTS beskrivning säger nu att PTS är marknadskontrollmyndighet för produkter och själv tillsynsmyndighet för elektronisk kommunikation, banktjänster och e-handel. Webbplatser, appar och e-biljetter för persontransport ligger hos **Konsumentverket, inte PTS**, och Transportstyrelsen har resten av persontransporten. Raderna för Mediemyndigheten och MTM är orörda.
+  - `lptt.exemptions.microbusiness` vilar nu på svensk lag (2 §, 10 §) i stället för direktivet. Texten skiljer helt undantag för tjänster från en lättnad för produkter.
+  - `lptt.note` säger att fristen till 2030-06-27 gäller produkter i tjänsteproduktionen och aldrig får läsas som ett allmänt anstånd.
+
+  **Frankrike.** `fr-rgaa.sectorAuthorities` är **borttaget** (Intern #94 fråga 3, Juno). DGCCRF och Banque de France hör till privat sektor och konsumenträtt, alltså `fr-eaa`, som redan har DGCCRF som `enforcement`. Fältet stod dessutom på svenska. `fr-rgaa.enforcement` (DINUM) är oförändrat.
+
+  **Sanktionstak.**
+
+  - `dos-lagen` (Intern #83): spannet 100 000 till 1 000 000 SEK är **borttaget**, eftersom det inte finns i lagen. 19 § ger påpekande, föreläggande och vite, men inget belopp, och vitet bestäms i varje enskilt fall. Arten `Vitesföreläggande` står i `note` tills sanktionsschemat i #70 ger den ett fält. `getMaxSanction('SE')` ger oförändrat 10 000 000 SEK ur `lptt`.
+  - `de-bfsg`: 500 000 EUR → **100 000 EUR**. § 37 Abs. 2 ger 100 000 för bland annat tjänsteledet och 10 000 för övrigt.
+  - `fr-rgaa`: 300 000 EUR → **50 000 EUR**. Art. 47-1 ger 50 000 för huvudkravet och 25 000 för deklarations- och plankraven.
+
+  - `ca-aoda` (Intern #93): spannet 200–100 000 CAD är **borttaget**, eftersom det inte finns i lagen. § 37(3) ger 50 000 CAD per dag för en person och 100 000 CAD per dag för ett bolag, och båda taken står citerade i `note`. Här är borttagning rätt och inte ett högsta belopp: taken gäller per dag, så ett platt `maxAmount` skulle underskatta exponeringen.
+  - `ca-aca` (Intern #70): lagrummet i `description` är nu § 91(2) i stället för "Part 6". Taket 250 000 CAD är bekräftat.
+
+  För `de-bfsg` och `fr-rgaa` står det lägre taket i `description`. Taken är två separata belopp för olika överträdelser, inte ett spann, så `minAmount` förblir 0 och inte det lägre taket. Tvåelementsformen kommer med sanktionsschemat i #70. `getMaxSanction('DE')` och `getMaxSanction('FR')` ger nu 100 000 respektive 50 000.
+
+  **Inget kunddokument ändras.** Motorn och komponenten läser varken `effectiveDate`, `exemptions`, `sectorAuthorities`, `responsibility` eller `sanctions`. Myndighetsraden i ett svenskt utlåtande för privat sektor säger därför fortfarande PTS, även för en transportkund. Att ändra det kräver ett formuleringsbeslut och ligger kvar i #83.
+
+## 4.2.2
+
+### Patch Changes
+
+- 94022ff: Intern #63 — två språkblandade fält rättade.
+
+  - `de-bitv.enforcement.responsibility`: `Federal tillsyn av offentlig sektor.` → `Federal oversight of the public sector.` Hela meningen var svensk i en tysk post. Engelska följer det mönster som faktiskt gäller för beskrivande prosafält i granskade poster; lagnamn och andra citatfält står kvar på originalspråket.
+  - `nl-eaa.sanctions.description`: ett svenskt `eller` mitt i en nederländsk mening → `of`.
+
+  Ingen sakuppgift är ändrad. Varken motorn eller komponenten läser `responsibility` eller `sanctions`, så inget kunddokument påverkas. Ändringen syns bara för den som läser datan via API:t.
+
 ## 4.2.1
 
 ### Patch Changes

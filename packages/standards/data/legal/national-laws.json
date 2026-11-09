@@ -73,7 +73,10 @@
                     "authority": "se-pts",
                     "authorityName": "PTS (Post- och telestyrelsen)",
                     "responsibility": "Marknadskontrollmyndighet för produkter (28 § och 25 § förordning (2023:676)) samt tillsynsmyndighet för elektronisk kommunikation, banktjänster och e-handelstjänster (4 § första stycket 1, 5 och 7), med samordningsansvar för övriga sektorsmyndigheter.",
-                    "website": "https://pts.se"
+                    "website": "https://pts.se",
+                    "statementText": {
+                        "sv": "Tillsynen över lagen (2023:254) om vissa produkters och tjänsters tillgänglighet är uppdelad mellan flera myndigheter beroende på vilken tjänst som erbjuds: Post- och telestyrelsen ansvarar för elektronisk kommunikation, banktjänster och e-handelstjänster, Mediemyndigheten för audiovisuella medietjänster, Myndigheten för tillgängliga medier för e-böcker, och Konsumentverket respektive Transportstyrelsen för olika delar av persontransporttjänster."
+                    }
                 },
                 "sectorAuthorities": [
                     {
@@ -97,7 +100,7 @@
                     "kind": "amount",
                     "type": "Sanktionsavgift",
                     "currency": "SEK",
-                    "description": "Sanktionsavgiften bestäms med hänsyn till allvaret och omfattningen av åsidosättandet samt till omständigheterna i övrigt. I ringa fall ska någon sanktionsavgift inte beslutas.",
+                    "description": "Sanktionsavgiften bestäms med hänsyn till allvaret och omfattningen av åsidosättandet samt till omständigheterna i övrigt. I ringa fall ska någon sanktionsavgift inte beslutas. Avgiften får sättas ned helt eller delvis om det finns särskilda skäl eller om det annars är påkallat med hänsyn till omständigheterna (39 § andra stycket).",
                     "minAmount": 10000,
                     "maxAmount": 10000000,
                     "cap": "stated",
@@ -336,7 +339,7 @@
                 "enforcement": {
                     "authority": "de-bfit",
                     "authorityName": "BFIT-Bund (Zentralstelle für barrierefreie Informationstechnik)",
-                    "responsibility": "Federal tillsyn av offentlig sektor.",
+                    "responsibility": "Federal oversight of the public sector.",
                     "website": "https://www.bfit-bund.de"
                 },
                 "inForce": true,
@@ -375,22 +378,22 @@
                         "kind": "amount",
                         "type": "Geldbuße",
                         "currency": "EUR",
-                        "description": "Fine for an administrative offence (Ordnungswidrigkeit), not a criminal penalty. Covers, among others, offering or providing a service that does not meet the accessibility requirements (no. 8, § 14(1)). The Act sets no minimum.",
+                        "description": "Fine for an administrative offence (Ordnungswidrigkeit), not a criminal penalty. Covers, among others, offering or providing a service that does not meet the accessibility requirements, or without having prepared the information under Annex 3 no. 1 and made it available to the public in an accessible form (no. 8, § 14(1) nos. 1 and 2). The BFSG sets no minimum; the general minimum is EUR 5 (§ 17(1) OWiG). Under § 17(4) OWiG the fine should exceed the economic benefit the offender gained from the offence, and the statutory maximum may be exceeded for that purpose. This also applies to fines against legal persons (§ 30(3) OWiG).",
                         "condition": "Offences under § 37(1) nos. 1, 7, 8, 9 and 10.",
                         "maxAmount": 100000,
                         "cap": "stated",
-                        "legalBasis": "Barrierefreiheitsstärkungsgesetz (BFSG), § 37(2)",
+                        "legalBasis": "Barrierefreiheitsstärkungsgesetz (BFSG), § 37(2); Gesetz über Ordnungswidrigkeiten (OWiG), § 17 and § 30(3)",
                         "sourceUrl": "https://www.gesetze-im-internet.de/bfsg/__37.html"
                     },
                     {
                         "kind": "amount",
                         "type": "Geldbuße",
                         "currency": "EUR",
-                        "description": "Fine for an administrative offence (Ordnungswidrigkeit), not a criminal penalty. Covers the other offences, such as the information and labelling duties (nos. 2 to 6). The Act sets no minimum.",
+                        "description": "Fine for an administrative offence (Ordnungswidrigkeit), not a criminal penalty. Covers the other offences, such as the information and labelling duties (nos. 2 to 6); the service information under § 14(1) no. 2 falls under no. 8 and the higher ceiling. The BFSG sets no minimum; the general minimum is EUR 5 (§ 17(1) OWiG). Under § 17(4) OWiG the fine should exceed the economic benefit the offender gained from the offence, and the statutory maximum may be exceeded for that purpose. This also applies to fines against legal persons (§ 30(3) OWiG).",
                         "condition": "All other offences under § 37(1).",
                         "maxAmount": 10000,
                         "cap": "stated",
-                        "legalBasis": "Barrierefreiheitsstärkungsgesetz (BFSG), § 37(2)",
+                        "legalBasis": "Barrierefreiheitsstärkungsgesetz (BFSG), § 37(2); Gesetz über Ordnungswidrigkeiten (OWiG), § 17 and § 30(3)",
                         "sourceUrl": "https://www.gesetze-im-internet.de/bfsg/__37.html"
                     }
                 ],
@@ -411,7 +414,8 @@
                     "attestedBy": "Juno",
                     "session": "2026-09-11",
                     "sources": [
-                        "gesetze-im-internet.de/bfsg/BJNR297010021.html (rubrikblock och fritextsökning av hela dokumentet), samt /bfsg/__20.html, /bfsg/__28.html och /bfsg/inhalts_bersicht.html, alla lästa i sin helhet Lagnamnet omgranskat 2026-09-12 mot gesetze-im-internet.de/bfsg/ och /bfsg/BJNR297010021.html, båda hämtade direkt (200). effectiveDate granskad 2026-09-14 mot lagens egen ikrafttradande- eller tillamplighetsbestammelse, oppnad i sessionen. Sanktionen granskad 2026-09-15 mot gesetze-im-internet.de/bfsg/__37.html, § 37 läst i sin helhet."
+                        "gesetze-im-internet.de/bfsg/BJNR297010021.html (rubrikblock och fritextsökning av hela dokumentet), samt /bfsg/__20.html, /bfsg/__28.html och /bfsg/inhalts_bersicht.html, alla lästa i sin helhet Lagnamnet omgranskat 2026-09-12 mot gesetze-im-internet.de/bfsg/ och /bfsg/BJNR297010021.html, båda hämtade direkt (200). effectiveDate granskad 2026-09-14 mot lagens egen ikrafttradande- eller tillamplighetsbestammelse, oppnad i sessionen. Sanktionen granskad 2026-09-15 mot gesetze-im-internet.de/bfsg/__37.html, § 37 läst i sin helhet.",
+                        "Sanktionen omgranskad 2026-11-08 (Juno, PR #219): gesetze-im-internet.de, BFSG § 14 och § 37 samt OWiG § 2, § 17 och § 30, alla lästa i sin helhet."
                     ],
                     "attested": [
                         "ikrafttradande",
@@ -726,8 +730,8 @@
             },
             {
                 "id": "nl-eaa",
-                "law": "Warenwetbesluit toegankelijkheidseisen producten en diensten",
-                "fullName": "Implementatie van de Richtlijn (EU) 2019/882 (EAA)",
+                "law": "Implementatiewet toegankelijkheidsvoorschriften producten en diensten",
+                "fullName": "Wet van 8 april 2024 tot wijziging van diverse wetten ter implementatie van Richtlijn (EU) 2019/882 van het Europees Parlement en de Raad van 17 april 2019 betreffende de toegankelijkheidsvoorschriften voor producten en diensten (Implementatiewet toegankelijkheidsvoorschriften producten en diensten)",
                 "euFramework": "EAA",
                 "scope": "private",
                 "enforcement": {
@@ -763,7 +767,8 @@
                     ],
                     "subject": "law-entry"
                 },
-                "note": "Sanctions (Intern #70, 2026-09-24): removed, because the amount is not attested against primary source and the sanctions schema requires a legal basis and a source for every element. An absent field means \"not established\", never \"no penalty\". The earlier record, verbatim: {\"type\":\"Bestuurlijke boete\",\"description\":\"Boetes bij overtreding van de Warenwet eller EAA-voorschriften.\",\"minAmount\":0,\"maxAmount\":900000,\"currency\":\"EUR\"}."
+                "lawUrl": "https://wetten.overheid.nl/BWBR0049571/",
+                "note": "Källkontroll 2026-11-09 (Intern #146): det tidigare namnet \"Warenwetbesluit toegankelijkheidseisen producten en diensten\" finns inte, och fullName var ingen titel. Implementatiewet (BWBR0049571, Stb. 2024, 87, rättelse 87-n1) ändrar flera lagar. Warenwetbesluit toegankelijkheidsvoorschriften 2024 (BWBR0049688) gäller bara produkter. Kraven för e-handelstjänster står i Burgerlijk Wetboek Boek 6, afdeling 2ab, art. 230fa-230fd, som Implementatiewet art. IV införde. Vilket instrument ett utlåtande för webb och e-handel ska namnge avgör Juno. Lagnamnet är ännu inte bekräftat. Sanctions (Intern #70, 2026-09-24): removed, because the amount is not attested against primary source and the sanctions schema requires a legal basis and a source for every element. An absent field means \"not established\", never \"no penalty\". The earlier record, verbatim: {\"type\":\"Bestuurlijke boete\",\"description\":\"Boetes bij overtreding van de Warenwet of EAA-voorschriften.\",\"minAmount\":0,\"maxAmount\":900000,\"currency\":\"EUR\"}."
             }
         ],
         "GB": [
@@ -814,10 +819,10 @@
                     "kind": "amount",
                     "type": "Skadestånd efter domstolsprövning",
                     "currency": "GBP",
-                    "description": "Ingen administrativ bötesskala. County court (England och Wales) eller sheriff (Skottland) prövar krav enligt Equality Act 2010 s. 114 och kan döma ut skadestånd.",
+                    "description": "Ingen administrativ bötesskala. County court (England och Wales) eller sheriff (Skottland) prövar krav enligt Equality Act 2010 s. 114 och kan döma ut skadestånd enligt s. 119.",
                     "cap": "no-ceiling",
-                    "legalBasis": "Equality Act 2010, section 114",
-                    "sourceUrl": "https://www.legislation.gov.uk/ukpga/2010/15/section/114"
+                    "legalBasis": "Equality Act 2010, sections 114 and 119",
+                    "sourceUrl": "https://www.legislation.gov.uk/ukpga/2010/15/part/9/chapter/2"
                 },
                 "inForce": true,
                 "effectiveDate": "2010-10-01",
@@ -928,12 +933,13 @@
                 },
                 "inForce": true,
                 "effectiveDate": "1992-01-26",
-                "note": "No final DOJ rule for web accessibility under Title III as of 2026-04. DOJ enforcement and private litigation under Title III frequently cite WCAG 2.0/2.1 Level AA as the technical reference in settlements and consent decrees (e.g. Robles v. Domino's Pizza, Gil v. Winn-Dixie), but no single standard is formally mandated by regulation — practice varies between circuits. Legal exposure is primarily through private lawsuits for injunctive relief (42 U.S.C. § 12188). NPRM for web accessibility was published 2024; final rule pending. Sanctions (Intern #70, 2026-09-24): the amounts are attested (28 CFR § 36.504(a)(3): USD 75,000 for a first violation and USD 150,000 for a subsequent one, with the applicable amount for penalties assessed after 2016-08-01 set in 28 CFR 85.5), but the register records no source address for the reading, and whether the ceiling counts as stated here or elsewhere awaits Juno (#70 question 2). The field returns when both are settled. The earlier record, verbatim: {\"type\":\"Lawsuit / Civil Penalties / Injunctive Relief\",\"description\":\"Private plaintiffs can file lawsuits under 42 U.S.C. § 12188 (injunctive relief only — no damages in federal court; state laws may allow additional damages). DOJ can seek civil monetary penalties per 28 CFR § 36.504 — statutory base amounts are $75,000 (first violation) / $150,000 (subsequent), annually inflation-adjusted per 28 CFR Part 85 (Federal Civil Penalties Inflation Adjustment Act). Consult the latest Federal Register inflation adjustment notice for current amounts.\",\"minAmount\":75000,\"maxAmount\":150000,\"currency\":\"USD\",\"example\":\"Thousands of ADA Title III web accessibility lawsuits filed annually. Notable settlements include Domino's Pizza, Winn-Dixie, and major retail chains.\"}.",
+                "note": "No final DOJ rule for web accessibility under Title III as of 2026-04. DOJ enforcement and private litigation under Title III frequently cite WCAG 2.0/2.1 Level AA as the technical reference in settlements and consent decrees (e.g. Robles v. Domino's Pizza, Gil v. Winn-Dixie), but no single standard is formally mandated by regulation — practice varies between circuits. Legal exposure is primarily through private lawsuits for injunctive relief (42 U.S.C. § 12188). NPRM for web accessibility was published 2024; final rule pending. Sanctions (Intern #70, 2026-09-24): the amounts are attested (28 CFR § 36.504(a)(3): USD 75,000 for a first violation and USD 150,000 for a subsequent one, with the applicable amount for penalties assessed after 2016-08-01 set in 28 CFR 85.5), but the register recorded no source address for the reading, and whether the ceiling counts as stated here or elsewhere awaited Juno (#70 question 2). Both were settled 2026-11-08 (Juno, PR #219): the ceiling is `elsewhere`, in 28 CFR 85.5, and the source is eCFR 28 CFR 36.504. The field is back in two elements, first and subsequent violation, without a fixed maxAmount, because 85.5 changes with each inflation adjustment. The earlier record, verbatim: {\"type\":\"Lawsuit / Civil Penalties / Injunctive Relief\",\"description\":\"Private plaintiffs can file lawsuits under 42 U.S.C. § 12188 (injunctive relief only — no damages in federal court; state laws may allow additional damages). DOJ can seek civil monetary penalties per 28 CFR § 36.504 — statutory base amounts are $75,000 (first violation) / $150,000 (subsequent), annually inflation-adjusted per 28 CFR Part 85 (Federal Civil Penalties Inflation Adjustment Act). Consult the latest Federal Register inflation adjustment notice for current amounts.\",\"minAmount\":75000,\"maxAmount\":150000,\"currency\":\"USD\",\"example\":\"Thousands of ADA Title III web accessibility lawsuits filed annually. Notable settlements include Domino's Pizza, Winn-Dixie, and major retail chains.\"}.",
                 "attestation": {
                     "attestedBy": "Juno",
                     "session": "2026-09-12",
                     "sources": [
-                        "eCFR:s officiella API, strukturen för title-28 per 2026-01-01, samt ada.gov/law-and-regs/regulations/title-iii-regulations/, båda hämtade direkt 2026-09-12."
+                        "eCFR:s officiella API, strukturen för title-28 per 2026-01-01, samt ada.gov/law-and-regs/regulations/title-iii-regulations/, båda hämtade direkt 2026-09-12.",
+                        "Sanktionen omgranskad 2026-11-08 (Juno, PR #219): eCFR (titel 28 aktuell per 2026-11-05), 28 CFR 36.504 och 85.5; govinfo, US Code 2024 Edition, 42 U.S.C. 12188 och 2000a-3."
                     ],
                     "attested": [
                         "sanktionsart",
@@ -944,7 +950,29 @@
                         "lagnamn"
                     ],
                     "subject": "law-entry"
-                }
+                },
+                "sanctions": [
+                    {
+                        "kind": "amount",
+                        "type": "Civil penalty",
+                        "currency": "USD",
+                        "cap": "elsewhere",
+                        "legalBasis": "42 U.S.C. 12188(b)(2)(C) and (b)(3); 28 CFR 36.504(a)(3); 28 CFR 85.5",
+                        "sourceUrl": "https://www.ecfr.gov/current/title-28/chapter-I/part-36/subpart-E/section-36.504",
+                        "description": "Imposed by a court in an action brought by the Attorney General under 42 U.S.C. 12188(b)(1)(B). The ceiling is set in 28 CFR 85.5 and adjusted for inflation: USD 118,225 for a first violation and USD 236,451 for a subsequent violation, for penalties assessed after 2025-07-03 for violations after 2015-11-02. Several discriminatory acts determined in a single action count as one violation (12188(b)(3)). The court shall consider good-faith efforts to comply (12188(b)(5)).",
+                        "condition": "First violation (12188(b)(2)(C)(i))."
+                    },
+                    {
+                        "kind": "amount",
+                        "type": "Civil penalty",
+                        "currency": "USD",
+                        "cap": "elsewhere",
+                        "legalBasis": "42 U.S.C. 12188(b)(2)(C) and (b)(3); 28 CFR 36.504(a)(3); 28 CFR 85.5",
+                        "sourceUrl": "https://www.ecfr.gov/current/title-28/chapter-I/part-36/subpart-E/section-36.504",
+                        "description": "Imposed by a court in an action brought by the Attorney General under 42 U.S.C. 12188(b)(1)(B). The ceiling is set in 28 CFR 85.5 and adjusted for inflation: USD 118,225 for a first violation and USD 236,451 for a subsequent violation, for penalties assessed after 2025-07-03 for violations after 2015-11-02. Several discriminatory acts determined in a single action count as one violation (12188(b)(3)). The court shall consider good-faith efforts to comply (12188(b)(5)).",
+                        "condition": "Subsequent violation (12188(b)(2)(C)(ii))."
+                    }
+                ]
             },
             {
                 "id": "us-hhs-section-504",
@@ -956,31 +984,44 @@
                 "enforcement": {
                     "authority": "us-hhs-ocr",
                     "authorityName": "HHS Office for Civil Rights (OCR)",
-                    "responsibility": "Enforces Section 504 obligations for recipients of HHS federal financial assistance. Investigates complaints, conducts compliance reviews, and may recommend suspension or termination of federal funding. WCAG 2.1 AA is the technical benchmark applied in OCR enforcement actions from the compliance deadline (45 C.F.R. § 84.85).",
+                    "responsibility": "Enforces Section 504 obligations for recipients of HHS federal financial assistance. Investigates complaints, conducts compliance reviews, and may seek suspension or termination of HHS federal financial assistance after an opportunity for a hearing, or refer the matter to the Department of Justice (45 C.F.R. §§ 84.98, 80.8). Under 45 C.F.R. § 84.84(b), the WCAG 2.1 AA requirement for web content and mobile apps applies from the compliance dates in complianceDeadlines.",
                     "website": "https://www.hhs.gov/ocr/index.html"
                 },
-                "inForce": false,
-                "effectiveDate": "2027-05-11",
-                "note": "Applies to private organizations — including hospitals, physician practices, federally qualified health centers, long-term care facilities, health plans, and research institutions — that receive federal financial assistance from the U.S. Department of Health and Human Services (HHS), directly or indirectly. HHS administers over 100 programs, making the scope extensive. Medicare Part B reimbursements are considered federal financial assistance triggering Section 504 obligations. Five content exemptions exist: archived content, pre-existing conventional documents, individualized password-protected documents, pre-existing social media posts, and third-party content not controlled by the recipient. Does NOT cover federal agencies (see us-508) or state/local governments (see us-ada-title-ii). Rule published 89 FR 40066 (May 9, 2024); general Section 504 obligations effective July 8, 2024; WCAG 2.1 AA technical standards enforcement begins at compliance deadlines (15+ employees: 2027-05-11; <15 employees: 2028-05-10 — see complianceDeadlines). `effectiveDate` reflects the WCAG benchmark in-force date for the large-entity tier (the primary enforcement trigger); `inForce` flips to true on that date. Compliance deadlines were extended by one year via HHS Interim Final Rule (2026-09266), published in the Federal Register on May 11, 2026, with a 60-day public comment window closing July 6, 2026 (docket HHS-OCR-2026-0004). Technical standards (WCAG 2.1 AA) and scope are unchanged. Grundregeln är 89 FR 40066 av 2024-05-09, action \"Final rule.\" Förlängningen av efterlevnadsdatumen är 91 FR 25496 av 2026-05-11, action \"Interim final rule; request for comments.\" — samma dokument som dokumentnummer 2026-09266. Interim-lydelsen är alltså korrekt och ska inte ändras, men den dag en slutlig regel kommer blir den föråldrad samma dag och efterlevnadsdatumen måste läsas om. Sanctions (Intern #70, 2026-09-24): removed, because the amount is not attested against primary source and the sanctions schema requires a legal basis and a source for every element. An absent field means \"not established\", never \"no penalty\". The earlier record, verbatim: {\"type\":\"Funding Suspension / Termination / Private Lawsuit\",\"description\":\"HHS OCR may suspend or terminate federal financial assistance for non-compliant recipients. Section 504 also provides a private right of action — individuals with disabilities may file lawsuits for injunctive relief and compensatory damages. No fixed statutory cap on damages; amounts vary by circuit and case. OCR may also initiate compliance investigations and require remediation plans.\",\"minAmount\":0,\"maxAmount\":0,\"currency\":\"USD\",\"example\":\"Loss of Medicare/Medicaid funding is the primary financial risk for healthcare organizations. Private Section 504 lawsuits have resulted in settlements and injunctions requiring full WCAG compliance with monitoring periods.\"}.",
+                "sanctions": {
+                    "kind": "amount",
+                    "type": "Funding Suspension / Termination / Private Lawsuit",
+                    "currency": "USD",
+                    "description": "HHS may suspend, terminate, or refuse federal financial assistance only after, among other things, an express finding on the record, after an opportunity for a hearing, and only for the particular program in which the noncompliance has been found. HHS may also refer the matter to the Department of Justice (45 C.F.R. §§ 84.98, 80.8). After a finding of discrimination, the recipient must take the remedial action that the OCR Director deems necessary (45 C.F.R. § 84.6(a)). Individuals can also enforce Section 504 through a private right of action. Injunctive relief, compensatory damages, and attorneys' fees (29 U.S.C. 794a(b)) may be available. Punitive damages are not available (Barnes v. Gorman, 536 U.S. 181 (2002)), and neither are damages for emotional distress (Cummings v. Premier Rehab Keller, 596 U.S. 212 (2022)).",
+                    "cap": "no-ceiling",
+                    "legalBasis": "45 C.F.R. §§ 80.8, 84.6(a) and 84.98; 29 U.S.C. 794a(a)(2) and (b); Barnes v. Gorman, 536 U.S. 181 (2002); Cummings v. Premier Rehab Keller, 596 U.S. 212 (2022)",
+                    "sourceUrl": "https://www.govinfo.gov/content/pkg/USCODE-2024-title29/html/USCODE-2024-title29-chap16-subchapV-sec794a.htm",
+                    "example": "HHS has stated that noncompliance could lead to \"a significant increase in litigation\" and that a court may allow individuals to \"obtain injunctive relief and attorneys' fees\" from recipients (91 FR 25499)."
+                },
+                "inForce": true,
+                "effectiveDate": "2024-07-08",
+                "note": "45 C.F.R. part 84 applies to each recipient of federal financial assistance from the U.S. Department of Health and Human Services (HHS), public or private, including states and local governments (45 C.F.R. § 84.10). Examples include hospitals, physician practices, federally qualified health centers, long-term care facilities, health plans, and research institutions that receive such assistance, directly or indirectly. HHS estimates that \"approximately 92% of doctors, 43% of dentists, and all hospitals receive Federal financial assistance from the Department\" (89 FR 40175). HHS interprets Medicare Part B reimbursements as federal financial assistance triggering Section 504 obligations (89 FR 37522). A recipient that is also a public entity under ADA Title II must comply with both (see us-ada-title-ii). Part 84 does not cover programs that HHS itself conducts (45 C.F.R. part 85). Section 504 also covers programs conducted by federal executive agencies (29 U.S.C. 794(a)); for federal ICT, see us-508. Five content exceptions exist (45 C.F.R. § 84.85(a) to (e)), each with its own condition: archived web content as defined in § 84.10, where all four conditions of that definition must be met; conventional electronic documents available as part of the recipient's web content or mobile apps before the date the recipient is required to comply with § 84.84, unless they \"are currently used to apply for, gain access to, or participate in the recipient's programs or activities\"; content posted by a third party, unless the third party posts it due to contractual, licensing, or other arrangements with the recipient; conventional electronic documents (PDFs, word processor files, presentations, and spreadsheets as defined in § 84.10) that both concern a specific individual, their property, or their account and are password-protected or otherwise secured, so a logged-in portal is not exempt as such; and social media posts \"posted before the date the recipient is required to comply with § 84.84\". Under 45 C.F.R. §§ 84.84(b) and 84.88, a recipient that can demonstrate that compliance would result in a \"fundamental alteration\" or \"undue financial and administrative burdens\" must still comply to the extent that this does not result in such an alteration or burden, and must take other actions so that individuals with disabilities receive the benefits or services \"to the maximum extent possible\". The recipient has the burden of proof, and the decision requires a written statement of the reasons by the head of the recipient or their designee. The 2024 final rule, 89 FR 40066, was published May 9, 2024 and took effect July 8, 2024. What took effect on that date was the revision of the HHS Section 504 regulations, not Section 504 obligations as such. Under 45 C.F.R. § 84.84(b), the WCAG 2.1 AA requirement applies from the compliance dates (15 or more employees: 2027-05-11; fewer than 15 employees: 2028-05-10; see complianceDeadlines). `inForce` marks that the revised regulations took effect on July 8, 2024 (`effectiveDate`). The WCAG 2.1 AA dates per tier are in `complianceDeadlines` and are read against the current date at runtime; they never change `inForce` for the entry as a whole. The compliance dates were extended by one year by 91 FR 25496 (Federal Register document 2026-09266, docket HHS-OCR-2026-0133), published May 11, 2026 as an interim final rule with request for comments. Technical standards (WCAG 2.1 AA) and scope are unchanged by the extension. The dates may change again: HHS has stated that it is considering a notice of proposed rulemaking (NPRM) that could affect the accessibility requirements for web content and mobile apps. Last checked: 2026-10-08. eCFR, 45 C.F.R. § 84.84: last amended 2026-05-11. Sanctions (Intern #70, 2026-11-09): rewritten in the sanctions schema from the version Juno signed 2026-10-08 (56942f1), with type, description and example verbatim. cap is no-ceiling for the private right of action (29 U.S.C. 794a); the funding action is not a monetary penalty and is never counted as an amount. The earlier record, verbatim: {\"type\":\"Funding Suspension / Termination / Private Lawsuit\",\"description\":\"HHS may suspend, terminate, or refuse federal financial assistance only after, among other things, an express finding on the record, after an opportunity for a hearing, and only for the particular program in which the noncompliance has been found. HHS may also refer the matter to the Department of Justice (45 C.F.R. §§ 84.98, 80.8). After a finding of discrimination, the recipient must take the remedial action that the OCR Director deems necessary (45 C.F.R. § 84.6(a)). Individuals can also enforce Section 504 through a private right of action. Injunctive relief, compensatory damages, and attorneys' fees (29 U.S.C. 794a(b)) may be available. Punitive damages are not available (Barnes v. Gorman, 536 U.S. 181 (2002)), and neither are damages for emotional distress (Cummings v. Premier Rehab Keller, 596 U.S. 212 (2022)).\",\"minAmount\":0,\"maxAmount\":0,\"currency\":\"USD\",\"example\":\"HHS has stated that noncompliance could lead to \\\"a significant increase in litigation\\\" and that a court may allow individuals to \\\"obtain injunctive relief and attorneys' fees\\\" from recipients (91 FR 25499).\"}.",
                 "complianceDeadlines": {
                     "largeEntity": {
                         "employeeThreshold": 15,
                         "deadline": "2027-05-11",
-                        "description": "Recipients of HHS federal financial assistance with 15 or more employees must conform web content and mobile apps to WCAG 2.1 Level A and AA (45 C.F.R. § 84.85). Deadline extended from 2026-05-11 by HHS Interim Final Rule published 2026-05-11 (Federal Register doc 2026-09266)."
+                        "description": "Recipients of HHS federal financial assistance with 15 or more employees must conform web content and mobile apps to WCAG 2.1 Level A and AA (45 C.F.R. § 84.84(b)). Deadline extended from 2026-05-11 by HHS Interim Final Rule published 2026-05-11 (Federal Register doc 2026-09266)."
                     },
                     "smallEntity": {
                         "employeeThreshold": 14,
                         "deadline": "2028-05-10",
-                        "description": "Recipients of HHS federal financial assistance with fewer than 15 employees must conform web content and mobile apps to WCAG 2.1 Level A and AA (45 C.F.R. § 84.85). Deadline extended from 2027-05-10 by HHS Interim Final Rule published 2026-05-11 (Federal Register doc 2026-09266)."
+                        "description": "Recipients of HHS federal financial assistance with fewer than 15 employees must conform web content and mobile apps to WCAG 2.1 Level A and AA (45 C.F.R. § 84.84(b)). Deadline extended from 2027-05-10 by HHS Interim Final Rule published 2026-05-11 (Federal Register doc 2026-09266)."
                     }
                 },
                 "attestation": {
                     "attestedBy": "Juno",
                     "session": "2026-09-12",
                     "sources": [
-                        "Federal Registers API, dokument 2024-09237 (89 FR 40066) och 2026-09266 (91 FR 25496), samt eCFR:s API, strukturen för title-45 per 2026-01-01. Allt hämtat direkt 2026-09-12."
+                        "Federal Registers API, dokument 2024-09237 (89 FR 40066) och 2026-09266 (91 FR 25496), samt eCFR:s API, strukturen för title-45 per 2026-01-01. Allt hämtat direkt 2026-09-12.",
+                        "Sanktionsart signerad av Juno 2026-10-08 (56942f1) och omgranskad 2026-11-08 (PR #219): eCFR 45 C.F.R. 80.8, 84.6 och 84.98; govinfo, US Code 2024 Edition, 29 U.S.C. 794a och 42 U.S.C. 1981a."
                     ],
-                    "attested": [],
+                    "attested": [
+                        "sanktionsart"
+                    ],
                     "notAttested": [
                         "lagnamn"
                     ],
@@ -1005,7 +1046,7 @@
                 },
                 "inForce": true,
                 "effectiveDate": "2005-06-13",
-                "note": "Sanctions (Intern #93, Juno 2026-09-24): § 37(3) reads 'Every person who is guilty of an offence under this Act is liable on conviction, (a) to a fine of not more than $50,000 for each day or part of a day on which the offence occurs or continues to occur; or (b) if the person is a corporation, to a fine of not more than $100,000 for each day or part of a day on which the offence occurs or continues to occur.' The earlier range of 200 to 100,000 CAD is not in the Act. The field is removed rather than rewritten, because a single range cannot carry two per-day ceilings split by who is liable, and a flat maximum would understate an exposure that accrues per day. The two-element form, one per liable person, arrives with the sanctions schema in Intern #70.",
+                "note": "Sanctions (Intern #93, Juno 2026-09-24): § 37(3) reads 'Every person who is guilty of an offence under this Act is liable on conviction, (a) to a fine of not more than $50,000 for each day or part of a day on which the offence occurs or continues to occur; or (b) if the person is a corporation, to a fine of not more than $100,000 for each day or part of a day on which the offence occurs or continues to occur.' The earlier range of 200 to 100,000 CAD is not in the Act. The field is removed rather than rewritten, because a single range cannot carry two per-day ceilings split by who is liable, and a flat maximum would understate an exposure that accrues per day. The sanctions schema in Intern #70 can carry the two elements, one per liable person, but the field returns only when the Act is read again: on 2026-11-08 e-Laws could not be read (the page requires JavaScript), and only § 37 has been read, not the rest of the Act or the regulations.",
                 "attestation": {
                     "attestedBy": "Juno",
                     "session": "2026-09-11",
@@ -1051,11 +1092,11 @@
                     "kind": "amount",
                     "type": "Administrative Monetary Penalty",
                     "currency": "CAD",
-                    "description": "A penalty fixed in accordance with regulations made under section 91(1) (section 77). The maximum for a violation is CAD 250,000, with no distinction between individuals and corporations.",
+                    "description": "A penalty fixed in accordance with regulations made under section 91(1) (section 77). The maximum for a violation is CAD 250,000, with no distinction between individuals and corporations. A violation that is committed or continued on more than one day is a separate violation for each day (section 88).",
                     "maxAmount": 250000,
                     "cap": "stated",
-                    "legalBasis": "Accessible Canada Act (S.C. 2019, c. 10), sections 77 and 91(2)",
-                    "sourceUrl": "https://laws-lois.justice.gc.ca/eng/acts/A-0.6/page-7.html"
+                    "legalBasis": "Accessible Canada Act (S.C. 2019, c. 10), sections 77, 88 and 91(2)",
+                    "sourceUrl": "https://laws-lois.justice.gc.ca/eng/acts/A-0.6/FullText.html"
                 },
                 "inForce": true,
                 "effectiveDate": "2025-12-05",
@@ -1076,7 +1117,8 @@
                     "attestedBy": "Juno",
                     "session": "2026-09-11",
                     "sources": [
-                        "laws-lois.justice.gc.ca/eng/acts/A-0.6, section 7 läst i sin helhet Lagnamnet omgranskat 2026-09-12 mot laws-lois.justice.gc.ca/eng/acts/A-0.6/ och /eng/acts/A-0.6/page-1.html, båda hämtade direkt (200, ingen omdirigering)."
+                        "laws-lois.justice.gc.ca/eng/acts/A-0.6, section 7 läst i sin helhet Lagnamnet omgranskat 2026-09-12 mot laws-lois.justice.gc.ca/eng/acts/A-0.6/ och /eng/acts/A-0.6/page-1.html, båda hämtade direkt (200, ingen omdirigering).",
+                        "Sanktionen omgranskad 2026-11-08 (Juno, PR #219): laws-lois.justice.gc.ca/eng/acts/A-0.6/FullText.html och page-7.html, ss. 77 till 91 lästa, \"Act current to 2026-10-19 and last amended on 2023-04-27\"."
                     ],
                     "attested": [
                         "lagrum",
@@ -1196,6 +1238,18 @@
                         "sourceUrl": "https://www.gazzettaufficiale.it/eli/gu/2022/07/01/152/sg/pdf"
                     },
                     {
+                        "kind": "formula",
+                        "type": "Sanzione amministrativa pecuniaria",
+                        "currency": "EUR",
+                        "description": "For entities under art. 3(1-bis) of Legge 4/2004 (legal entities other than those in art. 3(1), offering services to the public through websites or mobile apps, with average turnover over the last three years above EUR 500 million), art. 24(1), second sentence, applies \"in ogni caso\" the sanction in art. 9(1-bis) of that law: AgID sets a deadline to remove the infringement, and if the warning (diffida) is not complied with, imposes an administrative pecuniary sanction of up to 5% of turnover (fatturato).",
+                        "condition": "Entities under art. 3(1-bis) of Legge 9 gennaio 2004, n. 4, after a warning (diffida) that has not been complied with.",
+                        "cap": "stated",
+                        "factor": 0.05,
+                        "index": "turnover",
+                        "legalBasis": "D.Lgs. 82/2022, art. 24, comma 1, second sentence; Legge 9 gennaio 2004, n. 4, art. 3, comma 1-bis, and art. 9, comma 1-bis",
+                        "sourceUrl": "https://www.normattiva.it/uri-res/N2Ls?urn:nir:stato:legge:2004-01-09;4~art9"
+                    },
+                    {
                         "kind": "amount",
                         "type": "Sanzione amministrativa pecuniaria",
                         "currency": "EUR",
@@ -1205,6 +1259,17 @@
                         "cap": "stated",
                         "legalBasis": "Decreto Legislativo 27 maggio 2022, n. 82, art. 24, comma 2",
                         "sourceUrl": "https://www.gazzettaufficiale.it/eli/gu/2022/07/01/152/sg/pdf"
+                    },
+                    {
+                        "kind": "amount",
+                        "type": "Sanzione amministrativa pecuniaria",
+                        "currency": "EUR",
+                        "description": "Unless the act constitutes a criminal offence, for an economic operator that does not provide the required cooperation in the activities under art. 6(9), 7(1), 8(8), 9(5), 11, 12(5) and 13(3) and (4), save for a reasoned refusal where the information requested could reveal its own liability for a punitive administrative offence or a crime.",
+                        "minAmount": 2500,
+                        "maxAmount": 30000,
+                        "cap": "stated",
+                        "legalBasis": "Decreto Legislativo 27 maggio 2022, n. 82, art. 24, comma 3",
+                        "sourceUrl": "https://www.normattiva.it/uri-res/N2Ls?urn:nir:stato:decreto.legislativo:2022-05-27;82~art24"
                     }
                 ],
                 "inForce": true,
@@ -1224,7 +1289,8 @@
                     "attestedBy": "Juno",
                     "session": "2026-09-12",
                     "sources": [
-                        "Normattiva, urn:nir:stato:decreto.legislativo:2022-05-27;82, hämtad direkt 2026-09-12 (200). effectiveDate granskad 2026-09-14 mot lagens egen ikrafttradande- eller tillamplighetsbestammelse, oppnad i sessionen."
+                        "Normattiva, urn:nir:stato:decreto.legislativo:2022-05-27;82, hämtad direkt 2026-09-12 (200). effectiveDate granskad 2026-09-14 mot lagens egen ikrafttradande- eller tillamplighetsbestammelse, oppnad i sessionen.",
+                        "Sanktionen omgranskad 2026-11-08 (Juno, PR #219): Normattiva, D.Lgs. 82/2022 art. 24 i gällande lydelse (\"ultimo aggiornamento all'atto: 30/12/2025\"), samt lag 4/2004 art. 3 och 9 (\"ultimo aggiornamento all'atto: 01/07/2022\"). Gazzetta Ufficiale n. 152 del 1-7-2022, art. 22 till 27. Attesteringen 2026-09-12 var ofullständig: art. 24 c. 1 andra meningen och c. 3 saknades."
                     ],
                     "attested": [
                         "ikrafttradande",
@@ -1242,8 +1308,8 @@
         "PT": [
             {
                 "id": "pt-wad",
-                "law": "DL 83/2018",
-                "fullName": "Decreto-Lei n.º 83/2018 de 19 de outubro",
+                "law": "Decreto-Lei n.º 83/2018",
+                "fullName": "Decreto-Lei n.º 83/2018, de 19 de outubro",
                 "euFramework": "WAD",
                 "scope": "public",
                 "enforcement": {
@@ -1254,8 +1320,8 @@
                 },
                 "inForce": true,
                 "effectiveDate": "2019-01-01",
-                "lawUrl": "https://diariodarepublica.pt/dr/eli/dec-lei/83/2018/10/19/p/dre/pt/pdf",
-                "note": "Intern #63/#66 (Juno, 2026-09-12): beskrivningen \"Acessibilidade dos sítios web e das aplicações móveis de organismos públicos\" stod tidigare i fullName men kommer inte ur akten — 2018 års utgåva av Diário da República trycker ingen Sumário-rad, till skillnad från 2022 års. Att akten är rätt är belagt i artigo 1.º n.º 1, som transponerar direktiv (UE) 2016/2102. Entry into force (Intern #63, Juno 2026-09-14): artigo 20.º reads 'O presente decreto-lei entra em vigor no dia 1 de janeiro de 2019'. The earlier value 2018-10-19 was the date of the decree. The staggered production of effects is not yet recorded here. Sanctions (Intern #70, 2026-09-24): removed, because the amount is not attested against primary source and the sanctions schema requires a legal basis and a source for every element. An absent field means \"not established\", never \"no penalty\". The earlier record, verbatim: {\"type\":\"Administrative\",\"description\":\"Administrative sanctions for non-compliance.\",\"minAmount\":0,\"maxAmount\":0,\"currency\":\"EUR\"}.",
+                "lawUrl": "https://data.dre.pt/eli/dec-lei/83/2018/10/19/p/dre/pt/pdf",
+                "note": "Intern #63/#66 (Juno, 2026-09-12): beskrivningen \"Acessibilidade dos sítios web e das aplicações móveis de organismos públicos\" stod tidigare i fullName men kommer inte ur akten — 2018 års utgåva av Diário da República trycker ingen Sumário-rad, till skillnad från 2022 års. Att akten är rätt är belagt i artigo 1.º n.º 1, som transponerar direktiv (UE) 2016/2102. Entry into force (Intern #63, Juno 2026-09-14): artigo 20.º reads 'O presente decreto-lei entra em vigor no dia 1 de janeiro de 2019'. The earlier value 2018-10-19 was the date of the decree. The staggered production of effects is not yet recorded here. Källkontroll 2026-11-09 (Intern #146): lawUrl via diariodarepublica.pt/dr/eli/... gav felsidan; ELI-adressen på data.dre.pt leder till PDF:en. \"DL 83/2018\" står inte i akten, så den officiella formen används. Sanctions (Intern #70, 2026-09-24): removed, because the amount is not attested against primary source and the sanctions schema requires a legal basis and a source for every element. An absent field means \"not established\", never \"no penalty\". The earlier record, verbatim: {\"type\":\"Administrative\",\"description\":\"Administrative sanctions for non-compliance.\",\"minAmount\":0,\"maxAmount\":0,\"currency\":\"EUR\"}.",
                 "attestation": {
                     "attestedBy": "Juno",
                     "session": "2026-09-12",
@@ -1273,7 +1339,7 @@
             {
                 "id": "pt-eaa",
                 "law": "Decreto-Lei n.º 82/2022",
-                "fullName": "Decreto-Lei n.º 82/2022 de 6 de dezembro",
+                "fullName": "Decreto-Lei n.º 82/2022, de 6 de dezembro",
                 "euFramework": "EAA",
                 "scope": "private",
                 "inForce": true,

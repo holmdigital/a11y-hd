@@ -67,6 +67,8 @@ npx hd-a11y-scan <url> [options]
 | `--phone <number>` | Contact phone for the statement metadata |
 | `--response-time <val>` | Response time for the statement metadata |
 | `--publish-date <date>` | Publish date for the website (YYYY-MM-DD) |
+| `--review-method <method>` | How the statement's assessment was made: `self-assessment` (default), `external-review` (requires `--reviewer`) or `no-review` |
+| `--reviewer <name>` | Organisation that performed the external review, named in the statement |
 | `--country <code>` | Country code for enforcement body (`SE`, `NO`, `DE`, `IT`, `PT`, `PL`, `AU`, etc.) |
 | `--sector <type>` | Sector type: `public` (WAD) or `private` (EAA). Default: `public` |
 | `--viewport <size>` | Set viewport size (`mobile`, `tablet`, `desktop`, or custom `1024x768`) |
@@ -74,6 +76,8 @@ npx hd-a11y-scan <url> [options]
 | `--junit <path>` | Generate a JUnit XML report for CI dashboards |
 | `--format <type>` | Output format for statement (`html`, `md`). Default: `html` |
 | `--invalid-https-cert` | Allow scanning sites with invalid/self-signed HTTPS certificates ⚠️ |
+| `--allow-private-hosts` | Allow private and internal addresses such as `localhost`, `10.x` and `192.168.x`. **Blocked by default**, for the page and every request it makes. Use it to scan your own local development server. |
+| `--no-sandbox` | Disable Chromium's sandbox. **On by default.** Needed only when running as root or where user namespaces are restricted (some CI runners, containers without a user). Only for pages you trust. `PUPPETEER_ARGS="--no-sandbox"` does the same. |
 | `--api-key <key>` | API Key for HolmDigital Cloud |
 | `--cloud-url <url>` | Custom Cloud API Endpoint (default: cloud.holmdigital.se) |
 | `--light` | Fast score-only mode — skips HTML validation and detailed legal mapping |
@@ -98,6 +102,15 @@ The badge uses accessible colors (AAA compliant contrast) and is included in bot
 A `partial` verdict still earns the badge: core content is there and the page can be read.
 
 > **⚠️ Security Note:** The `--invalid-https-cert` flag should only be used in trusted environments (local dev, staging). It disables certificate validation and is not recommended for production. *(Contributed by [@FerdiStro](https://github.com/FerdiStro))*
+
+#### Security defaults (4.0.0)
+
+Two defaults changed in 4.0.0, because the engine renders third-party pages with their scripts:
+
+- **Private and internal addresses are blocked.** Scanning `http://localhost:3000` now fails with a message telling you to pass `--allow-private-hosts` (library: `allowPrivateHosts: true`). The check also covers redirects and every resource the page loads, so a public page cannot pull the scanner into your internal network.
+- **Chromium's sandbox is on.** If Chrome cannot start its sandbox, which happens when running as root or on CI runners that restrict user namespaces, the error says so and tells you to add `--no-sandbox` (library: `sandbox: false`, or `PUPPETEER_ARGS="--no-sandbox"`).
+
+In CI that scans a local build, you will typically need both: `npx hd-a11y-scan http://localhost:3000 --ci --allow-private-hosts --no-sandbox`.
 
 **Example:**
 ```bash

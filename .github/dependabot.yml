@@ -17,6 +17,14 @@ updates:
       time: "06:00"
       timezone: "Europe/Stockholm"
     open-pull-requests-limit: 10
+    # Intern #89 fynd 1: utan den här raden skrev en MINOR-grupp (PR #109,
+    # 2026-07-28) om motorns react/react-dom från "^18.3.1 || ^19.0.0" till
+    # "^19.2.8", och en senare grupp (PR #191) ville göra "^19.3.0". Undantaget
+    # för React-majors längre ned stoppade inte det, eftersom det bara gäller
+    # majors. Ett spann som redan tillåter den nya versionen ska lämnas orört,
+    # och bara låsfilen ska uppdateras. För ett publicerat bibliotek är ett
+    # smalare spann en brytande ändring för konsumenterna.
+    versioning-strategy: increase-if-necessary
     commit-message:
       prefix: "chore(deps)"
       prefix-development: "chore(dev-deps)"
@@ -58,10 +66,16 @@ updates:
       # en breaking change som kräver changeset + major-bump, inte
       # chore(deps). Se stängd PR #87. Minor/patch inom 18.x/19.x
       # fortsätter grupperas som vanligt.
+      #
+      # react och react-dom undantas helt, inte bara för majors. Grupp-PR:erna
+      # följer inte versioning-strategy (#237 och #253, 2026-11: axe-core
+      # ^4.13.0 blev ^4.14.0 trots increase-if-necessary) och skrev om engines
+      # "^18.3.1 || ^19.0.0" till "^19.3.1". Policytestet i engine stoppar det,
+      # men då faller hela gruppen och alla andra bumpar fastnar med den. React
+      # höjs i stället för hand: `npm update react react-dom` uppdaterar bara
+      # lockfilen, och spannen står kvar.
       - dependency-name: "react"
-        update-types: ["version-update:semver-major"]
       - dependency-name: "react-dom"
-        update-types: ["version-update:semver-major"]
       - dependency-name: "@types/react"
         update-types: ["version-update:semver-major"]
       - dependency-name: "@types/react-dom"
@@ -86,3 +100,11 @@ updates:
       github-actions-security:
         applies-to: security-updates
         patterns: ["*"]
+    ignore:
+      # changesets/action v2 kräver Changesets CLI v3 och vägrar köra mot v2.
+      # PR #170 lyfte den från v1.9.0 till v2.1.2 med kommentaren "# v1"
+      # orörd, och Release-jobbet föll ("Changesets CLI v2 is not supported").
+      # Actionen och CLI:t (@changesets/cli, se #203) måste lyftas i samma PR.
+      # Ta bort undantaget när CLI v3 är inne.
+      - dependency-name: "changesets/action"
+        update-types: ["version-update:semver-major"]

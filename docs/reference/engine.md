@@ -39,6 +39,8 @@ hd-a11y-scan <url> [options]
 | `--phone <number>` | Contact phone for the statement. | `--phone "555-0123"` |
 | `--response-time <val>` | Response time for the statement. | `--response-time "2 days"` |
 | `--publish-date <date>` | Website publish date (YYYY-MM-DD). | `--publish-date 2024-02-06` |
+| `--review-method <method>` | How the statement's assessment was made: `self-assessment` (default), `external-review` or `no-review`. Never derived from the scan result. | `--review-method external-review` |
+| `--reviewer <name>` | Organisation that performed the external review, named in the statement. Required with `--review-method external-review`. | `--reviewer "Example Audit AB"` |
 | `--api-key <key>` | Upload results to HolmDigital Cloud. | `--api-key abc-123` |
 | `--cloud-url <url>` | Cloud API URL (default: `https://cloud.holmdigital.se`). | `--cloud-url https://custom.api` |
 | `--country <code>` | Country code for enforcement body in statement. For `US`: combined with `--sector public` → ADA Title II + Section 508 (DOJ); combined with `--sector private` → ADA Title III (DOJ). | `--country SE` |
@@ -46,6 +48,8 @@ hd-a11y-scan <url> [options]
 | `--sector <type>` | Sector type for enforcement body and law selection (`public` or `private`). Default: `public`. | `--sector private` |
 | `--light` | Fast score-only mode — skips HTML validation and detailed legal mapping. | `--light` |
 | `--invalid-https-cert` | Allow scanning sites with invalid/self-signed HTTPS certificates ⚠️ (trusted envs only). | `--invalid-https-cert` |
+| `--allow-private-hosts` | Allow private and internal addresses (`localhost`, `10.x`, `192.168.x`, link-local). Blocked by default since 4.0.0, for the page and every request it makes. | `--allow-private-hosts` |
+| `--no-sandbox` | Disable Chromium's sandbox (on by default since 4.0.0). Only for pages you trust, when running as root or where user namespaces are restricted. `PUPPETEER_ARGS="--no-sandbox"` does the same. | `--no-sandbox` |
 | `--audience <mode>` | Report audience: `developer` (default) or `plain`. Plain mode renders a non-technical, grouped report for managers, lawyers, and buyers. | `--audience plain` |
 | `--plain` | Alias for `--audience plain` (klarspråksläge). | `--plain` |
 | `--noscript-check` | Robustness probe: how much content is available without JavaScript. Advisory only, never affects the score. | `--noscript-check` |
@@ -160,7 +164,11 @@ The following keys in `.a11yrc` map to the `AccessibilityStatement` component pr
 | `country` | `country` | Country code for enforcement body (SE, NO, etc.) |
 | `sector` | `sector` | Sector type (`public` or `private`) for law framework selection |
 | `publishDate` | `publishDate` | Website publish date (YYYY-MM-DD) |
+| `reviewMethod` | `reviewMethod` | `self-assessment` (default), `external-review` or `no-review` |
+| `reviewer` | `reviewer.name` | Organisation that performed the external review (required with `external-review`) |
 | `invalidHttpsCert` | — | Allow scanning pages with invalid HTTPS certificates |
+| `allowPrivateHosts` | — | Allow private and internal addresses (blocked by default since 4.0.0) |
+| `sandbox` | — | `false` disables Chromium's sandbox (on by default since 4.0.0) |
 | `cloudUrl` | — | Custom Cloud API endpoint URL |
 
 > [!TIP]

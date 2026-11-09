@@ -680,6 +680,28 @@ export function getNationalLawForSector(country: Country, sector: Sector): Natio
     return candidates.find(l => l.scope === sector) ?? candidates[0];
 }
 
+/** Nivåer i `NationalLaw.complianceDeadlines`. */
+export type ComplianceTier = 'largeEntity' | 'smallEntity';
+
+/**
+ * Är en nivå av en lags `complianceDeadlines` gällande på `today`?
+ *
+ * Datumet avgörs vid körning. `law.inForce` är flaggan för regelns grundnivå och
+ * ändras aldrig av ett nivådatum. Ett nivådatum gör bara den nivån gällande, och
+ * ingen kod får slå om hela posten till gällande på ett datum (Juno, 2026-10-06).
+ *
+ * Jämförelsen sker på UTC-datum, eftersom `deadline` är ett kalenderdatum.
+ */
+export function isComplianceTierInForce(
+    law: NationalLaw,
+    tier: ComplianceTier,
+    today: Date = new Date()
+): boolean {
+    const deadline = law.complianceDeadlines?.[tier]?.deadline;
+    if (!deadline) return false;
+    return today.toISOString().slice(0, 10) >= deadline;
+}
+
 /**
  * Intern #82 — lagnamnsgrinden.
  *
@@ -737,16 +759,26 @@ export const NATIONAL_LAW_FALLBACK: Readonly<Record<string, string>> = Object.fr
  * ingen ny information. `dk-eaa` bär titeln i båda fälten och `ca-aca`:s
  * fullName är korttiteln plus lagrumsreferens; utan regeln renderades titeln
  * två gånger i rad i ett danskt kunddokument, och det syntes inte i någon
- * datadiff. DOS-lagen och DL 83/2018 är inga prefix och står därför kvar.
+ * datadiff. DOS-lagen är inget prefix och står därför kvar.
+ *
+ * Intern #146: parentesen faller också när det långa namnet redan bär
+ * kortnamnet inom parentes. Nederländernas opschrift avslutas med
+ * citeertiteln, "Besluit van 3 mei 2018, … (Tijdelijk besluit digitale
+ * toegankelijkheid overheid)", och utan regeln hade nl-wad skrivit
+ * citeertiteln två gånger så fort lagnamnet attesterades. Grinden dolde det:
+ * ett oattesterat namn renderas aldrig, så inget test såg raden.
  *
  * Intern #82: motorns US-gren gick förbi regeln och skrev "Section 508 of the
  * Rehabilitation Act of 1973 (Section 508)", medan komponenten skrev samma rad
  * utan parentes. Nu går varje namnväg genom den här funktionen.
  */
-function lawPhrase(law: NationalLaw): string {
+/** @internal Exporterad för testerna, som prövar varje post utan lagnamnsgrinden. */
+export function lawPhrase(law: Pick<NationalLaw, 'law' | 'fullName'>): string {
     const shortName = law.law.trim();
     const longName = law.fullName.trim();
-    return longName === shortName || longName.startsWith(shortName)
+    return longName === shortName
+        || longName.startsWith(shortName)
+        || longName.includes(`(${shortName})`)
         ? longName
         : `${longName} (${shortName})`;
 }
@@ -802,6 +834,28 @@ export function resolveNationalLawReference(
 
     const langKey = lang.split('-')[0];
     return NATIONAL_LAW_FALLBACK[langKey] ?? NATIONAL_LAW_FALLBACK.en;
+}
+
+/**
+ * Tillsynsavsnittets text när tillsynen är delad mellan flera myndigheter
+ * efter tjänstetyp (Intern #83, Karins beslut i #94 fråga 2). Motorn vet inte
+ * vilken tjänst kunden driver, så ett enda myndighetsnamn vore fel för en del
+ * kunder: för ett tåg- eller bussbolags webbplats är Konsumentverket
+ * tillsynsmyndighet enligt LPTT, inte PTS.
+ *
+ * Samma lagval som `resolveNationalLawReference` och samma grind. Texten
+ * namnger lagen, så den används bara när lagnamnet är attesterat; annars vore
+ * den en väg förbi grinden. Returnerar null när lagen saknar text på språket,
+ * och då gäller mallens tillsynsavsnitt som förut.
+ */
+export function getEnforcementStatementText(
+    country: Country,
+    sector: 'public' | 'private',
+    lang: string = 'en'
+): string | null {
+    const law = getNationalLawForSector(country, sector);
+    if (!law || law.inForce === false || !isNameAttested(law)) return null;
+    return law.enforcement?.statementText?.[lang.split('-')[0]] ?? null;
 }
 
 /**

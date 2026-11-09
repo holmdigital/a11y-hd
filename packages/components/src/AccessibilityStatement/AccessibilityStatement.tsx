@@ -2,6 +2,7 @@ import React from 'react';
 import {
     getStatementToolsByCountry,
     getEnforcementBody,
+    getEnforcementStatementText,
     resolveNationalLawReference,
     type Country
 } from '@holmdigital/standards';
@@ -10,6 +11,21 @@ import { BADGE_LABELS, UPDATED_LABEL, FOOTER_TEXT } from './locale-chrome';
 /**
  * Props för AccessibilityStatement-komponenten
  */
+/**
+ * Intern #95: platshållarna för den externa part som granskat webbplatsen. De
+ * står bara i metodvalets andra alternativ. Samma lista som motorns
+ * REVIEWER_PLACEHOLDERS, som täcker båda mallsatserna.
+ *
+ * Platsen fylls ur `reviewer` och ALDRIG ur `generatorTool`: det är verktyget
+ * som skrev dokumentet och det står i sidfoten. När det namnet hamnade här
+ * påstod utlåtandet att verktyget gjort en oberoende granskning (#91).
+ */
+const REVIEWER_PLACEHOLDERS = [
+    '{<extern aktör>}', '{<ekstern aktør>}', '{<ekstern aktor>}', '{<ulkoinen taho>}',
+    '{<externe partij>}', '{<externer Dritter>}', '{<tiers externe>}', '{<tercero externo>}',
+    '{<terza parte>}', '{<terceiro externo>}', '{<podmiot zewnętrzny>}', '{<third party>}',
+];
+
 export interface AccessibilityStatementProps {
     /**
      * Landskod (SE, NO, DK, FI, DE, FR, ES, IE)
@@ -63,6 +79,31 @@ export interface AccessibilityStatementProps {
     generatorTool?: {
         name: string;
         url: string;
+    };
+
+    /**
+     * (Valfritt) Hur bedömningen bakom utlåtandet gjordes. Ett uttryckligt val,
+     * aldrig härlett ur complianceLevel eller ur ett scanresultat.
+     *
+     * - utelämnad eller 'self-assessment': organisationen har bedömt sin egen
+     *   webbplats. Det är default, och en skanning som kunden kör själv är en
+     *   självskattning.
+     * - 'external-review': en extern part har granskat webbplatsen. Kräver
+     *   `reviewer`, och utlåtandet namnger granskaren.
+     * - 'no-review': tillgängligheten är uppskattad utan granskning.
+     */
+    reviewMethod?: 'self-assessment' | 'external-review' | 'no-review';
+
+    /**
+     * (Valfritt) Den som gjorde den externa granskningen. Krävs när reviewMethod
+     * är 'external-review': utan ett namn kastar komponenten ett fel. Utlåtandet
+     * namnger granskaren med `name`; `url` tas emot för samma form som
+     * generatorTool men renderas inte. Sidfoten namnger fortfarande verktyget
+     * som skrev dokumentet, aldrig granskaren.
+     */
+    reviewer?: {
+        name: string;
+        url?: string;
     };
 
     /**
@@ -359,6 +400,35 @@ const formatDiggDate = (date: Date, locale: string) => {
 };
 
 /**
+ * Juno B2 (Intern #128, 2026-10-20): the generic "Tillsyn" section in the sv
+ * TEMPLATES block above is written for DOS-lagen (public sector, WAD) and is
+ * wrong for private sector, the same two defects already fixed on the
+ * markdown path (`resolveSwedishEnforcementContent` in
+ * packages/engine/src/reporting/statement-generator.ts, Juno H3/H4/B3) but
+ * never ported to this component, which renders the CLI's HTML and PDF
+ * statements:
+ *
+ * 1. "oskäligt betungande", "tillgänglighetsredogörelse" and "begäran om
+ *    tillgängliggörande" are DOS-lagen concepts (10-12 §§), zero hits in
+ *    lagen (2023:254) or förordningen (2023:676).
+ * 2. PTS was named as the sole supervisor, when tillsyn is split across five
+ *    authorities and PTS itself doesn't cover most service types.
+ *
+ * Public-sector DOS-lagen wording is correct and gets the same Digg anmälan
+ * link as the engine (MDFFS 2019:2 6 §). Private-sector wording (Karin's
+ * own, Intern#94 fråga 2 alternativ (a), Intern#83) lives on the law record,
+ * `lptt.enforcement.statementText.sv`, and both render paths read it through
+ * getEnforcementStatementText(), so it passes the law-name gate (Intern #82).
+ * This function only handles the public sector.
+ *
+ * Scoped to SE only — no other country's enforcement template has been
+ * reviewed for the same defect.
+ */
+function resolveSwedishEnforcementContent(enforcementBody: string, nationalLaw: string): string {
+    return `${enforcementBody} har ansvaret för tillsyn över ${nationalLaw}. Du kan anmäla till ${enforcementBody} om du tycker att vår digitala service har brister i tillgänglighet.\n\nDu kan också anmäla till ${enforcementBody} om du tycker att vår bedömning av vad som är oskäligt betungande ska granskas, om du tycker att vår tillgänglighetsredogörelse har brister eller om du tycker att vi inte har hanterat din begäran om tillgängliggörande korrekt.\n\nDu kan anmäla direkt till Digg via tjänsten för anmälan om bristande tillgänglighet: https://www.digg.se/tdosanmalan`;
+}
+
+/**
  * Tillgänglighetsredogörelse-komponent
  * 
  * Genererar en juridiskt korrekt tillgänglighetsredogörelse 
@@ -380,6 +450,8 @@ export const AccessibilityStatement: React.FC<AccessibilityStatementProps> = ({
     assessmentDate,
     evaluationMethod,
     generatorTool,
+    reviewMethod,
+    reviewer,
     logoUrl,
     nonComplianceItems = [],
     locale = 'en',
@@ -389,6 +461,20 @@ export const AccessibilityStatement: React.FC<AccessibilityStatementProps> = ({
     badgeUrl,
     publishDate
 }) => {
+    // Intern #95: en extern granskning måste säga vem som granskade. Utan ett
+    // namn finns inget sant att skriva i granskarens plats. En ogiltig
+    // propkombination är ett programmeringsfel, men ett påstående i ett
+    // kunddokument om en granskning som ingen namngiven part gjort är värre.
+    const reviewerName = typeof reviewer?.name === 'string' ? reviewer.name.trim() : '';
+    if (reviewMethod === 'external-review' && reviewerName === '') {
+        throw new Error(
+            'AccessibilityStatement: reviewMethod="external-review" requires a reviewer prop with a non-empty name: ' +
+            "the organisation that performed the review, e.g. reviewer={{ name: 'Example Audit AB' }}. " +
+            "The statement names it as the reviewer. Use 'self-assessment' (the default) if the statement is " +
+            'based on your own testing.'
+        );
+    }
+
     // Localization & Template Logic
     const supportedLocales: Record<string, string> = {
         sv: 'sv', en: 'en', no: 'no', nb: 'no', dk: 'da',
@@ -429,8 +515,6 @@ export const AccessibilityStatement: React.FC<AccessibilityStatementProps> = ({
         '{<publish date>}': publishDate ? d(publishDate) : '[YOUR PUBLISH DATE]',
         '{<metod>}': evaluationMethod || 'Automated Scan',
         '{<method>}': evaluationMethod || 'Automated Scan',
-        '{<extern aktör>}': generatorTool?.name || 'HolmDigital Engine',
-        '{<third party>}': generatorTool?.name || 'HolmDigital Engine',
         '{<enforcement_body>}': enforcementBody,
         // Intern #82: lagvalet, lagnamnsgrinden och fallback-fraserna bor i
         // @holmdigital/standards, och motorn använder samma funktion. Den här
@@ -439,6 +523,11 @@ export const AccessibilityStatement: React.FC<AccessibilityStatementProps> = ({
         // efter att motorn lagats (Intern #63/#66).
         '{<national_law>}': resolveNationalLawReference(country, sector, effectiveLang),
     };
+
+    // Intern #95: granskarens plats fylls bara ur reviewer, aldrig ur
+    // generatorTool. Den renderas bara när metodvalet är en uttalad extern
+    // granskning, och då är namnet kontrollerat ovan.
+    for (const placeholder of REVIEWER_PLACEHOLDERS) replacements[placeholder] = reviewerName;
 
     // Construct issue list string
     let issuesContent = '';
@@ -470,7 +559,6 @@ export const AccessibilityStatement: React.FC<AccessibilityStatementProps> = ({
     replacements['{<svartid>}'] = responseTime || '';
     replacements['{<vurderingsdato>}'] = assessmentDate ? d(assessmentDate) : d(lastReviewDate);
     replacements['{<publiseringsdatum>}'] = publishDate ? d(publishDate) : '[YOUR PUBLISH DATE]';
-    replacements['{<ekstern aktor>}'] = generatorTool?.name || 'HolmDigital Engine';
     // NO placeholder bug fixes (4 missing mappings)
     replacements['{<e-postadresse>}'] = contactEmail;
     replacements['{<oppdateringsdato>}'] = d(lastReviewDate);
@@ -479,7 +567,6 @@ export const AccessibilityStatement: React.FC<AccessibilityStatementProps> = ({
 
     // DA-specific mappings
     replacements['{<e-mailadresse>}'] = contactEmail;
-    replacements['{<ekstern aktør>}'] = generatorTool?.name || 'HolmDigital Engine';
     replacements['{<offentliggørelsesdato>}'] = publishDate ? d(publishDate) : '[YOUR PUBLISH DATE]';
     replacements['{<opdateringsdato>}'] = d(lastReviewDate);
 
@@ -488,7 +575,6 @@ export const AccessibilityStatement: React.FC<AccessibilityStatementProps> = ({
     replacements['{<veröffentlichungsdatum>}'] = publishDate ? d(publishDate) : '[YOUR PUBLISH DATE]';
     replacements['{<aktualisierungsdatum>}'] = d(lastReviewDate);
     replacements['{<methode>}'] = evaluationMethod || 'Automated Scan';
-    replacements['{<externer Dritter>}'] = generatorTool?.name || 'HolmDigital Engine';
     replacements['{<mängel>}'] = issuesContent;
 
     // FR-specific mappings
@@ -496,7 +582,6 @@ export const AccessibilityStatement: React.FC<AccessibilityStatementProps> = ({
     replacements['{<date_publication>}'] = publishDate ? d(publishDate) : '[YOUR PUBLISH DATE]';
     replacements['{<date_mise_a_jour>}'] = d(lastReviewDate);
     replacements['{<méthode>}'] = evaluationMethod || 'Automated Scan';
-    replacements['{<tiers externe>}'] = generatorTool?.name || 'HolmDigital Engine';
     replacements['{<défauts>}'] = issuesContent;
     replacements['{<telefoonnummer>}'] = phoneNumber || '';
 
@@ -505,7 +590,6 @@ export const AccessibilityStatement: React.FC<AccessibilityStatementProps> = ({
     replacements['{<fecha_publicacion>}'] = publishDate ? d(publishDate) : '[YOUR PUBLISH DATE]';
     replacements['{<fecha_actualizacion>}'] = d(lastReviewDate);
     replacements['{<metodo>}'] = evaluationMethod || 'Automated Scan';
-    replacements['{<tercero externo>}'] = generatorTool?.name || 'HolmDigital Engine';
     replacements['{<deficiencias>}'] = issuesContent;
 
     // FI-specific mappings
@@ -513,7 +597,6 @@ export const AccessibilityStatement: React.FC<AccessibilityStatementProps> = ({
     replacements['{<julkaisupäivä>}'] = publishDate ? d(publishDate) : '[YOUR PUBLISH DATE]';
     replacements['{<päivityspäivä>}'] = d(lastReviewDate);
     replacements['{<metodi>}'] = evaluationMethod || 'Automated Scan';
-    replacements['{<ulkoinen taho>}'] = generatorTool?.name || 'HolmDigital Engine';
     replacements['{<puutteet>}'] = issuesContent;
     replacements['{<e-mailosoite>}'] = contactEmail;
     replacements['{<puhelinnumero>}'] = phoneNumber || '';
@@ -522,7 +605,6 @@ export const AccessibilityStatement: React.FC<AccessibilityStatementProps> = ({
     replacements['{<beoordelingsdatum>}'] = assessmentDate ? d(assessmentDate) : d(lastReviewDate);
     replacements['{<publicatiedatum>}'] = publishDate ? d(publishDate) : '[YOUR PUBLISH DATE]';
     replacements['{<updatedatum>}'] = d(lastReviewDate);
-    replacements['{<externe partij>}'] = generatorTool?.name || 'HolmDigital Engine';
     replacements['{<gebreken>}'] = issuesContent;
     replacements['{<e-mailadres>}'] = contactEmail;
 
@@ -531,7 +613,6 @@ export const AccessibilityStatement: React.FC<AccessibilityStatementProps> = ({
     replacements['{<data_pubblicazione>}'] = publishDate ? d(publishDate) : '[YOUR PUBLISH DATE]';
     replacements['{<data_aggiornamento>}'] = d(lastReviewDate);
     replacements['{<metodo_it>}'] = evaluationMethod || 'Automated Scan';
-    replacements['{<terza parte>}'] = generatorTool?.name || 'HolmDigital Engine';
     replacements['{<carenze>}'] = issuesContent;
 
     // PT-specific mappings
@@ -539,7 +620,6 @@ export const AccessibilityStatement: React.FC<AccessibilityStatementProps> = ({
     replacements['{<data_publicacao>}'] = publishDate ? d(publishDate) : '[YOUR PUBLISH DATE]';
     replacements['{<data_atualizacao>}'] = d(lastReviewDate);
     replacements['{<metodo_pt>}'] = evaluationMethod || 'Automated Scan';
-    replacements['{<terceiro externo>}'] = generatorTool?.name || 'HolmDigital Engine';
     replacements['{<deficiências>}'] = issuesContent;
 
     // PL-specific mappings
@@ -547,7 +627,6 @@ export const AccessibilityStatement: React.FC<AccessibilityStatementProps> = ({
     replacements['{<data_publikacji>}'] = publishDate ? d(publishDate) : '[YOUR PUBLISH DATE]';
     replacements['{<data_aktualizacji>}'] = d(lastReviewDate);
     replacements['{<metoda_pl>}'] = evaluationMethod || 'Automated Scan';
-    replacements['{<podmiot zewnętrzny>}'] = generatorTool?.name || 'HolmDigital Engine';
     replacements['{<braki>}'] = issuesContent;
 
     // AU-specific mappings
@@ -562,9 +641,18 @@ export const AccessibilityStatement: React.FC<AccessibilityStatementProps> = ({
      * tested …", alltså en extern granskning som aldrig gjordes, och varje ej
      * förenlig kund "we have estimated the accessibility without testing".
      * Ett verktyg som kunden själv kör är en självskattning.
+     *
+     * Intern #95: metodvalet följer anroparens uttalade `reviewMethod` och
+     * ingenting annat. Utan val blir det självskattning, som förut. Den externa
+     * granskningen kräver en namngiven granskare, och utfallet läses
+     * fortfarande aldrig här.
      */
     const choiceIndex = (kind: 'compliance' | 'method', parts: number): number => {
-        if (kind === 'method') return 0;
+        if (kind === 'method') {
+            if (reviewMethod === 'external-review') return 1;
+            if (reviewMethod === 'no-review') return parts > 2 ? 2 : 1;
+            return 0;
+        }
         if (complianceLevel === 'partial') return 1;
         if (complianceLevel === 'non-compliant') return parts > 2 ? 2 : 1;
         return 0;
@@ -622,7 +710,22 @@ export const AccessibilityStatement: React.FC<AccessibilityStatementProps> = ({
     const renderSections = (sections: TemplateSection[]) => {
         return sections.map((section, i) => {
             if (section.sectors && !section.sectors.includes(sector)) return null;
-            const content = renderTemplate(section.content, section.id === 'testing' ? 'method' : 'compliance');
+            // Intern #83 och #94 fråga 2: där tillsynen är delad efter
+            // tjänstetyp bär lagposten avsnittets text. Samma som i motorn.
+            // Juno H3/H4/B2: svensk offentlig sektor får DOS-lagens text med
+            // Digg-länken, se resolveSwedishEnforcementContent() ovan.
+            const delad = section.id === 'enforcement' ? getEnforcementStatementText(country, sector, effectiveLang) : null;
+            const content = delad
+                ?? ((section.id === 'enforcement' && country === 'SE' && effectiveLang === 'sv' && sector === 'public')
+                    ? resolveSwedishEnforcementContent(enforcementBody, replacements['{<national_law>}'])
+                    : renderTemplate(section.content, section.id === 'testing' ? 'method' : 'compliance'));
+            // Intern #23 (motorn) och #146 (här): finns ingen tillsynsmyndighet
+            // och ingen text för delad tillsyn utelämnas hela avsnittet. Annars
+            // renderas tomma hål i kundtext, som "Tilsyn har ansvaret for tilsyn
+            // med …" och "Du kan klage til hvis du mener …" i privat norsk
+            // sektor. Motorn hade regeln, men HTML-utlåtandet renderas här, så
+            // kunderna såg hålen ändå.
+            if (section.id === 'enforcement' && !delad && enforcementBody.trim() === '') return null;
             const trimmed = content.trim();
             if (!trimmed) return null;
 

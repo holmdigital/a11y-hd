@@ -6,6 +6,8 @@
  * Det som ska enhetstestas måste därför ligga utanför.
  */
 
+import type { StatementMetadata } from '../reporting/statement-generator';
+
 /** Övre gräns för hydration-waiten. Över en minut är det inte en wait, det är en hängning. */
 export const MAX_HYDRATION_WAIT_MS = 60000;
 
@@ -42,4 +44,51 @@ export function parseHydrationWait(raw: string): number {
     }
 
     return ms;
+}
+
+type ReviewMethod = NonNullable<StatementMetadata['reviewMethod']>;
+
+/** Granskningsmetoderna som --review-method tar emot (Intern #95). */
+export const REVIEW_METHODS: readonly ReviewMethod[] = ['self-assessment', 'external-review', 'no-review'];
+
+const isReviewMethod = (value: string): value is ReviewMethod =>
+    (REVIEW_METHODS as readonly string[]).includes(value);
+
+/**
+ * Tolkar --review-method och --reviewer (Intern #95) till fälten i StatementMetadata.
+ *
+ * Utelämnad metod betyder självskattning, samma som utan flaggan i dag. Ett
+ * okänt värde är ett fel och ingen tyst fallback: den som skrev "external" ska
+ * inte få ett utlåtande om självskattning utan att veta om det.
+ *
+ * external-review kräver en granskare med namn. Utlåtandegeneratorn kräver
+ * samma sak, men här syns felet före skanningen och inte efter den.
+ *
+ * En granskare skickas bara vidare med external-review, för det är bara då
+ * utlåtandet namnger någon. API:t gör likadant: utan external-review står
+ * ingen granskare i utlåtandet.
+ */
+export function parseReviewOptions(
+    rawMethod: unknown,
+    rawReviewer: unknown
+): Pick<StatementMetadata, 'reviewMethod' | 'reviewer'> {
+    if (rawMethod === undefined || rawMethod === null) return {};
+
+    const method = String(rawMethod).trim();
+    if (!isReviewMethod(method)) {
+        throw new InvalidOptionError(
+            `Invalid --review-method value '${String(rawMethod)}'. Expected one of: ${REVIEW_METHODS.join(', ')}.`
+        );
+    }
+    if (method !== 'external-review') return { reviewMethod: method };
+
+    const name = typeof rawReviewer === 'string' ? rawReviewer.trim() : '';
+    if (name === '') {
+        throw new InvalidOptionError(
+            `--review-method external-review requires --reviewer <name> (or "reviewer" in the config file): ` +
+            `the organisation that performed the review, e.g. --reviewer "Example Audit AB". ` +
+            `Use self-assessment (the default) if the statement is based on your own testing, such as this scan.`
+        );
+    }
+    return { reviewMethod: method, reviewer: { name } };
 }

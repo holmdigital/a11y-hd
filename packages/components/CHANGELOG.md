@@ -1,5 +1,166 @@
 # @holmdigital/components
 
+## 4.2.1
+
+### Patch Changes
+
+- b28c06e: Intern #146: tillsynsavsnittet utelämnas när det inte finns någon tillsynsmyndighet. HTML-utlåtandet för privat norsk sektor hade tomma hål i kundtext:
+
+  > "Tilsyn har ansvaret for tilsyn med gjeldende tilgjengelighetskrav. Du kan klage til hvis du mener …"
+
+  Motorn hade regeln redan (Intern #23, `statement-generator.ts`), men HTML-utlåtandet renderas av `AccessibilityStatement`, som saknade den. Nu utelämnas avsnittet när myndighetsnamnet är tomt och det inte heller finns någon text för delad tillsyn. Svensk privat sektor behåller sin text om delad tillsyn, och norsk offentlig sektor behåller UU-tilsynet.
+
+  Felet hittades när livekörningen i Intern fick en fungerande utplockning av myndighetsnamnet. Av alla 32 kombinationer av land och sektor drabbades bara Norge, privat sektor. Nya tester täcker alla tre fallen. Det första var rött före rättningen.
+
+- Updated dependencies [aed787c]
+  - @holmdigital/standards@5.1.0
+
+## 4.2.0
+
+### Minor Changes
+
+- e92c075: Intern #82: lagnamnsgrinden. Ett utlåtande namnger en lag bara om någon har gått i god för just det namnet mot primärkälla. Annars skriver det fallback-frasen, till exempel "gällande tillgänglighetskrav" (Karins beslut 2026-09-12).
+
+  **Det här ser kunden.** Meningen som namnger lagen skriver i stället fallback-frasen på utlåtandets språk i 18 av 32 kombinationer av land och sektor:
+
+  | Land                   | Sektor som får fallback-frasen |
+  | ---------------------- | ------------------------------ |
+  | NO, DK, FI, NL, PT, CA | båda                           |
+  | DE, ES, IT, GB, US     | privat                         |
+  | IE                     | offentlig                      |
+
+  I övriga 14 kombinationer står lagens namn kvar som i dag: SE, FR, PL och AU i båda sektorerna, DE, ES, IT, GB och US i offentlig sektor, och IE i privat. Inget annat i utlåtandet ändras. Myndighetsraden står kvar, eftersom tillsynsmyndighetens namn har en egen registerkategori och tystas inte i det här bygget.
+
+  **Ett land tänds** när Juno lägger `lagnamn` i `bekraftat` för landets poster i registret i holmdigital/Intern och generatorn där körs. Diffen visar då `"lagnamn"` i `attested`, en rad per post. Det finns ingen annan väg in, ingen landflagga och inget fält som sätts för hand.
+
+  **En rad byter form i motorns utlåtanden för US offentlig sektor.** Motorn skrev "Section 508 of the Rehabilitation Act of 1973 (Section 508)" och gick förbi regeln att parentesen faller när kortnamnet redan står först. Komponenten skrev raden utan parentes. Nu används samma funktion överallt, och parentesen faller.
+
+  **Nytt i standards:**
+
+  - `NationalLaw.attestation?: Attestation`, med `attestedBy`, `session`, `sources`, `attested`, `notAttested` och `subject`. Blocket genereras ur registret och redigeras aldrig för hand här. `attested` och `notAttested` är listor av typen `AttestableField`, en union, så att en felstavning fäller typkontrollen i stället för att tyst läsas som "ej granskat". Schemat har `additionalProperties: false` och ingen `minItems` på `attested`, eftersom en tom lista är en giltig spärr.
+  - `isNameAttested(law)` är grinden. Den läser `attested` och inget annat, och bara `subject: 'law-entry'` kan öppna den.
+  - `resolveNationalLawReference(country, sector, lang)` och `NATIONAL_LAW_FALLBACK` har flyttat hit från motorn och komponenten. Båda bar varsin kopia, och kopiorna har glidit isär en gång redan (Intern #63/#66). Grinden sitter på varje väg som kan returnera ett namn, också US-grenen, där varje lag i kombinationen prövas för sig.
+  - `sources` bär registrets källtext. Standardlistan över källor per land och anteckningarna om hur en källa nåddes ingår inte (Intern #94 fråga 1).
+
+  Motorn återexporterar `resolveNationalLawReference`, så dess publika API är oförändrat.
+
+- 18097bc: Tillgänglighetsutlåtandet kan nu säga hur bedömningen gjordes. Det nya fältet `reviewMethod` har tre värden:
+
+  - `self-assessment`: organisationen har bedömt sin egen webbplats. Det är default.
+  - `external-review`: en extern part har granskat webbplatsen, och utlåtandet namnger den.
+  - `no-review`: tillgängligheten är uppskattad utan granskning.
+
+  **Vad kunden ser.** Ingenting ändras om anroparen inte sätter fältet. Utlåtandet säger då att organisationen gjort en självskattning, precis som i dag och byte för byte. Med `external-review` står granskarens namn i avsnittet om hur webbplatsen testats, till exempel "Granskaren AB har gjort en oberoende granskning av Testkommunen." Valet läses bara ur fältet, aldrig ur efterlevnadsutfallet eller scanresultatet.
+
+  Fälten finns i motorns `StatementMetadata` och i komponentens `AccessibilityStatementProps`. Motorn skickar dem vidare till komponenten, så HTML- och Markdown-utlåtanden säger samma sak. CLI:t har två nya flaggor, `--review-method` och `--reviewer`, och nycklarna `reviewMethod` och `reviewer` i config-filen. Ett okänt värde, eller en extern granskning utan granskare, stoppas innan skanningen börjar.
+
+  **Två avsteg från kravspecen. Båda finns för att utlåtandet inte ska påstå något falskt.**
+
+  1. **Granskaren har ett eget fält, `reviewer: { name, url? }`.** Kravspecen föreslog att återanvända `generatorTool`. Men `generatorTool` styr också sidfoten ("Genererad med hjälp av …"). Med granskaren där skulle sidfoten påstå att dokumentet genererats med granskaren. Sidfoten namnger därför verktyget som förut. Granskarens plats i texten fylls bara från `reviewer`, aldrig från `generatorTool`. `url` tas emot men renderas inte.
+  2. **Extern granskning utan namngiven granskare är ett fel.** Motorn och komponenten kastar ett fel när `reviewMethod` är `external-review` och `reviewer.name` saknas eller är tomt. Med verktyget som standardvärde hade utlåtandet sagt "HolmDigital Regulatory Engine har gjort en oberoende granskning", alltså exakt felet i Intern #91.
+
+  Nya tester läser alla mallar i båda mallsatserna, så en ny mall omfattas automatiskt. Mot den gamla koden fäller de 68 utlåtandetester i motorn och 51 i komponenten.
+
+### Patch Changes
+
+- 0538933: Intern #68: Australiens Digital Access Standard är borttagen ur lagdatan, eftersom intern regeringspolicy inte är ett lagrum.
+
+  **Regeln som gäller framåt (Juno):** en post hör hemma i `national-laws.json` bara om ett bindande rättsligt instrument gör efterlevnaden obligatorisk och möjlig att göra gällande mot den som bär skyldigheten. Digital Access Standard är obligatorisk inom den australiska regeringens egen investeringsstyrning. Standarden har däremot ingen författning, ingen tredjepartsrätt, ingen tillsynsmyndighet utanför DTA och ingen domstolsväg.
+
+  **Brytande ändringar, därav major:**
+
+  - Posten `au-dta` finns inte längre. `getNationalLaws('AU')` ger nu en post, `au-dda`, och `getNationalLaw('au-dta', 'AU')` ger `null`.
+  - `'DAS'` är borttagen ur `LegalFramework` och ur schemats `euFramework`. Kod som anropar `getNationalLawByFramework('DAS', …)` eller har ett uttömmande `switch` över `LegalFramework` med ett `'DAS'`-fall går inte längre att kompilera. Ta bort fallet. `getLegalFramework('DAS')` gav redan `null`.
+
+  **Lagen i utlåtandet ändras inte.** Utlåtandet för Australien namngav redan Disability Discrimination Act 1992 i båda sektorerna. Det kom tidigare från en egen AU-gren i standards (`deriveEnforcementLaw`), i motorn (`resolveNationalLawReference`) och i komponenten. Grenarna fanns bara för att standarden, med scope `public`, annars vann väljarens företräde för exakt scope. Nu är de borttagna, och den generella väljaren ger samma lag, så tre handhållna speglar som kunde glida isär är borta. Med motorns gren försvann också dess hårdkodade reservtext med lagnamnet, en namnväg som gick förbi lagvalet.
+
+  Digital Inclusion Standard, som är det dokument som faktiskt rör tillgänglighet, beskrivs i `docs/guides/eu-legal-framework.md` och finns inte i datan.
+
+  **Det här ändras i kunddokumenten: avsnittet "Australian Government digital policy" visas bara för offentlig sektor** (Intern #94 fråga 4, Juno). Avsnittet beskriver en policy för federala myndigheter och ingen annan. Ett privat företag är varken "subject to" policyn eller en "Commonwealth agency", så i ett privat utlåtande var avsnittet sakligt fel, oavsett datumen. Ett australiskt utlåtande för privat sektor saknar nu avsnittet, och resten är oförändrat. Offentlig sektor är oförändrad.
+
+  Mallarna har fått ett valfritt fält per avsnitt, `sectors`, som begränsar avsnittet till de angivna sektorerna. Det finns i både motorns mallar och komponentens, och ett avsnitt utan fältet gäller båda sektorerna som förut. Datumen i avsnittet (1 januari och 1 juli 2025) är belagda sedan tidigare men inte omverifierade den här omgången. Juno kontrollerar dem mot primärkällan när den svarar.
+
+- f998d58: Intern #83, Karins beslut i #94 fråga 2: ett svenskt utlåtande för privat sektor anger hur tillsynen över LPTT är fördelad, i stället för att peka ut PTS för alla.
+
+  **Det här ser kunden.** Tillsynsavsnittet i ett svenskt utlåtande för privat sektor lyder nu, ordagrant som Karin skrev det:
+
+  > Tillsynen över lagen (2023:254) om vissa produkters och tjänsters tillgänglighet är uppdelad mellan flera myndigheter beroende på vilken tjänst som erbjuds: Post- och telestyrelsen ansvarar för elektronisk kommunikation, banktjänster och e-handelstjänster, Mediemyndigheten för audiovisuella medietjänster, Myndigheten för tillgängliga medier för e-böcker, och Konsumentverket respektive Transportstyrelsen för olika delar av persontransporttjänster.
+
+  Förut stod där att PTS har ansvaret för tillsynen och att kunden kan anmäla till PTS. För ett buss-, tåg-, flyg- eller rederibolags webbplats är Konsumentverket tillsynsmyndighet, så meningen var fel för dem. Motorn vet inte vilken tjänst kunden driver, och därför anger avsnittet fördelningen.
+
+  **Texten ersätter hela avsnittet.** Mallens två meningar om att anmäla till PTS och dess stycke om oskäligt betungande krav, tillgänglighetsredogörelsen och begäran om tillgängliggörande står inte längre i ett svenskt utlåtande för privat sektor. Det stycket hör till DOS-lagen och offentlig sektor.
+
+  **Oförändrat:** offentlig sektor, alla andra länder och svensk privat sektor på andra språk än svenska. Det finns bara en svensk text än.
+
+  **Nytt i standards:** `enforcement.statementText`, en språknycklad text för en lag vars tillsyn är delad efter tjänstetyp, och `getEnforcementStatementText(country, sector, lang)`. Funktionen har samma lagval som `resolveNationalLawReference` och samma lagnamnsgrind. Texten namnger lagen, så den används bara när lagnamnet är attesterat; annars vore den en väg förbi grinden. Motorn och komponenten läser den på samma sätt.
+
+- c300588: Utlåtandet: ingen artikel framför lagnamnet, och fallback-fraser som passar sin mening (Intern #82, förberedelse).
+
+  Flera mallar hade en artikel framför lagplatsen, till exempel "con la", "com a", "mit der", "met de" och "alla". För lagnamn med annat genus gav det fel redan i dag:
+
+  - "con la Real Decreto 1112/2018"
+  - "em conformidade com a Decreto-Lei n.º 83/2018"
+  - "mit der Gesetz zur Umsetzung …"
+  - i komponentens tyska inledning "im Einklang mit den nationalen Rechtsvorschriften zur Umsetzung der BITV 2.0", där BITV 2.0 är den nationella lagen och inte något som genomförs
+
+  Med fallback-frasen, som bär sin egen artikel, blev meningen obegriplig: "con la los requisitos", "avec la la réglementation". Lagnamnsgrinden i #82 kommer att visa fallbacken i ungefär hälften av alla kombinationer av land och sektor.
+
+  **Vad kunden ser nu:**
+
+  - **HTML-utlåtanden på franska, spanska, nederländska, italienska och portugisiska** har ingen artikel framför lagnamnet. Det är samma meningsbyggnad som Markdown-mallarna redan hade.
+  - **Tyska, båda formaten:** "im Einklang mit …", "mit … vereinbar" och "für die Überwachung der Einhaltung von … zuständig".
+  - **Fallback-fraserna**, som visas när ingen lag kan namnges, står nu i den form deras mening kräver:
+    - tyska: dativ, "den geltenden Barrierefreiheitsanforderungen"
+    - polska: instrumentalis, "obowiązującymi wymaganiami dostępności"
+    - finska: genitiv, "sovellettavan saavutettavuuslainsäädännön"
+    - italienska och portugisiska: utan artikel, så att "a i" och "de os" inte kan uppstå
+
+    Ingen rad visar fallbacken i dag, så den ändringen syns först när grinden i #82 tänds.
+
+  Ett nytt test läser båda mallsamlingarna. Det fäller varje artikel direkt före lagplatsen på de sex språken, kräver instrumentalis för polska och genitiv för finska, och kräver att motorns och komponentens fallback-fraser är ordagrant identiska. Det kravet stod tidigare bara i en kommentar. Mot de gamla mallarna fäller testet 8 av 10.
+
+- 318cc77: Tillgänglighetsutlåtandet: tre fel i hur mallens val `{A / B / C}` löstes. Alla tre har funnits i publicerade versioner och når kunddokument, både i CLI:ts Markdown- och HTML-utlåtanden och i komponenten på webbplatser.
+
+  **1. Utlåtandet påstod en granskning som aldrig gjorts.** Sektionen om hur webbplatsen testats har ett eget val: självskattning, extern granskning eller uppskattning utan granskning. Det valet löstes på kundens efterlevnadsutfall, precis som valet om hur väl webbplatsen uppfyller kraven.
+
+  - En kund som var **delvis förenlig** fick "HolmDigital Engine har gjort en oberoende granskning av …", alltså en extern granskning som aldrig ägde rum. Det gällde alla 16 språk.
+  - En kund som **inte var förenlig** fick "Vi har uppskattat tillgängligheten utan granskning", fast en automatisk granskning just hade gjorts.
+
+  Metodvalet ger nu alltid självskattning, eftersom ett verktyg som kunden själv kör är en självskattning.
+
+  **2. Lagnamn med snedstreck klövs.** Värdena byttes in i mallen innan valen löstes, och valparsern delar på "/". Ett lagnamn som "Real Decreto 1112/2018" eller "(Tillgänglighetslagen / LPTT)" delades därför mitt i. Så här blev det för svensk privat sektor:
+
+  | Kundens utfall  | Före rättelsen                               |
+  | --------------- | -------------------------------------------- |
+  | Förenlig        | Lagnamnet klipptes av                        |
+  | Delvis förenlig | Meningen blev "LPTT)."                       |
+  | Inte förenlig   | Kunden fick meningen för **delvis** förenlig |
+
+  Samma fel fanns för Spanien, Portugal, Irland, Finland, Tyskland (privat), Nederländerna (privat) och för varje organisationsnamn som innehåller "/". Värdena byts nu in först efter att valen lösts.
+
+  **3. Komponentens engelska mallar gick förbi lagvalet (bara `@holmdigital/components`).** Mallarna för en-gb, en-us och en-ca hårdkodade lagnamn, samma fel som motorns mallar rättades för i 3.3.8. Den rättelsen nådde aldrig komponenten, och CLI:ts HTML-utlåtanden renderas med komponenten. Följden var:
+
+  - Brittisk privat sektor fick regleringen för offentlig sektor.
+  - Amerikansk privat sektor fick Section 508, som bara gäller federala myndigheter.
+  - Kanada fick Ontarios AODA som landets lag.
+
+  Mallarna använder nu `{<national_law>}` som resten.
+
+  Ett komponenttest krävde att AODA skulle stå i det kanadensiska utlåtandet, och det passerade just därför att mallen gick förbi lagvalet. Testet är nu omvänt. Nya tester läser mallarna i stället för att räkna upp fraser per språk, så en ny mall omfattas automatiskt. Mot den gamla koden fäller de 37 komponenttester och alla metodtester för delvis och ej förenlig i motorn.
+
+- Updated dependencies [9bdf720]
+- Updated dependencies [0538933]
+- Updated dependencies [e92c075]
+- Updated dependencies [f998d58]
+- Updated dependencies [c29822b]
+  - @holmdigital/standards@5.0.0
+
+## 4.1.0
+
+### Minor Changes
+
+- 3725b99: ToastProvider: new optional `ariaLabel` and `closeLabel` props set the accessible names of the toast region and of each toast's close button, so they can match the language of the page (WCAG 3.1.2). Defaults are unchanged ("Notifications" and "Close"). The empty toast region no longer catches pointer events (`pointer-events-none`), only the toasts do (`pointer-events-auto`).
+
 ## 4.0.2
 
 ### Patch Changes
