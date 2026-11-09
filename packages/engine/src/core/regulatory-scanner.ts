@@ -13,6 +13,7 @@ import { assertPublicHost, guardPage, PrivateHostError, type BlockedRequest } fr
 import { chromeLaunchArgs, explainLaunchFailure, type LaunchPolicy } from './browser-launch';
 
 import { readFileSync } from 'node:fs';
+import { createRequire } from 'node:module';
 
 /**
  * Intern #30: pick the mapped rule for an axe violation by its WCAG CRITERION,
@@ -189,7 +190,12 @@ export function getStandardsVersion(): string {
         // Try to find @holmdigital/standards package.json via require.resolve.
         // Intern #43: standards `exports` måste exponera "./package.json", annars
         // faller detta på ERR_PACKAGE_PATH_NOT_EXPORTED och versionen blir 'unknown'.
-        const stdPath = require.resolve('@holmdigital/standards/package.json');
+        //
+        // createRequire, inte en bar `require`: i ESM-bygget finns ingen `require`,
+        // och tsups ersättning kastar "Dynamic require ... is not supported", så
+        // versionen blev 'unknown' för alla ESM-konsumenter (t.ex. scan-servern).
+        // tsups `shims: true` ger import.meta.url även i CJS-bygget.
+        const stdPath = createRequire(import.meta.url).resolve('@holmdigital/standards/package.json');
         const pkg = JSON.parse(readFileSync(stdPath, 'utf-8'));
         return pkg.version;
     } catch {

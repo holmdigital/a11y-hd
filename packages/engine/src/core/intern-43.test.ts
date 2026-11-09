@@ -1,4 +1,8 @@
 import { describe, it, expect } from 'vitest';
+import { execFileSync } from 'node:child_process';
+import { existsSync } from 'node:fs';
+import { dirname, join } from 'node:path';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 import { isInterstitialPage, getStandardsVersion, RegulatoryScanner } from './regulatory-scanner';
 import type { ScanResult } from './regulatory-scanner';
 import { generateJUnitXML } from '../reporting/junit-generator';
@@ -62,6 +66,25 @@ describe('Intern #43 fynd 3 — standardsVersion är inte "unknown"', () => {
         expect(v).not.toBe('unknown');
         expect(v).toMatch(/^\d+\.\d+\.\d+/);
     });
+
+    // Vitest kör källan, där `require` finns. Felet syntes bara i det byggda
+    // ESM-paketet (dist/index.mjs), som scan-servern och andra ESM-konsumenter
+    // laddar: där blev versionen 'unknown'. Pröva därför båda byggena i en
+    // vanlig Node-process. ESM-fallet MÅSTE köras med --input-type=module: en
+    // vanlig `node -e` är CJS och har en global `require`, som döljer felet.
+    // CI bygger alltid före testerna.
+    const DIST = join(dirname(fileURLToPath(import.meta.url)), '..', '..', 'dist');
+    for (const [format, file, args] of [
+        ['ESM', 'index.mjs', ['--input-type=module', '-e', 'const m = await import(process.argv[1]); console.log(m.getStandardsVersion())']],
+        ['CJS', 'index.js', ['-e', 'console.log(require(process.argv[1]).getStandardsVersion())']],
+    ] as const) {
+        it.skipIf(!existsSync(join(DIST, file)))(`det byggda ${format}-paketet (dist/${file}) läser en riktig semver`, () => {
+            const target = format === 'ESM' ? pathToFileURL(join(DIST, file)).href : join(DIST, file);
+            const v = execFileSync(process.execPath, [...args, target], { encoding: 'utf-8' }).trim();
+            expect(v).not.toBe('unknown');
+            expect(v).toMatch(/^\d+\.\d+\.\d+/);
+        });
+    }
 });
 
 /**
