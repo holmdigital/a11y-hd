@@ -35,6 +35,7 @@ import {
     getAllNationalLaws,
     generateRegulatoryReport,
     isNameAttested,
+    lawPhrase,
     resolveNationalLawReference,
     NATIONAL_LAW_FALLBACK,
     getEnforcementStatementText,
@@ -320,7 +321,7 @@ describe('National Laws — IT, PT, PL', () => {
     it('should have correct law identifiers', () => {
         expect(getNationalLawByFramework('WAD', 'IT')?.law).toBe('Legge 4/2004');
         expect(getNationalLawByFramework('EAA', 'IT')?.law).toBe('D.Lgs. 82/2022');
-        expect(getNationalLawByFramework('WAD', 'PT')?.law).toBe('DL 83/2018');
+        expect(getNationalLawByFramework('WAD', 'PT')?.law).toBe('Decreto-Lei n.º 83/2018');
         // Intern #63/#66 F1: DL 101-D/2023 är ett diploma DRE:s ELI-resolver inte
         // lämnar ut på något av 168 prövade datum under 2023, och som det är EJ
         // BELAGT att det existerar. Rätt akt är 82/2022, belagt i artigo 1.º.
@@ -1458,5 +1459,34 @@ describe('Intern #63 — findNationalLaw och getAllNationalLaws', () => {
         const ids = getAllNationalLaws().map(l => l.id);
         const dupes = ids.filter((id, i) => ids.indexOf(id) !== i);
         expect(dupes, 'dubbletter: ' + dupes.join(', ')).toEqual([]);
+    });
+});
+
+/**
+ * Intern #146: lagnamnsgrinden visar fallback-frasen för varje oattesterat
+ * namn, så testerna som går via resolveNationalLawReference ser aldrig hur
+ * en sådan post skulle renderas. nl-wad hade därför en dold dubbelparentes
+ * som hade nått kunddokumentet samma dag som Juno attesterade namnet. Pröva
+ * därför frasen för VARJE post, attesterad eller inte.
+ */
+describe('Intern #146 — lagfrasen upprepar inte namnet, oavsett attestering', () => {
+    it('ingen post ger samma namn två gånger i frasen', () => {
+        const repeats: string[] = [];
+        for (const law of getAllNationalLaws()) {
+            const phrase = lawPhrase(law);
+            // Felet är samma parentes två gånger, "… (X) (X)". Att kortnamnet
+            // ingår i en längre beteckning, som RGAA i "(RGAA 4.1.2) (RGAA)",
+            // är avsiktligt och prövas i motorns test.
+            const paren = `(${law.law.trim()})`;
+            const count = phrase.split(paren).length - 1;
+            if (count > 1) repeats.push(`${law.id}: "${phrase}"`);
+        }
+        expect(repeats, `Lagfras som upprepar namnet: ${repeats.join(' | ')}`).toEqual([]);
+    });
+
+    it('nl-wad skriver citeertiteln en gång', () => {
+        const nlWad = getNationalLaws('NL').find((l) => l.id === 'nl-wad');
+        expect(nlWad).toBeDefined();
+        expect(lawPhrase(nlWad!)).toBe(nlWad!.fullName.trim());
     });
 });

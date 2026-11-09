@@ -856,9 +856,12 @@ describe('Intern #63 — lagraden upprepar inte namnet', () => {
         expect(resolveNationalLawReference('FR', 'public', 'fr')).toContain('(RGAA)');
         // Intern #82: pt-wad har inget attesterat lagnamn än, och då skrivs
         // varken namn eller parentes. Kontrollen tänds med landet.
+        // Intern #146: kortnamnet är nu den officiella formen "Decreto-Lei
+        // n.º 83/2018", som är ett prefix av det långa, så parentesen faller.
         const ptWad = getNationalLaws('PT').find(l => l.id === 'pt-wad');
         if (isNameAttested(ptWad)) {
-            expect(resolveNationalLawReference('PT', 'public', 'pt')).toContain('(DL 83/2018)');
+            expect(resolveNationalLawReference('PT', 'public', 'pt')).toContain('Decreto-Lei n.º 83/2018, de 19 de outubro');
+            expect(resolveNationalLawReference('PT', 'public', 'pt')).not.toContain('(Decreto-Lei');
         }
     });
 });
