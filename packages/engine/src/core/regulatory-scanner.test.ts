@@ -47,6 +47,20 @@ const mockAxeOutput: AxeScanOutput = {
 };
 
 // Test fixture: unmatched rule (fallback path)
+// Unmapped rule that declares a WCAG criterion in its tags: the fallback takes the
+// criterion from the tags (as light mode does), never 'Unknown'.
+const mockAxeOutputUnmappedWithTag: AxeScanOutput = {
+    violations: [{
+        id: 'fake-rule-with-wcag-tag',
+        help: 'Unmapped rule with a criterion tag',
+        description: 'Testing fallback criterion',
+        // 2.5.1 and 1.2.1 have no rule in standards, so this reaches the fallback.
+        tags: ['wcag2a', 'wcag251', 'wcag121', 'EN-9.2.5.1'],
+        nodes: [{ html: '<span>x</span>', target: ['span'], failureSummary: 'x' }]
+    }],
+    passes: []
+};
+
 const mockAxeOutputNoMatch: AxeScanOutput = {
     violations: [{
         id: 'fake-rule-that-does-not-exist',
@@ -102,7 +116,7 @@ describe('enrichResults', () => {
         expect(reports[0].holmdigitalInsight.reasoning).toBe('Elements must have sufficient color contrast');
     });
 
-    it('produces fallback report without failingNodes for unmatched rule', async () => {
+    it('produces fallback report with failingNodes for unmatched rule', async () => {
         const reports = await enrichResults(mockAxeOutputNoMatch);
 
         expect(reports.length).toBe(1);
@@ -113,8 +127,11 @@ describe('enrichResults', () => {
         expect(reports[0].en301549Criteria).toBe('Unknown');
         expect(reports[0].diggRisk).toBe('medium');
 
-        // No failingNodes or legalContext in fallback path
-        expect(reports[0].failingNodes).toBeUndefined();
+        // The finding counts in the score, so its nodes must follow (axe-core 4.14,
+        // label-content-name-mismatch, 2026-11-10). No legalContext without a mapping.
+        expect(reports[0].failingNodes).toEqual([
+            { html: '<div>test</div>', target: 'div', failureSummary: 'Fails for testing' }
+        ]);
         expect(reports[0].legalContext).toBeUndefined();
 
         // reasoning comes from violation.help
@@ -122,6 +139,31 @@ describe('enrichResults', () => {
         // remediation populated from violation fields
         expect(reports[0].remediation.description).toBe('This rule does not exist in standards');
         expect(reports[0].remediation.technicalGuidance).toBe('Testing fallback path');
+    });
+
+    it('unmapped fallback takes the lowest WCAG criterion from the tags, not Unknown', async () => {
+        const reports = await enrichResults(mockAxeOutputUnmappedWithTag);
+        expect(reports[0].ruleId).toBe('fake-rule-with-wcag-tag');
+        expect(reports[0].wcagCriteria).toBe('1.2.1');
+        expect(reports[0].en301549Criteria).toBe('9.2.5.1');
+        expect(reports[0].failingNodes).toHaveLength(1);
+    });
+
+    it('label-content-name-mismatch (on by default in axe-core 4.14) maps to label-in-name, 2.5.3', async () => {
+        const reports = await enrichResults({
+            violations: [{
+                id: 'label-content-name-mismatch',
+                help: 'Elements must have their visible text as part of their accessible name',
+                description: 'Ensure that elements labelled through their content must have their visible text as part of their accessible name',
+                tags: ['cat.semantics', 'wcag21a', 'wcag253', 'EN-301-549', 'EN-9.2.5.3'],
+                nodes: [{ html: '<button aria-label="Starta sökningen">Sök</button>', target: ['button'], failureSummary: 'x' }]
+            }],
+            passes: []
+        });
+        expect(reports[0].wcagCriteria).toBe('2.5.3');
+        expect(reports[0].en301549Criteria).toBe('9.2.5.3');
+        expect(reports[0].dosLagenReference).not.toBe('Kräver manuell bedömning');
+        expect(reports[0].failingNodes).toHaveLength(1);
     });
 
     it('labels best-practice rules correctly instead of Unknown', async () => {
@@ -161,8 +203,8 @@ describe('enrichResults', () => {
         expect(reports.length).toBe(2);
         // First report is matched (has failingNodes)
         expect(reports[0].failingNodes).toBeDefined();
-        // Second report is fallback (no failingNodes)
-        expect(reports[1].failingNodes).toBeUndefined();
+        // Second report is fallback; its nodes follow too (2026-11-10)
+        expect(reports[1].failingNodes).toHaveLength(1);
     });
 });
 

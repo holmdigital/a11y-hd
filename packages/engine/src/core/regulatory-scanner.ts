@@ -746,7 +746,11 @@ export class RegulatoryScanner {
 
                 reports.push({
                     ruleId: violation.id,
-                    wcagCriteria: isBestPractice ? 'Best Practice' : 'Unknown',
+                    // Kriteriet ur axes egna wcagNNN-taggar, som i light-läget (Intern #30),
+                    // innan 'Unknown'. Lägsta kriteriet vinner, som i selectMappedRuleId.
+                    wcagCriteria: isBestPractice
+                        ? 'Best Practice'
+                        : (criteriaFromTags(violation.tags).sort(compareCriteria)[0] || 'Unknown'),
                     // Intern #39: omappat fynd → EN-9.x ur axes egen tagg som fallback
                     // före 'Unknown'. Best practice behåller 'N/A'. Rör aldrig matchade.
                     en301549Criteria: isBestPractice ? 'N/A' : (en301549FromTags(violation.tags) || 'Unknown'),
@@ -772,7 +776,15 @@ export class RegulatoryScanner {
                         requiresManualCheck: false,
                         pseudoAutomation: false,
                         complexity: 'moderate'
-                    }
+                    },
+                    // Felnoderna följer med även när regeln saknar mappning. Fyndet räknas
+                    // in i score, och utan noderna ser kunden avdraget men inte var felet
+                    // sitter (label-content-name-mismatch i axe-core 4.14, 2026-11-10).
+                    failingNodes: violation.nodes.map((node) => ({
+                        html: node.html,
+                        target: node.target.join(' '),
+                        failureSummary: node.failureSummary
+                    }))
                 });
             }
         }

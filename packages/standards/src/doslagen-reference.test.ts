@@ -60,9 +60,10 @@ describe('Intern #28 — dosLagenReference lagrum', () => {
         }
     });
 
-    it('rules.sv bär Junos svenska 10 §-lydelse (21 nivå A, 17 nivå AA)', () => {
-        // 21 f.d. §7 (de 7 f.d. 9 § blev "Best Practice" i Intern #27, ej lagkrav).
-        expect(count(ALL_DATA['rules.sv'], SV_A)).toBe(21);
+    it('rules.sv bär Junos svenska 10 §-lydelse (22 nivå A, 17 nivå AA)', () => {
+        // 21 f.d. §7 (de 7 f.d. 9 § blev "Best Practice" i Intern #27, ej lagkrav),
+        // plus 2.5.3 label-in-name (2026-11-10), som bär samma granskade lydelse som 2.1.4.
+        expect(count(ALL_DATA['rules.sv'], SV_A)).toBe(22);
         expect(count(ALL_DATA['rules.sv'], SV_AA)).toBe(17);
     });
 
@@ -74,17 +75,19 @@ describe('Intern #28 — dosLagenReference lagrum', () => {
         }
     });
 
-    it('da och fi har samma A/AA-fördelning som no (21 A / 17 AA) efter Best Practice-flytten', () => {
+    it('da och fi har samma A/AA-fördelning som no (22 A / 17 AA) efter Best Practice-flytten', () => {
         // 21, inte 28: de 7 f.d. 9 § blev "Best Practice" (Intern #27), utan EN-lagrum.
+        // 22 sedan 2.5.3 label-in-name (2026-11-10), med samma lydelse som 2.1.4.
         for (const f of ['rules.da', 'rules.fi', 'rules.no']) {
-            expect(count(ALL_DATA[f], 'WCAG 2.1 Level A required')).toBe(21);
+            expect(count(ALL_DATA[f], 'WCAG 2.1 Level A required')).toBe(22);
             expect(count(ALL_DATA[f], 'WCAG 2.1 Level AA required')).toBe(17);
         }
     });
 
-    it('rules.es bär Junos RD 1112/2018-lydelse (21 nivå A, 17 nivå AA)', () => {
+    it('rules.es bär Junos RD 1112/2018-lydelse (22 nivå A, 17 nivå AA)', () => {
         // 21, inte 28: de 7 f.d. 9 § blev "Best Practice" (Intern #27).
-        expect(count(ALL_DATA['rules.es'], ES_A)).toBe(21);
+        // 22 sedan 2.5.3 label-in-name (2026-11-10), med samma lydelse som 2.1.4.
+        expect(count(ALL_DATA['rules.es'], ES_A)).toBe(22);
         expect(count(ALL_DATA['rules.es'], ES_AA)).toBe(17);
     });
 

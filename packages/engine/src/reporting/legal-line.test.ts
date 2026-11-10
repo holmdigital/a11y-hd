@@ -138,13 +138,14 @@ describe('Intern #56 — fall A och interna referenser', () => {
 });
 
 describe('Intern #56 — grenindelningen matchar Junos genomgång av datan', () => {
-    it('38 lagkrav / 7 god praxis / 3 ännu inte bindande', () => {
+    // 39 sedan 2.5.3 label-in-name (2026-11-10), som bär samma lagrumstext som 2.1.4.
+    it('39 lagkrav / 7 god praxis / 3 ännu inte bindande', () => {
         const rules = rulesSv as Array<{ ruleId: string; wcagCriteria: string; dosLagenReference: string }>;
         const branch = (r: { wcagCriteria: string; dosLagenReference: string }) =>
             r.wcagCriteria === 'Best Practice' ? 2 : (/ännu inte lagkrav/.test(r.dosLagenReference ?? '') ? 3 : 1);
         const counts = { 1: 0, 2: 0, 3: 0 } as Record<number, number>;
         for (const r of rules) counts[branch(r)]++;
-        expect(counts[1]).toBe(38);
+        expect(counts[1]).toBe(39);
         expect(counts[2]).toBe(7);
         expect(counts[3]).toBe(3);
     });

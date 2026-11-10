@@ -1080,6 +1080,24 @@ describe('WCAG 2.2 Phase 1 locale parity (target-size, dragging-movements, focus
             });
         }
     }
+
+    // 2.5.3 Label in Name: axe-core 4.14 slår på label-content-name-mismatch som standard.
+    // Kriteriet är WCAG 2.1 nivå A och ingår i EN 301 549 V3.2.1 (9.2.5.3), så lagrummet är
+    // detsamma som för 2.1.4 (också 2.1 nivå A) i varje språkfil.
+    for (const [lang, rules] of LOCALE_FILES) {
+        it(`${lang}: label-in-name (2.5.3) has the same legal basis as 2.1.4`, () => {
+            const rule = rules.find(r => r.ruleId === 'label-in-name');
+            const ref = rules.find(r => r.ruleId === 'character-key-shortcuts');
+            expect(rule, `${lang} missing label-in-name`).toBeDefined();
+            expect(rule?.wcagCriteria).toBe('2.5.3');
+            expect(rule?.wcagLevel).toBe('A');
+            expect(rule?.wcagVersion).toBe('2.1');
+            expect(rule?.en301549Criteria).toBe('9.2.5.3');
+            expect(rule?.dosLagenApplies).toBe(true);
+            expect(rule?.dosLagenReference).toBe(ref?.dosLagenReference);
+            expect(rule?.legalContext).toEqual(ref?.legalContext);
+        });
+    }
 });
 
 /**

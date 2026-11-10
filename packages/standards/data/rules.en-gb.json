@@ -3032,6 +3032,74 @@
         }
     },
     {
+        "ruleId": "label-in-name",
+        "wcagCriteria": "2.5.3",
+        "wcagLevel": "A",
+        "wcagTitle": "Label in Name",
+        "wcagVersion": "2.1",
+        "en301549Criteria": "9.2.5.3",
+        "en301549Title": "Label in name",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "PSBAR 2018, WCAG 2.1 AA required",
+        "remediation": {
+            "description": "If a component has a visible label made of text or an image of text, its accessible name must contain that same text. Ideally the name starts with the visible text.",
+            "technicalGuidance": "Make aria-label and aria-labelledby contain the visible text verbatim, preferably first. Put extra explanation after the visible text or in aria-describedby instead of replacing it.",
+            "component": null,
+            "wcagTechnique": [
+                "G208",
+                "G211"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "medium",
+            "eaaImpact": "medium",
+            "ukInterpretation": "Important for people who control the computer by voice. They say what they see, for example \"click Search\", and that only works if the button name contains the word Search.",
+            "commonMistakes": [
+                "The button shows \"Search\" but has aria-label=\"Start the search\"",
+                "Visible text in one language and aria-label in another, for example \"Stäng\" and \"Close\""
+            ],
+            "priorityRationale": "Breaks speech input: the visible word the user says does not activate the control."
+        },
+        "testability": {
+            "automated": true,
+            "requiresManualCheck": false,
+            "pseudoAutomation": false,
+            "complexity": "moderate"
+        },
+        "tags": [
+            "labels",
+            "accessible-name",
+            "speech-input",
+            "wcag21a",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA",
+                "ADA",
+                "REHAB"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
+    },
+    {
         "ruleId": "target-size",
         "wcagCriteria": "2.5.8",
         "wcagLevel": "AA",

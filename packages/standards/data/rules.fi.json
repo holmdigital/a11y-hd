@@ -3034,6 +3034,74 @@
         }
     },
     {
+        "ruleId": "label-in-name",
+        "wcagCriteria": "2.5.3",
+        "wcagLevel": "A",
+        "wcagTitle": "Label in Name",
+        "wcagVersion": "2.1",
+        "en301549Criteria": "9.2.5.3",
+        "en301549Title": "Label in name",
+        "en301549Chapter": 9,
+        "dosLagenApplies": true,
+        "dosLagenReference": "EN 301 549 V3.2.1, WCAG 2.1 Level A required",
+        "remediation": {
+            "description": "Jos komponentilla on näkyvä nimike tekstinä tai tekstiä sisältävänä kuvana, sen saavutettavan nimen on sisällettävä sama teksti. Mieluiten nimi alkaa näkyvällä tekstillä.",
+            "technicalGuidance": "Varmista, että aria-label ja aria-labelledby sisältävät näkyvän tekstin sanatarkasti, mieluiten alussa. Lisää tarkennukset näkyvän tekstin perään tai aria-describedby-määreeseen sen sijaan, että korvaisit tekstin.",
+            "component": null,
+            "wcagTechnique": [
+                "G208",
+                "G211"
+            ]
+        },
+        "holmdigitalInsight": {
+            "diggRisk": "medium",
+            "eaaImpact": "medium",
+            "finnishInterpretation": "Tärkeä puheohjausta käyttäville. Käyttäjä sanoo sen, minkä näkee, esimerkiksi \"napsauta Hae\", ja se toimii vain, jos painikkeen nimessä on sana Hae.",
+            "commonMistakes": [
+                "Painikkeessa lukee \"Hae\", mutta sen aria-label on \"Käynnistä haku\"",
+                "Näkyvä teksti suomeksi ja aria-label englanniksi, esimerkiksi \"Sulje\" ja \"Close\""
+            ],
+            "priorityRationale": "Tärkeä puheohjauksen toimivuuden kannalta."
+        },
+        "testability": {
+            "automated": true,
+            "requiresManualCheck": false,
+            "pseudoAutomation": false,
+            "complexity": "moderate"
+        },
+        "tags": [
+            "labels",
+            "accessible-name",
+            "speech-input",
+            "wcag21a",
+            "WAD",
+            "EAA",
+            "public-sector",
+            "private-sector"
+        ],
+        "legalContext": {
+            "appliesTo": [
+                "WAD",
+                "EAA",
+                "ADA",
+                "REHAB"
+            ],
+            "sectors": [
+                "public",
+                "private"
+            ],
+            "wadArticle": "Article 4, Annex referencing EN 301 549",
+            "eaaAnnex": "Annex I, Section I - Functional accessibility requirements",
+            "eaaProductScope": [
+                "e-commerce",
+                "banking",
+                "transport",
+                "telecommunications"
+            ],
+            "eaaDeadline": "2025-06-28"
+        }
+    },
+    {
         "ruleId": "target-size",
         "wcagCriteria": "2.5.8",
         "wcagLevel": "AA",
