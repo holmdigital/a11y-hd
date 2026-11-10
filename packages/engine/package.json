@@ -1,6 +1,6 @@
 {
     "name": "@holmdigital/engine",
-    "version": "4.0.2",
+    "version": "4.1.0",
     "private": false,
     "publishConfig": {
         "access": "public"
@@ -85,7 +85,7 @@
     },
     "dependencies": {
         "@holmdigital/components": "^4.2.0",
-        "@holmdigital/standards": "^5.0.0",
+        "@holmdigital/standards": "^5.2.0",
         "axe-core": "^4.14.0",
         "chalk": "^6.0.1",
         "commander": "^15.0.0",
