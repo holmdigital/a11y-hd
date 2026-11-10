@@ -128,13 +128,14 @@ import {
 const seLaws = getNationalLaws('SE');
 // [{ id: "dos-lagen", law: "DOS-lagen", ... }, { id: "lptt", law: "LPTT", ... }]
 
-// Get sanctions for a specific law
+// Get sanctions for a specific law: always a list, or null
 const sanctions = getSanctions('lptt', 'SE');
-// Returns the recorded range, or undefined where no amount is established.
+// [{ kind: 'amount', type: 'Sanktionsavgift', minAmount: 10000, maxAmount: 10000000,
+//    currency: 'SEK', cap: 'stated', legalBasis: '… 37 § och 39 §', sourceUrl: 'https://…' }]
 
-// Get maximum sanction for a country
+// Get the highest ceiling a law in the country states itself
 const maxSanction = getMaxSanction('DE');
-// Returns the highest recorded maximum, skipping laws with no established amount.
+// { law: 'BFSG (Barrierefreiheitsstärkungsgesetz)', amount: 100000, currency: 'EUR' }
 
 // Get sector-specific EAA authorities
 const sectors = getSectorAuthorities('SE');
@@ -162,8 +163,22 @@ penalty of its own at all, or have no ceiling (Denmark). Flattening that into on
 produced figures our own data does not support.
 
 **Read sanctions from the data, never from documentation:** `getSanctions(lawId, country)`
-returns what is recorded, and `undefined` where no amount is established. An absent value
-means "not established against primary source" — never "no penalty exists".
+returns a list of elements, one per sanction the law provides, and `null` where nothing is
+established against primary source. `null` never means "no penalty exists".
+
+Each element carries its own `legalBasis` and `sourceUrl`, and `cap` says where its ceiling
+comes from: `stated` in this law, `elsewhere` in another instrument, `no-ceiling` where the
+law sets no ceiling, or `not-established`. An element is an `amount` (an optional `minAmount`
+and `maxAmount`), a `formula` (a `factor` over an `index`) or a `measure`, a sanction that
+is not a sum of money (US: suspending federal financial assistance), with no currency and no
+`cap`. `exceedableUnder` names the provision that lets a stated ceiling be exceeded (Germany:
+§ 17(4) OWiG). `getMaxSanction(country)`
+returns the highest ceiling per violation or decision that a law states itself. It is not a
+country's maximum exposure: it does not count formula ceilings (for example up to 5% of
+turnover for large companies in Italy), a violation that becomes a new violation each day
+(section 88 of the Accessible Canada Act), or general rules that let a stated maximum be
+exceeded (§ 17(4) OWiG in Germany).
+
 ## API Reference
 
 ### Core Functions
@@ -208,8 +223,8 @@ means "not established against primary source" — never "no penalty exists".
 | `getNationalLaw(id, country?)` | Get specific law by ID |
 | `getNationalLawByFramework(framework, country?)` | Get law by WAD/EAA/DDA |
 | `getEnforcementBody(country, sector?)` | Get enforcement authority name |
-| `getSanctions(lawId, country?)` | Get sanctions for a law |
-| `getMaxSanction(country?)` | Get maximum sanction amount |
+| `getSanctions(lawId, country?)` | Sanctions a law provides, as a list, or `null` where none is established |
+| `getMaxSanction(country?)` | Highest ceiling a law in the country states itself, or `null` |
 | `getSectorAuthorities(country?)` | Get EAA sector authorities |
 | `getDatabaseStats(lang?)` | Get rule counts and coverage stats |
 
