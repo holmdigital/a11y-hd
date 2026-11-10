@@ -14,17 +14,29 @@ import * as jestDomMatchers from '@testing-library/jest-dom/matchers';
 // @chialab/vitest-axe 0.19.x exposes matchers as the default export of the main entry.
 // The "./matchers" subpath only carries types, no runtime — see node_modules/@chialab/vitest-axe/package.json.
 import axeMatchers from '@chialab/vitest-axe';
+import type { TestingLibraryMatchers } from '@testing-library/jest-dom/matchers';
 
-// Type augmentation: @chialab/vitest-axe adds `toHaveNoViolations` at runtime
-// but does not augment vitest's Assertion interface. Declare it here so
-// src/_test/axe.ts's `expect(results).toHaveNoViolations()` type-checks.
+// Typutökning för vitest 5 (Intern #125 punkt B).
+//
+// Vitest 5 deklarerar `Assertion<R, T>` och `Matchers<R, T>` med två
+// typparametrar. jest-doms egen vitest-utökning (7.0.1) och den tidigare
+// `interface Assertion<T = any>` här har bara en, och då slutar
+// sammanslagningen verka: TS2428 här och TS2339 på toHaveAttribute,
+// toBeInTheDocument med flera i varje test.
+//
+// Vi utökar därför `Matchers`, som `Assertion` ärver från, med exakt samma
+// typparametrar som vitest 5. `AsymmetricMatchersContaining` ärver
+// `Matchers<any>` och får matcharna därifrån.
+//
+// `toHaveNoViolations` lägger @chialab/vitest-axe till vid körning utan att
+// utöka vitests typer. Den deklareras här så att src/_test/axe.ts typkontrolleras.
 declare module 'vitest' {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    interface Assertion<T = any> {
-        toHaveNoViolations(): T;
-    }
-    interface AsymmetricMatchersContaining {
-        toHaveNoViolations(): unknown;
+    // `T` används inte men måste finnas: typparametrarna ska vara identiska med vitests.
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    interface Matchers<R extends void | Promise<void> = void | Promise<void>, T = unknown>
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        extends TestingLibraryMatchers<any, R> {
+        toHaveNoViolations(): R;
     }
 }
 
