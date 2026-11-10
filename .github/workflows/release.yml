@@ -47,12 +47,24 @@ jobs:
         # SHA-pinnad: den här actionen kör med contents/pull-requests/id-token
         # write, alltså med rätten att publicera. En flyttad tagg vore en kapad
         # publiceringskedja. Dependabot uppdaterar SHA-pins precis som taggar.
-        uses: changesets/action@a45c4d594aa4e2c509dc14a9f2b3b67ba3780d0d # v1.9.0
+        #
+        # v2 hör ihop med @changesets/cli v3 (v2 vägrar köra mot CLI v2, och v1
+        # stöder inte CLI v3). Lyft dem alltid i samma PR. I v2 bytte in- och
+        # utdata namn, och tre saker i den här filen följer av det:
+        #   * indata `version` heter `version-script`,
+        #   * utdata `hasChangesets` heter `has-changesets`. Båda `if:` nedan
+        #     läser den. Med det gamla namnet blir värdet tomt, `!= 'true'` blir
+        #     alltid sant och publicering och dispatch körs även när det finns
+        #     changesets kvar,
+        #   * tokenen läses bara från `github-token`. En GITHUB_TOKEN i `env:` som
+        #     skiljer sig från den får actionen att fälla steget, så en egen
+        #     token (Intern #125 punkt A) ska in här och inte i `env:`.
+        uses: changesets/action@ae32849d5ba541f9ae29e40e22a623bc13562f51 # v2.1.2
         with:
-          # Only use the action for versioning/PR creation
-          version: npx changeset version
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # Actionen används bara för versionering och Release-PR:en.
+          # Publiceringen sköts av stegen nedan (OIDC), så `publish-script` sätts inte.
+          version-script: npx changeset version
+          github-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: OIDC Diagnostic
         run: |
@@ -68,7 +80,7 @@ jobs:
 
       - name: Publish to NPM (OIDC)
         # Only publish if on master and there are no changeset files left
-        if: github.ref == 'refs/heads/master' && steps.changesets.outputs.hasChangesets != 'true'
+        if: github.ref == 'refs/heads/master' && steps.changesets.outputs.has-changesets != 'true'
         run: |
           echo "No changesets found, attempting to publish..."
           
@@ -118,7 +130,7 @@ jobs:
           # id-token: write permission handles auth via Trusted Publishing
 
       - name: Trigger downstream deploys
-        if: github.ref == 'refs/heads/master' && steps.changesets.outputs.hasChangesets != 'true'
+        if: github.ref == 'refs/heads/master' && steps.changesets.outputs.has-changesets != 'true'
         run: |
           set -euo pipefail
 
