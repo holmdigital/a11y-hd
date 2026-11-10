@@ -383,7 +383,7 @@
         "@types/node": "^26.6.2",
         "@types/react": "^19.2.18",
         "@types/react-dom": "^19.2.7",
-        "axe-core": "^4.13.0",
+        "axe-core": "^4.14.0",
         "eslint-plugin-testing-library": "^7.16.2",
         "jsdom": "^31.0.0",
         "lucide-react": "^1.70.0",
