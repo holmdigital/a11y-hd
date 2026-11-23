@@ -86,13 +86,13 @@
     "dependencies": {
         "@holmdigital/components": "^4.2.0",
         "@holmdigital/standards": "^5.2.0",
-        "axe-core": "^4.14.0",
+        "axe-core": "^4.14.1",
         "chalk": "^6.0.1",
         "commander": "^15.1.0",
         "cosmiconfig": "^10.0.1",
-        "html-validate": "11.19.0",
+        "html-validate": "11.21.1",
         "ora": "^10.0.0",
-        "puppeteer": "25.16.0",
+        "puppeteer": "25.18.1",
         "react": "^18.3.1 || ^19.0.0",
         "react-dom": "^18.3.1 || ^19.0.0",
         "ws": "^8.22.1"
